@@ -25,8 +25,12 @@ published.
 
 ## Status
 
-Nothing designed yet. The spec — cell candidates, N, split-axis plan,
-program/read architecture, and the measurement matrix — is the first work.
+The spec — cell candidates, N, split-axis plan, program/read architecture,
+and the measurement matrix — came first. The first design sources are now in
+`design/`: xschem schematics and derived netlists for the three ratified
+antifuse cell candidates. The array, row/column MUX, sense path and SPI slave
+are specified at the interface level only and are not captured yet — see
+`design/README.md` for what is and is not designed.
 
 ## Repo layout
 

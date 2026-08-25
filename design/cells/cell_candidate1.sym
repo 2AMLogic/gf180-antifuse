@@ -1,0 +1,41 @@
+v {xschem version=3.4.7 file_version=1.2
+
+* gf180-antifuse: symbol for the Candidate 1 (baseline) antifuse cell.
+*
+* Parameters:
+*   wcap, lcap - capacitor (antifuse element) width and length. Split axis
+*                per spec/split-axis-plan.md; the values below are the PDK
+*                cap_nmos_03v3 symbol template defaults, carried through
+*                verbatim as placeholders. They are NOT a process-minimum
+*                claim - the minimum-legal geometry is a PDK design-rule
+*                lookup deferred to follow-on work.
+*   wacc, lacc - access-device width and length, same placeholder rule
+*                (nfet_06v0 symbol template defaults).
+}
+G {}
+K {type=subcircuit
+format="@name @pinlist @symname wcap=@wcap lcap=@lcap wacc=@wacc lacc=@lacc m=@m"
+template="name=x1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1"
+}
+V {}
+S {}
+E {}
+L 4 -60 -60 60 -60 {}
+L 4 -60 60 60 60 {}
+L 4 -60 -60 -60 60 {}
+L 4 60 -60 60 60 {}
+L 4 -80 -30 -60 -30 {}
+L 4 -80 30 -60 30 {}
+L 4 60 -30 80 -30 {}
+L 4 60 30 80 30 {}
+B 5 -82.5 -32.5 -77.5 -27.5 {name=BL dir=inout}
+B 5 -82.5 27.5 -77.5 32.5 {name=WL dir=in}
+B 5 77.5 -32.5 82.5 -27.5 {name=PL dir=inout}
+B 5 77.5 27.5 82.5 32.5 {name=VB dir=inout}
+T {@symname} -52 -5 0 0 0.3 0.3 {}
+T {@name} -60 -75 0 0 0.25 0.25 {}
+T {BL} -55 -35 0 0 0.25 0.25 {}
+T {WL} -55 25 0 0 0.25 0.25 {}
+T {PL} 35 -35 0 0 0.25 0.25 {}
+T {VB} 35 25 0 0 0.25 0.25 {}
+T {cap_nmos_03v3 + nfet_06v0} -60 40 0 0 0.22 0.22 {}

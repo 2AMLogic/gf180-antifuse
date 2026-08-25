@@ -1,0 +1,55 @@
+* gf180-antifuse: elaboration + parameter-propagation check, Candidate 3.
+*
+* NOT a design result and NOT evidence: this deck exists only to prove that
+* the xschem-derived netlist design/netlists/cell_candidate3.spice
+*   (a) elaborates cleanly in ngspice against the pinned PDK model files, and
+*   (b) actually routes the wcap/lcap subcircuit parameters through to the
+*       capacitor instance.
+* Device characterization, programming-yield and read-margin work belongs in
+* sim/ with PVT corners, per CLAUDE.md. Nothing here is cornered.
+*
+* Run it through design/check-netlists.sh - that script materializes the two
+* generated includes this deck expects:
+*   models.spice   - the pinned PDK model libraries, path-resolved from PDK_ROOT
+*   geometry.spice - .param wcell / lcell, the capacitor geometry under test
+*
+* PL is driven by the only AC source in the deck and connects to nothing but
+* the capacitor's body plate, so mag(i(vpl)) is the capacitor branch current
+* alone - no access-device parasitics in the measurement. Doubling the
+* capacitor area must double it.
+*
+* Candidate 3's polarity is inverted relative to Candidates 1 and 2, so the
+* bias differs: BL is the access device's source and sits high, WL pulls low
+* to turn the device on, and VNW - the n-well tie - is held at the most
+* positive potential the cell sees.
+*
+* At this bias cap_pmos_03v3 sits in depletion, not accumulation - its C-V
+* tanh argument in sm141064.ngspice is -6.25*v(G,B) - 4.9375, so it needs a
+* negative gate-to-body bias to accumulate - which makes the absolute branch
+* current here much smaller than Candidates 1 and 2's. That is fine and
+* deliberate: this deck compares the SAME bias at two capacitor areas, so
+* only the ratio matters, and holding the access device firmly on keeps the
+* measurement out of the device's off-resistance. Choosing an operating bias
+* for this cell is sim/'s job, not this deck's.
+
+.include models.spice
+.include cell_candidate3.spice
+.include geometry.spice
+
+* Capacitor geometry comes in as subcircuit parameters. Access-device
+* geometry is left at the subcircuit's own defaults.
+X1 BL WL PL VNW cell_candidate3 wcap=wcell lcap=lcell
+
+* Access device held on so the cell node CN has a defined DC operating point.
+VBL BL 0 DC 3.3
+VWL WL 0 DC 0
+VNW VNW 0 DC 3.3
+VPL PL 0 DC 0 AC 1
+
+.control
+op
+print v(bl) v(wl) v(x1.cn)
+ac lin 1 1e3 1e3
+print mag(i(vpl))
+.endc
+.end
