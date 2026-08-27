@@ -1,0 +1,30 @@
+name: CI
+
+# Minimal PR-blocking pipeline for this repo. The only checks that exist here
+# today are the design/ netlist checks — see design/check-netlists.sh and
+# package.json's "check:ci" script, which this workflow runs verbatim so a
+# local run and a CI run mean the same thing.
+
+on:
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: design netlist checks
+    # This repo is PRIVATE: GitHub-hosted `ubuntu-latest` is billed, not a free
+    # fallback, and a billing failure kills the job silently at startup with no
+    # test output. Route same-repo PRs to the self-hosted runner (which also
+    # carries the gf180mcuD PDK + xschem/ngspice this check needs); only an
+    # external/fork PR (where the self-hosted runner cannot be trusted with
+    # untrusted code) falls back to ubuntu-latest.
+    runs-on: ${{ (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && fromJSON('["self-hosted","heavy"]') || 'ubuntu-latest' }}
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Run repo checks (same command as package.json's check:ci)
+        run: ./design/check-netlists.sh
