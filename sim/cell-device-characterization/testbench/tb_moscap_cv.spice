@@ -1,0 +1,100 @@
+* gf180-antifuse sim/cell-device-characterization
+* Pre-breakdown capacitor C-V and leakage, measured through the committed
+* 1T1C cell subcircuit -- spec/architecture.md Section 3 item 2 (the
+* unprogrammed-cell current floor) and spec/cell-candidates.md's flagged
+* post-breakdown-model gap (no stock leakage branch exists to characterize;
+* this bench measures what the stock model actually has).
+*
+* This is a TEMPLATE, not a runnable deck: run_experiment.py replaces the
+* @TOKEN@ placeholders below with literal numeric values before writing the
+* per-corner deck (`sim/.work/...`, git-ignored, not committed) -- see
+* tb_access_device.spice's header for why literal substitution is used
+* instead of `.param` + `alter`.
+*
+* @VON@        WL "fully on" bias for this candidate (V)
+* @VPL_1..5@   the 5 PL bias points that sweep the capacitor's own
+*              gate(CN)-to-plate(PL) bias across -V_rated .. +V_rated (see
+*              below for why PL, not BL, is the swept terminal)
+*
+* Reuses the access-device-in-series-with-capacitor measurement principle
+* established in design/tb/tb_cell_candidateN.spice
+* (design/check-netlists.sh's mag(i(vpl)) technique): WL is held fully ON so
+* the cell's internal node (X1's CN) tracks BL with no DC drop (no DC
+* current flows through the capacitor in steady state, so there is no
+* voltage drop across the access device's ON resistance either).
+*
+* BL is held FIXED at 0 V here (not swept) and the capacitor's bias range is
+* instead swept on PL, with the opposite sign (V(CN)-V(PL) ~= 0 - V(PL) =
+* -V(PL)): sweeping BL itself across +-V_rated was tried first and, for the
+* NMOS-access candidates, forward-biased the access device's own
+* drain/body junction at the negative end of the range (BL well below the
+* grounded p-substrate) -- a large, real diode current that swamped the
+* capacitor leakage measurement and had nothing to do with the capacitor.
+* PL has no such junction in the stock model (it is a bare capacitor
+* terminal), so sweeping it instead reaches the same relative bias without
+* stressing the access device at all.
+*
+* Included ahead of this fragment (also generated per corner, not
+* committed): models.spice (`.lib sm141064.ngspice <moscap_corner>`, a
+* fixed `typical` MOS section for the access device -- its ON conduction is
+* not the quantity under test here, see README -- `.temp`, `.options
+* gmin=<fixed literal>`) and instantiate.spice (`.include`s the real,
+* committed design/netlists/cell_candidateN.spice -- no device lines
+* copied -- and instantiates it as X1 at the requested access-sizing /
+* capacitor-geometry level, plus fixed VVB bias).
+*
+* Leakage: the stock cap_* subcircuit is a single voltage-dependent
+* capacitance element with no DC branch at all (spec/cell-candidates.md), so
+* the `.op` current recorded at each bias point is, like tb_access_device's
+* I_off, a gmin-floor-limited upper bound rather than a resolved leakage
+* figure -- consistent with, and citing the same model gap as, that flagged
+* finding. Recording it anyway (rather than omitting it) is deliberate: a
+* future custom breakdown-augmented model's leakage branch has this number
+* as its zero-order comparison point. Measured at PL (the swept terminal)
+* rather than BL, for the same reason BL is not the swept node above.
+
+VBL BL 0 DC 0
+VWL WL 0 DC @VON@
+VPL PL 0 DC @VPL_1@ AC 1
+
+.control
+op
+let ilk_1 = abs(i(vpl))
+print ilk_1
+ac lin 1 1e3 1e3
+let cval_1 = mag(i(vpl))/(2*pi*1e3)
+print cval_1
+
+alter vpl = @VPL_2@
+op
+let ilk_2 = abs(i(vpl))
+print ilk_2
+ac lin 1 1e3 1e3
+let cval_2 = mag(i(vpl))/(2*pi*1e3)
+print cval_2
+
+alter vpl = @VPL_3@
+op
+let ilk_3 = abs(i(vpl))
+print ilk_3
+ac lin 1 1e3 1e3
+let cval_3 = mag(i(vpl))/(2*pi*1e3)
+print cval_3
+
+alter vpl = @VPL_4@
+op
+let ilk_4 = abs(i(vpl))
+print ilk_4
+ac lin 1 1e3 1e3
+let cval_4 = mag(i(vpl))/(2*pi*1e3)
+print cval_4
+
+alter vpl = @VPL_5@
+op
+let ilk_5 = abs(i(vpl))
+print ilk_5
+ac lin 1 1e3 1e3
+let cval_5 = mag(i(vpl))/(2*pi*1e3)
+print cval_5
+.endc
+.end
