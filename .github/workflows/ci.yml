@@ -26,5 +26,26 @@ jobs:
       - name: Check out
         uses: actions/checkout@v4
 
+      # This job's own log is not readable from here (the forge App
+      # installation lacks Actions:read on this repo, so
+      # `actions/jobs/<id>/logs` 403s for every agent). Check-run
+      # *annotations*, unlike job logs, don't need that permission — emitting
+      # them via the `::notice::`/`::error::` workflow commands is the only
+      # way a failure's actual cause reaches anyone diagnosing this repo
+      # without direct runner access.
+      - name: Diagnose toolchain environment
+        run: |
+          : "${PDK_ROOT:=${HOME}/.volare}"
+          echo "::notice::PATH=${PATH}"
+          echo "::notice::HOME=${HOME}"
+          echo "::notice::PDK_ROOT=${PDK_ROOT}"
+          echo "::notice::xschem=$(command -v xschem || echo 'NOT FOUND')"
+          echo "::notice::ngspice=$(command -v ngspice || echo 'NOT FOUND')"
+          if [[ -d "${PDK_ROOT}/gf180mcuD/libs.tech/ngspice" ]]; then
+            echo "::notice::gf180mcuD models found at ${PDK_ROOT}/gf180mcuD/libs.tech/ngspice"
+          else
+            echo "::error::gf180mcuD models NOT found at ${PDK_ROOT}/gf180mcuD/libs.tech/ngspice"
+          fi
+
       - name: Run repo checks (same command as package.json's check:ci)
         run: ./design/check-netlists.sh
