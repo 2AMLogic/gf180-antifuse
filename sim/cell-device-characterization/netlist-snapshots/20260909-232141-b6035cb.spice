@@ -1,0 +1,14 @@
+
+* expanding   symbol:  cell_candidate2.sym # of pins=4
+** sym_path: design/cells/cell_candidate2.sym
+** sch_path: design/cells/cell_candidate2.sch
+.subckt cell_candidate2 BL WL PL VB  wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u
+*.iopin BL
+*.iopin WL
+*.iopin PL
+*.iopin VB
+XM1 BL WL CN VB nfet_10v0_asym L=lacc W=wacc nf=1 ad='wacc * 1.48u' as='wacc * 0.48u' pd='2 * (wacc + 1.48u)' ps='2 * (wacc + 0.48u)'
++ nrd=0 nrs=0 sa=0 sb=0 sd=0 m=1
+XC1 CN PL cap_nmos_06v0 c_width=wcap c_length=lcap m=1
+.ends
+

@@ -1,0 +1,92 @@
+* gf180-antifuse sim/cell-device-characterization
+* Access-device OFF-state leakage (I_off) and ON-state series resistance
+* (R_on), measured through the committed 1T1C cell subcircuit's BL
+* terminal -- spec/architecture.md Section 3 item 2 and Section 4.
+*
+* This is a TEMPLATE, not a runnable deck: run_experiment.py replaces the
+* @TOKEN@ placeholders below with literal numeric values before writing the
+* per-corner deck (`sim/.work/...`, git-ignored, not committed). Literal
+* substitution -- not ngspice `.param` + `alter` -- is deliberate: `alter
+* <element> = <param-name>` was confirmed during development to silently
+* fail (ngspice keeps the element's prior value and reports a spurious
+* "no such vector <param-name>" after the run) where `alter <element> =
+* <literal>` works correctly. See this directory's README.
+*
+* @VREAD@   read-voltage rail for this corner (V)
+* @VOFF_LO@ / @VOFF_MID@ / @VOFF_HI@   3-point OFF-gate-bias sweep (V)
+* @VON@     WL "fully on" bias for this candidate (V), matching the bias
+*           design/tb/tb_cell_candidateN.spice already uses for the same
+*           purpose
+*
+* Included ahead of this fragment (also generated per corner, not
+* committed): models.spice (`.lib` sections for the requested MOS process
+* corner, `.temp`, `.options gmin=<fixed literal>`) and instantiate.spice
+* (`.include`s the real, committed design/netlists/cell_candidateN.spice --
+* no device lines copied -- and instantiates it as X1 at the requested
+* access-sizing / capacitor-geometry level, plus fixed VPL/VVB bias).
+*
+* Methodology (full derivation in this directory's README):
+*
+*  - I_off: a 3-point OFF-gate-bias sweep (`.op` at voff_lo/mid/hi) with BL
+*    at the read voltage and WL held OFF. The stock cap_* models have no DC
+*    branch (spec/cell-candidates.md's flagged post-breakdown-model gap), so
+*    the cell's internal node (X1's CN) has no DC path except the access
+*    device's own OFF-state channel conduction and its source/body
+*    junction -- both verified (README) to sit far below ngspice's default
+*    gmin at deep cutoff. Every ioff_* value in the corner logs is therefore
+*    a gmin-floor-limited UPPER BOUND on the true subthreshold current, not
+*    a fully resolved measurement -- the conservative direction for the
+*    I_ref > I_sneak_max inequality this record substantiates (an
+*    overestimate of sneak leakage only makes the derived I_ref bound safer,
+*    never falsely reassuring). `abs()` is used because Candidate 3's PMOS
+*    access device reverses the sign of the physically same leakage current.
+*  - R_on: WL held fully ON, small-signal AC excitation at BL (VBL carries
+*    an AC=1 component regardless of analysis type -- ngspice ignores it
+*    during `.op`). For an ideal series R+C, Re(Z) seen from BL equals the
+*    resistive term exactly, independent of frequency and of the
+*    capacitor's value -- but only once the measurement frequency is high
+*    enough that the capacitor's own admittance dominates gmin's parallel
+*    leakage conductance at the internal node between the access device and
+*    the capacitor. At too low a frequency (confirmed during development:
+*    1 kHz, with this device's few-fF capacitance), gmin's tiny conductance
+*    is still comparable to the capacitor's admittance and corrupts Re(Z)
+*    by many orders of magnitude -- not a small correction, because a
+*    parallel conductance across a mostly-reactive admittance injects a NEW
+*    real term (Re(1/(G+jB)) = G/(G^2+B^2)) rather than a proportionate
+*    one. 10 MHz was verified (against a gmin sweep down to 1e-15 S, where
+*    the extracted R_on stopped moving) to already be in the
+*    frequency-independent, gmin-independent regime for every candidate's
+*    geometry range this experiment sweeps -- see README. Note this is only
+*    approximate, not exact: the real circuit also has the access device's
+*    own parasitic Cgd/Cdb in parallel with the BL node, unaffected by the
+*    capacitor's own geometry, so the extracted R_on carries a small
+*    (single-digit-percent to ~10%) dependence on the capacitor-geometry
+*    sub-configuration even once frequency/gmin effects are settled -- see
+*    README's methodology note. Reported per sub-configuration, not
+*    asserted capacitor-geometry-invariant.
+
+VBL BL 0 DC @VREAD@ AC 1
+VWL WL 0 DC @VOFF_LO@
+VPL PL 0 DC 0
+
+.control
+op
+let ioff_lo = abs(i(vbl))
+print ioff_lo
+
+alter vwl = @VOFF_MID@
+op
+let ioff_mid = abs(i(vbl))
+print ioff_mid
+
+alter vwl = @VOFF_HI@
+op
+let ioff_hi = abs(i(vbl))
+print ioff_hi
+
+alter vwl = @VON@
+ac lin 1 1e7 1e7
+let ron = real(v(bl)/(-i(vbl)))
+print ron
+.endc
+.end

@@ -9,6 +9,9 @@ __pycache__/
 # (append-only record trail), so they escape the *.log rule.
 !sim/*/corners/**/*.log
 sim/build/
+# sim/ harness: generated per-corner ngspice decks are disposable, not
+# evidence -- only the raw .log output above is committed.
+**/.work/
 # synthesis / P&R scratch
 flow/build/
 # local klt install, created by the setup script
