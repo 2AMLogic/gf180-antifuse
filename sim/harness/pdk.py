@@ -70,7 +70,6 @@ def resolve_pdk(pdk_root_override: str | None = None) -> PDKPaths:
     env_variant_path = os.environ.get("GF180_PDK_PATH")
     if env_variant_path:
         variant_dir = Path(env_variant_path).expanduser()
-        pdk_root = variant_dir.parent
     else:
         root_str = pdk_root_override or os.environ.get("PDK_ROOT") or str(Path.home() / ".volare")
         pdk_root = Path(root_str).expanduser()
