@@ -10,7 +10,6 @@ from __future__ import annotations
 
 import shutil
 import subprocess
-from dataclasses import dataclass
 from pathlib import Path
 
 
@@ -30,12 +29,7 @@ def check_ngspice() -> str:
     return path
 
 
-@dataclass(frozen=True)
-class NgspiceRun:
-    output: str
-
-
-def run_deck(deck_path: Path, cwd: Path, timeout_s: float = 60.0) -> NgspiceRun:
+def run_deck(deck_path: Path, cwd: Path, timeout_s: float = 60.0) -> str:
     """Run `ngspice -b <deck_path>` from cwd, return combined stdout+stderr.
 
     Callers determine success from the deck's own expected measurement
@@ -53,7 +47,7 @@ def run_deck(deck_path: Path, cwd: Path, timeout_s: float = 60.0) -> NgspiceRun:
         )
     except subprocess.TimeoutExpired as exc:
         combined = (exc.stdout or "") + (exc.stderr or "")
-        return NgspiceRun(output=combined + "\n[harness] TIMEOUT\n")
+        return combined + "\n[harness] TIMEOUT\n"
 
     combined = proc.stdout + proc.stderr
-    return NgspiceRun(output=combined)
+    return combined
