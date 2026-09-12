@@ -56,7 +56,7 @@ def _resolve_revision(variant_dir: Path) -> str:
     return "unknown"
 
 
-def resolve_pdk(pdk_root_override: str | None = None, variant_override: str | None = None) -> PDKPaths:
+def resolve_pdk(pdk_root_override: str | None = None) -> PDKPaths:
     """Resolve the PDK, in order:
 
     1. ``GF180_PDK_PATH`` -- the variant directory itself.
@@ -66,7 +66,7 @@ def resolve_pdk(pdk_root_override: str | None = None, variant_override: str | No
     4. ``~/.volare`` (the built-in default this repo's other scripts, e.g.
        ``design/check-netlists.sh``, already assume).
     """
-    variant = variant_override or os.environ.get("PDK", "gf180mcuD")
+    variant = os.environ.get("PDK", "gf180mcuD")
 
     env_variant_path = os.environ.get("GF180_PDK_PATH")
     if env_variant_path:
