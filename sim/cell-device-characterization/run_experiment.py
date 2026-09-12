@@ -479,7 +479,7 @@ def sci(x: float | None) -> str:
     return f"{x:.4e}"
 
 
-def render_record(pdk: P.PDKPaths, run: CandidateRun, dirty: bool, claim_extra: str = "") -> str:
+def render_record(pdk: P.PDKPaths, run: CandidateRun, dirty: bool) -> str:
     c = run.candidate
     bounds = derive_bounds(run)
     n_access = len(run.access_results)
@@ -500,7 +500,6 @@ def render_record(pdk: P.PDKPaths, run: CandidateRun, dirty: bool, claim_extra: 
         "`spec/architecture.md#4-sense-scheme` (the slow/cold access-device series-resistance "
         "term of the sense path's worst-case corner). Region "
         f"{c.region} / Candidate {c.n} (`spec/split-axis-plan.md`, `spec/cell-candidates.md`)."
-        f"{claim_extra}"
     )
     lines.append(f"- **Netlist provenance**: {provenance}")
     lines.append("- **Corner matrix run**:")
