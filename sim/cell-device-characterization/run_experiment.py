@@ -351,10 +351,9 @@ def run_access_corner(pdk: P.PDKPaths, candidate: Candidate, defaults: dict, siz
     ioff_mid = parse_scalar(result.output, "ioff_mid")
     ioff_hi = parse_scalar(result.output, "ioff_hi")
     ron = parse_scalar(result.output, "ron")
-    # A corner is "ok" when every expected scalar parsed to a real number.
-    # Not gated on NgspiceRun.ok, which flags on any "error"/"fatal"
-    # substring -- more conservative than needed here, since the ground
-    # truth is whether the expected measurements actually printed.
+    # AccessResult.ok is true when every expected scalar parsed to a real
+    # number -- the ground truth is whether the expected measurements
+    # actually printed, not ngspice's own exit status.
     ok = None not in (ioff_lo, ioff_mid, ioff_hi, ron)
 
     return AccessResult(
@@ -378,7 +377,8 @@ def run_cap_corner(pdk: P.PDKPaths, candidate: Candidate, defaults: dict, sizing
 
     ilk = [parse_scalar(result.output, f"ilk_{i}") for i in range(1, 6)]
     cval = [parse_scalar(result.output, f"cval_{i}") for i in range(1, 6)]
-    # See run_access_corner's comment: not gated on NgspiceRun.ok.
+    # CapResult.ok follows the same rule as AccessResult.ok (see
+    # run_access_corner): every expected scalar must have parsed.
     ok = all(v is not None for v in ilk) and all(v is not None for v in cval)
 
     return CapResult(sizing=sizing, geometry=geometry, moscap_corner=moscap_corner,
