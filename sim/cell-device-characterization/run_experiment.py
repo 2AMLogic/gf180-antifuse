@@ -172,23 +172,33 @@ def cv_bias_points(candidate: Candidate) -> tuple[float, float, float, float, fl
 # ---------------------------------------------------------------------------
 
 
-def gen_models(pdk: P.PDKPaths, candidate: Candidate, mos_corner: str, temp_c: int) -> str:
+def _gen_models(
+    pdk: P.PDKPaths,
+    candidate: Candidate,
+    mos_lib_corner: str,
+    moscap_lib_corner: str,
+    temp_c: int,
+) -> str:
     # gmin is a fixed constant for this whole experiment (see GMIN's module
     # docstring / README methodology note) -- written as a literal here
     # rather than routed through `.param`, since ngspice's `.options` card
     # does not reliably substitute a `.param`-declared name (confirmed
     # during development: it silently keeps the default gmin and reports
     # spurious "no such vector" errors after the .control block instead).
-    lines = [f".include {pdk.design_ngspice}", f".lib {pdk.sm141064} {mos_corner}"]
+    lines = [f".include {pdk.design_ngspice}", f".lib {pdk.sm141064} {mos_lib_corner}"]
     for extra in candidate.extra_mos_libs:
         extra_path = pdk.smbb000149 if extra == "smbb000149" else None
         if extra_path is None:
             raise ValueError(f"unknown extra MOS lib file: {extra}")
-        lines.append(f".lib {extra_path} {mos_corner}")
-    lines.append(f".lib {pdk.sm141064} moscap_typical")
+        lines.append(f".lib {extra_path} {mos_lib_corner}")
+    lines.append(f".lib {pdk.sm141064} {moscap_lib_corner}")
     lines.append(f".temp {temp_c}")
     lines.append(f".options gmin={fmt(GMIN)}")
     return "\n".join(lines) + "\n"
+
+
+def gen_models(pdk: P.PDKPaths, candidate: Candidate, mos_corner: str, temp_c: int) -> str:
+    return _gen_models(pdk, candidate, mos_corner, "moscap_typical", temp_c)
 
 
 def gen_models_moscap(pdk: P.PDKPaths, candidate: Candidate, moscap_corner: str, temp_c: int) -> str:
@@ -196,16 +206,7 @@ def gen_models_moscap(pdk: P.PDKPaths, candidate: Candidate, moscap_corner: str,
     # here even though this bench isn't sweeping the MOS corner (it holds
     # WL fully ON and measures the capacitor branch only) -- fixed at
     # `typical` for every point, documented in the README.
-    lines = [f".include {pdk.design_ngspice}", f".lib {pdk.sm141064} typical"]
-    for extra in candidate.extra_mos_libs:
-        extra_path = pdk.smbb000149 if extra == "smbb000149" else None
-        if extra_path is None:
-            raise ValueError(f"unknown extra MOS lib file: {extra}")
-        lines.append(f".lib {extra_path} typical")
-    lines.append(f".lib {pdk.sm141064} {moscap_corner}")
-    lines.append(f".temp {temp_c}")
-    lines.append(f".options gmin={fmt(GMIN)}")
-    return "\n".join(lines) + "\n"
+    return _gen_models(pdk, candidate, "typical", moscap_corner, temp_c)
 
 
 def gen_instantiate(candidate: Candidate, wcap: float, lcap: float, wacc: float, lacc: float) -> str:
