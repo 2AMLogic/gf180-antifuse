@@ -333,7 +333,7 @@ def run_access_corner(pdk: P.PDKPaths, candidate: Candidate, defaults: dict, siz
     deck.write_text(".include models.spice\n.include instantiate.spice\n.include tb.spice\n")
 
     result = RUN.run_deck(deck, cwd=scratch)
-    log_path.write_text(result.output)
+    R.append_log(log_path, result.output)
 
     ioff_lo = parse_scalar(result.output, "ioff_lo")
     ioff_mid = parse_scalar(result.output, "ioff_mid")
@@ -369,7 +369,7 @@ def run_cap_corner(pdk: P.PDKPaths, candidate: Candidate, defaults: dict, sizing
     deck.write_text(".include models.spice\n.include instantiate.spice\n.include tb.spice\n")
 
     result = RUN.run_deck(deck, cwd=scratch)
-    log_path.write_text(result.output)
+    R.append_log(log_path, result.output)
 
     ilk = [parse_scalar(result.output, f"ilk_{i}") for i in range(1, 6)]
     cval = [parse_scalar(result.output, f"cval_{i}") for i in range(1, 6)]
