@@ -222,7 +222,7 @@ def gen_instantiate(candidate: Candidate, wcap: float, lcap: float, wacc: float,
     )
 
 
-def _write_and_run_deck(log_path: Path, models_text: str, instantiate_text: str, tb_text: str) -> RUN.NgspiceRun:
+def _write_and_run_deck(log_path: Path, models_text: str, instantiate_text: str, tb_text: str) -> str:
     """Shared scratch-dir + deck-assembly + ngspice-invocation scaffolding for
     the per-corner runners below (`run_access_corner`, `run_cap_corner`) --
     only the models/instantiate/testbench content differs between the two
@@ -236,7 +236,7 @@ def _write_and_run_deck(log_path: Path, models_text: str, instantiate_text: str,
     deck.write_text(".include models.spice\n.include instantiate.spice\n.include tb.spice\n")
 
     result = RUN.run_deck(deck, cwd=scratch)
-    R.append_log(log_path, result.output)
+    R.append_log(log_path, result)
     return result
 
 
@@ -347,10 +347,10 @@ def run_access_corner(pdk: P.PDKPaths, candidate: Candidate, defaults: dict, siz
         render_template(TB_ACCESS_TEMPLATE, access_substitutions(candidate, vread)),
     )
 
-    ioff_lo = parse_scalar(result.output, "ioff_lo")
-    ioff_mid = parse_scalar(result.output, "ioff_mid")
-    ioff_hi = parse_scalar(result.output, "ioff_hi")
-    ron = parse_scalar(result.output, "ron")
+    ioff_lo = parse_scalar(result, "ioff_lo")
+    ioff_mid = parse_scalar(result, "ioff_mid")
+    ioff_hi = parse_scalar(result, "ioff_hi")
+    ron = parse_scalar(result, "ron")
     # AccessResult.ok is true when every expected scalar parsed to a real
     # number -- the ground truth is whether the expected measurements
     # actually printed, not ngspice's own exit status.
@@ -375,8 +375,8 @@ def run_cap_corner(pdk: P.PDKPaths, candidate: Candidate, defaults: dict, sizing
         render_template(TB_MOSCAP_TEMPLATE, moscap_substitutions(candidate)),
     )
 
-    ilk = [parse_scalar(result.output, f"ilk_{i}") for i in range(1, 6)]
-    cval = [parse_scalar(result.output, f"cval_{i}") for i in range(1, 6)]
+    ilk = [parse_scalar(result, f"ilk_{i}") for i in range(1, 6)]
+    cval = [parse_scalar(result, f"cval_{i}") for i in range(1, 6)]
     # CapResult.ok follows the same rule as AccessResult.ok (see
     # run_access_corner): every expected scalar must have parsed.
     ok = all(v is not None for v in ilk) and all(v is not None for v in cval)
