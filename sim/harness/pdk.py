@@ -21,7 +21,6 @@ class PDKNotFoundError(RuntimeError):
 
 @dataclass(frozen=True)
 class PDKPaths:
-    pdk_root: Path          # the *search root* (e.g. ~/.volare)
     variant: str            # e.g. "gf180mcuD"
     variant_dir: Path       # pdk_root-resolved variant directory
     design_ngspice: Path
@@ -96,7 +95,6 @@ def resolve_pdk(pdk_root_override: str | None = None) -> PDKPaths:
     revision = _resolve_revision(variant_dir)
 
     return PDKPaths(
-        pdk_root=pdk_root,
         variant=variant,
         variant_dir=variant_dir,
         design_ngspice=design_ngspice,
