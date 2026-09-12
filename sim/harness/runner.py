@@ -32,17 +32,16 @@ def check_ngspice() -> str:
 
 @dataclass(frozen=True)
 class NgspiceRun:
-    ok: bool
-    returncode: int
     output: str
 
 
 def run_deck(deck_path: Path, cwd: Path, timeout_s: float = 60.0) -> NgspiceRun:
     """Run `ngspice -b <deck_path>` from cwd, return combined stdout+stderr.
 
-    A run is considered failed if ngspice exits non-zero OR its own output
-    reports an error/fatal line -- ngspice sometimes exits 0 after printing
-    an ERROR to stdout mid-``.control`` block.
+    Callers determine success from the deck's own expected measurement
+    output (see ``run_experiment.py``), not from ngspice's exit status --
+    ngspice sometimes exits 0 after printing an ERROR to stdout mid-
+    ``.control`` block.
     """
     try:
         proc = subprocess.run(
@@ -54,9 +53,7 @@ def run_deck(deck_path: Path, cwd: Path, timeout_s: float = 60.0) -> NgspiceRun:
         )
     except subprocess.TimeoutExpired as exc:
         combined = (exc.stdout or "") + (exc.stderr or "")
-        return NgspiceRun(ok=False, returncode=-1, output=combined + "\n[harness] TIMEOUT\n")
+        return NgspiceRun(output=combined + "\n[harness] TIMEOUT\n")
 
     combined = proc.stdout + proc.stderr
-    lower = combined.lower()
-    has_error = "fatal error" in lower or "\nerror" in lower or lower.startswith("error")
-    return NgspiceRun(ok=(proc.returncode == 0 and not has_error), returncode=proc.returncode, output=combined)
+    return NgspiceRun(output=combined)
