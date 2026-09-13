@@ -236,7 +236,7 @@ def _write_and_run_deck(log_path: Path, models_text: str, instantiate_text: str,
     deck.write_text(".include models.spice\n.include instantiate.spice\n.include tb.spice\n")
 
     result = RUN.run_deck(deck, cwd=scratch)
-    R.append_log(log_path, result)
+    R.write_once(log_path, result)
     return result
 
 
