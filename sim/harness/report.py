@@ -67,8 +67,3 @@ def write_once(path: Path, content: str) -> None:
     if path.exists():
         raise FileExistsError(f"refusing to overwrite existing evidence file: {path}")
     path.write_text(content)
-
-
-def append_log(path: Path, content: str) -> None:
-    """Write a raw per-corner log. Same append-only rule as write_once."""
-    write_once(path, content)
