@@ -26,9 +26,12 @@ doc) or on any drift from the committed report.
 
 `tier: null` — **0 of 22 T1 items met**, graded against
 `design-evidence-tiers.md` at
-`sha256:275964ed6cdc3ed57566710540daa76beb26c1b67fb4b3dbf598d05b640a7ce0`
-(the copy bundled in klayout-tools `0.5.0+g2b1e55e51bb8`, which is the
+`sha256:cdedcd283089b1f9a825c81ef6178502eb7737de89ec4e89162e079081484bec`
+(the copy bundled in klayout-tools `0.5.0+g32f69f811682`, which is the
 eleven-item checklist — item 11, "Power delivery (structural)", included).
+Both values are copied from the committed `signoff/report.json`
+(`source_doc_content_hash` and `build.version`); if a regenerated report
+changes either, this paragraph moves with it.
 Every item renders `unmet` with `reason: "no_evidence"`.
 
 That is the honest state of this block, not a placeholder: **no `klt` JSON
