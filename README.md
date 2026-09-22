@@ -41,6 +41,7 @@ are specified at the interface level only and are not captured yet — see
 | `sim/` | ngspice testbenches + results — append-only evidence |
 | `layout/` | Layout, DRC/LVS via klayout-tools |
 | `measurements/` | Silicon results, recorded per grid region |
+| `signoff/` | `klt signoff` block manifest + graded T1 verdict — the verdict of record |
 
 ## Conventions
 
