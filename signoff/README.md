@@ -1,0 +1,156 @@
+# signoff/
+
+This block's **T1 state, graded mechanically**. `signoff/report.json` is the
+verdict of record — not a prose checklist, not a comment thread.
+
+| File | What it is |
+|---|---|
+| `manifest.json` | The block manifest `klt signoff --manifest` grades: this block's `block` name, its `kind`, and the evidence envelope backing each T1 item. |
+| `report.json` | The committed output of grading that manifest. Regenerate it, never hand-edit it. |
+| `verify.sh` | Re-grades and asserts the committed report is still true. |
+
+Regenerate and check:
+
+```sh
+klt signoff --manifest signoff/manifest.json --format json > signoff/report.json
+./signoff/verify.sh
+```
+
+`klt signoff --manifest` exits **3** whenever any T1 item is `unmet`
+(`tier: null`) and **0** only when every item is met. Exit 3 is a *verdict*,
+not a tool failure — it is the current, correct exit status for this block.
+`verify.sh` accepts 0 and 3 and fails on 1/2 (unreadable manifest or tiers
+doc) or on any drift from the committed report.
+
+## Current verdict
+
+`tier: null` — **0 of 22 T1 items met**, graded against
+`design-evidence-tiers.md` at
+`sha256:cdedcd283089b1f9a825c81ef6178502eb7737de89ec4e89162e079081484bec`
+(the copy bundled in klayout-tools `0.5.0+g32f69f811682`, which is the
+eleven-item checklist — item 11, "Power delivery (structural)", included).
+Both values are copied from the committed `signoff/report.json`
+(`source_doc_content_hash` and `build.version`); if a regenerated report
+changes either, this paragraph moves with it.
+Every item renders `unmet` with `reason: "no_evidence"`.
+
+That is the honest state of this block, not a placeholder: **no `klt` JSON
+evidence envelope of any kind exists anywhere in this tree.** There is no
+`klt drc`, `lvs`, `extract`, `sim`, `yield`, `pex`, `sta`,
+`functional-verification`, `erc`, or generic envelope to cite, so there is
+nothing that could raise any row above `no_evidence` without fabricating it.
+The manifest therefore declares `"evidence": {}` and cites nothing.
+
+### Why this reads differently from the hand-maintained checklist
+
+Issue #10's checkbox list marks items 1, 5, and 9 met. Those annotations are
+about *artifacts that exist* — committed schematics and derived netlists, the
+PVT corner campaign under `sim/cell-device-characterization/`, the committed
+testbenches. They are not wrong about the tree. They are graded `unmet` here
+because `klt signoff` grades only one thing: whether the item cites a
+readable, passing, fresh `klt` JSON envelope. This repo's corner campaign is
+run by its own harness (`sim/harness/`, ngspice) and records results as
+Markdown evidence records, which no `klt` verb produces and `klt signoff`
+cannot read.
+
+**Neither reading supersedes the other on the underlying facts, and the
+divergence is itself the finding**: the evidence this block has is real but
+is not in the form the tier grader can check, so it cannot be mechanically
+re-verified and cannot roll up into the fleet view. Closing that gap means
+producing `klt`-native evidence (or, for item 8 only, a generic envelope),
+not re-arguing the checkboxes.
+
+## Block kind: `mixed-signal`
+
+Declared `mixed-signal`, **not** `analog`. The ratified
+`spec/architecture.md` puts genuine digital content inside this block's
+boundary, so an `analog`-only declaration would grade the wrong column:
+
+- §1.1 specifies the global row/column decode as a conventional binary
+  decoder built from the `gf180mcu_fd_sc_mcu7t5v0` standard-cell library,
+  running in the logic-voltage domain.
+- §5 specifies an SPI slave (mode 0, 4-wire) with a byte-addressed register
+  file (`ADDR_ROW`, `ADDR_COL`, `CTRL`, `PULSE_WIDTH`, `STATUS`, `RDATA`)
+  and the arm-then-strobe program interlock sequencer.
+
+This matches the kind issue #10 already anticipated ("mixed-signal (program
+path + sense)"). A `mixed-signal` manifest renders both columns of the
+per-kind items (1, 2, 5, 7, 11) once per partition — hence 22 rendered T1
+rows rather than 11.
+
+### Partition boundary
+
+A mixed-signal claim must state which silicon each column's evidence covers.
+The boundary is the **level shifters** of `spec/architecture.md` §1.1 and the
+`PROG_EN`/`READ_EN` control interface of §1.2:
+
+| Partition | Contains |
+|---|---|
+| **Digital** | SPI slave (`SCLK`/`MOSI`/`MISO`/`CS_N` pads, shift/capture logic), the register file, the program arm/strobe sequencer and its arm-timeout, and the global row/column binary decoders — everything on the logic-voltage side of the level shifters. Drives the one-hot row/column select lines and `PROG_EN`/`READ_EN`. |
+| **Analog** | Everything on the far side of the level shifters: the level shifters themselves, the local high-voltage row/column pass-gate stages, the antifuse cell array, the program leg (ballast resistor + active current limit, §2) and the `VPP` rail, and the read leg's current-threshold sense amplifier and `I_ref` reference branch (§4). |
+
+`RDATA` crosses back from the sense amplifier's comparator output into the
+digital `STATUS`/`RDATA` registers; that comparator output is the analog
+partition's boundary pin on the read side.
+
+Neither partition has been captured as design sources yet beyond the three
+cell candidates (`design/README.md` is explicit that the array, MUX, sense
+path and SPI slave are specified at interface level only), so the boundary
+above is a statement about the ratified architecture, not about committed
+netlists.
+
+## Disclosures the grader reports but does not enforce
+
+Two T1 items require the claimant to disclose coverage alongside the verdict,
+because `klt signoff` reports those fields without grading on them:
+
+- **Item 3 (DRC) — deck coverage.** A `met` verdict is `status: "clean"`
+  alone; `coverage.layers_in_stream_without_rules`, `coverage.rules_skipped`
+  and `coverage.deck_scope` are reported on the citation but never compared
+  against the claim. **Nothing to disclose here yet**: item 3 is `unmet` with
+  no citation, so no DRC coverage has been measured on this block at all.
+- **Item 7 (post-layout) — device body bias.** A `pex` citation whose
+  `body_bias.status` is `"unbiased"` still grades `met`, even though a
+  resimulation of a netlist whose device bodies have no DC path is
+  physically wrong rather than merely imprecise. **Nothing to disclose here
+  yet**: item 7 is `unmet` with no citation.
+
+Both disclosures become mandatory the moment those rows are cited. A future
+`met` on either row is not evidence that its coverage was disclosed — it has
+to be read out of the citation and stated in this file.
+
+## Rules this directory holds itself to
+
+1. **Every citation pins a `content_hash`.** An unpinned citation cannot have
+   its freshness checked, and a passing report against a superseded netlist
+   or layout is evidence of nothing. `verify.sh` rejects an unpinned entry
+   before it ever reaches the grader — and rejects an evidence key that names
+   no real T1 item, since `klt signoff` ignores an unrecognised key silently
+   and a typo would otherwise read as an honest gap.
+2. **Never cite an envelope that does not actually support the item.** Items
+   1, 2, 9 and 10 have no `klt` verb behind them and are graded on "some
+   passing envelope was cited" with no relevance check at all — any clean
+   report turns those rows green. Making a row green that way is a false
+   claim this repo's tooling cannot catch; the accurate `unmet` row stays.
+3. **Item 7 takes `klt pex` only** (for this block's analog partition; its
+   digital partition would also accept an SDF-annotated `klt
+   functional-verification` run). A clean DRC or a pre-layout corner sim
+   renders `wrong_kind`.
+4. **Item 8 is the only item a `generic` envelope may satisfy.** Items 3-7
+   reject `"kind": "generic"` outright. Item 8 stays `unmet` until an
+   aggregated characterization artifact actually exists — and per this
+   repo's `CLAUDE.md`, that artifact must report per grid region, since an
+   aggregate that averages across splits is a bug, not a result.
+5. **`report.json` is regenerated, never edited.** If `verify.sh` fails, the
+   verdict changed; re-run the grader, read the diff, and update this file's
+   claim to match.
+
+## CI
+
+`verify.sh` is the command CI should run. This repo has no
+`.github/workflows/` on `main` yet — bootstrapping it is issue #14, with PR
+#15 open against it — so this check is not yet wired to a PR-blocking job. It
+is written to be dropped straight into that workflow (or into
+`package.json`'s `check:ci` hook, which #15 also touches) with no
+adaptation: it needs only `klt` and `python3`, reads nothing outside the
+repo, and prints the exact remediation command on failure.
