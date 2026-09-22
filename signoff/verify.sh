@@ -2,10 +2,12 @@
 # Re-grade this block's T1 state and assert the committed verdict is still true.
 #
 # Three assertions, in order:
-#   1. Every citation in signoff/manifest.json pins a content_hash, and every
-#      file-backed citation names a file that exists in the tree. An unpinned
-#      citation cannot have its freshness checked by `klt signoff` at all, so
-#      this script refuses one outright.
+#   1. Every citation in signoff/manifest.json keys a real T1 item, pins a
+#      content_hash, and (if file-backed) names a file that exists in the
+#      tree. An unpinned citation cannot have its freshness checked by
+#      `klt signoff` at all, and an evidence key the grader does not recognise
+#      is ignored silently -- a typo would read as an honest gap. This script
+#      refuses both outright.
 #   2. `klt signoff --manifest signoff/manifest.json --format json` renders a
 #      report (exit 0 = every T1 item met, exit 3 = at least one unmet -- both
 #      are successful runs; 1 and 2 are tool/usage failures).
@@ -37,10 +39,10 @@ command -v python3 >/dev/null 2>&1 || fail "python3 is not on PATH"
 [ -f "$committed_report" ] || fail "missing $committed_report"
 
 # 1. Citation hygiene: every citation pinned, every cited file present.
-python3 - "$manifest" "$repo_root" <<'PY'
-import json, os, sys
+python3 - "$manifest" "$repo_root" "$committed_report" <<'PY'
+import json, os, re, sys
 
-manifest_path, repo_root = sys.argv[1], sys.argv[2]
+manifest_path, repo_root, report_path = sys.argv[1], sys.argv[2], sys.argv[3]
 with open(manifest_path) as fh:
     manifest = json.load(fh)
 
@@ -51,8 +53,28 @@ for key in ("block", "kind"):
 if manifest.get("kind") not in (None, "analog", "digital", "mixed-signal"):
     problems.append(f"kind {manifest['kind']!r} is not analog/digital/mixed-signal")
 
+# `klt signoff` silently ignores an evidence key it does not recognise, so a
+# typo ("3.anlaog", "12") reads as an honest gap rather than an error. Check
+# every key against the item ids the committed report actually renders.
+with open(report_path) as fh:
+    known_ids = {
+        str(item["id"]) for item in json.load(fh).get("items", [])
+        if item.get("tier") == "T1" and item.get("id") is not None
+    }
+
 for item, entry in (manifest.get("evidence") or {}).items():
     where = f"evidence[{item!r}]"
+    match = re.fullmatch(r"(\d+)(?:\.(analog|digital))?", str(item))
+    if not match:
+        problems.append(
+            f"{where} is not a valid item key -- expected '<id>' or "
+            "'<id>.analog' / '<id>.digital'"
+        )
+    elif known_ids and match.group(1) not in known_ids:
+        problems.append(
+            f"{where} names item {match.group(1)}, which is not a T1 item in "
+            "the graded checklist -- klt signoff would ignore it silently"
+        )
     if isinstance(entry, str):
         problems.append(
             f"{where} is a bare path with no pinned content_hash -- use "

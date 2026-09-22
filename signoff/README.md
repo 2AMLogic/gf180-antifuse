@@ -121,7 +121,9 @@ to be read out of the citation and stated in this file.
 1. **Every citation pins a `content_hash`.** An unpinned citation cannot have
    its freshness checked, and a passing report against a superseded netlist
    or layout is evidence of nothing. `verify.sh` rejects an unpinned entry
-   before it ever reaches the grader.
+   before it ever reaches the grader — and rejects an evidence key that names
+   no real T1 item, since `klt signoff` ignores an unrecognised key silently
+   and a typo would otherwise read as an honest gap.
 2. **Never cite an envelope that does not actually support the item.** Items
    1, 2, 9 and 10 have no `klt` verb behind them and are graded on "some
    passing envelope was cited" with no relevance check at all — any clean
