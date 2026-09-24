@@ -38,14 +38,39 @@ BASE_W="1e-6"
 BASE_L="1e-6"
 DOUBLE_W="2e-6"
 
-: "${PDK_ROOT:=${HOME}/.volare}"
-export PDK_ROOT
-MODELS="${PDK_ROOT}/gf180mcuD/libs.tech/ngspice"
+# PDK root resolution: honour $PDK_ROOT (open_pdks'/volare's own variable, and
+# what an openlane-shaped toolchain already exports) when it actually holds the
+# gf180mcuD model tree, and only then fall back to ~/.volare, which is one
+# deployment's convention rather than the portable contract.
+PDK_CANDIDATES=()
+if [[ -n "${PDK_ROOT:-}" ]]; then
+  PDK_CANDIDATES+=("${PDK_ROOT}")
+fi
+if [[ "${PDK_ROOT:-}" != "${HOME}/.volare" ]]; then
+  PDK_CANDIDATES+=("${HOME}/.volare")
+fi
 
-if [[ ! -d "${MODELS}" ]]; then
-  echo "ERROR: no gf180mcuD model directory at ${MODELS}" >&2
+MODELS=""
+for root in "${PDK_CANDIDATES[@]}"; do
+  if [[ -d "${root}/gf180mcuD/libs.tech/ngspice" ]]; then
+    PDK_ROOT="${root}"
+    MODELS="${root}/gf180mcuD/libs.tech/ngspice"
+    break
+  fi
+done
+
+if [[ -z "${MODELS}" ]]; then
+  echo "ERROR: no gf180mcuD model directory found. Looked under:" >&2
+  for root in "${PDK_CANDIDATES[@]}"; do
+    echo "         ${root}/gf180mcuD/libs.tech/ngspice" >&2
+  done
+  echo "       Set PDK_ROOT to the open_pdks/volare install root." >&2
   exit 1
 fi
+
+export PDK_ROOT
+echo "using PDK_ROOT=${PDK_ROOT} (models: ${MODELS})"
+
 if ! command -v ngspice >/dev/null 2>&1; then
   echo "ERROR: ngspice not found on PATH." >&2
   exit 1
