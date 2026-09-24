@@ -44,14 +44,38 @@ case "${1:-}" in
   *)       echo "usage: $(basename "$0") [--check]" >&2; exit 2 ;;
 esac
 
-: "${PDK_ROOT:=${HOME}/.volare}"
-export PDK_ROOT
+# PDK root resolution: honour $PDK_ROOT (open_pdks'/volare's own variable, and
+# what an openlane-shaped toolchain already exports) when it actually holds
+# gf180mcuD, and only then fall back to ~/.volare, which is one deployment's
+# convention rather than the portable contract.
+PDK_CANDIDATES=()
+if [[ -n "${PDK_ROOT:-}" ]]; then
+  PDK_CANDIDATES+=("${PDK_ROOT}")
+fi
+if [[ "${PDK_ROOT:-}" != "${HOME}/.volare" ]]; then
+  PDK_CANDIDATES+=("${HOME}/.volare")
+fi
 
-if [[ ! -d "${PDK_ROOT}/gf180mcuD" ]]; then
-  echo "ERROR: no gf180mcuD under PDK_ROOT=${PDK_ROOT}" >&2
+RESOLVED_PDK_ROOT=""
+for root in "${PDK_CANDIDATES[@]}"; do
+  if [[ -d "${root}/gf180mcuD" ]]; then
+    RESOLVED_PDK_ROOT="${root}"
+    break
+  fi
+done
+
+if [[ -z "${RESOLVED_PDK_ROOT}" ]]; then
+  echo "ERROR: no gf180mcuD found. Looked under:" >&2
+  for root in "${PDK_CANDIDATES[@]}"; do
+    echo "         ${root}/gf180mcuD" >&2
+  done
   echo "       Set PDK_ROOT to the open_pdks/volare install root." >&2
   exit 1
 fi
+
+PDK_ROOT="${RESOLVED_PDK_ROOT}"
+export PDK_ROOT
+echo "using PDK_ROOT=${PDK_ROOT}"
 
 if ! command -v xschem >/dev/null 2>&1; then
   echo "ERROR: xschem not found on PATH." >&2

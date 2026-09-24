@@ -125,8 +125,10 @@ see below.
 ## Working with these sources
 
 Everything below needs `PDK_ROOT` pointing at the open_pdks / volare install
-root that contains `gf180mcuD/` (it defaults to `~/.volare`), plus `xschem` and
-`ngspice` on `PATH`.
+root that contains `gf180mcuD/`, plus `xschem` and `ngspice` on `PATH`. The
+scripts honour `$PDK_ROOT` first and fall back to `~/.volare` when it is unset
+or does not contain `gf180mcuD/`; each prints the root it resolved before
+running.
 
 Open a cell:
 
