@@ -84,7 +84,13 @@ for cell in "${CELLS[@]}"; do
     sed 's/^/    /' "${XSCHEM_LOG}" >&2
     exit 1
   fi
-  sed -i "s#${REPO_ROOT}/##g" "${src}"
+  # Portable in-place edit: GNU sed's bare `-i` and BSD/macOS sed's
+  # `-i <suffix>` are mutually incompatible spellings, so neither form runs on
+  # both hosts. Substituting through a temp file and moving it back is the one
+  # spelling that is identical on both, and leaves no stray backup file behind
+  # if sed fails (set -e aborts before the mv).
+  sed "s#${REPO_ROOT}/##g" "${src}" >"${src}.tmp"
+  mv "${src}.tmp" "${src}"
 done
 
 status=0
