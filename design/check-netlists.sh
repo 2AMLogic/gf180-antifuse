@@ -90,7 +90,7 @@ EOF
     sed 's/^/    /' "${log}" >&2
     return 1
   fi
-  if grep -qiE '^\s*(error|fatal)' "${log}"; then
+  if grep -qiE '^[[:space:]]*(error|fatal)' "${log}"; then
     echo "ERROR: ngspice reported an error for ${cell} at wcap=${w}" >&2
     sed 's/^/    /' "${log}" >&2
     return 1
