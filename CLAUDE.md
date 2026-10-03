@@ -27,6 +27,7 @@ single point.
   `2AMLogic/klayout-tools` (for tool issues). If a task appears to need
   application context to proceed, stop and leave it for the operator — that
   need is itself the signal the task doesn't belong here.
+  Fleet-ops plumbing is exempt (operator ruling 2026-10-02): fleet tooling such as the burndown badge may reference the fleet's own infrastructure, while design content remains subject to this firewall and the private-visibility rule is unchanged.
 - **The grid is the experiment.** Every cell-level design choice (capacitor
   W/L, oxide flavor, series-device sizing, program pulse voltage/width) is a
   split axis candidate. The spec must say which axes vary across which grid

@@ -7,6 +7,8 @@ deliberately varies antifuse cell design and programming conditions across
 regions, so a single die measures the design space (programming yield, read
 margin, retention) rather than proving one operating point.
 
+![fleet burndown](https://raw.githubusercontent.com/2AMLogic/2am/main/fleet-metrics/charts/gf180-antifuse.svg)
+
 **Private repo.** Visibility is an operator decision; nothing here is
 published.
 
