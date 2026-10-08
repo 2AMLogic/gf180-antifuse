@@ -5,8 +5,13 @@ Schematics (xschem) and the SPICE netlists derived from them.
 ## What is captured
 
 The three antifuse cell candidates ratified in
-[`spec/cell-candidates.md`](../spec/cell-candidates.md), and nothing else.
-Each is the two-device series pair that record specifies — the MOS-capacitor
+[`spec/cell-candidates.md`](../spec/cell-candidates.md) (schematics below), plus
+the SPI slave, register file and program/read sequencer as behavioural RTL in
+[`../rtl/`](../rtl/README.md) (verified by
+[`../verification/`](../verification/README.md); design choices in
+[`../spec/spi-register-implementation-decision.md`](../spec/spi-register-implementation-decision.md)).
+The RTL is a digital source, not a schematic, and has no synthesized netlist
+yet. Each cell is the two-device series pair that record specifies — the MOS-capacitor
 antifuse element plus the access/isolation device that gates the programming
 current:
 
@@ -94,7 +99,8 @@ Not captured here, and deliberately so:
   `spec/split-axis-plan.md`.
 - **Row/column MUX** — decode, high-voltage pass-gate stage, level shifters.
 - **Sense path** — sense amplifier and read leg.
-- **SPI slave** — register map, address decode, control logic.
+- **SPI slave, gate level** — the RTL is captured (see above); the synthesized
+  netlist is not.
 - **Program current limiting** — ballast resistor and the active limit.
 
 `spec/architecture.md` specifies each of those at the block/interface level
