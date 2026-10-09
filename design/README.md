@@ -5,8 +5,8 @@ Schematics (xschem) and the SPICE netlists derived from them.
 ## What is captured
 
 The three antifuse cell candidates ratified in
-[`spec/cell-candidates.md`](../spec/cell-candidates.md), and nothing else.
-Each is the two-device series pair that record specifies — the MOS-capacitor
+[`spec/cell-candidates.md`](../spec/cell-candidates.md), plus the program and
+read legs described under "Program leg and read leg" below. Each cell is the two-device series pair that record specifies — the MOS-capacitor
 antifuse element plus the access/isolation device that gates the programming
 current:
 
@@ -86,6 +86,39 @@ is a PDK design-rule lookup, deliberately out of scope for this first drop of
 sources. Choosing those numbers is follow-on work; nothing in this directory
 should be read as asserting them.
 
+## Program leg and read leg
+
+Added for the analog partition `spec/architecture.md` §1.2, §2 and §4 specify
+but did not design. Rationale, the ballast sizing inequality and the
+`ppolyf_u_2k_6p0` rating finding are in
+[`spec/leg-design-record.md`](../spec/leg-design-record.md).
+
+| Block | Schematic | Ports | Content |
+|---|---|---|---|
+| `leg_interlock` | [`cells/leg_interlock.sch`](cells/leg_interlock.sch) | `PROG_EN READ_EN VDD VSS PON RON` | Static CMOS: `PON = PROG_EN & ~READ_EN`, `RON = READ_EN & ~PROG_EN`. Both 0 when both enables are 1. |
+| `program_leg` | [`cells/program_leg.sch`](cells/program_leg.sch) | `PROG_EN READ_EN VDD VSS BL VPP` | `VPP` -> `pfet_06v0` switch (VPP-referenced cross-coupled level shifter) -> `ppolyf_u_2k_6p0` ballast -> `BL`. |
+| `read_leg` | [`cells/read_leg.sch`](cells/read_leg.sch) | `PROG_EN READ_EN VCLAMP IREF VDD VSS BL SENSE RDATA` | `BL` - `nfet_06v0` isolation switch - `nfet_03v3` clamp - `pfet_03v3` mirror vs `I_ref` mirror -> `SENSE` -> two inverters -> `RDATA`. |
+
+Both legs instantiate `leg_interlock`, so a fault that asserts `PROG_EN` and
+`READ_EN` together leaves both legs OFF at the shared bit line. Sizes are
+subcircuit parameters (defaults on each `.sym`); `rb_w` / `rb_l` set the
+ballast. Two interface constraints to honour upstream: `VPP` must idle at or
+above `VDD` while the program leg is OFF, and the program leg is a 6 V-tier
+design (no Candidate 2 / 10 V variant yet).
+
+**These three schematics are generated**, by
+[`tools/gen_leg_schematics.py`](tools/gen_leg_schematics.py): it holds the
+device table and net list once and computes every pin coordinate from the PDK
+symbols, which a hand-typed `.sch` would have to do by eye. The output is an
+ordinary xschem schematic and `regen-netlists.sh` derives the netlists from it
+exactly as for the cells; edit in xschem and stop using the script, or edit
+the script and re-run it -- but not both. The script does not draw wires (pins
+connect by label), so the canvas is a connectivity diagram, not a laid-out
+drawing.
+
+`cells/leg_library.sch` is the netlist driver for these three blocks (same
+purpose as `cell_library.sch`).
+
 ## What is explicitly deferred
 
 Not captured here, and deliberately so:
@@ -93,9 +126,14 @@ Not captured here, and deliberately so:
 - **Array top level** — the N×N grid, and the region banding from
   `spec/split-axis-plan.md`.
 - **Row/column MUX** — decode, high-voltage pass-gate stage, level shifters.
-- **Sense path** — sense amplifier and read leg.
 - **SPI slave** — register map, address decode, control logic.
-- **Program current limiting** — ballast resistor and the active limit.
+- **Active compliance limit** — the WL-bias second limit of
+  `spec/architecture.md` §2 (owned by the WL level shifter above, not by the
+  program leg).
+- **On-die `I_ref` generation** — the read leg takes `I_ref` as a bench pin.
+
+(The program leg's ballast and the read leg's sense amplifier are no longer
+deferred: see "Program leg and read leg" below.)
 
 `spec/architecture.md` specifies each of those at the block/interface level
 only, and says so explicitly: "this record specifies the block and its
@@ -116,6 +154,10 @@ see below.
 |---|---|
 | `cells/cell_candidateN.sch` / `.sym` | The cell schematics and their symbols. |
 | `cells/cell_library.sch` | Netlist driver, not a circuit — see its header comment. |
+| `cells/{leg_interlock,program_leg,read_leg}.sch` / `.sym` | Program-leg / read-leg blocks (generated, see above). |
+| `cells/leg_library.sch` | Netlist driver for the leg blocks. |
+| `tools/gen_leg_schematics.py` | Generator for the leg schematics and symbols. |
+| `tb/tb_legs.spice` | Leg elaboration + interlock truth-table deck for `check-netlists.sh`. |
 | `netlists/cell_candidateN.spice` | **Derived.** xschem's netlist export. Do not edit; regenerate. |
 | `tb/tb_cell_candidateN.spice` | Elaboration / parameter-propagation decks for `check-netlists.sh`. Not evidence, not cornered. |
 | `xschemrc` | Project xschem config: PDK library path, this repo's cells, `split_files`. |
@@ -165,6 +207,10 @@ which asserts, in order:
    proves `wcap` / `lcap` actually reach the device instance rather than being
    decorative. The two levels used are an arbitrary mechanism check, *not* the
    split-axis levels — see "Capacitor geometry is a parameter" above.
+4. **Program leg / read leg** — the three leg netlists elaborate (with the
+   `res_typical` section for the ballast) and `leg_interlock`'s truth table
+   holds at the typical corner. Structure only; the PVT mutual-exclusion and
+   margin benches are in `sim/program-read-legs/`.
 
 ### Two things worth knowing about the flow
 
@@ -175,6 +221,12 @@ which asserts, in order:
   override `wcap` on the instance line ("Undefined parameter"). `cell_library.sch`
   instantiates one of each cell so that `split_files` writes one properly
   parameterized netlist per cell.
+- **`regen-netlists.sh` also joins `+` continuation lines.** xschem 3.4.4
+  and 3.4.7 wrap long device lines at different columns (pure formatting), so
+  a netlist exported on one failed `--check` against the other. Continuation
+  lines are now joined onto their parent line, making the committed text
+  independent of the xschem version (the three cell netlists were re-committed
+  unwrapped; no circuit content changed).
 - **`regen-netlists.sh` normalizes two comment lines.** xschem stamps the
   absolute filesystem path of each schematic and symbol into `** sym_path:` /
   `** sch_path:` comments, which would make a committed netlist depend on where
