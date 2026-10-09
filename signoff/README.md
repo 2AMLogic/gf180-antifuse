@@ -39,22 +39,45 @@ doc) or on any drift from the committed report.
 
 ## Current verdict
 
-`tier: null` — **0 of 22 T1 items met**, graded against
+`tier: null` -- **2 of 22 T1 items met**, both for the analog partition and
+both resting on **one bitcell of candidate 1**, not on the array, the
+multiplexers, the pass gates or any program or sense path. Graded against
 `design-evidence-tiers.md` at
-`sha256:cdedcd283089b1f9a825c81ef6178502eb7737de89ec4e89162e079081484bec`
-(the copy bundled in klayout-tools `0.5.0+g32f69f811682`, which is the
-eleven-item checklist — item 11, "Power delivery (structural)", included).
-Both values are copied from the committed `signoff/report.json`
-(`source_doc_content_hash` and `build.version`); if a regenerated report
-changes either, this paragraph moves with it.
-Every item renders `unmet` with `reason: "no_evidence"`.
+`sha256:4c67ffc59128482d00f7d87cf446b6a96b9ab0c41ae5234098244e3052033335`
+by klayout-tools `0.7.0+g4cbdfa769875` (commit
+`4cbdfa7698752b720c0e627163867de1e23475f3`). Both values are copied from the
+committed `signoff/report.json` (`source_doc_content_hash`, `build.version`).
 
-That is the honest state of this block, not a placeholder: **no `klt` JSON
-evidence envelope of any kind exists anywhere in this tree.** There is no
-`klt drc`, `lvs`, `extract`, `sim`, `yield`, `pex`, `sta`,
-`functional-verification`, `erc`, or generic envelope to cite, so there is
-nothing that could raise any row above `no_evidence` without fabricating it.
-The manifest therefore declares `"evidence": {}` and cites nothing.
+**Grader build changed.** The earlier all-`no_evidence` report was graded by
+`0.5.0+g32f69f811682`; the host `klt` is `0.7.0+g4cbdfa769875` and all new
+evidence was produced by it, so the report was regenerated with it (the
+checklist still has 22 rows; the doc hash and `grading_ruleset_id` moved). No
+tool was installed to keep the older pin. The `0.5.0` paragraph further up
+describes the earlier report only.
+
+| Item | State | What it rests on |
+|---|---|---|
+| 2.analog Layout | met | `layout/cell_candidate1/cell_candidate1.gds`, reproducible via `python3 layout/cell_candidate1/generate.py --check`. The grader accepts any passing envelope pinned to the GDS hash for this item, so the citation is the DRC report; the reproducibility claim itself is carried by `--check`, not by the envelope. |
+| 3.analog DRC clean | met | `layout/cell_candidate1/drc_report.json`, `status: clean`, pinned to the GDS sha256. Coverage disclosure below. |
+| 4.analog LVS clean | unmet, `no_evidence` | No report exists: `klt lvs` cannot compare a MOS capacitor (upstream 2AMLogic/klayout-tools#2919, #2953). See `layout/README.md`. |
+
+Every other row remains `unmet`, reason `no_evidence`; the block's other
+evidence (schematics, netlists, the corner campaign) is not in `klt`-native
+form (see the next section).
+
+**Item 3 DRC coverage (disclosed, read from the cited envelope).**
+`coverage.deck_scope`, `coverage.layers_in_stream_without_rules` (`34/10`,
+the Metal1 label purpose) and `coverage.rules_skipped` (34 rules, all
+`no_applicable_geometry`) are quoted verbatim in `layout/README.md`. The deck
+also states it applies 3.3 V thresholds to the Dualgate (6 V) access device
+beyond DF.1a/DF.3a. A clean verdict is not a 6 V design-rule verdict.
+
+**Item 7 (post-layout) body bias:** nothing to disclose yet; item 7 is unmet
+with no citation.
+
+The previous version of this section, kept for the record of the unmet state:
+the 22 rows were all `unmet`/`no_evidence` because no `klt` JSON evidence
+envelope existed anywhere in the tree.
 
 ### Why this reads differently from the hand-maintained checklist
 
@@ -122,8 +145,8 @@ because `klt signoff` reports those fields without grading on them:
 - **Item 3 (DRC) — deck coverage.** A `met` verdict is `status: "clean"`
   alone; `coverage.layers_in_stream_without_rules`, `coverage.rules_skipped`
   and `coverage.deck_scope` are reported on the citation but never compared
-  against the claim. **Nothing to disclose here yet**: item 3 is `unmet` with
-  no citation, so no DRC coverage has been measured on this block at all.
+  against the claim. Item 3 is now cited for one cell only (analog partition); the
+  coverage is disclosed in `layout/README.md` and summarised under "Current verdict".
 - **Item 7 (post-layout) — device body bias.** A `pex` citation whose
   `body_bias.status` is `"unbiased"` still grades `met`, even though a
   resimulation of a netlist whose device bodies have no DC path is
