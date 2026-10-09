@@ -324,8 +324,9 @@ def write_records(record_id, sections, rep_paths, per_slice_summary, clean, now)
            f"- **Netlist provenance**: schematic (`design/netlists/`, derived by xschem from `design/array/`, "
            f"`design/mux/`, `design/cells/`); git HEAD `{sha[:12]}`; working tree "
            f"{'clean' if clean else 'NOT clean (uncommitted changes at run time)'}.",
-           "- **Corner matrix run**: process {typical, ff, ss, fs, sf} (MOS, 10 V LDMOS and moscap sections as a "
-           "bundle, see `testbench/*.request.json`) x temperature {-40, 27, 125} C x supply {-10%, nominal, "
+           "- **Corner matrix run**: process {typical, ff, ss, fs, sf} (MOS and moscap sections from the request, the "
+           "matching 10 V LDMOS section from the netlist; one `klt sim` request per process corner, see "
+           "`testbench/*.request.json`) x temperature {-40, 27, 125} C x supply {-10%, nominal, "
            "+10%} (scaling VDDL, every VDDH, every BLG stand-in level together) x all 16 selectable cells of the "
            "slice. This is the full CLAUDE.md PVT matrix; no subset.",
            "- **Result**: see per-slice sections below. Per region, per sub-combination; nothing is averaged "
