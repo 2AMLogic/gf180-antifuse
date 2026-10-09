@@ -41,6 +41,7 @@ import hashlib
 import importlib.util
 import json
 import math
+import random
 import re
 import shutil
 import subprocess
@@ -84,7 +85,12 @@ KLT_BACKEND = "batch"
 # that runner has (.meas-only measurements, single-library process bundles),
 # so the skew cannot silently drop an option; the version check is set to
 # `warn` so the job runs, and environment.remote records both versions.
-BATCH_OPTS = {"runner_version_check": "warn"}
+BATCH_OPTS = {"runner_version_check": "warn", "capacity_wait_s": 1800}
+# The fleet's shared concurrency cap refuses a launch outright (klt does not
+# retry it, unlike a Spot capacity refusal). Wait and resubmit the SAME
+# request, bounded -- never fall back to a local run.
+CAP_REFUSAL = "BATCH_MAX_CONCURRENT_INSTANCES"
+CAP_RETRY_BUDGET_S, CAP_RETRY_BASE_S, CAP_RETRY_MAX_S = 5400, 60, 600
 # The executing host's gf180mcuD variant directory, needed for the one model
 # library Candidate 2 loads from the body (README "Two model libraries").
 # Observed in fleet-generated corner decks: `.lib /opt/pdk/gf180mcuD/...`.
@@ -449,11 +455,20 @@ def run_klt(req_path: Path, outdir: Path, backend: str | None) -> tuple[dict | N
     cmd = KLT_CMD + ["sim", str(req_path.resolve()), "-o", str(outdir.resolve()), "--format", "json"]
     if backend:
         cmd += ["--backend", backend]
-    proc = subprocess.run(cmd, capture_output=True, text=True)
-    try:
-        return json.loads(proc.stdout), proc.stderr
-    except json.JSONDecodeError:
-        return None, f"exit {proc.returncode}\nstdout:\n{proc.stdout[-4000:]}\nstderr:\n{proc.stderr[-4000:]}"
+    t0, delay, attempt = time.time(), CAP_RETRY_BASE_S, 0
+    while True:
+        attempt += 1
+        proc = subprocess.run(cmd, capture_output=True, text=True)
+        try:
+            return json.loads(proc.stdout), proc.stderr
+        except json.JSONDecodeError:
+            err = f"exit {proc.returncode} (attempt {attempt})\nstdout:\n{proc.stdout[-4000:]}\nstderr:\n{proc.stderr[-4000:]}"
+        if CAP_REFUSAL not in proc.stderr or time.time() - t0 + delay > CAP_RETRY_BUDGET_S:
+            return None, err
+        wait = delay * (0.5 + random.random() / 2)
+        print(f"      fleet at its concurrency cap; retrying in {wait:.0f}s (attempt {attempt})", flush=True)
+        time.sleep(wait)
+        delay = min(delay * 2, CAP_RETRY_MAX_S)
 
 
 def corner_key(bench: str, corner: dict, cand, params: dict) -> str:
