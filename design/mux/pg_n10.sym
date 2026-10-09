@@ -1,0 +1,41 @@
+v {xschem version=3.4.7 file_version=1.2
+
+* gf180-antifuse: local high-voltage pass-gate (spec/architecture.md 1.1).
+*
+* One thick-oxide NMOS between A and B, gate G, bulk VB. The family is a
+* per-region choice (the generator picks the cell by band); sizes are
+* PLACEHOLDERS, not a sized design.
+*
+* Device family: nfet_10v0_asym (Candidate 2 region).
+* DELIBERATE d/s ASSIGNMENT: d -> A, s -> B. Instances wire A to the node that
+* must be blocked against the elevated voltage while the gate is off - the
+* global bus for a column gate (bus at the program rail, column deselected),
+* the array-side plate line for a row return gate. See design/README.md.
+}
+G {}
+K {type=subcircuit
+format="@name @pinlist @symname wpg=@wpg lpg=@lpg"
+template="name=x1 wpg=25u lpg=0.60u"
+}
+V {}
+S {}
+E {}
+L 4 -60 -40 60 -40 {}
+L 4 -60 40 60 40 {}
+L 4 -60 -40 -60 40 {}
+L 4 60 -40 60 40 {}
+L 4 -80 -10 -60 -10 {}
+B 5 -82.5 -12.5 -77.5 -7.5 {name=A dir=inout}
+T {A} -76 -16 0 0 0.2 0.2 {}
+L 4 -80 10 -60 10 {}
+B 5 -82.5 7.5 -77.5 12.5 {name=G dir=in}
+T {G} -76 4 0 0 0.2 0.2 {}
+L 4 80 -10 60 -10 {}
+B 5 77.5 -12.5 82.5 -7.5 {name=B dir=inout}
+T {B} 69 -16 0 0 0.2 0.2 {}
+L 4 80 10 60 10 {}
+B 5 77.5 7.5 82.5 12.5 {name=VB dir=in}
+T {VB} 62 4 0 0 0.2 0.2 {}
+T {@symname} -52 -36 0 0 0.3 0.3 {}
+T {@name} -60 -54 0 0 0.25 0.25 {}
+T {nfet_10v0_asym} -52 26 0 0 0.2 0.2 {}

@@ -1,0 +1,25 @@
+
+* expanding   symbol:  ls_hv10.sym # of pins=6
+** sym_path: design/mux/ls_hv10.sym
+** sch_path: design/mux/ls_hv10.sch
+.subckt ls_hv10 IN VDDL VSS OUT OUTB VDDH  wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+*.ipin IN
+*.ipin VDDL
+*.ipin VSS
+*.opin OUT
+*.opin OUTB
+*.ipin VDDH
+XM1 INB IN VSS VSS nfet_03v3 L=0.28u W=2u nf=1 ad='int((nf+1)/2) * 2u/nf * 0.18u' as='int((nf+2)/2) * 2u/nf * 0.18u' pd='2*int((nf+1)/2) * (2u/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (2u/nf + 0.18u)' nrd='0.18u / 2u' nrs='0.18u / 2u' sa=0 sb=0 sd=0 m=1
+XM2 INB IN VDDL VDDL pfet_03v3 L=0.28u W=4u nf=1 ad='int((nf+1)/2) * 4u/nf * 0.18u' as='int((nf+2)/2) * 4u/nf * 0.18u' pd='2*int((nf+1)/2) * (4u/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (4u/nf + 0.18u)' nrd='0.18u / 4u' nrs='0.18u / 4u' sa=0 sb=0 sd=0 m=1
+XM3 OUTB IN VSS VSS nfet_10v0_asym L=lpdn W=wpdn nf=1 ad='wpdn * 1.48u' as='wpdn * 0.48u' pd='2 * (wpdn + 1.48u)' ps='2 * (wpdn + 0.48u)'
++ nrd=0 nrs=0 sa=0 sb=0 sd=0 m=1
+XM4 OUT INB VSS VSS nfet_10v0_asym L=lpdn W=wpdn nf=1 ad='wpdn * 1.48u' as='wpdn * 0.48u' pd='2 * (wpdn + 1.48u)' ps='2 * (wpdn + 0.48u)'
++ nrd=0 nrs=0 sa=0 sb=0 sd=0 m=1
+XM5 OUT OUTB VDDH VDDH pfet_10v0_asym L=lpup W=wpup nf=1 ad='wpup * 1.78u' as='wpup * 0.48u' pd='2 * (wpup + 1.78u)' ps='2 * (wpup + 0.48u)'
++ nrd=0 nrs=0 sa=0 sb=0 sd=0 m=1
+XM6 OUTB OUT VDDH VDDH pfet_10v0_asym L=lpup W=wpup nf=1 ad='wpup * 1.78u' as='wpup * 0.48u' pd='2 * (wpup + 1.78u)' ps='2 * (wpup + 0.48u)'
++ nrd=0 nrs=0 sa=0 sb=0 sd=0 m=1
+.ends
+

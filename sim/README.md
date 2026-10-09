@@ -119,6 +119,13 @@ contract" — the experiment still owns its own runner and record). One
 region), summarizing every sub-configuration and corner it covers, not one
 record per sub-configuration.
 
+## Experiments that run through `klt sim`
+
+`sim/array-slice-bench/` expresses its PVT grid as a `klt sim` request (so it
+goes to the batch fleet on the dispatch workers) instead of the stdlib
+`harness/` runner above, and is not wired into `run_corners.py`. It still keeps
+this directory's record / append-only conventions; see its README.
+
 ## Append-only rule
 
 `records/*.md`, `netlist-snapshots/*.spice` and `corners/**/*.log` are never

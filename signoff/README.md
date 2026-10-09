@@ -108,11 +108,11 @@ The boundary is the **level shifters** of `spec/architecture.md` §1.1 and the
 digital `STATUS`/`RDATA` registers; that comparator output is the analog
 partition's boundary pin on the read side.
 
-Neither partition has been captured as design sources yet beyond the three
-cell candidates (`design/README.md` is explicit that the array, MUX, sense
-path and SPI slave are specified at interface level only), so the boundary
-above is a statement about the ratified architecture, not about committed
-netlists.
+The analog partition's array, local pass-gate stage and level shifters are now
+captured as design sources (`design/README.md`); the sense path, program leg,
+digital partition and SPI slave are not, so the boundary above is still a
+statement about the ratified architecture rather than a fully committed
+netlist.
 
 ## Disclosures the grader reports but does not enforce
 

@@ -1,0 +1,13 @@
+
+* expanding   symbol:  pg_n06.sym # of pins=4
+** sym_path: design/mux/pg_n06.sym
+** sch_path: design/mux/pg_n06.sch
+.subckt pg_n06 A G B VB  wpg=20u lpg=0.70u
+*.iopin A
+*.iopin B
+*.ipin G
+*.ipin VB
+XM1 A G B VB nfet_06v0 L=lpg W=wpg nf=1 ad='int((nf+1)/2) * wpg/nf * 0.18u' as='int((nf+2)/2) * wpg/nf * 0.18u' pd='2*int((nf+1)/2) * (wpg/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (wpg/nf + 0.18u)' nrd='0.18u / wpg' nrs='0.18u / wpg' sa=0 sb=0 sd=0 m=1
+.ends
+

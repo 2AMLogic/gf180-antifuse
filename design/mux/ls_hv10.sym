@@ -1,0 +1,58 @@
+v {xschem version=3.4.7 file_version=1.2
+
+* gf180-antifuse: level shifter (spec/architecture.md 1.1).
+*
+* Cross-coupled PMOS latch with NMOS pull-downs, referenced to VDDH (the
+* region's programming-voltage rail during a program operation, a fixed
+* logic-compatible bias during read). A thin-oxide (3.3 V) inverter makes the
+* complement of the logic-domain select IN from VDDL, so the digital partition
+* supplies one single-ended one-hot select line per row / column.
+*
+* Both latch outputs are actively driven at all times once the rails are up
+* (spec/architecture.md 3 item 1: no decoder output may float). OUT follows
+* IN; OUTB is its complement.
+*
+* Transistor widths are PLACEHOLDERS to be sized against the worst-case
+* corner; nothing in this file claims a sized design.
+*
+* Device family: nfet_10v0_asym / pfet_10v0_asym (10 V tier, Candidate 2 region).
+* DELIBERATE d/s ASSIGNMENT, as for the Candidate 2 cell: the drift-extended
+* drain faces the high-swing node - the pull-down's drain is the latch output,
+* the pull-up's drain is the latch output, sources go to VSS / VDDH.
+* spec/architecture.md 1.1 names the 6 V devices 'for the 6 V tier'; using the
+* asymmetric 10 V pair for the 10 V tier is this repo's reading of that, not
+* separate ratified text.
+}
+G {}
+K {type=subcircuit
+format="@name @pinlist @symname wpdn=@wpdn lpdn=@lpdn wpup=@wpup lpup=@lpup"
+template="name=x1 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u"
+}
+V {}
+S {}
+E {}
+L 4 -60 -50 60 -50 {}
+L 4 -60 50 60 50 {}
+L 4 -60 -50 -60 50 {}
+L 4 60 -50 60 50 {}
+L 4 -80 -20 -60 -20 {}
+B 5 -82.5 -22.5 -77.5 -17.5 {name=IN dir=in}
+T {IN} -76 -26 0 0 0.2 0.2 {}
+L 4 -80 0 -60 0 {}
+B 5 -82.5 -2.5 -77.5 2.5 {name=VDDL dir=in}
+T {VDDL} -76 -6 0 0 0.2 0.2 {}
+L 4 -80 20 -60 20 {}
+B 5 -82.5 17.5 -77.5 22.5 {name=VSS dir=in}
+T {VSS} -76 14 0 0 0.2 0.2 {}
+L 4 80 -20 60 -20 {}
+B 5 77.5 -22.5 82.5 -17.5 {name=OUT dir=out}
+T {OUT} 55 -26 0 0 0.2 0.2 {}
+L 4 80 0 60 0 {}
+B 5 77.5 -2.5 82.5 2.5 {name=OUTB dir=out}
+T {OUTB} 48 -6 0 0 0.2 0.2 {}
+L 4 80 20 60 20 {}
+B 5 77.5 17.5 82.5 22.5 {name=VDDH dir=in}
+T {VDDH} 48 14 0 0 0.2 0.2 {}
+T {@symname} -52 -46 0 0 0.3 0.3 {}
+T {@name} -60 -64 0 0 0.25 0.25 {}
+T {level shifter 10v0_asym} -52 36 0 0 0.2 0.2 {}
