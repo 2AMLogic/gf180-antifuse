@@ -5,20 +5,21 @@ breakdown-augmented cell model (issue #62).
 For each ratified cell candidate (spec/cell-candidates.md) this runs, as
 `klt sim` corner requests (one request per bench -- see README for why):
 
-  access_op   .op, 5 MOS x 3 T x 3 read-rail corners (45):
+  access_op   operating point, 5 MOS x 3 T x 3 read-rail corners (45):
               - regression: access-device OFF current through the stock cell,
                 the wrapper with the element disabled (bden=0), and the
                 wrapper enabled but unprogrammed (bden=1) -- same stimulus as
                 sim/cell-device-characterization's tb_access_device.spice
               - programmed-cell read current at the median and worst-case
                 filament resistance -> I_prog_min
-  access_ac   .ac 10 MHz, same 45 corners: R_on regression (3 variants)
-  cap_op      .op, 3 moscap x 3 T (9): capacitor leakage regression
-  cap_ac      .ac 1 kHz, same 9 corners: C-V regression
+  access_ac   AC at 10 MHz, same 45 corners: R_on regression (3 variants)
+  cap_op      operating point, 3 moscap x 3 T (9): capacitor leakage regression
+  cap_ac      AC at 1 kHz, same 9 corners: C-V regression
   trigger     .tran, 3 moscap x 3 T x 10 stress points (90): the breakdown
               trigger + latch check, one stressed instance per corner
 
-and writes one append-only record per candidate under records/.
+and writes one append-only record per candidate under records/. Requests
+use only features the fleet runner's klt has (README "Fleet klt version").
 
     python3 sim/run_corners.py cell-breakdown-model
     python3 sim/cell-breakdown-model/run_experiment.py --candidates 1
@@ -78,6 +79,16 @@ CHECK = _load(BD_DIR / "check_params.py", "bd_check_params")
 
 # --- bench constants (stimulus placeholders, documented in README) ---------
 KLT_BACKEND = "batch"
+# The fleet runner image currently ships an older klt than this host's client
+# (README "Fleet klt version"). Every request below is restricted to features
+# that runner has (.meas-only measurements, single-library process bundles),
+# so the skew cannot silently drop an option; the version check is set to
+# `warn` so the job runs, and environment.remote records both versions.
+BATCH_OPTS = {"runner_version_check": "warn"}
+# The executing host's gf180mcuD variant directory, needed for the one model
+# library Candidate 2 loads from the body (README "Two model libraries").
+# Observed in fleet-generated corner decks: `.lib /opt/pdk/gf180mcuD/...`.
+FLEET_PDK_VARIANT_DIR = "/opt/pdk/gf180mcuD"
 DEFAULT_RELTOL = 1e-3          # ngspice default reltol
 DEFAULT_ABSTOL = 1e-12         # ngspice default abstol (A)
 # Quantity classes for the regression criterion (README "Regression
@@ -86,6 +97,24 @@ DEFAULT_ABSTOL = 1e-12         # ngspice default abstol (A)
 # solver promises; well-conditioned quantities are held to reltol alone.
 GMIN_FLOOR = ("ioff", "ilk")
 WELL_CONDITIONED = ("ron", "cval")
+UBD_LOW = 0.01                 # Weibull quantile of the trigger bench's 2nd instance
+TRIG_FRACTIONS = (0.9, 0.95, 1.0, 1.1)  # x V_bd(tref); the rated voltage is the 5th point
+TRIG_T1, TRIG_TR, TRIG_TW = 1e-6, 100e-9, 10e-6
+TRIG_TSTOP, TRIG_TSTEP, TRIG_TMEAS = 20e-6, 10e-9, 19.9e-6
+# .op is expressed as a 3-point DC sweep of an unconnected dummy source, read
+# at its interior point (.meas FIND needs an interval; klt's runner has no
+# `expr` measurements, and ngspice has no `.meas op`). AC likewise uses a
+# 3-point sweep centred on the characterization experiment's frequency.
+DC_ARGS, DC_AT = "VDMY -1 1 1", 0.0
+F_RON, F_CV = 1e7, 1e3
+
+VARIANTS = {
+    "st": "stock cell (design/netlists, unwrapped)",
+    "b0": "wrapper, breakdown element disabled (bden=0)",
+    "b1": "wrapper, element enabled, unprogrammed (bden=1 prog=0 dyn=0)",
+}
+REGRESSION_VARIANTS = ("st", "b0", "b1")
+BIAS_TAGS = ("lo", "mid", "hi")
 
 
 def within_tol(q: str, x: float, ref: float) -> bool:
@@ -98,18 +127,6 @@ def rel_dev(x: float, ref: float) -> float:
     if ref == 0:
         return 0.0 if x == 0 else math.inf
     return abs(x - ref) / abs(ref)
-UBD_LOW = 0.01                 # Weibull quantile of the trigger bench's 2nd instance
-TRIG_FRACTIONS = (0.9, 0.95, 1.0, 1.1)  # x V_bd(tref); the rated voltage is the 5th point
-TRIG_T1, TRIG_TR, TRIG_TW = 1e-6, 100e-9, 10e-6
-TRIG_TSTOP, TRIG_TSTEP, TRIG_TMEAS = 20e-6, 10e-9, 19.9e-6
-
-VARIANTS = {
-    "st": "stock cell (design/netlists, unwrapped)",
-    "b0": "wrapper, breakdown element disabled (bden=0)",
-    "b1": "wrapper, element enabled, unprogrammed (bden=1 prog=0 dyn=0)",
-}
-REGRESSION_VARIANTS = ("st", "b0", "b1")
-BIAS_TAGS = ("lo", "mid", "hi")
 
 
 def fmt(x: float) -> str:
@@ -129,6 +146,10 @@ def rel_from(base: Path, target: Path) -> str:
     committed deck carries this checkout's absolute path)."""
     import os
     return os.path.relpath(target, base)
+
+
+def meas(analysis: str, name: str, quantity: str, at: float, unit: str) -> dict:
+    return {"name": name, "spice": f".meas {analysis} {name} FIND {quantity} AT={fmt(at)}", "unit": unit}
 
 
 # ---------------------------------------------------------------------------
@@ -151,13 +172,26 @@ def design_param_block(pdk: P.PDKPaths) -> str:
             f"(sha256 {sha256(pdk.design_ngspice)}) ---\n" + "\n".join(lines) + "\n* --- end inline ---\n")
 
 
-def body_header(pdk: P.PDKPaths, body_dir: Path, title: str) -> str:
+def second_lib(cand, bench: str, lib_root: str) -> str:
+    """Candidate 2 needs two model files (smbb000149 for its access device,
+    sm141064 for its capacitor). klt's process bundle reads every section from
+    the request's one models.lib, so the library whose section is FIXED in this
+    bench is loaded here instead, from the executing host's PDK."""
+    if "smbb000149" not in cand.extra_mos_libs:
+        return ""
+    if bench.startswith("access"):     # access device corner swept; capacitor fixed typical
+        return f".lib {lib_root}/libs.tech/ngspice/sm141064.ngspice moscap_typical\n"
+    return f".lib {lib_root}/libs.tech/ngspice/smbb000149.ngspice typical\n"  # moscap swept; MOS fixed
+
+
+def body_header(pdk: P.PDKPaths, body_dir: Path, title: str, cand, bench: str, lib_root: str) -> str:
     # the characterization experiment's options, unchanged (gmin only)
     opts = f".options gmin={fmt(CHAR.GMIN)}"
     return (
         f"* gf180-antifuse sim/cell-breakdown-model -- {title}\n"
         "* Generated by run_experiment.py; frozen here as evidence. See README.\n"
         + design_param_block(pdk)
+        + second_lib(cand, bench, lib_root)
         + opts + "\n"
         + f".include {rel_from(body_dir, WRAPPERS)}\n"
     )
@@ -183,16 +217,27 @@ def dut(cand, variant: str, geo: str) -> str:
     raise ValueError(variant)
 
 
-def body_access(pdk, cand, defaults, body_dir: Path, analysis: str) -> tuple[str, list[dict]]:
+def ac_probe(out: list[str], ms: list[dict], t: str, f: float) -> None:
+    """A 1-ohm-transresistance CCVS reads the ammeter's complex AC current
+    as a node voltage (ngspice .meas reads real/imag parts of voltages, vr/vi).
+    It draws no current from the circuit."""
+    out.append(f"H_{t} HP_{t} 0 VM_{t} 1")
+    ms.append(meas("ac", f"hr_{t}", f"vr(hp_{t})", f, "A"))
+    ms.append(meas("ac", f"hi_{t}", f"vi(hp_{t})", f, "A"))
+
+
+def body_access(pdk, cand, defaults, body_dir: Path, bench: str, lib_root: str) -> tuple[str, list[dict]]:
     """access_op and access_ac. One shared VBL (the swept read rail),
     one 0 V ammeter per instance so each instance's BL current is separable."""
     lo, mid, hi = CHAR.off_levels(cand)
-    out = [body_header(pdk, body_dir, f"Candidate {cand.n} access bench ({analysis})")]
+    analysis = "dc" if bench == "access_op" else "ac"
+    out = [body_header(pdk, body_dir, f"Candidate {cand.n} access bench ({bench})", cand, bench, lib_root)]
     out.append(f"VBL BL 0 DC {fmt(CHAR.V_READ_NOM)} AC 1")
     out.append(f"VVB VB 0 DC {fmt(cand.vb)}")
     out.append("VPL PL 0 DC 0")
-    meas: list[dict] = []
-    if analysis == "op":
+    ms: list[dict] = []
+    if analysis == "dc":
+        out.append("VDMY DMY 0 DC 0")
         out += [f"VWLLO WLLO 0 DC {fmt(lo)}", f"VWLMID WLMID 0 DC {fmt(mid)}",
                 f"VWLHI WLHI 0 DC {fmt(hi)}", f"VWLON WLON 0 DC {fmt(cand.wl_on)}"]
         for s in CHAR.SIZING_LEVELS:
@@ -204,14 +249,16 @@ def body_access(pdk, cand, defaults, body_dir: Path, analysis: str) -> tuple[str
                         t = f"{v}_{sg}_{b}"
                         out.append(f"VM_{t} BL B_{t} 0")
                         out.append(f"X_{t} B_{t} {wl} PL VB {dut(cand, v, geo)}")
-                        meas.append({"name": f"ioff_{t}", "expr": f"abs(i(vm_{t}))", "unit": "A"})
+                        ms.append(meas("dc", f"i_{t}", f"i(vm_{t})", DC_AT, "A"))
                 for v in ("pm", "pw"):
                     t = f"{v}_{sg}"
                     out.append(f"VM_{t} BL B_{t} 0")
                     out.append(f"X_{t} B_{t} WLON PL VB {dut(cand, v, geo)}")
-                    meas.append({"name": f"iread_{t}", "expr": f"abs(i(vm_{t}))", "unit": "A"})
-    else:  # ac
+                    ms.append(meas("dc", f"i_{t}", f"i(vm_{t})", DC_AT, "A"))
+    else:
         out.append(f"VWLON WLON 0 DC {fmt(cand.wl_on)}")
+        ms.append(meas("ac", "vr_bl", "vr(bl)", F_RON, "V"))
+        ms.append(meas("ac", "vi_bl", "vi(bl)", F_RON, "V"))
         for s in CHAR.SIZING_LEVELS:
             for g in CHAR.GEOM_LEVELS:
                 geo = geometry(cand, defaults, s, g)
@@ -219,23 +266,24 @@ def body_access(pdk, cand, defaults, body_dir: Path, analysis: str) -> tuple[str
                     t = f"{v}_{sg_tag(s, g)}"
                     out.append(f"VM_{t} BL B_{t} 0")
                     out.append(f"X_{t} B_{t} WLON PL VB {dut(cand, v, geo)}")
-                    # same quantity as tb_access_device.spice's
-                    # real(v(bl)/(-i(vbl))): i(vm) is positive INTO the cell
-                    meas.append({"name": f"ron_{t}", "expr": f"real(v(bl)/i(vm_{t}))", "unit": "ohm"})
-    return "\n".join(out) + "\n", meas
+                    ac_probe(out, ms, t, F_RON)
+    return "\n".join(out) + "\n", ms
 
 
-def body_cap(pdk, cand, defaults, body_dir: Path, analysis: str) -> tuple[str, list[dict]]:
+def body_cap(pdk, cand, defaults, body_dir: Path, bench: str, lib_root: str) -> tuple[str, list[dict]]:
     """cap_op and cap_ac: BL fixed at 0, WL fully on, the capacitor
     bias set on PL (tb_moscap_cv.spice's convention, incl. V(PL) = -bias)."""
-    out = [body_header(pdk, body_dir, f"Candidate {cand.n} capacitor bench ({analysis})")]
+    analysis = "dc" if bench == "cap_op" else "ac"
+    out = [body_header(pdk, body_dir, f"Candidate {cand.n} capacitor bench ({bench})", cand, bench, lib_root)]
     out.append("VBL BL 0 DC 0")
     out.append(f"VWL WL 0 DC {fmt(cand.moscap_wl_on)}")
     out.append(f"VVB VB 0 DC {fmt(cand.vb)}")
+    if analysis == "dc":
+        out.append("VDMY DMY 0 DC 0")
     subs = CHAR.moscap_substitutions(cand)
     for k in range(1, 6):
         out.append(f"VPL{k} PL{k} 0 DC {fmt(subs[f'VPL_{k}'])} AC 1")
-    meas: list[dict] = []
+    ms: list[dict] = []
     for s in CHAR.SIZING_LEVELS:
         for g in CHAR.GEOM_LEVELS:
             geo = geometry(cand, defaults, s, g)
@@ -244,11 +292,11 @@ def body_cap(pdk, cand, defaults, body_dir: Path, analysis: str) -> tuple[str, l
                     t = f"{v}_{sg_tag(s, g)}_{k}"
                     out.append(f"VM_{t} PL{k} P_{t} 0")
                     out.append(f"X_{t} BL WL P_{t} VB {dut(cand, v, geo)}")
-                    if analysis == "op":
-                        meas.append({"name": f"ilk_{t}", "expr": f"abs(i(vm_{t}))", "unit": "A"})
+                    if analysis == "dc":
+                        ms.append(meas("dc", f"i_{t}", f"i(vm_{t})", DC_AT, "A"))
                     else:
-                        meas.append({"name": f"cval_{t}", "expr": f"mag(i(vm_{t}))/(2*pi*1e3)", "unit": "F"})
-    return "\n".join(out) + "\n", meas
+                        ac_probe(out, ms, t, F_CV)
+    return "\n".join(out) + "\n", ms
 
 
 def vbd_ref(cand, params: dict) -> float:
@@ -261,11 +309,11 @@ def trigger_levels(cand, params: dict) -> list[float]:
     return [sign * cand.cap_rated_v] + [sign * f * vbd for f in TRIG_FRACTIONS]
 
 
-def body_trigger(pdk, cand, defaults, body_dir: Path) -> tuple[str, list[dict]]:
+def body_trigger(pdk, cand, defaults, body_dir: Path, lib_root: str) -> tuple[str, list[dict]]:
     """Two dynamic instances (median and low Weibull quantile); each corner
     stresses exactly ONE of them via its own scalar amplitude source, so no
     deck ever contains two breakdown events (README: multi-event transients)."""
-    out = [body_header(pdk, body_dir, f"Candidate {cand.n} trigger/latch bench (tran)")]
+    out = [body_header(pdk, body_dir, f"Candidate {cand.n} trigger/latch bench (tran)", cand, "trigger", lib_root)]
     out.append(f".param t1={fmt(TRIG_T1)} tr={fmt(TRIG_TR)} tw={fmt(TRIG_TW)}")
     out.append("VBL BL 0 DC 0")
     out.append(f"VWL WL 0 DC {fmt(cand.moscap_wl_on)}")
@@ -275,22 +323,55 @@ def body_trigger(pdk, cand, defaults, body_dir: Path) -> tuple[str, list[dict]]:
     out.append("BSH SH 0 V = '0.5*(1-cos(pi*min(max((time-t1)/tr,0),1)))"
                " - 0.5*(1-cos(pi*min(max((time-t1-tr-tw)/tr,0),1)))'")
     geo = geometry(cand, defaults, "min", "min")
-    meas: list[dict] = []
+    ms: list[dict] = []
     for inst, ubd in (("a", 0.5), ("b", UBD_LOW)):
         out.append(f"VAMP{inst.upper()} AMP{inst.upper()} 0 DC 0")
         out.append(f"BPL{inst.upper()} PL{inst.upper()} 0 V = 'v(amp{inst})*v(sh)'")
         out.append(f"X{inst.upper()} BL WL PL{inst.upper()} VB {cand.subckt}_bd {geo} bden=1 prog=0 dyn=1 ubd={ubd}")
-        for q, node in (("st", "st"), ("dmg", "dmg")):
-            nm = f"{q}_{inst}"
-            meas.append({"name": nm, "spice": f".meas tran {nm} FIND v(x{inst}.xbd.{node}) AT={fmt(TRIG_TMEAS)}",
-                         "unit": "1"})
+        ms.append(meas("tran", f"st_{inst}", f"v(x{inst}.xbd.st)", TRIG_TMEAS, "1"))
+        ms.append(meas("tran", f"dmg_{inst}", f"v(x{inst}.xbd.dmg)", TRIG_TMEAS, "1"))
         # oxide voltage mid-pulse = vcn - vpl (ngspice's .meas does not take
         # the two-node v(a,b) form on hierarchical names, so two FINDs)
-        for q, node in (("vcn", f"x{inst}.xc.cn"), ("vpl", f"pl{inst}")):
-            nm = f"{q}_{inst}"
-            meas.append({"name": nm, "spice": f".meas tran {nm} FIND v({node}) AT={fmt(TRIG_T1 + TRIG_TR + TRIG_TW / 2)}",
-                         "unit": "V"})
-    return "\n".join(out) + "\n", meas
+        mid = TRIG_T1 + TRIG_TR + TRIG_TW / 2
+        ms.append(meas("tran", f"vcn_{inst}", f"v(x{inst}.xc.cn)", mid, "V"))
+        ms.append(meas("tran", f"vpl_{inst}", f"v(pl{inst})", mid, "V"))
+    return "\n".join(out) + "\n", ms
+
+
+def derive(bench: str, raw: dict[str, float | None]) -> dict[str, float | None]:
+    """Raw .meas values -> the quantities the characterization experiment
+    reports (same definitions as its testbench templates)."""
+    out: dict[str, float | None] = {}
+    if bench in ("access_op", "cap_op"):
+        q = "ioff" if bench == "access_op" else "ilk"
+        for name, x in raw.items():
+            if not name.startswith("i_"):
+                continue
+            t = name[2:]
+            key = f"iread_{t}" if t.startswith(("pm_", "pw_")) else f"{q}_{t}"
+            out[key] = None if x is None else abs(x)
+    elif bench in ("access_ac", "cap_ac"):
+        vbl = None
+        if bench == "access_ac" and raw.get("vr_bl") is not None and raw.get("vi_bl") is not None:
+            vbl = complex(raw["vr_bl"], raw["vi_bl"])
+        for name, x in raw.items():
+            if not name.startswith("hr_"):
+                continue
+            t = name[3:]
+            xi = raw.get(f"hi_{t}")
+            if x is None or xi is None:
+                out[("ron_" if bench == "access_ac" else "cval_") + t] = None
+                continue
+            i = complex(x, xi)
+            if bench == "access_ac":
+                # tb_access_device.spice: real(v(bl)/(-i(vbl))); i(vm) is +INTO the cell
+                out[f"ron_{t}"] = None if vbl is None or i == 0 else (vbl / i).real
+            else:
+                # tb_moscap_cv.spice: mag(i(vpl))/(2*pi*1e3)
+                out[f"cval_{t}"] = abs(i) / (2 * math.pi * F_CV)
+    else:
+        out = dict(raw)
+    return out
 
 
 # ---------------------------------------------------------------------------
@@ -298,48 +379,44 @@ def body_trigger(pdk, cand, defaults, body_dir: Path) -> tuple[str, list[dict]]:
 # ---------------------------------------------------------------------------
 
 
-def mos_bundle(cand, mos: str, moscap: str) -> dict:
-    sections: list = [mos]
-    if "smbb000149" in cand.extra_mos_libs:
-        sections.append({"lib": "libs.tech/ngspice/smbb000149.ngspice", "section": mos})
-    sections.append(moscap)
-    return {"name": mos, "sections": sections}
-
-
 def make_request(bench: str, cand, pdk: P.PDKPaths, measurements: list[dict], params: dict) -> dict:
     temps = [float(t) for t in C.TEMPS_C]
+    two_lib = "smbb000149" in cand.extra_mos_libs
+    lib = "libs.tech/ngspice/sm141064.ngspice"
     req: dict = {
         "netlist": "body.spice",
         "engine": "ngspice",
         "backend": KLT_BACKEND,
-        "models": {"pdk": pdk.variant, "lib": "libs.tech/ngspice/sm141064.ngspice"},
+        "batch": dict(BATCH_OPTS),
         "measurements": measurements,
         "options": {"timeout_s": 300, "keep_artifacts": True},
     }
     if bench.startswith("access"):
+        if two_lib:
+            lib = "libs.tech/ngspice/smbb000149.ngspice"
+            procs = [{"name": m, "sections": [m]} for m in C.MOS_CORNERS]
+        else:
+            procs = [{"name": m, "sections": [m, "moscap_typical"]} for m in C.MOS_CORNERS]
         req["corners"] = {
-            "process": [mos_bundle(cand, m, "moscap_typical") for m in C.MOS_CORNERS],
+            "process": procs,
             "supply_v": {"vbl": [round(CHAR.V_READ_NOM * m, 6) for m in
                                   (1 - CHAR.SUPPLY_TOL, 1.0, 1 + CHAR.SUPPLY_TOL)]},
             "temperature_c": temps,
         }
     else:
-        procs = []
-        for mc in C.MOSCAP_CORNERS:
-            b = mos_bundle(cand, "typical", mc)
-            b["name"] = mc
-            procs.append(b)
-        req["corners"] = {"process": procs, "temperature_c": temps}
+        req["corners"] = {"process": [{"name": mc, "sections": ["typical", mc]} for mc in C.MOSCAP_CORNERS],
+                          "temperature_c": temps}
+    req["models"] = {"pdk": pdk.variant, "lib": lib}
     if bench == "trigger":
         lv = trigger_levels(cand, params)
         z = [0.0] * len(lv)
         req["corners"]["supply_v"] = {"vampa": [round(x, 6) for x in lv] + z,
                                       "vampb": z + [round(x, 6) for x in lv]}
     req["analysis"] = {
-        "access_op": {"kind": "op", "args": ""},
-        "access_ac": {"kind": "ac", "args": "lin 1 1e7 1e7"},
-        "cap_op": {"kind": "op", "args": ""},
-        "cap_ac": {"kind": "ac", "args": "lin 1 1e3 1e3"},
+        "access_op": {"kind": "dc", "args": DC_ARGS},
+        "access_ac": {"kind": "ac", "args": f"lin 3 {fmt(F_RON / 2)} {fmt(F_RON * 1.5)}"},
+        "cap_op": {"kind": "dc", "args": DC_ARGS},
+        "cap_ac": {"kind": "ac", "args": f"lin 3 {fmt(F_CV / 2)} {fmt(F_CV * 1.5)}"},
         "trigger": {"kind": "tran", "args": f"{fmt(TRIG_TSTEP)} {fmt(TRIG_TSTOP)}"},
     }[bench]
     return req
@@ -348,12 +425,12 @@ def make_request(bench: str, cand, pdk: P.PDKPaths, measurements: list[dict], pa
 BENCHES = ("access_op", "access_ac", "cap_op", "cap_ac", "trigger")
 
 
-def build_body(bench: str, pdk, cand, defaults, body_dir: Path) -> tuple[str, list[dict]]:
+def build_body(bench: str, pdk, cand, defaults, body_dir: Path, lib_root: str) -> tuple[str, list[dict]]:
     if bench.startswith("access"):
-        return body_access(pdk, cand, defaults, body_dir, "op" if "op" in bench else "ac")
+        return body_access(pdk, cand, defaults, body_dir, bench, lib_root)
     if bench.startswith("cap"):
-        return body_cap(pdk, cand, defaults, body_dir, "op" if "op" in bench else "ac")
-    return body_trigger(pdk, cand, defaults, body_dir)
+        return body_cap(pdk, cand, defaults, body_dir, bench, lib_root)
+    return body_trigger(pdk, cand, defaults, body_dir, lib_root)
 
 
 # ---------------------------------------------------------------------------
@@ -361,11 +438,15 @@ def build_body(bench: str, pdk, cand, defaults, body_dir: Path) -> tuple[str, li
 # ---------------------------------------------------------------------------
 
 
+KLT_CMD = ["klt"]
+
+
 def run_klt(req_path: Path, outdir: Path, backend: str | None) -> tuple[dict | None, str]:
     # --outdir must be ABSOLUTE: klt runs ngspice with cwd set to the corner
     # directory but passes it deck/log paths relative to the invocation
-    # directory, so a relative --outdir makes every corner fail to start.
-    cmd = ["klt", "sim", str(req_path.resolve()), "-o", str(outdir.resolve()), "--format", "json"]
+    # directory, so a relative --outdir makes every corner fail to start
+    # (2AMLogic/klayout-tools#2892).
+    cmd = KLT_CMD + ["sim", str(req_path.resolve()), "-o", str(outdir.resolve()), "--format", "json"]
     if backend:
         cmd += ["--backend", backend]
     proc = subprocess.run(cmd, capture_output=True, text=True)
@@ -411,7 +492,7 @@ def collect(bench: str, report: dict | None, err: str, bench_dir: Path, cand, pa
     for c in report["corners"]:
         cid = corner_key(bench, c, cand, params)
         res.corner_status[cid] = c["status"]
-        res.values[cid] = {m["name"]: m["value"] for m in c["measurements"]}
+        res.values[cid] = derive(bench, {m["name"].lower(): m["value"] for m in c["measurements"]})
         art = c.get("artifacts") or {}
         for kind, suffix in (("log", ".log"), ("deck", ".cir")):
             src = art.get(kind)
@@ -721,9 +802,9 @@ def smoke(pdk, cand, bench: str, params: dict) -> int:
     defaults = CHAR.parse_defaults(REPO_ROOT / "design" / "netlists" / cand.netlist)
     work = THIS_DIR / ".work" / f"smoke-{time.strftime('%Y%m%d-%H%M%S')}-c{cand.n}-{bench}"
     work.mkdir(parents=True)
-    body, meas = build_body(bench, pdk, cand, defaults, work)
+    body, ms = build_body(bench, pdk, cand, defaults, work, str(pdk.variant_dir))
     (work / "body.spice").write_text(body)
-    req = make_request(bench, cand, pdk, meas, params)
+    req = make_request(bench, cand, pdk, ms, params)
     corners = req["corners"]
     corners["process"] = corners["process"][:1]
     corners["temperature_c"] = [27.0]
@@ -741,8 +822,9 @@ def smoke(pdk, cand, bench: str, params: dict) -> int:
     bad = [m for m in c["measurements"] if m["value"] is None]
     print(f"smoke c{cand.n} {bench}: {c['corner_id']} status={c['status']} "
           f"{len(c['measurements']) - len(bad)}/{len(c['measurements'])} measurements; work dir {work}")
-    for m in c["measurements"][:6]:
-        print(f"   {m['name']} = {m['value']}")
+    derived = derive(bench, {m["name"].lower(): m["value"] for m in c["measurements"]})
+    for k in list(derived)[:8]:
+        print(f"   {k} = {derived[k]}")
     for d in c["diagnostics"][:3]:
         print(f"   diag: {d}")
     return 0 if c["status"] == "pass" else 1
@@ -756,15 +838,19 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--smoke", default=None, metavar="N:BENCH",
                     help="run ONE corner of ONE bench locally (debug probe; writes no record)")
     ap.add_argument("--check-env", action="store_true")
+    ap.add_argument("--klt", default="klt",
+                    help="klt command (space-separated), e.g. a version-pinned `uvx --from ... klt` to "
+                         "pre-flight a request against the fleet runner's klt with --smoke")
     args = ap.parse_args(argv)
+    KLT_CMD[:] = args.klt.split()
 
     try:
         pdk = P.resolve_pdk(args.pdk_root)
     except P.PDKNotFoundError as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 3
-    if not shutil.which("klt"):
-        print("ERROR: klt not on PATH", file=sys.stderr)
+    if not shutil.which(KLT_CMD[0]):
+        print(f"ERROR: {KLT_CMD[0]} not on PATH", file=sys.stderr)
         return 3
     params, perr = CHECK.parse_params((BD_DIR / "breakdown_params.spice").read_text())
     if perr:
@@ -794,9 +880,9 @@ def main(argv: list[str] | None = None) -> int:
         for bench in benches:
             bdir = THIS_DIR / "corners" / rid / bench
             bdir.mkdir(parents=True, exist_ok=False)
-            body, meas = build_body(bench, pdk, cand, defaults, bdir)
+            body, ms = build_body(bench, pdk, cand, defaults, bdir, FLEET_PDK_VARIANT_DIR)
             R.write_once(bdir / "body.spice", body)
-            req = make_request(bench, cand, pdk, meas, params)
+            req = make_request(bench, cand, pdk, ms, params)
             R.write_once(bdir / "request.json", json.dumps(req, indent=2) + "\n")
             t0 = time.time()
             report, err = run_klt(bdir / "request.json", bdir / ".work" / "klt", None)
