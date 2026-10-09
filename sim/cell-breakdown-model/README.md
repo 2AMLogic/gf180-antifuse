@@ -21,6 +21,38 @@ Everything in (b) and (c) is **conditional on the assumed parameters** in
 programming-yield Monte Carlo and ballast sizing are out of scope; they
 are follow-ups.
 
+## Results so far
+
+All numbers in (b) are conditional on the **assumed** parameters. All runs
+were on the batch fleet; the job IDs are in each record.
+
+| | Candidate 1 / Region I | Candidate 2 / Region II | Candidate 3 / Region III |
+|---|---|---|---|
+| Static-bench record | [`20261009-020137-66efd11`](records/20261009-020137-66efd11.md) | [`20261009-020409-66efd11`](records/20261009-020409-66efd11.md) | [`20261009-020416-66efd11`](records/20261009-020416-66efd11.md) |
+| Trigger record (`uic`) | [`20261009-023645-6eff628`](records/20261009-023645-6eff628.md) | [`20261009-023648-6eff628`](records/20261009-023648-6eff628.md) | [`20261009-023651-6eff628`](records/20261009-023651-6eff628.md) |
+| (a1) disabled/unprogrammed vs stock, same deck: R_on, C(V), leakage | all exactly equal | C(V), leakage exactly equal; R_on within reltol (worst 1.1e-5) | all exactly equal |
+| (a1) same, I_off | all within criterion | all within criterion | all within criterion |
+| (a2) committed headline I_sneak_max | 9.8192e-12 vs 9.8191e-12 A | 7.2888e-9 vs 7.2887e-9 A | 1.3949e-11 vs 1.3956e-11 A |
+| (a2) committed headline R_on | 1.4466e4 vs 1.4466e4 Ω | 65.490 vs 65.490 Ω | 1080.1 vs 1098.0 Ω (floating CN; see below) |
+| (b) I_prog_min at §4's `ss_-40c_bl0p90v` | 9.19 µA | 11.0 µA | 0.24 pA |
+| (b) I_prog_min, worst corner | **8.35 µA at `ss_125c_bl0p90v`** | 10.98 µA at `ss_125c_bl0p90v` | 4.9 fA at `typical_27c_bl1p00v` |
+| (b) I_prog_min / I_sneak_max | 8.5e5 | 1.5e3 | < 1: **no `I_ref` window** (#75) |
+| (c) trigger, converged corners as predicted | 74/74 (16/90 not converged) | 78/78 (12/90 not converged) | 84/84 (6/90 not converged) |
+
+- **Hot, not cold, is the worst read corner.** For Candidates 1 and 2 the
+  worst programmed read is at ss / **125 °C** / low rail, not at the
+  ss / −40 °C / low rail corner `spec/architecture.md` §4 names for the
+  selected cell. The difference is about 9 % for Candidate 1.
+- **Candidate 3 cannot read a programmed cell at the inherited placeholder
+  bias.** At WL = 0 V with the n-well at 3.3 V, the PMOS access device is
+  effectively off once the filament pulls CN low. I_prog_min is therefore
+  not derivable until a Candidate 3 read bias is chosen (#75).
+- **Candidate 2's window is narrow.** It has the narrowest window of the
+  three, because its 25 µm LDNMOS access device leaks about 700× more than
+  Candidate 1's at the fast/hot corner.
+- **Non-converged trigger corners** are a transient-robustness limitation
+  of the stock cells around the event, not a model outcome (#74).
+
 ## Running it
 
 ```bash
@@ -276,6 +308,28 @@ So the regression is judged per class:
 
 Exact-match counts and the worst relative deviation are reported alongside,
 so a deviation is visible rather than hidden by the loose bound.
+
+**Caveat: R_on is not always well-conditioned either.** R_on is a
+small-signal quantity taken at an operating point where no DC current
+flows (the capacitor blocks it). The cell node CN therefore floats to
+wherever the sub-`abstol` leakages put it, and for Candidates 2 and 3 the
+access device's conductance depends on that voltage.
+
+Candidate 3 at `ss_-40c_bl0p90v` shows this:
+
+| Deck | CN at the operating point | R_on |
+|---|---|---|
+| Single stock instance (committed log's structure) | 1.23 V, 0.33 V above BL | 1098.048 Ω, reproduced exactly with or without the 0 V ammeter |
+| The bench's multi-instance deck | slightly different | 1080.1 Ω |
+
+The 1080.1 Ω value is identical under local ngspice 42 and fleet ngspice
+46, so the engine version is ruled out.
+
+The records therefore show a few R_on values outside `reltol` against the
+committed logs: Candidate 2 up to 3 % at `fs_125c`, and Candidate 3's
+headline 1.6 %. In each case the stock instance and the wrapper instances
+agree exactly within the same deck. The deviation comes from deck
+structure acting on a floating node, not from the breakdown element.
 
 The element's inertness does not rest on these statistics. With `bden=0`
 every B-source in `af_breakdown` evaluates to exactly 0 A with an exactly

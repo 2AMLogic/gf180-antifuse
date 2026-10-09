@@ -792,10 +792,17 @@ def render_iread(a, rows, results, cand) -> None:
       f"`{glob['cid'] if glob else 'n/a'}`" + (" -- a different corner than Section 4 names" if glob and sc_row
                                                   and glob["cid"] != sc_row["cid"] else ""))
     if h1["i_sneak_max"] is not None and glob is not None:
-        a(f"    - against this run's unprogrammed-model `I_sneak_max` = {sci(h1['i_sneak_max'])} A (`{h1['fh']}`, "
-          "gmin-floor upper bound): the `I_sneak_max < I_ref < I_prog_min` window spans a factor of "
-          f"**{glob['wc_min'] / h1['i_sneak_max']:.3g}** (worst-corner I_prog_min). This sizes nothing -- it is "
-          "conditional on the assumed filament distribution and the placeholder read/WL biases.")
+        ratio = glob["wc_min"] / h1["i_sneak_max"]
+        if ratio > 1:
+            a(f"    - against this run's unprogrammed-model `I_sneak_max` = {sci(h1['i_sneak_max'])} A (`{h1['fh']}`, "
+              "gmin-floor upper bound): the `I_sneak_max < I_ref < I_prog_min` window spans a factor of "
+              f"**{ratio:.3g}** (worst-corner I_prog_min). This sizes nothing -- it is conditional on the assumed "
+              "filament distribution and the placeholder read/WL biases.")
+        else:
+            a(f"    - against this run's unprogrammed-model `I_sneak_max` = {sci(h1['i_sneak_max'])} A (`{h1['fh']}`): "
+              f"the worst-corner I_prog_min is **below** it (ratio {ratio:.3g}). **No `I_ref` satisfies "
+              "`I_sneak_max < I_ref < I_prog_min` at these placeholder read/WL biases, so a usable I_prog_min "
+              "cannot be derived for this candidate until its read bias is set** -- see the run note.")
 
 
 def render_trigger(a, tr: BenchResult, cand, params: dict) -> None:
@@ -807,26 +814,46 @@ def render_trigger(a, tr: BenchResult, cand, params: dict) -> None:
           "must still read 1). Instance a: median Weibull quantile; instance b: ubd = "
           f"{UBD_LOW}. Model-mechanism check only, NOT a program-path claim:")
         a("")
-        a("    | Corner | V(PL) [V] | inst | st | D | V(CN,PL) mid-pulse [V] | klt |")
-        a("    |---|---|---|---|---|---|---|")
+        a("    | Corner | V(PL) [V] | inst | predicted st | st | D | V(CN,PL) mid-pulse [V] | klt |")
+        a("    |---|---|---|---|---|---|---|---|")
+        n_conv = n_ok = 0
         for cid in sorted(tr.values):
             vals = tr.values[cid]
             inst = "a" if "_pla" in cid else "b"
             vpl = cid.rsplit("_", 1)[1][3:-1].replace("p", ".")  # pla8p00v -> 8.00
-            a(f"    | `{cid}` | {vpl} | {inst} | {sci(vals.get(f'st_{inst}'))} | {sci(vals.get(f'dmg_{inst}'))} "
+            pred = trigger_prediction(cand, params, float(vpl), inst)
+            st = vals.get(f"st_{inst}")
+            if st is not None and tr.corner_status.get(cid) == "pass":
+                n_conv += 1
+                n_ok += int((st > 0.5) == bool(pred))
+            a(f"    | `{cid}` | {vpl} | {inst} | {pred} | {sci(st)} | {sci(vals.get(f'dmg_{inst}'))} "
               f"| {vox(vals, inst)} | {tr.corner_status.get(cid)} |")
         a("")
+        a(f"    **Converged corners: {n_conv}/{len(tr.corner_status)}; outcome as predicted at {n_ok}/{n_conv}.** "
+          "Prediction (from the parameters alone): intact at the rated voltage and at 0.9 x V_bd; at 0.95 x V_bd "
+          f"intact for the median instance a (D ~ 0.32) but broken down for instance b (ubd = {UBD_LOW}); broken "
+          "down and latched at 1.0 and 1.1 x V_bd. Non-converged corners carry no state reading and are not "
+          "counted either way (README \"Transient start\"; follow-up #74).")
         a(f"    Stress points: rated voltage {abs(lv[0]):.2f} V, then "
           + ", ".join(f"{f:g} x V_bd" for f in TRIG_FRACTIONS) + f" (V_bd = {vbd_ref(cand, params):.2f} V).")
-        n_ok = sum(1 for s_ in tr.corner_status.values() if s_ == "pass")
-        lat = [c for c, v in tr.values.items()
-               if v.get(f"st_{'a' if '_pla' in c else 'b'}") is not None]
-        a(f"    Resolved corners: {n_ok}/{len(tr.corner_status)}; corners with a state reading: {len(lat)}.")
+
+
+def trigger_prediction(cand, params: dict, vpl: float, inst: str) -> int:
+    """Expected latched state (0/1) at the end of the trigger bench, from the
+    stress level alone (index into trigger_levels)."""
+    lv = [abs(v) for v in trigger_levels(cand, params)]
+    i = min(range(len(lv)), key=lambda k: abs(lv[k] - abs(vpl)))
+    f = (None,) + TRIG_FRACTIONS
+    if i == 0 or f[i] < 0.95:
+        return 0
+    if f[i] == 0.95:
+        return 0 if inst == "a" else 1
+    return 1
 
 
 def render_links(a, rid: str, stored_rid: str | None, pdk) -> None:
     a("- **Links**:")
-    a(f"  - Model: `design/breakdown/` (element, wrappers, parameters, `check_params.py`)")
+    a("  - Model: `design/breakdown/` (element, wrappers, parameters, `check_params.py`)")
     a(f"  - Netlist snapshot: `sim/cell-breakdown-model/netlist-snapshots/{rid}.spice`")
     a(f"  - Requests, generated bodies, klt reports, per-corner decks and logs: `sim/cell-breakdown-model/corners/{rid}/<bench>/`")
     a(f"  - Regression reference: `sim/cell-device-characterization/records/{stored_rid}.md`")
