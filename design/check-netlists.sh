@@ -150,15 +150,15 @@ echo
 echo "== 5. slice elaboration and selected-cell smoke =="
 REPO_ROOT="$(cd "${DESIGN_DIR}/.." && pwd)"
 BENCH_TB="${REPO_ROOT}/sim/array-slice-bench/testbench"
-if [[ ! -f "${BENCH_TB}/tb_slice_i_ii.spice" ]]; then
-  echo "ERROR: ${BENCH_TB}/tb_slice_i_ii.spice missing (run sim/array-slice-bench/make_bench.py)." >&2
+if [[ ! -f "${BENCH_TB}/tb_slice_i_ii_typical.spice" ]]; then
+  echo "ERROR: ${BENCH_TB}/tb_slice_i_ii_typical.spice missing (run sim/array-slice-bench/make_bench.py)." >&2
   exit 1
 fi
 # models.spice already carries design.ngspice and the typical sections; the
-# bench decks also .include design.ngspice via $PDK_ROOT, so drop that line for
-# this wrapper and add the 10 V sections the slices need.
-sed '/design.ngspice/d' "${BENCH_TB}/tb_slice_i_ii.spice" > "${SCRATCH}/tb_slice_i_ii.spice"
-sed '/design.ngspice/d' "${BENCH_TB}/tb_slice_ii_iii.spice" > "${SCRATCH}/tb_slice_ii_iii.spice"
+# bench decks also .include design.ngspice and .lib the 10 V section via $PDK_ROOT;
+# models.spice already carries both, so drop those lines for this wrapper.
+sed '/design.ngspice/d; /smbb000149/d' "${BENCH_TB}/tb_slice_i_ii_typical.spice" > "${SCRATCH}/tb_slice_i_ii.spice"
+sed '/design.ngspice/d; /smbb000149/d' "${BENCH_TB}/tb_slice_ii_iii_typical.spice" > "${SCRATCH}/tb_slice_ii_iii.spice"
 # the includes inside the bench decks are relative to the testbench dir
 sed -i "s#\.\./\.\./\.\./design/netlists/#${DESIGN_DIR}/netlists/#" "${SCRATCH}"/tb_slice_*.spice
 

@@ -1,5 +1,5 @@
 {
-  "netlist": "tb_slice_ii_iii.spice",
+  "netlist": "tb_slice_i_ii_ff.spice",
   "engine": "ngspice",
   "models": {
     "pdk": "gf180mcuD",
@@ -8,73 +8,10 @@
   "corners": {
     "process": [
       {
-        "name": "typical",
-        "sections": [
-          "typical",
-          {
-            "lib": "libs.tech/ngspice/smbb000149.ngspice",
-            "section": "typical"
-          },
-          {
-            "lib": "libs.tech/ngspice/sm141064.ngspice",
-            "section": "moscap_typical"
-          }
-        ]
-      },
-      {
         "name": "ff",
         "sections": [
           "ff",
-          {
-            "lib": "libs.tech/ngspice/smbb000149.ngspice",
-            "section": "ff"
-          },
-          {
-            "lib": "libs.tech/ngspice/sm141064.ngspice",
-            "section": "moscap_ff"
-          }
-        ]
-      },
-      {
-        "name": "ss",
-        "sections": [
-          "ss",
-          {
-            "lib": "libs.tech/ngspice/smbb000149.ngspice",
-            "section": "ss"
-          },
-          {
-            "lib": "libs.tech/ngspice/sm141064.ngspice",
-            "section": "moscap_ss"
-          }
-        ]
-      },
-      {
-        "name": "fs",
-        "sections": [
-          "fs",
-          {
-            "lib": "libs.tech/ngspice/smbb000149.ngspice",
-            "section": "fs"
-          },
-          {
-            "lib": "libs.tech/ngspice/sm141064.ngspice",
-            "section": "moscap_typical"
-          }
-        ]
-      },
-      {
-        "name": "sf",
-        "sections": [
-          "sf",
-          {
-            "lib": "libs.tech/ngspice/smbb000149.ngspice",
-            "section": "sf"
-          },
-          {
-            "lib": "libs.tech/ngspice/sm141064.ngspice",
-            "section": "moscap_typical"
-          }
+          "moscap_ff"
         ]
       }
     ],
@@ -128,6 +65,106 @@
         2.97,
         3.3,
         3.63
+      ],
+      "vddh_i": [
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5
+      ],
+      "vbl_i": [
+        2.7,
+        3.0,
+        3.3,
+        2.7,
+        3.0,
+        3.3,
+        2.7,
+        3.0,
+        3.3,
+        2.7,
+        3.0,
+        3.3,
+        2.7,
+        3.0,
+        3.3,
+        2.7,
+        3.0,
+        3.3,
+        2.7,
+        3.0,
+        3.3,
+        2.7,
+        3.0,
+        3.3,
+        2.7,
+        3.0,
+        3.3,
+        2.7,
+        3.0,
+        3.3,
+        2.7,
+        3.0,
+        3.3,
+        2.7,
+        3.0,
+        3.3,
+        2.7,
+        3.0,
+        3.3,
+        2.7,
+        3.0,
+        3.3,
+        2.7,
+        3.0,
+        3.3,
+        2.7,
+        3.0,
+        3.3
       ],
       "vddh_ii": [
         4.95,
@@ -228,106 +265,6 @@
         3.15,
         3.5,
         3.85
-      ],
-      "vddh_iii": [
-        4.5,
-        5.0,
-        5.5,
-        4.5,
-        5.0,
-        5.5,
-        4.5,
-        5.0,
-        5.5,
-        4.5,
-        5.0,
-        5.5,
-        4.5,
-        5.0,
-        5.5,
-        4.5,
-        5.0,
-        5.5,
-        4.5,
-        5.0,
-        5.5,
-        4.5,
-        5.0,
-        5.5,
-        4.5,
-        5.0,
-        5.5,
-        4.5,
-        5.0,
-        5.5,
-        4.5,
-        5.0,
-        5.5,
-        4.5,
-        5.0,
-        5.5,
-        4.5,
-        5.0,
-        5.5,
-        4.5,
-        5.0,
-        5.5,
-        4.5,
-        5.0,
-        5.5,
-        4.5,
-        5.0,
-        5.5
-      ],
-      "vbl_iii": [
-        2.7,
-        3.0,
-        3.3,
-        2.7,
-        3.0,
-        3.3,
-        2.7,
-        3.0,
-        3.3,
-        2.7,
-        3.0,
-        3.3,
-        2.7,
-        3.0,
-        3.3,
-        2.7,
-        3.0,
-        3.3,
-        2.7,
-        3.0,
-        3.3,
-        2.7,
-        3.0,
-        3.3,
-        2.7,
-        3.0,
-        3.3,
-        2.7,
-        3.0,
-        3.3,
-        2.7,
-        3.0,
-        3.3,
-        2.7,
-        3.0,
-        3.3,
-        2.7,
-        3.0,
-        3.3,
-        2.7,
-        3.0,
-        3.3,
-        2.7,
-        3.0,
-        3.3,
-        2.7,
-        3.0,
-        3.3
       ],
       "vrsel0": [
         2.97,
@@ -529,7 +466,7 @@
         3.3,
         3.63
       ],
-      "vcsel20": [
+      "vcsel9": [
         2.97,
         3.3,
         3.63,
@@ -579,7 +516,7 @@
         0.0,
         0.0
       ],
-      "vcsel21": [
+      "vcsel10": [
         0.0,
         0.0,
         0.0,
@@ -629,7 +566,7 @@
         0.0,
         0.0
       ],
-      "vcsel22": [
+      "vcsel11": [
         0.0,
         0.0,
         0.0,
@@ -679,7 +616,7 @@
         0.0,
         0.0
       ],
-      "vcsel23": [
+      "vcsel12": [
         0.0,
         0.0,
         0.0,
@@ -737,176 +674,173 @@
     ]
   },
   "analysis": {
-    "kind": "op",
-    "args": ""
+    "kind": "dc",
+    "args": "vdum 0 1 1"
   },
   "measurements": [
     {
-      "name": "ifil_0_20",
-      "expr": "i(vfil_0_20)",
+      "name": "ifil_0_9",
+      "spice": ".meas dc ifil_0_9 FIND i(vfil_0_9) AT=0",
       "unit": "A"
     },
     {
-      "name": "ifil_0_21",
-      "expr": "i(vfil_0_21)",
+      "name": "ifil_0_10",
+      "spice": ".meas dc ifil_0_10 FIND i(vfil_0_10) AT=0",
       "unit": "A"
     },
     {
-      "name": "ifil_0_22",
-      "expr": "i(vfil_0_22)",
+      "name": "ifil_0_11",
+      "spice": ".meas dc ifil_0_11 FIND i(vfil_0_11) AT=0",
       "unit": "A"
     },
     {
-      "name": "ifil_0_23",
-      "expr": "i(vfil_0_23)",
+      "name": "ifil_0_12",
+      "spice": ".meas dc ifil_0_12 FIND i(vfil_0_12) AT=0",
       "unit": "A"
     },
     {
-      "name": "ifil_1_20",
-      "expr": "i(vfil_1_20)",
+      "name": "ifil_1_9",
+      "spice": ".meas dc ifil_1_9 FIND i(vfil_1_9) AT=0",
       "unit": "A"
     },
     {
-      "name": "ifil_1_21",
-      "expr": "i(vfil_1_21)",
+      "name": "ifil_1_10",
+      "spice": ".meas dc ifil_1_10 FIND i(vfil_1_10) AT=0",
       "unit": "A"
     },
     {
-      "name": "ifil_1_22",
-      "expr": "i(vfil_1_22)",
+      "name": "ifil_1_11",
+      "spice": ".meas dc ifil_1_11 FIND i(vfil_1_11) AT=0",
       "unit": "A"
     },
     {
-      "name": "ifil_1_23",
-      "expr": "i(vfil_1_23)",
+      "name": "ifil_1_12",
+      "spice": ".meas dc ifil_1_12 FIND i(vfil_1_12) AT=0",
       "unit": "A"
     },
     {
-      "name": "ifil_2_20",
-      "expr": "i(vfil_2_20)",
+      "name": "ifil_2_9",
+      "spice": ".meas dc ifil_2_9 FIND i(vfil_2_9) AT=0",
       "unit": "A"
     },
     {
-      "name": "ifil_2_21",
-      "expr": "i(vfil_2_21)",
+      "name": "ifil_2_10",
+      "spice": ".meas dc ifil_2_10 FIND i(vfil_2_10) AT=0",
       "unit": "A"
     },
     {
-      "name": "ifil_2_22",
-      "expr": "i(vfil_2_22)",
+      "name": "ifil_2_11",
+      "spice": ".meas dc ifil_2_11 FIND i(vfil_2_11) AT=0",
       "unit": "A"
     },
     {
-      "name": "ifil_2_23",
-      "expr": "i(vfil_2_23)",
+      "name": "ifil_2_12",
+      "spice": ".meas dc ifil_2_12 FIND i(vfil_2_12) AT=0",
       "unit": "A"
     },
     {
-      "name": "ifil_3_20",
-      "expr": "i(vfil_3_20)",
+      "name": "ifil_3_9",
+      "spice": ".meas dc ifil_3_9 FIND i(vfil_3_9) AT=0",
       "unit": "A"
     },
     {
-      "name": "ifil_3_21",
-      "expr": "i(vfil_3_21)",
+      "name": "ifil_3_10",
+      "spice": ".meas dc ifil_3_10 FIND i(vfil_3_10) AT=0",
       "unit": "A"
     },
     {
-      "name": "ifil_3_22",
-      "expr": "i(vfil_3_22)",
+      "name": "ifil_3_11",
+      "spice": ".meas dc ifil_3_11 FIND i(vfil_3_11) AT=0",
       "unit": "A"
     },
     {
-      "name": "ifil_3_23",
-      "expr": "i(vfil_3_23)",
+      "name": "ifil_3_12",
+      "spice": ".meas dc ifil_3_12 FIND i(vfil_3_12) AT=0",
       "unit": "A"
     },
     {
-      "name": "nv_bl_20",
-      "expr": "v(x_dut.bl_20)",
+      "name": "nv_bl_9",
+      "spice": ".meas dc nv_bl_9 FIND v(x_dut.bl_9) AT=0",
       "unit": "V"
     },
     {
-      "name": "nv_bl_21",
-      "expr": "v(x_dut.bl_21)",
+      "name": "nv_bl_10",
+      "spice": ".meas dc nv_bl_10 FIND v(x_dut.bl_10) AT=0",
       "unit": "V"
     },
     {
-      "name": "nv_bl_22",
-      "expr": "v(x_dut.bl_22)",
+      "name": "nv_bl_11",
+      "spice": ".meas dc nv_bl_11 FIND v(x_dut.bl_11) AT=0",
       "unit": "V"
     },
     {
-      "name": "nv_bl_23",
-      "expr": "v(x_dut.bl_23)",
+      "name": "nv_bl_12",
+      "spice": ".meas dc nv_bl_12 FIND v(x_dut.bl_12) AT=0",
       "unit": "V"
     },
     {
-      "name": "ibus_II",
-      "expr": "i(vbl_II)",
+      "name": "ibus_i",
+      "spice": ".meas dc ibus_i FIND i(vbl_I) AT=0",
       "unit": "A"
     },
     {
-      "name": "iret_II",
-      "expr": "i(vplg_II)",
+      "name": "iret_i",
+      "spice": ".meas dc iret_i FIND i(vplg_I) AT=0",
       "unit": "A"
     },
     {
-      "name": "nv_pl_0_II",
-      "expr": "v(x_dut.pl_0_II)",
+      "name": "nv_pl_0_i",
+      "spice": ".meas dc nv_pl_0_i FIND v(x_dut.pl_0_I) AT=0",
       "unit": "V"
     },
     {
-      "name": "nv_pl_1_II",
-      "expr": "v(x_dut.pl_1_II)",
+      "name": "nv_pl_1_i",
+      "spice": ".meas dc nv_pl_1_i FIND v(x_dut.pl_1_I) AT=0",
       "unit": "V"
     },
     {
-      "name": "nv_pl_2_II",
-      "expr": "v(x_dut.pl_2_II)",
+      "name": "nv_pl_2_i",
+      "spice": ".meas dc nv_pl_2_i FIND v(x_dut.pl_2_I) AT=0",
       "unit": "V"
     },
     {
-      "name": "nv_pl_3_II",
-      "expr": "v(x_dut.pl_3_II)",
+      "name": "nv_pl_3_i",
+      "spice": ".meas dc nv_pl_3_i FIND v(x_dut.pl_3_I) AT=0",
       "unit": "V"
     },
     {
-      "name": "ibus_III",
-      "expr": "i(vbl_III)",
+      "name": "ibus_ii",
+      "spice": ".meas dc ibus_ii FIND i(vbl_II) AT=0",
       "unit": "A"
     },
     {
-      "name": "iret_III",
-      "expr": "i(vplg_III)",
+      "name": "iret_ii",
+      "spice": ".meas dc iret_ii FIND i(vplg_II) AT=0",
       "unit": "A"
     },
     {
-      "name": "nv_pl_0_III",
-      "expr": "v(x_dut.pl_0_III)",
+      "name": "nv_pl_0_ii",
+      "spice": ".meas dc nv_pl_0_ii FIND v(x_dut.pl_0_II) AT=0",
       "unit": "V"
     },
     {
-      "name": "nv_pl_1_III",
-      "expr": "v(x_dut.pl_1_III)",
+      "name": "nv_pl_1_ii",
+      "spice": ".meas dc nv_pl_1_ii FIND v(x_dut.pl_1_II) AT=0",
       "unit": "V"
     },
     {
-      "name": "nv_pl_2_III",
-      "expr": "v(x_dut.pl_2_III)",
+      "name": "nv_pl_2_ii",
+      "spice": ".meas dc nv_pl_2_ii FIND v(x_dut.pl_2_II) AT=0",
       "unit": "V"
     },
     {
-      "name": "nv_pl_3_III",
-      "expr": "v(x_dut.pl_3_III)",
+      "name": "nv_pl_3_ii",
+      "spice": ".meas dc nv_pl_3_ii FIND v(x_dut.pl_3_II) AT=0",
       "unit": "V"
     }
   ],
   "options": {
     "timeout_s": 600,
-    "keep_artifacts": false,
-    "ngspice_init": [
-      "set numdgt=9"
-    ]
+    "keep_artifacts": false
   }
 }
