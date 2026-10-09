@@ -205,6 +205,40 @@ produced no value" errors. This is already filed as
   element present. Raised-cosine edges, which have a continuous first
   derivative, avoid it.
 
+### Transient start (`uic`)
+
+The first full trigger runs had many corners abort with "timestep too
+small" on a stock moscap macro node:
+
+| Candidate | Record | Corners errored |
+|---|---|---|
+| 1 | `20261009-020137-66efd11` | 32/90, mostly −40 °C |
+| 2 | `20261009-020409-66efd11` | 53/90, all temperatures |
+| 3 | `20261009-020416-66efd11` | 18/90 |
+
+Most of these failed in the *idle* instance, or before any stress was
+applied. A local single-deck bisection at −40 °C pinned it down:
+
+- The **bare stock** `cell_candidate1`, with no wrapper and no breakdown
+  element, fails the same way.
+- Its capacitor alone and its access device alone each run cleanly.
+- The series cell starting from ngspice's computed operating point fails.
+- The same deck started from `uic` (zero initial conditions) runs.
+
+`uic` also clears the failing Candidate 2 125 °C deck and the Candidate 1
+`moscap_ff` −40 °C deck, which had hit the 300 s timeout.
+
+The trigger bench therefore runs `tran ... uic`. Every stress source is 0
+at t = 0 and the pulse starts at 1 µs, so the cell settles long before it
+is stressed, and the damage integrator's D(0) = 0 becomes explicit rather
+than inherited from an operating point.
+
+The original runs are kept as evidence of the stock cells' operating-point
+transient start problem. The `uic` trigger re-runs are separate records,
+each linked from the original run's record. Any future transient work on
+these cells (program-pulse benches, yield Monte Carlo) should expect the
+same behaviour.
+
 ### Regression criterion: why not "every digit equal"
 
 The regression quantities fall into two classes.

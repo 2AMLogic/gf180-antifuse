@@ -423,7 +423,12 @@ def make_request(bench: str, cand, pdk: P.PDKPaths, measurements: list[dict], pa
         "access_ac": {"kind": "ac", "args": f"lin 3 {fmt(F_RON / 2)} {fmt(F_RON * 1.5)}"},
         "cap_op": {"kind": "dc", "args": DC_ARGS},
         "cap_ac": {"kind": "ac", "args": f"lin 3 {fmt(F_CV / 2)} {fmt(F_CV * 1.5)}"},
-        "trigger": {"kind": "tran", "args": f"{fmt(TRIG_TSTEP)} {fmt(TRIG_TSTOP)}"},
+        # uic: start from zero initial conditions, not the computed operating
+        # point -- the stock cells' transient fails to leave a DC-computed
+        # start at temperature extremes (README "Transient start"). Every
+        # stress source is 0 at t=0 and the pulse starts at TRIG_T1, so the
+        # cell settles long before the stress; D(0) = 0 is then explicit.
+        "trigger": {"kind": "tran", "args": f"{fmt(TRIG_TSTEP)} {fmt(TRIG_TSTOP)} uic"},
     }[bench]
     return req
 
@@ -663,7 +668,7 @@ def sci(x) -> str:
 
 
 def render_record(pdk, cand, rid: str, results: dict[str, BenchResult], params: dict,
-                  dirty: bool, stored_rid: str | None) -> str:
+                  dirty: bool | None, stored_rid: str | None, note: str | None = None) -> str:
     L: list[str] = []
     a = L.append
     a(f"# Record {rid}")
@@ -675,9 +680,15 @@ def render_record(pdk, cand, rid: str, results: dict[str, BenchResult], params: 
       "or enabled but unprogrammed, the cell reproduces `sim/cell-device-characterization` "
       f"record `{stored_rid}`; (b) programmed-cell read current and `I_prog_min` per PVT corner under the "
       "ASSUMED parameters of `design/breakdown/breakdown_params.spice`; (c) the trigger/latch mechanism.")
-    prov = f"schematic (design/netlists/{cand.netlist} wrapped by design/breakdown/cell_candidates_bd.spice" + \
-        (", dirty tree at run time)" if dirty else ")")
+    if dirty is None:
+        state = (f"; working-tree state at run time not captured -- the run executed commit "
+                 f"`{rid.rsplit('-', 1)[-1]}` (record id), and the exact decks are frozen under corners/{rid}/)")
+    else:
+        state = ", dirty tree at run time)" if dirty else ")"
+    prov = f"schematic (design/netlists/{cand.netlist} wrapped by design/breakdown/cell_candidates_bd.spice" + state
     a(f"- **Netlist provenance**: {prov}")
+    if note:
+        a(f"- **Run note**: {note}")
     a("- **Model parameters** (sha256 of `design/breakdown/breakdown_params.spice`: "
       f"`{sha256(BD_DIR / 'breakdown_params.spice')}`):")
     a("")
@@ -702,6 +713,17 @@ def render_record(pdk, cand, rid: str, results: dict[str, BenchResult], params: 
       "(2 instances x 5 levels, one stressed per corner) = 90 corners, process-minimum (netlist-default) geometry")
     a("  - geometry/sizing levels are the committed netlists' placeholder defaults and their x2 widths, "
       "NOT `spec/split-axis-plan.md`'s ratified levels (same caveat as the characterization records)")
+    envs = [r.klt_env for r in results.values() if r.klt_env]
+    if envs:
+        e0 = envs[0]
+        rm = e0.get("remote") or {}
+        a(f"- **Execution**: engine ngspice {e0.get('engine_version')} on the batch fleet "
+          f"(runner klt {rm.get('runner_klt_version')}, submitting client {rm.get('client_klt_version')}, "
+          f"`runner_compatibility: {rm.get('runner_compatibility')}` -- requests use only runner-supported "
+          "features, README \"Fleet klt version\"); models_lib sha256 "
+          f"`{e0.get('models_lib_sha256')}`. ngspice {e0.get('engine_version')} prints `.meas` results to 6 "
+          "significant digits; the committed characterization logs carry 7, so exact digit matches against "
+          "them are not expected and relative deviations of order 1e-6 are print precision.")
     a("- **Result**:")
     a("  - **Bench status**:")
     for b in BENCHES:
@@ -719,11 +741,13 @@ def render_record(pdk, cand, rid: str, results: dict[str, BenchResult], params: 
       f"reltol = {DEFAULT_RELTOL:g}; gmin-floor {'/'.join(GMIN_FLOOR)} within reltol*|ref| + abstol "
       f"({DEFAULT_ABSTOL:g} A), ngspice's own convergence bound for currents below abstol. Exact-match counts "
       "and the worst relative deviation are reported regardless:")
+    if not inertness(results):
+        a("    - (no regression bench in this run)")
     for row in inertness(results):
         a(f"    - `{row['bench']}` {row['quantity']} [{row['variant']}]: {row['ok']}/{row['n']} within criterion, "
           f"{row['exact']}/{row['n']} exactly equal; worst relative difference {row['worst_rel']:.2e}"
           + (f" at `{row['worst_at']}`" if row["worst_at"] else ""))
-    if stored_rid:
+    if stored_rid and ("access_op" in results or "access_ac" in results or "cap_op" in results or "cap_ac" in results):
         a(f"  - **(a2) Reproduction of committed record `{stored_rid}`** (default tolerances, as that record ran) -- "
           "per corner and sub-configuration vs its raw logs; same class-based criterion as (a1):")
         for row in reproduction(results, stored_rid):
@@ -737,13 +761,23 @@ def render_record(pdk, cand, rid: str, results: dict[str, BenchResult], params: 
             h = headline(results, v)
             a(f"    - headline, {v}: I_sneak_max = {sci(h['i_sneak_max'])} A at `{h['fh']}` (record: "
               f"{sci(sh['i_sneak_max'])}); R_on = {sci(h['r_on'])} ohm at `{h['sc']}` (record: {sci(sh['r_on'])})")
+    rows = iread_table(results)
+    if rows:
+        render_iread(a, rows, results, cand)
+    tr = results.get("trigger")
+    if tr and tr.values:
+        render_trigger(a, tr, cand, params)
+    render_links(a, rid, stored_rid, pdk)
+    return "\n".join(L)
+
+
+def render_iread(a, rows, results, cand) -> None:
     a("  - **(b) Programmed-cell read current** (BL = read rail, WL fully on, PL = 0, state forced programmed; "
       "minimum over the 4 sub-configurations at each corner). `rf_med` = median filament, `rf_wc` = "
       "+bd_zrf_wc sigma filament. CONDITIONAL ON THE ASSUMED FILAMENT PARAMETERS:")
     a("")
     a("    | Corner | I_read (rf_med) [A] | I_read (rf_wc) [A] | worst sub-config | klt |")
     a("    |---|---|---|---|---|")
-    rows = iread_table(results)
     for row in rows:
         a(f"    | `{row['cid']}` | {sci(row['med_min'])} | {sci(row['wc_min'])} | {row['wc_at']} | {row['status']} |")
     a("")
@@ -762,8 +796,10 @@ def render_record(pdk, cand, rid: str, results: dict[str, BenchResult], params: 
           "gmin-floor upper bound): the `I_sneak_max < I_ref < I_prog_min` window spans a factor of "
           f"**{glob['wc_min'] / h1['i_sneak_max']:.3g}** (worst-corner I_prog_min). This sizes nothing -- it is "
           "conditional on the assumed filament distribution and the placeholder read/WL biases.")
-    tr = results.get("trigger")
-    if tr and tr.values:
+
+
+def render_trigger(a, tr: BenchResult, cand, params: dict) -> None:
+    if tr.values:
         lv = trigger_levels(cand, params)
         a("  - **(c) Trigger/latch** -- PL stressed with a raised-cosine pulse "
           f"({TRIG_TW*1e6:g} us flat, {TRIG_TR*1e9:g} ns edges) with the access device on and BL = 0; state "
@@ -782,6 +818,13 @@ def render_record(pdk, cand, rid: str, results: dict[str, BenchResult], params: 
         a("")
         a(f"    Stress points: rated voltage {abs(lv[0]):.2f} V, then "
           + ", ".join(f"{f:g} x V_bd" for f in TRIG_FRACTIONS) + f" (V_bd = {vbd_ref(cand, params):.2f} V).")
+        n_ok = sum(1 for s_ in tr.corner_status.values() if s_ == "pass")
+        lat = [c for c, v in tr.values.items()
+               if v.get(f"st_{'a' if '_pla' in c else 'b'}") is not None]
+        a(f"    Resolved corners: {n_ok}/{len(tr.corner_status)}; corners with a state reading: {len(lat)}.")
+
+
+def render_links(a, rid: str, stored_rid: str | None, pdk) -> None:
     a("- **Links**:")
     a(f"  - Model: `design/breakdown/` (element, wrappers, parameters, `check_params.py`)")
     a(f"  - Netlist snapshot: `sim/cell-breakdown-model/netlist-snapshots/{rid}.spice`")
@@ -791,7 +834,6 @@ def render_record(pdk, cand, rid: str, results: dict[str, BenchResult], params: 
     a(f"- **Timestamp / author**: {time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())}, agent-builder")
     a("- **Supersedes**: (none -- first record for this claim/region)")
     a("")
-    return "\n".join(L)
 
 
 def vox(vals: dict, inst: str) -> str:
@@ -845,6 +887,41 @@ def smoke(pdk, cand, bench: str, params: dict) -> int:
     return 0 if c["status"] == "pass" else 1
 
 
+def results_from_reports(cand, rid: str, params: dict) -> dict[str, BenchResult]:
+    results: dict[str, BenchResult] = {}
+    for bench in BENCHES:
+        bdir = THIS_DIR / "corners" / rid / bench
+        rp = bdir / "report.json"
+        if rp.is_file():
+            report = json.loads(rp.read_text())
+            env = report.get("environment", {})
+            res = BenchResult(bench=bench, status=report.get("status", "?"), remote=env.get("remote"), klt_env=env)
+            for c in report["corners"]:
+                cid = corner_key(bench, c, cand, params)
+                res.corner_status[cid] = c["status"]
+                res.values[cid] = derive(bench, {m["name"].lower(): m["value"] for m in c["measurements"]})
+        elif (bdir / "submit-error.txt").is_file():
+            res = BenchResult(bench=bench, status="submit-error", remote=None,
+                              error=(bdir / "submit-error.txt").read_text())
+        else:
+            continue
+        results[bench] = res
+    return results
+
+
+def render_only(pdk, cand, rid: str, params: dict, note: str | None = None) -> int:
+    results = results_from_reports(cand, rid, params)
+    if not results:
+        print(f"ERROR: no saved reports under corners/{rid}/", file=sys.stderr)
+        return 2
+    prov_file = THIS_DIR / "corners" / rid / "run-provenance.json"
+    dirty = json.loads(prov_file.read_text())["dirty"] if prov_file.is_file() else None
+    R.write_once(THIS_DIR / "records" / f"{rid}.md",
+                 render_record(pdk, cand, rid, results, params, dirty, stored_record_id(cand), note))
+    print(f"record: records/{rid}.md (rendered from saved reports)")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--pdk-root", default=None)
@@ -853,6 +930,10 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--smoke", default=None, metavar="N:BENCH",
                     help="run ONE corner of ONE bench locally (debug probe; writes no record)")
     ap.add_argument("--check-env", action="store_true")
+    ap.add_argument("--note", default=None, help="free-text run note carried into the record(s)")
+    ap.add_argument("--render", default=None, metavar="RECORD_ID",
+                    help="(re)write records/RECORD_ID.md from the saved corners/RECORD_ID/*/report.json "
+                         "of ONE candidate (--candidates N); runs no simulation. Refuses to overwrite.")
     ap.add_argument("--klt", default="klt",
                     help="klt command (space-separated), e.g. a version-pinned `uvx --from ... klt` to "
                          "pre-flight a request against the fleet runner's klt with --smoke")
@@ -878,6 +959,8 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     by_n = {c.n: c for c in CHAR.CANDIDATES}
+    if args.render:
+        return render_only(pdk, by_n[int(args.candidates)], args.render, params, args.note)
     if args.smoke:
         n, bench = args.smoke.split(":")
         return smoke(pdk, by_n[int(n)], bench, params)
@@ -891,10 +974,12 @@ def main(argv: list[str] | None = None) -> int:
         defaults = CHAR.parse_defaults(REPO_ROOT / "design" / "netlists" / cand.netlist)
         rid = R.allocate_record_id(THIS_DIR, REPO_ROOT)
         print(f"== Candidate {n} (Region {cand.region}) record {rid}")
+        R.write_once(THIS_DIR / "corners" / rid / "run-provenance.json",
+                     json.dumps({"git_sha": R.git_short_sha(REPO_ROOT), "dirty": dirty}) + "\n")
         results: dict[str, BenchResult] = {}
         for bench in benches:
             bdir = THIS_DIR / "corners" / rid / bench
-            bdir.mkdir(parents=True, exist_ok=False)
+            bdir.mkdir(parents=True, exist_ok=False)  # corners/<rid>/ itself exists (run-provenance.json)
             body, ms = build_body(bench, pdk, cand, defaults, bdir, FLEET_PDK_VARIANT_DIR)
             R.write_once(bdir / "body.spice", body)
             req = make_request(bench, cand, pdk, ms, params)
@@ -914,7 +999,7 @@ def main(argv: list[str] | None = None) -> int:
                 rc = 1
         R.write_once(THIS_DIR / "netlist-snapshots" / f"{rid}.spice", snapshot(cand))
         R.write_once(THIS_DIR / "records" / f"{rid}.md",
-                     render_record(pdk, cand, rid, results, params, dirty, stored_record_id(cand)))
+                     render_record(pdk, cand, rid, results, params, dirty, stored_record_id(cand), args.note))
         print(f"   record: records/{rid}.md")
     return rc
 
