@@ -3,6 +3,10 @@
 Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 
+### 2026-10-09
+
+- **Issue #71** (closed): Auditor Capability Request: Python 3 unavailable for simulation runner smoke checks
+
 ### 2026-10-03
 
 - **PR #56**: docs: embed fleet burndown chart and fleet-ops firewall carve-out (#46)
