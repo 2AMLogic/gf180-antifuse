@@ -95,14 +95,14 @@ Issues carrying `loom:curated`.
 
 | Tier | Count |
 |------|-------|
-| Operator merge-risk holds | 1 |
+| Operator merge-risk holds | 9 |
 | Operator priority | 0 |
-| Ready (`loom:issue`) | 3 |
+| Ready (`loom:issue`) | 12 |
 | In Progress (`loom:building`) | 0 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 10 |
-| Curated | 7 |
-| Architect / Hermit proposals | 5 |
+| Curated | 12 |
+| Architect / Hermit proposals | 2 |
 | Active epics | 1 |
 
 <!-- guide:plan-body:end -->
