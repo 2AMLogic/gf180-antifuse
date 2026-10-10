@@ -90,7 +90,19 @@ named, and (c) program-pulse width remains a host-settable split axis?
   argument: while armed, the only accepted `CTRL` values are `0x00` and `0x03`
   (Hamming distance 2 apart), and every one-bit neighbour of `0x03` (`0x01`,
   `0x02`, `0x07`, `0x0B`, `0x13`, `0x23`, `0x43`, `0x83`) is rejected, so one
-  flipped bit in any command cannot produce a fire. While unarmed, `0x03` is
+  flipped bit in the `CTRL` *data* byte cannot produce a fire. Command-byte
+  corruption is covered for every non-firing frame the host legitimately
+  issues while armed (DISARM, register reads): no one-bit neighbour of those
+  frames is the fire frame `{0x82, 0x03}`. **Known residual, not closed by
+  this record:** the fire frame is one command-bit flip away from a
+  `ROW` or `PULSE_WIDTH` write of value `0x03` (`{0x80, 0x03}`, `{0x83, 0x03}`; `COL` at `0x81` is two bits away).
+  Those writes are never part of the legitimate armed sequence (they are
+  rejected while armed), but a host that intends one and has its command bit
+  corrupted fires. A frame cannot distinguish the two; closing this needs a
+  register-map or protocol change (e.g. a fire address at Hamming distance
+  >= 2 from every other writable address), which alters the ratified §5
+  register map and is escalated for an operator decision rather than made
+  here. While unarmed, `0x03` is
   rejected, so a flip of an arm command cannot fire either. The earlier
   "two set bits" rationale is withdrawn: it gave no two-bit protection by
   itself. `CTRL` reads back `{5'b0, read-in-flight, PROG_STROBE,

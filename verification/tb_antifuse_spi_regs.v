@@ -445,6 +445,30 @@ module tb_antifuse_spi_regs;
         end
     endtask
 
+    // Command-byte corruption: every non-firing frame the host legitimately
+    // issues while armed (DISARM write, reads of each register), with each of
+    // the 8 command bits flipped, must not program.
+    task t_single_bit_corrupted_cmd_while_armed;
+        integer k, f;
+        reg [7:0] c, d;
+        begin
+            begin_test("single_bit_corrupted_cmd_while_armed");
+            for (f = 0; f < 7; f = f + 1) begin
+                for (k = 0; k < 8; k = k + 1) begin
+                    if (f == 0) begin c = 8'h82; d = 8'h00; end   // DISARM write
+                    else begin c = f - 1; d = 8'h00; end          // read of reg f-1
+                    c = c ^ (8'h01 << k);
+                    hard_reset; c0 = pulse_cnt;
+                    xw(A_ROW, 8'h00); xw(A_COL, 8'h00);
+                    xw(A_CTRL, 8'h01);
+                    xfer(c, d); wait_idle;
+                    check(pulse_cnt == c0, "single-bit-corrupted command byte while armed must not program");
+                end
+            end
+            end_test;
+        end
+    endtask
+
     task t_disarm_and_rearm;
         begin
             begin_test("disarm_write_and_rearm");
@@ -734,6 +758,7 @@ module tb_antifuse_spi_regs;
         t_arm_flag_duration;
         t_neg_arm_timeout_boundary;
         t_neg_single_bit_corrupt_while_armed;
+        t_single_bit_corrupted_cmd_while_armed;
         t_disarm_and_rearm;
         t_neg_busy_writes_program;
         t_neg_busy_writes_read;
