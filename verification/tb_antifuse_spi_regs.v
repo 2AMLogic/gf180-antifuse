@@ -425,6 +425,26 @@ module tb_antifuse_spi_regs;
         end
     endtask
 
+    // Single-bit-fault regression: while armed, every CTRL value one bit away
+    // from the fire code (0x03) must be rejected and must not program.
+    task t_neg_single_bit_corrupt_while_armed;
+        integer k;
+        reg [7:0] v;
+        begin
+            begin_test("single_bit_corrupted_ctrl_while_armed");
+            for (k = 0; k < 8; k = k + 1) begin
+                v = 8'h03 ^ (8'h01 << k);
+                hard_reset; c0 = pulse_cnt;
+                xw(A_ROW, 8'h00); xw(A_COL, 8'h00);
+                xw(A_CTRL, 8'h01);
+                xw(A_CTRL, v); wait_idle;
+                check(pulse_cnt == c0, "single-bit-corrupted CTRL while armed must not program");
+                st; check(rd[S_PERR], "single-bit-corrupted CTRL while armed sets PROTOCOL_ERROR");
+            end
+            end_test;
+        end
+    endtask
+
     task t_disarm_and_rearm;
         begin
             begin_test("disarm_write_and_rearm");
@@ -713,6 +733,7 @@ module tb_antifuse_spi_regs;
         t_neg_write_while_armed;
         t_arm_flag_duration;
         t_neg_arm_timeout_boundary;
+        t_neg_single_bit_corrupt_while_armed;
         t_disarm_and_rearm;
         t_neg_busy_writes_program;
         t_neg_busy_writes_read;

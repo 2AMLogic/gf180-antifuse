@@ -80,13 +80,20 @@ named, and (c) program-pulse width remains a host-settable split axis?
   CS_N and `miso` is 0 with CS_N high. Read data is captured at the 8th
   rising edge; reads have no side effect except the `STATUS` rule below.
 - **`CTRL` write decode** (reserved bits `[7:3]` nonzero is rejected whole):
-  `0x00` disarms (no error); `0x01` arms, restarts the timeout and clears
-  `PROG_DONE`; `0x03` fires **only if `PROG_ARM` was already set by an earlier
+  `0x00` disarms (no error); `0x01` arms and clears `PROG_DONE` **only when
+  not already armed** (a re-arm while armed is rejected and drops the arm, so
+  the timeout cannot be refreshed — the host disarms or lets it expire, then
+  arms again); `0x03` fires **only if `PROG_ARM` was already set by an earlier
   committed transaction** — otherwise it is rejected, so arm-and-strobe in one
   transaction never fires and never arms; `0x04` starts a read only when not
-  armed; `0x02`, `0x05`, `0x06`, `0x07` are rejected. Requiring `0x03`
-  (not `0x02`) to fire means two bits must be correct in addition to the
-  stored arm state. `CTRL` reads back `{5'b0, read-in-flight, PROG_STROBE,
+  armed; `0x02`, `0x05`, `0x06`, `0x07` are rejected. Single-bit-fault
+  argument: while armed, the only accepted `CTRL` values are `0x00` and `0x03`
+  (Hamming distance 2 apart), and every one-bit neighbour of `0x03` (`0x01`,
+  `0x02`, `0x07`, `0x0B`, `0x13`, `0x23`, `0x43`, `0x83`) is rejected, so one
+  flipped bit in any command cannot produce a fire. While unarmed, `0x03` is
+  rejected, so a flip of an arm command cannot fire either. The earlier
+  "two set bits" rationale is withdrawn: it gave no two-bit protection by
+  itself. `CTRL` reads back `{5'b0, read-in-flight, PROG_STROBE,
   PROG_ARM}`; `PROG_STROBE` and `PROG_ARM` stay set for the pulse and clear on
   its completion, as §5 requires.
 - **Protocol errors** (all set `PROTOCOL_ERROR` and drop an idle `PROG_ARM`):

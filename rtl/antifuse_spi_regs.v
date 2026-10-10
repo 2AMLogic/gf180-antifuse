@@ -183,7 +183,7 @@ module antifuse_spi_regs #(
                         if (dat[7:3] != 5'b0) err = 1'b1;
                         else case (dat[2:0])
                             3'b000: do_disarm = 1'b1;
-                            3'b001: do_arm    = 1'b1;
+                            3'b001: if (arm) err = 1'b1; else do_arm = 1'b1; // re-arm while armed is 1 bit from fire
                             3'b011: if (arm) do_fire = 1'b1; else err = 1'b1; // ARM-GUARD
                             3'b100: if (arm) err = 1'b1; else do_read = 1'b1;
                             default: err = 1'b1;

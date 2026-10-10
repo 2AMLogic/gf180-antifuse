@@ -48,7 +48,8 @@ the settle is too short for a frame to fit, i.e. N = 32 config).
   `neg_target_or_width_write_while_armed` (row, column, width, out-of-range),
   `neg_arm_timeout_boundary` (commit one cycle inside the window fires, one
   cycle outside does not), `arm_flag_high_exactly_ARM_TIMEOUT_cycles`,
-  `disarm_write_and_rearm`, `reset_while_armed_and_while_active`
+  `single_bit_corrupted_ctrl_while_armed` (all eight one-bit neighbours of
+  the fire code), `disarm_write_and_rearm`, `reset_while_armed_and_while_active`
 - `busy_writes_rejected_during_program_pulse`,
   `busy_writes_rejected_during_read_settle`
 - Read path: `read_strobe_rdata_and_settle` (sense 0 and 1, `READ_VALID`,
