@@ -23,6 +23,7 @@ SIM_DIR = Path(__file__).resolve().parent
 
 EXPERIMENTS = {
     "cell-device-characterization": SIM_DIR / "cell-device-characterization" / "run_experiment.py",
+    "cell-breakdown-model": SIM_DIR / "cell-breakdown-model" / "run_experiment.py",
 }
 
 
