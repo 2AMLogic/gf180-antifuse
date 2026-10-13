@@ -39,26 +39,28 @@ doc) or on any drift from the committed report.
 
 ## Current verdict
 
-`tier: null` -- **2 of 22 T1 items met**, both for the analog partition and
-both resting on **one bitcell of candidate 1**, not on the array, the
-multiplexers, the pass gates or any program or sense path. Graded against
+`tier: null` -- **1 of 22 T1 items met** (analog partition). Graded against
 `design-evidence-tiers.md` at
-`sha256:4c67ffc59128482d00f7d87cf446b6a96b9ab0c41ae5234098244e3052033335`
-by klayout-tools `0.7.0+g4cbdfa769875` (commit
-`4cbdfa7698752b720c0e627163867de1e23475f3`). Both values are copied from the
+`sha256:a548796d76644ff406a097ff4713b2ba2d9882c978c441914990020869e57cd6`
+by klayout-tools `0.7.1.dev256+gaf7a43de415a` (commit
+`af7a43de415a1e599b4872fa0fd1d716e3269182`). Both values are copied from the
 committed `signoff/report.json` (`source_doc_content_hash`, `build.version`).
 
-**Grader build changed.** The earlier all-`no_evidence` report was graded by
-`0.5.0+g32f69f811682`; the host `klt` is `0.7.0+g4cbdfa769875` and all new
-evidence was produced by it, so the report was regenerated with it (the
-checklist still has 22 rows; the doc hash and `grading_ruleset_id` moved). No
-tool was installed to keep the older pin. The `0.5.0` paragraph further up
-describes the earlier report only.
+**Grader build changed; one row demoted.** The `0.7.0+g4cbdfa769875`-graded
+report (which had carried 2 of 22) was superseded: per the operator ruling of
+2026-10-13 the report was re-graded on the host build
+`0.7.1.dev256+gaf7a43de415a` — the newer pin wins, ahead of the `0.6.0`
+re-pin #67 gives the sim-side grader — and in the same regrade **2.analog
+Layout was demoted to `unmet`**: the drawn evidence covers **one bitcell of
+candidate 1**, and layout evidence for item 2 must cover the array before
+that row can cite it (operator ruling 2026-10-13). No tool was installed to
+hold any older pin. The `0.5.0` paragraph further up describes the earliest
+(all-`no_evidence`) report only.
 
 | Item | State | What it rests on |
 |---|---|---|
-| 2.analog Layout | met | `layout/cell_candidate1/cell_candidate1.gds`, reproducible via `python3 layout/cell_candidate1/generate.py --check`. The grader accepts any passing envelope pinned to the GDS hash for this item, so the citation is the DRC report; the reproducibility claim itself is carried by `--check`, not by the envelope. |
-| 3.analog DRC clean | met | `layout/cell_candidate1/drc_report.json`, `status: clean`, pinned to the GDS sha256. Coverage disclosure below. |
+| 2.analog Layout | unmet, `no_evidence` | Deliberately uncited per the operator ruling of 2026-10-13: the committed `layout/cell_candidate1/cell_candidate1.gds` (reproducible via `python3 layout/cell_candidate1/generate.py --check`) covers one bitcell of one candidate, not the array the item's evidence must cover. The GDS and its `--check` reproducibility remain committed; the row re-cites when array-level layout exists. |
+| 3.analog DRC clean | met | `layout/cell_candidate1/drc_report.json`, `status: clean`, pinned to the GDS sha256. Accepted as evidence for this row only (operator ruling 2026-10-13). Coverage disclosure below. |
 | 4.analog LVS clean | unmet, `no_evidence` | No report exists: `klt lvs` cannot compare a MOS capacitor (upstream 2AMLogic/klayout-tools#2919, #2953). See `layout/README.md`. |
 
 Every other row remains `unmet`, reason `no_evidence`; the block's other
