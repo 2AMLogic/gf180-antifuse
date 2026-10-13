@@ -1,0 +1,129 @@
+{
+  "generator_version": 1,
+  "experiment_dir": "sim/cell-device-characterization",
+  "pdk_revision": "c6d73a35f524070e85faff4a6a9eef49553ebc2b",
+  "required_regions": [
+    "I",
+    "II",
+    "III"
+  ],
+  "grid": {
+    "access_process": [
+      "typical",
+      "ff",
+      "ss",
+      "fs",
+      "sf"
+    ],
+    "moscap_process": [
+      "moscap_typical",
+      "moscap_ff",
+      "moscap_ss"
+    ],
+    "temps_c": [
+      -40,
+      27,
+      125
+    ],
+    "access_supply": [
+      "bl0p90v",
+      "bl1p00v",
+      "bl1p10v"
+    ],
+    "sizing_levels": [
+      "min",
+      "2x"
+    ],
+    "geometry_levels": [
+      "min",
+      "2x"
+    ],
+    "fast_hot_corner": "ff_125c_bl1p10v",
+    "slow_cold_corner": "ss_-40c_bl0p90v"
+  },
+  "stimulus_note": "Placeholder stimulus values from sim/cell-device-characterization/README.md; none is a ratified spec number. Gate biases are in volts.",
+  "stimulus": {
+    "1": {
+      "off_gate_bias_v": [
+        -0.3,
+        0.0,
+        0.3
+      ],
+      "on_gate_bias_v": 3.3,
+      "cv_bias_v": [
+        -3.3,
+        -1.65,
+        0.0,
+        1.65,
+        3.3
+      ]
+    },
+    "2": {
+      "off_gate_bias_v": [
+        -0.3,
+        0.0,
+        0.3
+      ],
+      "on_gate_bias_v": 5.0,
+      "cv_bias_v": [
+        -6.0,
+        -3.0,
+        0.0,
+        3.0,
+        6.0
+      ]
+    },
+    "3": {
+      "off_gate_bias_v": [
+        3.0,
+        3.3,
+        3.6
+      ],
+      "on_gate_bias_v": 0.0,
+      "cv_bias_v": [
+        -3.3,
+        -1.65,
+        0.0,
+        1.65,
+        3.3
+      ]
+    }
+  },
+  "measurement_notes": [
+    "I_off is a gmin-floor-limited upper bound (gmin = 1e-13 S), set jointly by true device leakage and the numerical floor; it is not a resolved subthreshold current.",
+    "Capacitor leakage comes from the stock cap model, which has no DC branch; it is a model-structural value, not a measurement of oxide leakage.",
+    "R_on is the real part of the small-signal impedance at 10 MHz; it carries a single-digit-percent to ~10% capacitor-geometry sensitivity, so it is reported per sub-configuration.",
+    "At the sf process corner Candidate 3's fixed gate overdrive is not fully on (R_on in the MOhm range); those values are reported as measured, not filtered.",
+    "Sizing and geometry levels are the netlist defaults and a x2 width, not the ratified split-axis levels.",
+    "Values are pre-breakdown, stock-model results at rated-voltage validity; nothing here predicts silicon behavior from assumed model parameters."
+  ],
+  "records": [
+    {
+      "record_id": "20260909-232140-b6035cb",
+      "region": "I",
+      "candidate": 1,
+      "design_netlist": "design/netlists/cell_candidate1.spice",
+      "record_sha256": "7fe988dbebc6539cd0931af86b9329b8a7c1c2c121c534b02a3c926dc9780e4e",
+      "snapshot_sha256": "c71b479ce58eacae695b566a632385d2efcf8f8974eefc2dd2b5f2294ef2098c",
+      "logs_tree_sha256": "75e45ad5651295c2858d8857ba557ed47cfff96be964868b39700f2f73c40762"
+    },
+    {
+      "record_id": "20260909-232141-b6035cb",
+      "region": "II",
+      "candidate": 2,
+      "design_netlist": "design/netlists/cell_candidate2.spice",
+      "record_sha256": "fe02a788db191b5e4a35ab421ab70350033a1dc0c496f66997772663fc0c692b",
+      "snapshot_sha256": "04ef71e089c2db0920bcad47f882148ba49327043c123522b64a1bac6c3e83b6",
+      "logs_tree_sha256": "bd7aa60f84df94e6e5c78feff2c82a621de417292e8785d79c0fb3edb6b743e8"
+    },
+    {
+      "record_id": "20260909-232143-b6035cb",
+      "region": "III",
+      "candidate": 3,
+      "design_netlist": "design/netlists/cell_candidate3.spice",
+      "record_sha256": "853dced7d072b0fd88f7d5da2d2145eedf606dfbd9c5870560efd5687e5f7ebc",
+      "snapshot_sha256": "386b3e0526635d98201eb4057f722a46ce823bb51e4a3dd37914031efbe2ff63",
+      "logs_tree_sha256": "be888721658335a367e691df0d2286a9274291d873ba293e9cede8a647e38613"
+    }
+  ]
+}

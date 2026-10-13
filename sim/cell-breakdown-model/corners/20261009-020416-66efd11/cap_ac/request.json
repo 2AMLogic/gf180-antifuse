@@ -1,0 +1,653 @@
+{
+  "netlist": "body.spice",
+  "engine": "ngspice",
+  "backend": "batch",
+  "batch": {
+    "runner_version_check": "warn",
+    "capacity_wait_s": 1800
+  },
+  "measurements": [
+    {
+      "name": "hr_st_s1g1_1",
+      "spice": ".meas ac hr_st_s1g1_1 FIND vr(hp_st_s1g1_1) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_st_s1g1_1",
+      "spice": ".meas ac hi_st_s1g1_1 FIND vi(hp_st_s1g1_1) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b0_s1g1_1",
+      "spice": ".meas ac hr_b0_s1g1_1 FIND vr(hp_b0_s1g1_1) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b0_s1g1_1",
+      "spice": ".meas ac hi_b0_s1g1_1 FIND vi(hp_b0_s1g1_1) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b1_s1g1_1",
+      "spice": ".meas ac hr_b1_s1g1_1 FIND vr(hp_b1_s1g1_1) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b1_s1g1_1",
+      "spice": ".meas ac hi_b1_s1g1_1 FIND vi(hp_b1_s1g1_1) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_st_s1g1_2",
+      "spice": ".meas ac hr_st_s1g1_2 FIND vr(hp_st_s1g1_2) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_st_s1g1_2",
+      "spice": ".meas ac hi_st_s1g1_2 FIND vi(hp_st_s1g1_2) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b0_s1g1_2",
+      "spice": ".meas ac hr_b0_s1g1_2 FIND vr(hp_b0_s1g1_2) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b0_s1g1_2",
+      "spice": ".meas ac hi_b0_s1g1_2 FIND vi(hp_b0_s1g1_2) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b1_s1g1_2",
+      "spice": ".meas ac hr_b1_s1g1_2 FIND vr(hp_b1_s1g1_2) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b1_s1g1_2",
+      "spice": ".meas ac hi_b1_s1g1_2 FIND vi(hp_b1_s1g1_2) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_st_s1g1_3",
+      "spice": ".meas ac hr_st_s1g1_3 FIND vr(hp_st_s1g1_3) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_st_s1g1_3",
+      "spice": ".meas ac hi_st_s1g1_3 FIND vi(hp_st_s1g1_3) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b0_s1g1_3",
+      "spice": ".meas ac hr_b0_s1g1_3 FIND vr(hp_b0_s1g1_3) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b0_s1g1_3",
+      "spice": ".meas ac hi_b0_s1g1_3 FIND vi(hp_b0_s1g1_3) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b1_s1g1_3",
+      "spice": ".meas ac hr_b1_s1g1_3 FIND vr(hp_b1_s1g1_3) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b1_s1g1_3",
+      "spice": ".meas ac hi_b1_s1g1_3 FIND vi(hp_b1_s1g1_3) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_st_s1g1_4",
+      "spice": ".meas ac hr_st_s1g1_4 FIND vr(hp_st_s1g1_4) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_st_s1g1_4",
+      "spice": ".meas ac hi_st_s1g1_4 FIND vi(hp_st_s1g1_4) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b0_s1g1_4",
+      "spice": ".meas ac hr_b0_s1g1_4 FIND vr(hp_b0_s1g1_4) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b0_s1g1_4",
+      "spice": ".meas ac hi_b0_s1g1_4 FIND vi(hp_b0_s1g1_4) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b1_s1g1_4",
+      "spice": ".meas ac hr_b1_s1g1_4 FIND vr(hp_b1_s1g1_4) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b1_s1g1_4",
+      "spice": ".meas ac hi_b1_s1g1_4 FIND vi(hp_b1_s1g1_4) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_st_s1g1_5",
+      "spice": ".meas ac hr_st_s1g1_5 FIND vr(hp_st_s1g1_5) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_st_s1g1_5",
+      "spice": ".meas ac hi_st_s1g1_5 FIND vi(hp_st_s1g1_5) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b0_s1g1_5",
+      "spice": ".meas ac hr_b0_s1g1_5 FIND vr(hp_b0_s1g1_5) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b0_s1g1_5",
+      "spice": ".meas ac hi_b0_s1g1_5 FIND vi(hp_b0_s1g1_5) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b1_s1g1_5",
+      "spice": ".meas ac hr_b1_s1g1_5 FIND vr(hp_b1_s1g1_5) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b1_s1g1_5",
+      "spice": ".meas ac hi_b1_s1g1_5 FIND vi(hp_b1_s1g1_5) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_st_s1g2_1",
+      "spice": ".meas ac hr_st_s1g2_1 FIND vr(hp_st_s1g2_1) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_st_s1g2_1",
+      "spice": ".meas ac hi_st_s1g2_1 FIND vi(hp_st_s1g2_1) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b0_s1g2_1",
+      "spice": ".meas ac hr_b0_s1g2_1 FIND vr(hp_b0_s1g2_1) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b0_s1g2_1",
+      "spice": ".meas ac hi_b0_s1g2_1 FIND vi(hp_b0_s1g2_1) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b1_s1g2_1",
+      "spice": ".meas ac hr_b1_s1g2_1 FIND vr(hp_b1_s1g2_1) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b1_s1g2_1",
+      "spice": ".meas ac hi_b1_s1g2_1 FIND vi(hp_b1_s1g2_1) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_st_s1g2_2",
+      "spice": ".meas ac hr_st_s1g2_2 FIND vr(hp_st_s1g2_2) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_st_s1g2_2",
+      "spice": ".meas ac hi_st_s1g2_2 FIND vi(hp_st_s1g2_2) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b0_s1g2_2",
+      "spice": ".meas ac hr_b0_s1g2_2 FIND vr(hp_b0_s1g2_2) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b0_s1g2_2",
+      "spice": ".meas ac hi_b0_s1g2_2 FIND vi(hp_b0_s1g2_2) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b1_s1g2_2",
+      "spice": ".meas ac hr_b1_s1g2_2 FIND vr(hp_b1_s1g2_2) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b1_s1g2_2",
+      "spice": ".meas ac hi_b1_s1g2_2 FIND vi(hp_b1_s1g2_2) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_st_s1g2_3",
+      "spice": ".meas ac hr_st_s1g2_3 FIND vr(hp_st_s1g2_3) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_st_s1g2_3",
+      "spice": ".meas ac hi_st_s1g2_3 FIND vi(hp_st_s1g2_3) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b0_s1g2_3",
+      "spice": ".meas ac hr_b0_s1g2_3 FIND vr(hp_b0_s1g2_3) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b0_s1g2_3",
+      "spice": ".meas ac hi_b0_s1g2_3 FIND vi(hp_b0_s1g2_3) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b1_s1g2_3",
+      "spice": ".meas ac hr_b1_s1g2_3 FIND vr(hp_b1_s1g2_3) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b1_s1g2_3",
+      "spice": ".meas ac hi_b1_s1g2_3 FIND vi(hp_b1_s1g2_3) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_st_s1g2_4",
+      "spice": ".meas ac hr_st_s1g2_4 FIND vr(hp_st_s1g2_4) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_st_s1g2_4",
+      "spice": ".meas ac hi_st_s1g2_4 FIND vi(hp_st_s1g2_4) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b0_s1g2_4",
+      "spice": ".meas ac hr_b0_s1g2_4 FIND vr(hp_b0_s1g2_4) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b0_s1g2_4",
+      "spice": ".meas ac hi_b0_s1g2_4 FIND vi(hp_b0_s1g2_4) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b1_s1g2_4",
+      "spice": ".meas ac hr_b1_s1g2_4 FIND vr(hp_b1_s1g2_4) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b1_s1g2_4",
+      "spice": ".meas ac hi_b1_s1g2_4 FIND vi(hp_b1_s1g2_4) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_st_s1g2_5",
+      "spice": ".meas ac hr_st_s1g2_5 FIND vr(hp_st_s1g2_5) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_st_s1g2_5",
+      "spice": ".meas ac hi_st_s1g2_5 FIND vi(hp_st_s1g2_5) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b0_s1g2_5",
+      "spice": ".meas ac hr_b0_s1g2_5 FIND vr(hp_b0_s1g2_5) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b0_s1g2_5",
+      "spice": ".meas ac hi_b0_s1g2_5 FIND vi(hp_b0_s1g2_5) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b1_s1g2_5",
+      "spice": ".meas ac hr_b1_s1g2_5 FIND vr(hp_b1_s1g2_5) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b1_s1g2_5",
+      "spice": ".meas ac hi_b1_s1g2_5 FIND vi(hp_b1_s1g2_5) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_st_s2g1_1",
+      "spice": ".meas ac hr_st_s2g1_1 FIND vr(hp_st_s2g1_1) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_st_s2g1_1",
+      "spice": ".meas ac hi_st_s2g1_1 FIND vi(hp_st_s2g1_1) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b0_s2g1_1",
+      "spice": ".meas ac hr_b0_s2g1_1 FIND vr(hp_b0_s2g1_1) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b0_s2g1_1",
+      "spice": ".meas ac hi_b0_s2g1_1 FIND vi(hp_b0_s2g1_1) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b1_s2g1_1",
+      "spice": ".meas ac hr_b1_s2g1_1 FIND vr(hp_b1_s2g1_1) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b1_s2g1_1",
+      "spice": ".meas ac hi_b1_s2g1_1 FIND vi(hp_b1_s2g1_1) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_st_s2g1_2",
+      "spice": ".meas ac hr_st_s2g1_2 FIND vr(hp_st_s2g1_2) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_st_s2g1_2",
+      "spice": ".meas ac hi_st_s2g1_2 FIND vi(hp_st_s2g1_2) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b0_s2g1_2",
+      "spice": ".meas ac hr_b0_s2g1_2 FIND vr(hp_b0_s2g1_2) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b0_s2g1_2",
+      "spice": ".meas ac hi_b0_s2g1_2 FIND vi(hp_b0_s2g1_2) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b1_s2g1_2",
+      "spice": ".meas ac hr_b1_s2g1_2 FIND vr(hp_b1_s2g1_2) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b1_s2g1_2",
+      "spice": ".meas ac hi_b1_s2g1_2 FIND vi(hp_b1_s2g1_2) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_st_s2g1_3",
+      "spice": ".meas ac hr_st_s2g1_3 FIND vr(hp_st_s2g1_3) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_st_s2g1_3",
+      "spice": ".meas ac hi_st_s2g1_3 FIND vi(hp_st_s2g1_3) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b0_s2g1_3",
+      "spice": ".meas ac hr_b0_s2g1_3 FIND vr(hp_b0_s2g1_3) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b0_s2g1_3",
+      "spice": ".meas ac hi_b0_s2g1_3 FIND vi(hp_b0_s2g1_3) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b1_s2g1_3",
+      "spice": ".meas ac hr_b1_s2g1_3 FIND vr(hp_b1_s2g1_3) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b1_s2g1_3",
+      "spice": ".meas ac hi_b1_s2g1_3 FIND vi(hp_b1_s2g1_3) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_st_s2g1_4",
+      "spice": ".meas ac hr_st_s2g1_4 FIND vr(hp_st_s2g1_4) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_st_s2g1_4",
+      "spice": ".meas ac hi_st_s2g1_4 FIND vi(hp_st_s2g1_4) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b0_s2g1_4",
+      "spice": ".meas ac hr_b0_s2g1_4 FIND vr(hp_b0_s2g1_4) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b0_s2g1_4",
+      "spice": ".meas ac hi_b0_s2g1_4 FIND vi(hp_b0_s2g1_4) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b1_s2g1_4",
+      "spice": ".meas ac hr_b1_s2g1_4 FIND vr(hp_b1_s2g1_4) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b1_s2g1_4",
+      "spice": ".meas ac hi_b1_s2g1_4 FIND vi(hp_b1_s2g1_4) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_st_s2g1_5",
+      "spice": ".meas ac hr_st_s2g1_5 FIND vr(hp_st_s2g1_5) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_st_s2g1_5",
+      "spice": ".meas ac hi_st_s2g1_5 FIND vi(hp_st_s2g1_5) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b0_s2g1_5",
+      "spice": ".meas ac hr_b0_s2g1_5 FIND vr(hp_b0_s2g1_5) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b0_s2g1_5",
+      "spice": ".meas ac hi_b0_s2g1_5 FIND vi(hp_b0_s2g1_5) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b1_s2g1_5",
+      "spice": ".meas ac hr_b1_s2g1_5 FIND vr(hp_b1_s2g1_5) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b1_s2g1_5",
+      "spice": ".meas ac hi_b1_s2g1_5 FIND vi(hp_b1_s2g1_5) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_st_s2g2_1",
+      "spice": ".meas ac hr_st_s2g2_1 FIND vr(hp_st_s2g2_1) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_st_s2g2_1",
+      "spice": ".meas ac hi_st_s2g2_1 FIND vi(hp_st_s2g2_1) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b0_s2g2_1",
+      "spice": ".meas ac hr_b0_s2g2_1 FIND vr(hp_b0_s2g2_1) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b0_s2g2_1",
+      "spice": ".meas ac hi_b0_s2g2_1 FIND vi(hp_b0_s2g2_1) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b1_s2g2_1",
+      "spice": ".meas ac hr_b1_s2g2_1 FIND vr(hp_b1_s2g2_1) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b1_s2g2_1",
+      "spice": ".meas ac hi_b1_s2g2_1 FIND vi(hp_b1_s2g2_1) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_st_s2g2_2",
+      "spice": ".meas ac hr_st_s2g2_2 FIND vr(hp_st_s2g2_2) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_st_s2g2_2",
+      "spice": ".meas ac hi_st_s2g2_2 FIND vi(hp_st_s2g2_2) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b0_s2g2_2",
+      "spice": ".meas ac hr_b0_s2g2_2 FIND vr(hp_b0_s2g2_2) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b0_s2g2_2",
+      "spice": ".meas ac hi_b0_s2g2_2 FIND vi(hp_b0_s2g2_2) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b1_s2g2_2",
+      "spice": ".meas ac hr_b1_s2g2_2 FIND vr(hp_b1_s2g2_2) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b1_s2g2_2",
+      "spice": ".meas ac hi_b1_s2g2_2 FIND vi(hp_b1_s2g2_2) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_st_s2g2_3",
+      "spice": ".meas ac hr_st_s2g2_3 FIND vr(hp_st_s2g2_3) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_st_s2g2_3",
+      "spice": ".meas ac hi_st_s2g2_3 FIND vi(hp_st_s2g2_3) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b0_s2g2_3",
+      "spice": ".meas ac hr_b0_s2g2_3 FIND vr(hp_b0_s2g2_3) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b0_s2g2_3",
+      "spice": ".meas ac hi_b0_s2g2_3 FIND vi(hp_b0_s2g2_3) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b1_s2g2_3",
+      "spice": ".meas ac hr_b1_s2g2_3 FIND vr(hp_b1_s2g2_3) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b1_s2g2_3",
+      "spice": ".meas ac hi_b1_s2g2_3 FIND vi(hp_b1_s2g2_3) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_st_s2g2_4",
+      "spice": ".meas ac hr_st_s2g2_4 FIND vr(hp_st_s2g2_4) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_st_s2g2_4",
+      "spice": ".meas ac hi_st_s2g2_4 FIND vi(hp_st_s2g2_4) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b0_s2g2_4",
+      "spice": ".meas ac hr_b0_s2g2_4 FIND vr(hp_b0_s2g2_4) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b0_s2g2_4",
+      "spice": ".meas ac hi_b0_s2g2_4 FIND vi(hp_b0_s2g2_4) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b1_s2g2_4",
+      "spice": ".meas ac hr_b1_s2g2_4 FIND vr(hp_b1_s2g2_4) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b1_s2g2_4",
+      "spice": ".meas ac hi_b1_s2g2_4 FIND vi(hp_b1_s2g2_4) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_st_s2g2_5",
+      "spice": ".meas ac hr_st_s2g2_5 FIND vr(hp_st_s2g2_5) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_st_s2g2_5",
+      "spice": ".meas ac hi_st_s2g2_5 FIND vi(hp_st_s2g2_5) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b0_s2g2_5",
+      "spice": ".meas ac hr_b0_s2g2_5 FIND vr(hp_b0_s2g2_5) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b0_s2g2_5",
+      "spice": ".meas ac hi_b0_s2g2_5 FIND vi(hp_b0_s2g2_5) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b1_s2g2_5",
+      "spice": ".meas ac hr_b1_s2g2_5 FIND vr(hp_b1_s2g2_5) AT=1.000000e+03",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b1_s2g2_5",
+      "spice": ".meas ac hi_b1_s2g2_5 FIND vi(hp_b1_s2g2_5) AT=1.000000e+03",
+      "unit": "A"
+    }
+  ],
+  "options": {
+    "timeout_s": 300,
+    "keep_artifacts": true
+  },
+  "corners": {
+    "process": [
+      {
+        "name": "moscap_typical",
+        "sections": [
+          "typical",
+          "moscap_typical"
+        ]
+      },
+      {
+        "name": "moscap_ff",
+        "sections": [
+          "typical",
+          "moscap_ff"
+        ]
+      },
+      {
+        "name": "moscap_ss",
+        "sections": [
+          "typical",
+          "moscap_ss"
+        ]
+      }
+    ],
+    "temperature_c": [
+      -40.0,
+      27.0,
+      125.0
+    ]
+  },
+  "models": {
+    "pdk": "gf180mcuD",
+    "lib": "libs.tech/ngspice/sm141064.ngspice"
+  },
+  "analysis": {
+    "kind": "ac",
+    "args": "lin 3 5.000000e+02 1.500000e+03"
+  }
+}

@@ -259,3 +259,86 @@ this command is always safe and always produces new, additional evidence,
 per `sim/README.md`'s append-only rule. Generated per-corner decks live
 under `corners/<record-id>/*/.work/` (git-ignored, disposable — a failing
 corner can be reproduced by hand with `ngspice -b <that path>/deck.spice`).
+
+## klt sim campaign (issue #63)
+
+The access-device bench (sections 1 and 2 above: `I_off`, `R_on`) is also
+expressed as a checked-in `klt sim` request set, so the PVT corner grid goes to
+the Spot batch fleet as a request instead of being looped locally. The legacy
+harness above is **unchanged and still the authoritative record** until a human
+retires it; the klt records supplement it.
+
+```bash
+python3 sim/cell-device-characterization/klt/mk_klt_requests.py        # regenerate klt/requests/ (deterministic)
+python3 sim/cell-device-characterization/klt/run_klt_campaign.py       # submit (backend from $KLT_SIM_BACKEND) + ingest
+python3 sim/cell-device-characterization/klt/run_klt_campaign.py --resume klt/runs/<run-id> --candidates 1,3   # re-submit only requests with no report
+python3 sim/cell-device-characterization/klt/run_klt_campaign.py --ingest-only klt/runs/<run-id>
+```
+
+- **Requests**: `klt/requests/c<N>_access-<sizing>_cap-<geometry>/{body.spice,ioff.json,ron.json}`.
+  The cell is the committed `design/netlists/cell_candidate<N>.spice`,
+  `.include`d unchanged; the testbench sources and `gmin=1e-13` match the
+  legacy template.
+- **Axes expressed as `klt sim` corners**: access-device MOS process (a bundle
+  with `moscap_typical`, as in the legacy deck; Candidate 2 additionally binds
+  `smbb000149`), temperature (-40/27/125), read voltage on BL
+  (0.9/1.0/1.1 V, `corners.supply_v: vbl`). For `I_off` the three OFF-gate
+  biases are enumerated alongside the read voltage in the same `supply_v`
+  lists (`vbl` and `vwl` move by index, so the 3x3 product is spelled out).
+- **Axes not expressed as corners**: access sizing and capacitor geometry. They
+  are sub-circuit instance parameters, which `alter` cannot re-evaluate, so each
+  (sizing, geometry) pair is its own `body.spice` and request pair. This is the
+  "no parameter corner axis" gap already open on the klayout-tools tracker;
+  a generic comment was added there.
+- **Two requests per sub-configuration** (one analysis per request): `ioff`
+  (single-point `dc` sweep standing in for `.op`, 135 units) and `ron` (`ac`
+  at 10 MHz, 45 units). `.meas` cards return raw quantities (signed `i(vbl)`;
+  real/imaginary parts of the branch current and BL voltage); `|I_off|` and
+  `R_on = Re(V/(-I))` are computed at ingest. `measurements[].expr` was tried
+  first and abandoned: on the batch backend the fleet runner rejected every
+  multi-unit request using it (single-unit passed), so the `.meas` form is
+  used.
+- **Capacitor C-V bench (section 3) is not migrated.** It needs two analyses
+  (`op` + `ac`) per point and five swept bias points; it remains in the legacy
+  harness.
+- **Output**: a new run directory `klt/runs/<run-id>/<sub-config>/<ioff|ron>/report.json`
+  (the `-o` klt report) and one append-only per-region record
+  `records/<run-id>-c<N>.md`. Records list every sub-configuration separately
+  with the full process x temperature x read-voltage grid; the region headline
+  is a worst case across that region's own four sub-configurations, never an
+  average, and nothing aggregates across regions.
+
+### Result of run `20261009-014137-8d6e70b`
+
+Reproduction against the legacy records, stated tolerance **1 % relative**
+(every one of 180 grid values per region, plus the two headline numbers):
+
+| Region / candidate | `I_sneak_max` klt vs legacy | `R_on` klt vs legacy | max deviation, grid I_off / R_on | within tolerance |
+|---|---|---|---|---|
+| I / 1 | 9.8192e-12 A vs 9.8191e-12 A | 1.4466e+04 ohm vs 1.4466e+04 ohm | 6.1e-04 / 6.1e-06 | yes |
+| II / 2 | not resolved | not resolved | n/a | **no** |
+| III / 3 | 1.3956e-11 A vs 1.3956e-11 A | 1.0981e+03 ohm vs 1.0980e+03 ohm | 5.8e-04 / 5.2e-04 | yes |
+
+(The sub-0.1 % residual is the legacy logs' 7-significant-figure print; both
+sides are the same ngspice 46 bench.)
+
+**Candidate 2 failed on the fleet; no local fallback was run.** Every
+Candidate 2 request came back as `batch_job_failed` ("finished 'failed' without
+a usable report: job command exited 1") for every unit. Isolation probes (each a
+tiny batch or single-corner local request): the same Candidate 2 request passes
+as a single unit on the fleet, passes multi-unit on `local-parallel`, and
+returns an ordinary per-corner netlist error when the per-section model library
+(`smbb000149`, `{"lib", "section"}` form) is removed; a hard-coded `.lib` of
+that library in the body did not resolve on the fleet. The per-section-library
+form with more than one unit is therefore the failing feature on the current
+fleet runner (same class as the runner-skew reports already open on the
+klayout-tools tracker; a generic comment was added). Per the host rule the
+Candidate 2 grid was not run locally. Its legacy record remains the only
+Region II evidence.
+
+Separately, the first submission attempt hit the fleet's shared concurrency
+cap for several Candidate 1 / Candidate 3 requests (verbatim in
+`klt/runs/<run-id>/submit-errors.attempt1.txt`: "8 instance(s) already running
++ 1 requested exceeds BATCH_MAX_CONCURRENT_INSTANCES=8"); those requests were
+re-submitted to the batch backend one at a time with `--resume` and all
+passed.
