@@ -3,6 +3,20 @@
 Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 
+### 2026-10-13
+
+- **PR #87**: docs: Auditor worker deployment discovery and handoff (#84)
+- **PR #82**: spec: measurement matrix and extraction protocol for yield, read margin and retention
+- **PR #81**: sim: reproducible per-split device characterization report (#72)
+- **PR #80**: spec: supply-domain inventory decision record
+- **PR #76**: design: behavioral breakdown-augmented cell model and single-cell bench (#62)
+- **PR #67**: sim: express the PVT corner campaign as klt sim requests (#63)
+- **Issue #84** (closed): Auditor Capability Request: klt unavailable for signoff verification
+- **Issue #78** (closed): spec: measurement matrix and extraction protocol for yield, read margin and retention per grid region
+- **Issue #77** (closed): spec: supply-domain inventory (net, voltage class, region, owner) for T1 item 11
+- **Issue #72** (closed): sim: reproducible per-split characterization report for T1 item 8
+- **Issue #62** (closed): design: behavioral breakdown-augmented model for the three antifuse cell candidates
+
 ### 2026-10-09
 
 - **Issue #71** (closed): Auditor Capability Request: Python 3 unavailable for simulation runner smoke checks
