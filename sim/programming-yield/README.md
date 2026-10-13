@@ -106,14 +106,27 @@ pulse amplitude.
 ### Draw reuse
 
 `klt sim` derives each sample's seed from (`monte_carlo.seed`, corner
-index, sample index). Within one request every corner (process x
-temperature x voltage) is therefore an independent sample set. The same
-corner index in a *different* request reuses the same draws, so the `min`
-and `2x` access sizings see identical `(ubd, zrf)` samples, and so do the
-pulse widths at the same corner index. That is a paired design: it makes
-sizing and width comparisons far less noisy than independent draws, but
-the two sizings' intervals are **not independent**, and the sampler check
-counts distinct draws only.
+index, sample index). Each request here is one (sizing, condition,
+process corner), so its only corner axis is temperature, and each process
+corner gets its own `monte_carlo.seed` (base + 1000 x process index). The
+nine PVT corners of a condition are therefore independent sample sets and
+pooling them is valid. The two access sizings, and the five pulse
+conditions, reuse the same draws at the same (process, temperature,
+sample): a paired design. It makes sizing and width comparisons far less
+noisy than independent draws, but their intervals are **not independent**,
+and the sampler check counts distinct draws only.
+
+### Job size
+
+The fleet kills a job at 3600 s. A first run put every voltage of a width
+into one request (2700 samples); on the slower decks that exceeded the limit
+and returned nothing (Candidate 3 at 1 us, Candidate 1 access `2x` at 1 us
+and 4 us). Per-sample wall time is 1-4 s and varies by candidate, sizing and
+width (a 4 us pulse integrates four times as long). The campaign therefore
+submits one request per (sizing, condition, process corner), 300 samples,
+and the records state which job each number came from. The first-run records
+remain in `records/` as evidence, with their failed jobs shown as `no data`
+or `error`; the supplement records say which conditions they re-run.
 
 ## Sampler check and analytic cross-check
 

@@ -75,6 +75,13 @@ UB_FLOOR = 1e-6                          # clamp of the uniform draw away from {
 SIGN = {"n": 1.0, "p": -1.0}
 
 
+def proc_seed(proc: str) -> int:
+    """A distinct monte_carlo.seed per process corner, so the PVT corners of a condition are independent
+    sample sets (klt derives draws from seed, corner index, sample index, and each request here has only
+    the temperature as its corner axis)."""
+    return MC_SEED + 1000 * C.MOSCAP_CORNERS.index(proc)
+
+
 def fmt(x: float) -> str:
     return BM.fmt(x)
 
@@ -223,13 +230,10 @@ def make_request(cand, pdk, ms: list[dict], tw: float, fracs: list[float], n: in
     }
 
 
-def request_groups() -> list[tuple[float, list[float]]]:
-    """(pulse width, voltage fractions) -- one request per group per sizing."""
-    return [(NOMINAL_TW, list(V_FRACS))] + [(w, [NOMINAL_FRAC]) for w in WIDTHS if w != NOMINAL_TW]
-
-
-def gtag(sz: str, tw: float) -> str:
-    return f"y_access-{sz}_tw{tw * 1e6:g}u".replace(".", "p")
+def gtag(sz: str, cnd: dict, proc: str) -> str:
+    """One request per (sizing, condition, process corner), 300 samples: the fleet kills a job at
+    3600 s, and 900- and 2700-sample requests exceeded it on the slower decks (README "Job size")."""
+    return f"y_access-{sz}_{cnd['tag']}_{proc}"
 
 
 # ---------------------------------------------------------------------------
@@ -308,6 +312,7 @@ class Group:
     error: str | None = None
     samples: dict = field(default_factory=dict)   # (frac, process, temp) -> [Sample]
     seeds: dict | None = None
+    jobs: list = field(default_factory=list)   # [{status, remote, error, label}]
 
 
 def parse_group(cand, report: dict | None, params: dict) -> Group:
@@ -319,6 +324,7 @@ def parse_group(cand, report: dict | None, params: dict) -> Group:
     env = report.get("environment", {})
     g.remote = env.get("remote")
     g.seeds = env.get("monte_carlo")
+    g.jobs.append({"status": g.status, "remote": g.remote, "error": None})
     vbd = vbd_ref(cand, params)
     for c in report["corners"]:
         sv = c.get("supply_v") or {}
@@ -396,19 +402,45 @@ def snapshot(cand) -> str:
 # ---------------------------------------------------------------------------
 
 
-def load_run(cand, rid: str) -> tuple[dict[tuple[str, float], Group], dict | None, str | None]:
-    groups: dict[tuple[str, float], Group] = {}
+def merge_into(dst: Group, src: Group) -> None:
+    dst.request_ok = dst.request_ok or src.request_ok
+    for k, v in src.samples.items():
+        dst.samples.setdefault(k, []).extend(v)
+    dst.jobs.extend(src.jobs)
+    if dst.status in ("", "pass") or src.status not in ("", "pass"):
+        dst.status = src.status or dst.status
+
+
+def load_run(cand, rid: str) -> tuple[dict[tuple[str, str], Group], dict | None, str | None]:
+    groups: dict[tuple[str, str], Group] = {}
     base = THIS_DIR / "corners" / rid
+
+    def load_dir(gdir: Path) -> Group | None:
+        if (gdir / "report.json").is_file():
+            return parse_group(cand, json.loads((gdir / "report.json").read_text()), PARAMS)
+        if (gdir / "submit-error.txt").is_file():
+            g = Group()
+            g.error = (gdir / "submit-error.txt").read_text()
+            g.jobs.append({"status": "submit-error", "remote": None, "error": g.error})
+            return g
+        return None
+
     for sz in SIZINGS:
-        for tw, _ in request_groups():
-            gdir = base / gtag(sz, tw)
-            rp = gdir / "report.json"
-            if rp.is_file():
-                groups[(sz, tw)] = parse_group(cand, json.loads(rp.read_text()), PARAMS)
-            elif (gdir / "submit-error.txt").is_file():
-                g = Group()
-                g.error = (gdir / "submit-error.txt").read_text()
-                groups[(sz, tw)] = g
+        for cnd in conditions():
+            dirs = sorted(base.glob(f"y_access-{sz}_{cnd['tag']}_*"))
+            # first-run layout: one request per (sizing, width) holding every voltage of that width
+            old = base / f"y_access-{sz}_tw{cnd['tw'] * 1e6:g}u".replace(".", "p")
+            if not dirs and old.is_dir():
+                dirs = [old]
+            merged = Group()
+            seen = False
+            for d in dirs:
+                g = load_dir(d)
+                if g is not None:
+                    merge_into(merged, g)
+                    seen = True
+            if seen:
+                groups[(sz, cnd["tag"])] = merged
     rt = base / "readtab" / "report.json"
     readtab = json.loads(rt.read_text()) if rt.is_file() else None
     rerr = (base / "readtab" / "submit-error.txt")
@@ -512,12 +544,14 @@ def render_record(pdk, cand, rid: str, groups, readtab, rerr, params: dict, dirt
        f"{len(C.TEMPS_C)} PVT corners of a condition multiplies the sample by up to "
        f"{len(C.MOSCAP_CORNERS) * len(C.TEMPS_C)}. Chosen from that half-width, not from a yield target. "
        "A cell that needs a tighter interval is re-run with a larger n as a new record.")
-    P_(f"- **Sampler**: `klt sim` `monte_carlo` {{n={n}, seed={MC_SEED}, vary=\"{MC_VARY}\"}}; the draws are "
+    P_(f"- **Sampler**: `klt sim` `monte_carlo` {{n={n}, vary=\"{MC_VARY}\"}}; the draws are "
        f"`ubd = aunif(0.5, 0.5)` clamped to [{UB_FLOOR:g}, 1 - {UB_FLOOR:g}] (uniform Weibull quantile) and "
        "`zrf = agauss(0, 1, 1)` (standard-normal filament draw), evaluated once per run from the "
-       "`.options seed=` klt writes. Seeds derive from (seed, corner index, sample index): corners within a "
-       "request are independent samples, while the same corner index in another request (the other access "
-       "sizing, or another pulse width) reuses the same draws -- a paired design, README \"Draw reuse\".")
+       "`.options seed=` klt writes, with a distinct `monte_carlo.seed` per process corner "
+       f"(base {MC_SEED} + 1000 x process index). The draws are a function of (seed, temperature index, "
+       "sample index), so the PVT corners of a condition are independent samples while the two access "
+       "sizings and the five pulse conditions reuse the same draws at the same (process, temperature, "
+       "sample) -- a paired design, README \"Draw reuse\".")
     P_("")
     P_("- **Corner matrix run**: " + str(sorted({k[1] for g in groups.values() for k in g.samples})) +
        " x temperatures " + str(sorted({k[2] for g in groups.values() for k in g.samples})) + " degC x pulse "
@@ -532,12 +566,18 @@ def render_record(pdk, cand, rid: str, groups, readtab, rerr, params: dict, dirt
     # ---- execution
     P_("- **Execution**: engine ngspice on the batch fleet; every request names `\"backend\": \"batch\"`; "
        "no local grid was run. Jobs:")
-    for (sz, tw), g in sorted(groups.items()):
-        r = g.remote or {}
-        P_(f"  - access `{sz}`, tw {tw * 1e6:g} us: klt status `{g.status or 'submit-error'}`, "
-           f"job `{r.get('job_id', 'n/a')}`, runner klt {r.get('runner_klt_version', 'n/a')} "
-           f"({r.get('runner_compatibility', 'n/a')}), {r.get('elapsed_seconds', 'n/a')} s"
-           + (f" -- ERROR: {esc(g.error[:300])}" if g.error else ""))
+    listed: set = set()
+    for (sz, tag), g in sorted(groups.items()):
+        for j in g.jobs:
+            r = j.get("remote") or {}
+            key = (sz, r.get("job_id") or id(j))
+            if key in listed:
+                continue                  # first-run layout: one job covers several conditions
+            listed.add(key)
+            P_(f"  - access `{sz}`, `{tag}`: klt status `{j.get('status') or 'submit-error'}`, "
+               f"job `{r.get('job_id', 'n/a')}`, runner klt {r.get('runner_klt_version', 'n/a')} "
+               f"({r.get('runner_compatibility', 'n/a')}), {r.get('elapsed_seconds', 'n/a')} s"
+               + (f" -- ERROR: {esc(j['error'][:300])}" if j.get("error") else ""))
     P_("")
     # ---- read table
     tabs = read_tables(readtab)
@@ -584,7 +624,7 @@ def render_record(pdk, cand, rid: str, groups, readtab, rerr, params: dict, dirt
         P_("| Condition | V_pulse [V] | tw [us] | Corner | n | succ | err | yield | CI95 | yield_hi | analytic |")
         P_("|---|---|---|---|---|---|---|---|---|---|---|")
         for cnd in conds:
-            g = groups.get((sz, cnd["tw"]))
+            g = groups.get((sz, cnd["tag"]))
             if not g or not g.samples:
                 P_(f"| `{cnd['tag']}` | {cnd['frac'] * vbd:.3f} | {cnd['tw'] * 1e6:g} | (no data) | | | | | | | |")
                 continue
@@ -615,7 +655,7 @@ def render_record(pdk, cand, rid: str, groups, readtab, rerr, params: dict, dirt
     P_("  |---|---|---|---|---|")
     for sz in SIZINGS:
         for cnd in conds:
-            g = groups.get((sz, cnd["tw"]))
+            g = groups.get((sz, cnd["tag"]))
             if not g:
                 continue
             best = None
@@ -716,6 +756,9 @@ def render_only(pdk, cand, rid: str, params: dict, ibound: float, n: int, note: 
         return 2
     pf = THIS_DIR / "corners" / rid / "run-provenance.json"
     dirty = json.loads(pf.read_text())["dirty"] if pf.is_file() else None
+    snap = THIS_DIR / "netlist-snapshots" / f"{rid}.spice"
+    if not snap.exists():
+        R.write_once(snap, snapshot(cand))
     R.write_once(THIS_DIR / "records" / f"{rid}.md",
                  render_record(pdk, cand, rid, groups, readtab, rerr, params, dirty, ibound, n, note))
     print(f"record: records/{rid}.md (rendered from saved reports)")
@@ -734,6 +777,9 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--smoke", default=None, metavar="N")
     ap.add_argument("--render", default=None, metavar="RECORD_ID")
     ap.add_argument("--note", default=None)
+    ap.add_argument("--conds", default="", help="comma list of condition tags to run (default: all 5)")
+    ap.add_argument("--sizings", default=",".join(SIZINGS))
+    ap.add_argument("--no-readtab", action="store_true", help="skip the programmed-read table request")
     ap.add_argument("--klt", default="klt")
     args = ap.parse_args(argv)
     KLT_CMD[:] = args.klt.split()
@@ -760,6 +806,8 @@ def main(argv: list[str] | None = None) -> int:
     if args.smoke:
         return smoke(pdk, by_n[int(args.smoke)], params)
 
+    conds = {x for x in args.conds.split(",") if x}
+    sizings = [x for x in args.sizings.split(",") if x]
     procs = [x for x in args.processes.split(",") if x]
     temps = [float(x) for x in args.temps.split(",") if x]
     dirty = R.git_is_dirty(REPO_ROOT)
@@ -774,15 +822,18 @@ def main(argv: list[str] | None = None) -> int:
                      json.dumps({"git_sha": R.git_short_sha(REPO_ROOT), "dirty": dirty, "n": args.n,
                                  "processes": procs, "temps": temps, "ibound": args.ibound}) + "\n")
         jobs: list[tuple[str, Path, dict]] = []
-        for sz in SIZINGS:
-            for tw, fracs in request_groups():
-                gdir = base / gtag(sz, tw)
-                gdir.mkdir(parents=True)
-                body, ms = body_yield(pdk, cand, defaults, gdir, BM.FLEET_PDK_VARIANT_DIR, sz, tw)
-                R.write_once(gdir / "body.spice", body)
-                jobs.append((f"{sz}/{tw * 1e6:g}us", gdir,
-                             make_request(cand, pdk, ms, tw, fracs, args.n, procs, temps, MC_SEED)))
-        if cand.n != 3:
+        for sz in sizings:
+            for cnd in conditions():
+                if conds and cnd["tag"] not in conds:
+                    continue
+                for proc in procs:
+                    gdir = base / gtag(sz, cnd, proc)
+                    gdir.mkdir(parents=True)
+                    body, ms = body_yield(pdk, cand, defaults, gdir, BM.FLEET_PDK_VARIANT_DIR, sz, cnd["tw"])
+                    R.write_once(gdir / "body.spice", body)
+                    jobs.append((f"{sz}/{cnd['tag']}/{proc}", gdir,
+                                 make_request(cand, pdk, ms, cnd["tw"], [cnd["frac"]], args.n, [proc], temps, proc_seed(proc))))
+        if cand.n != 3 and not args.no_readtab:
             gdir = base / "readtab"
             gdir.mkdir(parents=True)
             body, ms = body_readtab(pdk, cand, defaults, gdir, BM.FLEET_PDK_VARIANT_DIR)
