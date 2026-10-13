@@ -118,6 +118,7 @@ see below.
 | `cells/cell_library.sch` | Netlist driver, not a circuit — see its header comment. |
 | `netlists/cell_candidateN.spice` | **Derived.** xschem's netlist export. Do not edit; regenerate. |
 | `tb/tb_cell_candidateN.spice` | Elaboration / parameter-propagation decks for `check-netlists.sh`. Not evidence, not cornered. |
+| `breakdown/` | Behavioral breakdown-augmented wrappers `cell_candidateN_bd` around the unmodified netlists, plus the labelled-parameter file. Hand-written, not derived; see [`breakdown/README.md`](breakdown/README.md). |
 | `xschemrc` | Project xschem config: PDK library path, this repo's cells, `split_files`. |
 | `regen-netlists.sh` | Regenerates `netlists/` from `cells/`. `--check` diffs instead of writing. |
 | `check-netlists.sh` | Runs all three checks below. |

@@ -1,0 +1,204 @@
+{
+  "netlist": "body.spice",
+  "engine": "ngspice",
+  "backend": "batch",
+  "batch": {
+    "runner_version_check": "warn",
+    "capacity_wait_s": 1800
+  },
+  "measurements": [
+    {
+      "name": "vr_bl",
+      "spice": ".meas ac vr_bl FIND vr(bl) AT=1.000000e+07",
+      "unit": "V"
+    },
+    {
+      "name": "vi_bl",
+      "spice": ".meas ac vi_bl FIND vi(bl) AT=1.000000e+07",
+      "unit": "V"
+    },
+    {
+      "name": "hr_st_s1g1",
+      "spice": ".meas ac hr_st_s1g1 FIND vr(hp_st_s1g1) AT=1.000000e+07",
+      "unit": "A"
+    },
+    {
+      "name": "hi_st_s1g1",
+      "spice": ".meas ac hi_st_s1g1 FIND vi(hp_st_s1g1) AT=1.000000e+07",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b0_s1g1",
+      "spice": ".meas ac hr_b0_s1g1 FIND vr(hp_b0_s1g1) AT=1.000000e+07",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b0_s1g1",
+      "spice": ".meas ac hi_b0_s1g1 FIND vi(hp_b0_s1g1) AT=1.000000e+07",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b1_s1g1",
+      "spice": ".meas ac hr_b1_s1g1 FIND vr(hp_b1_s1g1) AT=1.000000e+07",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b1_s1g1",
+      "spice": ".meas ac hi_b1_s1g1 FIND vi(hp_b1_s1g1) AT=1.000000e+07",
+      "unit": "A"
+    },
+    {
+      "name": "hr_st_s1g2",
+      "spice": ".meas ac hr_st_s1g2 FIND vr(hp_st_s1g2) AT=1.000000e+07",
+      "unit": "A"
+    },
+    {
+      "name": "hi_st_s1g2",
+      "spice": ".meas ac hi_st_s1g2 FIND vi(hp_st_s1g2) AT=1.000000e+07",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b0_s1g2",
+      "spice": ".meas ac hr_b0_s1g2 FIND vr(hp_b0_s1g2) AT=1.000000e+07",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b0_s1g2",
+      "spice": ".meas ac hi_b0_s1g2 FIND vi(hp_b0_s1g2) AT=1.000000e+07",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b1_s1g2",
+      "spice": ".meas ac hr_b1_s1g2 FIND vr(hp_b1_s1g2) AT=1.000000e+07",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b1_s1g2",
+      "spice": ".meas ac hi_b1_s1g2 FIND vi(hp_b1_s1g2) AT=1.000000e+07",
+      "unit": "A"
+    },
+    {
+      "name": "hr_st_s2g1",
+      "spice": ".meas ac hr_st_s2g1 FIND vr(hp_st_s2g1) AT=1.000000e+07",
+      "unit": "A"
+    },
+    {
+      "name": "hi_st_s2g1",
+      "spice": ".meas ac hi_st_s2g1 FIND vi(hp_st_s2g1) AT=1.000000e+07",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b0_s2g1",
+      "spice": ".meas ac hr_b0_s2g1 FIND vr(hp_b0_s2g1) AT=1.000000e+07",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b0_s2g1",
+      "spice": ".meas ac hi_b0_s2g1 FIND vi(hp_b0_s2g1) AT=1.000000e+07",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b1_s2g1",
+      "spice": ".meas ac hr_b1_s2g1 FIND vr(hp_b1_s2g1) AT=1.000000e+07",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b1_s2g1",
+      "spice": ".meas ac hi_b1_s2g1 FIND vi(hp_b1_s2g1) AT=1.000000e+07",
+      "unit": "A"
+    },
+    {
+      "name": "hr_st_s2g2",
+      "spice": ".meas ac hr_st_s2g2 FIND vr(hp_st_s2g2) AT=1.000000e+07",
+      "unit": "A"
+    },
+    {
+      "name": "hi_st_s2g2",
+      "spice": ".meas ac hi_st_s2g2 FIND vi(hp_st_s2g2) AT=1.000000e+07",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b0_s2g2",
+      "spice": ".meas ac hr_b0_s2g2 FIND vr(hp_b0_s2g2) AT=1.000000e+07",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b0_s2g2",
+      "spice": ".meas ac hi_b0_s2g2 FIND vi(hp_b0_s2g2) AT=1.000000e+07",
+      "unit": "A"
+    },
+    {
+      "name": "hr_b1_s2g2",
+      "spice": ".meas ac hr_b1_s2g2 FIND vr(hp_b1_s2g2) AT=1.000000e+07",
+      "unit": "A"
+    },
+    {
+      "name": "hi_b1_s2g2",
+      "spice": ".meas ac hi_b1_s2g2 FIND vi(hp_b1_s2g2) AT=1.000000e+07",
+      "unit": "A"
+    }
+  ],
+  "options": {
+    "timeout_s": 300,
+    "keep_artifacts": true
+  },
+  "corners": {
+    "process": [
+      {
+        "name": "typical",
+        "sections": [
+          "typical",
+          "moscap_typical"
+        ]
+      },
+      {
+        "name": "ff",
+        "sections": [
+          "ff",
+          "moscap_typical"
+        ]
+      },
+      {
+        "name": "ss",
+        "sections": [
+          "ss",
+          "moscap_typical"
+        ]
+      },
+      {
+        "name": "fs",
+        "sections": [
+          "fs",
+          "moscap_typical"
+        ]
+      },
+      {
+        "name": "sf",
+        "sections": [
+          "sf",
+          "moscap_typical"
+        ]
+      }
+    ],
+    "supply_v": {
+      "vbl": [
+        0.9,
+        1.0,
+        1.1
+      ]
+    },
+    "temperature_c": [
+      -40.0,
+      27.0,
+      125.0
+    ]
+  },
+  "models": {
+    "pdk": "gf180mcuD",
+    "lib": "libs.tech/ngspice/sm141064.ngspice"
+  },
+  "analysis": {
+    "kind": "ac",
+    "args": "lin 3 5.000000e+06 1.500000e+07"
+  }
+}
