@@ -156,6 +156,11 @@ to be read out of the citation and stated in this file.
    aggregated characterization artifact actually exists — and per this
    repo's `CLAUDE.md`, that artifact must report per grid region, since an
    aggregate that averages across splits is a bug, not a result.
+   `sim/characterization-report/` now generates a per-region device
+   characterization bundle, but it covers device characterization only and
+   reports programming yield, full sense margin and retention as
+   unmeasured (status `incomplete`), so it does not meet item 8's contract;
+   no envelope is cited and item 8 stays `unmet`.
 5. **`report.json` is regenerated, never edited.** If `verify.sh` fails, the
    verdict changed; re-run the grader, read the diff, and update this file's
    claim to match.
