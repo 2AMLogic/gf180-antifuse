@@ -344,6 +344,225 @@ def body_trigger(pdk, cand, defaults, body_dir: Path, lib_root: str) -> tuple[st
     return "\n".join(out) + "\n", ms
 
 
+# ---------------------------------------------------------------------------
+# Issue #74: single-instance trigger and BL-driven program benches
+# ---------------------------------------------------------------------------
+#
+# Each deck holds exactly ONE cell. The #62 trigger bench (body_trigger, kept
+# unchanged above as the control) holds two, stressing one; the idle one is
+# where most of its non-convergence was reported (README "Transient
+# convergence (#74)"). The variant is the only difference between the four
+# decks of a stimulus, so a corner that fails in the stock deck but not in
+# the enabled one (or vice versa) is attributable.
+
+CONV_STIMULI = {
+    "trig1": "PL-driven (the #62 trigger stimulus), one cell per deck, BL = 0",
+    "prog": "BL-driven through a ballast resistor from a VPP pulse, PL = 0 return (spec/architecture.md 1.2, 2)",
+}
+CONV_VARIANTS = {
+    "st": "stock cell (design/netlists, unwrapped)",
+    "b0": "wrapper, breakdown element disabled (bden=0)",
+    "b1m": "wrapper, element enabled, dynamic, median quantile (ubd=0.5)",
+    "b1l": f"wrapper, element enabled, dynamic, low quantile (ubd={UBD_LOW})",
+}
+CONV_BENCHES = tuple(f"{s}_{v}" for s in CONV_STIMULI for v in CONV_VARIANTS)
+CONTROL_BENCH = "trigger"
+TRIG_TMID = TRIG_T1 + TRIG_TR + TRIG_TW / 2
+# Ratified access-device ratings (spec/cell-candidates.md device table;
+# spec/supply-domains-decision.md rows 3-5, 14, 15). The spec states one
+# rating per device; it is applied to every access-device terminal pair.
+ACCESS_RATING_V = {1: 6.0, 2: 10.0, 3: 6.0}
+# Program-leg ballast (spec/architecture.md 2 item 1): R >= (VPP - V_compliance)
+# / I_target_max, and I_target_max is NOT fixed by the spec. PLACEHOLDER: a
+# 500 uA compliance target at V_bd(t_ref), i.e. R = V_bd / 500 uA per
+# candidate. An ideal resistor (no ppolyf corner/TC): this bench characterizes
+# convergence of the topology, it does not size the ballast.
+PROG_ILIM_PLACEHOLDER = 500e-6
+# Terminal pairs logged over the whole transient (max and min of each
+# difference). Names are cell ports plus CN, the internal capacitor node.
+TERMINAL_PAIRS = {
+    "ox": ("cn", "pl", "capacitor oxide (intended to exceed its rating)"),
+    "wc": ("wl", "cn", "access gate to CN-side terminal"),
+    "wb": ("wl", "bl", "access gate to BL-side terminal"),
+    "bc": ("bl", "cn", "access BL-to-CN (drain-source)"),
+    "cj": ("cn", "vb", "access CN-side junction to bulk"),
+    "bj": ("bl", "vb", "access BL-side junction to bulk"),
+    "gb": ("wl", "vb", "access gate to bulk"),
+}
+ACCESS_PAIRS = ("wc", "wb", "bc", "cj", "bj", "gb")
+
+
+def conv_split(bench: str) -> tuple[str, str]:
+    stim, var = bench.split("_", 1)
+    if stim not in CONV_STIMULI or var not in CONV_VARIANTS:
+        raise ValueError(bench)
+    return stim, var
+
+
+def conv_dut(cand, variant: str, geo: str) -> str:
+    if variant == "st":
+        return f"{cand.subckt} {geo}"
+    if variant == "b0":
+        return f"{cand.subckt}_bd {geo} bden=0"
+    ubd = 0.5 if variant == "b1m" else UBD_LOW
+    return f"{cand.subckt}_bd {geo} bden=1 prog=0 dyn=1 ubd={ubd}"
+
+
+def conv_cn(variant: str) -> str:
+    """Hierarchical name of the capacitor node CN in this variant's deck."""
+    return "xdut.cn" if variant == "st" else "xdut.xc.cn"
+
+
+def prog_rballast(cand, params: dict) -> float:
+    return vbd_ref(cand, params) / PROG_ILIM_PLACEHOLDER
+
+
+def conv_levels(cand, params: dict, stim: str) -> list[float]:
+    """trig1: the #62 trigger levels (signed V(PL)); prog: the same
+    magnitudes as a positive VPP (BL side) for every candidate."""
+    lv = trigger_levels(cand, params)
+    return lv if stim == "trig1" else [abs(x) for x in lv]
+
+
+def body_conv(pdk, cand, defaults, body_dir: Path, lib_root: str, bench: str,
+              params: dict) -> tuple[str, list[dict]]:
+    stim, var = conv_split(bench)
+    out = [body_header(pdk, body_dir, f"Candidate {cand.n} {stim} bench, variant {var} (tran, #74)",
+                       cand, "trigger", lib_root)]
+    out.append(f".param t1={fmt(TRIG_T1)} tr={fmt(TRIG_TR)} tw={fmt(TRIG_TW)}")
+    out.append("BSH SH 0 V = '0.5*(1-cos(pi*min(max((time-t1)/tr,0),1)))"
+               " - 0.5*(1-cos(pi*min(max((time-t1-tr-tw)/tr,0),1)))'")
+    # klt's supply axis alters the DC value of VAMP (as in the #62 bench)
+    out.append("VAMP AMP 0 DC 0")
+    if stim == "trig1":
+        out.append("VBL BL 0 DC 0")
+        out.append(f"VWL WL 0 DC {fmt(cand.moscap_wl_on)}")
+        out.append(f"VVB VB 0 DC {fmt(cand.vb)}")
+        out.append("BPL PL 0 V = 'v(amp)*v(sh)'")
+    else:
+        # VPP pulse -> ballast -> 0 V ammeter -> BL. The access device's gate
+        # (and, for the PMOS candidate, its n-well) rides on VPP with the
+        # static "on" bias of the #62 bench added, so its Vgs/Vsb before the
+        # stress equal that bench's; Candidates 1/2's bulk is the p-substrate
+        # tie (spec/supply-domains-decision.md row 14) and stays at VB.
+        out.append("BVPP VPP 0 V = 'v(amp)*v(sh)'")
+        out.append(f"RBAL VPP BLM {fmt(prog_rballast(cand, params))}")
+        out.append("VBL BLM BL DC 0")
+        out.append(f"BWL WL 0 V = '{fmt(cand.moscap_wl_on)} + v(vpp)'")
+        if cand.polarity == "p":
+            out.append(f"BVB VB 0 V = '{fmt(cand.vb)} + v(vpp)'")
+        else:
+            out.append(f"VVB VB 0 DC {fmt(cand.vb)}")
+        out.append("VPL PL 0 DC 0")
+    geo = geometry(cand, defaults, "min", "min")
+    out.append(f"XDUT BL WL PL VB {conv_dut(cand, var, geo)}")
+    cn = conv_cn(var)
+    node = {"cn": cn, "pl": "pl", "wl": "wl", "bl": "bl", "vb": "vb"}
+    ms: list[dict] = []
+    # terminal differences as top-level nodes (ngspice .meas does not take
+    # v(a,b) on hierarchical names); these B-sources load nothing
+    for k, (p, n, _) in TERMINAL_PAIRS.items():
+        out.append(f"BD{k.upper()} D{k.upper()} 0 V = 'v({node[p]})-v({node[n]})'")
+        ms.append({"name": f"mx_{k}", "spice": f".meas tran mx_{k} MAX v(d{k})", "unit": "V"})
+        ms.append({"name": f"mn_{k}", "spice": f".meas tran mn_{k} MIN v(d{k})", "unit": "V"})
+    ms.append(meas("tran", "vox_mid", "v(dox)", TRIG_TMID, "V"))
+    ms.append(meas("tran", "vcn_mid", f"v({cn})", TRIG_TMID, "V"))
+    ms.append(meas("tran", "vbl_mid", "v(bl)", TRIG_TMID, "V"))
+    ms.append(meas("tran", "vpl_mid", "v(pl)", TRIG_TMID, "V"))
+    ms.append(meas("tran", "vcn_end", f"v({cn})", TRIG_TMEAS, "V"))
+    ms.append(meas("tran", "ibl_mid", "i(vbl)", TRIG_TMID, "A"))
+    ms.append({"name": "ibl_mx", "spice": ".meas tran ibl_mx MAX i(vbl)", "unit": "A"})
+    ms.append({"name": "ibl_mn", "spice": ".meas tran ibl_mn MIN i(vbl)", "unit": "A"})
+    if var.startswith("b1"):
+        ms.append(meas("tran", "st", "v(xdut.xbd.st)", TRIG_TMEAS, "1"))
+        ms.append(meas("tran", "dmg", "v(xdut.xbd.dmg)", TRIG_TMEAS, "1"))
+        ms.append(meas("tran", "st_mid", "v(xdut.xbd.st)", TRIG_TMID, "1"))
+    return "\n".join(out) + "\n", ms
+
+
+def damage_prediction(cand, params: dict, vox: float, ubd: float) -> tuple[float, float]:
+    """Bounds on the damage the E-model accumulates over the pulse if the
+    oxide held |vox| (the DISABLED deck's mid-pulse value at the same corner)
+    for the flat top only (lower) or flat top plus both edges (upper)."""
+    tox = params[f"c{cand.n}_bd_tox"]["value"]
+    gam, ebd = params["bd_gam"]["value"], params["bd_ebd"]["value"]
+    tref, beta = params["bd_tref"]["value"], params["bd_beta"]["value"]
+    xmax = params["bd_num_xmax"]["value"]
+    tq = (math.log(1 / (1 - ubd)) / math.log(2)) ** (1 / beta)
+    rate = math.exp(min(gam * (abs(vox) / tox - ebd), xmax)) / (tq * tref)
+    return TRIG_TW * rate, (TRIG_TW + 2 * TRIG_TR) * rate
+
+
+def predict_state(d_lo: float, d_hi: float) -> int | None:
+    """1 = must break down (D passes 1 well inside the flat top), 0 = must
+    not, None = within a factor of 2 of the threshold (not scored)."""
+    if d_lo >= 2.0:
+        return 1
+    if d_hi <= 0.5:
+        return 0
+    return None
+
+
+def latched_as_predicted(st: float, pred: int) -> bool:
+    """The end-of-transient state matches the prediction AND is a settled
+    0 or 1 (a half-formed filament counts as a miss either way)."""
+    settled = st <= 1e-3 or st >= 1 - 1e-3
+    return settled and (st > 0.5) == bool(pred)
+
+
+TIMESTEP_RE = re.compile(r'Timestep too small; time = ([0-9.eE+-]+), timestep = [0-9.eE+-]+: '
+                         r'trouble with node "([^"]+)"')
+
+
+def classify_failure(status: str, diagnostics: list[dict], log_text: str | None,
+                     values: dict[str, float | None]) -> dict:
+    """One corner's outcome: `pass`, `timeout`, `timestep` (with the time
+    and node ngspice named), `missing-measurement`, or `error` (anything
+    else). A corner is only `pass` if klt passed it AND every requested
+    measurement has a value."""
+    codes = {d.get("code") for d in diagnostics or []}
+    missing = sorted(k for k, v in values.items() if v is None)
+    out = {"kind": "pass", "time": None, "node": None, "missing": missing, "where": None}
+    m = TIMESTEP_RE.search(log_text or "")
+    if "timeout" in codes:
+        out["kind"] = "timeout"
+    elif m:
+        out.update(kind="timestep", time=float(m.group(1).rstrip(",")), node=m.group(2))
+    elif status == "pass" and not missing:
+        return out
+    elif missing:
+        out["kind"] = "missing-measurement"
+    else:
+        out["kind"] = "error"
+    if out["node"]:
+        out["where"] = "breakdown element" if ".xbd." in out["node"] else "stock cell / testbench"
+    return out
+
+
+def attribute_corner(ok: dict[str, bool | None]) -> str:
+    """Attribute a corner's non-convergence by which of the otherwise
+    identical decks (st, b0, b1m/b1l) failed. `ok[v]` is None when that
+    variant was not run."""
+    st, b0 = ok.get("st"), ok.get("b0")
+    b1 = [ok[v] for v in ("b1m", "b1l") if ok.get(v) is not None]
+    if st is False:
+        return "stock-cell"
+    if b0 is False:
+        return "wrapper (element disabled)"
+    if b1 and not all(b1):
+        return "breakdown-element (enabled)" if st is not None else "enabled deck (stock deck not run)"
+    return "converged"
+
+
+def tally(kinds: list[str]) -> dict[str, int]:
+    """Attempted/pass/failure counts; every attempted corner stays in the
+    denominator whatever its failure kind."""
+    out = {"attempted": len(kinds), "pass": 0, "timeout": 0, "timestep": 0, "missing-measurement": 0, "error": 0}
+    for k in kinds:
+        out[k] = out.get(k, 0) + 1
+    return out
+
+
 def derive(bench: str, raw: dict[str, float | None]) -> dict[str, float | None]:
     """Raw .meas values -> the quantities the characterization experiment
     reports (same definitions as its testbench templates)."""
@@ -418,6 +637,10 @@ def make_request(bench: str, cand, pdk: P.PDKPaths, measurements: list[dict], pa
         z = [0.0] * len(lv)
         req["corners"]["supply_v"] = {"vampa": [round(x, 6) for x in lv] + z,
                                       "vampb": z + [round(x, 6) for x in lv]}
+    if bench in CONV_BENCHES:
+        req["corners"]["supply_v"] = {"vamp": [round(x, 6) for x in conv_levels(cand, params, conv_split(bench)[0])]}
+        req["analysis"] = {"kind": "tran", "args": f"{fmt(TRIG_TSTEP)} {fmt(TRIG_TSTOP)} uic"}
+        return req
     req["analysis"] = {
         "access_op": {"kind": "dc", "args": DC_ARGS},
         "access_ac": {"kind": "ac", "args": f"lin 3 {fmt(F_RON / 2)} {fmt(F_RON * 1.5)}"},
@@ -434,9 +657,14 @@ def make_request(bench: str, cand, pdk: P.PDKPaths, measurements: list[dict], pa
 
 
 BENCHES = ("access_op", "access_ac", "cap_op", "cap_ac", "trigger")
+ALL_BENCHES = BENCHES + CONV_BENCHES
 
 
-def build_body(bench: str, pdk, cand, defaults, body_dir: Path, lib_root: str) -> tuple[str, list[dict]]:
+def build_body(bench: str, pdk, cand, defaults, body_dir: Path, lib_root: str,
+               params: dict | None = None) -> tuple[str, list[dict]]:
+    if bench in CONV_BENCHES:
+        assert params is not None
+        return body_conv(pdk, cand, defaults, body_dir, lib_root, bench, params)
     if bench.startswith("access"):
         return body_access(pdk, cand, defaults, body_dir, bench, lib_root)
     if bench.startswith("cap"):
@@ -485,6 +713,8 @@ def corner_key(bench: str, corner: dict, cand, params: dict) -> str:
     elif bench == "trigger":
         inst = "a" if abs(sv.get("vampa", 0.0)) > 0 else "b"
         tok = C.fmt_node_supply(f"pl{inst}", sv[f"vamp{inst}"])
+    elif bench in CONV_BENCHES:
+        tok = C.fmt_node_supply("pl" if bench.startswith("trig1") else "vpp", sv["vamp"])
     else:
         tok = "nosupply"
     return C.corner_id(proc, temp, tok)
@@ -499,6 +729,17 @@ class BenchResult:
     corner_status: dict[str, str] = field(default_factory=dict)
     error: str | None = None
     klt_env: dict | None = None
+    outcome: dict[str, dict] = field(default_factory=dict)  # corner-id -> classify_failure()
+
+
+def fill_outcomes(res: BenchResult, report: dict, bench_dir: Path, cand, params: dict) -> None:
+    """Per-corner outcome from klt's status/diagnostics and the committed log."""
+    for c in report["corners"]:
+        cid = corner_key(res.bench, c, cand, params)
+        log = bench_dir / f"{cid}.log"
+        res.outcome[cid] = classify_failure(c["status"], c.get("diagnostics") or [],
+                                            log.read_text(errors="replace") if log.is_file() else None,
+                                            {m["name"].lower(): m["value"] for m in c["measurements"]})
 
 
 def collect(bench: str, report: dict | None, err: str, bench_dir: Path, cand, params: dict) -> BenchResult:
@@ -518,6 +759,7 @@ def collect(bench: str, report: dict | None, err: str, bench_dir: Path, cand, pa
             src = art.get(kind)
             if src and Path(src).is_file():
                 R.write_once(bench_dir / f"{cid}{suffix}", Path(src).read_text(errors="replace"))
+    fill_outcomes(res, report, bench_dir, cand, params)
     return res
 
 
@@ -851,6 +1093,375 @@ def trigger_prediction(cand, params: dict, vpl: float, inst: str) -> int:
     return 1
 
 
+# --- issue #74 convergence record -------------------------------------------
+
+# The #62 trigger records whose non-converged corners #74 is about; the
+# control bench of a #74 run is compared corner by corner against them.
+ORIGINAL_TRIGGER_RECORDS = {1: "20261009-023645-6eff628", 2: "20261009-023648-6eff628", 3: "20261009-023651-6eff628"}
+
+
+def level_label(cand, params: dict, stim: str, v: float) -> str:
+    lv = [abs(x) for x in conv_levels(cand, params, stim)]
+    i = min(range(len(lv)), key=lambda k: abs(lv[k] - abs(v)))
+    return "rated" if i == 0 else f"{TRIG_FRACTIONS[i - 1]:g}x"
+
+
+def corner_level(cid: str) -> float:
+    """Signed stress level from a corner id's supply token (pl-7p90v -> -7.9)."""
+    tok = cid.rsplit("_", 1)[1]
+    m = re.match(r"^(?:pl[ab]?|vpp)(-?[0-9]+p[0-9]+)v$", tok)
+    if not m:
+        raise ValueError(cid)
+    return float(m.group(1).replace("p", "."))
+
+
+def corner_temp(cid: str) -> int:
+    m = re.search(r"_(-?\d+)c_", cid)
+    return int(m.group(1)) if m else 0
+
+
+def conv_ok(res: BenchResult | None, cid: str) -> bool | None:
+    if res is None or cid not in res.outcome:
+        return None
+    return res.outcome[cid]["kind"] == "pass"
+
+
+def abs_extreme(vals: dict, k: str) -> float | None:
+    hi, lo = vals.get(f"mx_{k}"), vals.get(f"mn_{k}")
+    if hi is None or lo is None:
+        return None
+    return max(abs(hi), abs(lo))
+
+
+def render_conv_record(pdk, cand, rid: str, results: dict[str, BenchResult], params: dict,
+                       dirty: bool | None, note: str | None = None) -> str:
+    L: list[str] = []
+    a = L.append
+    vbd = vbd_ref(cand, params)
+    rating = ACCESS_RATING_V[cand.n]
+    orig_rid = ORIGINAL_TRIGGER_RECORDS.get(cand.n)
+    a(f"# Record {rid}")
+    a("")
+    a(f"- **Record ID**: {rid}")
+    a(f"- **Claim**: issue #74 -- the breakdown-event transient of Candidate {cand.n} / Region {cand.region} "
+      "converges at every corner of the full #62 trigger PVT grid on the fleet engine, under (i) the #62 "
+      "two-instance trigger bench re-run unchanged (control), (ii) the same PL-driven stimulus with ONE cell "
+      "per deck, and (iii) a BL-driven, ballast-limited program leg with PL as the return "
+      "(`spec/architecture.md` 1.2, 2); every stimulus as stock / element-disabled / element-enabled decks "
+      "that differ only in the cell line; any non-convergence attributed by that comparison. Trigger "
+      "threshold, latch, program current and access-device terminal voltages (against the ratified "
+      f"{rating:g} V rating of `{CHAR.CANDIDATES[cand.n - 1].access_model}`) are logged, CONDITIONAL ON THE "
+      "ASSUMED breakdown parameters.")
+    if dirty is None:
+        state = f"; working-tree state at run time not captured, exact decks frozen under corners/{rid}/)"
+    else:
+        state = ", dirty tree at run time)" if dirty else ")"
+    a(f"- **Netlist provenance**: schematic (design/netlists/{cand.netlist} wrapped by "
+      "design/breakdown/cell_candidates_bd.spice" + state)
+    if note:
+        a(f"- **Run note**: {note}")
+    a("- **Model parameters**: `design/breakdown/breakdown_params.spice` unchanged by #74 (sha256 "
+      f"`{sha256(BD_DIR / 'breakdown_params.spice')}`); element `design/breakdown/af_breakdown.spice` sha256 "
+      f"`{sha256(BD_DIR / 'af_breakdown.spice')}`. Derived V_bd(t_ref) = bd_ebd x c{cand.n}_bd_tox = "
+      f"**{vbd:.2f} V** (assumed, not a gf180 number).")
+    a("- **Corner matrix run** (each bench one `klt sim` request on the batch fleet; same grid as the #62 "
+      f"trigger records): {', '.join(C.MOSCAP_CORNERS)} (MOS typical) x {', '.join(str(t) for t in C.TEMPS_C)} "
+      f"degC x 5 stress levels = 45 corners per single-instance bench; the control is 90 corners "
+      "(2 instances x 5 levels). Process-minimum (netlist-default) geometry. Levels: the capacitor's rated "
+      f"voltage ({cand.cap_rated_v:g} V) and " + ", ".join(f"{f:g}" for f in TRIG_FRACTIONS) +
+      f" x V_bd. Pulse: raised-cosine edges {TRIG_TR*1e9:g} ns, flat {TRIG_TW*1e6:g} us from t = "
+      f"{TRIG_T1*1e6:g} us; `tran {fmt(TRIG_TSTEP)} {fmt(TRIG_TSTOP)} uic`; default ngspice tolerances, "
+      f"gmin = {fmt(CHAR.GMIN)}; per-corner timeout 300 s.")
+    a("  - `trig1`: PL driven to the signed level, BL = 0 V, WL = "
+      f"{cand.moscap_wl_on:g} V, VB = {cand.vb:g} V (the #62 stimulus, one cell).")
+    a(f"  - `prog`: VPP pulse (positive level) -> ballast {prog_rballast(cand, params)/1e3:.4g} kOhm (PLACEHOLDER: "
+      f"V_bd / {PROG_ILIM_PLACEHOLDER*1e6:g} uA; `I_target_max` is unresolved in `spec/architecture.md` 2) -> BL; "
+      f"PL = 0 V return; WL = {cand.moscap_wl_on:g} V + VPP(t)"
+      + (f"; n-well VB = {cand.vb:g} V + VPP(t)" if cand.polarity == "p" else f"; VB = {cand.vb:g} V (p-substrate tie)")
+      + ". Gate (and well) drive riding on VPP is a bench choice: the gate-drive and well levels are "
+      "unresolved in `spec/supply-domains-decision.md` rows 8, 9, 15.")
+    envs = [r.klt_env for r in results.values() if r.klt_env]
+    if envs:
+        e0 = envs[0]
+        rm = e0.get("remote") or {}
+        a(f"- **Execution**: engine ngspice {e0.get('engine_version')} on the batch fleet (runner klt "
+          f"{rm.get('runner_klt_version')}, submitting client {rm.get('client_klt_version')}, "
+          f"`runner_compatibility: {rm.get('runner_compatibility')}`); models_lib sha256 "
+          f"`{e0.get('models_lib_sha256')}`.")
+    a("- **Result**:")
+    render_conv_matrix(a, cand, params, results)
+    render_control(a, cand, params, results, orig_rid)
+    render_attribution(a, rid, results)
+    for stim in CONV_STIMULI:
+        render_conv_trigger(a, cand, params, results, stim)
+    if any(b in results for b in CONV_BENCHES):
+        render_conv_regression(a, results)
+        render_device_limits(a, cand, params, results)
+        render_prog_current(a, cand, params, results)
+    a("- **Links**:")
+    a("  - Model: `design/breakdown/` (unchanged by this run)")
+    a(f"  - Netlist snapshot: `sim/cell-breakdown-model/netlist-snapshots/{rid}.spice`")
+    a(f"  - Requests, bodies, klt reports, per-corner decks and logs: `sim/cell-breakdown-model/corners/{rid}/<bench>/`")
+    if orig_rid:
+        a(f"  - Original trigger record: `sim/cell-breakdown-model/records/{orig_rid}.md`")
+    a(f"  - PDK: `{pdk.variant}`, open_pdks `{pdk.revision}` (submit host); fleet-side hashes in each `report.json`")
+    a(f"- **Timestamp / author**: {time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())}, agent-builder")
+    a(f"- **Supersedes**: (none -- the #62 trigger record `{orig_rid}` stays as evidence; this record adds "
+      "the #74 convergence campaign)")
+    a("")
+    return "\n".join(L)
+
+
+def render_conv_matrix(a, cand, params, results) -> None:
+    a("  - **(1) Convergence, every attempted corner counted** (`pass` = klt pass AND every measurement has a "
+      "value; failures by kind: `timeout` = 300 s per-corner limit, `timestep` = ngspice \"timestep too "
+      "small\", `missing` = ran to the end but a measurement has no value):")
+    a("")
+    a("    | Bench | Stimulus / variant | Attempted | Pass | Timeout | Timestep | Missing | Other | klt | Job |")
+    a("    |---|---|---|---|---|---|---|---|---|---|")
+    for b in (CONTROL_BENCH,) + CONV_BENCHES:
+        r = results.get(b)
+        if r is None:
+            continue
+        desc = "control: #62 two-instance bench, unchanged" if b == CONTROL_BENCH else \
+            f"{b.split('_')[0]} / {CONV_VARIANTS[conv_split(b)[1]]}"
+        job = (r.remote or {}).get("job_id", "?") if r.remote else ("submit-error" if r.error else "?")
+        t = tally([o["kind"] for o in r.outcome.values()])
+        a(f"    | `{b}` | {desc} | {t['attempted']} | {t['pass']} | {t['timeout']} | {t['timestep']} | "
+          f"{t['missing-measurement']} | {t['error']} | `{r.status}` | `{job}` |")
+        if r.error:
+            a(f"    | | ERROR: {r.error[:300]!r} | | | | | | | | |")
+    a("")
+    a("    Per stress level (pass / attempted), each level over 3 moscap corners x 3 temperatures:")
+    a("")
+    head = ["rated"] + [f"{f:g}x" for f in TRIG_FRACTIONS]
+    a("    | Bench | " + " | ".join(head) + " |")
+    a("    |---|" + "---|" * len(head))
+    for b in (CONTROL_BENCH,) + CONV_BENCHES:
+        r = results.get(b)
+        if r is None or not r.outcome:
+            continue
+        stim = "trig1" if b == CONTROL_BENCH else conv_split(b)[0]
+        cnt = {h: [0, 0] for h in head}
+        for cid, o in r.outcome.items():
+            h = level_label(cand, params, stim, corner_level(cid))
+            cnt[h][1] += 1
+            cnt[h][0] += o["kind"] == "pass"
+        a(f"    | `{b}` | " + " | ".join(f"{cnt[h][0]}/{cnt[h][1]}" for h in head) + " |")
+    a("")
+
+
+def render_control(a, cand, params, results, orig_rid) -> None:
+    r = results.get(CONTROL_BENCH)
+    if r is None or not orig_rid:
+        return
+    orig = results_from_reports(cand, orig_rid, params, benches=(CONTROL_BENCH,)).get(CONTROL_BENCH)
+    if orig is None:
+        return
+    now_bad = {c for c, o in r.outcome.items() if o["kind"] != "pass"}
+    old_bad = {c for c, o in orig.outcome.items() if o["kind"] != "pass"}
+    a(f"  - **(2) Control reproduction** -- the #62 two-instance deck, re-submitted unchanged, vs record "
+      f"`{orig_rid}`: {len(now_bad)}/{len(r.outcome)} not converged now, {len(old_bad)}/{len(orig.outcome)} "
+      f"then; same corners: **{'yes' if now_bad == old_bad else 'no'}**"
+      + ("" if now_bad == old_bad else
+         f" (only now: {', '.join(f'`{c}`' for c in sorted(now_bad - old_bad)) or 'none'}; only then: "
+         f"{', '.join(f'`{c}`' for c in sorted(old_bad - now_bad)) or 'none'})") + ".")
+    where: dict[str, int] = {}
+    for c in sorted(now_bad):
+        o = r.outcome[c]
+        k = o["kind"] if o["kind"] != "timestep" else f"timestep in {o['node']} ({control_role(c, o['node'])})"
+        where[k] = where.get(k, 0) + 1
+    if where:
+        a("    Where ngspice reported the failure: " + "; ".join(f"{k}: {n}" for k, n in sorted(where.items())) + ".")
+
+
+def control_role(cid: str, node: str) -> str:
+    """In the two-instance control deck: was the failing node in the stressed
+    cell, the idle one, or a testbench source?"""
+    m = re.match(r"^(?:e\.)?x([ab])\.", node)
+    if not m:
+        return "testbench source"
+    stressed = "a" if "_pla" in cid else "b"
+    return "stressed instance" if m.group(1) == stressed else "idle instance"
+
+
+def render_attribution(a, rid, results) -> None:
+    if not any(b in results for b in CONV_BENCHES):
+        return
+    a("  - **(3) Attribution of non-converged single-instance corners** (stock / disabled / enabled decks of "
+      "the same stimulus at the same corner; the committed `.cir` is the minimal reproducer, one cell, one "
+      "corner):")
+    any_bad = False
+    for stim in CONV_STIMULI:
+        rs = {v: results.get(f"{stim}_{v}") for v in CONV_VARIANTS}
+        cids = sorted(set().union(*[set(r.outcome) for r in rs.values() if r]))
+        for cid in cids:
+            ok = {v: conv_ok(rs[v], cid) for v in CONV_VARIANTS}
+            if all(x is not False for x in ok.values()):
+                continue
+            any_bad = True
+            fails = []
+            for v, x in ok.items():
+                if x is False:
+                    o = rs[v].outcome[cid]
+                    det = o["kind"] + (f" at t = {o['time']:.4e} s in `{o['node']}` ({o['where']})"
+                                       if o["kind"] == "timestep" else "")
+                    fails.append(f"{v}: {det}; reproducer `corners/{rid}/{stim}_{v}/{cid}.cir`")
+            a(f"    - `{stim}` `{cid}`: **{attribute_corner(ok)}** -- " + "; ".join(fails))
+    if not any_bad:
+        a("    - none: every corner of every single-instance bench converged.")
+
+
+def render_conv_trigger(a, cand, params, results, stim) -> None:
+    b0 = results.get(f"{stim}_b0")
+    rows = []
+    for var, ubd in (("b1m", 0.5), ("b1l", UBD_LOW)):
+        r = results.get(f"{stim}_{var}")
+        if r is None:
+            continue
+        for cid in sorted(r.values, key=lambda c: (c.split("_")[1], corner_temp(c), abs(corner_level(c)))):
+            vals = r.values[cid]
+            vox = (b0.values.get(cid) or {}).get("vox_mid") if b0 else None
+            d_lo = d_hi = pred = None
+            if vox is not None:
+                d_lo, d_hi = damage_prediction(cand, params, vox, ubd)
+                pred = predict_state(d_lo, d_hi)
+            rows.append((var, cid, vox, d_lo, pred, vals, r.outcome[cid]["kind"]))
+    if not rows:
+        return
+    title = {"trig1": "(4a) Trigger/latch, PL-driven, one cell per deck",
+             "prog": "(4b) Trigger/latch, BL-driven program leg"}[stim]
+    a(f"  - **{title}** -- predicted state from the E-model applied to the DISABLED deck's mid-pulse oxide "
+      "voltage at the same corner (damage over the flat top >= 2: must break down; flat top plus edges <= 0.5: "
+      "must not; in between: threshold boundary, not scored). `st` read at "
+      f"{TRIG_TMID*1e6:g} us (mid-pulse) and {TRIG_TMEAS*1e6:g} us (after the pulse: latch):")
+    a("")
+    a("    | Variant | Corner | Level | V(CN,PL) disabled [V] | D_pred (flat) | predicted | st mid | st end | D end | outcome |")
+    a("    |---|---|---|---|---|---|---|---|---|---|")
+    n_conv = n_scored = n_ok = n_bound = 0
+    for var, cid, vox, d_lo, pred, vals, kind in rows:
+        st = vals.get("st")
+        conv = kind == "pass"
+        n_conv += conv
+        if conv and pred is not None and st is not None:
+            n_scored += 1
+            n_ok += int(latched_as_predicted(st, pred))
+        n_bound += pred is None
+        a(f"    | {var} | `{cid}` | {level_label(cand, params, stim, corner_level(cid))} | "
+          f"{'n/a' if vox is None else f'{vox:.4f}'} | {sci(d_lo)} | {'boundary' if pred is None else pred} | "
+          f"{sci(vals.get('st_mid'))} | {sci(st)} | {sci(vals.get('dmg'))} | {kind} |")
+    a("")
+    a(f"    **Converged {n_conv}/{len(rows)}; outcome as predicted (and fully latched, st = 0 or 1) at "
+      f"{n_ok}/{n_scored} scored corners; {n_bound} at the threshold boundary (not scored).**")
+
+
+CELL_QUANTITIES = tuple(f"{p}_{k}" for k in TERMINAL_PAIRS for p in ("mx", "mn")) + \
+    ("vox_mid", "vcn_mid", "vbl_mid", "vpl_mid", "vcn_end", "ibl_mid", "ibl_mx", "ibl_mn")
+
+
+def compare_decks(ra: BenchResult | None, rb: BenchResult | None, cids=None) -> dict:
+    """Exact-equality count and worst relative deviation of every cell
+    quantity between two decks, over corners where both converged."""
+    out = {"n": 0, "exact": 0, "worst": 0.0, "at": "", "corners": 0}
+    if ra is None or rb is None:
+        return out
+    for cid in sorted(set(ra.values) & set(rb.values)):
+        if cids is not None and cid not in cids:
+            continue
+        if ra.outcome[cid]["kind"] != "pass" or rb.outcome[cid]["kind"] != "pass":
+            continue
+        out["corners"] += 1
+        for q in CELL_QUANTITIES:
+            x, y = rb.values[cid].get(q), ra.values[cid].get(q)
+            if x is None or y is None:
+                continue
+            out["n"] += 1
+            out["exact"] += x == y
+            d = rel_dev(x, y) if abs(y) > 1e-9 else abs(x - y)
+            if d > out["worst"]:
+                out["worst"], out["at"] = d, f"{cid} {q}"
+    return out
+
+
+def render_conv_regression(a, results) -> None:
+    a("  - **(5) Element inertness in transient** -- every logged cell quantity (terminal-difference extremes, "
+      "mid-pulse and end voltages, BL current), same corner, decks differing only in the cell line. "
+      "Relative deviation (absolute below 1 nV/nA):")
+    for stim in CONV_STIMULI:
+        st = results.get(f"{stim}_st")
+        c = compare_decks(st, results.get(f"{stim}_b0"))
+        a(f"    - `{stim}` disabled (`b0`) vs stock: {c['exact']}/{c['n']} exactly equal over {c['corners']} "
+          f"corners; worst deviation {c['worst']:.2e}" + (f" at `{c['at']}`" if c["at"] else ""))
+        for v in ("b1m", "b1l"):
+            r = results.get(f"{stim}_{v}")
+            if r is None:
+                continue
+            intact = {cid for cid, vals in r.values.items() if vals.get("st") == 0.0}
+            c = compare_decks(st, r, intact)
+            a(f"    - `{stim}` enabled (`{v}`) vs stock where the enabled cell stayed intact (st = 0 exactly): "
+              f"{c['exact']}/{c['n']} exactly equal over {c['corners']} corners; worst deviation {c['worst']:.2e}"
+              + (f" at `{c['at']}`" if c["at"] else ""))
+
+
+def render_device_limits(a, cand, params, results) -> None:
+    rating = ACCESS_RATING_V[cand.n]
+    a(f"  - **(6) Terminal voltages vs ratings** -- largest |V| of each pair over the WHOLE transient, worst "
+      f"PVT corner per stress level (converged corners only). Access-device rating {rating:g} V "
+      f"(`{CHAR.CANDIDATES[cand.n - 1].access_model}`); **bold** = exceeds it. The capacitor column is the "
+      f"stressed oxide (rated {cand.cap_rated_v:g} V; exceeding it is the point of the bench):")
+    head = ["rated"] + [f"{f:g}x" for f in TRIG_FRACTIONS]
+    for stim in CONV_STIMULI:
+        for var in ("st", "b1m", "b1l"):
+            r = results.get(f"{stim}_{var}")
+            if r is None or not r.values:
+                continue
+            a("")
+            a(f"    `{stim}_{var}`:")
+            a("")
+            a("    | Level | " + " | ".join(f"{k}: {TERMINAL_PAIRS[k][0].upper()}-{TERMINAL_PAIRS[k][1].upper()}"
+                                         for k in TERMINAL_PAIRS) + " | over rating |")
+            a("    |---|" + "---|" * (len(TERMINAL_PAIRS) + 1))
+            for h in head:
+                cells, over = [], 0
+                cids = [c for c in r.values if level_label(cand, params, stim, corner_level(c)) == h
+                        and r.outcome[c]["kind"] == "pass"]
+                for k in TERMINAL_PAIRS:
+                    best, at = None, ""
+                    for c in cids:
+                        x = abs_extreme(r.values[c], k)
+                        if x is not None and (best is None or x > best):
+                            best, at = x, c
+                    if best is None:
+                        cells.append("n/a")
+                        continue
+                    if k in ACCESS_PAIRS and best > rating:
+                        over += 1
+                        cells.append(f"**{best:.2f}**")
+                    else:
+                        cells.append(f"{best:.2f}")
+                a(f"    | {h} ({len(cids)} corners) | " + " | ".join(cells) + f" | {over} pair(s) |")
+    a("")
+
+
+def render_prog_current(a, cand, params, results) -> None:
+    rb = prog_rballast(cand, params)
+    a(f"  - **(7) Program current, BL-driven leg** -- I(BL) at mid-pulse and its peak over the transient; the "
+      f"ballast alone allows VPP / {rb/1e3:.4g} kOhm:")
+    a("")
+    a("    | Variant | Corner | VPP [V] | ballast-only limit [A] | I(BL) mid [A] | I(BL) peak [A] | st end | outcome |")
+    a("    |---|---|---|---|---|---|---|---|")
+    for var in ("b1m", "b1l"):
+        r = results.get(f"prog_{var}")
+        if r is None:
+            continue
+        for cid in sorted(r.values, key=lambda c: (c.split("_")[1], corner_temp(c), corner_level(c))):
+            v = r.values[cid]
+            vpp = corner_level(cid)
+            a(f"    | {var} | `{cid}` | {vpp:.2f} | {sci(vpp / rb)} | {sci(v.get('ibl_mid'))} | "
+              f"{sci(v.get('ibl_mx'))} | {sci(v.get('st'))} | {r.outcome[cid]['kind']} |")
+    a("")
+
+
 def render_links(a, rid: str, stored_rid: str | None, pdk) -> None:
     a("- **Links**:")
     a("  - Model: `design/breakdown/` (element, wrappers, parameters, `check_params.py`)")
@@ -881,20 +1492,25 @@ def snapshot(cand) -> str:
 # ---------------------------------------------------------------------------
 
 
-def smoke(pdk, cand, bench: str, params: dict) -> int:
-    """ONE corner of ONE bench, locally -- a debug probe, not evidence."""
+def smoke(pdk, cand, bench: str, params: dict, pick: list[str] | None = None) -> int:
+    """ONE corner of ONE bench, locally -- a debug probe, not evidence.
+    `pick` = [process, temperature, supply-index] selects the corner
+    (default: the first process, 27 degC, a bench-specific level)."""
     defaults = CHAR.parse_defaults(REPO_ROOT / "design" / "netlists" / cand.netlist)
     work = THIS_DIR / ".work" / f"smoke-{time.strftime('%Y%m%d-%H%M%S')}-c{cand.n}-{bench}"
     work.mkdir(parents=True)
-    body, ms = build_body(bench, pdk, cand, defaults, work, str(pdk.variant_dir))
+    body, ms = build_body(bench, pdk, cand, defaults, work, str(pdk.variant_dir), params)
     (work / "body.spice").write_text(body)
     req = make_request(bench, cand, pdk, ms, params)
     corners = req["corners"]
-    corners["process"] = corners["process"][:1]
-    corners["temperature_c"] = [27.0]
+    proc = [p for p in corners["process"] if pick and p["name"] == pick[0]]
+    corners["process"] = proc or corners["process"][:1]
+    corners["temperature_c"] = [float(pick[1]) if pick else 27.0]
     if "supply_v" in corners:
         k = len(next(iter(corners["supply_v"].values())))
         idx = k - 2 if bench == "trigger" else k // 2   # trigger: inst b at 1.0 x V_bd; else nominal
+        if pick:
+            idx = int(pick[2])
         corners["supply_v"] = {key: [vals[idx]] for key, vals in corners["supply_v"].items()}
     req["backend"] = "local"
     (work / "request.json").write_text(json.dumps(req, indent=2))
@@ -907,16 +1523,16 @@ def smoke(pdk, cand, bench: str, params: dict) -> int:
     print(f"smoke c{cand.n} {bench}: {c['corner_id']} status={c['status']} "
           f"{len(c['measurements']) - len(bad)}/{len(c['measurements'])} measurements; work dir {work}")
     derived = derive(bench, {m["name"].lower(): m["value"] for m in c["measurements"]})
-    for k in list(derived)[:8]:
+    for k in list(derived)[:40]:
         print(f"   {k} = {derived[k]}")
     for d in c["diagnostics"][:3]:
         print(f"   diag: {d}")
     return 0 if c["status"] == "pass" else 1
 
 
-def results_from_reports(cand, rid: str, params: dict) -> dict[str, BenchResult]:
+def results_from_reports(cand, rid: str, params: dict, benches=None) -> dict[str, BenchResult]:
     results: dict[str, BenchResult] = {}
-    for bench in BENCHES:
+    for bench in benches or ALL_BENCHES:
         bdir = THIS_DIR / "corners" / rid / bench
         rp = bdir / "report.json"
         if rp.is_file():
@@ -927,6 +1543,7 @@ def results_from_reports(cand, rid: str, params: dict) -> dict[str, BenchResult]
                 cid = corner_key(bench, c, cand, params)
                 res.corner_status[cid] = c["status"]
                 res.values[cid] = derive(bench, {m["name"].lower(): m["value"] for m in c["measurements"]})
+            fill_outcomes(res, report, bdir, cand, params)
         elif (bdir / "submit-error.txt").is_file():
             res = BenchResult(bench=bench, status="submit-error", remote=None,
                               error=(bdir / "submit-error.txt").read_text())
@@ -936,6 +1553,13 @@ def results_from_reports(cand, rid: str, params: dict) -> dict[str, BenchResult]
     return results
 
 
+def render_any(pdk, cand, rid: str, results: dict[str, BenchResult], params: dict, dirty, note) -> str:
+    """A run that includes any #74 bench gets the convergence record."""
+    if any(b in CONV_BENCHES for b in results):
+        return render_conv_record(pdk, cand, rid, results, params, dirty, note)
+    return render_record(pdk, cand, rid, results, params, dirty, stored_record_id(cand), note)
+
+
 def render_only(pdk, cand, rid: str, params: dict, note: str | None = None) -> int:
     results = results_from_reports(cand, rid, params)
     if not results:
@@ -943,8 +1567,7 @@ def render_only(pdk, cand, rid: str, params: dict, note: str | None = None) -> i
         return 2
     prov_file = THIS_DIR / "corners" / rid / "run-provenance.json"
     dirty = json.loads(prov_file.read_text())["dirty"] if prov_file.is_file() else None
-    R.write_once(THIS_DIR / "records" / f"{rid}.md",
-                 render_record(pdk, cand, rid, results, params, dirty, stored_record_id(cand), note))
+    R.write_once(THIS_DIR / "records" / f"{rid}.md", render_any(pdk, cand, rid, results, params, dirty, note))
     print(f"record: records/{rid}.md (rendered from saved reports)")
     return 0
 
@@ -953,8 +1576,12 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--pdk-root", default=None)
     ap.add_argument("--candidates", default="1,2,3")
-    ap.add_argument("--benches", default=",".join(BENCHES))
-    ap.add_argument("--smoke", default=None, metavar="N:BENCH",
+    ap.add_argument("--benches", default=",".join(BENCHES),
+                    help=f"comma-separated; #62 benches {', '.join(BENCHES)}; #74 benches {', '.join(CONV_BENCHES)}")
+    ap.add_argument("--campaign", choices=("conv74",), default=None,
+                    help="conv74: the #74 convergence campaign = the #62 trigger bench (control) + every "
+                         "single-instance trigger/program bench; overrides --benches")
+    ap.add_argument("--smoke", default=None, metavar="N:BENCH[:PROCESS:TEMP:LEVEL_INDEX]",
                     help="run ONE corner of ONE bench locally (debug probe; writes no record)")
     ap.add_argument("--check-env", action="store_true")
     ap.add_argument("--note", default=None, help="free-text run note carried into the record(s)")
@@ -989,11 +1616,17 @@ def main(argv: list[str] | None = None) -> int:
     if args.render:
         return render_only(pdk, by_n[int(args.candidates)], args.render, params, args.note)
     if args.smoke:
-        n, bench = args.smoke.split(":")
-        return smoke(pdk, by_n[int(n)], bench, params)
+        n, bench, *pick = args.smoke.split(":")
+        return smoke(pdk, by_n[int(n)], bench, params, pick or None)
 
     wanted = [int(x) for x in args.candidates.split(",") if x.strip()]
     benches = [b for b in args.benches.split(",") if b.strip()]
+    if args.campaign == "conv74":
+        benches = [CONTROL_BENCH, *CONV_BENCHES]
+    unknown = [b for b in benches if b not in ALL_BENCHES]
+    if unknown:
+        print(f"ERROR: unknown bench(es) {unknown}", file=sys.stderr)
+        return 2
     dirty = R.git_is_dirty(REPO_ROOT)
     rc = 0
     for n in wanted:
@@ -1007,7 +1640,7 @@ def main(argv: list[str] | None = None) -> int:
         for bench in benches:
             bdir = THIS_DIR / "corners" / rid / bench
             bdir.mkdir(parents=True, exist_ok=False)  # corners/<rid>/ itself exists (run-provenance.json)
-            body, ms = build_body(bench, pdk, cand, defaults, bdir, FLEET_PDK_VARIANT_DIR)
+            body, ms = build_body(bench, pdk, cand, defaults, bdir, FLEET_PDK_VARIANT_DIR, params)
             R.write_once(bdir / "body.spice", body)
             req = make_request(bench, cand, pdk, ms, params)
             R.write_once(bdir / "request.json", json.dumps(req, indent=2) + "\n")
@@ -1026,7 +1659,7 @@ def main(argv: list[str] | None = None) -> int:
                 rc = 1
         R.write_once(THIS_DIR / "netlist-snapshots" / f"{rid}.spice", snapshot(cand))
         R.write_once(THIS_DIR / "records" / f"{rid}.md",
-                     render_record(pdk, cand, rid, results, params, dirty, stored_record_id(cand), args.note))
+                     render_any(pdk, cand, rid, results, params, dirty, args.note))
         print(f"   record: records/{rid}.md")
     return rc
 
