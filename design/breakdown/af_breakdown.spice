@@ -74,4 +74,11 @@ Bsd sd 0 V = 'pow(min(max((v(dmg)-1)/dw, 0), 1), 2)*(3-2*min(max((v(dmg)-1)/dw, 
 Bst st 0 V = 'max(prog, v(sd))'
 * post-breakdown filament: ohmic, gated by the state
 Bfil a b I = 'en*v(st)*v(a,b)/rf'
+* observability probes (issue #66): this instance's own per-instance draws as node
+* voltages, V(ubdn) = ubd and V(zrfn) = zrf. ngspice re-evaluates a random .param
+* (aunif/agauss) at EACH reference, so a deck cannot read back "the value the instance
+* used" from its own copy of the .param; the instance has to report it. Output-only: both
+* are voltage sources to ground that nothing reads, so the cell's equations are unchanged.
+Bubdn ubdn 0 V = 'ubd'
+Bzrfn zrfn 0 V = 'zrf'
 .ends af_breakdown
