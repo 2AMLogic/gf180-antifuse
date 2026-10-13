@@ -84,11 +84,22 @@ was claimed:
 - **Item 8** (characterization report) needs a per-region `generic` envelope;
   none was produced. The per-region Markdown records stay the human-readable
   per-region result.
-- **Candidate 2 (Region II) is not covered**: its fleet requests failed (see
-  `sim/cell-device-characterization/README.md`, "klt sim campaign"), so
-  `supporting_evidence` cites only the 16 passing Candidate 1 / Candidate 3
-  reports. A cited sim report that does not span all three regions could not
-  support a whole-block row regardless.
+- **Candidate 2 (Region II)** failed on the fleet in the first run
+  (`20261009-014137-8d6e70b`) and again on 2026-10-13 with the installed
+  klt 0.7.1.dev256 client (fleet runner is 0.7.0 and refuses it). A
+  version-matched (0.7.0) resubmission passed, run `20261013-170230-b0bb935`;
+  its 8 reports are now also under `supporting_evidence` (24 reports, all three
+  candidates, access-device bench only). The capacitor C-V bench is still not
+  migrated, so coverage of the analog partition is incomplete regardless.
+
+**Regeneration on 2026-10-13.** `report.json` was regenerated with the
+installed klt `0.7.1.dev256` (it had been stale: the checklist text hash and
+the grading ruleset id changed with the klt build, and `verify.sh` failed on
+main). The only differences are the klt build identity, the checklist
+`source_doc_content_hash`, and checklist wording (a provisional port-
+accessibility clause). **Rows moved: none** -- 22 `unmet`/`no_evidence`
+(plus the 3 `tier_not_supported` entries unchanged). `./signoff/verify.sh`
+passes.
 
 
 ### Why this reads differently from the hand-maintained checklist

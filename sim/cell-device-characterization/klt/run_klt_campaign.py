@@ -7,7 +7,9 @@
 Submission: one `klt sim -o <rundir>/<sub>/<ioff|ron> <request> --format json`
 per request. The backend is whatever the environment selects
 (`KLT_SIM_BACKEND`; on the dispatch workers that is `batch`, i.e. the Spot
-fleet). This script never falls back to a local grid: a request whose submit
+fleet). `KLT_CMD` overrides the klt launcher, e.g.
+`KLT_CMD='uvx --from klayout-tools==0.7.0 klt'` to match the fleet runner's
+klt version (the runner refuses a newer client). This script never falls back to a local grid: a request whose submit
 fails is recorded verbatim in `<rundir>/submit-errors.txt` and its sub-
 configuration is left out of the record (the record then says so).
 
@@ -25,7 +27,9 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
+import shlex
 import subprocess
 import sys
 import time
@@ -61,7 +65,7 @@ def submit_one(rundir: Path, sub: str, which: str, workers_note: str = "") -> tu
     out = rundir / sub / which
     out.mkdir(parents=True, exist_ok=True)
     proc = subprocess.run(
-        ["klt", "sim", "-o", str(out), str(req), "--format", "json"],
+        [*shlex.split(os.environ.get("KLT_CMD", "klt")), "sim", "-o", str(out), str(req), "--format", "json"],
         capture_output=True, text=True,
     )
     (out / "report.json").write_text(proc.stdout)
