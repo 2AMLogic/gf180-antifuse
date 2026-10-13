@@ -34,17 +34,24 @@ of this file, by design/check-array.py): N = 32; three contiguous column bands
 levels and two access-sizing levels per band, interleaved, all four
 combinations present.
 
-NOT ratified, so fixed here as an explicit convention and repeated in
-design/README.md:
-  * The phase / pitch of the two interleaved sub-axes (see level_indices()).
-  * The numeric "min" geometry. spec/split-axis-plan.md says "process-minimum"
-    but no ratified document fixes that number. "min" here is the committed
-    cell subcircuit's own parameter default (placeholders carried from the PDK
-    symbol templates, see design/README.md); "2x" doubles the capacitor WIDTH
-    (2x area at fixed length) or the access-device WIDTH (fixed length).
-  * Row stage granularity: rows span all three bands, but the pass-gate device
-    family is per band, so the row stage (level shifter + return pass-gate +
-    word line) is instantiated per (row, band) segment.
+NOT ratified, so fixed here as an explicit PROVISIONAL convention, each an
+open item for the operator (see "PROVISIONAL resolutions - open items for
+the operator" in design/README.md; the same marking is stamped into the
+generated sources):
+  (a) The numeric "min" geometry. spec/split-axis-plan.md says "process-minimum"
+      but no ratified document fixes that number. "min" here is the committed
+      cell subcircuit's own parameter default (placeholders carried from the PDK
+      symbol templates, see design/README.md); "2x" doubles the capacitor WIDTH
+      (2x area at fixed length) or the access-device WIDTH (fixed length).
+  (b) The phase / pitch of the two interleaved sub-axes (see level_indices()).
+  (c) Band axis = column, so rows span all three bands and the row stage
+      (level shifter + return pass-gate + word line) is instantiated per
+      (row, band) segment; each band has its own BLG/PLG bus and VDDH rail.
+  (d) Region II level shifters/pass-gates use the 10 V asymmetric device pair;
+      spec/architecture.md 1.1 only names nfet_06v0/pfet_06v0 "for the 6 V tier".
+  (e) The NMOS pass-gate gate rail is the level shifter's VDDH rail, so a
+      column gate passes at most VDDH - Vth (plus body effect); the bench holds
+      BLG below VDDH. A boosted gate rail is a program-leg decision.
 """
 
 from __future__ import annotations
@@ -142,6 +149,22 @@ def level_indices(r: int, c: int, c0: int) -> tuple[int, int]:
     """
     cp = c - c0
     return (r + cp) % 2, (r // 2 + cp // 2) % 2
+
+
+# PROVISIONAL stamp repeated in every generated array/slice source. Items (a)-(e)
+# are open for the operator; see "PROVISIONAL resolutions - open items for the
+# operator" in design/README.md for the alternative and the consequence of each.
+PROVISIONAL_NOTE = [
+    "PROVISIONAL CONVENTIONS (not ratified) - open items for the operator,",
+    "numbered (a)-(e) with alternatives and consequences in design/README.md",
+    '("PROVISIONAL resolutions - open items for the operator"):',
+    "  (a) 'min' geometry = the cell subckt placeholder defaults; '2x' = width x2.",
+    "  (b) interleave phase: cap (r+c') mod 2, access (r//2+c'//2) mod 2,",
+    "      band-relative column c'.",
+    "  (c) band axis = column; row stage per (row, band); per-band BLG/PLG/VDDH.",
+    "  (d) Region II level shifters/pass-gates use the 10 V asymmetric pair.",
+    "  (e) NMOS pass-gate gate rail = VDDH (passes at most VDDH - Vth).",
+]
 
 
 def cell_params(r: int, c: int) -> tuple[int, dict[str, str]]:
@@ -322,6 +345,9 @@ def gen_ls(family: str) -> tuple[str, str]:
             "spec/architecture.md 1.1 names the 6 V devices 'for the 6 V tier'; using the",
             "asymmetric 10 V pair for the 10 V tier is this repo's reading of that, not",
             "separate ratified text.",
+            "PROVISIONAL (open item d for the operator): the 10 V asymmetric family for",
+            "this tier is a convention of the generator - alternative and consequence in",
+            "design/README.md, 'PROVISIONAL resolutions - open items for the operator'.",
         ]
     s = Sch(LS_NOTE + [""] + fam_note)
     # logic-domain inverter (3.3 V thin oxide): INB = NOT IN
@@ -369,7 +395,14 @@ def gen_pg(family: str) -> tuple[str, str]:
         "per-region choice (the generator picks the cell by band); sizes are",
         "PLACEHOLDERS, not a sized design.",
         "",
-    ] + note
+    ] + note + [
+        "",
+        "PROVISIONAL (open item e for the operator): the gate is driven by the level",
+        "shifter referenced to VDDH, so this NMOS passes at most VDDH - Vth (plus",
+        "body effect); whether the program rail needs a boosted gate rail is open -",
+        "alternative and consequence in design/README.md, 'PROVISIONAL resolutions -",
+        "open items for the operator'.",
+    ]
     s = Sch(comment)
     place_mos(s, k, "M1", 300, 0, "wpg", "lpg", "A", "G", "B", "VB")
     for i, (kind, nm) in enumerate((("iopin", "A"), ("iopin", "B"), ("ipin", "G"), ("ipin", "VB"))):
@@ -418,7 +451,8 @@ def gen_array(name: str, r0: int, r1: int, c0: int, c1: int) -> tuple[str, str]:
         "one-hot selects from the digital partition; VDDH_<band> level-shifter rail.",
         "Candidate 3's word line is active-low (PMOS access) and its cell VB is the",
         "band's VDDH rail (n-well tie at the most positive potential).",
-    ]
+        "",
+    ] + PROVISIONAL_NOTE
     s = Sch(comment)
     ports: list[tuple[str, str, str]] = []  # (xschem kind, net, direction for sym)
 

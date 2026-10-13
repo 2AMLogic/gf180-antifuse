@@ -16,6 +16,16 @@ v {xschem version=3.4.7 file_version=1.2
 * one-hot selects from the digital partition; VDDH_<band> level-shifter rail.
 * Candidate 3's word line is active-low (PMOS access) and its cell VB is the
 * band's VDDH rail (n-well tie at the most positive potential).
+*
+* PROVISIONAL CONVENTIONS (not ratified) - open items for the operator,
+* numbered (a)-(e) with alternatives and consequences in design/README.md
+* ("PROVISIONAL resolutions - open items for the operator"):
+*   (a) 'min' geometry = the cell subckt placeholder defaults; '2x' = width x2.
+*   (b) interleave phase: cap (r+c') mod 2, access (r//2+c'//2) mod 2,
+*       band-relative column c'.
+*   (c) band axis = column; row stage per (row, band); per-band BLG/PLG/VDDH.
+*   (d) Region II level shifters/pass-gates use the 10 V asymmetric pair.
+*   (e) NMOS pass-gate gate rail = VDDH (passes at most VDDH - Vth).
 }
 G {}
 K {}

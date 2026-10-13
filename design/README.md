@@ -145,41 +145,84 @@ cells), if a slice differs from the same cells of the full array, and if the
 Candidate 1/2/3 access-device orientation is not drain-to-BL / drain-to-BL /
 source-to-BL.
 
-### Decisions made here that the spec leaves open (flagged, not ratified)
+### PROVISIONAL resolutions — open items for the operator
 
-These are conventions of the generator, written down so they can be overruled
-by a spec decision record rather than discovered later:
+The ratified specs are ambiguous or silent on five points below. The
+generator fixes a working convention so the sources stay buildable, marks
+each one **PROVISIONAL** in the generated sources (`design/array/`,
+`design/mux/`), and lists each here as a numbered open item for the
+operator. None is decided in ratified text; overrule any of them in a spec
+decision record and the generator + netlists regenerate.
 
-1. **Numeric "process-minimum" geometry is still not fixed anywhere.** "min"
-   above is the PDK-symbol-template placeholder carried since the cell drop, so
-   *no claim in this directory or in `sim/array-slice-bench/` is about the
-   process-minimum device*.
-2. **Phase and pitch of the two interleaved sub-axes.** The plan says
-   "checkerboarded" and "orthogonal" without fixing a pattern. The generator
-   uses (band-relative column c'): capacitor level `(r + c') mod 2`
-   (cell-pitch checkerboard), access level `(r//2 + c'//2) mod 2` (2 x 2-block
-   checkerboard). That is balanced (88/88/80 per sub-combination) and satisfies
-   the stated properties; `check-array.py` enforces the *properties*, not this
-   exact formula, so another conforming pattern needs only a generator change.
-3. **Band axis = column.** The region table says columns; the prose defers
-   row/column orientation to the architecture record. Columns are the band axis
-   here, and rows are shared across bands, hence the per-(row, band) row stage.
-4. **Per-band buses.** Each band has its own `BLG`/`PLG` bus and `VDDH` rail so
-   each region's program conditions are independently settable (the plan's
-   per-region nominal points). Where the program/read legs attach is out of
-   scope (below).
-5. **Level shifters/pass-gates for Region II use the 10 V asymmetric pair.**
-   `spec/architecture.md` §1.1 names `nfet_06v0`/`pfet_06v0` "for the 6 V tier";
-   the asymmetric pair for the 10 V tier is this repo's reading of that.
-6. **Pass-gate drain/source (Candidate 2 band).** `pg_n10` wires `d` to the node
-   that must be blocked against the elevated voltage while the gate is off: the
-   global `BLG` bus for a column gate, the array-side `PL` for a row return gate.
-   Same rationale as the cell's own assignment above.
-7. **NMOS pass-gate passing a high bit line.** With `VDDH` equal to the
-   programming rail an NMOS column gate passes at most `VDDH - Vth` (plus body
-   effect). Whether the real programming rail needs a boosted gate rail is a
-   program-leg/pulse decision; the bench holds `BLG` well below `VDDH`.
-8. **Transistor sizes** in `ls_*` / `pg_*` are placeholders, not a sized design.
+1. **(a) Numeric "process-minimum" geometry — placeholder numbers.**
+   Resolution: "min" is the committed cell subcircuit's own parameter
+   default (the PDK symbol template placeholder carried since the cell
+   drop); "2x" doubles `wcap` (2x area at fixed `lcap`) or `wacc`
+   (fixed `lacc`). *No claim in this directory or in
+   `sim/array-slice-bench/` is about the process-minimum device.*
+   Alternative: fix the true process-minimum legal geometry from the PDK
+   design rules, and (separately) whether "2x-area" means width-doubling,
+   L-doubling, or both.
+   Consequence: every cell instance's `wcap`/`lcap`/`wacc`/`lacc`
+   re-scales, and the recorded bench numbers (path efficiency, isolation,
+   leakage) scale with them — current results remain valid as structure
+   evidence only; a re-run mints a new append-only record.
+
+2. **(b) Phase and pitch of the two interleaved sub-axes.**
+   Resolution: the plan says "checkerboarded" and "orthogonal" without
+   fixing a pattern. The generator uses (band-relative column c'):
+   capacitor level `(r + c') mod 2` (cell-pitch checkerboard), access
+   level `(r//2 + c'//2) mod 2` (2×2-block checkerboard).
+   Alternative: any conforming pattern — e.g. absolute (not band-relative)
+   phase, or a different interleave pitch.
+   Consequence: `check-array.py` enforces the *properties* (checkerboarded,
+   orthogonal, balanced 88/88/80), not this formula, so another conforming
+   pattern needs only a generator change + regenerate; per-cell geometry
+   assignments move, per-region distributions and the balance do not.
+
+3. **(c) Band axis = column; per-(row, band) row stage; per-band buses.**
+   Resolution: the region table bands columns; rows span all three bands,
+   so the row stage (level shifter + return pass-gate + word line) is
+   instantiated per (row, band) segment, and each band has its own
+   `BLG`/`PLG` bus and `VDDH` rail so each region's program conditions are
+   independently settable (the plan's per-region nominal points).
+   Alternative: rows as the band axis (the prose defers orientation to the
+   architecture record); or shared global buses instead of per-band ones.
+   Consequence: transposing the axis re-assigns every cell's candidate —
+   `check-array.py` re-reads the ratified region table, so that requires a
+   spec decision record, not just a generator edit; merging the buses
+   couples the regions' programming conditions and removes the per-region
+   split the measurement matrix depends on.
+
+4. **(d) Region II level shifters / pass-gates use the 10 V asymmetric
+   pair.**
+   Resolution: `spec/architecture.md` §1.1 names `nfet_06v0`/`pfet_06v0`
+   "for the 6 V tier" and says nothing about the 10 V tier; the generator
+   uses `nfet_10v0_asym`/`pfet_10v0_asym` for Candidate 2's band, with the
+   same deliberate drain-to-high-swing assignment as the Candidate 2 cell.
+   Alternative: 6 V symmetric devices in all tiers (if the Region II rail
+   stays within the 6 V SOA), or a different 10 V family.
+   Consequence: the family sets Region II's standby leakage and isolation
+   numbers and forces the d/s orientation rule; ruling 6 V devices instead
+   collapses `ls_hv10`/`pg_n10` onto the 06 family with symmetric d/s and
+   re-runs the Region II slice evidence.
+
+5. **(e) NMOS pass-gate gate rail = VDDH.**
+   Resolution: the pass-gate gate is driven by the level shifter whose
+   rail is the band's `VDDH`, so with `VDDH` at the programming rail an
+   NMOS column gate passes at most `VDDH − Vth` (plus body effect). The
+   bench holds `BLG` 2 V below `VDDH` for exactly this reason.
+   Alternative: a boosted gate rail above `VDDH` (charge pump / second
+   rail), or transmission-gate (CMOS) pass-gates.
+   Consequence: the program leg must either budget `Vth` + body-effect
+   headroom into the pulse plan or land the boosted-rail decision first;
+   the measured Region I idle-bus miss is placeholder-size leakage of
+   these NMOS gates and moves with that family/sizing decision.
+
+Other flagged conventions (not operator-open): the `pg_n10` drain/source
+assignment (forced by the same PDK device asymmetry as the ratified
+Candidate 2 cell record), and the `ls_*`/`pg_*` transistor sizes
+(placeholders, not a sized design).
 
 ## What is explicitly NOT captured
 

@@ -22,6 +22,9 @@ v {xschem version=3.4.7 file_version=1.2
 * spec/architecture.md 1.1 names the 6 V devices 'for the 6 V tier'; using the
 * asymmetric 10 V pair for the 10 V tier is this repo's reading of that, not
 * separate ratified text.
+* PROVISIONAL (open item d for the operator): the 10 V asymmetric family for
+* this tier is a convention of the generator - alternative and consequence in
+* design/README.md, 'PROVISIONAL resolutions - open items for the operator'.
 }
 G {}
 K {type=subcircuit

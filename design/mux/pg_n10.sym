@@ -11,6 +11,12 @@ v {xschem version=3.4.7 file_version=1.2
 * must be blocked against the elevated voltage while the gate is off - the
 * global bus for a column gate (bus at the program rail, column deselected),
 * the array-side plate line for a row return gate. See design/README.md.
+*
+* PROVISIONAL (open item e for the operator): the gate is driven by the level
+* shifter referenced to VDDH, so this NMOS passes at most VDDH - Vth (plus
+* body effect); whether the program rail needs a boosted gate rail is open -
+* alternative and consequence in design/README.md, 'PROVISIONAL resolutions -
+* open items for the operator'.
 }
 G {}
 K {type=subcircuit
