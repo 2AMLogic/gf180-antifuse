@@ -1,0 +1,46 @@
+{
+  "regions": {
+    "1": {
+      "complete": true,
+      "i_sneak_max": 9.819157000000001e-12,
+      "r_on_worst": 14466.4592068726,
+      "legacy_record": "20260909-232140-b6035cb",
+      "legacy_i_sneak_max": 9.8191e-12,
+      "legacy_r_on": 14466.0,
+      "n_compared": 180,
+      "max_dev_ioff": "6.08e-04",
+      "max_dev_ron": "6.14e-06",
+      "headline_ok": true,
+      "grid_ok": true,
+      "tolerance_rel": 0.01
+    },
+    "2": {
+      "complete": false,
+      "i_sneak_max": null,
+      "r_on_worst": null,
+      "legacy_record": "20260909-232141-b6035cb",
+      "legacy_i_sneak_max": 7.2887e-09,
+      "legacy_r_on": 65.49,
+      "n_compared": 0,
+      "max_dev_ioff": "n/a",
+      "max_dev_ron": "n/a",
+      "headline_ok": false,
+      "grid_ok": false,
+      "tolerance_rel": 0.01
+    },
+    "3": {
+      "complete": true,
+      "i_sneak_max": 1.3956045e-11,
+      "r_on_worst": 1098.0517589153892,
+      "legacy_record": "20260909-232143-b6035cb",
+      "legacy_i_sneak_max": 1.3956e-11,
+      "legacy_r_on": 1098.0,
+      "n_compared": 180,
+      "max_dev_ioff": "5.78e-04",
+      "max_dev_ron": "5.19e-04",
+      "headline_ok": true,
+      "grid_ok": true,
+      "tolerance_rel": 0.01
+    }
+  }
+}
