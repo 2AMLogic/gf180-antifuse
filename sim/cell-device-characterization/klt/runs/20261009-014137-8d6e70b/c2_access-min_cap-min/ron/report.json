@@ -1,0 +1,4066 @@
+{
+  "schema_version": 3,
+  "netlist": {
+    "path": "sim/cell-device-characterization/klt/requests/c2_access-min_cap-min/body.spice",
+    "scope": "repo"
+  },
+  "status": "error",
+  "corner_count": 45,
+  "passed": 0,
+  "failed": 0,
+  "errored": 45,
+  "inconclusive": 0,
+  "diagnostic_counts": {
+    "by_code": {
+      "batch_job_failed": 45
+    },
+    "by_severity": {
+      "error": 45
+    },
+    "corners_with_diagnostics": 45
+  },
+  "metrics": {
+    "sim__corner__count": 45,
+    "sim__corner__passed_count": 0,
+    "sim__corner__failed_count": 0,
+    "sim__corner__errored_count": 45,
+    "sim__corner__inconclusive_count": 0
+  },
+  "environment": {
+    "engine": "ngspice",
+    "engine_version": null,
+    "ngspice_binary": "/home/ubuntu/.local/bin/ngspice",
+    "models_lib": {
+      "path": null,
+      "scope": "external"
+    },
+    "models_lib_sha256": "6edba54d23b38a2c60f8ffdbaa3eb75a7568c615e4820808969bd1121b77b1aa",
+    "netlist_sha256": "39eee72fb07673f988f469befb596790126dd62b68484a4a1f72a5767fd6af77",
+    "netlist_source": "schematic",
+    "corner_section_libs": [
+      {
+        "name": "smbb000149.ngspice",
+        "path": null,
+        "scope": "external",
+        "sha256": "14451e922ea0f6b05c5ee86438fe4cdc11b8379e356d41ee1c65ac4e60e5d620"
+      }
+    ],
+    "remote": {
+      "provider": "aws-batch-fleet",
+      "job_id": "klt-sim-039553e7d0c8",
+      "bucket": "2am-batch-jobs-221082181346",
+      "region": "us-east-1",
+      "instance_id": "i-08dff33883b784cad",
+      "instance_type": "m7i.4xlarge",
+      "availability_zone": "us-east-1d",
+      "ami_id": "ami-0e40e3245f1923ac8",
+      "lifecycle": "spot",
+      "spot": true,
+      "state": "failed",
+      "exit_code": "1",
+      "concurrency": "1",
+      "physical_cores": "8",
+      "elapsed_seconds": 6
+    }
+  },
+  "coverage": {
+    "corners_simulated": 45,
+    "measurements_declared": 4,
+    "measurements_with_limits": 0,
+    "unrecognized_limit_keys": [],
+    "schema_version": 1,
+    "known": true,
+    "checked": [],
+    "skipped": [
+      {
+        "id": "measurement:[0,\"typical/vbl=0.900_vwl=5.000V/-40C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[0,\"typical/vbl=0.900_vwl=5.000V/-40C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[0,\"typical/vbl=0.900_vwl=5.000V/-40C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[0,\"typical/vbl=0.900_vwl=5.000V/-40C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[1,\"typical/vbl=0.900_vwl=5.000V/27C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[1,\"typical/vbl=0.900_vwl=5.000V/27C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[1,\"typical/vbl=0.900_vwl=5.000V/27C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[1,\"typical/vbl=0.900_vwl=5.000V/27C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[10,\"ff/vbl=0.900_vwl=5.000V/27C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[10,\"ff/vbl=0.900_vwl=5.000V/27C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[10,\"ff/vbl=0.900_vwl=5.000V/27C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[10,\"ff/vbl=0.900_vwl=5.000V/27C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[11,\"ff/vbl=0.900_vwl=5.000V/125C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[11,\"ff/vbl=0.900_vwl=5.000V/125C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[11,\"ff/vbl=0.900_vwl=5.000V/125C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[11,\"ff/vbl=0.900_vwl=5.000V/125C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[12,\"ff/vbl=1.000_vwl=5.000V/-40C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[12,\"ff/vbl=1.000_vwl=5.000V/-40C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[12,\"ff/vbl=1.000_vwl=5.000V/-40C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[12,\"ff/vbl=1.000_vwl=5.000V/-40C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[13,\"ff/vbl=1.000_vwl=5.000V/27C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[13,\"ff/vbl=1.000_vwl=5.000V/27C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[13,\"ff/vbl=1.000_vwl=5.000V/27C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[13,\"ff/vbl=1.000_vwl=5.000V/27C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[14,\"ff/vbl=1.000_vwl=5.000V/125C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[14,\"ff/vbl=1.000_vwl=5.000V/125C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[14,\"ff/vbl=1.000_vwl=5.000V/125C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[14,\"ff/vbl=1.000_vwl=5.000V/125C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[15,\"ff/vbl=1.100_vwl=5.000V/-40C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[15,\"ff/vbl=1.100_vwl=5.000V/-40C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[15,\"ff/vbl=1.100_vwl=5.000V/-40C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[15,\"ff/vbl=1.100_vwl=5.000V/-40C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[16,\"ff/vbl=1.100_vwl=5.000V/27C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[16,\"ff/vbl=1.100_vwl=5.000V/27C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[16,\"ff/vbl=1.100_vwl=5.000V/27C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[16,\"ff/vbl=1.100_vwl=5.000V/27C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[17,\"ff/vbl=1.100_vwl=5.000V/125C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[17,\"ff/vbl=1.100_vwl=5.000V/125C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[17,\"ff/vbl=1.100_vwl=5.000V/125C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[17,\"ff/vbl=1.100_vwl=5.000V/125C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[18,\"ss/vbl=0.900_vwl=5.000V/-40C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[18,\"ss/vbl=0.900_vwl=5.000V/-40C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[18,\"ss/vbl=0.900_vwl=5.000V/-40C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[18,\"ss/vbl=0.900_vwl=5.000V/-40C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[19,\"ss/vbl=0.900_vwl=5.000V/27C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[19,\"ss/vbl=0.900_vwl=5.000V/27C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[19,\"ss/vbl=0.900_vwl=5.000V/27C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[19,\"ss/vbl=0.900_vwl=5.000V/27C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[2,\"typical/vbl=0.900_vwl=5.000V/125C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[2,\"typical/vbl=0.900_vwl=5.000V/125C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[2,\"typical/vbl=0.900_vwl=5.000V/125C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[2,\"typical/vbl=0.900_vwl=5.000V/125C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[20,\"ss/vbl=0.900_vwl=5.000V/125C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[20,\"ss/vbl=0.900_vwl=5.000V/125C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[20,\"ss/vbl=0.900_vwl=5.000V/125C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[20,\"ss/vbl=0.900_vwl=5.000V/125C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[21,\"ss/vbl=1.000_vwl=5.000V/-40C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[21,\"ss/vbl=1.000_vwl=5.000V/-40C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[21,\"ss/vbl=1.000_vwl=5.000V/-40C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[21,\"ss/vbl=1.000_vwl=5.000V/-40C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[22,\"ss/vbl=1.000_vwl=5.000V/27C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[22,\"ss/vbl=1.000_vwl=5.000V/27C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[22,\"ss/vbl=1.000_vwl=5.000V/27C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[22,\"ss/vbl=1.000_vwl=5.000V/27C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[23,\"ss/vbl=1.000_vwl=5.000V/125C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[23,\"ss/vbl=1.000_vwl=5.000V/125C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[23,\"ss/vbl=1.000_vwl=5.000V/125C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[23,\"ss/vbl=1.000_vwl=5.000V/125C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[24,\"ss/vbl=1.100_vwl=5.000V/-40C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[24,\"ss/vbl=1.100_vwl=5.000V/-40C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[24,\"ss/vbl=1.100_vwl=5.000V/-40C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[24,\"ss/vbl=1.100_vwl=5.000V/-40C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[25,\"ss/vbl=1.100_vwl=5.000V/27C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[25,\"ss/vbl=1.100_vwl=5.000V/27C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[25,\"ss/vbl=1.100_vwl=5.000V/27C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[25,\"ss/vbl=1.100_vwl=5.000V/27C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[26,\"ss/vbl=1.100_vwl=5.000V/125C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[26,\"ss/vbl=1.100_vwl=5.000V/125C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[26,\"ss/vbl=1.100_vwl=5.000V/125C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[26,\"ss/vbl=1.100_vwl=5.000V/125C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[27,\"fs/vbl=0.900_vwl=5.000V/-40C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[27,\"fs/vbl=0.900_vwl=5.000V/-40C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[27,\"fs/vbl=0.900_vwl=5.000V/-40C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[27,\"fs/vbl=0.900_vwl=5.000V/-40C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[28,\"fs/vbl=0.900_vwl=5.000V/27C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[28,\"fs/vbl=0.900_vwl=5.000V/27C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[28,\"fs/vbl=0.900_vwl=5.000V/27C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[28,\"fs/vbl=0.900_vwl=5.000V/27C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[29,\"fs/vbl=0.900_vwl=5.000V/125C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[29,\"fs/vbl=0.900_vwl=5.000V/125C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[29,\"fs/vbl=0.900_vwl=5.000V/125C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[29,\"fs/vbl=0.900_vwl=5.000V/125C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[3,\"typical/vbl=1.000_vwl=5.000V/-40C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[3,\"typical/vbl=1.000_vwl=5.000V/-40C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[3,\"typical/vbl=1.000_vwl=5.000V/-40C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[3,\"typical/vbl=1.000_vwl=5.000V/-40C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[30,\"fs/vbl=1.000_vwl=5.000V/-40C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[30,\"fs/vbl=1.000_vwl=5.000V/-40C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[30,\"fs/vbl=1.000_vwl=5.000V/-40C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[30,\"fs/vbl=1.000_vwl=5.000V/-40C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[31,\"fs/vbl=1.000_vwl=5.000V/27C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[31,\"fs/vbl=1.000_vwl=5.000V/27C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[31,\"fs/vbl=1.000_vwl=5.000V/27C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[31,\"fs/vbl=1.000_vwl=5.000V/27C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[32,\"fs/vbl=1.000_vwl=5.000V/125C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[32,\"fs/vbl=1.000_vwl=5.000V/125C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[32,\"fs/vbl=1.000_vwl=5.000V/125C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[32,\"fs/vbl=1.000_vwl=5.000V/125C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[33,\"fs/vbl=1.100_vwl=5.000V/-40C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[33,\"fs/vbl=1.100_vwl=5.000V/-40C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[33,\"fs/vbl=1.100_vwl=5.000V/-40C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[33,\"fs/vbl=1.100_vwl=5.000V/-40C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[34,\"fs/vbl=1.100_vwl=5.000V/27C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[34,\"fs/vbl=1.100_vwl=5.000V/27C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[34,\"fs/vbl=1.100_vwl=5.000V/27C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[34,\"fs/vbl=1.100_vwl=5.000V/27C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[35,\"fs/vbl=1.100_vwl=5.000V/125C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[35,\"fs/vbl=1.100_vwl=5.000V/125C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[35,\"fs/vbl=1.100_vwl=5.000V/125C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[35,\"fs/vbl=1.100_vwl=5.000V/125C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[36,\"sf/vbl=0.900_vwl=5.000V/-40C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[36,\"sf/vbl=0.900_vwl=5.000V/-40C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[36,\"sf/vbl=0.900_vwl=5.000V/-40C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[36,\"sf/vbl=0.900_vwl=5.000V/-40C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[37,\"sf/vbl=0.900_vwl=5.000V/27C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[37,\"sf/vbl=0.900_vwl=5.000V/27C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[37,\"sf/vbl=0.900_vwl=5.000V/27C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[37,\"sf/vbl=0.900_vwl=5.000V/27C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[38,\"sf/vbl=0.900_vwl=5.000V/125C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[38,\"sf/vbl=0.900_vwl=5.000V/125C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[38,\"sf/vbl=0.900_vwl=5.000V/125C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[38,\"sf/vbl=0.900_vwl=5.000V/125C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[39,\"sf/vbl=1.000_vwl=5.000V/-40C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[39,\"sf/vbl=1.000_vwl=5.000V/-40C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[39,\"sf/vbl=1.000_vwl=5.000V/-40C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[39,\"sf/vbl=1.000_vwl=5.000V/-40C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[4,\"typical/vbl=1.000_vwl=5.000V/27C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[4,\"typical/vbl=1.000_vwl=5.000V/27C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[4,\"typical/vbl=1.000_vwl=5.000V/27C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[4,\"typical/vbl=1.000_vwl=5.000V/27C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[40,\"sf/vbl=1.000_vwl=5.000V/27C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[40,\"sf/vbl=1.000_vwl=5.000V/27C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[40,\"sf/vbl=1.000_vwl=5.000V/27C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[40,\"sf/vbl=1.000_vwl=5.000V/27C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[41,\"sf/vbl=1.000_vwl=5.000V/125C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[41,\"sf/vbl=1.000_vwl=5.000V/125C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[41,\"sf/vbl=1.000_vwl=5.000V/125C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[41,\"sf/vbl=1.000_vwl=5.000V/125C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[42,\"sf/vbl=1.100_vwl=5.000V/-40C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[42,\"sf/vbl=1.100_vwl=5.000V/-40C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[42,\"sf/vbl=1.100_vwl=5.000V/-40C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[42,\"sf/vbl=1.100_vwl=5.000V/-40C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[43,\"sf/vbl=1.100_vwl=5.000V/27C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[43,\"sf/vbl=1.100_vwl=5.000V/27C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[43,\"sf/vbl=1.100_vwl=5.000V/27C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[43,\"sf/vbl=1.100_vwl=5.000V/27C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[44,\"sf/vbl=1.100_vwl=5.000V/125C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[44,\"sf/vbl=1.100_vwl=5.000V/125C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[44,\"sf/vbl=1.100_vwl=5.000V/125C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[44,\"sf/vbl=1.100_vwl=5.000V/125C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[5,\"typical/vbl=1.000_vwl=5.000V/125C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[5,\"typical/vbl=1.000_vwl=5.000V/125C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[5,\"typical/vbl=1.000_vwl=5.000V/125C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[5,\"typical/vbl=1.000_vwl=5.000V/125C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[6,\"typical/vbl=1.100_vwl=5.000V/-40C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[6,\"typical/vbl=1.100_vwl=5.000V/-40C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[6,\"typical/vbl=1.100_vwl=5.000V/-40C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[6,\"typical/vbl=1.100_vwl=5.000V/-40C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[7,\"typical/vbl=1.100_vwl=5.000V/27C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[7,\"typical/vbl=1.100_vwl=5.000V/27C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[7,\"typical/vbl=1.100_vwl=5.000V/27C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[7,\"typical/vbl=1.100_vwl=5.000V/27C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[8,\"typical/vbl=1.100_vwl=5.000V/125C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[8,\"typical/vbl=1.100_vwl=5.000V/125C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[8,\"typical/vbl=1.100_vwl=5.000V/125C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[8,\"typical/vbl=1.100_vwl=5.000V/125C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[9,\"ff/vbl=0.900_vwl=5.000V/-40C\",\"iim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[9,\"ff/vbl=0.900_vwl=5.000V/-40C\",\"ire\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[9,\"ff/vbl=0.900_vwl=5.000V/-40C\",\"vim\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[9,\"ff/vbl=0.900_vwl=5.000V/-40C\",\"vre\"]/observation",
+        "reason": "unavailable_measurement"
+      }
+    ],
+    "inapplicable": [
+      {
+        "id": "measurement:[0,\"typical/vbl=0.900_vwl=5.000V/-40C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"typical/vbl=0.900_vwl=5.000V/-40C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"typical/vbl=0.900_vwl=5.000V/-40C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"typical/vbl=0.900_vwl=5.000V/-40C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"typical/vbl=0.900_vwl=5.000V/27C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"typical/vbl=0.900_vwl=5.000V/27C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"typical/vbl=0.900_vwl=5.000V/27C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"typical/vbl=0.900_vwl=5.000V/27C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[10,\"ff/vbl=0.900_vwl=5.000V/27C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[10,\"ff/vbl=0.900_vwl=5.000V/27C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[10,\"ff/vbl=0.900_vwl=5.000V/27C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[10,\"ff/vbl=0.900_vwl=5.000V/27C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[11,\"ff/vbl=0.900_vwl=5.000V/125C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[11,\"ff/vbl=0.900_vwl=5.000V/125C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[11,\"ff/vbl=0.900_vwl=5.000V/125C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[11,\"ff/vbl=0.900_vwl=5.000V/125C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[12,\"ff/vbl=1.000_vwl=5.000V/-40C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[12,\"ff/vbl=1.000_vwl=5.000V/-40C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[12,\"ff/vbl=1.000_vwl=5.000V/-40C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[12,\"ff/vbl=1.000_vwl=5.000V/-40C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[13,\"ff/vbl=1.000_vwl=5.000V/27C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[13,\"ff/vbl=1.000_vwl=5.000V/27C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[13,\"ff/vbl=1.000_vwl=5.000V/27C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[13,\"ff/vbl=1.000_vwl=5.000V/27C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[14,\"ff/vbl=1.000_vwl=5.000V/125C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[14,\"ff/vbl=1.000_vwl=5.000V/125C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[14,\"ff/vbl=1.000_vwl=5.000V/125C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[14,\"ff/vbl=1.000_vwl=5.000V/125C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[15,\"ff/vbl=1.100_vwl=5.000V/-40C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[15,\"ff/vbl=1.100_vwl=5.000V/-40C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[15,\"ff/vbl=1.100_vwl=5.000V/-40C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[15,\"ff/vbl=1.100_vwl=5.000V/-40C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[16,\"ff/vbl=1.100_vwl=5.000V/27C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[16,\"ff/vbl=1.100_vwl=5.000V/27C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[16,\"ff/vbl=1.100_vwl=5.000V/27C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[16,\"ff/vbl=1.100_vwl=5.000V/27C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[17,\"ff/vbl=1.100_vwl=5.000V/125C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[17,\"ff/vbl=1.100_vwl=5.000V/125C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[17,\"ff/vbl=1.100_vwl=5.000V/125C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[17,\"ff/vbl=1.100_vwl=5.000V/125C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[18,\"ss/vbl=0.900_vwl=5.000V/-40C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[18,\"ss/vbl=0.900_vwl=5.000V/-40C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[18,\"ss/vbl=0.900_vwl=5.000V/-40C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[18,\"ss/vbl=0.900_vwl=5.000V/-40C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[19,\"ss/vbl=0.900_vwl=5.000V/27C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[19,\"ss/vbl=0.900_vwl=5.000V/27C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[19,\"ss/vbl=0.900_vwl=5.000V/27C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[19,\"ss/vbl=0.900_vwl=5.000V/27C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"typical/vbl=0.900_vwl=5.000V/125C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"typical/vbl=0.900_vwl=5.000V/125C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"typical/vbl=0.900_vwl=5.000V/125C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"typical/vbl=0.900_vwl=5.000V/125C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[20,\"ss/vbl=0.900_vwl=5.000V/125C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[20,\"ss/vbl=0.900_vwl=5.000V/125C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[20,\"ss/vbl=0.900_vwl=5.000V/125C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[20,\"ss/vbl=0.900_vwl=5.000V/125C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[21,\"ss/vbl=1.000_vwl=5.000V/-40C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[21,\"ss/vbl=1.000_vwl=5.000V/-40C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[21,\"ss/vbl=1.000_vwl=5.000V/-40C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[21,\"ss/vbl=1.000_vwl=5.000V/-40C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[22,\"ss/vbl=1.000_vwl=5.000V/27C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[22,\"ss/vbl=1.000_vwl=5.000V/27C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[22,\"ss/vbl=1.000_vwl=5.000V/27C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[22,\"ss/vbl=1.000_vwl=5.000V/27C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[23,\"ss/vbl=1.000_vwl=5.000V/125C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[23,\"ss/vbl=1.000_vwl=5.000V/125C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[23,\"ss/vbl=1.000_vwl=5.000V/125C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[23,\"ss/vbl=1.000_vwl=5.000V/125C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[24,\"ss/vbl=1.100_vwl=5.000V/-40C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[24,\"ss/vbl=1.100_vwl=5.000V/-40C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[24,\"ss/vbl=1.100_vwl=5.000V/-40C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[24,\"ss/vbl=1.100_vwl=5.000V/-40C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[25,\"ss/vbl=1.100_vwl=5.000V/27C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[25,\"ss/vbl=1.100_vwl=5.000V/27C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[25,\"ss/vbl=1.100_vwl=5.000V/27C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[25,\"ss/vbl=1.100_vwl=5.000V/27C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[26,\"ss/vbl=1.100_vwl=5.000V/125C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[26,\"ss/vbl=1.100_vwl=5.000V/125C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[26,\"ss/vbl=1.100_vwl=5.000V/125C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[26,\"ss/vbl=1.100_vwl=5.000V/125C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[27,\"fs/vbl=0.900_vwl=5.000V/-40C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[27,\"fs/vbl=0.900_vwl=5.000V/-40C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[27,\"fs/vbl=0.900_vwl=5.000V/-40C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[27,\"fs/vbl=0.900_vwl=5.000V/-40C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[28,\"fs/vbl=0.900_vwl=5.000V/27C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[28,\"fs/vbl=0.900_vwl=5.000V/27C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[28,\"fs/vbl=0.900_vwl=5.000V/27C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[28,\"fs/vbl=0.900_vwl=5.000V/27C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[29,\"fs/vbl=0.900_vwl=5.000V/125C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[29,\"fs/vbl=0.900_vwl=5.000V/125C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[29,\"fs/vbl=0.900_vwl=5.000V/125C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[29,\"fs/vbl=0.900_vwl=5.000V/125C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"typical/vbl=1.000_vwl=5.000V/-40C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"typical/vbl=1.000_vwl=5.000V/-40C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"typical/vbl=1.000_vwl=5.000V/-40C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"typical/vbl=1.000_vwl=5.000V/-40C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[30,\"fs/vbl=1.000_vwl=5.000V/-40C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[30,\"fs/vbl=1.000_vwl=5.000V/-40C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[30,\"fs/vbl=1.000_vwl=5.000V/-40C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[30,\"fs/vbl=1.000_vwl=5.000V/-40C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[31,\"fs/vbl=1.000_vwl=5.000V/27C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[31,\"fs/vbl=1.000_vwl=5.000V/27C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[31,\"fs/vbl=1.000_vwl=5.000V/27C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[31,\"fs/vbl=1.000_vwl=5.000V/27C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[32,\"fs/vbl=1.000_vwl=5.000V/125C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[32,\"fs/vbl=1.000_vwl=5.000V/125C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[32,\"fs/vbl=1.000_vwl=5.000V/125C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[32,\"fs/vbl=1.000_vwl=5.000V/125C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[33,\"fs/vbl=1.100_vwl=5.000V/-40C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[33,\"fs/vbl=1.100_vwl=5.000V/-40C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[33,\"fs/vbl=1.100_vwl=5.000V/-40C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[33,\"fs/vbl=1.100_vwl=5.000V/-40C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[34,\"fs/vbl=1.100_vwl=5.000V/27C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[34,\"fs/vbl=1.100_vwl=5.000V/27C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[34,\"fs/vbl=1.100_vwl=5.000V/27C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[34,\"fs/vbl=1.100_vwl=5.000V/27C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[35,\"fs/vbl=1.100_vwl=5.000V/125C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[35,\"fs/vbl=1.100_vwl=5.000V/125C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[35,\"fs/vbl=1.100_vwl=5.000V/125C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[35,\"fs/vbl=1.100_vwl=5.000V/125C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[36,\"sf/vbl=0.900_vwl=5.000V/-40C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[36,\"sf/vbl=0.900_vwl=5.000V/-40C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[36,\"sf/vbl=0.900_vwl=5.000V/-40C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[36,\"sf/vbl=0.900_vwl=5.000V/-40C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[37,\"sf/vbl=0.900_vwl=5.000V/27C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[37,\"sf/vbl=0.900_vwl=5.000V/27C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[37,\"sf/vbl=0.900_vwl=5.000V/27C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[37,\"sf/vbl=0.900_vwl=5.000V/27C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[38,\"sf/vbl=0.900_vwl=5.000V/125C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[38,\"sf/vbl=0.900_vwl=5.000V/125C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[38,\"sf/vbl=0.900_vwl=5.000V/125C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[38,\"sf/vbl=0.900_vwl=5.000V/125C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[39,\"sf/vbl=1.000_vwl=5.000V/-40C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[39,\"sf/vbl=1.000_vwl=5.000V/-40C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[39,\"sf/vbl=1.000_vwl=5.000V/-40C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[39,\"sf/vbl=1.000_vwl=5.000V/-40C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"typical/vbl=1.000_vwl=5.000V/27C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"typical/vbl=1.000_vwl=5.000V/27C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"typical/vbl=1.000_vwl=5.000V/27C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"typical/vbl=1.000_vwl=5.000V/27C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[40,\"sf/vbl=1.000_vwl=5.000V/27C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[40,\"sf/vbl=1.000_vwl=5.000V/27C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[40,\"sf/vbl=1.000_vwl=5.000V/27C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[40,\"sf/vbl=1.000_vwl=5.000V/27C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[41,\"sf/vbl=1.000_vwl=5.000V/125C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[41,\"sf/vbl=1.000_vwl=5.000V/125C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[41,\"sf/vbl=1.000_vwl=5.000V/125C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[41,\"sf/vbl=1.000_vwl=5.000V/125C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[42,\"sf/vbl=1.100_vwl=5.000V/-40C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[42,\"sf/vbl=1.100_vwl=5.000V/-40C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[42,\"sf/vbl=1.100_vwl=5.000V/-40C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[42,\"sf/vbl=1.100_vwl=5.000V/-40C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[43,\"sf/vbl=1.100_vwl=5.000V/27C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[43,\"sf/vbl=1.100_vwl=5.000V/27C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[43,\"sf/vbl=1.100_vwl=5.000V/27C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[43,\"sf/vbl=1.100_vwl=5.000V/27C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[44,\"sf/vbl=1.100_vwl=5.000V/125C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[44,\"sf/vbl=1.100_vwl=5.000V/125C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[44,\"sf/vbl=1.100_vwl=5.000V/125C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[44,\"sf/vbl=1.100_vwl=5.000V/125C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"typical/vbl=1.000_vwl=5.000V/125C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"typical/vbl=1.000_vwl=5.000V/125C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"typical/vbl=1.000_vwl=5.000V/125C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"typical/vbl=1.000_vwl=5.000V/125C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"typical/vbl=1.100_vwl=5.000V/-40C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"typical/vbl=1.100_vwl=5.000V/-40C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"typical/vbl=1.100_vwl=5.000V/-40C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"typical/vbl=1.100_vwl=5.000V/-40C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"typical/vbl=1.100_vwl=5.000V/27C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"typical/vbl=1.100_vwl=5.000V/27C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"typical/vbl=1.100_vwl=5.000V/27C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"typical/vbl=1.100_vwl=5.000V/27C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"typical/vbl=1.100_vwl=5.000V/125C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"typical/vbl=1.100_vwl=5.000V/125C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"typical/vbl=1.100_vwl=5.000V/125C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"typical/vbl=1.100_vwl=5.000V/125C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[9,\"ff/vbl=0.900_vwl=5.000V/-40C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[9,\"ff/vbl=0.900_vwl=5.000V/-40C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[9,\"ff/vbl=0.900_vwl=5.000V/-40C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[9,\"ff/vbl=0.900_vwl=5.000V/-40C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      }
+    ],
+    "unknown": [],
+    "nothing_checked": true,
+    "nothing_checked_reasons": [
+      "characterization_without_limits",
+      "unavailable_measurement"
+    ]
+  },
+  "provenance": {
+    "klt_version": "0.6.0+g1eb3e4bfd0f5",
+    "klayout_version": "0.30.12",
+    "pdk": {
+      "name": "gf180mcuD",
+      "source": "search root: ~/.volare",
+      "version": "open_pdks c6d73a35f524070e85faff4a6a9eef49553ebc2b"
+    },
+    "deck": {
+      "name": "sm141064.ngspice",
+      "content_hash": "sha256:6edba54d23b38a2c60f8ffdbaa3eb75a7568c615e4820808969bd1121b77b1aa",
+      "released": false
+    },
+    "input": {
+      "content_hash": "sha256:39eee72fb07673f988f469befb596790126dd62b68484a4a1f72a5767fd6af77",
+      "role": "netlist"
+    }
+  },
+  "measurements": [
+    {
+      "name": "ire",
+      "unit": "A",
+      "limits": null,
+      "status": "error",
+      "worst_case": {
+        "corner_id": "typical/vbl=0.900_vwl=5.000V/-40C",
+        "value": null,
+        "margin": null
+      }
+    },
+    {
+      "name": "iim",
+      "unit": "A",
+      "limits": null,
+      "status": "error",
+      "worst_case": {
+        "corner_id": "typical/vbl=0.900_vwl=5.000V/-40C",
+        "value": null,
+        "margin": null
+      }
+    },
+    {
+      "name": "vre",
+      "unit": "V",
+      "limits": null,
+      "status": "error",
+      "worst_case": {
+        "corner_id": "typical/vbl=0.900_vwl=5.000V/-40C",
+        "value": null,
+        "margin": null
+      }
+    },
+    {
+      "name": "vim",
+      "unit": "V",
+      "limits": null,
+      "status": "error",
+      "worst_case": {
+        "corner_id": "typical/vbl=0.900_vwl=5.000V/-40C",
+        "value": null,
+        "margin": null
+      }
+    }
+  ],
+  "corners": [
+    {
+      "corner_id": "typical/vbl=0.900_vwl=5.000V/-40C",
+      "process": "typical",
+      "supply_v": {
+        "vbl": 0.9,
+        "vwl": 5.0
+      },
+      "temperature_c": -40,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "typical/vbl=0.900_vwl=5.000V/27C",
+      "process": "typical",
+      "supply_v": {
+        "vbl": 0.9,
+        "vwl": 5.0
+      },
+      "temperature_c": 27,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "typical/vbl=0.900_vwl=5.000V/125C",
+      "process": "typical",
+      "supply_v": {
+        "vbl": 0.9,
+        "vwl": 5.0
+      },
+      "temperature_c": 125,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "typical/vbl=1.000_vwl=5.000V/-40C",
+      "process": "typical",
+      "supply_v": {
+        "vbl": 1.0,
+        "vwl": 5.0
+      },
+      "temperature_c": -40,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "typical/vbl=1.000_vwl=5.000V/27C",
+      "process": "typical",
+      "supply_v": {
+        "vbl": 1.0,
+        "vwl": 5.0
+      },
+      "temperature_c": 27,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "typical/vbl=1.000_vwl=5.000V/125C",
+      "process": "typical",
+      "supply_v": {
+        "vbl": 1.0,
+        "vwl": 5.0
+      },
+      "temperature_c": 125,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "typical/vbl=1.100_vwl=5.000V/-40C",
+      "process": "typical",
+      "supply_v": {
+        "vbl": 1.1,
+        "vwl": 5.0
+      },
+      "temperature_c": -40,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "typical/vbl=1.100_vwl=5.000V/27C",
+      "process": "typical",
+      "supply_v": {
+        "vbl": 1.1,
+        "vwl": 5.0
+      },
+      "temperature_c": 27,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "typical/vbl=1.100_vwl=5.000V/125C",
+      "process": "typical",
+      "supply_v": {
+        "vbl": 1.1,
+        "vwl": 5.0
+      },
+      "temperature_c": 125,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ff/vbl=0.900_vwl=5.000V/-40C",
+      "process": "ff",
+      "supply_v": {
+        "vbl": 0.9,
+        "vwl": 5.0
+      },
+      "temperature_c": -40,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ff/vbl=0.900_vwl=5.000V/27C",
+      "process": "ff",
+      "supply_v": {
+        "vbl": 0.9,
+        "vwl": 5.0
+      },
+      "temperature_c": 27,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ff/vbl=0.900_vwl=5.000V/125C",
+      "process": "ff",
+      "supply_v": {
+        "vbl": 0.9,
+        "vwl": 5.0
+      },
+      "temperature_c": 125,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ff/vbl=1.000_vwl=5.000V/-40C",
+      "process": "ff",
+      "supply_v": {
+        "vbl": 1.0,
+        "vwl": 5.0
+      },
+      "temperature_c": -40,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ff/vbl=1.000_vwl=5.000V/27C",
+      "process": "ff",
+      "supply_v": {
+        "vbl": 1.0,
+        "vwl": 5.0
+      },
+      "temperature_c": 27,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ff/vbl=1.000_vwl=5.000V/125C",
+      "process": "ff",
+      "supply_v": {
+        "vbl": 1.0,
+        "vwl": 5.0
+      },
+      "temperature_c": 125,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ff/vbl=1.100_vwl=5.000V/-40C",
+      "process": "ff",
+      "supply_v": {
+        "vbl": 1.1,
+        "vwl": 5.0
+      },
+      "temperature_c": -40,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ff/vbl=1.100_vwl=5.000V/27C",
+      "process": "ff",
+      "supply_v": {
+        "vbl": 1.1,
+        "vwl": 5.0
+      },
+      "temperature_c": 27,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ff/vbl=1.100_vwl=5.000V/125C",
+      "process": "ff",
+      "supply_v": {
+        "vbl": 1.1,
+        "vwl": 5.0
+      },
+      "temperature_c": 125,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ss/vbl=0.900_vwl=5.000V/-40C",
+      "process": "ss",
+      "supply_v": {
+        "vbl": 0.9,
+        "vwl": 5.0
+      },
+      "temperature_c": -40,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ss/vbl=0.900_vwl=5.000V/27C",
+      "process": "ss",
+      "supply_v": {
+        "vbl": 0.9,
+        "vwl": 5.0
+      },
+      "temperature_c": 27,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ss/vbl=0.900_vwl=5.000V/125C",
+      "process": "ss",
+      "supply_v": {
+        "vbl": 0.9,
+        "vwl": 5.0
+      },
+      "temperature_c": 125,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ss/vbl=1.000_vwl=5.000V/-40C",
+      "process": "ss",
+      "supply_v": {
+        "vbl": 1.0,
+        "vwl": 5.0
+      },
+      "temperature_c": -40,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ss/vbl=1.000_vwl=5.000V/27C",
+      "process": "ss",
+      "supply_v": {
+        "vbl": 1.0,
+        "vwl": 5.0
+      },
+      "temperature_c": 27,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ss/vbl=1.000_vwl=5.000V/125C",
+      "process": "ss",
+      "supply_v": {
+        "vbl": 1.0,
+        "vwl": 5.0
+      },
+      "temperature_c": 125,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ss/vbl=1.100_vwl=5.000V/-40C",
+      "process": "ss",
+      "supply_v": {
+        "vbl": 1.1,
+        "vwl": 5.0
+      },
+      "temperature_c": -40,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ss/vbl=1.100_vwl=5.000V/27C",
+      "process": "ss",
+      "supply_v": {
+        "vbl": 1.1,
+        "vwl": 5.0
+      },
+      "temperature_c": 27,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ss/vbl=1.100_vwl=5.000V/125C",
+      "process": "ss",
+      "supply_v": {
+        "vbl": 1.1,
+        "vwl": 5.0
+      },
+      "temperature_c": 125,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "fs/vbl=0.900_vwl=5.000V/-40C",
+      "process": "fs",
+      "supply_v": {
+        "vbl": 0.9,
+        "vwl": 5.0
+      },
+      "temperature_c": -40,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "fs/vbl=0.900_vwl=5.000V/27C",
+      "process": "fs",
+      "supply_v": {
+        "vbl": 0.9,
+        "vwl": 5.0
+      },
+      "temperature_c": 27,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "fs/vbl=0.900_vwl=5.000V/125C",
+      "process": "fs",
+      "supply_v": {
+        "vbl": 0.9,
+        "vwl": 5.0
+      },
+      "temperature_c": 125,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "fs/vbl=1.000_vwl=5.000V/-40C",
+      "process": "fs",
+      "supply_v": {
+        "vbl": 1.0,
+        "vwl": 5.0
+      },
+      "temperature_c": -40,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "fs/vbl=1.000_vwl=5.000V/27C",
+      "process": "fs",
+      "supply_v": {
+        "vbl": 1.0,
+        "vwl": 5.0
+      },
+      "temperature_c": 27,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "fs/vbl=1.000_vwl=5.000V/125C",
+      "process": "fs",
+      "supply_v": {
+        "vbl": 1.0,
+        "vwl": 5.0
+      },
+      "temperature_c": 125,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "fs/vbl=1.100_vwl=5.000V/-40C",
+      "process": "fs",
+      "supply_v": {
+        "vbl": 1.1,
+        "vwl": 5.0
+      },
+      "temperature_c": -40,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "fs/vbl=1.100_vwl=5.000V/27C",
+      "process": "fs",
+      "supply_v": {
+        "vbl": 1.1,
+        "vwl": 5.0
+      },
+      "temperature_c": 27,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "fs/vbl=1.100_vwl=5.000V/125C",
+      "process": "fs",
+      "supply_v": {
+        "vbl": 1.1,
+        "vwl": 5.0
+      },
+      "temperature_c": 125,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "sf/vbl=0.900_vwl=5.000V/-40C",
+      "process": "sf",
+      "supply_v": {
+        "vbl": 0.9,
+        "vwl": 5.0
+      },
+      "temperature_c": -40,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "sf/vbl=0.900_vwl=5.000V/27C",
+      "process": "sf",
+      "supply_v": {
+        "vbl": 0.9,
+        "vwl": 5.0
+      },
+      "temperature_c": 27,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "sf/vbl=0.900_vwl=5.000V/125C",
+      "process": "sf",
+      "supply_v": {
+        "vbl": 0.9,
+        "vwl": 5.0
+      },
+      "temperature_c": 125,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "sf/vbl=1.000_vwl=5.000V/-40C",
+      "process": "sf",
+      "supply_v": {
+        "vbl": 1.0,
+        "vwl": 5.0
+      },
+      "temperature_c": -40,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "sf/vbl=1.000_vwl=5.000V/27C",
+      "process": "sf",
+      "supply_v": {
+        "vbl": 1.0,
+        "vwl": 5.0
+      },
+      "temperature_c": 27,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "sf/vbl=1.000_vwl=5.000V/125C",
+      "process": "sf",
+      "supply_v": {
+        "vbl": 1.0,
+        "vwl": 5.0
+      },
+      "temperature_c": 125,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "sf/vbl=1.100_vwl=5.000V/-40C",
+      "process": "sf",
+      "supply_v": {
+        "vbl": 1.1,
+        "vwl": 5.0
+      },
+      "temperature_c": -40,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "sf/vbl=1.100_vwl=5.000V/27C",
+      "process": "sf",
+      "supply_v": {
+        "vbl": 1.1,
+        "vwl": 5.0
+      },
+      "temperature_c": 27,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "sf/vbl=1.100_vwl=5.000V/125C",
+      "process": "sf",
+      "supply_v": {
+        "vbl": 1.1,
+        "vwl": 5.0
+      },
+      "temperature_c": 125,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": null,
+          "unit": "V",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-039553e7d0c8 finished 'failed' without a usable report: job command exited 1"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    }
+  ]
+}
