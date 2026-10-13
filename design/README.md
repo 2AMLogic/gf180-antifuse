@@ -214,6 +214,7 @@ evidence — see below. The cornered per-region bench for the array slices is
 | `check-array.py` | Region-map drift check (see above). stdlib only. |
 | `netlists/*.spice` | **Derived.** xschem's netlist export (cells, level shifters, pass-gates, array, slices). Do not edit; regenerate. |
 | `tb/tb_cell_candidateN.spice` | Elaboration / parameter-propagation decks for `check-netlists.sh`. Not evidence, not cornered. |
+| `breakdown/` | Behavioral breakdown-augmented wrappers `cell_candidateN_bd` around the unmodified netlists, plus the labelled-parameter file. Hand-written, not derived; see [`breakdown/README.md`](breakdown/README.md). |
 | `xschemrc` | Project xschem config: PDK library path, this repo's cells, `split_files`. |
 | `regen-netlists.sh` | Runs `gen_array.py`, then regenerates `netlists/` from `cells/` and `array/`. `--check` diffs instead of writing. |
 | `check-netlists.sh` | Runs all five checks below. |

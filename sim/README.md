@@ -161,3 +161,9 @@ documented invocation, not re-implementing per-experiment logic.
 See [`sim/cell-device-characterization/README.md`](cell-device-characterization/README.md)
 for that experiment's methodology, the two PDK/ngspice findings that shaped
 its testbench design, and how to read its records.
+
+## Derived reports
+
+`sim/characterization-report/` holds a deterministic, hash-pinned generator that
+summarizes selected committed records per region and sub-configuration without
+editing them (see its README). Its bundles are append-only like records.
