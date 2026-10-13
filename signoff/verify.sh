@@ -93,6 +93,22 @@ for item, entry in (manifest.get("evidence") or {}).items():
     elif "command" not in entry:
         problems.append(f"{where} has neither a 'file' nor a 'command'")
 
+# `supporting_evidence` is NOT read by `klt signoff` (an unknown top-level key
+# is ignored), so it can never move a row. It records klt envelopes that back
+# claims the grader has no row for; this script is the only thing that keeps it
+# honest, so every entry must name a file that exists and whose sha256 matches.
+import hashlib
+
+for i, entry in enumerate(manifest.get("supporting_evidence") or []):
+    where = f"supporting_evidence[{i}]"
+    path = os.path.join(repo_root, str(entry.get("file", "")))
+    if not os.path.isfile(path):
+        problems.append(f"{where} cites {entry.get('file')!r}, which is not in the tree")
+        continue
+    digest = "sha256:" + hashlib.sha256(open(path, "rb").read()).hexdigest()
+    if entry.get("content_hash") != digest:
+        problems.append(f"{where} content_hash does not match {entry['file']} (now {digest})")
+
 if problems:
     for problem in problems:
         print(f"signoff/verify.sh: {problem}", file=sys.stderr)

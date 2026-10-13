@@ -1,0 +1,95 @@
+== c1_access-min_cap-2x/ioff: rc=1
+{
+  "schema_version": 1,
+  "error": {
+    "command": "sim",
+    "message": "batch backend failed: batch-fleet-provision.sh launch failed (exit 1): error: 8 instance(s) already running + 1 requested exceeds BATCH_MAX_CONCURRENT_INSTANCES=8"
+  }
+}
+
+== c1_access-min_cap-2x/ron: rc=1
+{
+  "schema_version": 1,
+  "error": {
+    "command": "sim",
+    "message": "batch backend failed: batch-fleet-provision.sh launch failed (exit 1): error: 8 instance(s) already running + 1 requested exceeds BATCH_MAX_CONCURRENT_INSTANCES=8"
+  }
+}
+
+== c1_access-2x_cap-2x/ioff: rc=1
+{
+  "schema_version": 1,
+  "error": {
+    "command": "sim",
+    "message": "batch backend failed: batch-fleet-provision.sh launch failed (exit 1): error: 8 instance(s) already running + 1 requested exceeds BATCH_MAX_CONCURRENT_INSTANCES=8"
+  }
+}
+
+== c1_access-2x_cap-2x/ron: rc=1
+{
+  "schema_version": 1,
+  "error": {
+    "command": "sim",
+    "message": "batch backend failed: batch-fleet-provision.sh launch failed (exit 1): error: 8 instance(s) already running + 1 requested exceeds BATCH_MAX_CONCURRENT_INSTANCES=8"
+  }
+}
+
+== c2_access-min_cap-min/ioff: rc=4
+
+== c2_access-min_cap-min/ron: rc=4
+
+== c2_access-min_cap-2x/ioff: rc=4
+
+== c2_access-min_cap-2x/ron: rc=4
+
+== c2_access-2x_cap-min/ioff: rc=4
+
+== c2_access-2x_cap-min/ron: rc=4
+
+== c2_access-2x_cap-2x/ioff: rc=1
+{
+  "schema_version": 1,
+  "error": {
+    "command": "sim",
+    "message": "batch backend failed: batch-fleet-provision.sh launch failed (exit 1): error: 8 instance(s) already running + 1 requested exceeds BATCH_MAX_CONCURRENT_INSTANCES=8"
+  }
+}
+
+== c2_access-2x_cap-2x/ron: rc=4
+
+== c3_access-min_cap-min/ioff: rc=1
+{
+  "schema_version": 1,
+  "error": {
+    "command": "sim",
+    "message": "batch backend failed: batch-fleet-provision.sh launch failed (exit 1): error: 9 instance(s) already running + 1 requested exceeds BATCH_MAX_CONCURRENT_INSTANCES=8"
+  }
+}
+
+== c3_access-min_cap-min/ron: rc=1
+{
+  "schema_version": 1,
+  "error": {
+    "command": "sim",
+    "message": "batch backend failed: batch-fleet-provision.sh launch failed (exit 1): error: 8 instance(s) already running + 1 requested exceeds BATCH_MAX_CONCURRENT_INSTANCES=8"
+  }
+}
+
+== c3_access-min_cap-2x/ioff: rc=1
+{
+  "schema_version": 1,
+  "error": {
+    "command": "sim",
+    "message": "batch backend failed: batch-fleet-provision.sh launch failed (exit 1): error: 8 instance(s) already running + 1 requested exceeds BATCH_MAX_CONCURRENT_INSTANCES=8"
+  }
+}
+
+== c3_access-2x_cap-min/ron: rc=1
+{
+  "schema_version": 1,
+  "error": {
+    "command": "sim",
+    "message": "batch backend failed: batch-fleet-provision.sh launch failed (exit 1): error: 8 instance(s) already running + 1 requested exceeds BATCH_MAX_CONCURRENT_INSTANCES=8"
+  }
+}
+
