@@ -383,9 +383,14 @@ STIM_DRIVE = {"trig1": "pl", "trigc": "pl", "prog": "bl", "progc": "bl"}
 #   cinf  f(u)/(f(u)+f(1-u)), f(u) = exp(-1/u): every derivative is
 #         continuous and zero at both ends of each edge
 STIM_EDGE = {"trig1": "rc", "prog": "rc", "trigc": "cinf", "progc": "cinf"}
+# The stock cell in the trigc deck, started from ngspice's computed operating
+# point instead of `uic` (README "Transient start"): a reproducer of the one
+# known start-up failure, at the rated level only (no stress needed).
+OPSTART_BENCH = "opstart"
 CAMPAIGNS = {
     "conv74": ("trigger",) + tuple(f"{s}_{v}" for s in ("trig1", "prog") for v in ("st", "b0", "b1m", "b1l")),
     "conv74c": tuple(f"{s}_{v}" for s in ("trigc", "progc") for v in ("st", "b0", "b1m", "b1l")),
+    "opstart": (OPSTART_BENCH,),
 }
 CONV_VARIANTS = {
     "st": "stock cell (design/netlists, unwrapped)",
@@ -683,6 +688,10 @@ def make_request(bench: str, cand, pdk: P.PDKPaths, measurements: list[dict], pa
         req["corners"]["supply_v"] = {"vamp": [round(x, 6) for x in conv_levels(cand, params, conv_split(bench)[0])]}
         req["analysis"] = {"kind": "tran", "args": f"{fmt(TRIG_TSTEP)} {fmt(TRIG_TSTOP)} uic"}
         return req
+    if bench == OPSTART_BENCH:
+        req["corners"]["supply_v"] = {"vamp": [round(conv_levels(cand, params, "trigc")[0], 6)]}
+        req["analysis"] = {"kind": "tran", "args": f"{fmt(TRIG_TSTEP)} {fmt(TRIG_TSTOP)}"}  # no uic
+        return req
     req["analysis"] = {
         "access_op": {"kind": "dc", "args": DC_ARGS},
         "access_ac": {"kind": "ac", "args": f"lin 3 {fmt(F_RON / 2)} {fmt(F_RON * 1.5)}"},
@@ -699,14 +708,15 @@ def make_request(bench: str, cand, pdk: P.PDKPaths, measurements: list[dict], pa
 
 
 BENCHES = ("access_op", "access_ac", "cap_op", "cap_ac", "trigger")
-ALL_BENCHES = BENCHES + CONV_BENCHES
+ALL_BENCHES = BENCHES + CONV_BENCHES + (OPSTART_BENCH,)
 
 
 def build_body(bench: str, pdk, cand, defaults, body_dir: Path, lib_root: str,
                params: dict | None = None) -> tuple[str, list[dict]]:
-    if bench in CONV_BENCHES:
+    if bench in CONV_BENCHES or bench == OPSTART_BENCH:
         assert params is not None
-        return body_conv(pdk, cand, defaults, body_dir, lib_root, bench, params)
+        return body_conv(pdk, cand, defaults, body_dir, lib_root,
+                         "trigc_st" if bench == OPSTART_BENCH else bench, params)
     if bench.startswith("access"):
         return body_access(pdk, cand, defaults, body_dir, bench, lib_root)
     if bench.startswith("cap"):
@@ -755,6 +765,8 @@ def corner_key(bench: str, corner: dict, cand, params: dict) -> str:
     elif bench == "trigger":
         inst = "a" if abs(sv.get("vampa", 0.0)) > 0 else "b"
         tok = C.fmt_node_supply(f"pl{inst}", sv[f"vamp{inst}"])
+    elif bench == OPSTART_BENCH:
+        tok = C.fmt_node_supply("pl", sv["vamp"])
     elif bench in CONV_BENCHES:
         tok = C.fmt_node_supply("pl" if STIM_DRIVE[conv_split(bench)[0]] == "pl" else "vpp", sv["vamp"])
     else:
@@ -1235,6 +1247,7 @@ def render_conv_record(pdk, cand, rid: str, results: dict[str, BenchResult], par
     render_conv_matrix(a, cand, params, results)
     render_control(a, cand, params, results, orig_rid)
     render_attribution(a, rid, results)
+    render_opstart(a, rid, results)
     for stim in CONV_STIMULI:
         render_conv_trigger(a, cand, params, results, stim)
     if any(b in results for b in CONV_BENCHES):
@@ -1262,11 +1275,14 @@ def render_conv_matrix(a, cand, params, results) -> None:
     a("")
     a("    | Bench | Stimulus / variant | Attempted | Pass | Timeout | Timestep | Missing | Other | klt | Job |")
     a("    |---|---|---|---|---|---|---|---|---|---|")
-    for b in (CONTROL_BENCH,) + CONV_BENCHES:
+    for b in (CONTROL_BENCH,) + CONV_BENCHES + (OPSTART_BENCH,):
         r = results.get(b)
         if r is None:
             continue
-        desc = "control: #62 two-instance bench, unchanged" if b == CONTROL_BENCH else \
+        if b == OPSTART_BENCH:
+            desc = "stock cell, trigc deck, rated level, operating-point start (no `uic`)"
+        else:
+            desc = "control: #62 two-instance bench, unchanged" if b == CONTROL_BENCH else \
             f"{b.split('_')[0]} / {CONV_VARIANTS[conv_split(b)[1]]}"
         job = (r.remote or {}).get("job_id", "?") if r.remote else ("submit-error" if r.error else "?")
         t = tally([o["kind"] for o in r.outcome.values()])
@@ -1355,6 +1371,22 @@ def render_attribution(a, rid, results) -> None:
         a("    - none: every corner of every single-instance bench converged.")
 
 
+def render_opstart(a, rid, results) -> None:
+    r = results.get(OPSTART_BENCH)
+    if r is None:
+        return
+    t = tally([o["kind"] for o in r.outcome.values()])
+    job = (r.remote or {}).get("job_id", "?") if r.remote else "?"
+    a(f"  - **(3b) Operating-point start, stock cell** (`{OPSTART_BENCH}`: the `trigc_st` deck at the rated level, "
+      "`tran` WITHOUT `uic`, job "
+      f"`{job}`): {t['pass']}/{t['attempted']} converged (timeout {t['timeout']}, timestep {t['timestep']}, "
+      f"missing {t['missing-measurement']}, other {t['error']}). No breakdown element is in this deck, so any "
+      "failure here is **stock-cell**; reproducers `corners/" + rid + f"/{OPSTART_BENCH}/<corner>.cir`:")
+    for cid in sorted(r.outcome, key=lambda c: (c.split("_")[1], corner_temp(c))):
+        o = r.outcome[cid]
+        a(f"    - `{cid}`: {o['kind']}" + (f" at t = {o['time']:.4e} s in `{o['node']}`" if o["kind"] == "timestep" else ""))
+
+
 def render_conv_trigger(a, cand, params, results, stim) -> None:
     b0 = results.get(f"{stim}_b0")
     rows = []
@@ -1433,6 +1465,8 @@ def render_conv_regression(a, results) -> None:
       "Relative deviation (absolute below 1 nV/nA):")
     for stim in CONV_STIMULI:
         st = results.get(f"{stim}_st")
+        if st is None:
+            continue
         c = compare_decks(st, results.get(f"{stim}_b0"))
         a(f"    - `{stim}` disabled (`b0`) vs stock: {c['exact']}/{c['n']} exactly equal over {c['corners']} "
           f"corners; worst deviation {c['worst']:.2e}" + (f" at `{c['at']}`" if c["at"] else ""))
@@ -1599,7 +1633,7 @@ def results_from_reports(cand, rid: str, params: dict, benches=None) -> dict[str
 
 def render_any(pdk, cand, rid: str, results: dict[str, BenchResult], params: dict, dirty, note) -> str:
     """A run that includes any #74 bench gets the convergence record."""
-    if any(b in CONV_BENCHES for b in results):
+    if any(b in CONV_BENCHES or b == OPSTART_BENCH for b in results):
         return render_conv_record(pdk, cand, rid, results, params, dirty, note)
     return render_record(pdk, cand, rid, results, params, dirty, stored_record_id(cand), note)
 

@@ -101,6 +101,16 @@ class Stimuli(unittest.TestCase):
         self.assertIn(RE.CONTROL_BENCH, RE.CAMPAIGNS["conv74"])
         self.assertTrue(all(RE.STIM_EDGE[RE.conv_split(b)[0]] == "cinf" for b in RE.CAMPAIGNS["conv74c"]))
 
+    def test_opstart_request_has_no_uic_and_one_level(self):
+        import types
+        pdk = types.SimpleNamespace(variant="gf180mcuD")
+        req = RE.make_request(RE.OPSTART_BENCH, CAND[1], pdk, [], PARAMS)
+        self.assertNotIn("uic", req["analysis"]["args"])
+        self.assertEqual(req["corners"]["supply_v"], {"vamp": [CAND[1].cap_rated_v]})
+        req = RE.make_request("trigc_b1m", CAND[1], pdk, [], PARAMS)
+        self.assertTrue(req["analysis"]["args"].endswith(" uic"))
+        self.assertEqual(len(req["corners"]["supply_v"]["vamp"]), 5)
+
     def test_cinf_edge_is_smooth_and_reaches_both_rails(self):
         import math
 
