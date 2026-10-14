@@ -9,3 +9,4 @@ Ratified targets, the split-axis plan, and decision records. Spec changes land h
 - [`architecture.md`](architecture.md) — program/read architecture
 - [`program-voltage-decision.md`](program-voltage-decision.md) — on-die vs. off-die program voltage
 - [`supply-domains-decision.md`](supply-domains-decision.md) — supply-domain inventory (supply and return nets, domain-crossing rule, open items)
+- [`candidate3-read-bias-decision.md`](candidate3-read-bias-decision.md) — Candidate 3 (Region III) read bias: n-well tied to the read rail
