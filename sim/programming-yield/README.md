@@ -16,6 +16,71 @@ sub-configuration, under the behavioral breakdown-augmented model of
 > under a stated model and exercise the harness; they cannot replace
 > measured breakdown data.
 
+## Results so far
+
+All yields are **conditional on the assumed breakdown statistics** (banner
+above), pooled over the 9 PVT corners (n = 900 per cell unless stated),
+95 % Wilson interval. Per-corner rows, the worst corner per condition, the
+current distributions and the sampler check are in the records. One row per
+(region, access sizing); columns are the five pulse conditions of
+"Pulse conditions" (V = fraction of that candidate's own V_bd(1 us)).
+
+| Region / sizing | 0.96 V, 1 us | 1.00 V, 1 us (nominal) | 1.04 V, 1 us | 1.00 V, 0.25 us | 1.00 V, 4 us |
+|---|---|---|---|---|---|
+| I (C1) `min` | 0.010 [0.005, 0.019] | 0.513 [0.481, 0.546] | 1.000 [0.996, 1.000] | 0.094 [0.077, 0.115] | 0.997 [0.990, 0.999] |
+| I (C1) `2x` | 0.011 [0.006, 0.020] | 0.477 [0.444, 0.509] | 1.000 [0.996, 1.000] | 0.094 [0.077, 0.115] | 0.998 [0.992, 0.999] |
+| II (C2) `min`, latch + read | 0.011 | 0.477 | 1.000 | 0.064 | 0.998 |
+| II (C2) `min`, **with the assumed 1 mA bound** | 0.007 [0.003, 0.014] | 0.149 [0.127, 0.174] | 0.276 [0.247, 0.306] | 0.021 [0.014, 0.033] | 0.297 [0.268, 0.327] |
+| II (C2) `2x`, with the 1 mA bound | 0.007 [0.003, 0.014] | 0.148 [0.126, 0.172] | 0.272 [0.244, 0.302] | 0.021 [0.014, 0.033] | 0.290 [0.261, 0.320] |
+| III (C3) `min`, **upper bound** (no read criterion) | 0.011 [0.006, 0.020] | 0.477 [0.444, 0.509] | 1.000 [0.996, 1.000] | 0.094 [0.077, 0.115] | 0.997 [0.990, 0.999] |
+| III (C3) `2x`, **upper bound** | 0.011 [0.006, 0.020] | 0.477 [0.444, 0.509] | 1.000 [0.996, 1.000] | 0.094 [0.077, 0.115] | 0.997 [0.990, 0.999] |
+
+Sources (all append-only, in `records/`):
+
+| Region | Records |
+|---|---|
+| I | `20261013-200244-7932822` (access `min` all five conditions, `2x` at 0.25 us); `20261013-222809-e32ed34` (supplement: `2x` at the 1 us and 4 us conditions) |
+| II | `20261014-003936-81de201` (all conditions, flat-top current; supersedes `20261013-222806-e32ed34`, whose current criterion was wrong, see "Current criterion") |
+| III | `20261013-200250-7932822` (0.25 us and 4 us, both sizings); `20261013-222812-e32ed34` (supplement: the 1 us conditions); `20261014-003939-81de201` (supplement: the one cell of the previous record that timed out, 300 samples) |
+
+What the numbers do and do not say:
+
+- **The yield curves are steep and centred where designed.** Under the
+  assumed Weibull spread (beta = 1.5) the yield goes from about 1 % at 0.96
+  V_bd to about 50 % at 1.00 V_bd to 100 % at 1.04 V_bd at a 1 us width, and
+  from 9 % to 50 % to 99.7 % across a 0.25 / 1 / 4 us width sweep. The
+  closed-form cross-check agrees at every condition except the nominal one,
+  where it over-predicts by about 7 points (0.551 against 0.477-0.513) because it credits the
+  whole rising and falling edges as flat-top time; that offset is
+  structural, not a sampler fault (the sampler check is in every record).
+- **No PVT corner moves the latch rate resolvably.** The corner-to-corner
+  spread of a condition is within its per-corner interval; the model has no
+  temperature or process dependence of breakdown, so this is expected and is
+  a statement about the model.
+- **Access sizing does not move the latch rate either** (Candidate 1 `min`
+  0.513 against `2x` 0.477 at the nominal point; the two come from different
+  seed layouts, so they are *not* paired, and their intervals overlap).
+  Sizing moves the post-event *current* (Candidate 1: 88 uA against 154 uA
+  median), which matters only through the current bound.
+- **Candidate 1 and Candidate 3 coincide** because the model gives them the
+  same kinetics, nearly the same tox (8.0 against 7.9 nm), the same relative
+  pulse and the same seeded draws. That is the model's polarity blind spot
+  (`design/breakdown/README.md`), not a finding that PMOS and NMOS oxides
+  yield alike.
+- **Candidate 2's yield is dominated by the assumed current bound.** Its
+  post-event current is the 10 kohm median filament at 15 V across it, a
+  median 1.5 mA, so a 1 mA bound removes most latched cells (0.149 against
+  0.477 at the nominal point). With the real `I_target_max` and ballast
+  unknown, the no-bound column is the latch-and-read yield and the bounded
+  one is an illustration of how much that missing number matters.
+- **The read criterion never binds.** `I_ref` (geometric mean of the #62
+  window) is so far below the programmed read current at z up to 4 that
+  `z_crit` is 8 to 15 (a probability of 1.0000 under the assumed filament
+  distribution). The read side would only matter with a much wider filament
+  spread or a narrower window.
+- **Capacitor-geometry** is not resolvable (no area dependence in the
+  model), as above.
+
 ## What is sampled, and what counts as success
 
 One transient per sample, one breakdown event per deck. Per sample the

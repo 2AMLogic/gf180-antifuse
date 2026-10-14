@@ -22,6 +22,7 @@ workarounds are identical by construction.
 from __future__ import annotations
 
 import argparse
+import gzip
 import importlib.util
 import json
 import math
@@ -391,11 +392,30 @@ def stored_bd_record(cand) -> str | None:
 # ---------------------------------------------------------------------------
 
 
+def report_path(gdir: Path) -> Path | None:
+    for name in ("report.json.gz", "report.json"):
+        if (gdir / name).is_file():
+            return gdir / name
+    return None
+
+
+def read_report(path: Path) -> dict:
+    if path.suffix == ".gz":
+        with gzip.open(path, "rt") as fh:
+            return json.load(fh)
+    return json.loads(path.read_text())
+
+
 def run_group(bdir: Path, req: dict) -> tuple[dict | None, str | None]:
     R.write_once(bdir / "request.json", json.dumps(req, indent=2) + "\n")
     report, err = BM.run_klt(bdir / "request.json", bdir / ".work" / "klt", None)
     if report is not None and "corners" in report:
-        R.write_once(bdir / "report.json", json.dumps(report, indent=2) + "\n")
+        # gzip: the plain reports are ~1 MB per 300 samples; the content is byte-identical once gunzipped
+        gz = bdir / "report.json.gz"
+        if gz.exists():
+            raise FileExistsError(f"refusing to overwrite existing evidence file: {gz}")
+        with gzip.GzipFile(gz, "wb", mtime=0) as fh:
+            fh.write((json.dumps(report, indent=2) + "\n").encode())
         return report, None
     R.write_once(bdir / "submit-error.txt", (err or json.dumps(report)[:4000]) + "\n")
     return None, err or "no corners in report"
@@ -423,8 +443,9 @@ def load_run(cand, rid: str) -> tuple[dict[tuple[str, str], Group], dict | None,
     base = THIS_DIR / "corners" / rid
 
     def load_dir(gdir: Path) -> Group | None:
-        if (gdir / "report.json").is_file():
-            return parse_group(cand, json.loads((gdir / "report.json").read_text()), PARAMS)
+        rp = report_path(gdir)
+        if rp is not None:
+            return parse_group(cand, read_report(rp), PARAMS)
         if (gdir / "submit-error.txt").is_file():
             g = Group()
             g.error = (gdir / "submit-error.txt").read_text()
@@ -448,8 +469,8 @@ def load_run(cand, rid: str) -> tuple[dict[tuple[str, str], Group], dict | None,
                     seen = True
             if seen:
                 groups[(sz, cnd["tag"])] = merged
-    rt = base / "readtab" / "report.json"
-    readtab = json.loads(rt.read_text()) if rt.is_file() else None
+    rt = report_path(base / "readtab")
+    readtab = read_report(rt) if rt is not None else None
     rerr = (base / "readtab" / "submit-error.txt")
     return groups, readtab, rerr.read_text() if rerr.is_file() else None
 

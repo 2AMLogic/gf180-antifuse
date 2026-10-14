@@ -1,0 +1,84 @@
+{
+  "netlist": "body.spice",
+  "engine": "ngspice",
+  "backend": "batch",
+  "batch": {
+    "runner_version_check": "warn",
+    "capacity_wait_s": 1800
+  },
+  "measurements": [
+    {
+      "name": "st",
+      "spice": ".meas tran st FIND v(xa.xbd.st) AT=3.100000e-06",
+      "unit": "1"
+    },
+    {
+      "name": "dmg",
+      "spice": ".meas tran dmg FIND v(xa.xbd.dmg) AT=3.100000e-06",
+      "unit": "1"
+    },
+    {
+      "name": "ubd",
+      "spice": ".meas tran ubd FIND v(xa.xbd.ubdn) AT=3.100000e-06",
+      "unit": "1"
+    },
+    {
+      "name": "zrf",
+      "spice": ".meas tran zrf FIND v(xa.xbd.zrfn) AT=3.100000e-06",
+      "unit": "1"
+    },
+    {
+      "name": "ifl",
+      "spice": ".meas tran ifl FIND i(vbl) AT=2.080000e-06",
+      "unit": "A"
+    },
+    {
+      "name": "ipk_hi",
+      "spice": ".meas tran ipk_hi MAX i(vbl)",
+      "unit": "A"
+    },
+    {
+      "name": "ipk_lo",
+      "spice": ".meas tran ipk_lo MIN i(vbl)",
+      "unit": "A"
+    }
+  ],
+  "options": {
+    "timeout_s": 300,
+    "keep_artifacts": true
+  },
+  "models": {
+    "pdk": "gf180mcuD",
+    "lib": "libs.tech/ngspice/sm141064.ngspice"
+  },
+  "corners": {
+    "process": [
+      {
+        "name": "moscap_ff",
+        "sections": [
+          "typical",
+          "moscap_ff"
+        ]
+      }
+    ],
+    "temperature_c": [
+      -40.0,
+      27.0,
+      125.0
+    ],
+    "supply_v": {
+      "vamp": [
+        15.808
+      ]
+    }
+  },
+  "analysis": {
+    "kind": "tran",
+    "args": "1.000000e-08 3.200000e-06 uic"
+  },
+  "monte_carlo": {
+    "n": 100,
+    "seed": 20262013,
+    "vary": "mismatch"
+  }
+}
