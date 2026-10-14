@@ -137,6 +137,8 @@ def body_yield(pdk, cand, defaults, body_dir: Path, lib_root: str, sizing: str, 
         BM.meas("tran", "dmg", "v(xa.xbd.dmg)", t_meas, "1"),
         BM.meas("tran", "ubd", "v(xa.xbd.ubdn)", t_meas, "1"),
         BM.meas("tran", "zrf", "v(xa.xbd.zrfn)", t_meas, "1"),
+        # steady post-event current: end of the flat top, where the charging (displacement) current is gone
+        BM.meas("tran", "ifl", "i(vbl)", T1 + TR + tw - 20e-9, "A"),
         {"name": "ipk_hi", "spice": ".meas tran ipk_hi MAX i(vbl)", "unit": "A"},
         {"name": "ipk_lo", "spice": ".meas tran ipk_lo MIN i(vbl)", "unit": "A"},
     ]
@@ -167,6 +169,7 @@ def make_request(cand, pdk, ms: list[dict], tw: float, fracs: list[float], n: in
 
 
 PARAMS: dict = {}
+SUPERSEDES: list = [None]
 KLT_CMD = BM.KLT_CMD
 
 # --- read-margin criterion --------------------------------------------------
@@ -302,6 +305,7 @@ class Sample:
     ubd: float | None = None
     zrf: float | None = None
     ipk: float | None = None
+    ikind: str = "pulse"        # "flat-top" (|i(VBL)| at the end of the flat top) or "pulse" (max over the pulse)
 
 
 @dataclass
@@ -334,8 +338,11 @@ def parse_group(cand, report: dict | None, params: dict) -> Group:
         need = ("st", "dmg", "ubd", "zrf", "ipk_hi", "ipk_lo")
         good = c["status"] == "pass" and all(vals.get(k) is not None for k in need)
         if good:
-            smp = Sample(True, vals["st"], vals["dmg"], vals["ubd"], vals["zrf"],
-                         max(abs(vals["ipk_hi"]), abs(vals["ipk_lo"])))
+            if vals.get("ifl") is not None:
+                smp = Sample(True, vals["st"], vals["dmg"], vals["ubd"], vals["zrf"], abs(vals["ifl"]), "flat-top")
+            else:
+                smp = Sample(True, vals["st"], vals["dmg"], vals["ubd"], vals["zrf"],
+                             max(abs(vals["ipk_hi"]), abs(vals["ipk_lo"])), "pulse")
         else:
             smp = Sample(False)
         g.samples.setdefault(key, []).append(smp)
@@ -515,10 +522,20 @@ def render_record(pdk, cand, rid: str, groups, readtab, rerr, params: dict, dirt
     P_(f"  1. the breakdown state is **latched** at the end of the transient: `st >= {LATCHED}` "
        f"(`st <= {INTACT}` is *not programmed* = fail; anything in between is a half-formed filament "
        "and is **inconclusive**, not counted either way);")
-    P_(f"  2. the **peak access-path current** during the pulse, max |i(VBL)|, is `<= {sci(ibound)} A`. "
+    kinds = {x.ikind for g in groups.values() for smp in g.samples.values() for x in smp if x.ok}
+    if kinds == {"flat-top"}:
+        what = ("the **steady post-event current**, |i(VBL)| at the end of the pulse flat top (20 ns before the "
+                "falling edge). The whole-pulse maximum is not used for this candidate: the stock capacitor's "
+                "charging current alone reaches several mA and is identical for programmed and unprogrammed "
+                "samples, so it says nothing about the programming current (README \"Current criterion\")")
+    else:
+        what = ("the **peak access-path current** over the pulse, max |i(VBL)| (this record predates the "
+                "flat-top measurement; for this candidate the filament current dominates the charging "
+                "current, so the value is the programming current)")
+    P_(f"  2. {what}, is `<= {sci(ibound)} A`. "
        "This bound is an **ASSUMED campaign parameter, not a ratified one**: `spec/architecture.md` "
        "section 2 leaves `I_target_max` open and the cell model has no ballast resistor, so the current "
-       "limit here is the access device alone. The peak-current distribution is tabulated so any other "
+       "limit here is the access device alone. The current distribution is tabulated so any other "
        "bound can be applied to the saved data;")
     if cand.n == 3:
         P_("  3. **read decision: NOT EVALUATED for Candidate 3.** The #62 records show no `I_ref` window "
@@ -613,7 +630,8 @@ def render_record(pdk, cand, rid: str, groups, readtab, rerr, params: dict, dirt
     P_("- **Result** -- success fraction vs pulse condition. One block per access sizing; rows are "
        "(condition, PVT corner). `succ/n` counts ok samples over **all** n drawn; `err` are inconclusive "
        "samples (klt error / non-converged / half-formed), so `yield` is a **lower bound** (errors counted "
-       "as not-ok) and `yield_hi` counts them as ok. CI is the 95 % Wilson interval on `succ/n`. "
+       "as not-ok) and `yield_hi` counts them as ok. `yield, no I bound` drops criterion 2 (the unratified current "
+       "bound) and keeps latch and read. CI is the 95 % Wilson interval on `succ/n`. "
        "`analytic` is the closed-form constant-field Weibull prediction, a sampler cross-check only.")
     P_("")
     ibsweep = (1e-5, 1e-4, 1e-3, 1e-2)
@@ -621,12 +639,12 @@ def render_record(pdk, cand, rid: str, groups, readtab, rerr, params: dict, dirt
     for sz in SIZINGS:
         P_(f"### Candidate {cand.n} / Region {cand.region}, access sizing `{sz}`")
         P_("")
-        P_("| Condition | V_pulse [V] | tw [us] | Corner | n | succ | err | yield | CI95 | yield_hi | analytic |")
-        P_("|---|---|---|---|---|---|---|---|---|---|---|")
+        P_("| Condition | V_pulse [V] | tw [us] | Corner | n | succ | err | yield | CI95 | yield_hi | yield, no I bound | analytic |")
+        P_("|---|---|---|---|---|---|---|---|---|---|---|---|")
         for cnd in conds:
             g = groups.get((sz, cnd["tag"]))
             if not g or not g.samples:
-                P_(f"| `{cnd['tag']}` | {cnd['frac'] * vbd:.3f} | {cnd['tw'] * 1e6:g} | (no data) | | | | | | | |")
+                P_(f"| `{cnd['tag']}` | {cnd['frac'] * vbd:.3f} | {cnd['tw'] * 1e6:g} | (no data) | | | | | | | | |")
                 continue
             pooled = {"n": 0, "succ": 0, "err": 0}
             for key in sorted(k for k in g.samples if k[0] == cnd["frac"]):
@@ -635,16 +653,17 @@ def render_record(pdk, cand, rid: str, groups, readtab, rerr, params: dict, dirt
                 ok, er = cl.count("ok"), cl.count("inconclusive")
                 lo, hi = wilson(ok, len(smp))
                 cid = C.corner_id(key[1], key[2], "nosupply").replace("_nosupply", "")
+                nb = [classify(x, zcrit.get(sz), read_defined, float("inf")) for x in smp].count("ok")
                 P_(f"| `{cnd['tag']}` | {cnd['frac'] * vbd:.3f} | {cnd['tw'] * 1e6:g} | `{cid}` | {len(smp)} | "
                    f"{ok} | {er} | {ok / len(smp):.3f} | [{lo:.3f}, {hi:.3f}] | {(ok + er) / len(smp):.3f} | "
-                   f"{analytic_yield(cand, params, cnd['frac'], cnd['tw']):.3f} |")
-                pooled["n"] += len(smp); pooled["succ"] += ok; pooled["err"] += er
+                   f"{nb / len(smp):.3f} | {analytic_yield(cand, params, cnd['frac'], cnd['tw']):.3f} |")
+                pooled["n"] += len(smp); pooled["succ"] += ok; pooled["err"] += er; pooled["nb"] = pooled.get("nb", 0) + nb
             if pooled["n"]:
                 lo, hi = wilson(pooled["succ"], pooled["n"])
                 P_(f"| `{cnd['tag']}` | {cnd['frac'] * vbd:.3f} | {cnd['tw'] * 1e6:g} | **all PVT pooled** | "
                    f"{pooled['n']} | {pooled['succ']} | {pooled['err']} | **{pooled['succ'] / pooled['n']:.3f}** | "
                    f"[{lo:.3f}, {hi:.3f}] | {(pooled['succ'] + pooled['err']) / pooled['n']:.3f} | "
-                   f"{analytic_yield(cand, params, cnd['frac'], cnd['tw']):.3f} |")
+                   f"{pooled['nb'] / pooled['n']:.3f} | {analytic_yield(cand, params, cnd['frac'], cnd['tw']):.3f} |")
                 cond_rows[(sz, cnd["tag"])] = pooled
         P_("")
     # ---- worst corner
@@ -693,8 +712,8 @@ def render_record(pdk, cand, rid: str, groups, readtab, rerr, params: dict, dirt
            f"(s.e. {1 / math.sqrt(len(zr)):.4f}), sd {zs:.4f} (target 1).")
         P_("")
     # ---- current
-    P_("- **Peak access-path current of latched samples** (max |i(VBL)| over the pulse; the data behind "
-       "criterion 2):")
+    P_(f"- **Access-path current of latched samples** ({'flat-top end' if kinds == {'flat-top'} else 'max over the pulse'}; "
+       "the data behind criterion 2):")
     P_("")
     P_("  | Sizing | latched samples | median [A] | p95 [A] | max [A] | frac <= " +
        " | frac <= ".join(sci(b) for b in ibsweep) + " |")
@@ -711,13 +730,16 @@ def render_record(pdk, cand, rid: str, groups, readtab, rerr, params: dict, dirt
        "only through the stock capacitor/access device); (iv) ballast sizing (no ballast in the cell "
        "model; the current bound is an assumed placeholder); (v) the program-path bias scheme (not "
        "ratified; the pulse is applied on PL with BL = 0 and the access device on, as in the #62 trigger "
-       "bench).")
+       "bench); (vi) any difference between candidates beyond oxide thickness and the access device: the "
+       "model gives all three the same kinetics and the same seeded draws, so candidates with equal relative "
+       "pulse and comparable access devices reproduce each other's latch counts (e.g. Candidates 1 and 3 here). "
+       "A cross-candidate yield comparison is a statement about this assumed model, not about the oxides.")
     P_("")
     P_("- **Links**:")
     P_(f"  - frozen netlist snapshot: `sim/programming-yield/netlist-snapshots/{rid}.spice`")
     P_(f"  - requests, decks and klt reports: `sim/programming-yield/corners/{rid}/`")
     P_(f"- **Timestamp / author**: {time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())} / Claude (loom sweep, issue #66)")
-    P_("- **Supersedes**: (none)")
+    P_(f"- **Supersedes**: {SUPERSEDES[0] or '(none)'}")
     return "\n".join(a) + "\n"
 
 
@@ -779,6 +801,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--note", default=None)
     ap.add_argument("--conds", default="", help="comma list of condition tags to run (default: all 5)")
     ap.add_argument("--sizings", default=",".join(SIZINGS))
+    ap.add_argument("--supersedes", default=None, help="record id this run supersedes (stated in the record)")
     ap.add_argument("--no-readtab", action="store_true", help="skip the programmed-read table request")
     ap.add_argument("--klt", default="klt")
     args = ap.parse_args(argv)
@@ -796,6 +819,7 @@ def main(argv: list[str] | None = None) -> int:
         print("ERROR: breakdown_params.spice fails provenance checks", file=sys.stderr)
         return 3
     PARAMS.update(params)
+    SUPERSEDES[0] = args.supersedes
     print(f"PDK: {pdk.variant} at {pdk.variant_dir} (open_pdks {pdk.revision})")
     if args.check_env:
         print("klt + PDK + parameter file OK.")

@@ -37,12 +37,14 @@ A sample is exactly one of **ok / fail / inconclusive**:
 1. **Latched.** `st >= 0.99` at the end of the transient. `st <= 0.01` is
    *not programmed* (fail). In between is a half-formed filament:
    *inconclusive* (counted in `err`, never silently as a pass or a fail).
-2. **Current within bound.** Peak |i(VBL)| over the pulse `<= I_bound`.
-   `I_bound` is an **assumed, unratified** campaign parameter (default
-   1 mA, `--ibound`): `spec/architecture.md` section 2 leaves
-   `I_target_max` open and the cell model has no ballast resistor. The
-   peak-current distribution is tabulated in every record so any other
-   bound can be applied to the saved data.
+2. **Current within bound.** The programming current through the access
+   path, `<= I_bound`. `I_bound` is an **assumed, unratified** campaign
+   parameter (default 1 mA, `--ibound`): `spec/architecture.md` section 2
+   leaves `I_target_max` open and the cell model has no ballast resistor.
+   Because that number is a placeholder, every yield table also carries a
+   `yield, no I bound` column (latch and read only), and the current
+   distribution is tabulated so any other bound can be applied to the saved
+   data. See "Current criterion" below for which current is measured.
 3. **Read decision correct at the worst-case read corner** (Candidates 1
    and 2). The programmed cell's read current at that sample's `zrf`,
    `I_read(z)`, must be `>= I_ref`, where `I_read(z)` is the pointwise
@@ -53,6 +55,24 @@ A sample is exactly one of **ok / fail / inconclusive**:
    **Candidate 3 has no `I_ref` window** at the inherited placeholder read
    bias (#75), so criterion 3 is **not evaluated** for it and its yields
    are explicit **upper bounds**.
+
+### Current criterion
+
+The first runs (Candidates 1 and 3, and a Candidate 2 run superseded by
+the one below) measured the **maximum |i(VBL)| over the whole pulse**. For
+Candidates 1 and 3 that is the filament current (latched samples 20-150 uA
+against about 16 uA of charging current in unprogrammed ones), so the value
+means what it says. For Candidate 2 it does not: the thick-oxide capacitor's
+charging current at 15 V is 3.3 mA in *both* latched and unprogrammed
+samples, which swamps the filament and made every sample fail a 1 mA bound
+for a reason unrelated to programming. Candidate 2's yield column in its
+first record is therefore wrong, and that record is superseded. Later runs
+measure the **steady post-event current**: |i(VBL)| 20 ns before the falling
+edge, on the flat top, where the charging current is gone (an unprogrammed
+sample reads about 0.2 nA there). Because that value is never larger than the
+whole-pulse maximum, the Candidate 1 and 3 verdicts against the 1 mA bound
+are unchanged by the better measurement; their latched currents are all far
+below it.
 
 ## Pulse conditions
 
