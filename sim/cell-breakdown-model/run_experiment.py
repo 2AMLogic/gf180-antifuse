@@ -21,8 +21,21 @@ For each ratified cell candidate (spec/cell-candidates.md) this runs, as
 and writes one append-only record per candidate under records/. Requests
 use only features the fleet runner's klt has (README "Fleet klt version").
 
+Issue #74 adds the transient-convergence campaign (`--campaign conv74`):
+the trigger bench above re-run unchanged as a control, plus ONE-cell-per-deck
+benches, each 3 moscap x 3 T x 5 levels (45):
+
+  trig1_<v>   the trigger stimulus (PL driven, BL = 0)
+  prog_<v>    a BL-driven program leg: VPP pulse -> ballast -> BL, PL = 0
+
+with <v> = st (stock cell), b0 (element disabled), b1m / b1l (element
+enabled, median / low Weibull quantile) -- decks identical but for the cell
+line, so a non-converged corner can be attributed (README "Transient
+convergence (#74)").
+
     python3 sim/run_corners.py cell-breakdown-model
     python3 sim/cell-breakdown-model/run_experiment.py --candidates 1
+    python3 sim/cell-breakdown-model/run_experiment.py --campaign conv74 --candidates 1
 
 The corner grids go to whatever backend the requests name -- `batch` (the
 Spot fleet) by default. They are never run as a local ngspice grid. A
@@ -356,8 +369,23 @@ def body_trigger(pdk, cand, defaults, body_dir: Path, lib_root: str) -> tuple[st
 # the enabled one (or vice versa) is attributable.
 
 CONV_STIMULI = {
-    "trig1": "PL-driven (the #62 trigger stimulus), one cell per deck, BL = 0",
-    "prog": "BL-driven through a ballast resistor from a VPP pulse, PL = 0 return (spec/architecture.md 1.2, 2)",
+    "trig1": "PL-driven (the #62 trigger stimulus), one cell per deck, BL = 0; raised-cosine edges",
+    "prog": "BL-driven through a ballast resistor from a VPP pulse, PL = 0 return (spec/architecture.md 1.2, 2); "
+            "raised-cosine edges",
+    "trigc": "as trig1, with C-infinity edges",
+    "progc": "as prog, with C-infinity edges",
+}
+# PL-driven (signed level on PL) or BL-driven (positive VPP on the BL side)
+STIM_DRIVE = {"trig1": "pl", "trigc": "pl", "prog": "bl", "progc": "bl"}
+# Edge shape of the stress pulse, rise and fall both over TRIG_TR:
+#   rc    raised cosine, 0.5*(1-cos(pi*u)): continuous slope, but its second
+#         derivative jumps at both ends of each edge (the #62 shape)
+#   cinf  f(u)/(f(u)+f(1-u)), f(u) = exp(-1/u): every derivative is
+#         continuous and zero at both ends of each edge
+STIM_EDGE = {"trig1": "rc", "prog": "rc", "trigc": "cinf", "progc": "cinf"}
+CAMPAIGNS = {
+    "conv74": ("trigger",) + tuple(f"{s}_{v}" for s in ("trig1", "prog") for v in ("st", "b0", "b1m", "b1l")),
+    "conv74c": tuple(f"{s}_{v}" for s in ("trigc", "progc") for v in ("st", "b0", "b1m", "b1l")),
 }
 CONV_VARIANTS = {
     "st": "stock cell (design/netlists, unwrapped)",
@@ -418,10 +446,25 @@ def prog_rballast(cand, params: dict) -> float:
 
 
 def conv_levels(cand, params: dict, stim: str) -> list[float]:
-    """trig1: the #62 trigger levels (signed V(PL)); prog: the same
-    magnitudes as a positive VPP (BL side) for every candidate."""
+    """PL-driven: the #62 trigger levels (signed V(PL)); BL-driven: the
+    same magnitudes as a positive VPP (BL side) for every candidate."""
     lv = trigger_levels(cand, params)
-    return lv if stim == "trig1" else [abs(x) for x in lv]
+    return lv if STIM_DRIVE[stim] == "pl" else [abs(x) for x in lv]
+
+
+def edge_lines(edge: str) -> list[str]:
+    """The unit pulse shape V(SH): 0 -> 1 over [t1, t1+tr], 1 -> 0 over
+    [t1+tr+tw, t1+2tr+tw]."""
+    if edge == "rc":
+        return ["BSH SH 0 V = '0.5*(1-cos(pi*min(max((time-t1)/tr,0),1)))"
+                " - 0.5*(1-cos(pi*min(max((time-t1-tr-tw)/tr,0),1)))'"]
+    if edge == "cinf":
+        # u clamped to [0,1]; exp(-1/max(u,1e-6)) underflows to exactly 0
+        # at u <= 1e-6, and f(u) + f(1-u) > 0 everywhere
+        return [".func af_fe(u) {exp(-1/max(u,1e-6))}",
+                ".func af_edge(x) {af_fe(min(max(x,0),1))/(af_fe(min(max(x,0),1))+af_fe(1-min(max(x,0),1)))}",
+                "BSH SH 0 V = 'af_edge((time-t1)/tr) - af_edge((time-t1-tr-tw)/tr)'"]
+    raise ValueError(edge)
 
 
 def body_conv(pdk, cand, defaults, body_dir: Path, lib_root: str, bench: str,
@@ -430,11 +473,10 @@ def body_conv(pdk, cand, defaults, body_dir: Path, lib_root: str, bench: str,
     out = [body_header(pdk, body_dir, f"Candidate {cand.n} {stim} bench, variant {var} (tran, #74)",
                        cand, "trigger", lib_root)]
     out.append(f".param t1={fmt(TRIG_T1)} tr={fmt(TRIG_TR)} tw={fmt(TRIG_TW)}")
-    out.append("BSH SH 0 V = '0.5*(1-cos(pi*min(max((time-t1)/tr,0),1)))"
-               " - 0.5*(1-cos(pi*min(max((time-t1-tr-tw)/tr,0),1)))'")
+    out += edge_lines(STIM_EDGE[stim])
     # klt's supply axis alters the DC value of VAMP (as in the #62 bench)
     out.append("VAMP AMP 0 DC 0")
-    if stim == "trig1":
+    if STIM_DRIVE[stim] == "pl":
         out.append("VBL BL 0 DC 0")
         out.append(f"VWL WL 0 DC {fmt(cand.moscap_wl_on)}")
         out.append(f"VVB VB 0 DC {fmt(cand.vb)}")
@@ -714,7 +756,7 @@ def corner_key(bench: str, corner: dict, cand, params: dict) -> str:
         inst = "a" if abs(sv.get("vampa", 0.0)) > 0 else "b"
         tok = C.fmt_node_supply(f"pl{inst}", sv[f"vamp{inst}"])
     elif bench in CONV_BENCHES:
-        tok = C.fmt_node_supply("pl" if bench.startswith("trig1") else "vpp", sv["vamp"])
+        tok = C.fmt_node_supply("pl" if STIM_DRIVE[conv_split(bench)[0]] == "pl" else "vpp", sv["vamp"])
     else:
         tok = "nosupply"
     return C.corner_id(proc, temp, tok)
@@ -1143,12 +1185,13 @@ def render_conv_record(pdk, cand, rid: str, results: dict[str, BenchResult], par
     a(f"# Record {rid}")
     a("")
     a(f"- **Record ID**: {rid}")
-    a(f"- **Claim**: issue #74 -- the breakdown-event transient of Candidate {cand.n} / Region {cand.region} "
-      "converges at every corner of the full #62 trigger PVT grid on the fleet engine, under (i) the #62 "
-      "two-instance trigger bench re-run unchanged (control), (ii) the same PL-driven stimulus with ONE cell "
-      "per deck, and (iii) a BL-driven, ballast-limited program leg with PL as the return "
-      "(`spec/architecture.md` 1.2, 2); every stimulus as stock / element-disabled / element-enabled decks "
-      "that differ only in the cell line; any non-convergence attributed by that comparison. Trigger "
+    stims = [s_ for s_ in CONV_STIMULI if any(f"{s_}_{v}" in results for v in CONV_VARIANTS)]
+    a(f"- **Claim**: issue #74 -- does the breakdown-event transient of Candidate {cand.n} / Region {cand.region} "
+      "converge at every corner of the full #62 trigger PVT grid on the fleet engine? Benches in this run: "
+      + ("the #62 two-instance trigger bench re-run unchanged (control); " if CONTROL_BENCH in results else "")
+      + "; ".join(f"`{s_}` = {CONV_STIMULI[s_]}" for s_ in stims)
+      + ". Every single-instance stimulus is run as stock / element-disabled / element-enabled decks "
+      "that differ only in the cell line; any non-convergence is attributed by that comparison. Trigger "
       "threshold, latch, program current and access-device terminal voltages (against the ratified "
       f"{rating:g} V rating of `{CHAR.CANDIDATES[cand.n - 1].access_model}`) are logged, CONDITIONAL ON THE "
       "ASSUMED breakdown parameters.")
@@ -1169,12 +1212,12 @@ def render_conv_record(pdk, cand, rid: str, results: dict[str, BenchResult], par
       f"degC x 5 stress levels = 45 corners per single-instance bench; the control is 90 corners "
       "(2 instances x 5 levels). Process-minimum (netlist-default) geometry. Levels: the capacitor's rated "
       f"voltage ({cand.cap_rated_v:g} V) and " + ", ".join(f"{f:g}" for f in TRIG_FRACTIONS) +
-      f" x V_bd. Pulse: raised-cosine edges {TRIG_TR*1e9:g} ns, flat {TRIG_TW*1e6:g} us from t = "
+      f" x V_bd. Pulse: edges {TRIG_TR*1e9:g} ns (shape per bench, `edge_lines()`), flat {TRIG_TW*1e6:g} us from t = "
       f"{TRIG_T1*1e6:g} us; `tran {fmt(TRIG_TSTEP)} {fmt(TRIG_TSTOP)} uic`; default ngspice tolerances, "
       f"gmin = {fmt(CHAR.GMIN)}; per-corner timeout 300 s.")
-    a("  - `trig1`: PL driven to the signed level, BL = 0 V, WL = "
+    a("  - PL-driven (`trig1`, `trigc`): PL driven to the signed level, BL = 0 V, WL = "
       f"{cand.moscap_wl_on:g} V, VB = {cand.vb:g} V (the #62 stimulus, one cell).")
-    a(f"  - `prog`: VPP pulse (positive level) -> ballast {prog_rballast(cand, params)/1e3:.4g} kOhm (PLACEHOLDER: "
+    a(f"  - BL-driven (`prog`, `progc`): VPP pulse (positive level) -> ballast {prog_rballast(cand, params)/1e3:.4g} kOhm (PLACEHOLDER: "
       f"V_bd / {PROG_ILIM_PLACEHOLDER*1e6:g} uA; `I_target_max` is unresolved in `spec/architecture.md` 2) -> BL; "
       f"PL = 0 V return; WL = {cand.moscap_wl_on:g} V + VPP(t)"
       + (f"; n-well VB = {cand.vb:g} V + VPP(t)" if cand.polarity == "p" else f"; VB = {cand.vb:g} V (p-substrate tie)")
@@ -1241,7 +1284,7 @@ def render_conv_matrix(a, cand, params, results) -> None:
         r = results.get(b)
         if r is None or not r.outcome:
             continue
-        stim = "trig1" if b == CONTROL_BENCH else conv_split(b)[0]
+        stim = "trig1" if b == CONTROL_BENCH else conv_split(b)[0]  # control: same levels as trig1
         cnt = {h: [0, 0] for h in head}
         for cid, o in r.outcome.items():
             h = level_label(cand, params, stim, corner_level(cid))
@@ -1329,8 +1372,9 @@ def render_conv_trigger(a, cand, params, results, stim) -> None:
             rows.append((var, cid, vox, d_lo, pred, vals, r.outcome[cid]["kind"]))
     if not rows:
         return
-    title = {"trig1": "(4a) Trigger/latch, PL-driven, one cell per deck",
-             "prog": "(4b) Trigger/latch, BL-driven program leg"}[stim]
+    title = (f"(4) Trigger/latch, `{stim}`: "
+             + ("PL-driven, one cell per deck" if STIM_DRIVE[stim] == "pl" else "BL-driven program leg")
+             + (", raised-cosine edges" if STIM_EDGE[stim] == "rc" else ", C-infinity edges"))
     a(f"  - **{title}** -- predicted state from the E-model applied to the DISABLED deck's mid-pulse oxide "
       "voltage at the same corner (damage over the flat top >= 2: must break down; flat top plus edges <= 0.5: "
       "must not; in between: threshold boundary, not scored). `st` read at "
@@ -1578,9 +1622,10 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--candidates", default="1,2,3")
     ap.add_argument("--benches", default=",".join(BENCHES),
                     help=f"comma-separated; #62 benches {', '.join(BENCHES)}; #74 benches {', '.join(CONV_BENCHES)}")
-    ap.add_argument("--campaign", choices=("conv74",), default=None,
-                    help="conv74: the #74 convergence campaign = the #62 trigger bench (control) + every "
-                         "single-instance trigger/program bench; overrides --benches")
+    ap.add_argument("--campaign", choices=tuple(CAMPAIGNS), default=None,
+                    help="conv74: the #62 trigger bench (control) + the single-instance trig1/prog benches "
+                         "(raised-cosine edges); conv74c: the trigc/progc benches (C-infinity edges). "
+                         "Overrides --benches")
     ap.add_argument("--smoke", default=None, metavar="N:BENCH[:PROCESS:TEMP:LEVEL_INDEX]",
                     help="run ONE corner of ONE bench locally (debug probe; writes no record)")
     ap.add_argument("--check-env", action="store_true")
@@ -1621,8 +1666,8 @@ def main(argv: list[str] | None = None) -> int:
 
     wanted = [int(x) for x in args.candidates.split(",") if x.strip()]
     benches = [b for b in args.benches.split(",") if b.strip()]
-    if args.campaign == "conv74":
-        benches = [CONTROL_BENCH, *CONV_BENCHES]
+    if args.campaign:
+        benches = list(CAMPAIGNS[args.campaign])
     unknown = [b for b in benches if b not in ALL_BENCHES]
     if unknown:
         print(f"ERROR: unknown bench(es) {unknown}", file=sys.stderr)

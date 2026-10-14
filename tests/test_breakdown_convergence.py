@@ -94,6 +94,33 @@ class CornerIds(unittest.TestCase):
         self.assertTrue(all(v < 0 for v in RE.conv_levels(CAND[3], PARAMS, "trig1")))
 
 
+class Stimuli(unittest.TestCase):
+    def test_campaigns_name_only_known_benches(self):
+        for name, benches in RE.CAMPAIGNS.items():
+            self.assertTrue(all(b in RE.ALL_BENCHES for b in benches), name)
+        self.assertIn(RE.CONTROL_BENCH, RE.CAMPAIGNS["conv74"])
+        self.assertTrue(all(RE.STIM_EDGE[RE.conv_split(b)[0]] == "cinf" for b in RE.CAMPAIGNS["conv74c"]))
+
+    def test_cinf_edge_is_smooth_and_reaches_both_rails(self):
+        import math
+
+        def fe(u):
+            return math.exp(-1 / max(u, 1e-6))
+
+        def edge(x):
+            u = min(max(x, 0), 1)
+            return fe(u) / (fe(u) + fe(1 - u))
+        self.assertEqual(edge(0.0), 0.0)
+        self.assertEqual(edge(1.0), 1.0)
+        self.assertAlmostEqual(edge(0.5), 0.5)
+        # flat at both ends: the first difference vanishes faster than the step
+        h = 1e-3
+        self.assertLess(edge(h) / h, 1e-100)
+        self.assertLess((1 - edge(1 - h)) / h, 1e-100)
+        lines = RE.edge_lines("cinf")
+        self.assertIn("af_fe(u) {exp(-1/max(u,1e-6))}", lines[0])
+
+
 class Prediction(unittest.TestCase):
     def test_parameters_parse(self):
         self.assertEqual(PERR, [])
