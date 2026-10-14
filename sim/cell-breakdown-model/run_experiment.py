@@ -1414,7 +1414,7 @@ def render_conv_trigger(a, cand, params, results, stim) -> None:
     a("")
     a("    | Variant | Corner | Level | V(CN,PL) disabled [V] | D_pred (flat) | predicted | st mid | st end | D end | outcome |")
     a("    |---|---|---|---|---|---|---|---|---|---|")
-    n_conv = n_scored = n_ok = n_bound = 0
+    n_conv = n_scored = n_ok = n_bound = n_nopred = 0
     for var, cid, vox, d_lo, pred, vals, kind in rows:
         st = vals.get("st")
         conv = kind == "pass"
@@ -1422,13 +1422,16 @@ def render_conv_trigger(a, cand, params, results, stim) -> None:
         if conv and pred is not None and st is not None:
             n_scored += 1
             n_ok += int(latched_as_predicted(st, pred))
-        n_bound += pred is None
+        n_bound += pred is None and vox is not None
+        n_nopred += vox is None
+        ptxt = "no prediction" if vox is None else ("boundary" if pred is None else str(pred))
         a(f"    | {var} | `{cid}` | {level_label(cand, params, stim, corner_level(cid))} | "
-          f"{'n/a' if vox is None else f'{vox:.4f}'} | {sci(d_lo)} | {'boundary' if pred is None else pred} | "
+          f"{'n/a' if vox is None else f'{vox:.4f}'} | {sci(d_lo)} | {ptxt} | "
           f"{sci(vals.get('st_mid'))} | {sci(st)} | {sci(vals.get('dmg'))} | {kind} |")
     a("")
     a(f"    **Converged {n_conv}/{len(rows)}; outcome as predicted (and fully latched, st = 0 or 1) at "
-      f"{n_ok}/{n_scored} scored corners; {n_bound} at the threshold boundary (not scored).**")
+      f"{n_ok}/{n_scored} scored corners; {n_bound} at the threshold boundary and {n_nopred} without a "
+      "prediction because the disabled deck did not converge there (neither scored).**")
 
 
 CELL_QUANTITIES = tuple(f"{p}_{k}" for k in TERMINAL_PAIRS for p in ("mx", "mn")) + \
