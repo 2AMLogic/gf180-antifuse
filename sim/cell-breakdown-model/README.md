@@ -50,6 +50,12 @@ were on the batch fleet; the job IDs are in each record.
   **Resolved by #75** (below): the `bias_op` bench compares nine read-bias
   arrangements; the chosen one ties the n-well to the read rail.
 
+- **Candidate 2's window is narrow.** It has the narrowest window of the
+  three, because its 25 µm LDNMOS access device leaks about 700× more than
+  Candidate 1's at the fast/hot corner.
+- **Non-converged trigger corners** are a transient-robustness limitation
+  of the stock cells around the event, not a model outcome (#74).
+
 ## Candidate 3 read bias (#75)
 
 `bias_op` is a sixth bench, Candidate 3 only, run on its own:
@@ -93,11 +99,6 @@ The placeholder scenario `s0_placeholder` reproduces the #62 failure exactly
 (4.8572e-15 A at `typical_27c_bl1p00v`, 2.4003e-13 A at `ss_-40c_bl0p90v`).
 Mismatch/Monte Carlo is not included. The conditional-on-assumed-filament
 caveat above applies throughout.
-- **Candidate 2's window is narrow.** It has the narrowest window of the
-  three, because its 25 µm LDNMOS access device leaks about 700× more than
-  Candidate 1's at the fast/hot corner.
-- **Non-converged trigger corners** are a transient-robustness limitation
-  of the stock cells around the event, not a model outcome (#74).
 
 ## Running it
 

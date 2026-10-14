@@ -1042,8 +1042,10 @@ def render_bias_record(pdk, cand, rid: str, results: dict[str, BenchResult], par
     a(f"  - `I_sneak_max` = (N-1) x `I_off`, N = {CHAR.N_GRID} (`spec/split-axis-plan.md`). Currents below "
       f"abstol ({DEFAULT_ABSTOL:g} A) are not resolved by ngspice, and `gmin` = {CHAR.GMIN:g} S dominates them; the "
       "**solver-floor-limited bound** `I_sneak,f` = (N-1) x max(`I_off`, abstol) is therefore the number the "
-      "verdict uses. A leakage of exactly 0.0 A means the junction/channel terms cancel at that bias, NOT that "
-      "the physical leakage is zero.")
+      "verdict uses. Model leakage below abstol is UNRESOLVED: the raw values are exactly 0.0 A or +-k x 2^-54 "
+      "(machine-epsilon residue of both signs), i.e. solver roundoff, not model output, and `abs()` in the "
+      "derivation hides the sign. The bound is a resolution floor, not a bound on physical leakage and not a "
+      "prediction.")
     a("  - `I_zero,f` = `I_sneak,f` + max(selected-unprogrammed current, abstol): the current an UNPROGRAMMED "
       "selected cell reads together with the N-1 unselected cells. `I_prog` = worst-filament (rf_wc) programmed "
       "read current, minimum over sub-configs. A bias is **feasible** iff, with no failed corner, "

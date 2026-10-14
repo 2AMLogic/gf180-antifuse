@@ -44,10 +44,12 @@ cell (CN pulled to PL), which is the worst sneak case.
 | `s8_vb_track_m0v3` | tracking, well 0.3 V below rail | 2.7e-8 (`ss_-40c_bl0p90v`) | 1.2e-8 | 2.2 | sensitivity: forward-biased source junction leaks |
 
 `I_zero,f` = (N-1) x max(I_off, abstol) + max(selected-unprogrammed current, abstol) with N = 32 and
-abstol = 1e-12 A. This is the solver-floor-limited bound: the PDK model's own leakage at the chosen bias is
-up to 3.4e-15 A for the (N-1) sum, below ngspice's resolution, and exactly 0.0 A at some corners. The
-bound used for the verdict is therefore an upper bound, not a leakage prediction. Against the model's
-measured leakage the chosen bias has a window above 3e5. The window column is the single-common-`I_ref`
+abstol = 1e-12 A. This is a solver resolution floor, (N-1+1) x abstol, not a bound on physical leakage and not a prediction.
+The PDK model's own leakage at the chosen bias is **unresolved, below about 1e-12 A per cell**: the raw
+`i_off_s3*`, `i_offp_s3*` and `i_un_s3*` values are exactly 0.0 A or small multiples of 2^-54 of both signs
+(machine-epsilon residue, e.g. 31 x 1.11e-16 = 3.4e-15 A for the (N-1) sum), so they are solver roundoff, not
+model output, and `abs()` in the derivation hides the sign. The window of 39 is measured against this
+resolution floor. The window column is the single-common-`I_ref`
 ratio: the minimum `I_prog` over all corners divided by the maximum `I_zero,f` over all corners.
 
 All scenarios except `s0_placeholder` satisfy `I_prog > I_zero,f` at 45/45 corners with no failed or
@@ -88,8 +90,8 @@ rails, are unchanged.
   higher rail should be taken only if the lower-rail window proves insufficient.
 - **The window is open at every corner.** `I_prog` is at least 1.25 nA (`ss_-40c_bl0p90v`, access-device
   limited: the median- and worst-filament currents agree to 3 digits there, so this number does not
-  depend on the assumed filament resistance) and `I_zero,f` is at most 3.2e-11 A. The measured model
-  leakage is 3e5 times smaller than the bound.
+  depend on the assumed filament resistance) and `I_zero,f` is at most 3.2e-11 A, which is the solver
+  resolution floor. Model leakage is unresolved below that floor; no ratio against it is claimed.
 - **A well switch is needed anyway.** Programming drives BL at `VPP` through the PMOS source, which a 3.3 V
   n-well cannot tolerate (junction forward-biased by the difference). So the Region III well net must
   already switch between a program level and a read level. That program level is #90's question.
@@ -131,8 +133,8 @@ already shows the cost of tolerating the rail swing separately: 11.5 against 39.
 
 ## What this does not establish
 
-- The window of 39 is set at one corner (`ss_-40c_bl0p90v`) where the selected PMOS is only about 1 V above
-  threshold, so `I_prog` there is a sub-threshold-class current (nanoamps). An ASSUMED rule of thumb is a decade per
+- The window of 39 is set at one corner (`ss_-40c_bl0p90v`) where the gate drive is V_SG = 0.9 V, near or
+  below |V_th|, so `I_prog` there is a sub-threshold-class current (about 1 nA). An ASSUMED rule of thumb is a decade per
   about 100 mV of threshold shift; it was not measured here. **Local mismatch and within-die variation are not in the corner set**, and
   neither is Monte Carlo. A mismatch Monte Carlo of this bias belongs with the sense-path work (#65, #66).
 - `I_ref` is not set. The valid interval for `I_ref` is `(3.2e-11, 1.2e-9)` A under this bias, per the
@@ -140,8 +142,14 @@ already shows the cost of tolerating the rail swing separately: 11.5 against 39.
   consumes it. The interval is per Region III; it says nothing for Regions I and II.
 - Read disturb is not established. The selected unprogrammed cell's oxide sees at most 1.1 V (a 3.3 V
   rated cap); the E-model parameters are assumed.
-- Junction leakage, GIDL and well-to-substrate terms beyond the PDK model are not characterized. The
-  floor-limited leakage bound stands in for them.
+- Junction leakage, GIDL and well-to-substrate terms beyond the PDK model are not characterized, and the
+  resolution floor does not stand in for them.
+- Well-junction current through the sensed node is not measured. The bench drives `VB_s3_vb_track` from an
+  ideal B-source and measures only `i(vm_*)` in the BL branch. At s3 the well is fed by the reverse-biased
+  drain p+ to n-well junctions of every unselected programmed cell (about 1 V) and the Region III
+  n-well-to-substrate junction. If `VB_III` is tied on the sensed side of the read leg, that current adds to
+  `I_zero` and is not in 3.2e-11 A. This decision therefore requires `VB_III` to connect on the rail-source
+  side, outside the sensed current path (see Downstream).
 - The program-phase well level, and whether a Region III program leg is feasible at all, is #90.
 
 ## Fallback ladder (if the window proves insufficient)
@@ -156,11 +164,15 @@ Neither is adopted. Taking either one requires a new record.
 ## Downstream
 
 - #64 (array, MUX, level shifters): Region III read uses WL 0 V / 3.3 V-class OFF, the well net `VB_III`
-  tied to the Region III read-rail node in read mode, and `VB_III` switched by the (undecided, #90)
+  tied to the Region III read-rail node in read mode on the rail-source side, outside the sensed current
+  path (well current must not flow through the sense element). The sense-element drop (rail minus BL) must
+  stay within about 0.1 V (`s7`/`s8`: a 0.3 V well-to-source offset closes the window), and `VB_III` switched by the (undecided, #90)
   program-mode level. There is no negative rail. Unselected bit-lines must sit at or below `VB_III`.
 - #77 (supply inventory): row 15 (`VB`, Region III) gains a read-mode value (the read rail); row 10 is
   unchanged; row 6's read bias keeps its OI-7 status.
-- #65 (read leg, I_ref): window `(3.2e-11, 1.2e-9)` A for Region III at the placeholder geometry.
+- #65 (read leg, I_ref): window `(3.2e-11, 1.2e-9)` A for Region III at the placeholder geometry. The lower
+  edge is a solver resolution floor, not a measured leakage. The sense element must not carry well current
+  and its drop (rail minus BL) must stay within about 0.1 V.
 - #90: the read choice does not constrain the program-mode well level, but program mode must not leave the
   well below the BL source potential; this record needs no change from #90's outcome except the well-switch
   design.
