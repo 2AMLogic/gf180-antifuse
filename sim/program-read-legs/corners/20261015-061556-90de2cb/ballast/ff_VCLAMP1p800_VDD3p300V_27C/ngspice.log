@@ -1,0 +1,36 @@
+
+Note: No compatibility mode selected!
+
+
+Circuit: * klt sim -- generated corner deck, do not edit
+
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+
+No. of Data Rows : 1
+ipg_vpp4p0_comp = 4.419312e-04
+vrbtop_vpp4p0_comp = 3.785846e+00
+vpg_vpp4p0_comp = 5.092033e-09
+vbl_vpp4p0_comp = 1.000000e+00
+ipg_vpp4p0_short = 5.884109e-04
+vrbtop_vpp4p0_short = 3.709225e+00
+vpg_vpp4p0_short = 5.092033e-09
+vbl_vpp4p0_short = 0.000000e+00
+ipg_vpp5p0_comp = 5.956597e-04
+vrbtop_vpp5p0_comp = 4.754920e+00
+vpg_vpp5p0_comp = 6.365765e-09
+vbl_vpp5p0_comp = 1.000000e+00
+ipg_vpp5p0_short = 7.439681e-04
+vrbtop_vpp5p0_short = 4.689827e+00
+vpg_vpp5p0_short = 6.365765e-09
+vbl_vpp5p0_short = 0.000000e+00
+ipg_vpp6p0_comp = 7.496144e-04
+vrbtop_vpp6p0_comp = 5.725420e+00
+vpg_vpp6p0_comp = 7.639382e-09
+vbl_vpp6p0_comp = 1.000000e+00
+ipg_vpp6p0_short = 8.990488e-04
+vrbtop_vpp6p0_short = 5.667425e+00
+vpg_vpp6p0_short = 7.639382e-09
+vbl_vpp6p0_short = 0.000000e+00
+ngspice-46 done

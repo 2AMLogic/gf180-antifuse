@@ -5,30 +5,29 @@ amp + `I_ref` branch) in `design/cells/` -- the transistor-level instantiation
 of `spec/architecture.md` sections 1.2, 2 and 4 (see
 [`spec/leg-design-record.md`](../../spec/leg-design-record.md)).
 
-## STATUS: benches and runner are complete; no PVT record exists yet
+## STATUS: first PVT record exists (45 corners x 6 benches, fleet batch)
 
-**The PVT tables have not been produced.** Both batch submits (jobs
-`klt-sim-b1f21dd1d468` and `klt-sim-c9421542227c`, 45 corners each, `ballast`
-bench) were rejected before any simulation ran: the fleet runner image has
-`klt 0.5.0`, this host has `klt 0.7.0`, and the submit preflight refuses a
-skewed pair (`batch_runner_version_mismatch`, exit 87). Per the host rules the
-grid was **not** run locally instead. No file under `records/`, `corners/` or
-`netlist-snapshots/` exists, so nothing here is evidence yet.
+Record: [`records/20261015-061556-90de2cb.md`](records/20261015-061556-90de2cb.md)
+(jobs in each report's `environment.remote`). All six benches returned 45/45
+corners with no errors. Headlines, all conditional on the assumptions below:
 
-Why a downgrade of the client is not a way out (checked, not assumed): a
-`klt 0.5.0` client cannot express these requests at all -- it has no
-`measurements[].expr` (operating-point quantities), no per-section model
-library (needed to put `design.ngspice` ahead of the gf180mcu `.lib` cards,
-see below) and does not stage the netlist's `.include` closure to the fleet.
+- Mutual exclusion: 45/45 corners, 14 cases each, never both legs driving; (1,1)
+  leaves both OFF.
+- Ballast: the Section 2 inequality holds at the minimum-resistance corner for
+  VPP 4/5/6 V under the ASSUMED `V_comp` = 1 V, `I_target_max` = 1 mA.
+- Read decisions at `I_ref` = 1 uA: Candidates 1 and 2 decide correctly in
+  every corner, unprogrammed and programmed (assumed R_prog) sides reported
+  separately. **Candidate 3 programmed side fails** (wrong `RDATA` at all 45
+  corners at min access sizing, 1/45 at 2x) at `I_ref` = 1 uA; at `I_ref` = 300 pA
+  34/45 decide correctly, still failing the cold/slow corners -- Region III read path is not working as designed (see "Open finding").
 
-To produce the record once the fleet runner matches the host client, run on a
-host with `KLT_SIM_BACKEND=batch`:
+Re-run trigger: the breakdown-augmented cell model (#62) replaces the assumed
+R_prog; `I_ref < I_prog_min` stays unchecked until `I_prog_min` exists.
 
-    python3 sim/run_corners.py program-read-legs
-
-which submits one `klt sim` request per bench and writes
-`records/<record-id>.md` (plus `corners/`, `netlist-snapshots/`) only if the
-fleet returns resolved corners. A failed submit writes nothing.
+Client/runner note: the fleet runner image runs `klt 0.7.0`; the host client was
+newer and the submit preflight refuses a skewed pair. This record was produced
+with a version-matched client (`uvx --from klayout-tools==0.7.0 klt`, passed via
+`KLT=<wrapper>`), still on the batch backend; no local grid was run.
 
 ## Benches (`benches.py` generates every netlist body)
 
@@ -79,7 +78,7 @@ poly-resistor sections follow ff / ss; typical for fs / sf), -40 / 27 / 125 C,
   assumed filament resistor across the capacitor and to read the ballast's
   internal node without editing the committed cell netlists.
 
-## Open finding for Candidate 3 (single-corner debug probe, not evidence)
+## Open finding for Candidate 3 (debug probe, now confirmed by the PVT record)
 
 A one-corner local probe (typical, 27 C, `VDD` 3.3 V) of `margin3` shows the
 programmed side of Candidate 3 passing only about 4 nA through the read leg at
@@ -88,10 +87,9 @@ programmed side of Candidate 3 passing only about 4 nA through the read leg at
 `R_on` figure for Candidate 3 (`sim/cell-device-characterization/`) is a
 small-signal value measured with no DC drain-source drop across the access
 device and does not predict this saturation-limited DC drive. This is the
-reason `margin3_lowiref` exists. Whether any `I_ref` works for Region III
-across PVT, or whether the PMOS candidate needs a different WL/`VB`/read
-polarity, is what the fleet run is meant to answer; until it runs, treat
-Region III's read path as **unproven**.
+reason `margin3_lowiref` exists. The fleet PVT record confirms it: the Region III programmed side reads wrong
+at 44-45 of 45 corners at `I_ref` = 1 uA and at 11 of 45 corners (cold/slow) at 300 pA. Treat Region III's read path as **failing as designed**; it likely
+needs a different WL/`VB`/read polarity (design follow-up, not resolved here).
 
 ## Layout
 
@@ -101,7 +99,7 @@ sim/program-read-legs/
   run_experiment.py     klt request builder / runner / record writer (stdlib only)
   models/preamble.lib   design.ngspice wrapper section (see "Harness notes")
   .work/                git-ignored: generated decks and requests with host paths
-  records/, corners/, netlist-snapshots/   created by the first successful run
+  records/, corners/, netlist-snapshots/   written by each successful run (append-only)
 ```
 
 `python3 sim/run_corners.py program-read-legs --probe` runs ONE typical corner

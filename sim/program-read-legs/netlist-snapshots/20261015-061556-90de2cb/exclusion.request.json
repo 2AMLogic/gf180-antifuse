@@ -1,0 +1,211 @@
+{
+ "netlist": "exclusion.sp",
+ "models": {
+  "pdk": "gf180mcuD",
+  "lib": "libs.tech/ngspice/sm141064.ngspice"
+ },
+ "corners": {
+  "process": [
+   {
+    "name": "typical",
+    "sections": [
+     {
+      "lib": "sim/program-read-legs/models/preamble.lib",
+      "section": "design"
+     },
+     "typical",
+     "moscap_typical",
+     "res_typical"
+    ]
+   },
+   {
+    "name": "ff",
+    "sections": [
+     {
+      "lib": "sim/program-read-legs/models/preamble.lib",
+      "section": "design"
+     },
+     "ff",
+     "moscap_ff",
+     "res_ff"
+    ]
+   },
+   {
+    "name": "ss",
+    "sections": [
+     {
+      "lib": "sim/program-read-legs/models/preamble.lib",
+      "section": "design"
+     },
+     "ss",
+     "moscap_ss",
+     "res_ss"
+    ]
+   },
+   {
+    "name": "fs",
+    "sections": [
+     {
+      "lib": "sim/program-read-legs/models/preamble.lib",
+      "section": "design"
+     },
+     "fs",
+     "moscap_typical",
+     "res_typical"
+    ]
+   },
+   {
+    "name": "sf",
+    "sections": [
+     {
+      "lib": "sim/program-read-legs/models/preamble.lib",
+      "section": "design"
+     },
+     "sf",
+     "moscap_typical",
+     "res_typical"
+    ]
+   }
+  ],
+  "supply_v": {
+   "VDD": [
+    2.97,
+    3.3,
+    3.63
+   ],
+   "VCLAMP": [
+    1.62,
+    1.8,
+    1.98
+   ]
+  },
+  "temperature_c": [
+   -40,
+   27,
+   125
+  ]
+ },
+ "analysis": {
+  "kind": "op",
+  "args": ""
+ },
+ "measurements": [
+  {
+   "name": "ipg_p0r0_vpp3p63_bl0",
+   "expr": "i(vamp_p0r0_vpp3p63_bl0)"
+  },
+  {
+   "name": "ird_p0r0_vpp3p63_bl0",
+   "expr": "i(vamr_p0r0_vpp3p63_bl0)"
+  },
+  {
+   "name": "ipg_p0r0_vpp3p63_blvpp",
+   "expr": "i(vamp_p0r0_vpp3p63_blvpp)"
+  },
+  {
+   "name": "ird_p0r0_vpp3p63_blvpp",
+   "expr": "i(vamr_p0r0_vpp3p63_blvpp)"
+  },
+  {
+   "name": "ipg_p0r0_vpp6p00_bl0",
+   "expr": "i(vamp_p0r0_vpp6p00_bl0)"
+  },
+  {
+   "name": "ird_p0r0_vpp6p00_bl0",
+   "expr": "i(vamr_p0r0_vpp6p00_bl0)"
+  },
+  {
+   "name": "ipg_p0r0_vpp6p00_blvpp",
+   "expr": "i(vamp_p0r0_vpp6p00_blvpp)"
+  },
+  {
+   "name": "ird_p0r0_vpp6p00_blvpp",
+   "expr": "i(vamr_p0r0_vpp6p00_blvpp)"
+  },
+  {
+   "name": "ipg_p1r0_vpp3p63_bl0",
+   "expr": "i(vamp_p1r0_vpp3p63_bl0)"
+  },
+  {
+   "name": "ird_p1r0_vpp3p63_bl0",
+   "expr": "i(vamr_p1r0_vpp3p63_bl0)"
+  },
+  {
+   "name": "ipg_p1r0_vpp3p63_blvpp",
+   "expr": "i(vamp_p1r0_vpp3p63_blvpp)"
+  },
+  {
+   "name": "ird_p1r0_vpp3p63_blvpp",
+   "expr": "i(vamr_p1r0_vpp3p63_blvpp)"
+  },
+  {
+   "name": "ipg_p1r0_vpp6p00_bl0",
+   "expr": "i(vamp_p1r0_vpp6p00_bl0)"
+  },
+  {
+   "name": "ird_p1r0_vpp6p00_bl0",
+   "expr": "i(vamr_p1r0_vpp6p00_bl0)"
+  },
+  {
+   "name": "ipg_p1r0_vpp6p00_blvpp",
+   "expr": "i(vamp_p1r0_vpp6p00_blvpp)"
+  },
+  {
+   "name": "ird_p1r0_vpp6p00_blvpp",
+   "expr": "i(vamr_p1r0_vpp6p00_blvpp)"
+  },
+  {
+   "name": "ipg_p0r1_vpp3p63_bl0",
+   "expr": "i(vamp_p0r1_vpp3p63_bl0)"
+  },
+  {
+   "name": "ird_p0r1_vpp3p63_bl0",
+   "expr": "i(vamr_p0r1_vpp3p63_bl0)"
+  },
+  {
+   "name": "ipg_p0r1_vpp6p00_bl0",
+   "expr": "i(vamp_p0r1_vpp6p00_bl0)"
+  },
+  {
+   "name": "ird_p0r1_vpp6p00_bl0",
+   "expr": "i(vamr_p0r1_vpp6p00_bl0)"
+  },
+  {
+   "name": "ipg_p1r1_vpp3p63_bl0",
+   "expr": "i(vamp_p1r1_vpp3p63_bl0)"
+  },
+  {
+   "name": "ird_p1r1_vpp3p63_bl0",
+   "expr": "i(vamr_p1r1_vpp3p63_bl0)"
+  },
+  {
+   "name": "ipg_p1r1_vpp3p63_blvpp",
+   "expr": "i(vamp_p1r1_vpp3p63_blvpp)"
+  },
+  {
+   "name": "ird_p1r1_vpp3p63_blvpp",
+   "expr": "i(vamr_p1r1_vpp3p63_blvpp)"
+  },
+  {
+   "name": "ipg_p1r1_vpp6p00_bl0",
+   "expr": "i(vamp_p1r1_vpp6p00_bl0)"
+  },
+  {
+   "name": "ird_p1r1_vpp6p00_bl0",
+   "expr": "i(vamr_p1r1_vpp6p00_bl0)"
+  },
+  {
+   "name": "ipg_p1r1_vpp6p00_blvpp",
+   "expr": "i(vamp_p1r1_vpp6p00_blvpp)"
+  },
+  {
+   "name": "ird_p1r1_vpp6p00_blvpp",
+   "expr": "i(vamr_p1r1_vpp6p00_blvpp)"
+  }
+ ],
+ "options": {
+  "keep_artifacts": true,
+  "timeout_s": 300,
+  "stage_model_inputs": true
+ }
+}
