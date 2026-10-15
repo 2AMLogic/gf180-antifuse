@@ -1,0 +1,20 @@
+* expanding   symbol:  program_leg.sym # of pins=6
+** sym_path: design/cells/program_leg.sym
+** sch_path: design/cells/program_leg.sch
+.subckt program_leg PROG_EN READ_EN VDD VSS BL VPP  rb_w=2u rb_l=7.5u wsw=20u lsw=0.7u wlsp=0.5u llsp=0.7u wlsn=2u llsn=0.7u lg=0.28u wnl=1u wpl=2u
+*.ipin PROG_EN
+*.ipin READ_EN
+*.iopin VDD
+*.iopin VSS
+*.iopin BL
+*.iopin VPP
+Xil PROG_EN READ_EN VDD VSS PON RON_nc leg_interlock lg=lg wn=wnl wp=wpl m=1
+XMN5 PONB PON VSS VSS nfet_03v3 L=lg W=wnl nf=1 ad='int((nf+1)/2) * wnl/nf * 0.18u' as='int((nf+2)/2) * wnl/nf * 0.18u' pd='2*int((nf+1)/2) * (wnl/nf + 0.18u)' ps='2*int((nf+2)/2) * (wnl/nf + 0.18u)' nrd='0.18u / wnl' nrs='0.18u / wnl' sa=0 sb=0 sd=0 m=1
+XMP5 PONB PON VDD VDD pfet_03v3 L=lg W=wpl nf=1 ad='int((nf+1)/2) * wpl/nf * 0.18u' as='int((nf+2)/2) * wpl/nf * 0.18u' pd='2*int((nf+1)/2) * (wpl/nf + 0.18u)' ps='2*int((nf+2)/2) * (wpl/nf + 0.18u)' nrd='0.18u / wpl' nrs='0.18u / wpl' sa=0 sb=0 sd=0 m=1
+XMLSP1 PG PGB VPP VPP pfet_06v0 L=llsp W=wlsp nf=1 ad='int((nf+1)/2) * wlsp/nf * 0.18u' as='int((nf+2)/2) * wlsp/nf * 0.18u' pd='2*int((nf+1)/2) * (wlsp/nf + 0.18u)' ps='2*int((nf+2)/2) * (wlsp/nf + 0.18u)' nrd='0.18u / wlsp' nrs='0.18u / wlsp' sa=0 sb=0 sd=0 m=1
+XMLSP2 PGB PG VPP VPP pfet_06v0 L=llsp W=wlsp nf=1 ad='int((nf+1)/2) * wlsp/nf * 0.18u' as='int((nf+2)/2) * wlsp/nf * 0.18u' pd='2*int((nf+1)/2) * (wlsp/nf + 0.18u)' ps='2*int((nf+2)/2) * (wlsp/nf + 0.18u)' nrd='0.18u / wlsp' nrs='0.18u / wlsp' sa=0 sb=0 sd=0 m=1
+XMLSN1 PG PON VSS VSS nfet_06v0 L=llsn W=wlsn nf=1 ad='int((nf+1)/2) * wlsn/nf * 0.18u' as='int((nf+2)/2) * wlsn/nf * 0.18u' pd='2*int((nf+1)/2) * (wlsn/nf + 0.18u)' ps='2*int((nf+2)/2) * (wlsn/nf + 0.18u)' nrd='0.18u / wlsn' nrs='0.18u / wlsn' sa=0 sb=0 sd=0 m=1
+XMLSN2 PGB PONB VSS VSS nfet_06v0 L=llsn W=wlsn nf=1 ad='int((nf+1)/2) * wlsn/nf * 0.18u' as='int((nf+2)/2) * wlsn/nf * 0.18u' pd='2*int((nf+1)/2) * (wlsn/nf + 0.18u)' ps='2*int((nf+2)/2) * (wlsn/nf + 0.18u)' nrd='0.18u / wlsn' nrs='0.18u / wlsn' sa=0 sb=0 sd=0 m=1
+XMSW RB_TOP PG VPP VPP pfet_06v0 L=lsw W=wsw nf=1 ad='int((nf+1)/2) * wsw/nf * 0.18u' as='int((nf+2)/2) * wsw/nf * 0.18u' pd='2*int((nf+1)/2) * (wsw/nf + 0.18u)' ps='2*int((nf+2)/2) * (wsw/nf + 0.18u)' nrd='0.18u / wsw' nrs='0.18u / wsw' sa=0 sb=0 sd=0 m=1
+XRB BL RB_TOP VSS ppolyf_u_2k_6p0 r_width=rb_w r_length=rb_l m=1
+.ends

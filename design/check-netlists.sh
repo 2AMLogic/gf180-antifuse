@@ -4,7 +4,12 @@
 #
 #   design/check-netlists.sh
 #
-# Three checks, all of which must pass:
+# Four checks, all of which must pass:
+#
+#   4. Program leg / read leg - the three leg netlists elaborate (including the
+#      ppolyf_u_2k_6p0 ballast), and the interlock block's truth table
+#      (PON = PROG_EN & ~READ_EN, RON = READ_EN & ~PROG_EN) holds at the typical
+#      corner. Structure only; the PVT bench is sim/program-read-legs/.
 #
 #   1. Reproducibility - design/regen-netlists.sh --check: a fresh xschem
 #      export of every cell schematic is byte-identical to what is committed.
@@ -127,6 +132,45 @@ for cell in "${CELLS[@]}"; do
   printf 'ok: %s elaborates; wcap %s -> %s scales i(vpl) by %sx\n' \
     "${cell}" "${BASE_W}" "${DOUBLE_W}" "${ratio}"
 done
+
+echo
+echo "== 4. program leg / read leg elaboration and interlock truth table =="
+for nl in leg_interlock program_leg read_leg; do
+  cp "${DESIGN_DIR}/netlists/${nl}.spice" "${SCRATCH}/"
+done
+cp "${DESIGN_DIR}/tb/tb_legs.spice" "${SCRATCH}/"
+# The ballast needs the poly-resistor sheet-resistance parameters.
+echo ".lib ${MODELS}/sm141064.ngspice res_typical" >> "${SCRATCH}/models.spice"
+LEGS_LOG="${SCRATCH}/legs.log"
+if ! ( cd "${SCRATCH}" && ngspice -b tb_legs.spice ) > "${LEGS_LOG}" 2>&1 \
+   || grep -qiE '^[[:space:]]*(error|fatal)' "${LEGS_LOG}"; then
+  echo "ERROR: leg netlists failed to elaborate:" >&2
+  sed 's/^/    /' "${LEGS_LOG}" >&2
+  exit 1
+fi
+# value of "<name> = <v>" from the ngspice log
+val() { awk -v n="$1" '$1 == n { v = $3 } END { if (v == "") exit 1; print v }' "${LEGS_LOG}"; }
+# (PROG_EN, READ_EN) tag: PON = PROG & ~READ, RON = READ & ~PROG
+check_state() {
+  local tag="$1" want_pon="$2" want_ron="$3" pon ron ok
+  pon="$(val "v(pon${tag})")" || { echo "ERROR: no v(pon${tag}) in log" >&2; exit 1; }
+  ron="$(val "v(ron${tag})")" || { echo "ERROR: no v(ron${tag}) in log" >&2; exit 1; }
+  ok="$(awk -v p="${pon}" -v r="${ron}" -v wp="${want_pon}" -v wr="${want_ron}" \
+    'BEGIN { print ((wp ? p > 3.0 : p < 0.3) && (wr ? r > 3.0 : r < 0.3)) ? "yes" : "no" }')"
+  if [[ "${ok}" != "yes" ]]; then
+    echo "FAIL: interlock state ${tag}: PON=${pon} RON=${ron}, expected PON=${want_pon} RON=${want_ron}" >&2
+    exit 1
+  fi
+  printf 'ok: interlock PROG_EN,READ_EN=%s -> PON=%s RON=%s\n' "${tag}" "${want_pon}" "${want_ron}"
+}
+check_state 00 0 0
+check_state 10 1 0
+check_state 01 0 1
+check_state 11 0 0
+pg="$(val "v(xpg.pg)")"
+awk -v v="${pg}" 'BEGIN { exit !(v < 0.5) }' || {
+  echo "FAIL: program leg enabled but switch gate xpg.pg = ${pg} (expected ~0 V)" >&2; exit 1; }
+echo "ok: program leg elaborates; switch gate at ${pg} V when enabled"
 
 echo
 echo "All checks passed."

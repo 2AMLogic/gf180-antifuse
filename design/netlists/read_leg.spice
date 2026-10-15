@@ -1,0 +1,25 @@
+* expanding   symbol:  read_leg.sym # of pins=9
+** sym_path: design/cells/read_leg.sym
+** sch_path: design/cells/read_leg.sch
+.subckt read_leg PROG_EN READ_EN VCLAMP IREF VDD VSS BL SENSE RDATA  wsw=10u lsw=0.7u wcl=4u lcl=0.28u wmp=4u lmp=1u wmn=2u lmn=1u lg=0.28u wnl=1u wpl=2u
+*.ipin PROG_EN
+*.ipin READ_EN
+*.ipin VCLAMP
+*.ipin IREF
+*.iopin VDD
+*.iopin VSS
+*.iopin BL
+*.opin SENSE
+*.opin RDATA
+Xil PROG_EN READ_EN VDD VSS PON_nc RON leg_interlock lg=lg wn=wnl wp=wpl m=1
+XMSW CS RON BL VSS nfet_06v0 L=lsw W=wsw nf=1 ad='int((nf+1)/2) * wsw/nf * 0.18u' as='int((nf+2)/2) * wsw/nf * 0.18u' pd='2*int((nf+1)/2) * (wsw/nf + 0.18u)' ps='2*int((nf+2)/2) * (wsw/nf + 0.18u)' nrd='0.18u / wsw' nrs='0.18u / wsw' sa=0 sb=0 sd=0 m=1
+XMCL PIN VCLAMP CS VSS nfet_03v3 L=lcl W=wcl nf=1 ad='int((nf+1)/2) * wcl/nf * 0.18u' as='int((nf+2)/2) * wcl/nf * 0.18u' pd='2*int((nf+1)/2) * (wcl/nf + 0.18u)' ps='2*int((nf+2)/2) * (wcl/nf + 0.18u)' nrd='0.18u / wcl' nrs='0.18u / wcl' sa=0 sb=0 sd=0 m=1
+XMPI PIN PIN VDD VDD pfet_03v3 L=lmp W=wmp nf=1 ad='int((nf+1)/2) * wmp/nf * 0.18u' as='int((nf+2)/2) * wmp/nf * 0.18u' pd='2*int((nf+1)/2) * (wmp/nf + 0.18u)' ps='2*int((nf+2)/2) * (wmp/nf + 0.18u)' nrd='0.18u / wmp' nrs='0.18u / wmp' sa=0 sb=0 sd=0 m=1
+XMPO SENSE PIN VDD VDD pfet_03v3 L=lmp W=wmp nf=1 ad='int((nf+1)/2) * wmp/nf * 0.18u' as='int((nf+2)/2) * wmp/nf * 0.18u' pd='2*int((nf+1)/2) * (wmp/nf + 0.18u)' ps='2*int((nf+2)/2) * (wmp/nf + 0.18u)' nrd='0.18u / wmp' nrs='0.18u / wmp' sa=0 sb=0 sd=0 m=1
+XMNI IREF IREF VSS VSS nfet_03v3 L=lmn W=wmn nf=1 ad='int((nf+1)/2) * wmn/nf * 0.18u' as='int((nf+2)/2) * wmn/nf * 0.18u' pd='2*int((nf+1)/2) * (wmn/nf + 0.18u)' ps='2*int((nf+2)/2) * (wmn/nf + 0.18u)' nrd='0.18u / wmn' nrs='0.18u / wmn' sa=0 sb=0 sd=0 m=1
+XMNO SENSE IREF VSS VSS nfet_03v3 L=lmn W=wmn nf=1 ad='int((nf+1)/2) * wmn/nf * 0.18u' as='int((nf+2)/2) * wmn/nf * 0.18u' pd='2*int((nf+1)/2) * (wmn/nf + 0.18u)' ps='2*int((nf+2)/2) * (wmn/nf + 0.18u)' nrd='0.18u / wmn' nrs='0.18u / wmn' sa=0 sb=0 sd=0 m=1
+XMN6 SB SENSE VSS VSS nfet_03v3 L=lg W=wnl nf=1 ad='int((nf+1)/2) * wnl/nf * 0.18u' as='int((nf+2)/2) * wnl/nf * 0.18u' pd='2*int((nf+1)/2) * (wnl/nf + 0.18u)' ps='2*int((nf+2)/2) * (wnl/nf + 0.18u)' nrd='0.18u / wnl' nrs='0.18u / wnl' sa=0 sb=0 sd=0 m=1
+XMP6 SB SENSE VDD VDD pfet_03v3 L=lg W=wpl nf=1 ad='int((nf+1)/2) * wpl/nf * 0.18u' as='int((nf+2)/2) * wpl/nf * 0.18u' pd='2*int((nf+1)/2) * (wpl/nf + 0.18u)' ps='2*int((nf+2)/2) * (wpl/nf + 0.18u)' nrd='0.18u / wpl' nrs='0.18u / wpl' sa=0 sb=0 sd=0 m=1
+XMN7 RDATA SB VSS VSS nfet_03v3 L=lg W=wnl nf=1 ad='int((nf+1)/2) * wnl/nf * 0.18u' as='int((nf+2)/2) * wnl/nf * 0.18u' pd='2*int((nf+1)/2) * (wnl/nf + 0.18u)' ps='2*int((nf+2)/2) * (wnl/nf + 0.18u)' nrd='0.18u / wnl' nrs='0.18u / wnl' sa=0 sb=0 sd=0 m=1
+XMP7 RDATA SB VDD VDD pfet_03v3 L=lg W=wpl nf=1 ad='int((nf+1)/2) * wpl/nf * 0.18u' as='int((nf+2)/2) * wpl/nf * 0.18u' pd='2*int((nf+1)/2) * (wpl/nf + 0.18u)' ps='2*int((nf+2)/2) * (wpl/nf + 0.18u)' nrd='0.18u / wpl' nrs='0.18u / wpl' sa=0 sb=0 sd=0 m=1
+.ends
