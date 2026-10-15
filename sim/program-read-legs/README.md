@@ -5,30 +5,26 @@ amp + `I_ref` branch) in `design/cells/` -- the transistor-level instantiation
 of `spec/architecture.md` sections 1.2, 2 and 4 (see
 [`spec/leg-design-record.md`](../../spec/leg-design-record.md)).
 
-## STATUS: benches and runner are complete; no PVT record exists yet
+## STATUS: PVT record exists (fleet batch run, 2026-10-15)
 
-**The PVT tables have not been produced.** Both batch submits (jobs
-`klt-sim-b1f21dd1d468` and `klt-sim-c9421542227c`, 45 corners each, `ballast`
-bench) were rejected before any simulation ran: the fleet runner image has
-`klt 0.5.0`, this host has `klt 0.7.0`, and the submit preflight refuses a
-skewed pair (`batch_runner_version_mismatch`, exit 87). Per the host rules the
-grid was **not** run locally instead. No file under `records/`, `corners/` or
-`netlist-snapshots/` exists, so nothing here is evidence yet.
+Record: [`records/20261015-151616-d3df921.md`](records/20261015-151616-d3df921.md)
+-- six `klt sim` requests, 45 corners each, all resolved (270/270), run on the
+Spot batch fleet (job id of each in the record's `remote=` field; runner and
+client `klt` versions matched). The earlier submits were rejected by a runner
+version mismatch; that no longer applies. Programmed-side numbers are
+**conditional on the assumed `R_prog`** and no Monte Carlo / mismatch was run.
 
-Why a downgrade of the client is not a way out (checked, not assumed): a
-`klt 0.5.0` client cannot express these requests at all -- it has no
-`measurements[].expr` (operating-point quantities), no per-section model
-library (needed to put `design.ngspice` ahead of the gf180mcu `.lib` cards,
-see below) and does not stage the netlist's `.include` closure to the fleet.
+Headline (see the record for the per-corner tables; sides and regions are never
+averaged): mutual exclusion holds at 45/45 corners; the ballast inequality is met
+at every VPP; Regions I and II decide correctly at 45/45 corners on both sides at
+`I_ref = 1 uA`; **Region III's programmed side fails at slow/cold corners**
+(0/45 correct at `I_ref = 1 uA`, 34/45 at 300 pA) -- see the finding below.
 
-To produce the record once the fleet runner matches the host client, run on a
-host with `KLT_SIM_BACKEND=batch`:
+To regenerate, on a host with `KLT_SIM_BACKEND=batch`:
 
     python3 sim/run_corners.py program-read-legs
 
-which submits one `klt sim` request per bench and writes
-`records/<record-id>.md` (plus `corners/`, `netlist-snapshots/`) only if the
-fleet returns resolved corners. A failed submit writes nothing.
+A failed submit writes nothing.
 
 ## Benches (`benches.py` generates every netlist body)
 
@@ -79,19 +75,19 @@ poly-resistor sections follow ff / ss; typical for fs / sf), -40 / 27 / 125 C,
   assumed filament resistor across the capacitor and to read the ballast's
   internal node without editing the committed cell netlists.
 
-## Open finding for Candidate 3 (single-corner debug probe, not evidence)
+## Open finding for Candidate 3 (confirmed by the fleet run)
 
-A one-corner local probe (typical, 27 C, `VDD` 3.3 V) of `margin3` shows the
-programmed side of Candidate 3 passing only about 4 nA through the read leg at
-`I_ref = 1 uA`, so `RDATA` stays 0 -- the `pfet_06v0` access device at
-`WL = 0 V` is barely turned on with a read bit line near 1.3 V. The earlier
-`R_on` figure for Candidate 3 (`sim/cell-device-characterization/`) is a
-small-signal value measured with no DC drain-source drop across the access
-device and does not predict this saturation-limited DC drive. This is the
-reason `margin3_lowiref` exists. Whether any `I_ref` works for Region III
-across PVT, or whether the PMOS candidate needs a different WL/`VB`/read
-polarity, is what the fleet run is meant to answer; until it runs, treat
-Region III's read path as **unproven**.
+An earlier single-corner probe suggested that Candidate 3's programmed side
+passes only a few nA through the read leg (the `pfet_06v0` access device at
+`WL = 0 V` is barely on with a read bit line near 1 V), so `RDATA` stays 0. The
+45-corner run confirms it as evidence: at `I_ref = 1 uA` the programmed side
+decides correctly at 0/45 corners (worst `I_read` about 4.9 pA at
+`ss/-40C/2.97 V`); at `I_ref = 300 pA` it is 34/45, still failing the slow/cold
+corners. The earlier `R_on` figure for Candidate 3
+(`sim/cell-device-characterization/`) is small-signal and does not predict this
+saturation-limited DC drive. No `I_ref` tried works across PVT, so Region III's
+read path needs a different WL / `VB` / read polarity (a design change, not
+made here). Region III's read path is **unproven**, not passing.
 
 ## Layout
 
