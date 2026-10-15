@@ -167,16 +167,17 @@ see below.
 
 ## Working with these sources
 
-Everything below needs `PDK_ROOT` pointing at the open_pdks / volare install
+Everything below needs `PDK_ROOT` pointing at the open_pdks / ciel install
 root that contains `gf180mcuD/`, plus `xschem` and `ngspice` on `PATH`. The
-scripts honour `$PDK_ROOT` first and fall back to `~/.volare` when it is unset
+scripts honour `$PDK_ROOT` first and fall back to `~/.ciel` when it is unset
 or does not contain `gf180mcuD/`; each prints the root it resolved before
-running.
+running. They also read `<root>/gf180mcuD/SOURCES` and refuse a tree
+whose `open_pdks` hash is not the pin in `design/lib-pdk-root.sh`.
 
 Open a cell:
 
 ```sh
-PDK_ROOT=$HOME/.volare xschem --rcfile design/xschemrc design/cells/cell_candidate1.sch
+PDK_ROOT=$HOME/.ciel xschem --rcfile design/xschemrc design/cells/cell_candidate1.sch
 ```
 
 Regenerate the derived netlists after any schematic change, and commit the

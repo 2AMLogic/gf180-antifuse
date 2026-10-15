@@ -385,7 +385,7 @@ sequence's self-clearing strobes.
   per-region MUX/access-device pairing is built on, and the source of the
   post-breakdown-model gap this record works around in §4.
 - GlobalFoundries gf180mcu open PDK (`open_pdks`, locally checked out at
-  `~/.volare/gf180mcuD`) — `gf180mcu_fd_sc_mcu7t5v0` standard-cell library
+  `~/.ciel/gf180mcuD`) — `gf180mcu_fd_sc_mcu7t5v0` standard-cell library
   (global decode logic), `gf180mcu_fd_io` (SPI pads), `ppolyf_u_2k_6p0`
   (ballast resistor), all verified present via `klt pdk list` and a
   filesystem scan of `libs.tech/xschem/symbols` and `libs.ref/` on

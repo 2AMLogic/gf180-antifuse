@@ -125,7 +125,7 @@ def run_klt(request_path: Path, outdir: Path, backend: str | None) -> tuple[dict
     if backend:
         cmd += ["--backend", backend]
     env = dict(os.environ)
-    env.setdefault("PDK_ROOT", str(Path.home() / ".volare"))
+    env.setdefault("PDK_ROOT", str(Path.home() / ".ciel"))
     try:
         proc = subprocess.run(cmd, capture_output=True, text=True, timeout=KLT_TIMEOUT_S, env=env)
     except subprocess.TimeoutExpired:
