@@ -90,6 +90,9 @@ def off_level(cand) -> float:
 # ---------------------------------------------------------------------------
 
 
+T_WL_RAMP = 4e-7   # WL / VB bring-up ramp [s]; the program pulse starts at CB.TRIG_T1 = 1 us
+
+
 def body_pl(pdk, cand, defaults, body_dir: Path, lib_root: str, bench: str, params: dict):
     scheme, var = bench.split("_", 1)
     out = [CB.body_header(pdk, body_dir, f"Candidate {cand.n} {bench} (tran, #90)", cand, "trigger", lib_root)]
@@ -101,8 +104,11 @@ def body_pl(pdk, cand, defaults, body_dir: Path, lib_root: str, bench: str, para
     out.append("VPLM PLM PL DC 0")                     # ammeter: program (return-side) current
     out.append("VBL BL 0 DC 0")                        # bit line at the 0 V return, through an ammeter
     wl = cand.moscap_wl_on if scheme == "plb" else off_level(cand)
-    out.append(f"VWL WL 0 DC {CB.fmt(wl)}")
-    out.append(f"VVB VB 0 DC {CB.fmt(cand.vb)}")
+    # WL and VB are static "on" levels, but a t=0 step into a `uic` start stalls the solver
+    # on the asymmetric 10 V device (timestep collapse), so they are brought up by a C-infinity
+    # ramp that completes (T_RAMP) well before the program pulse starts at t1.
+    out.append(f"BWL WL 0 V = '{CB.fmt(wl)}*af_edge(time/{CB.fmt(T_WL_RAMP)})'")
+    out.append(f"BVB VB 0 V = '{CB.fmt(cand.vb)}*af_edge(time/{CB.fmt(T_WL_RAMP)})'")
     geo = CB.geometry(cand, defaults, "min", "min")
     out.append(f"XDUT BL WL PL VB {CB.conv_dut(cand, var, geo)}")
     cn = CB.conv_cn(var)
