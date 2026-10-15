@@ -45,7 +45,7 @@ case "${1:-}" in
   *)       echo "usage: $(basename "$0") [--check]" >&2; exit 2 ;;
 esac
 
-# PDK root resolution: $PDK_ROOT first, then ~/.volare - see
+# PDK root resolution: $PDK_ROOT first, then ~/.ciel (pinned revision verified) - see
 # design/lib-pdk-root.sh for the order and why it is shared with
 # check-netlists.sh. This script only drives xschem, so bare gf180mcuD is
 # enough of a candidate root to require.

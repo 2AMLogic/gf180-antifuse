@@ -3,7 +3,7 @@
 #### Use it either by starting xschem from this directory (xschem picks up
 #### ./xschemrc automatically) or explicitly:
 ####
-####   PDK_ROOT=$HOME/.volare xschem --rcfile design/xschemrc design/cells/cell_candidate1.sch
+####   PDK_ROOT=$HOME/.ciel xschem --rcfile design/xschemrc design/cells/cell_candidate1.sch
 ####
 #### design/regen-netlists.sh passes it explicitly, so netlist regeneration
 #### does not depend on the invoking shell's cwd or on ~/.xschem/xschemrc.
@@ -12,7 +12,7 @@
 #### ($::180MCU_MODELS), and PDK-specific defaults. It requires PDK_ROOT.
 if { ![info exists env(PDK_ROOT)] || $env(PDK_ROOT) eq {} } {
   puts stderr "gf180-antifuse xschemrc: PDK_ROOT is not set."
-  puts stderr "Set it to the volare/open_pdks install root that contains gf180mcuD/."
+  puts stderr "Set it to the ciel/open_pdks install root that contains gf180mcuD/."
   exit 1
 }
 source $env(PDK_ROOT)/gf180mcuD/libs.tech/xschem/xschemrc

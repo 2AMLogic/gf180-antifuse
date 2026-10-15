@@ -16,7 +16,7 @@ sys.path.insert(0, str(HERE.parent))
 import build_report as B  # noqa: E402
 
 REPO = HERE.parent.parent.parent
-PDK = "c6d73a35f524070e85faff4a6a9eef49553ebc2b"
+PDK = "f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
 EXP = "sim/cell-device-characterization"
 CORNER = "typical_27c_bl1p00v"
 SNAP = ("*snap\n.subckt cell_candidateN BL WL PL VB  wcap=1e-6 lcap=1e-6 "

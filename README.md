@@ -63,9 +63,9 @@ executed there, not that it fails.
 
 **Tools and PDK.** `xschem` 3.4.7, `ngspice` 46, `python3` (stdlib only for
 `sim/`), and the gf180mcu PDK (`gf180mcuD`, `open_pdks` commit
-`c6d73a35f524070e85faff4a6a9eef49553ebc2b`, the revision recorded in
+`f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7`, the revision recorded in
 [`spec/cell-candidates.md`](spec/cell-candidates.md)). Point `PDK_ROOT` at a
-root containing `gf180mcuD/` (scripts fall back to `~/.volare`). The
+root containing `gf180mcuD/` (scripts fall back to `~/.ciel`; install with `pip install ciel==2.6.1`, then `ciel enable --pdk-family gf180mcu -l gf180mcu_fd_pr f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7`; a tree whose `SOURCES` differs from the pin is refused). The
 `signoff/` grade needs a specific `klt` build, below.
 
 | Dir | Command | Outcome |
