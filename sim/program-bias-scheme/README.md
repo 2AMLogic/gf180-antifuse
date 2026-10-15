@@ -68,6 +68,7 @@ The default mode submits to the batch fleet (`KLT_SIM_BACKEND=batch` /
 - The ballast is an ideal resistor (PLACEHOLDER 500 uA target at V_bd); the
   ratified `ppolyf_u_2k_6p0` and its voltage rating (open, OI-5) are not
   modelled.
+- The PL node carries a PLACEHOLDER 100 fF shunt capacitance (`C_PL_SHUNT`). Without it the ballasted PL node stalls the `uic` start of the moscap macro (timestep collapse). Two earlier attempts without it are kept as failed evidence, no records: `corners/20261015-083207-76419ad` (Candidate 2, DC WL, 45/45 errored) and `corners/20261015-090309-9b440d0` (Candidate 2, WL/VB ramp, 25/45 errored). The partial `corners/20261015-081614-4b821a1` (Candidate 1, killed mid-run, before the shunt) is also kept.
 - Plate-line / body-plate voltage stress is **not modelled**: the stock
   `cap_*` macros are a two-terminal C(V) with no junction to substrate or
   well. A PL-driven scheme puts the program voltage on the capacitor's body
