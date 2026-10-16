@@ -5,6 +5,7 @@
     python3 sim/array-slice-bench/run_bench.py --slice slice_i_ii
     python3 sim/array-slice-bench/run_bench.py --backend local # debug only
     python3 sim/array-slice-bench/run_bench.py --analyze-report PATH --slice S   # one process request's report
+    python3 sim/array-slice-bench/run_bench.py --mode full-band   # issue #70: full-band leakage (fullband.py)
 
 What it does (and does not do)
 ------------------------------
@@ -188,8 +189,8 @@ def region_tables(sl: str, per: list[dict]):
 # ---------------------------------------------------------------------------
 
 
-def run_klt(sl: str, proc: str, backend: str | None, outdir: Path) -> dict:
-    cmd = ["klt", "sim", str(B.TB_DIR / f"{sl}_{proc}.request.json"), "--format", "json", "-o", str(outdir)]
+def run_klt(sl: str, proc: str, backend: str | None, outdir: Path, request: Path | None = None) -> dict:
+    cmd = ["klt", "sim", str(request or B.TB_DIR / f"{sl}_{proc}.request.json"), "--format", "json", "-o", str(outdir)]
     if backend:
         cmd += ["--backend", backend]
     for attempt in range(1, MAX_SUBMITS + 1):
@@ -350,8 +351,164 @@ def write_records(record_id, sections, rep_paths, per_slice_summary, clean, now)
     return "\n".join(rec) + "\n"
 
 
+# ---------------------------------------------------------------------------
+# Full-band leakage mode (issue #70)
+# ---------------------------------------------------------------------------
+
+
+def _jobs_line(reps: dict) -> list[str]:
+    out = []
+    for key in sorted(reps):
+        j = (reps[key].get("environment") or {}).get("remote") or {}
+        out.append(f"`{j.get('job_id')}` ({key}; {j.get('provider')}, {j.get('instance_type')}, {j.get('lifecycle')}, "
+                   f"exit {j.get('exit_code')})" if j else f"none reported ({key}; local run)")
+    return out
+
+
+def run_full_band(a) -> int:
+    import fullband as F   # noqa: E402  (stdlib + gen_array + make_bench only)
+
+    now = dt.datetime.now(dt.timezone.utc)
+    record_id = a.record_id or f"{now:%Y%m%d-%H%M%S}-{git('rev-parse', '--short', 'HEAD')}-fullband"
+    clean = git("status", "--porcelain") == ""
+    bands = a.band or list(G.BAND_SLICES)
+    rep_dir = HERE / "reports" / record_id
+    reports: dict[tuple[str, str], dict[str, dict]] = {}
+    for name in bands:
+        for variant in B.LEAK_VARIANTS:
+            reports[(name, variant)] = {}
+            for proc in B.PROCESS:
+                rp = rep_dir / f"leak_{variant}_{name}_{proc}.report.json"
+                if rp.exists():   # resume: a raw report already on disk is never resubmitted or overwritten
+                    reports[(name, variant)][proc] = json.loads(rp.read_text())
+                    print(f"reusing {rp.relative_to(REPO)}", flush=True)
+                    continue
+                req = B.TB_DIR / f"leak_{variant}_{name}_{proc}.request.json"
+                rep = run_klt(name, proc, a.backend, Path("/tmp") / f"klt-sim-{record_id}-{variant}-{name}-{proc}", req)
+                rep_dir.mkdir(parents=True, exist_ok=True)
+                rp.write_text(json.dumps(slim(rep), indent=None, separators=(",", ":")) + "\n")
+                reports[(name, variant)][proc] = rep
+                print(f"wrote {rp.relative_to(REPO)}", flush=True)
+    return finish_full_band(F, record_id, clean, now, bands, reports, a)
+
+
+def finish_full_band(F, record_id, clean, now, bands, reports, a) -> int:
+    pg, nat, sel = [], [], []
+    jobs = []
+    problems = []
+    for name in bands:
+        for variant, fn, acc in (("pgoff", F.analyze_pgoff, pg), ("nat", F.analyze_nat, nat), ("sel", F.analyze_sel, sel)):
+            reps = reports[(name, variant)]
+            try:
+                acc += fn(name, reps) if variant != "pgoff" else fn(name, reps)
+            except F.AnalysisError as ex:
+                problems.append(f"{name}/{variant}: {ex}")
+        for variant in B.LEAK_VARIANTS:
+            for proc, r in reports[(name, variant)].items():
+                jobs.append(f"- `{variant}` {name} {proc}: " + ", ".join(_jobs_line({proc: r})) +
+                            f"; corners {r['corner_count']} (pass {r['passed']}, fail {r['failed']}, error {r['errored']}, "
+                            f"inconclusive {r['inconclusive']})")
+    if problems:
+        print("ERROR: ungradable report(s); no record written:\n  " + "\n  ".join(problems), file=sys.stderr)
+        return 3
+    sha = git("rev-parse", "HEAD")
+    sel_bad = sum(0 if r["ok"] else 1 for r in sel)
+    floor_n = sum(1 for r in pg if r["floor_dominated"])
+    eqn = [
+        "I_leak,total = I_node,pgoff + I_cell,max          (each term once)",
+        "I_node,pgoff = -i(Vbl_<band>) with every column OFF and every BL_c clamped to 0 V",
+        "             = sum_c i(Vcl_<c>)  [channel leakage into OFF columns]  +  I_other  [BLG-node junction/bulk]",
+        "I_cell,max   = 31 x I_off from sim/cell-device-characterization/records (carried, not re-measured here)",
+        "margin       = I_ref - I_leak,total   and   I_ref / I_leak,total",
+    ]
+    body = [f"# Record {record_id}", "",
+            f"- **Record ID**: {record_id}",
+            "- **Claim**: `spec/architecture.md` §3 (the selected bit-line budget includes the aggregate OFF-state "
+            "leakage) and §4 (`I_ref > I_sneak_max`, fast/hot leakage analysed apart from slow/cold selected-path "
+            "conduction), per region (`spec/split-axis-plan.md`: 11 / 11 / 10 columns). Closes the addressing-stage "
+            "term that the #65 margin benches did not carry.",
+            f"- **Netlist provenance**: schematic (`design/netlists/band_{{i,ii,iii}}.spice`, generated by "
+            f"`design/gen_array.py`, netlisted with `klt netlist`); git HEAD `{sha[:12]}`; working tree "
+            f"{'clean' if clean else 'NOT clean (uncommitted changes at run time)'}.",
+            "- **Corner matrix run**: process {typical, ff, ss, fs, sf} (one `klt sim` request per variant, band and "
+            "process corner) x temperature {-40, 27, 125} C x supply {-10 %, nominal, +10 %} (scales VDDL and the band "
+            "VDDH) x read level (per region, below) x read-level scale {0.9, 1.0, 1.1} (the VCLAMP +-10 % tracking "
+            "points, approximated as a scaling of the level; `sel` runs level scale 1.0 only). Full CLAUDE.md PVT "
+            "matrix; no subset.",
+            "- **Result**: see the per-region tables below; nothing is averaged across regions or read levels.",
+            f"- **Links**: raw klt reports `sim/array-slice-bench/reports/{record_id}/`; per-corner CSV "
+            f"`measurements/array-slice-bench/{record_id}.csv`; per-region view "
+            f"`measurements/array-slice-bench/{record_id}.md`.",
+            f"- **Timestamp / author**: {now:%Y-%m-%dT%H:%M:%SZ} / Claude Sonnet 5.5 (Loom builder, issue #70)",
+            "- **Supersedes**: (none)", "",
+            "## Assumed / placeholder inputs (all of them)", "",
+            "- **Sense-node attachment: ASSUMED.** The read leg is not connected to the array on `main` "
+            "(`design/README.md`). The bench places the sense node on the band's `BLG` bus (shared by all of the "
+            "band's column pass-gates). Every unselected `BL_c` is either clamped to 0 V (`pgoff`, the leakage worst "
+            "case) or floating (`nat`, the natural DC steady state); idle-band buses do not exist in a one-band "
+            "slice, so no idle-band term is claimed. All columns are OFF (n, not n-1: a read has one column ON, so "
+            "this is the conservative count). Attachment is #73's to design.",
+            f"- **Read levels**: bracket the bit-line voltages in `sim/program-read-legs/records/{B.READ_RECORD}.md` "
+            "(\"BL at worst\" rows), not corner-matched; table below. Program-path placeholder stimulus (BLG 3.0/3.5 V) "
+            "is **not** used for the margin budget.",
+            "- **Cell term** `31 x I_off` is the committed record's value, a gmin-floor upper bound evaluated at BL "
+            "0.9-1.1 V (ff/125C/high). It was **not** re-evaluated at the 3.77-3.98 V unprogrammed sense levels; "
+            "this record does not claim the cell term at those levels.",
+            "- **Programmed side**: carried from #65 with its ASSUMED R_prog; Region III programmed side is unproven (#75). "
+            "Leakage is drawn out of the sense node in the same direction as the programmed-cell read current, so it "
+            "cannot reduce the programmed-side margin - the #65 figures are carried unchanged.",
+            f"- **Simulator floor**: estimated as gmin ({F.GMIN:g} S) x V_BLG x columns; a pass-gate-at-node reading "
+            f"below {F.FLOOR_FACTOR:g}x that is flagged floor-dominated (upper bound only). {floor_n} of {len(pg)} "
+            "graded points are flagged.",
+            "- **Settling is not evidenced**: the stock moscap model does not run in transient (README); selected-path "
+            "conduction is a DC check only.", "",
+            "## Sign convention and budget equation", "",
+            "Leakage is positive when drawn **out of** the summation node `BLG_<band>`; ngspice `i(V)` of a supplying "
+            "source is negative, so `I_node = -i(Vbl)`; `i(Vcl_c)` (BL_c clamp, + terminal on BL_c) is positive for "
+            "current entering BL_c from the OFF pass-gate.", "", "```", *eqn, "```", "",
+            "## Read-level provenance", "", *F.provenance_rows(), "",
+            "## Leakage budget, worst corner per region and read level", "", *F.budget_table(pg), "",
+            "## Per-region PVT table (worst supply / level scale per process x temperature)", "", *F.pvt_table(pg), "",
+            "## Which pass-gate leaks (per-column spread at each region's worst point)", "", *F.attribution_table(pg), "",
+            "## Natural DC steady state vs clamped worst case", "", *F.nat_table(nat, pg), "",
+            f"## Selected-path conduction at the read level (thresholds: eta >= {F.ETA_MIN}, V(BL)/V(BLG) >= {F.BL_MIN}, "
+            f"return in [{F.RETURN_MIN}, {1 / F.RETURN_MIN:.3f}]; {sel_bad} of {len(sel)} points below)", "",
+            *F.sel_table(sel), "",
+            "## Programmed / unprogrammed side margins carried from #65", "",
+            f"Parsed from `sim/program-read-legs/records/{B.READ_RECORD}.md`; R_prog is ASSUMED there.", "",
+            *F.programmed_side_from_65(), "",
+            "## Fleet jobs (out-of-band verification)", "", *jobs, ""]
+    rec = HERE / "records" / f"{record_id}.md"
+    rec.parent.mkdir(parents=True, exist_ok=True)
+    rec.write_text("\n".join(body))
+    meas = REPO / "measurements" / "array-slice-bench"
+    meas.mkdir(parents=True, exist_ok=True)
+    (meas / f"{record_id}.md").write_text(
+        f"# Full-band leakage - per-region results ({record_id})\n\n"
+        "**Pre-silicon simulation, not a silicon measurement.** Per-region view of "
+        f"`sim/array-slice-bench/records/{record_id}.md` (assumptions, corner matrix, provenance). "
+        "Regions are never averaged together.\n\n## Leakage budget\n\n" + "\n".join(F.budget_table(pg)) +
+        "\n\n## Per-region PVT table\n\n" + "\n".join(F.pvt_table(pg)) +
+        "\n\n## Selected-path conduction\n\n" + "\n".join(F.sel_table(sel)) + "\n")
+    csv = ["band,process,temp_c,level,level_scale,supply_scale,vblg_v,i_ref_a,pg_channel_a,pg_other_a,pg_node_a,"
+           "cell_a,total_a,headroom_a,ratio,floor_a,floor_dominated"]
+    for r in sorted(pg, key=lambda r: (r["band"], r["level"], r["i_ref"], r["process"], r["temp"], r["scale"], r["level_scale"])):
+        csv.append(",".join(str(x) for x in (r["band"], r["process"], r["temp"], r["level"], r["level_scale"], r["scale"],
+                                             r["vbl"], r["i_ref"], r["pg_channel"], r["pg_other"], r["pg_node"], r["cell"],
+                                             r["total"], r["headroom"], r["ratio"], r["floor"], r["floor_dominated"])))
+    (meas / f"{record_id}.csv").write_text("\n".join(csv) + "\n")
+    print(f"wrote {rec.relative_to(REPO)}, measurements/array-slice-bench/{record_id}.{{md,csv}}")
+    worst = max(pg, key=lambda r: r["total"])
+    print(f"worst I_leak,total {worst['total']:.3g} A ({worst['band']} {worst['level']} {worst['process']}/{worst['temp']}C); "
+          f"min I_ref/I_leak,total {min(r['ratio'] for r in pg):.3g}; selected-path points below threshold {sel_bad}/{len(sel)}")
+    return 0
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--mode", choices=("slice", "full-band"), default="slice")
+    ap.add_argument("--band", action="append", choices=list(G.BAND_SLICES), help="full-band mode: restrict to a band")
+    ap.add_argument("--record-id", help="full-band mode: resume an interrupted run (reuses reports already on disk)")
     ap.add_argument("--slice", action="append", choices=list(G.SLICES))
     ap.add_argument("--backend", default=None, help="klt sim backend override (default: host default)")
     ap.add_argument("--analyze-report", type=Path, help="grade an existing klt JSON report (one process request) instead of running")
@@ -362,6 +519,9 @@ def main():
     if any((not p.exists()) or p.read_text() != t for p, t in B.outputs().items()):
         print("ERROR: testbench/ is stale; run make_bench.py first.", file=sys.stderr)
         return 1
+
+    if a.mode == "full-band":
+        return run_full_band(a)
 
     now = dt.datetime.now(dt.timezone.utc)
     record_id = f"{now:%Y%m%d-%H%M%S}-{git('rev-parse', '--short', 'HEAD')}"
