@@ -20,6 +20,8 @@ source $env(PDK_ROOT)/gf180mcuD/libs.tech/xschem/xschemrc
 #### Make this repo's own cells resolvable by bare name (cell_candidate1.sym).
 set GF180_ANTIFUSE_DESIGN_DIR [file dirname [file normalize [info script]]]
 append XSCHEM_LIBRARY_PATH :${GF180_ANTIFUSE_DESIGN_DIR}/cells
+append XSCHEM_LIBRARY_PATH :${GF180_ANTIFUSE_DESIGN_DIR}/mux
+append XSCHEM_LIBRARY_PATH :${GF180_ANTIFUSE_DESIGN_DIR}/array
 
 #### Write one file per subcircuit when netlisting. design/cells/cell_library.sch
 #### relies on this to emit one derived netlist per cell schematic.
