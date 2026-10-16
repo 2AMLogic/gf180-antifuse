@@ -10,7 +10,7 @@ of `spec/architecture.md` sections 1.2, 2 and 4 (see
 Records (both kept; `sim/` results are append-only evidence):
 [`records/20261015-061556-90de2cb.md`](records/20261015-061556-90de2cb.md)
 (earlier run, version-matched `klt 0.7.0` client, same 45 corners x 6 benches) and
-[`records/20261015-151616-d3df921.md`](records/20261015-151616-d3df921.md)
+[`records/20261015-151616-d3df921.md`](records/20261015-151616-d3df921.md) (latest).
 The latest record is six `klt sim` requests, 45 corners each, all resolved (270/270), run on the
 Spot batch fleet (job id of each in the record's `remote=` field; runner and
 client `klt` versions matched). The earlier submits were rejected by a runner
