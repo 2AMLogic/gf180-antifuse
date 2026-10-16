@@ -9,3 +9,12 @@
 .lib design
 .include $PDK_ROOT/gf180mcuD/libs.tech/ngspice/design.ngspice
 .endl design
+
+* Mismatch variant (Monte Carlo benches): the same globals, then the PDK's
+* per-instance mismatch switch (sw_stat_mismatch, default 0) turned ON. Global
+* process variation (sw_stat_global) stays 0, so a monte_carlo vary="mismatch"
+* request samples intra-die mismatch only, on top of the named PVT corner.
+.lib design_mm
+.include $PDK_ROOT/gf180mcuD/libs.tech/ngspice/design.ngspice
+.param sw_stat_mismatch=1
+.endl design_mm
