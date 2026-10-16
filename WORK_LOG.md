@@ -5,6 +5,8 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-10-16
 
+- **PR #108**: sim: integrated program-to-read transition and stress bench with first fleet record
+- **Issue #73** (closed): sim: integrated program-to-read transition and voltage-stress bench
 - **PR #105**: sim: full-band addressing-stage leakage per region at read bias
 - **Issue #70** (closed): design: quantify full-band addressing leakage in the sense-margin budget
 - **PR #103**: sim: mismatch Monte Carlo for read-leg sense mirror against I_ref
