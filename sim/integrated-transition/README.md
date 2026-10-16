@@ -51,9 +51,22 @@ Scenarios (`make_bench.py: SCENARIOS`): `base`, `vslow` (500 ns VPP ramp), `rd_o
 20 ns before PROG_EN starts to fall), `rd_gap` (read 200 ns after completion), `csel_late` (column
 select 100 ns after the row select), `timeout` (armed, no pulse, selects released, immediate read).
 Filament variants: `unprog`; `prog_lo` / `prog_hi` (assumed 10 kohm / 100 kohm across the selected
-capacitor) on the scenarios where the filament changes the answer. Per slice: selected cells in rows
-0-3 of one column per region (all four capacitor x access sub-combinations of each region) x supply scale
-{0.9, 1.0, 1.1} x those scenarios x {-40, 27, 125} C x five process corners.
+capacitor).
+
+### Cost and the two tiers
+
+A fleet unit (one process x temperature x point) costs about 12 s on the ngspice-46 runner at the 5 ns step
+(about 6 s at 10 ns, but that step aborted some units, below); the same deck takes about 2 s on a local
+ngspice 42. The full product of every axis would be about 5000 units, so the matrix is two tiers
+(`make_bench.py: TIER_POINTS`, `TIER_B_CORNERS`):
+
+| Tier | PVT | Cells | Points | Units |
+|---|---|---|---|---|
+| A | full: 5 process x {-40, 27, 125} C x supply scale {0.9, 1.0, 1.1} | 4 per region (rows 0-3 of one column: all four capacitor x access sub-combinations) | `base` scenario, `unprog` and `prog_lo` | 1080 |
+| B | reduced, 7 corners: ss at -40 / 125 C with scale 0.9; ff at -40 / 125 C with scale 1.1; typical, fs, sf at 27 C with scale 1.0 | 2 per region (rows 0 and 3: opposite on both axes) | `vslow`, `rd_ovl`, `rd_gap`, `csel_late`, `timeout` unprogrammed; `rd_ovl`, `rd_gap` with `prog_lo`; `base` with `prog_hi` | 336 |
+
+The scenarios in tier B are therefore **not** run at all 45 corners; a record says so and the tables show
+which corners each row covers. (Scale 0.9 / 1.1 move VDD, VDDH, VCLAMP and V_PK together.)
 
 ## What is measured and how it is judged
 
@@ -84,9 +97,11 @@ nothing about long-term disturb or retention.
 * **Transient start and edges.** `uic` start and C-infinity edges (100 ns control edges, ramped supplies): the stock
   moscap macro stalls on slope discontinuities and on some operating-point starts
   (`sim/cell-breakdown-model/README.md`, "Transient convergence (#74)").
-* **Step size matters on the fleet.** With a 10 ns maximum step three of nine probe units (one typical-corner
-  temperature, lowest supply) aborted on the ngspice-46 fleet and passed with 5 ns; local ngspice 42 passed both.
-  The bench uses 5 ns. A unit that still aborts is recorded as an error and never counted as a pass.
+* **Step size matters on the fleet.** With a 10 ns maximum step three of nine probe units (typical corner, 125 C,
+  lowest supply) aborted on the ngspice-46 fleet and passed with 5 ns or 2 ns; local ngspice 42 passed all. The bench uses
+  5 ns. A unit that still aborts is recorded as an error and never counted as a pass. (Filed against the tool: the
+  abort is reported only as `measurement produced no value`, and `keep_artifacts`, the only route to a log, fails when many
+  `supply_v` keys are swept.)
 * **Branch currents ring.** The trapezoidal integrator rings at the step rate on a floating bus after a select
   edge (+-1.6 uA seen locally), so leg currents are window averages, never instantaneous values or peaks.
 * **The floating bus.** With both legs off the bus level comes from charge injection by the select edges and
@@ -101,7 +116,7 @@ limits.py            supported limits with provenance
 analyze.py           grading, stress aggregation (pure functions)
 run_bench.py         submits via klt sim, grades, writes records
 test_integrated.py   offline tests
-testbench/tb_<slice>_<process>.spice, <slice>_<process>.request.json, probes_<slice>.json
+testbench/tb_<slice>_<process>.spice, <slice>_<process>.request.json (tier A), <slice>_<process>_x.request.json (tier B), probes_<slice>.json
 reports/<record-id>/<slice>_<process>.report.json.gz   raw measurements of every unit
 records/<record-id>.md                                  evidence record
 ../../measurements/integrated-transition/<record-id>.{md,csv}   per-region view and per-point rows
@@ -111,7 +126,7 @@ records/<record-id>.md                                  evidence record
 python3 sim/integrated-transition/make_bench.py --check
 python3 -m unittest discover -s sim/integrated-transition -p 'test_integrated.py'
 python3 sim/integrated-transition/run_bench.py --preflight    # two units on the fleet, nothing recorded
-python3 sim/integrated-transition/run_bench.py                # the full matrix via klt sim (KLT_SIM_BACKEND=batch)
+python3 sim/integrated-transition/run_bench.py                # both tiers via klt sim (KLT_SIM_BACKEND=batch), ~1400 units
 ```
 
 Reports and records are never edited; a re-run mints a new `<record-id>`. If a batch submit fails the script

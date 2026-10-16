@@ -20,20 +20,57 @@ class Bench(unittest.TestCase):
         for p, t in B.outputs().items():
             self.assertTrue(p.exists() and p.read_text() == t, f"stale {p.name}; run make_bench.py")
 
-    def test_point_list_covers_every_subcombination_per_region(self):
-        seen = {}
+    def requests(self):
         for sl in B.SLICE_CELLS:
-            req = json.loads((B.TB_DIR / f"{sl}_typical.request.json").read_text())
-            n = len(req["corners"]["supply_v"]["vdd"])
-            self.assertEqual(n, len(B.points(sl)))
-            for i in range(n):
+            for proc in B.PROCESS:
+                for tier in B.TIER_POINTS:
+                    yield sl, proc, tier, json.loads((B.TB_DIR / B.request_name(sl, proc, tier)).read_text())
+
+    def test_point_lists_decode_back_to_their_definition(self):
+        for sl, proc, tier, req in self.requests():
+            pts = B.points(sl, proc, tier)
+            self.assertEqual(len(req["corners"]["supply_v"]["vdd"]), len(pts))
+            for i, pt in enumerate(pts):
                 sv = {k: v[i] for k, v in req["corners"]["supply_v"].items()}
                 d = A.decode(sl, sv)
-                pt = B.points(sl)[i]
-                self.assertEqual((d["cell"], d["scen"], d["var"]), (pt["cell"], pt["scen"], pt["var"]))
+                self.assertEqual((d["cell"], d["scen"], d["var"], d["scale"]), (pt["cell"], pt["scen"], pt["var"], pt["scale"]))
+
+    def test_tier_a_covers_every_subcombination_and_the_full_pvt_grid(self):
+        seen = {}
+        for sl, proc, tier, req in self.requests():
+            if tier != "A":
+                continue
+            self.assertEqual(req["corners"]["temperature_c"], list(B.TEMPS))
+            self.assertEqual(sorted(set(round(v / B.VDD, 2) for v in req["corners"]["supply_v"]["vdd"])), list(B.SUPPLY_SCALES))
+            for i in range(len(req["corners"]["supply_v"]["vdd"])):
+                d = A.decode(sl, {k: v[i] for k, v in req["corners"]["supply_v"].items()})
                 seen.setdefault(d["band"], set()).add((d["cap"], d["acc"]))
         for band in "I II III".split():
             self.assertEqual(len(seen[band]), 4, band)
+        self.assertEqual(len(B.PROCESS), 5)
+
+    def test_tier_b_is_the_declared_reduced_corner_set_and_keeps_opposite_subcombinations(self):
+        corners = set()
+        for sl, proc, tier, req in self.requests():
+            if tier != "B":
+                continue
+            for t in req["corners"]["temperature_c"]:
+                for v in set(round(x / B.VDD, 2) for x in req["corners"]["supply_v"]["vdd"]):
+                    corners.add((proc, t, v))
+            combos = {}
+            for i in range(len(req["corners"]["supply_v"]["vdd"])):
+                d = A.decode(sl, {k: v[i] for k, v in req["corners"]["supply_v"].items()})
+                combos.setdefault(d["band"], set()).add((d["cap"], d["acc"]))
+            for band, cs in combos.items():
+                self.assertEqual(len(cs), 2, (sl, band))
+                (c1, a1), (c2, a2) = sorted(cs)
+                self.assertTrue(c1 != c2 and a1 != a2, "tier B cells must differ on both axes")
+        self.assertEqual(len(corners), 7)
+
+    def test_request_units_per_shard_stay_small(self):
+        for sl, proc, tier, req in self.requests():
+            n = len(req["corners"]["supply_v"]["vdd"]) * len(req["corners"]["temperature_c"])
+            self.assertLessEqual(-(-n // req["remote"]["hosts"]), B.UNITS_PER_HOST)
 
     def test_every_probe_has_a_measurement(self):
         for sl in B.SLICE_CELLS:
@@ -45,10 +82,10 @@ class Bench(unittest.TestCase):
             # ngspice allows at most 99 par() calls and the bench must not use any
             self.assertFalse(any("par(" in m["spice"] for m in req["measurements"]))
 
-    def test_each_filament_variant_runs_only_where_declared(self):
-        for sl in B.SLICE_CELLS:
-            for p in B.points(sl):
-                self.assertIn(p["scen"], B.VARIANTS[p["var"]][0])
+    def test_every_scenario_and_variant_is_run_somewhere(self):
+        run = {pv for tier in B.TIER_POINTS.values() for pv in tier}
+        self.assertEqual({s for s, _v in run}, set(B.SCENARIOS))
+        self.assertEqual({v for _s, v in run}, set(B.VARIANTS))
 
     def test_no_hand_rolled_simulator_loop(self):
         for f in HERE.glob("*.py"):

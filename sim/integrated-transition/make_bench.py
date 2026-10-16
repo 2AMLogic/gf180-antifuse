@@ -61,7 +61,6 @@ I_REF = 1e-6
 R_BLEED = 10e9               # bus bleed to VSS so a floating bus has a defined DC start
 GFIL = {"prog_lo": 1.0 / 10e3, "prog_hi": 1.0 / 100e3}   # assumed R_prog (no breakdown model)
 TEMPS = (-40, 27, 125)
-HOSTS = 4                    # fleet shards per request
 PROCESS = {
     "typical": ("typical", "moscap_typical", "res_typical"),
     "ff": ("ff", "moscap_ff", "res_ff"),
@@ -96,12 +95,31 @@ SCENARIOS = {
     "csel_late": dict(tvr=0.02, tcsl=0.10, tpe=1.8, tpf=2.8, tren=2.80, tdis=NEVER),
     "timeout":   dict(tvr=0.02, tcsl=0.00, tpe=NEVER, tpf=NEVER, tren=2.80, tdis=2.8),
 }
-# which filament variants run on which scenarios (unprog runs on all of them)
-VARIANTS = {
-    "unprog": (tuple(SCENARIOS), 0.0),
-    "prog_lo": (("base", "rd_ovl", "rd_gap"), GFIL["prog_lo"]),
-    "prog_hi": (("base",), GFIL["prog_hi"]),
+# filament variants: conductance across the SELECTED cell's capacitor (siemens)
+VARIANTS = {"unprog": 0.0, "prog_lo": GFIL["prog_lo"], "prog_hi": GFIL["prog_hi"]}
+
+# The matrix is two tiers, because a fleet unit costs about 12 s (ngspice-46, 5 ns step) and a full product would be
+# thousands of units (README.md "Cost and the two tiers"):
+#   A: the full 45-corner PVT grid (5 process x 3 temperature x 3 supply scale) for the base case
+#      (immediate read after the pulse), every selected cell (all four capacitor x access sub-combinations of each region),
+#      unprogrammed and with the assumed 10 kohm filament;
+#   B: the remaining scenarios (VPP ramp, interlock overlap, read gap, late column select, arm timeout, the
+#      100 kohm filament) on the two opposite sub-combinations of each region, at 7 PVT corners chosen as the
+#      slow/cold/low-supply and fast/hot/high-supply extremes plus the two skewed process corners at typical.
+TIER_POINTS = {
+    "A": (("base", "unprog"), ("base", "prog_lo")),
+    "B": (("vslow", "unprog"), ("rd_ovl", "unprog"), ("rd_gap", "unprog"), ("csel_late", "unprog"),
+          ("timeout", "unprog"), ("rd_ovl", "prog_lo"), ("rd_gap", "prog_lo"), ("base", "prog_hi")),
 }
+# tier B corners: process -> (temperatures, supply scales)
+TIER_B_CORNERS = {
+    "typical": ((27,), (1.0,)),
+    "ss": ((-40, 125), (0.9,)),
+    "ff": ((-40, 125), (1.1,)),
+    "fs": ((27,), (1.0,)),
+    "sf": ((27,), (1.0,)),
+}
+UNITS_PER_HOST = 16          # fleet shard size: ~4 min of simulation per job, far below the 3600 s whole-job ceiling
 
 # slice -> selected cells (one per access/capacitor level pair where the slice has it)
 # Rows 0-3 of one column per band give all four capacitor x access sub-combinations (design/gen_array.py
@@ -111,6 +129,8 @@ SLICE_CELLS = {
     "slice_i_ii": [(r, c) for c in (10, 11) for r in range(4)],
     "slice_ii_iii": [(r, 22) for r in range(4)],
 }
+# tier B: rows 0 and 3 of the same columns are opposite on both the capacitor and the access level
+TIER_B_ROWS = (0, 3)
 NETLIST_FILES = ["cell_candidate1", "cell_candidate2", "cell_candidate3", "ls_hv06", "ls_hv10", "pg_n06",
                  "pg_n10", "leg_interlock", "program_leg", "read_leg"]
 
@@ -124,14 +144,25 @@ def bands_in(cols):
     return [b[0] for b in G.BANDS if any(b[1] <= c <= b[2] for c in cols)]
 
 
-def points(sl):
-    """Ordered operating points (index = klt supply_v index)."""
+def tier_cells(sl, tier):
+    return [c for c in SLICE_CELLS[sl] if tier == "A" or c[0] in TIER_B_ROWS]
+
+
+def tier_scales(proc, tier):
+    return SUPPLY_SCALES if tier == "A" else TIER_B_CORNERS[proc][1]
+
+
+def tier_temps(proc, tier):
+    return TEMPS if tier == "A" else TIER_B_CORNERS[proc][0]
+
+
+def points(sl, proc, tier="A"):
+    """Ordered operating points of one request (index = klt supply_v index)."""
     pts = []
-    for cell in SLICE_CELLS[sl]:
-        for sc in SUPPLY_SCALES:
-            for var, (scens, _g) in VARIANTS.items():
-                for scen in scens:
-                    pts.append({"cell": cell, "scale": sc, "scen": scen, "var": var})
+    for cell in tier_cells(sl, tier):
+        for sc in tier_scales(proc, tier):
+            for scen, var in TIER_POINTS[tier]:
+                pts.append({"cell": cell, "scale": sc, "scen": scen, "var": var})
     return pts
 
 
@@ -389,10 +420,10 @@ def probe_manifest(sl: str):
     return out
 
 
-def request(sl: str, proc: str) -> dict:
+def request(sl: str, proc: str, tier: str = "A") -> dict:
     rows, cols = window(sl)
     bands = bands_in(cols)
-    pts = points(sl)
+    pts = points(sl, proc, tier)
     keys = {k: [] for k in ["vdd", "vclamp", "vpk", *[f"vddh_{b.lower()}" for b in bands], "vtvr", "vtcsl", "vtpe",
                             "vtpf", "vtren", "vtdis", "vgfil", *[f"ven_r{r}" for r in rows],
                             *[f"ven_c{c}" for c in cols], *[f"vbsel_{b.lower()}" for b in bands]]}
@@ -408,7 +439,7 @@ def request(sl: str, proc: str) -> dict:
             keys[f"vbsel_{b.lower()}"].append(1.0 if b == sb else 0.0)
         for t in ("tvr", "tcsl", "tpe", "tpf", "tren", "tdis"):
             keys[f"v{t}"].append(sce[t])
-        keys["vgfil"].append(VARIANTS[p["var"]][1])
+        keys["vgfil"].append(VARIANTS[p["var"]])
         for r in rows:
             keys[f"ven_r{r}"].append(1.0 if r == sr else 0.0)
         for c in cols:
@@ -421,14 +452,18 @@ def request(sl: str, proc: str) -> dict:
         "corners": {
             "process": [{"name": proc, "sections": list(PROCESS[proc])}],
             "supply_v": keys,
-            "temperature_c": list(TEMPS),
+            "temperature_c": list(tier_temps(proc, tier)),
         },
         "analysis": {"kind": "tran", "args": f"5n {T_END:g}u uic"},
         "measurements": measurements(sl),
         "options": {"timeout_s": 300, "keep_artifacts": False},
-        # shard across fleet hosts: the fleet's whole-job ceiling is 3600 s and a request is 720 units
-        "remote": {"hosts": HOSTS},
+        # shard across fleet hosts (the whole-job ceiling is 3600 s)
+        "remote": {"hosts": max(1, -(-len(pts) * len(tier_temps(proc, tier)) // UNITS_PER_HOST))},
     }
+
+
+def request_name(sl, proc, tier):
+    return f"{sl}_{proc}.request.json" if tier == "A" else f"{sl}_{proc}_x.request.json"
 
 
 def outputs():
@@ -437,7 +472,8 @@ def outputs():
         out[TB_DIR / f"probes_{sl}.json"] = json.dumps(probe_manifest(sl), indent=1) + "\n"
         for proc in PROCESS:
             out[TB_DIR / f"tb_{sl}_{proc}.spice"] = netlist(sl, proc)
-            out[TB_DIR / f"{sl}_{proc}.request.json"] = json.dumps(request(sl, proc)) + "\n"
+            for tier in TIER_POINTS:
+                out[TB_DIR / request_name(sl, proc, tier)] = json.dumps(request(sl, proc, tier)) + "\n"
     return out
 
 

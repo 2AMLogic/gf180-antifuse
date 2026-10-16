@@ -38,7 +38,7 @@ def decode(sl: str, sv: dict) -> dict:
     tim = tuple(round(sv[f"v{k}"], 6) for k in SCEN_KEYS)
     scen = next((n for n, d in B.SCENARIOS.items() if tuple(round(d[k], 6) for k in SCEN_KEYS) == tim), None)
     g = sv["vgfil"]
-    var = next((n for n, (_s, gv) in B.VARIANTS.items() if abs(gv - g) <= 1e-12 + 1e-6 * abs(gv)), None)
+    var = next((n for n, gv in B.VARIANTS.items() if abs(gv - g) <= 1e-12 + 1e-6 * abs(gv)), None)
     if scen is None or var is None:
         raise Ungradable(f"unknown scenario/variant {tim} {g}")
     cell = (sr[0], sc[0])

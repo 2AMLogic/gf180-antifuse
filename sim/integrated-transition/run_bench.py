@@ -137,7 +137,7 @@ CHECKS = [
 def grade_slice(sl: str, comps: dict) -> tuple[list[dict], dict, int, list[str]]:
     man = json.loads((B.TB_DIR / f"probes_{sl}.json").read_text())
     rows, stress, bad, why = [], {}, 0, []
-    for proc, comp in comps.items():
+    for (proc, tier), comp in comps.items():
         for c in expand(comp):
             try:
                 r = A.grade(sl, c)
@@ -218,10 +218,12 @@ def table_transition(rows):
         gl = sum(1 for r in rs if not r["chk"]["no_false_high"])
         td = [r["t_dec"] for r in rs if r["t_dec"] is not None]
         ts = [r["t_settle"] for r in rs if r["t_settle"] is not None]
-        td_s = fe(max(td)) + (f" ({len(rs) - len(td)} never)" if len(td) < len(rs) else "")
-        ts_s = fe(max(ts)) + (f" ({len(rs) - len(ts)} never)" if len(ts) < len(rs) else "")
-        out.append(f"| {REGION[k[0]]} | {k[1]} | {k[2]} | {k[3]} | {k[4]} | {len(rs)} | {ok}/{len(rs)} | {gl} | {td_s if td else 'never'} | "
-                   f"{ts_s if ts else 'never'} | {fe(min(r['blg_final'] for r in rs))}..{fe(max(r['blg_final'] for r in rs))} |")
+        def delay(v):
+            if not v:
+                return f"never ({len(rs)} of {len(rs)})"
+            return fe(max(v)) + (f" ({len(rs) - len(v)} never)" if len(v) < len(rs) else "")
+        out.append(f"| {REGION[k[0]]} | {k[1]} | {k[2]} | {k[3]} | {k[4]} | {len(rs)} | {ok}/{len(rs)} | {gl} | {delay(td)} | "
+                   f"{delay(ts)} | {fe(min(r['blg_final'] for r in rs))}..{fe(max(r['blg_final'] for r in rs))} |")
     return out
 
 
@@ -355,13 +357,15 @@ pair's peak against the stated device rating.
 def jobs_lines(comps_by_slice):
     out = []
     for sl, comps in comps_by_slice.items():
-        for proc, comp in comps.items():
+        for (proc, tier), comp in comps.items():
             rem = comp.get("remote") or {}
             s = comp.get("summary") or {}
-            out.append(f"- `{sl}` / `{proc}`: {s.get('corner_count')} units (pass {s.get('passed')}, fail {s.get('failed')}, "
-                       f"error {s.get('errored')}, inconclusive {s.get('inconclusive')}); job `{rem.get('job_id')}` "
-                       f"({rem.get('provider')}, {rem.get('instance_type')}, {rem.get('lifecycle')}, runner klt "
-                       f"{rem.get('runner_klt_version')}); engine {comp.get('engine')}")
+            jobs = rem.get("fleet") or [rem]
+            ids = ", ".join(f"`{j.get('job_id')}`" for j in jobs)
+            out.append(f"- `{sl}` / `{proc}` / tier {tier}: {s.get('corner_count')} units (pass {s.get('passed')}, fail {s.get('failed')}, "
+                       f"error {s.get('errored')}, inconclusive {s.get('inconclusive')}); {len(jobs)} job(s) {ids} "
+                       f"({jobs[0].get('provider')}, {jobs[0].get('instance_type')}, {jobs[0].get('lifecycle')}, runner klt "
+                       f"{jobs[0].get('runner_klt_version')}); engine {comp.get('engine')}")
     return out
 
 
@@ -381,8 +385,14 @@ def write_records(record_id, all_rows, stress, comps_by_slice, ungradable, clean
         f"working tree {'clean' if clean else 'NOT clean (uncommitted changes at run time)'}.",
         f"- **Corner matrix run**: process {{typical, ff, ss, fs, sf}} (MOS, moscap and poly-resistor sections from the request; the "
         f"matching 10 V LDMOS section from the netlist) x temperature {{-40, 27, 125}} C x supply scale {{0.9, 1.0, 1.1}} "
-        f"(VDD, VDDH, VCLAMP and V_PK scale together) x selected cell (4 per region, covering all four capacitor x access "
-        f"sub-combinations) x scenario/filament point list: **{n_units} units**, two slices, ten `klt sim` requests.",
+        f"(VDD, VDDH, VCLAMP and V_PK scale together) x selected cell x scenario/filament point list, in two tiers: "
+        f"**tier A**, the full 45-corner PVT grid for the base case (immediate read), unprogrammed and with the assumed "
+        f"10 kohm filament, on 4 selected cells per region (all four capacitor x access sub-combinations); **tier B**, the "
+        f"other scenarios and the 100 kohm filament on 2 cells per region (rows 0 and 3, opposite on both axes) at a REDUCED "
+        f"set of 7 PVT corners: ss at -40 and 125 C with scale 0.9, ff at -40 and 125 C with scale 1.1, and typical, fs, sf at 27 C "
+        f"with scale 1.0. The subset is used because a fleet unit costs about 12 s (README.md, 'Cost and the two tiers'); "
+        f"the worst corners of each scenario are the cold/slow/low-supply and hot/fast/high-supply extremes and the two skewed "
+        f"corners. **{n_units} units**, two slices, twenty `klt sim` requests (two tiers, below).",
         f"- **Result**: per-region tables below; `measurements/integrated-transition/{record_id}.md` and `.csv`.",
         f"- **Links**: testbench `sim/integrated-transition/testbench/`; raw measurements "
         f"`sim/integrated-transition/reports/{record_id}/`; runner `run_bench.py`, grading `analyze.py`, limits `limits.py`.",
@@ -477,27 +487,29 @@ def main():
     repdir = HERE / "reports" / record_id
     clean = git("status", "--porcelain") == ""
 
-    todo = [(sl, p) for sl in slices for p in procs]
+    todo = [(sl, p, t) for sl in slices for p in procs for t in B.TIER_POINTS]
     comps: dict = {sl: {} for sl in slices}
 
-    def one(sl_p):
-        sl, proc = sl_p
-        path = repdir / f"{sl}_{proc}.report.json.gz"
+    def one(job):
+        sl, proc, tier = job
+        sfx = "" if tier == "A" else "_x"
+        path = repdir / f"{sl}_{proc}{sfx}.report.json.gz"
         if path.exists():
-            return sl, proc, load(path), path
+            return sl, proc, tier, load(path), path
         if a.analyze:
             raise SystemExit(f"--analyze: {path} missing")
-        rep = run_klt(B.TB_DIR / f"{sl}_{proc}.request.json", a.backend, Path("/tmp") / f"klt-sim-{record_id}-{sl}-{proc}")
+        rep = run_klt(B.TB_DIR / B.request_name(sl, proc, tier), a.backend,
+                      Path("/tmp") / f"klt-sim-{record_id}-{sl}-{proc}{sfx}")
         comp = compact(rep)
         save(path, comp)    # saved as soon as it returns, so an interrupted run can be resumed
-        return sl, proc, comp, path
+        return sl, proc, tier, comp, path
 
     paths = []
     with cf.ThreadPoolExecutor(max_workers=max(1, a.workers)) as ex:
-        for sl, proc, comp, path in ex.map(one, todo):
-            comps[sl][proc] = comp
+        for sl, proc, tier, comp, path in ex.map(one, todo):
+            comps[sl][(proc, tier)] = comp
             paths.append(path)
-            print(f"{sl}/{proc}: {comp['summary']}", flush=True)
+            print(f"{sl}/{proc}/tier {tier}: {comp['summary']}", flush=True)
 
     all_rows, stress, bad_total, why = [], {}, 0, []
     for sl in slices:
