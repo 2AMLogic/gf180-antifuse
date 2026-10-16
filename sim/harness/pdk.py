@@ -15,8 +15,19 @@ from dataclasses import dataclass
 from pathlib import Path
 
 
+# Single source of truth for the open_pdks revision this repo is pinned to.
+# design/lib-pdk-root.sh carries the shell-side twin (PINNED_OPEN_PDKS).
+PINNED_OPEN_PDKS = "f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
+
+DEFAULT_PDK_ROOT = "~/.ciel"
+
+
 class PDKNotFoundError(RuntimeError):
     pass
+
+
+class PDKRevisionMismatchError(PDKNotFoundError):
+    """The resolved tree is not the pinned open_pdks revision."""
 
 
 @dataclass(frozen=True)
@@ -26,19 +37,38 @@ class PDKPaths:
     design_ngspice: Path
     sm141064: Path
     smbb000149: Path
-    revision: str           # open_pdks commit hash, resolved from the
-                             # variant symlink's target path when possible
+    revision: str           # open_pdks commit hash from the variant's
+                             # SOURCES file (verified against the pin)
+    path_revision: str = "unknown"  # hash from the versions/<hash> path walk,
+                                    # secondary / informational only
 
 
 def _variant_dir_from_root(root: Path, variant: str) -> Path:
     return root / variant
 
 
-def _resolve_revision(variant_dir: Path) -> str:
-    """Best-effort open_pdks revision string for this variant.
+def _read_sources_revision(variant_dir: Path) -> str | None:
+    """open_pdks hash from ``<variant_dir>/SOURCES`` (``open_pdks <hash>``).
 
-    volare lays out installs as
-    ``<root>/volare/<family>/versions/<hash>/<variant>``, symlinked from
+    Returns None when the file is missing, unreadable, or has no
+    ``open_pdks`` line.
+    """
+    try:
+        text = (variant_dir / "SOURCES").read_text()
+    except OSError:
+        return None
+    for line in text.splitlines():
+        parts = line.split()
+        if len(parts) >= 2 and parts[0] == "open_pdks":
+            return parts[1]
+    return None
+
+
+def _resolve_revision(variant_dir: Path) -> str:
+    """Best-effort open_pdks revision string from the install path.
+
+    volare/ciel lay out installs as
+    ``<root>/<tool>/<family>/versions/<hash>/<variant>``, symlinked from
     ``<root>/<variant>``. Walk the resolved path looking for a
     ``versions/<hash>`` segment; fall back to "unknown" rather than
     fabricating a value if that layout is not what is on disk (e.g. a
@@ -62,8 +92,12 @@ def resolve_pdk(pdk_root_override: str | None = None) -> PDKPaths:
     2. ``pdk_root_override`` (``--pdk-root`` CLI flag).
     3. ``PDK_ROOT`` (+ ``PDK``, default ``gf180mcuD``) -- the open_pdks /
        OpenLane convention.
-    4. ``~/.volare`` (the built-in default this repo's other scripts, e.g.
-       ``design/check-netlists.sh``, already assume).
+    4. ``~/.ciel`` (the built-in default this repo's other scripts, e.g.
+       ``design/check-netlists.sh``, also assume).
+
+    The resolved variant's ``SOURCES`` file must name ``PINNED_OPEN_PDKS``;
+    a missing/unreadable ``SOURCES`` or a different hash raises
+    ``PDKRevisionMismatchError`` rather than proceeding on a stray tree.
     """
     variant = os.environ.get("PDK", "gf180mcuD")
 
@@ -71,7 +105,7 @@ def resolve_pdk(pdk_root_override: str | None = None) -> PDKPaths:
     if env_variant_path:
         variant_dir = Path(env_variant_path).expanduser()
     else:
-        root_str = pdk_root_override or os.environ.get("PDK_ROOT") or str(Path.home() / ".volare")
+        root_str = pdk_root_override or os.environ.get("PDK_ROOT") or DEFAULT_PDK_ROOT
         pdk_root = Path(root_str).expanduser()
         variant_dir = _variant_dir_from_root(pdk_root, variant)
 
@@ -85,13 +119,21 @@ def resolve_pdk(pdk_root_override: str | None = None) -> PDKPaths:
         raise PDKNotFoundError(
             "gf180mcu PDK model files not found under "
             f"{ngspice_dir}. Missing: {', '.join(str(m) for m in missing)}. "
-            "Set PDK_ROOT (or GF180_PDK_PATH) to a volare/open_pdks install, "
-            "e.g. PDK_ROOT=$HOME/.volare (default) with `volare enable "
-            "--pdk gf180mcu <hash>` already run. Verify what is actually "
+            "Set PDK_ROOT (or GF180_PDK_PATH) to a ciel/open_pdks install, "
+            "e.g. PDK_ROOT=$HOME/.ciel (default) after `pip install "
+            "ciel==2.6.1` and `ciel enable --pdk-family gf180mcu -l "
+            f"gf180mcu_fd_pr {PINNED_OPEN_PDKS}`. Verify what is actually "
             "installed with `klt pdk list`."
         )
 
-    revision = _resolve_revision(variant_dir)
+    revision = _read_sources_revision(variant_dir)
+    if revision != PINNED_OPEN_PDKS:
+        found = revision if revision else "unreadable/missing SOURCES"
+        raise PDKRevisionMismatchError(
+            f"PDK at {variant_dir} is open_pdks {found}, but this repo pins "
+            f"open_pdks {PINNED_OPEN_PDKS}. Refusing to use it; point "
+            "PDK_ROOT (or GF180_PDK_PATH) at the pinned install."
+        )
 
     return PDKPaths(
         variant=variant,
@@ -100,4 +142,5 @@ def resolve_pdk(pdk_root_override: str | None = None) -> PDKPaths:
         sm141064=sm141064,
         smbb000149=smbb000149,
         revision=revision,
+        path_revision=_resolve_revision(variant_dir),
     )

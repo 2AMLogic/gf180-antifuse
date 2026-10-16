@@ -5,9 +5,13 @@ amp + `I_ref` branch) in `design/cells/` -- the transistor-level instantiation
 of `spec/architecture.md` sections 1.2, 2 and 4 (see
 [`spec/leg-design-record.md`](../../spec/leg-design-record.md)).
 
-## STATUS: PVT record exists (fleet batch run, 2026-10-15)
+## STATUS: PVT records exist (fleet batch runs, 2026-10-15)
 
-Record: [`records/20261015-151616-d3df921.md`](records/20261015-151616-d3df921.md)
+Records (both kept; `sim/` results are append-only evidence):
+[`records/20261015-061556-90de2cb.md`](records/20261015-061556-90de2cb.md)
+(earlier run, version-matched `klt 0.7.0` client, same 45 corners x 6 benches) and
+[`records/20261015-151616-d3df921.md`](records/20261015-151616-d3df921.md)
+(latest, below).
 -- six `klt sim` requests, 45 corners each, all resolved (270/270), run on the
 Spot batch fleet (job id of each in the record's `remote=` field; runner and
 client `klt` versions matched). The earlier submits were rejected by a runner
@@ -97,7 +101,7 @@ sim/program-read-legs/
   run_experiment.py     klt request builder / runner / record writer (stdlib only)
   models/preamble.lib   design.ngspice wrapper section (see "Harness notes")
   .work/                git-ignored: generated decks and requests with host paths
-  records/, corners/, netlist-snapshots/   created by the first successful run
+  records/, corners/, netlist-snapshots/   written by each successful run (append-only)
 ```
 
 `python3 sim/run_corners.py program-read-legs --probe` runs ONE typical corner

@@ -85,7 +85,7 @@ kohm, VPP = 4.0 V needs 3.0 kohm; both are met by the chosen resistor.
 
 `spec/architecture.md` carries this forward as an open question: is `_6p0` a
 6.0 V rating? What the locally installed PDK (open_pdks
-`c6d73a35f524070e85faff4a6a9eef49553ebc2b`) can and cannot settle:
+`f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7`; re-pinned 2026-10-15, see [`pdk-pin-decision.md`](pdk-pin-decision.md)) can and cannot settle:
 
 - **Settled (naming):** `sm141064.ngspice` describes `ppolyf_u_2k_6p0` as a
   "2k high-Rs p+ poly resistor on field oxide **(6.0V area)**", its sibling

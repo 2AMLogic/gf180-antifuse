@@ -43,7 +43,7 @@ BASE_W="1e-6"
 BASE_L="1e-6"
 DOUBLE_W="2e-6"
 
-# PDK root resolution: $PDK_ROOT first, then ~/.volare - see
+# PDK root resolution: $PDK_ROOT first, then ~/.ciel (pinned revision verified) - see
 # design/lib-pdk-root.sh for the order and why it is shared with
 # regen-netlists.sh. This script needs the ngspice model tree, so that is the
 # subdirectory a candidate root has to actually hold.

@@ -3,6 +3,19 @@
 Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 
+### 2026-10-15
+
+- **PR #100**: feat: pin open_pdks f6eeac7d and fail visibly on PDK revision mismatch
+- **PR #93**: sim: program/read-leg PVT evidence from the batch fleet (#65)
+- **Issue #98** (closed): Re-pin open_pdks to f6eeac7 and make PDK search verify the pinned revision (ciel 2.6.1)
+- **PR #91**: sim: programming-yield Monte Carlo campaign, yield-vs-condition per grid region (#66)
+- **PR #89**: sim: converge the breakdown-event transient at every PVT corner (#74)
+- **PR #83**: docs: README spec table and reproduction section
+- **PR #68**: design: program leg + read leg schematics, benches, ballast record (#65)
+- **Issue #79** (closed): docs: README spec table and reproduction section for T1 item 10
+- **Issue #74** (closed): sim: breakdown-event transient fails to converge at some PVT corners (cell-breakdown-model trigger bench)
+- **Issue #66** (closed): sim: programming-yield Monte Carlo campaign, yield-vs-condition per grid region (T1 item 6)
+
 ### 2026-10-13
 
 - **PR #87**: docs: Auditor worker deployment discovery and handoff (#84)
