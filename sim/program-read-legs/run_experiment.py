@@ -58,10 +58,10 @@ PROCESS = (
 KLT_TIMEOUT_S = 3 * 3600
 
 
-def process_bundles(candidate_has_smbb: bool, preamble: str) -> list[dict]:
+def process_bundles(candidate_has_smbb: bool, preamble: str, design_section: str = "design") -> list[dict]:
     out = []
     for name, mos, moscap, res in PROCESS:
-        sections: list = [{"lib": preamble, "section": "design"}, mos]
+        sections: list = [{"lib": preamble, "section": design_section}, mos]
         if candidate_has_smbb:
             sections.append({"lib": "libs.tech/ngspice/smbb000149.ngspice", "section": mos})
         sections += [moscap, res]
@@ -88,6 +88,43 @@ def make_request(netlist_name: str, measurements: list[dict], smbb: bool, preamb
         "measurements": measurements,
         "options": {"keep_artifacts": True, "timeout_s": 300, "stage_model_inputs": True},
     }
+
+
+# Monte Carlo corner points (one request each, so the sweep is these points and
+# not a cross product): (label, process bundle, temperature C, VDD V).
+MC_POINTS = (
+    ("typ", "typical", 27, 3.30),
+    ("slow_cold", "ss", -40, 2.97),     # slow/cold selected cell, low supply
+    ("fast_hot", "ff", 125, 3.63),      # fast/hot selected cell, high supply
+)
+MC_N = 200          # samples per corner point (per instance: each bench holds >= 4 independent draws)
+MC_SEED = 20261016
+MC_CONF = 0.95      # one-sided confidence for the decision-yield bound
+
+
+def make_mc_request(netlist_name: str, measurements: list[dict], smbb: bool, preamble: str,
+                    point: tuple, n: int = MC_N, seed: int = MC_SEED) -> dict:
+    """A klt `monte_carlo` request (vary=mismatch) at ONE named PVT point."""
+    _label, proc, temp, vdd = point
+    req = make_request(netlist_name, measurements, smbb, preamble, temps=(temp,),
+                       processes=(proc,), vdd_points=(vdd,))
+    for b in req["corners"]["process"]:
+        b["sections"][0] = {"lib": preamble, "section": "design_mm"}
+    req["monte_carlo"] = {"n": n, "seed": seed, "vary": "mismatch"}
+    return req
+
+
+def mc_bench_defs() -> dict:
+    """name -> (netlist text, measurements, needs smbb, candidate or None)."""
+    defs = {}
+    n, m = B.offset_bench(REL_NETLISTS)
+    defs["offset"] = (n, m, False, None)
+    for k in (1, 2, 3):
+        n, m = B.margin_bench(k, REL_NETLISTS)
+        defs[f"margin{k}"] = (n, m, k == 2, k)
+    n, m = B.margin_bench(3, REL_NETLISTS, iref=B.I_REF_LOW)
+    defs["margin3_lowiref"] = (n, m, False, 3)
+    return defs
 
 
 def bench_defs() -> dict:
@@ -324,6 +361,303 @@ def env_summary(resp: dict) -> str:
 
 
 # ---------------------------------------------------------------------------
+# Monte Carlo (mismatch) variant: statistics, request fan-out, record
+# ---------------------------------------------------------------------------
+
+def mc_table(response: dict) -> dict[str, dict[str, float | None]]:
+    """sample label -> {measurement name -> value} (one request = one PVT point)."""
+    out = {}
+    for c in response["corners"]:
+        idx = (c.get("monte_carlo") or {}).get("sample_index", len(out))
+        out[f"s{idx:04d}"] = {m["name"]: m.get("value") for m in c["measurements"]}
+    return out
+
+
+def cp_lower(k: int, n: int, conf: float = MC_CONF) -> float:
+    """One-sided Clopper-Pearson lower bound on a success probability: the p with
+    P(X >= k | n, p) = 1 - conf (bisection; stdlib only)."""
+    if n == 0 or k == 0:
+        return 0.0
+    if k == n:
+        return (1.0 - conf) ** (1.0 / n)
+    from math import comb
+    alpha = 1.0 - conf
+
+    def tail(p: float) -> float:        # P(X >= k)
+        return sum(comb(n, i) * p ** i * (1 - p) ** (n - i) for i in range(k, n + 1))
+
+    lo, hi = 0.0, 1.0
+    for _ in range(60):
+        mid = (lo + hi) / 2
+        if tail(mid) > alpha:
+            hi = mid
+        else:
+            lo = mid
+    return lo
+
+
+def pctl(vals: list[float], q: float) -> float:
+    v = sorted(vals)
+    if not v:
+        return float("nan")
+    pos = q / 100 * (len(v) - 1)
+    lo = int(pos)
+    hi = min(lo + 1, len(v) - 1)
+    return v[lo] + (v[hi] - v[lo]) * (pos - lo)
+
+
+def mean_sigma(vals: list[float]) -> tuple[float, float]:
+    n = len(vals)
+    m = sum(vals) / n
+    return m, (sum((x - m) ** 2 for x in vals) / (n - 1)) ** 0.5 if n > 1 else 0.0
+
+
+def analyze_mc_margin(tab: dict, iref: float) -> dict:
+    """side_sizing -> decision count, yield bound and margin-ratio spread, over samples."""
+    rows = analyze_margin(tab, iref)
+    out = {}
+    for side, _ in B.SIDES:
+        for sz, _m in B.SIZINGS:
+            t = f"{side}_{sz}"
+            xs = [r[t] for r in rows.values() if r.get(t)]
+            if not xs:
+                out[t] = None
+                continue
+            k = sum(1 for x in xs if x["ok"])
+            marg = [x["margin"] for x in xs]
+            mu, sd = mean_sigma([x["i"] for x in xs])
+            out[t] = dict(n=len(xs), k=k, lb=cp_lower(k, len(xs)), mmin=min(marg),
+                          p1=pctl(marg, 1), med=pctl(marg, 50), i_mu=mu, i_sd=sd)
+    return out
+
+
+def analyze_mc_offset(tab: dict) -> dict:
+    vals = [v[f"isense_o{k}"] for v in tab.values() for k in range(B.OFFSET_INSTANCES)
+            if v.get(f"isense_o{k}") is not None]
+    mu, sd = mean_sigma(vals)
+    return dict(n=len(vals), mu=mu, sd=sd, lo=min(vals), hi=max(vals),
+                absmax=max(abs(x) for x in vals), p1=pctl(vals, 1), p99=pctl(vals, 99))
+
+
+def render_mc_offset(per_point: dict) -> str:
+    L = ["| corner point | draws | mean (A) | sigma (A) | sigma / I_ref | min (A) | max (A) | mean +- 3 sigma / I_ref |",
+         "|---|---|---|---|---|---|---|---|"]
+    for label, a in per_point.items():
+        if a is None:
+            L.append(f"| {label} | n/a | n/a | n/a | n/a | n/a | n/a | n/a |")
+            continue
+        L.append(f"| {label} | {a['n']} | {sci(a['mu'])} | {sci(a['sd'])} | {a['sd']/B.I_REF:.1%} | "
+                 f"{sci(a['lo'])} | {sci(a['hi'])} | "
+                 f"{(a['mu']-3*a['sd'])/B.I_REF:+.1%} .. {(a['mu']+3*a['sd'])/B.I_REF:+.1%} |")
+    return "\n".join(L)
+
+
+def render_mc_margin(cand: int, per_point: dict) -> str:
+    names = {"U": "unprogrammed", "Plo": f"programmed, R_prog={B.R_PROG_ASSUMED['lo']/1e3:.0f}k (ASSUMED)",
+             "Phi": f"programmed, R_prog={B.R_PROG_ASSUMED['hi']/1e3:.0f}k (ASSUMED)"}
+    L = [f"| corner point | side | access sizing | samples | correct | yield (point) | "
+         f"{MC_CONF:.0%} lower bound | margin x: min / 1% / median | I_read mean +- sigma (A) |",
+         "|---|---|---|---|---|---|---|---|---|"]
+    for label, a in per_point.items():
+        for side, _ in B.SIDES:
+            for sz, _m in B.SIZINGS:
+                x = (a or {}).get(f"{side}_{sz}")
+                if x is None:
+                    L.append(f"| {label} | {names[side]} | {sz} | n/a | n/a | n/a | n/a | n/a | n/a |")
+                    continue
+                L.append(f"| {label} | {names[side]} | {sz} | {x['n']} | {x['k']} | {x['k']/x['n']:.1%} | "
+                         f"{x['lb']:.1%} | {x['mmin']:.3g} / {x['p1']:.3g} / {x['med']:.3g} | "
+                         f"{sci(x['i_mu'])} +- {sci(x['i_sd'])} |")
+    return "\n".join(L)
+
+
+def run_mc(args, pdk, preamble: Path) -> int:
+    from concurrent.futures import ThreadPoolExecutor
+    wanted = [b.strip() for b in args.benches.split(",") if b.strip()]
+    defs = mc_bench_defs()
+    unknown = [b for b in wanted if b not in defs]
+    if unknown:
+        print(f"ERROR: unknown MC benches {unknown}; known: {sorted(defs)}", file=sys.stderr)
+        return 2
+    backend = "local" if args.probe else args.backend
+    n_samples = 1 if args.probe else args.mc_n
+    points = MC_POINTS[:1] if args.probe else MC_POINTS
+    dirty = R.git_is_dirty(REPO_ROOT)
+    record_id = R.allocate_record_id(THIS_DIR, REPO_ROOT)
+    snap_dir = THIS_DIR / "netlist-snapshots" / record_id
+    corner_dir = THIS_DIR / "corners" / record_id
+
+    jobs = []
+    for name in wanted:
+        text, meas, smbb, _cand = defs[name]
+        netlist_path = WORK / f"{name}.sp"
+        netlist_path.write_text(text.replace(f".include {B.PDK_DESIGN}\n", ""))
+        for pt in points:
+            req = make_mc_request(f"{name}.sp", meas, smbb, str(preamble), pt, n=n_samples)
+            req_path = WORK / f"{name}.{pt[0]}.mc.request.json"
+            req_path.write_text(json.dumps(req, indent=1))
+            out = (WORK / "probe" / f"mc_{name}_{pt[0]}") if args.probe else (corner_dir / f"{name}.{pt[0]}")
+            out.mkdir(parents=True, exist_ok=True)
+            jobs.append((name, pt, req_path, out))
+
+    def submit(job):
+        name, pt, req_path, out = job
+        t0 = time.time()
+        resp, err = run_klt(req_path, out, backend)
+        for attempt in (2, 3):      # a submit that returned no report is retried (same klt request, same backend)
+            if resp is not None and "corners" in resp:
+                break
+            print(f"== {name}/{pt[0]}: no report ({(err or '').strip()[-300:]!r}); retry {attempt}/3", flush=True)
+            time.sleep(15)
+            resp, err = run_klt(req_path, out, backend)
+        print(f"== {name}/{pt[0]}: {time.time() - t0:.0f}s status="
+              f"{(resp or {}).get('status')} units={(resp or {}).get('corner_count')} "
+              f"pass={(resp or {}).get('passed')} err={(resp or {}).get('errored')}", flush=True)
+        return job, resp, err
+
+    # Submissions only go through klt (batch fleet via KLT_SIM_BACKEND); the thread pool just
+    # overlaps the waits. No local ngspice grid is ever started here (--probe is one unit).
+    with ThreadPoolExecutor(max_workers=1 if args.probe else 4) as ex:
+        results = list(ex.map(submit, jobs))
+
+    responses: dict[tuple, dict] = {}
+    failures: dict[tuple, str] = {}
+    for (name, pt, req_path, out), resp, err in results:
+        key = (name, pt[0])
+        if resp is None or "corners" not in resp:
+            failures[key] = (err or "no response").strip()[-1500:]
+        elif not resp.get("passed"):
+            remote = resp.get("environment", {}).get("remote") or {}
+            failures[key] = (f"no sample resolved; diagnostics={resp.get('diagnostic_counts', {}).get('by_code', {})}; "
+                             f"job={remote.get('job_id')}")
+        else:
+            responses[key] = resp
+    for key, msg in failures.items():
+        print(f"   FAILED {key}: {msg[:300]}", file=sys.stderr)
+    if args.probe:
+        for key, resp in responses.items():
+            print(key, json.dumps(list(mc_table(resp).items())[:1])[:800])
+        return 1 if failures else 0
+    if not responses:
+        shutil.rmtree(corner_dir, ignore_errors=True)
+        print("ERROR: no MC request resolved; no record written. Failures:\n  "
+              + "\n  ".join(f"{k}: {v}" for k, v in failures.items()), file=sys.stderr)
+        return 1
+
+    snap_dir.mkdir(parents=True, exist_ok=True)
+    for (name, pt, req_path, out) in jobs:
+        key = (name, pt[0])
+        if key not in responses:
+            continue
+        if not (snap_dir / f"{name}.sp").exists():
+            R.write_once(snap_dir / f"{name}.sp", (WORK / f"{name}.sp").read_text())
+        req_norm = json.loads(req_path.read_text())
+        for b in req_norm["corners"]["process"]:
+            for sec in b["sections"]:
+                if isinstance(sec, dict) and sec["lib"].endswith("preamble.lib"):
+                    sec["lib"] = "sim/program-read-legs/models/preamble.lib"
+        R.write_once(snap_dir / f"{name}.{pt[0]}.mc.request.json", json.dumps(req_norm, indent=1) + "\n")
+        R.write_once(corner_dir / f"{name}.{pt[0]}.report.json", json.dumps(responses[key], indent=1) + "\n")
+        for stale in [*out.rglob("corner.cir"), *out.rglob("ngspice.log")]:
+            stale.unlink()      # per-sample decks/logs: the report keeps values, seeds and diagnostics
+
+    sections, unevidenced, remotes = [], [], {}
+    for name in wanted:
+        per_point = {}
+        for pt in points:
+            key = (name, pt[0])
+            label = f"{pt[0]} ({pt[1]}, {pt[2]} C, VDD {pt[3]:.2f} V)"
+            resp = responses.get(key)
+            if resp is None:
+                per_point[label] = None
+                unevidenced.append(f"{name}/{pt[0]}: klt sim did not return a report ({failures.get(key, 'not run')[:200]})")
+                continue
+            remotes[f"{name}/{pt[0]}"] = (resp.get("environment", {}).get("remote") or {}).get("job_id")
+            tab = mc_table(resp)
+            short = [lab for lab, v in tab.items() if any(x is None for x in v.values())]
+            if short or len(tab) != args.mc_n:
+                unevidenced.append(f"{name}/{pt[0]}: {len(tab)} of {args.mc_n} samples returned, "
+                                   f"{len(short)} with a missing measurement")
+            tab = {k: v for k, v in tab.items() if k not in short}
+            if name == "offset":
+                per_point[label] = analyze_mc_offset(tab) if tab else None
+            else:
+                per_point[label] = analyze_mc_margin(tab, bench_iref(name)) if tab else None
+        if name == "offset":
+            sections.append(("Sense-mirror current offset vs I_ref", render_mc_offset(per_point)))
+        else:
+            k = defs[name][3]
+            c = B.CANDIDATES[k]
+            sections.append((f"Read decision under mismatch, Candidate {k} (Region {c['region']}), "
+                             f"I_ref = {bench_iref(name):.0e} A", render_mc_margin(k, per_point)))
+    rec = render_mc_record(record_id, pdk, dirty, args.mc_n, sections, unevidenced, failures, remotes)
+    R.write_once(THIS_DIR / "records" / f"{record_id}.md", rec)
+    print(f"record: sim/program-read-legs/records/{record_id}.md")
+    return 1 if (failures or unevidenced) else 0
+
+
+def render_mc_record(record_id, pdk, dirty, n, sections, unevidenced, failures, remotes) -> str:
+    now = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    pts = "; ".join(f"`{p[0]}` = {p[1]} / {p[2]} C / VDD {p[3]:.2f} V (VCLAMP tracking)" for p in MC_POINTS)
+    L = [f"# Record {record_id}", "",
+         f"- **Record ID**: {record_id}",
+         "- **Claim**: `spec/architecture.md` 4 (read decision), the part the corner-only records cannot "
+         "bound: random mismatch of the sense mirror against `I_ref`. Per candidate/region, "
+         "unprogrammed and programmed sides in separate rows, never averaged. Regions I/II/III = "
+         "Candidates 1/2/3 (`spec/split-axis-plan.md`).",
+         f"- **Netlist provenance**: `design/netlists/{{leg_interlock,program_leg,read_leg,cell_candidate1..3}}.spice`, "
+         f"{'DIRTY' if dirty else 'clean'} working tree at run time. Frozen bench netlists and the normalised "
+         f"`klt sim` requests: `sim/program-read-legs/netlist-snapshots/{record_id}/`.",
+         f"- **Method**: one `klt sim` request per bench per corner point, each with `monte_carlo = "
+         f"{{n: {n}, seed: {MC_SEED}, vary: \"mismatch\"}}` on the batch backend (no hand-launched ngspice). "
+         f"Corner points: {pts}. The slow/cold and fast/hot points are the selected-cell extremes; the "
+         "recorded `I_sneak_max` floor is applied at every point (as in the corner-only record). "
+         "`sw_stat_mismatch = 1` is set by the `design_mm` section of `models/preamble.lib` "
+         "(PDK default 0); `sw_stat_global` stays 0, so only intra-die mismatch is sampled, on top of "
+         "the named corner.",
+         "- **What is sampled**: the PDK's per-instance MOS mismatch (`delvto`, `mulu0`, Pelgrom-scaled) on "
+         "**every** MOS in the bench, because the PDK exposes one global switch, not a per-instance one. "
+         "That covers the sense mirror (`MPI`/`MPO`/`MNI`/`MNO`), the clamp and read switch, the latch "
+         "inverters and the access device of the selected cell. The offset bench contains the read leg "
+         "only. Poly-resistor and MIM mismatch are not sampled by this PDK deck; the assumed filament "
+         "resistor is therefore a fixed value.",
+         "- **Statistics**: the decision yield is the fraction of samples whose `RDATA` is correct; the "
+         f"stated bound is the one-sided {MC_CONF:.0%} Clopper-Pearson lower bound. With N = {n} and all "
+         f"samples correct the bound is {cp_lower(n, n):.1%}; a yield above that cannot be claimed from this N. "
+         "Each sample of a margin bench holds six independent read legs (3 sides x 2 access sizings), so "
+         "every row has N independent draws; the offset bench holds "
+         f"{B.OFFSET_INSTANCES} independent legs per sample. Seeds are derived by klt from the stated seed "
+         "(reproducible).",
+         "- **Mirror offset definition**: read leg alone, bit line sunk at exactly `I_ref`, `SENSE` forced to "
+         "VDD/2; the current through the forcing source is `I(MPO) - I(MNO)`, zero for a matched mirror. "
+         "The decision threshold is `I_ref` plus this offset.",
+         "- **Assumed / placeholder inputs**: programmed-state resistance 10 kohm and 100 kohm **ASSUMED** "
+         "(no breakdown model; `sim/cell-breakdown-model/` not used here), so every programmed-side row is "
+         "**conditional on the assumed R_prog**. `I_ref` and `VCLAMP` are bench-supplied. Access sizing "
+         "\"min\" is the committed netlist default `wacc`, not the ratified split-axis level.",
+         f"- **Region III**: Candidate 3's read path is unproven (tracked in #75); its programmed-side rows are "
+         "reported as measured and are **not** a pass.",
+         f"- **PDK**: `{pdk.variant}`, open_pdks `{pdk.revision}`.",
+         f"- **Fleet job ids** (`environment.remote.job_id` per request): "
+         + (", ".join(f"`{k}` {v}" for k, v in sorted(remotes.items())) or "none recorded"),
+         "- **Result**:", ""]
+    for title, body in sections:
+        L += [f"### {title}", "", body, ""]
+    if unevidenced or failures:
+        L += ["### Not evidenced by this record", ""]
+        L += [f"- {u}" for u in unevidenced]
+        L += [""]
+    L += ["- **Links**:",
+          "  - Benches: `sim/program-read-legs/benches.py` (`margin_bench`, `offset_bench`); runner `run_experiment.py --mc`",
+          f"  - Frozen netlists / requests: `sim/program-read-legs/netlist-snapshots/{record_id}/`",
+          f"  - Full klt reports (per-sample measurements, seeds, diagnostics): `sim/program-read-legs/corners/{record_id}/` (per-sample ngspice logs are not kept)",
+          f"- **Timestamp / author**: {now}, agent-builder",
+          "- **Supersedes**: (none -- adds mismatch statistics to the corner-only record "
+          "`records/20261015-151616-d3df921.md`, which is unchanged)", ""]
+    return "\n".join(L)
+
+
+# ---------------------------------------------------------------------------
 # main
 # ---------------------------------------------------------------------------
 
@@ -335,7 +669,14 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--probe", action="store_true",
                     help="ONE typical corner on the local backend; debug only, nothing recorded")
     ap.add_argument("--check-env", action="store_true")
+    ap.add_argument("--mc", action="store_true",
+                    help="mismatch Monte Carlo variant (klt `monte_carlo`, vary=mismatch) of the margin "
+                         "benches + the mirror-offset bench; default benches then become "
+                         "offset,margin1,margin2,margin3,margin3_lowiref")
+    ap.add_argument("--mc-n", type=int, default=MC_N, help="samples per corner point (default %(default)s)")
     args = ap.parse_args(argv)
+    if args.mc and args.benches == ap.get_default("benches"):
+        args.benches = "offset,margin1,margin2,margin3,margin3_lowiref"
 
     try:
         pdk = P.resolve_pdk(args.pdk_root)
@@ -356,6 +697,9 @@ def main(argv: list[str] | None = None) -> int:
     preamble.write_text(
         (THIS_DIR / "models" / "preamble.lib").read_text().replace(
             "$PDK_ROOT/gf180mcuD", str(pdk.variant_dir)))
+
+    if args.mc:
+        return run_mc(args, pdk, preamble)
 
     wanted = [b.strip() for b in args.benches.split(",") if b.strip()]
     defs = bench_defs()

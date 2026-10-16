@@ -15,7 +15,8 @@ The latest record is six `klt sim` requests, 45 corners each, all resolved (270/
 Spot batch fleet (job id of each in the record's `remote=` field; runner and
 client `klt` versions matched). The earlier submits were rejected by a runner
 version mismatch; that no longer applies. Programmed-side numbers are
-**conditional on the assumed `R_prog`** and no Monte Carlo / mismatch was run.
+**conditional on the assumed `R_prog`**. The corner-only records ran no mismatch; mismatch
+Monte Carlo is a separate record (next section).
 
 Headline (see the record for the per-corner tables; sides and regions are never
 averaged): mutual exclusion holds at 45/45 corners; the ballast inequality is met
@@ -28,6 +29,20 @@ To regenerate, on a host with `KLT_SIM_BACKEND=batch`:
     python3 sim/run_corners.py program-read-legs
 
 A failed submit writes nothing.
+
+## Mismatch Monte Carlo (record `records/20261016-010943-88897b2.md`)
+
+`python3 sim/run_corners.py program-read-legs --mc` submits, per bench, one `klt sim` request per
+corner point (typical/27 C/3.30 V, ss/-40 C/2.97 V, ff/125 C/3.63 V) with
+`monte_carlo = {n: 200, vary: "mismatch"}` on the batch backend. `sw_stat_mismatch` is set by the
+`design_mm` section of `models/preamble.lib`; it is one PDK-wide switch, so every MOS in the bench is
+varied, not only the sense mirror (the record says so). Each margin row has 200 independent draws and
+reports the decision yield with its one-sided 95 % Clopper-Pearson lower bound (98.5 % is the best a
+200-for-200 row can state). The `offset` bench gives the mirror's current offset against `I_ref`
+(sigma about 9-11 % of `I_ref`). Result: Regions I and II decide correctly at 200/200 on both sides at
+all three points; Region III's programmed side is 0/200 at typical and slow/cold at `I_ref = 1 uA`
+(and 0/200 at slow/cold at 300 pA) -- unproven, not a pass (#75). Programmed rows stay conditional on
+the assumed `R_prog`. `--mc --probe` runs one unit locally and records nothing.
 
 ## Benches (`benches.py` generates every netlist body)
 
@@ -59,8 +74,9 @@ poly-resistor sections follow ff / ss; typical for fs / sf), -40 / 27 / 125 C,
   reference.
 - Access sizing "min" is the committed netlist's default `wacc`, not the
   ratified split-axis level (see `design/README.md`).
-- Process corners only; no mismatch/Monte Carlo, so the sense mirror's offset
-  spread is not evidenced.
+- The corner-only records have no mismatch; the sense mirror's offset spread is
+  evidenced only by the Monte Carlo record above (N = 200 per point, three points,
+  not the full 45-corner grid).
 
 ## Harness notes (klt friction, for the operator to file generically)
 

@@ -141,6 +141,42 @@ def margin_bench(candidate: int, rel_netlists: str, iref: float = I_REF) -> tupl
 
 
 # ---------------------------------------------------------------------------
+# Mirror-offset bench (Monte Carlo): read leg alone, no cell
+# ---------------------------------------------------------------------------
+
+OFFSET_INSTANCES = 4   # independent read-leg instances (independent mismatch draws) per sample
+
+
+def offset_bench(rel_netlists: str) -> tuple[str, list[dict]]:
+    """The sense mirror's input-referred current offset against I_ref.
+
+    Each instance is a read leg whose bit line is loaded by an ideal sink of
+    exactly I_REF (the I_ref branch's nominal copy), with SENSE forced to
+    VDD/2 by a voltage source. The current through that source,
+    ``i_sense = I(MPO) - I(MNO)``, is zero for a perfectly matched mirror and
+    equals the mirror's current offset otherwise: the decision threshold is
+    I_ref + (offset). No cell is present, so this is candidate-independent.
+    """
+    L = header("mirror-offset bench (read leg, BL sunk at I_ref, SENSE forced to VDD/2)", rel_netlists)
+    L += common_sources()
+    L.append("EHALF half 0 vdd 0 0.5")
+    L.append("VPEN prog_en 0 DC 0")
+    L.append("EREN read_en 0 hi 0 1")
+    L.append("VPPIDLE vppi 0 DC %s" % fmt(VPP_IDLE))
+    meas = []
+    for k in range(OFFSET_INSTANCES):
+        t = f"o{k}"
+        L.append(f"* ---- instance {t} ----")
+        L.append(f"ISNK_{t} bl_{t} 0 DC {fmt(I_REF)}")
+        L.append(f"VSNS_{t} sense_{t} half DC 0")
+        L.append(f"XRD_{t} prog_en read_en vclamp iref_{t} vdd 0 bl_{t} sense_{t} rdata_{t} read_leg")
+        L.append(f"IREF_{t} 0 iref_{t} DC {fmt(I_REF)}")
+        meas.append({"name": f"isense_{t}", "expr": f"i(vsns_{t})"})
+        meas.append({"name": f"vbl_{t}", "expr": f"v(bl_{t})"})
+    return "\n".join(L) + "\n", meas
+
+
+# ---------------------------------------------------------------------------
 # Mutual-exclusion bench
 # ---------------------------------------------------------------------------
 

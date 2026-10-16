@@ -1,0 +1,198 @@
+{
+ "netlist": "margin2.sp",
+ "models": {
+  "pdk": "gf180mcuD",
+  "lib": "libs.tech/ngspice/sm141064.ngspice"
+ },
+ "corners": {
+  "process": [
+   {
+    "name": "typical",
+    "sections": [
+     {
+      "lib": "sim/program-read-legs/models/preamble.lib",
+      "section": "design_mm"
+     },
+     "typical",
+     {
+      "lib": "libs.tech/ngspice/smbb000149.ngspice",
+      "section": "typical"
+     },
+     "moscap_typical",
+     "res_typical"
+    ]
+   }
+  ],
+  "supply_v": {
+   "VDD": [
+    3.3
+   ],
+   "VCLAMP": [
+    1.8
+   ]
+  },
+  "temperature_c": [
+   27
+  ]
+ },
+ "analysis": {
+  "kind": "op",
+  "args": ""
+ },
+ "measurements": [
+  {
+   "name": "ird_U_min",
+   "expr": "i(vamr_U_min)"
+  },
+  {
+   "name": "ipg_U_min",
+   "expr": "i(vamp_U_min)"
+  },
+  {
+   "name": "vbl_U_min",
+   "expr": "v(bl_U_min)"
+  },
+  {
+   "name": "vsense_U_min",
+   "expr": "v(sense_U_min)"
+  },
+  {
+   "name": "vrdata_U_min",
+   "expr": "v(rdata_U_min)"
+  },
+  {
+   "name": "vddm_U_min",
+   "expr": "v(vdd)"
+  },
+  {
+   "name": "ird_U_2x",
+   "expr": "i(vamr_U_2x)"
+  },
+  {
+   "name": "ipg_U_2x",
+   "expr": "i(vamp_U_2x)"
+  },
+  {
+   "name": "vbl_U_2x",
+   "expr": "v(bl_U_2x)"
+  },
+  {
+   "name": "vsense_U_2x",
+   "expr": "v(sense_U_2x)"
+  },
+  {
+   "name": "vrdata_U_2x",
+   "expr": "v(rdata_U_2x)"
+  },
+  {
+   "name": "vddm_U_2x",
+   "expr": "v(vdd)"
+  },
+  {
+   "name": "ird_Plo_min",
+   "expr": "i(vamr_Plo_min)"
+  },
+  {
+   "name": "ipg_Plo_min",
+   "expr": "i(vamp_Plo_min)"
+  },
+  {
+   "name": "vbl_Plo_min",
+   "expr": "v(bl_Plo_min)"
+  },
+  {
+   "name": "vsense_Plo_min",
+   "expr": "v(sense_Plo_min)"
+  },
+  {
+   "name": "vrdata_Plo_min",
+   "expr": "v(rdata_Plo_min)"
+  },
+  {
+   "name": "vddm_Plo_min",
+   "expr": "v(vdd)"
+  },
+  {
+   "name": "ird_Plo_2x",
+   "expr": "i(vamr_Plo_2x)"
+  },
+  {
+   "name": "ipg_Plo_2x",
+   "expr": "i(vamp_Plo_2x)"
+  },
+  {
+   "name": "vbl_Plo_2x",
+   "expr": "v(bl_Plo_2x)"
+  },
+  {
+   "name": "vsense_Plo_2x",
+   "expr": "v(sense_Plo_2x)"
+  },
+  {
+   "name": "vrdata_Plo_2x",
+   "expr": "v(rdata_Plo_2x)"
+  },
+  {
+   "name": "vddm_Plo_2x",
+   "expr": "v(vdd)"
+  },
+  {
+   "name": "ird_Phi_min",
+   "expr": "i(vamr_Phi_min)"
+  },
+  {
+   "name": "ipg_Phi_min",
+   "expr": "i(vamp_Phi_min)"
+  },
+  {
+   "name": "vbl_Phi_min",
+   "expr": "v(bl_Phi_min)"
+  },
+  {
+   "name": "vsense_Phi_min",
+   "expr": "v(sense_Phi_min)"
+  },
+  {
+   "name": "vrdata_Phi_min",
+   "expr": "v(rdata_Phi_min)"
+  },
+  {
+   "name": "vddm_Phi_min",
+   "expr": "v(vdd)"
+  },
+  {
+   "name": "ird_Phi_2x",
+   "expr": "i(vamr_Phi_2x)"
+  },
+  {
+   "name": "ipg_Phi_2x",
+   "expr": "i(vamp_Phi_2x)"
+  },
+  {
+   "name": "vbl_Phi_2x",
+   "expr": "v(bl_Phi_2x)"
+  },
+  {
+   "name": "vsense_Phi_2x",
+   "expr": "v(sense_Phi_2x)"
+  },
+  {
+   "name": "vrdata_Phi_2x",
+   "expr": "v(rdata_Phi_2x)"
+  },
+  {
+   "name": "vddm_Phi_2x",
+   "expr": "v(vdd)"
+  }
+ ],
+ "options": {
+  "keep_artifacts": true,
+  "timeout_s": 300,
+  "stage_model_inputs": true
+ },
+ "monte_carlo": {
+  "n": 200,
+  "seed": 20261016,
+  "vary": "mismatch"
+ }
+}
