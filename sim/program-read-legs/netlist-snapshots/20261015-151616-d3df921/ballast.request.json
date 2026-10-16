@@ -1,0 +1,195 @@
+{
+ "netlist": "ballast.sp",
+ "models": {
+  "pdk": "gf180mcuD",
+  "lib": "libs.tech/ngspice/sm141064.ngspice"
+ },
+ "corners": {
+  "process": [
+   {
+    "name": "typical",
+    "sections": [
+     {
+      "lib": "sim/program-read-legs/models/preamble.lib",
+      "section": "design"
+     },
+     "typical",
+     "moscap_typical",
+     "res_typical"
+    ]
+   },
+   {
+    "name": "ff",
+    "sections": [
+     {
+      "lib": "sim/program-read-legs/models/preamble.lib",
+      "section": "design"
+     },
+     "ff",
+     "moscap_ff",
+     "res_ff"
+    ]
+   },
+   {
+    "name": "ss",
+    "sections": [
+     {
+      "lib": "sim/program-read-legs/models/preamble.lib",
+      "section": "design"
+     },
+     "ss",
+     "moscap_ss",
+     "res_ss"
+    ]
+   },
+   {
+    "name": "fs",
+    "sections": [
+     {
+      "lib": "sim/program-read-legs/models/preamble.lib",
+      "section": "design"
+     },
+     "fs",
+     "moscap_typical",
+     "res_typical"
+    ]
+   },
+   {
+    "name": "sf",
+    "sections": [
+     {
+      "lib": "sim/program-read-legs/models/preamble.lib",
+      "section": "design"
+     },
+     "sf",
+     "moscap_typical",
+     "res_typical"
+    ]
+   }
+  ],
+  "supply_v": {
+   "VDD": [
+    2.97,
+    3.3,
+    3.63
+   ],
+   "VCLAMP": [
+    1.62,
+    1.8,
+    1.98
+   ]
+  },
+  "temperature_c": [
+   -40,
+   27,
+   125
+  ]
+ },
+ "analysis": {
+  "kind": "op",
+  "args": ""
+ },
+ "measurements": [
+  {
+   "name": "ipg_vpp4p0_comp",
+   "expr": "i(vam_vpp4p0_comp)"
+  },
+  {
+   "name": "vrbtop_vpp4p0_comp",
+   "expr": "v(xpg_vpp4p0_comp.rb_top)"
+  },
+  {
+   "name": "vpg_vpp4p0_comp",
+   "expr": "v(xpg_vpp4p0_comp.pg)"
+  },
+  {
+   "name": "vbl_vpp4p0_comp",
+   "expr": "v(bl_vpp4p0_comp)"
+  },
+  {
+   "name": "ipg_vpp4p0_short",
+   "expr": "i(vam_vpp4p0_short)"
+  },
+  {
+   "name": "vrbtop_vpp4p0_short",
+   "expr": "v(xpg_vpp4p0_short.rb_top)"
+  },
+  {
+   "name": "vpg_vpp4p0_short",
+   "expr": "v(xpg_vpp4p0_short.pg)"
+  },
+  {
+   "name": "vbl_vpp4p0_short",
+   "expr": "v(bl_vpp4p0_short)"
+  },
+  {
+   "name": "ipg_vpp5p0_comp",
+   "expr": "i(vam_vpp5p0_comp)"
+  },
+  {
+   "name": "vrbtop_vpp5p0_comp",
+   "expr": "v(xpg_vpp5p0_comp.rb_top)"
+  },
+  {
+   "name": "vpg_vpp5p0_comp",
+   "expr": "v(xpg_vpp5p0_comp.pg)"
+  },
+  {
+   "name": "vbl_vpp5p0_comp",
+   "expr": "v(bl_vpp5p0_comp)"
+  },
+  {
+   "name": "ipg_vpp5p0_short",
+   "expr": "i(vam_vpp5p0_short)"
+  },
+  {
+   "name": "vrbtop_vpp5p0_short",
+   "expr": "v(xpg_vpp5p0_short.rb_top)"
+  },
+  {
+   "name": "vpg_vpp5p0_short",
+   "expr": "v(xpg_vpp5p0_short.pg)"
+  },
+  {
+   "name": "vbl_vpp5p0_short",
+   "expr": "v(bl_vpp5p0_short)"
+  },
+  {
+   "name": "ipg_vpp6p0_comp",
+   "expr": "i(vam_vpp6p0_comp)"
+  },
+  {
+   "name": "vrbtop_vpp6p0_comp",
+   "expr": "v(xpg_vpp6p0_comp.rb_top)"
+  },
+  {
+   "name": "vpg_vpp6p0_comp",
+   "expr": "v(xpg_vpp6p0_comp.pg)"
+  },
+  {
+   "name": "vbl_vpp6p0_comp",
+   "expr": "v(bl_vpp6p0_comp)"
+  },
+  {
+   "name": "ipg_vpp6p0_short",
+   "expr": "i(vam_vpp6p0_short)"
+  },
+  {
+   "name": "vrbtop_vpp6p0_short",
+   "expr": "v(xpg_vpp6p0_short.rb_top)"
+  },
+  {
+   "name": "vpg_vpp6p0_short",
+   "expr": "v(xpg_vpp6p0_short.pg)"
+  },
+  {
+   "name": "vbl_vpp6p0_short",
+   "expr": "v(bl_vpp6p0_short)"
+  }
+ ],
+ "options": {
+  "keep_artifacts": true,
+  "timeout_s": 300,
+  "stage_model_inputs": true
+ }
+}

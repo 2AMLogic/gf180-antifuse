@@ -1,0 +1,40 @@
+
+Note: No compatibility mode selected!
+
+
+Circuit: * klt sim -- generated corner deck, do not edit
+
+Doing analysis at TEMP = 125.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+
+No. of Data Rows : 1
+ipg_p0r0_vpp3p63_bl0 = 9.384426e-12
+ird_p0r0_vpp3p63_bl0 = 5.654459e-11
+ipg_p0r0_vpp3p63_blvpp = -7.27196e-15
+ird_p0r0_vpp3p63_blvpp = -4.63984e-12
+ipg_p0r0_vpp6p00_bl0 = 1.354992e-11
+ird_p0r0_vpp6p00_bl0 = 5.654459e-11
+ipg_p0r0_vpp6p00_blvpp = -1.09912e-14
+ird_p0r0_vpp6p00_blvpp = -7.00595e-12
+ipg_p1r0_vpp3p63_bl0 = 4.699151e-04
+ird_p1r0_vpp3p63_bl0 = 5.654455e-11
+ipg_p1r0_vpp3p63_blvpp = -3.33067e-16
+ird_p1r0_vpp3p63_blvpp = -4.63984e-12
+ipg_p1r0_vpp6p00_bl0 = 8.094418e-04
+ird_p1r0_vpp6p00_bl0 = 5.654454e-11
+ipg_p1r0_vpp6p00_blvpp = -8.88178e-16
+ird_p1r0_vpp6p00_blvpp = -7.00595e-12
+ipg_p0r1_vpp3p63_bl0 = 9.384426e-12
+ird_p0r1_vpp3p63_bl0 = 1.991838e-04
+ipg_p0r1_vpp6p00_bl0 = 1.354992e-11
+ird_p0r1_vpp6p00_bl0 = 1.991838e-04
+ipg_p1r1_vpp3p63_bl0 = 9.384426e-12
+ird_p1r1_vpp3p63_bl0 = 5.654458e-11
+ipg_p1r1_vpp3p63_blvpp = -7.27196e-15
+ird_p1r1_vpp3p63_blvpp = -4.63984e-12
+ipg_p1r1_vpp6p00_bl0 = 1.354992e-11
+ird_p1r1_vpp6p00_bl0 = 5.654458e-11
+ipg_p1r1_vpp6p00_blvpp = -1.09912e-14
+ird_p1r1_vpp6p00_blvpp = -7.00595e-12
+ngspice-46 done

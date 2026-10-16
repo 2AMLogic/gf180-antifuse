@@ -5,29 +5,29 @@ amp + `I_ref` branch) in `design/cells/` -- the transistor-level instantiation
 of `spec/architecture.md` sections 1.2, 2 and 4 (see
 [`spec/leg-design-record.md`](../../spec/leg-design-record.md)).
 
-## STATUS: first PVT record exists (45 corners x 6 benches, fleet batch)
+## STATUS: PVT records exist (fleet batch runs, 2026-10-15)
 
-Record: [`records/20261015-061556-90de2cb.md`](records/20261015-061556-90de2cb.md)
-(jobs in each report's `environment.remote`). All six benches returned 45/45
-corners with no errors. Headlines, all conditional on the assumptions below:
+Records (both kept; `sim/` results are append-only evidence):
+[`records/20261015-061556-90de2cb.md`](records/20261015-061556-90de2cb.md)
+(earlier run, version-matched `klt 0.7.0` client, same 45 corners x 6 benches) and
+[`records/20261015-151616-d3df921.md`](records/20261015-151616-d3df921.md) (latest).
+The latest record is six `klt sim` requests, 45 corners each, all resolved (270/270), run on the
+Spot batch fleet (job id of each in the record's `remote=` field; runner and
+client `klt` versions matched). The earlier submits were rejected by a runner
+version mismatch; that no longer applies. Programmed-side numbers are
+**conditional on the assumed `R_prog`** and no Monte Carlo / mismatch was run.
 
-- Mutual exclusion: 45/45 corners, 14 cases each, never both legs driving; (1,1)
-  leaves both OFF.
-- Ballast: the Section 2 inequality holds at the minimum-resistance corner for
-  VPP 4/5/6 V under the ASSUMED `V_comp` = 1 V, `I_target_max` = 1 mA.
-- Read decisions at `I_ref` = 1 uA: Candidates 1 and 2 decide correctly in
-  every corner, unprogrammed and programmed (assumed R_prog) sides reported
-  separately. **Candidate 3 programmed side fails** (wrong `RDATA` at all 45
-  corners at min access sizing, 1/45 at 2x) at `I_ref` = 1 uA; at `I_ref` = 300 pA
-  34/45 decide correctly, still failing the cold/slow corners -- Region III read path is not working as designed (see "Open finding").
+Headline (see the record for the per-corner tables; sides and regions are never
+averaged): mutual exclusion holds at 45/45 corners; the ballast inequality is met
+at every VPP; Regions I and II decide correctly at 45/45 corners on both sides at
+`I_ref = 1 uA`; **Region III's programmed side fails at slow/cold corners**
+(0/45 correct at `I_ref = 1 uA`, 34/45 at 300 pA) -- see the finding below.
 
-Re-run trigger: the breakdown-augmented cell model (#62) replaces the assumed
-R_prog; `I_ref < I_prog_min` stays unchecked until `I_prog_min` exists.
+To regenerate, on a host with `KLT_SIM_BACKEND=batch`:
 
-Client/runner note: the fleet runner image runs `klt 0.7.0`; the host client was
-newer and the submit preflight refuses a skewed pair. This record was produced
-with a version-matched client (`uvx --from klayout-tools==0.7.0 klt`, passed via
-`KLT=<wrapper>`), still on the batch backend; no local grid was run.
+    python3 sim/run_corners.py program-read-legs
+
+A failed submit writes nothing.
 
 ## Benches (`benches.py` generates every netlist body)
 
@@ -78,18 +78,19 @@ poly-resistor sections follow ff / ss; typical for fs / sf), -40 / 27 / 125 C,
   assumed filament resistor across the capacitor and to read the ballast's
   internal node without editing the committed cell netlists.
 
-## Open finding for Candidate 3 (debug probe, now confirmed by the PVT record)
+## Open finding for Candidate 3 (confirmed by the fleet run)
 
-A one-corner local probe (typical, 27 C, `VDD` 3.3 V) of `margin3` shows the
-programmed side of Candidate 3 passing only about 4 nA through the read leg at
-`I_ref = 1 uA`, so `RDATA` stays 0 -- the `pfet_06v0` access device at
-`WL = 0 V` is barely turned on with a read bit line near 1.3 V. The earlier
-`R_on` figure for Candidate 3 (`sim/cell-device-characterization/`) is a
-small-signal value measured with no DC drain-source drop across the access
-device and does not predict this saturation-limited DC drive. This is the
-reason `margin3_lowiref` exists. The fleet PVT record confirms it: the Region III programmed side reads wrong
-at 44-45 of 45 corners at `I_ref` = 1 uA and at 11 of 45 corners (cold/slow) at 300 pA. Treat Region III's read path as **failing as designed**; it likely
-needs a different WL/`VB`/read polarity (design follow-up, not resolved here).
+An earlier single-corner probe suggested that Candidate 3's programmed side
+passes only a few nA through the read leg (the `pfet_06v0` access device at
+`WL = 0 V` is barely on with a read bit line near 1 V), so `RDATA` stays 0. The
+45-corner run confirms it as evidence: at `I_ref = 1 uA` the programmed side
+decides correctly at 0/45 corners (worst `I_read` about 4.9 pA at
+`ss/-40C/2.97 V`); at `I_ref = 300 pA` it is 34/45, still failing the slow/cold
+corners. The earlier `R_on` figure for Candidate 3
+(`sim/cell-device-characterization/`) is small-signal and does not predict this
+saturation-limited DC drive. No `I_ref` tried works across PVT, so Region III's
+read path needs a different WL / `VB` / read polarity (a design change, not
+made here). Region III's read path is **unproven**, not passing.
 
 ## Layout
 
