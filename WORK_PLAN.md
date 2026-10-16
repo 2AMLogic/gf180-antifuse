@@ -29,7 +29,6 @@ Human-approved issues ready for implementation (`loom:issue`).
 
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4)
 - **#58**: design: SPI slave register file RTL and bench per architecture §5 (T1 items 1 and 9, digital partition)
-- **#73**: sim: integrated program-to-read transition and voltage-stress bench
 
 ## In Progress
 
@@ -79,7 +78,7 @@ _None._
 | Operator merge-risk holds | 4 |
 | Very important | 0 |
 | Important | 2 |
-| Ready (`loom:issue`) | 3 |
+| Ready (`loom:issue`) | 2 |
 | In Progress (`loom:building`) | 1 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 4 |
