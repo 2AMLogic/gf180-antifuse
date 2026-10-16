@@ -5,6 +5,8 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-10-16
 
+- **PR #105**: sim: full-band addressing-stage leakage per region at read bias
+- **Issue #70** (closed): design: quantify full-band addressing leakage in the sense-margin budget
 - **PR #103**: sim: mismatch Monte Carlo for read-leg sense mirror against I_ref
 - **PR #96**: sim: PVT record for program/read legs from fleet batch run
 - **PR #69**: design: N=32 array, local HV pass-gate stage and level shifters as xschem sources + slice bench (#64)
