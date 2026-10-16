@@ -13,7 +13,7 @@ establish on their own.
 
 ## Status
 
-See `records/` (newest first). Until a record exists nothing here has been run on the fleet.
+See `records/` (newest first). Record `20261016-054944-66fb0003`: 1416 fleet units, 1405 graded, 11 not gradable (unit errors, never counted as passes). Armed isolation, exclusion, pulse isolation and unselected-line bias met on every graded point; Region III read decision met on 250 of 469 graded points and Region II no-false-high on 453 of 466 (Region III programmed reads are known-unproven, #75). Details and unchecked stress pairs are in the record.
 
 ## What is assembled (nothing is copied or substituted)
 
