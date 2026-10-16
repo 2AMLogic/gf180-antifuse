@@ -19,8 +19,10 @@ Budget equation (one place, evaluated by `budget()`):
        measured at BLG with every    carried ONCE from the committed
        column OFF and BL_c at 0 V    cell-device record: 31 x I_off
 
-    I_node,pgoff = sum_c I_pg,c (channel leakage into the OFF columns)
-                   + I_other    (BLG-node junction / bulk leakage = I_node - sum)
+    I_node,pgoff = sum_c i(Vcl_c)  (current delivered into the OFF columns)
+                   + I_other    (= I_node - sum; positive: BLG-node junction/bulk leakage;
+                                 negative: current entering BL_c from the cell side at BL_c = 0 V,
+                                 e.g. the PMOS access n-well junction - not drawn from BLG)
 
 The cell term is NOT in I_node,pgoff by construction: BL_c is clamped to 0 V so
 the access devices see V_DS = 0 and the capacitor blocks DC.
@@ -86,11 +88,12 @@ def budget(band: str, pg_by_col: dict[int, float], node_current: float, i_cell: 
         if v is None or v != v:
             raise AnalysisError(f"band {band}: non-finite/missing term {k}")
     ch = sum(pg_by_col.values())
+    # Signed on purpose. The budget quantity is the node current (what BLG supplies: OFF pass-gates and
+    # BLG-node junctions only; the cells hang off BL_c, not BLG). The clamp sources also carry whatever else
+    # enters BL_c at 0 V - e.g. the n-well junction of Candidate 3's PMOS access devices (well tied to VDDH) -
+    # so sum(i(Vcl)) can EXCEED the node current; then `other` is negative and that excess is current entering
+    # BL_c from the cell side, not a BLG-budget term (it is reported, never added).
     other = node_current - ch
-    # the node sees at least the channel leakage; allow numerical noise only
-    if other < -max(1e-12, 0.05 * abs(node_current)):
-        raise AnalysisError(f"band {band}: node current {node_current:.3e} A is below the per-column sum {ch:.3e} A "
-                            "(inconsistent instrumentation)")
     total = node_current + i_cell      # i_cell added exactly once, here
     fl = floor_a(v_blg, len(pg_by_col))
     return {"n_cols": len(pg_by_col), "pg_channel": ch, "pg_other": other, "pg_node": node_current,
@@ -248,8 +251,8 @@ def worst_by(rows: list[dict], keyf, valf):
 def budget_table(rows: list[dict]) -> list[str]:
     """Per region x level x I_ref, worst corner (largest I_leak,total)."""
     w = worst_by(rows, lambda r: (r["band"], r["level"], r["i_ref"]), lambda r: r["total"])
-    out = ["| Region | cols | read level | BLG (V) | I_ref (A) | worst corner | pass-gate channel sum (A) | "
-           "BLG-node other (A) | pass-gate at node (A) | cell 31 x I_off (A) | I_leak,total (A) | "
+    out = ["| Region | cols | read level | BLG (V) | I_ref (A) | worst corner | sum of clamp-source currents (A) | "
+           "node minus clamp sum (A, signed) | pass-gate at node (A) | cell 31 x I_off (A) | I_leak,total (A) | "
            "I_ref - I_leak,total (A) | I_ref / I_leak,total | floor-dominated |",
            "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
     for k in sorted(w, key=lambda k: ([b[0] for b in G.BANDS].index(k[0]), k[1], -k[2])):
@@ -279,7 +282,7 @@ def pvt_table(rows: list[dict]) -> list[str]:
 def attribution_table(rows: list[dict]) -> list[str]:
     """Per-column spread at the worst point of each region: which pass-gate leaks."""
     w = worst_by(rows, lambda r: r["band"], lambda r: r["pg_node"])
-    out = ["| Region | worst point | columns | min column (A) | max column (A) | max/min | channel share of node | other share |",
+    out = ["| Region | worst point | columns | min clamp column (A) | max clamp column (A) | max/min | clamp-sum / node | (node - clamp-sum) / node |",
            "|---|---|---|---|---|---|---|---|"]
     for lab in [b[0] for b in G.BANDS]:
         if lab not in w:
@@ -340,7 +343,7 @@ def programmed_side_from_65(record: Path | None = None) -> list[str]:
         m = re.match(r"Read margin, (Candidate \d \(Region [I]+\)), I_ref = (\S+)", sect)
         if not m:
             continue
-        for row in re.finditer(r"^\| (unprogrammed|programmed[^|]*)\| (\w+) \| ([^|]+)\| (`[^`]+`) \| [^|]+\| ([^|]+)\| ([^|]+)\|$",
+        for row in re.finditer(r"^\| (unprogrammed|programmed[^|]*?)\s*\| (\w+) \| ([^|]+)\| (`[^`]+`) \| [^|]+\| ([^|]+)\| ([^|]+)\|$",
                                sect, re.M):
             side, sz, marg, corner, bl, dec = (x.strip() for x in row.groups())
             out.append(f"| {m.group(1)}, I_ref = {m.group(2)} | {side} | {sz} | {marg} | {corner} | {bl} | {dec} |")
@@ -355,4 +358,28 @@ def provenance_rows() -> list[str]:
         for ln, lv in B.leak_levels(name):
             out.append(f"| {REGION_NAME[lab]} | {cols[0]}-{cols[-1]} ({len(cols)}) | {rows[0]}-{rows[-1]} | {ln} | "
                        f"{' / '.join(f'{lv * s:.4g}' for s in B.LEVEL_SCALES)} |")
+    return out
+
+
+def summary_lines(pg: list[dict], sel: list[dict]) -> list[str]:
+    """Data-derived statements only (recomputed from the graded points)."""
+    out = []
+    for lab in [b[0] for b in G.BANDS]:
+        for iref in sorted({r["i_ref"] for r in pg if r["band"] == lab}, reverse=True):
+            rs = [r for r in pg if r["band"] == lab and r["i_ref"] == iref]
+            w = max(rs, key=lambda r: r["total"])
+            verdict = "I_ref > I_leak,total at every graded point" if all(r["headroom"] > 0 for r in rs) else \
+                f"I_ref <= I_leak,total at {sum(1 for r in rs if r['headroom'] <= 0)} of {len(rs)} graded points"
+            out.append(f"- {REGION_NAME[lab]}, I_ref = {iref:.0e} A: {verdict}; worst I_leak,total {e(w['total'])} A "
+                       f"({w['level']}, {w['process']}/{w['temp']}C), min I_ref/I_leak,total {e(min(r['ratio'] for r in rs))}.")
+    for lab in [b[0] for b in G.BANDS]:
+        sp = max((max(r["pg_by_col"].values()) / min(r["pg_by_col"].values())
+                  for r in pg if r["band"] == lab and min(r["pg_by_col"].values()) > 0), default=float("nan"))
+        out.append(f"- {REGION_NAME[lab]}: largest per-column clamp-current spread (max/min over the {EXPECTED_COLS[lab]} "
+                   f"columns, any point) = {sp:.3g}.")
+    for lab in [b[0] for b in G.BANDS]:
+        for ln in sorted({r["level"] for r in sel if r["band"] == lab}):
+            rs = [r for r in sel if r["band"] == lab and r["level"] == ln]
+            out.append(f"- {REGION_NAME[lab]} selected-path, level `{ln}`: {sum(1 for r in rs if not r['ok'])} of {len(rs)} "
+                       f"points below threshold; min V(BL)/V(BLG) {min(r['bl_ratio'] for r in rs):.3g}, min eta {min(r['eta'] for r in rs):.3g}.")
     return out

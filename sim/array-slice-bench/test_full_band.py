@@ -91,9 +91,11 @@ class SignAndBudget(unittest.TestCase):
         with self.assertRaises(F.AnalysisError):
             F.budget("III", extra, 1e-9, 0.0, 1e-6, 3.0)
 
-    def test_node_below_channel_sum_rejected(self):
-        with self.assertRaises(F.AnalysisError):
-            F.budget("II", pg_terms("II", 1e-9), 1e-10, 0.0, 1e-6, 1.6)
+    def test_clamp_sum_above_node_is_reported_not_added(self):
+        # cell-side current entering BL_c (e.g. PMOS n-well junction) must not inflate the BLG budget
+        b = F.budget("III", pg_terms("III", 1e-10), 1e-11, 8e-12, 1e-6, 3.77)
+        self.assertAlmostEqual(b["total"], 1e-11 + 8e-12, 20)
+        self.assertLess(b["pg_other"], 0)
 
     def test_missing_value_rejected(self):
         pg = pg_terms("I"); pg[3] = None

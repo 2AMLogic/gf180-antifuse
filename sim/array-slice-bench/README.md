@@ -85,3 +85,30 @@ Reports and records are never edited; a re-run mints a new `<record-id>`.
 python3 sim/array-slice-bench/make_bench.py --check
 python3 sim/array-slice-bench/run_bench.py        # both slices, via klt sim
 ```
+
+## Full-band leakage mode (issue #70)
+
+`python3 sim/array-slice-bench/run_bench.py --mode full-band` measures the OFF-state
+addressing-stage current at the **read** bias for every column of each band
+(Region I 11, II 11, III 10 columns; rows 0-3, which carry all four capacitor x
+access sub-combinations). The bands are `band_i/ii/iii` in `design/gen_array.py`
+(`BAND_SLICES`, kept apart from `SLICES`; netlists in `design/netlists/`). Three
+variants per band and process corner (`testbench/leak_<variant>_<band>_<process>.request.json`):
+
+| Variant | What it holds | What it reads |
+|---|---|---|
+| `pgoff` | every column OFF, every `BL_c` clamped to 0 V | `i(Vbl)` at the summation node and `i(Vcl_c)` per column: the OFF pass-gate worst case (cells see V_DS = 0, so the `31 x I_off` cell term is not in it) |
+| `nat` | every column OFF, `BL_c` floating, no filament stand-in | natural DC steady-state current at the node |
+| `sel` | one cell selected (one per cap x access sub-combination), `R_FIL` on every cell | selected-path conduction at the read level (`eta`, `V(BL)/V(BLG)`, return ratio); DC only, **settling is not evidenced** |
+
+**Assumed, not designed here:** the sense node is the band's `BLG` bus (the legs are not
+attached to the array on `main`; #73). Read levels bracket the `BL at worst` rows of
+`sim/program-read-legs/records/20261015-151616-d3df921.md` per candidate (table in the
+record), each at x0.9 / 1.0 / 1.1 for the VCLAMP tracking points. The `31 x I_off` cell term is
+carried once from `sim/cell-device-characterization/records/` and was not re-evaluated at the 3.8-4.4 V
+unprogrammed sense levels. Sign convention and the budget equation are in `fullband.py`'s docstring
+and in every record. `test_full_band.py` covers band cardinality, per-region separation, sign
+normalisation and rejection of missing/duplicate terms (`python3 -m unittest discover -s sim/array-slice-bench -p 'test_full_band.py'`).
+
+First record: `records/20261016-015644-361e4f1b-fullband.md` (raw reports in `reports/20261016-015644-361e4f1b-fullband/`, per-region view and per-corner CSV
+in `measurements/array-slice-bench/`). The batch job ids are listed in the record.

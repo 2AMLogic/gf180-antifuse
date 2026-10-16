@@ -400,7 +400,7 @@ def finish_full_band(F, record_id, clean, now, bands, reports, a) -> int:
         for variant, fn, acc in (("pgoff", F.analyze_pgoff, pg), ("nat", F.analyze_nat, nat), ("sel", F.analyze_sel, sel)):
             reps = reports[(name, variant)]
             try:
-                acc += fn(name, reps) if variant != "pgoff" else fn(name, reps)
+                acc += fn(name, reps)
             except F.AnalysisError as ex:
                 problems.append(f"{name}/{variant}: {ex}")
         for variant in B.LEAK_VARIANTS:
@@ -466,6 +466,7 @@ def finish_full_band(F, record_id, clean, now, bands, reports, a) -> int:
             "Leakage is positive when drawn **out of** the summation node `BLG_<band>`; ngspice `i(V)` of a supplying "
             "source is negative, so `I_node = -i(Vbl)`; `i(Vcl_c)` (BL_c clamp, + terminal on BL_c) is positive for "
             "current entering BL_c from the OFF pass-gate.", "", "```", *eqn, "```", "",
+            "## Summary (recomputed from the graded points)", "", *F.summary_lines(pg, sel), "",
             "## Read-level provenance", "", *F.provenance_rows(), "",
             "## Leakage budget, worst corner per region and read level", "", *F.budget_table(pg), "",
             "## Per-region PVT table (worst supply / level scale per process x temperature)", "", *F.pvt_table(pg), "",
