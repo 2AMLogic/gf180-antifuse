@@ -22,4 +22,7 @@ C {pg_n10.sym} 1800 300 0 0 {name=X4}
 C {array_32x32.sym} 2300 300 0 0 {name=X5}
 C {slice_i_ii.sym} 2800 300 0 0 {name=X6}
 C {slice_ii_iii.sym} 3300 300 0 0 {name=X7}
+C {band_i.sym} 3800 300 0 0 {name=X8}
+C {band_ii.sym} 4300 300 0 0 {name=X9}
+C {band_iii.sym} 4800 300 0 0 {name=X10}
 T {Netlist driver - not a circuit. See the header comment in this file.} 160 120 0 0 0.5 0.5 {}

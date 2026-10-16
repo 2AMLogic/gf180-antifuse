@@ -46,7 +46,7 @@ ARRAY_DRIVER="${DESIGN_DIR}/array/array_library.sch"
 CELLS=(cell_candidate1 cell_candidate2 cell_candidate3 leg_interlock program_leg read_leg)
 # Netlists exported from ARRAY_DRIVER. array_32x32 and the slices are generated
 # schematics; the ls_/pg_ cells are the addressing-stage building blocks.
-ARRAY_NETLISTS=(ls_hv06 ls_hv10 pg_n06 pg_n10 array_32x32 slice_i_ii slice_ii_iii)
+ARRAY_NETLISTS=(ls_hv06 ls_hv10 pg_n06 pg_n10 array_32x32 slice_i_ii slice_ii_iii band_i band_ii band_iii)
 
 CHECK_ONLY=0
 case "${1:-}" in
