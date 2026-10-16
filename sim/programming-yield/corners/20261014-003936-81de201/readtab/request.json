@@ -1,0 +1,123 @@
+{
+  "netlist": "body.spice",
+  "engine": "ngspice",
+  "backend": "batch",
+  "batch": {
+    "runner_version_check": "warn",
+    "capacity_wait_s": 1800
+  },
+  "measurements": [
+    {
+      "name": "i_min_zm3",
+      "spice": ".meas dc i_min_zm3 FIND i(vm_min_zm3) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_min_zm2",
+      "spice": ".meas dc i_min_zm2 FIND i(vm_min_zm2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_min_zm1",
+      "spice": ".meas dc i_min_zm1 FIND i(vm_min_zm1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_min_zp0",
+      "spice": ".meas dc i_min_zp0 FIND i(vm_min_zp0) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_min_zp1",
+      "spice": ".meas dc i_min_zp1 FIND i(vm_min_zp1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_min_zp2",
+      "spice": ".meas dc i_min_zp2 FIND i(vm_min_zp2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_min_zp3",
+      "spice": ".meas dc i_min_zp3 FIND i(vm_min_zp3) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_min_zp4",
+      "spice": ".meas dc i_min_zp4 FIND i(vm_min_zp4) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_2x_zm3",
+      "spice": ".meas dc i_2x_zm3 FIND i(vm_2x_zm3) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_2x_zm2",
+      "spice": ".meas dc i_2x_zm2 FIND i(vm_2x_zm2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_2x_zm1",
+      "spice": ".meas dc i_2x_zm1 FIND i(vm_2x_zm1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_2x_zp0",
+      "spice": ".meas dc i_2x_zp0 FIND i(vm_2x_zp0) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_2x_zp1",
+      "spice": ".meas dc i_2x_zp1 FIND i(vm_2x_zp1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_2x_zp2",
+      "spice": ".meas dc i_2x_zp2 FIND i(vm_2x_zp2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_2x_zp3",
+      "spice": ".meas dc i_2x_zp3 FIND i(vm_2x_zp3) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_2x_zp4",
+      "spice": ".meas dc i_2x_zp4 FIND i(vm_2x_zp4) AT=0.000000e+00",
+      "unit": "A"
+    }
+  ],
+  "options": {
+    "timeout_s": 300,
+    "keep_artifacts": true
+  },
+  "corners": {
+    "process": [
+      {
+        "name": "ss",
+        "sections": [
+          "ss"
+        ]
+      }
+    ],
+    "supply_v": {
+      "vbl": [
+        0.9
+      ]
+    },
+    "temperature_c": [
+      -40.0,
+      27.0,
+      125.0
+    ]
+  },
+  "models": {
+    "pdk": "gf180mcuD",
+    "lib": "libs.tech/ngspice/smbb000149.ngspice"
+  },
+  "analysis": {
+    "kind": "dc",
+    "args": "VDMY -1 1 1"
+  }
+}

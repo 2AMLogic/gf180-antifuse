@@ -3,27 +3,39 @@
 <!-- guide:plan-body:start -->
 ## Operator Attention: Merge-Risk-Hold Pileup
 
-Judge-approved PRs stuck under a `loom:operator` merge-risk hold — implementation work is done, only a human merge decision is missing.
+Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a human merge decision is missing.
+
+- **#85**: layout: first drawn candidate-1 bitcell with klt drc (T1 2.analog, 3.analog); LVS blocked upstream
+- **#88**: sim: Candidate 2 klt campaign via version-matched client; regenerate signoff (#63)
+- **#92**: design+sim: Candidate 3 read bias (n-well tied to read rail) with PVT evidence
+- **#94**: design: program bias scheme vs access-device ratings; PROPOSED decision record (#90)
+
+## Very Important
+
+`loom:very-important` (one counts per workspace); every stage takes these first.
 
 _None._
 
-## Operator Priority
+## Important
 
-Issues the operator starred (`loom:operator-priority`); land these first.
+`loom:important`; taken before unlabelled work.
 
-_None._
+- **#64**: design: capture the N=32 array, local HV pass-gate MUX and level shifters as xschem sources (analog partition)
+- **#65**: design: program leg (ballast + current limit) and read leg (sense amp + I_ref) schematics with worst-case margin bench
 
 ## Ready
 
 Human-approved issues ready for implementation (`loom:issue`).
 
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4)
+- **#58**: design: SPI slave register file RTL and bench per architecture §5 (T1 items 1 and 9, digital partition)
+- **#65**: design: program leg (ballast + current limit) and read leg (sense amp + I_ref) schematics with worst-case margin bench
 
 ## In Progress
 
 Issues currently being built (`loom:building`).
 
-_None._
+- **#90**: design: program-leg access-device overstress at assumed V_bd; Candidate 2 not programmable via BL-driven leg
 
 ## PRs Awaiting Review
 
@@ -35,17 +47,29 @@ _None._
 
 PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
-_None._
+- **#69**: design: N=32 array, local HV pass-gate stage and level shifters as xschem sources + slice bench (#64)
+- **#85**: layout: first drawn candidate-1 bitcell with klt drc (T1 2.analog, 3.analog); LVS blocked upstream
+- **#88**: sim: Candidate 2 klt campaign via version-matched client; regenerate signoff (#63)
+- **#92**: design+sim: Candidate 3 read bias (n-well tied to read rail) with PVT evidence
+- **#94**: design: program bias scheme vs access-device ratings; PROPOSED decision record (#90)
+- **#96**: sim: PVT record for program/read legs from fleet batch run
 
 ## Proposed
 
 Issues carrying `loom:curated`.
 
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4) *(curated)*
+- **#58**: design: SPI slave register file RTL and bench per architecture §5 (T1 items 1 and 9, digital partition) *(curated)*
+- **#59**: layout: first drawn bitcell (candidate 1) with klt drc and klt lvs (T1 items 2, 3, 4, analog partition) *(curated)*
+- **#63**: sim: express the PVT corner campaign as a klt sim request and cite it in the signoff manifest *(curated)*
+- **#64**: design: capture the N=32 array, local HV pass-gate MUX and level shifters as xschem sources (analog partition) *(curated)*
+- **#65**: design: program leg (ballast + current limit) and read leg (sense amp + I_ref) schematics with worst-case margin bench *(curated)*
+- **#75**: design: Candidate 3 read bias -- placeholder WL=0 V cannot read a programmed cell (I_prog_min undefined) *(curated)*
+- **#90**: design: program-leg access-device overstress at assumed V_bd; Candidate 2 not programmable via BL-driven leg *(curated)*
 
 ## Proposed (Architect / Hermit)
 
-_None._
+- **#73**: sim: integrated program-to-read transition and voltage-stress bench *(architect)*
 
 ## Epics
 
@@ -53,17 +77,19 @@ _None._
 
 ## Backlog Balance
 
-| Tier | Count |
+| Bucket | Count |
 |------|-------|
-| Operator merge-risk holds | 0 |
-| Operator priority | 0 |
-| Ready (`loom:issue`) | 1 |
-| In Progress (`loom:building`) | 0 |
+| Operator merge-risk holds | 4 |
+| Very important | 0 |
+| Important | 2 |
+| Ready (`loom:issue`) | 3 |
+| In Progress (`loom:building`) | 1 |
 | PRs awaiting review | 0 |
-| Approved PRs awaiting merge | 0 |
-| Curated | 1 |
-| Architect / Hermit proposals | 0 |
+| Approved PRs awaiting merge | 6 |
+| Curated | 8 |
+| Architect / Hermit proposals | 1 |
 | Active epics | 1 |
+
 <!-- guide:plan-body:end -->
 
 The sections above reflect labels. Issue #14 already has implementation PR #15,

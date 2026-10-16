@@ -6,7 +6,10 @@ Schematics (xschem) and the SPICE netlists derived from them.
 
 1. The three antifuse cell candidates ratified in
    [`spec/cell-candidates.md`](../spec/cell-candidates.md) (below).
-2. The N = 32 array, its row/column local high-voltage pass-gate stage and the
+2. The program leg and read leg of
+   [`spec/architecture.md`](../spec/architecture.md) §1.2, §2 and §4 (see
+   "Program leg and read leg" below).
+3. The N = 32 array, its row/column local high-voltage pass-gate stage and the
    level shifters of [`spec/architecture.md`](../spec/architecture.md) §1.1,
    generated from the region map in
    [`spec/split-axis-plan.md`](../spec/split-axis-plan.md) (see "The array and
@@ -95,6 +98,39 @@ spec document fixes what the process-minimum legal geometry actually is — that
 is a PDK design-rule lookup, deliberately out of scope for this first drop of
 sources. Choosing those numbers is follow-on work; nothing in this directory
 should be read as asserting them.
+
+## Program leg and read leg
+
+Added for the analog partition `spec/architecture.md` §1.2, §2 and §4 specify
+but did not design. Rationale, the ballast sizing inequality and the
+`ppolyf_u_2k_6p0` rating finding are in
+[`spec/leg-design-record.md`](../spec/leg-design-record.md).
+
+| Block | Schematic | Ports | Content |
+|---|---|---|---|
+| `leg_interlock` | [`cells/leg_interlock.sch`](cells/leg_interlock.sch) | `PROG_EN READ_EN VDD VSS PON RON` | Static CMOS: `PON = PROG_EN & ~READ_EN`, `RON = READ_EN & ~PROG_EN`. Both 0 when both enables are 1. |
+| `program_leg` | [`cells/program_leg.sch`](cells/program_leg.sch) | `PROG_EN READ_EN VDD VSS BL VPP` | `VPP` -> `pfet_06v0` switch (VPP-referenced cross-coupled level shifter) -> `ppolyf_u_2k_6p0` ballast -> `BL`. |
+| `read_leg` | [`cells/read_leg.sch`](cells/read_leg.sch) | `PROG_EN READ_EN VCLAMP IREF VDD VSS BL SENSE RDATA` | `BL` - `nfet_06v0` isolation switch - `nfet_03v3` clamp - `pfet_03v3` mirror vs `I_ref` mirror -> `SENSE` -> two inverters -> `RDATA`. |
+
+Both legs instantiate `leg_interlock`, so a fault that asserts `PROG_EN` and
+`READ_EN` together leaves both legs OFF at the shared bit line. Sizes are
+subcircuit parameters (defaults on each `.sym`); `rb_w` / `rb_l` set the
+ballast. Two interface constraints to honour upstream: `VPP` must idle at or
+above `VDD` while the program leg is OFF, and the program leg is a 6 V-tier
+design (no Candidate 2 / 10 V variant yet).
+
+**These three schematics are generated**, by
+[`tools/gen_leg_schematics.py`](tools/gen_leg_schematics.py): it holds the
+device table and net list once and computes every pin coordinate from the PDK
+symbols, which a hand-typed `.sch` would have to do by eye. The output is an
+ordinary xschem schematic and `regen-netlists.sh` derives the netlists from it
+exactly as for the cells; edit in xschem and stop using the script, or edit
+the script and re-run it -- but not both. The script does not draw wires (pins
+connect by label), so the canvas is a connectivity diagram, not a laid-out
+drawing.
+
+`cells/leg_library.sch` is the netlist driver for these three blocks (same
+purpose as `cell_library.sch`).
 
 ## The array and addressing stage
 
@@ -226,10 +262,11 @@ Candidate 2 cell record), and the `ls_*`/`pg_*` transistor sizes
 
 ## What is explicitly NOT captured
 
-- **Program leg** - ballast resistor, active current limit, `PROG_EN`/`READ_EN`
-  interlock, and the `VPP` pad/switch. The per-band `BLG`/`PLG` buses are the
-  attachment points; nothing is attached.
-- **Sense path** - sense amplifier and read leg (separate issue).
+- **Attachment of the legs to the array.** The program leg and read leg
+  (above) are standalone blocks; nothing connects them to the per-band
+  `BLG`/`PLG` buses yet, and the active compliance limit (the WL-bias second
+  limit of `spec/architecture.md` §2, owned by the WL level shifter) and on-die
+  `I_ref` generation are not designed.
 - **SPI slave and the global decode** - register map, address decode, control
   logic. The digital partition is the *source* of `RSEL_<r>` / `CSEL_<c>`; the
   level shifters here are the first analog stage.
@@ -255,6 +292,10 @@ evidence — see below. The cornered per-region bench for the array slices is
 | `gen_array.py` | **Generator** for everything under `array/` and `mux/` (schematics, symbols, driver). `--check` diffs instead of writing. |
 | `array/`, `mux/` | **Generated** xschem sources: the 32x32 array, the two slices, level shifters, pass-gates, and `array/array_library.sch` (netlist driver). |
 | `check-array.py` | Region-map drift check (see above). stdlib only. |
+| `cells/{leg_interlock,program_leg,read_leg}.sch` / `.sym` | Program-leg / read-leg blocks (generated, see above). |
+| `cells/leg_library.sch` | Netlist driver for the leg blocks. |
+| `tools/gen_leg_schematics.py` | Generator for the leg schematics and symbols. |
+| `tb/tb_legs.spice` | Leg elaboration + interlock truth-table deck for `check-netlists.sh`. |
 | `netlists/*.spice` | **Derived.** xschem's netlist export (cells, level shifters, pass-gates, array, slices). Do not edit; regenerate. |
 | `tb/tb_cell_candidateN.spice` | Elaboration / parameter-propagation decks for `check-netlists.sh`. Not evidence, not cornered. |
 | `breakdown/` | Behavioral breakdown-augmented wrappers `cell_candidateN_bd` around the unmodified netlists, plus the labelled-parameter file. Hand-written, not derived; see [`breakdown/README.md`](breakdown/README.md). |
@@ -264,16 +305,17 @@ evidence — see below. The cornered per-region bench for the array slices is
 
 ## Working with these sources
 
-Everything below needs `PDK_ROOT` pointing at the open_pdks / volare install
+Everything below needs `PDK_ROOT` pointing at the open_pdks / ciel install
 root that contains `gf180mcuD/`, plus `xschem` and `ngspice` on `PATH`. The
-scripts honour `$PDK_ROOT` first and fall back to `~/.volare` when it is unset
+scripts honour `$PDK_ROOT` first and fall back to `~/.ciel` when it is unset
 or does not contain `gf180mcuD/`; each prints the root it resolved before
-running.
+running. They also read `<root>/gf180mcuD/SOURCES` and refuse a tree
+whose `open_pdks` hash is not the pin in `design/lib-pdk-root.sh`.
 
 Open a cell:
 
 ```sh
-PDK_ROOT=$HOME/.volare xschem --rcfile design/xschemrc design/cells/cell_candidate1.sch
+PDK_ROOT=$HOME/.ciel xschem --rcfile design/xschemrc design/cells/cell_candidate1.sch
 ```
 
 Regenerate the derived netlists after any schematic change, and commit the
@@ -312,6 +354,10 @@ which asserts, in order:
 5. **Slice smoke** — the two slice netlists elaborate in ngspice at the typical
    corner; with one cell selected it conducts through its filament stand-in and
    every other cell does not. Typical corner only: not a result.
+6. **Program leg / read leg** — the three leg netlists elaborate (with the
+   `res_typical` section for the ballast) and `leg_interlock`'s truth table
+   holds at the typical corner. Structure only; the PVT mutual-exclusion and
+   margin benches are in `sim/program-read-legs/`.
 
 ### Two things worth knowing about the flow
 
@@ -322,6 +368,12 @@ which asserts, in order:
   override `wcap` on the instance line ("Undefined parameter"). `cell_library.sch`
   instantiates one of each cell so that `split_files` writes one properly
   parameterized netlist per cell.
+- **`regen-netlists.sh` also joins `+` continuation lines.** xschem 3.4.4
+  and 3.4.7 wrap long device lines at different columns (pure formatting), so
+  a netlist exported on one failed `--check` against the other. Continuation
+  lines are now joined onto their parent line, making the committed text
+  independent of the xschem version (the three cell netlists were re-committed
+  unwrapped; no circuit content changed).
 - **`regen-netlists.sh` normalizes two comment lines.** xschem stamps the
   absolute filesystem path of each schematic and symbol into `** sym_path:` /
   `** sch_path:` comments, which would make a committed netlist depend on where

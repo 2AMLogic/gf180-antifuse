@@ -1,0 +1,37 @@
+v {xschem version=3.4.7 file_version=1.2
+
+* gf180-antifuse: symbol for the PROG_EN/READ_EN interlock gating block.
+}
+G {}
+K {type=subcircuit
+format="@name @pinlist @symname lg=@lg wn=@wn wp=@wp m=@m"
+template="name=x1 lg=0.28u wn=1u wp=2u m=1"
+}
+V {}
+S {}
+E {}
+L 4 -60 -150 60 -150 {}
+L 4 -60 150 60 150 {}
+L 4 -60 -150 -60 150 {}
+L 4 60 -150 60 150 {}
+L 4 -80 -120 -60 -120 {}
+B 5 -82.5 -122.5 -77.5 -117.5 {name=PROG_EN dir=in}
+T {PROG_EN} -55 -125 0 0 0.2 0.2 {}
+L 4 -80 -90 -60 -90 {}
+B 5 -82.5 -92.5 -77.5 -87.5 {name=READ_EN dir=in}
+T {READ_EN} -55 -95 0 0 0.2 0.2 {}
+L 4 -80 -60 -60 -60 {}
+B 5 -82.5 -62.5 -77.5 -57.5 {name=VDD dir=inout}
+T {VDD} -55 -65 0 0 0.2 0.2 {}
+L 4 -80 -30 -60 -30 {}
+B 5 -82.5 -32.5 -77.5 -27.5 {name=VSS dir=inout}
+T {VSS} -55 -35 0 0 0.2 0.2 {}
+L 4 60 -120 80 -120 {}
+B 5 77.5 -122.5 82.5 -117.5 {name=PON dir=out}
+T {PON} 55 -125 0 1 0.2 0.2 {}
+L 4 60 -90 80 -90 {}
+B 5 77.5 -92.5 82.5 -87.5 {name=RON dir=out}
+T {RON} 55 -95 0 1 0.2 0.2 {}
+T {@symname} -52 -5 0 0 0.3 0.3 {}
+T {@name} -60 -165 0 0 0.25 0.25 {}
+T {PON/RON mutually exclusive} -60 160 0 0 0.2 0.2 {}

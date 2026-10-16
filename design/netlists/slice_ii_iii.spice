@@ -1,9 +1,7 @@
-
 * expanding   symbol:  slice_ii_iii.sym # of pins=16
 ** sym_path: design/array/slice_ii_iii.sym
 ** sch_path: design/array/slice_ii_iii.sch
-.subckt slice_ii_iii RSEL_0 RSEL_1 RSEL_2 RSEL_3 CSEL_20 CSEL_21 CSEL_22 CSEL_23 BLG_II PLG_II BLG_III PLG_III VDDH_II VDDH_III
-+ VDDL VSS
+.subckt slice_ii_iii RSEL_0 RSEL_1 RSEL_2 RSEL_3 CSEL_20 CSEL_21 CSEL_22 CSEL_23 BLG_II PLG_II BLG_III PLG_III VDDH_II VDDH_III VDDL VSS
 *.ipin RSEL_0
 *.ipin RSEL_1
 *.ipin RSEL_2
@@ -61,4 +59,3 @@ XPR_2_III PL_2_III RG_2_III PLG_III VSS pg_n06 wpg=20u lpg=0.70u
 XLR_3_III RSEL_3 VDDL VSS RG_3_III WL_3_III VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
 XPR_3_III PL_3_III RG_3_III PLG_III VSS pg_n06 wpg=20u lpg=0.70u
 .ends
-

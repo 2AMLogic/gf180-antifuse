@@ -1,4 +1,3 @@
-
 * expanding   symbol:  slice_i_ii.sym # of pins=16
 ** sym_path: design/array/slice_i_ii.sym
 ** sch_path: design/array/slice_i_ii.sch
@@ -60,4 +59,3 @@ XPR_2_II PL_2_II WL_2_II PLG_II VSS pg_n10 wpg=25u lpg=0.60u
 XLR_3_II RSEL_3 VDDL VSS WL_3_II RGB_3_II VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
 XPR_3_II PL_3_II WL_3_II PLG_II VSS pg_n10 wpg=25u lpg=0.60u
 .ends
-

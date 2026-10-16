@@ -1,4 +1,3 @@
-
 * expanding   symbol:  pg_n10.sym # of pins=4
 ** sym_path: design/mux/pg_n10.sym
 ** sch_path: design/mux/pg_n10.sch
@@ -7,7 +6,5 @@
 *.iopin B
 *.ipin G
 *.ipin VB
-XM1 A G B VB nfet_10v0_asym L=lpg W=wpg nf=1 ad='wpg * 1.48u' as='wpg * 0.48u' pd='2 * (wpg + 1.48u)' ps='2 * (wpg + 0.48u)' nrd=0
-+ nrs=0 sa=0 sb=0 sd=0 m=1
+XM1 A G B VB nfet_10v0_asym L=lpg W=wpg nf=1 ad='wpg * 1.48u' as='wpg * 0.48u' pd='2 * (wpg + 1.48u)' ps='2 * (wpg + 0.48u)' nrd=0 nrs=0 sa=0 sb=0 sd=0 m=1
 .ends
-

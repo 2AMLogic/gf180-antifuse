@@ -26,7 +26,8 @@
 # (or, under --check, runs in --check mode to prove the committed schematics
 # are what the generator produces) - see that file's header.
 #
-# The only transformation applied to xschem's output is path normalization:
+# The only transformations applied to xschem's output are path normalization
+# and continuation-line unwrapping (see below):
 # xschem stamps the absolute filesystem path of each schematic and symbol into
 # two "** sym_path:" / "** sch_path:" comment lines, which would otherwise make
 # the committed netlist depend on where the repository happens to be checked
@@ -39,10 +40,10 @@ DESIGN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${DESIGN_DIR}/.." && pwd)"
 CELLS_DIR="${DESIGN_DIR}/cells"
 NETLIST_DIR="${DESIGN_DIR}/netlists"
-DRIVER="${CELLS_DIR}/cell_library.sch"
+DRIVERS=("${CELLS_DIR}/cell_library.sch" "${CELLS_DIR}/leg_library.sch")
 ARRAY_DRIVER="${DESIGN_DIR}/array/array_library.sch"
 
-CELLS=(cell_candidate1 cell_candidate2 cell_candidate3)
+CELLS=(cell_candidate1 cell_candidate2 cell_candidate3 leg_interlock program_leg read_leg)
 # Netlists exported from ARRAY_DRIVER. array_32x32 and the slices are generated
 # schematics; the ls_/pg_ cells are the addressing-stage building blocks.
 ARRAY_NETLISTS=(ls_hv06 ls_hv10 pg_n06 pg_n10 array_32x32 slice_i_ii slice_ii_iii)
@@ -54,7 +55,7 @@ case "${1:-}" in
   *)       echo "usage: $(basename "$0") [--check]" >&2; exit 2 ;;
 esac
 
-# PDK root resolution: $PDK_ROOT first, then ~/.volare - see
+# PDK root resolution: $PDK_ROOT first, then ~/.ciel (pinned revision verified) - see
 # design/lib-pdk-root.sh for the order and why it is shared with
 # check-netlists.sh. This script only drives xschem, so bare gf180mcuD is
 # enough of a candidate root to require.
@@ -97,8 +98,11 @@ trap 'rm -rf "${SCRATCH}"' EXIT
 # what this script actually validates.
 XSCHEM_LOG="${SCRATCH}/xschem.log"
 set +e
-xschem -n -s -q -x -o "${SCRATCH}" --rcfile "${DESIGN_DIR}/xschemrc" "${DRIVER}" \
-  >"${XSCHEM_LOG}" 2>&1
+: >"${XSCHEM_LOG}"
+for DRIVER in "${DRIVERS[@]}"; do
+  xschem -n -s -q -x -o "${SCRATCH}" --rcfile "${DESIGN_DIR}/xschemrc" "${DRIVER}" \
+    >>"${XSCHEM_LOG}" 2>&1
+done
 set -e
 
 ARRAY_SCRATCH="${SCRATCH}/array"
@@ -117,11 +121,11 @@ for nl in "${ARRAY_NETLISTS[@]}"; do
 done
 
 # Normalize the absolute paths xschem stamps into the block header comments.
-for cell in "${CELLS[@]}"; do
+for cell in "${CELLS[@]}" "${ARRAY_NETLISTS[@]}"; do
   src="${SCRATCH}/${cell}.spice"
   if [[ ! -f "${src}" ]]; then
     echo "ERROR: xschem did not emit ${cell}.spice." >&2
-    echo "       Is ${cell}.sym instantiated in $(basename "${DRIVER}")," >&2
+    echo "       Is ${cell}.sym instantiated in a driver schematic (cell_library.sch / leg_library.sch)," >&2
     echo "       and is split_files set in design/xschemrc?" >&2
     echo "--- xschem output ---" >&2
     sed 's/^/    /' "${XSCHEM_LOG}" >&2
@@ -132,7 +136,15 @@ for cell in "${CELLS[@]}"; do
   # both hosts. Substituting through a temp file and moving it back is the one
   # spelling that is identical on both, and leaves no stray backup file behind
   # if sed fails (set -e aborts before the mv).
-  sed "s#${REPO_ROOT}/##g" "${src}" >"${src}.tmp"
+  #
+  # Second normalization: xschem's line-wrapping of long device lines differs
+  # between versions (3.4.4 wraps at a different column than 3.4.7), which is
+  # pure formatting. Continuation lines ("+ ...") are joined onto their parent
+  # line so the committed netlist does not depend on the xschem version.
+  sed "s#${REPO_ROOT}/##g" "${src}" \
+    | awk '/^\+/ { sub(/^\+ */, " "); buf = buf $0; next }
+           { if (buf != "") print buf; buf = $0 }
+           END { if (buf != "") print buf }' >"${src}.tmp"
   mv "${src}.tmp" "${src}"
 done
 
