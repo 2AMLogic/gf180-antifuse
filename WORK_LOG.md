@@ -3,6 +3,15 @@
 Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 
+### 2026-10-16
+
+- **PR #103**: sim: mismatch Monte Carlo for read-leg sense mirror against I_ref
+- **PR #96**: sim: PVT record for program/read legs from fleet batch run
+- **PR #69**: design: N=32 array, local HV pass-gate stage and level shifters as xschem sources + slice bench (#64)
+- **Issue #102** (closed): sim: mismatch Monte Carlo for read-leg sense mirror vs I_ref
+- **Issue #65** (closed): design: program leg (ballast + current limit) and read leg (sense amp + I_ref) schematics with worst-case margin bench
+- **Issue #64** (closed): design: capture the N=32 array, local HV pass-gate MUX and level shifters as xschem sources (analog partition)
+
 ### 2026-10-15
 
 - **PR #100**: feat: pin open_pdks f6eeac7d and fail visibly on PDK revision mismatch
