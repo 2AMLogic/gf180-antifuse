@@ -36,7 +36,6 @@ import json
 import re
 import subprocess
 import sys
-import time
 from collections import defaultdict
 from pathlib import Path
 
@@ -47,6 +46,9 @@ sys.path.insert(0, str(REPO / "design"))
 import gen_array as G  # noqa: E402
 import make_bench as B  # noqa: E402
 
+sys.path.insert(0, str(REPO / "sim"))
+from harness import klt as K  # noqa: E402
+
 # Grading thresholds. Bench acceptance criteria of THIS record, not spec numbers.
 ETA_MIN = 0.80          # selected-cell access-path current / ideal (V_BL / R_FIL)
 RETURN_MIN = 0.95       # |I(PLG)| / |I(BLG)| for the selected cell's band
@@ -56,8 +58,6 @@ ISO_MAX = 1e-3          # unselected-cell / bus current relative to ideal
 R_FIL = B.R_FIL
 
 
-MAX_SUBMITS = 40
-RETRY_WAIT_S = 45
 
 
 def git(*a):
@@ -190,33 +190,7 @@ def region_tables(sl: str, per: list[dict]):
 
 
 def run_klt(sl: str, proc: str, backend: str | None, outdir: Path, request: Path | None = None) -> dict:
-    cmd = ["klt", "sim", str(request or B.TB_DIR / f"{sl}_{proc}.request.json"), "--format", "json", "-o", str(outdir)]
-    if backend:
-        cmd += ["--backend", backend]
-    for attempt in range(1, MAX_SUBMITS + 1):
-        print(f"running (submit {attempt}/{MAX_SUBMITS}):", " ".join(cmd), flush=True)
-        p = subprocess.run(cmd, capture_output=True, text=True)
-        blob = p.stdout + p.stderr
-        # The fleet is shared: a concurrency-cap or no-capacity refusal is transient
-        # and is retried as the SAME batch request after a pause. Nothing else is
-        # retried, and a local run is never substituted.
-        if ("BATCH_MAX_CONCURRENT_INSTANCES" in blob or "batch_no_capacity" in blob) and attempt < MAX_SUBMITS:
-            print(f"  fleet refusal ({'concurrency cap' if 'MAX_CONCURRENT' in blob else 'no capacity'}); "
-                  f"waiting {RETRY_WAIT_S}s", flush=True)
-            time.sleep(RETRY_WAIT_S)
-            continue
-        break
-    try:
-        rep = json.loads(p.stdout)
-    except json.JSONDecodeError:
-        print(f"ERROR: klt sim produced no JSON (exit {p.returncode}).\n--- stderr ---\n{p.stderr}\n--- stdout ---\n{p.stdout[:2000]}",
-              file=sys.stderr)
-        raise SystemExit(1)
-    if "error" in rep:
-        print(f"ERROR: klt sim reported an error (exit {p.returncode}); NOT falling back to a local run:\n"
-              f"{json.dumps(rep['error'], indent=2)}", file=sys.stderr)
-        raise SystemExit(1)
-    return rep
+    return K.run_klt_or_exit(request or B.TB_DIR / f"{sl}_{proc}.request.json", outdir, backend, retry=K.FIXED_WAIT)
 
 
 def merge_reports(reps: list[dict]) -> dict:

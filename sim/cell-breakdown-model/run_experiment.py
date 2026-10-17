@@ -54,10 +54,8 @@ import hashlib
 import importlib.util
 import json
 import math
-import random
 import re
 import shutil
-import subprocess
 import sys
 import time
 from dataclasses import dataclass, field
@@ -72,6 +70,7 @@ CHAR_DIR = SIM_DIR / "cell-device-characterization"
 
 sys.path.insert(0, str(SIM_DIR))
 from harness import corners as C  # noqa: E402
+from harness import klt as K  # noqa: E402
 from harness import pdk as P  # noqa: E402
 from harness import report as R  # noqa: E402
 
@@ -102,8 +101,6 @@ BATCH_OPTS = {"runner_version_check": "warn", "capacity_wait_s": 1800}
 # The fleet's shared concurrency cap refuses a launch outright (klt does not
 # retry it, unlike a Spot capacity refusal). Wait and resubmit the SAME
 # request, bounded -- never fall back to a local run.
-CAP_REFUSAL = "BATCH_MAX_CONCURRENT_INSTANCES"
-CAP_RETRY_BUDGET_S, CAP_RETRY_BASE_S, CAP_RETRY_MAX_S = 5400, 60, 600
 # The executing host's gf180mcuD variant directory, needed for the one model
 # library Candidate 2 loads from the body (README "Two model libraries").
 # Observed in fleet-generated corner decks: `.lib /opt/pdk/gf180mcuD/...`.
@@ -733,27 +730,7 @@ KLT_CMD = ["klt"]
 
 
 def run_klt(req_path: Path, outdir: Path, backend: str | None) -> tuple[dict | None, str]:
-    # --outdir must be ABSOLUTE: klt runs ngspice with cwd set to the corner
-    # directory but passes it deck/log paths relative to the invocation
-    # directory, so a relative --outdir makes every corner fail to start
-    # (2AMLogic/klayout-tools#2892).
-    cmd = KLT_CMD + ["sim", str(req_path.resolve()), "-o", str(outdir.resolve()), "--format", "json"]
-    if backend:
-        cmd += ["--backend", backend]
-    t0, delay, attempt = time.time(), CAP_RETRY_BASE_S, 0
-    while True:
-        attempt += 1
-        proc = subprocess.run(cmd, capture_output=True, text=True)
-        try:
-            return json.loads(proc.stdout), proc.stderr
-        except json.JSONDecodeError:
-            err = f"exit {proc.returncode} (attempt {attempt})\nstdout:\n{proc.stdout[-4000:]}\nstderr:\n{proc.stderr[-4000:]}"
-        if CAP_REFUSAL not in proc.stderr or time.time() - t0 + delay > CAP_RETRY_BUDGET_S:
-            return None, err
-        wait = delay * (0.5 + random.random() / 2)
-        print(f"      fleet at its concurrency cap; retrying in {wait:.0f}s (attempt {attempt})", flush=True)
-        time.sleep(wait)
-        delay = min(delay * 2, CAP_RETRY_MAX_S)
+    return K.run_klt(req_path, outdir, backend, klt_cmd=KLT_CMD, retry=K.BACKOFF)
 
 
 def corner_key(bench: str, corner: dict, cand, params: dict) -> str:

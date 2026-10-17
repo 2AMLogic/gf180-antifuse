@@ -146,29 +146,6 @@ def body_yield(pdk, cand, defaults, body_dir: Path, lib_root: str, sizing: str, 
     return "\n".join(out) + "\n", ms
 
 
-def make_request(cand, pdk, ms: list[dict], tw: float, fracs: list[float], n: int,
-                 corners_proc: list[str], temps: list[float], seed: int) -> dict:
-    two_lib = "smbb000149" in cand.extra_mos_libs
-    del two_lib  # the capacitor corner is swept via sm141064 in every case (as the trigger bench)
-    vbd = vbd_ref(cand, PARAMS)
-    return {
-        "netlist": "body.spice",
-        "engine": "ngspice",
-        "backend": BM.KLT_BACKEND,
-        "batch": dict(BM.BATCH_OPTS),
-        "measurements": ms,
-        "options": {"timeout_s": 300, "keep_artifacts": True},
-        "models": {"pdk": pdk.variant, "lib": "libs.tech/ngspice/sm141064.ngspice"},
-        "corners": {
-            "process": [{"name": mc, "sections": ["typical", mc]} for mc in corners_proc],
-            "temperature_c": temps,
-            "supply_v": {"vamp": [round(SIGN[cand.polarity] * f * vbd, 6) for f in fracs]},
-        },
-        "analysis": {"kind": "tran", "args": f"{fmt(TSTEP)} {fmt(tstop(tw))} uic"},
-        "monte_carlo": {"n": n, "seed": seed, "vary": MC_VARY},
-    }
-
-
 PARAMS: dict = {}
 SUPERSEDES: list = [None]
 KLT_CMD = BM.KLT_CMD
