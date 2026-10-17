@@ -63,6 +63,8 @@ Issues carrying `loom:curated`.
 - **#75**: design: Candidate 3 read bias -- placeholder WL=0 V cannot read a programmed cell (I_prog_min undefined) *(curated)*
 - **#90**: design: program-leg access-device overstress at assumed V_bd; Candidate 2 not programmable via BL-driven leg *(curated)*
 - **#99**: Re-qualify reference sim records under open_pdks f6eeac7 as new records *(curated)*
+- **#117**: T1 items 1 and 9 (analog partition): attest the cell sources and testbenches with klt signoff --attest *(curated)*
+- **#119**: T1 item 11 (analog): klt erc supply spec from the supply-domain decision record, then cite ERC with item 4's LVS *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -83,7 +85,7 @@ _None._
 | In Progress (`loom:building`) | 1 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 5 |
-| Curated | 7 |
+| Curated | 9 |
 | Architect / Hermit proposals | 0 |
 | Active epics | 1 |
 

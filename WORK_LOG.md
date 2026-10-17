@@ -5,6 +5,8 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-10-17
 
+- **PR #116**: refactor(sim): share number-parsing, formatting and git helpers in sim/harness
+- **Issue #114** (closed): Consolidate duplicated SPICE-number and record-format helpers into sim/harness
 - **PR #113**: refactor(design): share xschem emitter between array and leg generators
 - **PR #112**: refactor(sim): share one klt sim submit helper across run scripts
 - **Issue #111** (closed): Consolidate four divergent run_klt wrappers in sim/ scripts into sim/harness
