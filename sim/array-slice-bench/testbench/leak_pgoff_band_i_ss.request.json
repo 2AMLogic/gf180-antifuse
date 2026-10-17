@@ -1,0 +1,183 @@
+{
+  "netlist": "tb_leak_pgoff_band_i_ss.spice",
+  "engine": "ngspice",
+  "models": {
+    "pdk": "gf180mcuD",
+    "lib": "libs.tech/ngspice/sm141064.ngspice"
+  },
+  "corners": {
+    "process": [
+      {
+        "name": "ss",
+        "sections": [
+          "ss",
+          "moscap_ss"
+        ]
+      }
+    ],
+    "supply_v": {
+      "vddl": [
+        2.97,
+        3.3,
+        3.63,
+        2.97,
+        3.3,
+        3.63,
+        2.97,
+        3.3,
+        3.63,
+        2.97,
+        3.3,
+        3.63,
+        2.97,
+        3.3,
+        3.63,
+        2.97,
+        3.3,
+        3.63,
+        2.97,
+        3.3,
+        3.63,
+        2.97,
+        3.3,
+        3.63,
+        2.97,
+        3.3,
+        3.63
+      ],
+      "vddh_i": [
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5
+      ],
+      "vbl_i": [
+        0.585,
+        0.585,
+        0.585,
+        0.65,
+        0.65,
+        0.65,
+        0.715,
+        0.715,
+        0.715,
+        0.63,
+        0.63,
+        0.63,
+        0.7,
+        0.7,
+        0.7,
+        0.77,
+        0.77,
+        0.77,
+        3.582,
+        3.582,
+        3.582,
+        3.98,
+        3.98,
+        3.98,
+        4.378,
+        4.378,
+        4.378
+      ]
+    },
+    "temperature_c": [
+      -40,
+      27,
+      125
+    ]
+  },
+  "analysis": {
+    "kind": "dc",
+    "args": "vdum 0 1 1"
+  },
+  "measurements": [
+    {
+      "name": "ibus",
+      "spice": ".meas dc ibus FIND i(vbl_I) AT=0",
+      "unit": "A"
+    },
+    {
+      "name": "icl_0",
+      "spice": ".meas dc icl_0 FIND i(vcl_0) AT=0",
+      "unit": "A"
+    },
+    {
+      "name": "icl_1",
+      "spice": ".meas dc icl_1 FIND i(vcl_1) AT=0",
+      "unit": "A"
+    },
+    {
+      "name": "icl_2",
+      "spice": ".meas dc icl_2 FIND i(vcl_2) AT=0",
+      "unit": "A"
+    },
+    {
+      "name": "icl_3",
+      "spice": ".meas dc icl_3 FIND i(vcl_3) AT=0",
+      "unit": "A"
+    },
+    {
+      "name": "icl_4",
+      "spice": ".meas dc icl_4 FIND i(vcl_4) AT=0",
+      "unit": "A"
+    },
+    {
+      "name": "icl_5",
+      "spice": ".meas dc icl_5 FIND i(vcl_5) AT=0",
+      "unit": "A"
+    },
+    {
+      "name": "icl_6",
+      "spice": ".meas dc icl_6 FIND i(vcl_6) AT=0",
+      "unit": "A"
+    },
+    {
+      "name": "icl_7",
+      "spice": ".meas dc icl_7 FIND i(vcl_7) AT=0",
+      "unit": "A"
+    },
+    {
+      "name": "icl_8",
+      "spice": ".meas dc icl_8 FIND i(vcl_8) AT=0",
+      "unit": "A"
+    },
+    {
+      "name": "icl_9",
+      "spice": ".meas dc icl_9 FIND i(vcl_9) AT=0",
+      "unit": "A"
+    },
+    {
+      "name": "icl_10",
+      "spice": ".meas dc icl_10 FIND i(vcl_10) AT=0",
+      "unit": "A"
+    }
+  ],
+  "options": {
+    "timeout_s": 600,
+    "keep_artifacts": false
+  }
+}

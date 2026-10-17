@@ -1,0 +1,151 @@
+{
+  "netlist": "tb_leak_nat_band_iii_fs.spice",
+  "engine": "ngspice",
+  "models": {
+    "pdk": "gf180mcuD",
+    "lib": "libs.tech/ngspice/sm141064.ngspice"
+  },
+  "corners": {
+    "process": [
+      {
+        "name": "fs",
+        "sections": [
+          "fs",
+          "moscap_typical"
+        ]
+      }
+    ],
+    "supply_v": {
+      "vddl": [
+        2.97,
+        3.3,
+        3.63,
+        2.97,
+        3.3,
+        3.63,
+        2.97,
+        3.3,
+        3.63,
+        2.97,
+        3.3,
+        3.63,
+        2.97,
+        3.3,
+        3.63,
+        2.97,
+        3.3,
+        3.63
+      ],
+      "vddh_iii": [
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5
+      ],
+      "vbl_iii": [
+        0.954,
+        0.954,
+        0.954,
+        1.06,
+        1.06,
+        1.06,
+        1.166,
+        1.166,
+        1.166,
+        3.393,
+        3.393,
+        3.393,
+        3.77,
+        3.77,
+        3.77,
+        4.147,
+        4.147,
+        4.147
+      ]
+    },
+    "temperature_c": [
+      -40,
+      27,
+      125
+    ]
+  },
+  "analysis": {
+    "kind": "dc",
+    "args": "vdum 0 1 1"
+  },
+  "measurements": [
+    {
+      "name": "ibus",
+      "spice": ".meas dc ibus FIND i(vbl_III) AT=0",
+      "unit": "A"
+    },
+    {
+      "name": "nv_bl_22",
+      "spice": ".meas dc nv_bl_22 FIND v(x_dut.bl_22) AT=0",
+      "unit": "V"
+    },
+    {
+      "name": "nv_bl_23",
+      "spice": ".meas dc nv_bl_23 FIND v(x_dut.bl_23) AT=0",
+      "unit": "V"
+    },
+    {
+      "name": "nv_bl_24",
+      "spice": ".meas dc nv_bl_24 FIND v(x_dut.bl_24) AT=0",
+      "unit": "V"
+    },
+    {
+      "name": "nv_bl_25",
+      "spice": ".meas dc nv_bl_25 FIND v(x_dut.bl_25) AT=0",
+      "unit": "V"
+    },
+    {
+      "name": "nv_bl_26",
+      "spice": ".meas dc nv_bl_26 FIND v(x_dut.bl_26) AT=0",
+      "unit": "V"
+    },
+    {
+      "name": "nv_bl_27",
+      "spice": ".meas dc nv_bl_27 FIND v(x_dut.bl_27) AT=0",
+      "unit": "V"
+    },
+    {
+      "name": "nv_bl_28",
+      "spice": ".meas dc nv_bl_28 FIND v(x_dut.bl_28) AT=0",
+      "unit": "V"
+    },
+    {
+      "name": "nv_bl_29",
+      "spice": ".meas dc nv_bl_29 FIND v(x_dut.bl_29) AT=0",
+      "unit": "V"
+    },
+    {
+      "name": "nv_bl_30",
+      "spice": ".meas dc nv_bl_30 FIND v(x_dut.bl_30) AT=0",
+      "unit": "V"
+    },
+    {
+      "name": "nv_bl_31",
+      "spice": ".meas dc nv_bl_31 FIND v(x_dut.bl_31) AT=0",
+      "unit": "V"
+    }
+  ],
+  "options": {
+    "timeout_s": 600,
+    "keep_artifacts": false
+  }
+}

@@ -1,0 +1,37 @@
+v {xschem version=3.4.7 file_version=1.2
+
+* gf180-antifuse: symbol for the program leg.
+}
+G {}
+K {type=subcircuit
+format="@name @pinlist @symname rb_w=@rb_w rb_l=@rb_l wsw=@wsw lsw=@lsw wlsp=@wlsp llsp=@llsp wlsn=@wlsn llsn=@llsn lg=@lg wnl=@wnl wpl=@wpl m=@m"
+template="name=x1 rb_w=2u rb_l=7.5u wsw=20u lsw=0.7u wlsp=0.5u llsp=0.7u wlsn=2u llsn=0.7u lg=0.28u wnl=1u wpl=2u m=1"
+}
+V {}
+S {}
+E {}
+L 4 -60 -150 60 -150 {}
+L 4 -60 150 60 150 {}
+L 4 -60 -150 -60 150 {}
+L 4 60 -150 60 150 {}
+L 4 -80 -120 -60 -120 {}
+B 5 -82.5 -122.5 -77.5 -117.5 {name=PROG_EN dir=in}
+T {PROG_EN} -55 -125 0 0 0.2 0.2 {}
+L 4 -80 -90 -60 -90 {}
+B 5 -82.5 -92.5 -77.5 -87.5 {name=READ_EN dir=in}
+T {READ_EN} -55 -95 0 0 0.2 0.2 {}
+L 4 -80 -60 -60 -60 {}
+B 5 -82.5 -62.5 -77.5 -57.5 {name=VDD dir=inout}
+T {VDD} -55 -65 0 0 0.2 0.2 {}
+L 4 -80 -30 -60 -30 {}
+B 5 -82.5 -32.5 -77.5 -27.5 {name=VSS dir=inout}
+T {VSS} -55 -35 0 0 0.2 0.2 {}
+L 4 60 -120 80 -120 {}
+B 5 77.5 -122.5 82.5 -117.5 {name=BL dir=inout}
+T {BL} 55 -125 0 1 0.2 0.2 {}
+L 4 60 -90 80 -90 {}
+B 5 77.5 -92.5 82.5 -87.5 {name=VPP dir=inout}
+T {VPP} 55 -95 0 1 0.2 0.2 {}
+T {@symname} -52 -5 0 0 0.3 0.3 {}
+T {@name} -60 -165 0 0 0.25 0.25 {}
+T {ballast + switch to VPP} -60 160 0 0 0.2 0.2 {}

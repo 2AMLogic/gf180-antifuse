@@ -1,0 +1,84 @@
+* gf180-antifuse: behavioral gate-oxide breakdown element (issue #62).
+*
+* ngspice-native (B-sources + one capacitor), no Verilog-A / OSDI. Placed in
+* PARALLEL with a cell's stock MOS-capacitor (between its gate plate and its
+* body plate) by the wrappers in cell_candidates_bd.spice -- it never
+* replaces or edits the stock cap_* model, which keeps supplying the
+* pre-breakdown C-V exactly as before.
+*
+* Every physical number this element uses is a subcircuit parameter that the
+* wrappers fill in from breakdown_params.spice, where each value carries a
+* provenance label (assumed / literature / measured). The defaults on the
+* .subckt line below are mode switches and median quantiles only:
+*   en=0     element disabled (default OFF: an instance that forgets to opt in
+*            contributes exactly zero current)
+*   prog=0   not forced programmed
+*   dyn=0    damage integrator idle (static/op benches)
+*   ubd=0.5  median of the per-instance breakdown-time distribution
+*   zrf=0    median of the per-instance filament-resistance distribution
+* and the physical defaults point at the global Candidate-1 / shared names in
+* breakdown_params.spice (so this file has no numeric physics of its own).
+*
+* Terminals: a = gate plate (the cell's internal node CN), b = body plate (PL).
+*
+* ---------------------------------------------------------------------------
+* Model (full derivation and limits: design/breakdown/README.md)
+* ---------------------------------------------------------------------------
+*  Oxide field        E(t)   = |V(a,b)| / tox          (flat-band / surface
+*                                                         potential ignored)
+*  Median time-to-BD  t50(E) = tref * exp(-gam * (E - ebd))      (E-model)
+*  Instance quantile  tq     = (ln(1/(1-ubd)) / ln 2)^(1/beta)    (Weibull,
+*                              equals 1 at ubd = 0.5)
+*  Damage (Miner)     dD/dt  = dyn * en * ( 1/(tq * t50(E)) + sd/tcomp )
+*                                                                  D(0) = 0
+*  Dynamic state      sd     = smoothstep((D - 1) / dw)       (0 for D <= 1)
+*  Breakdown state    s      = max(prog, sd)
+*  Filament current   I(a->b)= en * s * V(a,b) / rf,  rf = rfmed*exp(rfsig*zrf)
+*
+* Breakdown initiates when the accumulated damage D reaches 1 (Miner's rule
+* over the E-model time-to-breakdown); the sd/tcomp term then completes the
+* event in ~tcomp regardless of how far the forming filament has pulled the
+* oxide voltage down. D only ever increases (dD/dt >= 0), so once s reaches 1
+* it stays at 1 for the rest of a transient: the breakdown event is latched
+* without a hysteretic switch. ubd is the per-instance stochastic breakdown-threshold
+* parameter (it shifts the instance's breakdown field by ln(tq)/gam) and zrf
+* the per-instance filament-resistance draw -- a Monte Carlo deck draws them
+* per instance, e.g. ubd={aunif(0.5,0.4999)} zrf={agauss(0,1,1)}.
+*
+* dyn=1 is for TRANSIENT analyses only. In an .op the integrator capacitor is
+* open and D would settle to rate*rdleak, which is not a damage integral;
+* static benches use dyn=0 with prog=0 (unprogrammed) or prog=1 (programmed).
+* With en=0 every B-source evaluates to exactly 0 A with zero derivative, so
+* the stock cell's solution is unchanged (the regression in
+* sim/cell-breakdown-model/ checks this).
+
+.subckt af_breakdown a b
++ en=0 prog=0 dyn=0 ubd=0.5 zrf=0
++ tox=c1_bd_tox ebd=bd_ebd tref=bd_tref gam=bd_gam beta=bd_beta
++ rfmed=bd_rf_med rfsig=bd_rf_sig tcomp=bd_tcomp
++ dw=bd_num_dw cdmg=bd_num_cdmg rdleak=bd_num_rdleak xmax=bd_num_xmax
+.param tq = 'pow(ln(1/(1-ubd))/ln(2), 1/beta)'
+.param rf = 'rfmed*exp(rfsig*zrf)'
+* damage integrator: current dD/dt into a 1 F capacitor, so V(dmg) = D.
+* Two terms: the field-driven E-model rate, and a completion term that is
+* nonzero only once the event has initiated (D > 1, so sd > 0). Without the
+* second term a partly-formed filament collapses V(a,b), the E-model rate
+* collapses with it, and D stalls just above 1 with the state half-on -- a
+* numerical artefact, not hard breakdown, which runs away once initiated.
+Bdmg 0 dmg I = 'dyn*en*(exp(min(gam*(abs(v(a,b))/tox - ebd), xmax))/(tq*tref) + v(sd)/tcomp)'
+Cdmg dmg 0 {cdmg}
+Rdmg dmg 0 {rdleak}
+* dynamic breakdown state: smoothstep of D over [1, 1+dw]
+Bsd sd 0 V = 'pow(min(max((v(dmg)-1)/dw, 0), 1), 2)*(3-2*min(max((v(dmg)-1)/dw, 0), 1))'
+* latched breakdown state, 0 (intact) .. 1 (broken down), exposed as V(st)
+Bst st 0 V = 'max(prog, v(sd))'
+* post-breakdown filament: ohmic, gated by the state
+Bfil a b I = 'en*v(st)*v(a,b)/rf'
+* observability probes (issue #66): this instance's own per-instance draws as node
+* voltages, V(ubdn) = ubd and V(zrfn) = zrf. ngspice re-evaluates a random .param
+* (aunif/agauss) at EACH reference, so a deck cannot read back "the value the instance
+* used" from its own copy of the .param; the instance has to report it. Output-only: both
+* are voltage sources to ground that nothing reads, so the cell's equations are unchanged.
+Bubdn ubdn 0 V = 'ubd'
+Bzrfn zrfn 0 V = 'zrf'
+.ends af_breakdown

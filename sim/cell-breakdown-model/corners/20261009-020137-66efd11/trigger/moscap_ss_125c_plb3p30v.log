@@ -1,0 +1,63 @@
+
+Note: No compatibility mode selected!
+
+
+Circuit: * klt sim -- generated corner deck, do not edit
+
+Doing analysis at TEMP = 125.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+
+Initial Transient Solution
+--------------------------
+
+Node                                   Voltage
+----                                   -------
+bl                                           0
+wl                                         3.3
+vb                                           0
+sh                                           0
+ampa                                         0
+pla                                          0
+xa.xc.cn                           1.26037e-17
+xa.xc.xc1.c_moscap_int1           -1.26037e-17
+xa.xbd.dmg                         1.08064e-09
+xa.xbd.sd                                    0
+xa.xbd.st                                    0
+ampb                                       3.3
+plb                                          0
+xb.xc.cn                           1.26037e-17
+xb.xc.xc1.c_moscap_int1           -1.26037e-17
+xb.xbd.dmg                         1.81737e-08
+xb.xbd.sd                                    0
+xb.xbd.st                                    0
+b.xb.xbd.bst#branch                          0
+b.xb.xbd.bsd#branch                          0
+e.xb.xc.xc1.ec_moscap#branch                 0
+bplb#branch                                  0
+b.xa.xbd.bst#branch                          0
+b.xa.xbd.bsd#branch                          0
+e.xa.xc.xc1.ec_moscap#branch                 0
+bpla#branch                        2.92358e-60
+bsh#branch                                   0
+vampb#branch                                 0
+vampa#branch                                 0
+vvb#branch                         2.01661e-26
+vwl#branch                                   0
+vbl#branch                        -2.02375e-26
+
+
+No. of Data Rows : 2013
+
+  Measurements for Transient Analysis
+
+st_a                =  0.00000e+00
+dmg_a               =  1.08064e-09
+vcn_a               =  3.19399e-19
+vpl_a               =  0.00000e+00
+st_b                =  0.00000e+00
+dmg_b               =  1.81737e-08
+vcn_b               =  -2.16471e-07
+vpl_b               =  3.30000e+00
+
+ngspice-46 done

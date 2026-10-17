@@ -78,8 +78,8 @@ sim/
 ## Summary record format
 
 Each record carries these fields (a subset of `gf180-bandgap`'s nine —
-**Statistical convention** is dropped here since no experiment in this repo
-yet makes a Monte Carlo/distribution claim; add it back the day one does):
+**Statistical convention** applies only to records that make a Monte Carlo/
+distribution claim, and is omitted from the others):
 
 - **Record ID** — matches the filename.
 - **Claim** — the ratified spec line/section this record substantiates
@@ -87,6 +87,14 @@ yet makes a Monte Carlo/distribution claim; add it back the day one does):
 - **Netlist provenance** — `schematic` (`design/...`) or `extracted`
   (post-layout, `layout/...`), plus whether the working tree was clean at
   run time.
+- **Statistical convention** (records that make a Monte Carlo claim; first
+  used by `sim/programming-yield/`, issue #66) — the sampler (`klt sim`
+  `monte_carlo` `n`, `seed`, `vary`; the per-process seed rule, if any), the
+  success criterion, the confidence-interval method (95 % Wilson), how
+  non-converged or half-formed samples are counted (never silently as a
+  pass: a lower and an upper yield are both given), and a banner when the
+  model parameters are `assumed`. Records without a distribution claim omit
+  it.
 - **Corner matrix run** — the explicit PVT grid actually executed, and any
   sub-configuration axes (e.g. this repo's access-sizing / capacitor-
   geometry levels) layered on top of it. Must be the full CLAUDE.md matrix
@@ -118,6 +126,13 @@ contract" — the experiment still owns its own runner and record). One
 `records/<record-id>.md` is written per experiment run (here: per candidate/
 region), summarizing every sub-configuration and corner it covers, not one
 record per sub-configuration.
+
+## Experiments that run through `klt sim`
+
+`sim/array-slice-bench/` expresses its PVT grid as a `klt sim` request (so it
+goes to the batch fleet on the dispatch workers) instead of the stdlib
+`harness/` runner above, and is not wired into `run_corners.py`. It still keeps
+this directory's record / append-only conventions; see its README.
 
 ## Append-only rule
 
@@ -154,3 +169,9 @@ documented invocation, not re-implementing per-experiment logic.
 See [`sim/cell-device-characterization/README.md`](cell-device-characterization/README.md)
 for that experiment's methodology, the two PDK/ngspice findings that shaped
 its testbench design, and how to read its records.
+
+## Derived reports
+
+`sim/characterization-report/` holds a deterministic, hash-pinned generator that
+summarizes selected committed records per region and sub-configuration without
+editing them (see its README). Its bundles are append-only like records.

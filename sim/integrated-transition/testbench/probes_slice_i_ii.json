@@ -1,0 +1,2810 @@
+{
+ "st0gs": {
+  "device": "x_dut.xc_0_9.xm1",
+  "model": "nfet_06v0",
+  "pair": "gs",
+  "a": "x_dut.wl_0_i",
+  "b": "x_dut.xc_0_9.cn",
+  "region": "I",
+  "role": "cell"
+ },
+ "st0gd": {
+  "device": "x_dut.xc_0_9.xm1",
+  "model": "nfet_06v0",
+  "pair": "gd",
+  "a": "x_dut.wl_0_i",
+  "b": "x_dut.bl_9",
+  "region": "I",
+  "role": "cell"
+ },
+ "st0ds": {
+  "device": "x_dut.xc_0_9.xm1",
+  "model": "nfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.bl_9",
+  "b": "x_dut.xc_0_9.cn",
+  "region": "I",
+  "role": "cell"
+ },
+ "st1t12": {
+  "device": "x_dut.xc_0_9.xc1",
+  "model": "cap_nmos_03v3",
+  "pair": "t12",
+  "a": "x_dut.xc_0_9.cn",
+  "b": "x_dut.pl_0_i",
+  "region": "I",
+  "role": "cell"
+ },
+ "st2gs": {
+  "device": "x_dut.xc_0_10.xm1",
+  "model": "nfet_06v0",
+  "pair": "gs",
+  "a": "x_dut.wl_0_i",
+  "b": "x_dut.xc_0_10.cn",
+  "region": "I",
+  "role": "cell"
+ },
+ "st2gd": {
+  "device": "x_dut.xc_0_10.xm1",
+  "model": "nfet_06v0",
+  "pair": "gd",
+  "a": "x_dut.wl_0_i",
+  "b": "x_dut.bl_10",
+  "region": "I",
+  "role": "cell"
+ },
+ "st2ds": {
+  "device": "x_dut.xc_0_10.xm1",
+  "model": "nfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.bl_10",
+  "b": "x_dut.xc_0_10.cn",
+  "region": "I",
+  "role": "cell"
+ },
+ "st3t12": {
+  "device": "x_dut.xc_0_10.xc1",
+  "model": "cap_nmos_03v3",
+  "pair": "t12",
+  "a": "x_dut.xc_0_10.cn",
+  "b": "x_dut.pl_0_i",
+  "region": "I",
+  "role": "cell"
+ },
+ "st4gs": {
+  "device": "x_dut.xc_0_11.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "gs",
+  "a": "x_dut.wl_0_ii",
+  "b": "x_dut.xc_0_11.cn",
+  "region": "II",
+  "role": "cell"
+ },
+ "st4gd": {
+  "device": "x_dut.xc_0_11.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "gd",
+  "a": "x_dut.wl_0_ii",
+  "b": "x_dut.bl_11",
+  "region": "II",
+  "role": "cell"
+ },
+ "st4ds": {
+  "device": "x_dut.xc_0_11.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.bl_11",
+  "b": "x_dut.xc_0_11.cn",
+  "region": "II",
+  "role": "cell"
+ },
+ "st5t12": {
+  "device": "x_dut.xc_0_11.xc1",
+  "model": "cap_nmos_06v0",
+  "pair": "t12",
+  "a": "x_dut.xc_0_11.cn",
+  "b": "x_dut.pl_0_ii",
+  "region": "II",
+  "role": "cell"
+ },
+ "st6gs": {
+  "device": "x_dut.xc_0_12.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "gs",
+  "a": "x_dut.wl_0_ii",
+  "b": "x_dut.xc_0_12.cn",
+  "region": "II",
+  "role": "cell"
+ },
+ "st6gd": {
+  "device": "x_dut.xc_0_12.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "gd",
+  "a": "x_dut.wl_0_ii",
+  "b": "x_dut.bl_12",
+  "region": "II",
+  "role": "cell"
+ },
+ "st6ds": {
+  "device": "x_dut.xc_0_12.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.bl_12",
+  "b": "x_dut.xc_0_12.cn",
+  "region": "II",
+  "role": "cell"
+ },
+ "st7t12": {
+  "device": "x_dut.xc_0_12.xc1",
+  "model": "cap_nmos_06v0",
+  "pair": "t12",
+  "a": "x_dut.xc_0_12.cn",
+  "b": "x_dut.pl_0_ii",
+  "region": "II",
+  "role": "cell"
+ },
+ "st8gs": {
+  "device": "x_dut.xc_1_9.xm1",
+  "model": "nfet_06v0",
+  "pair": "gs",
+  "a": "x_dut.wl_1_i",
+  "b": "x_dut.xc_1_9.cn",
+  "region": "I",
+  "role": "cell"
+ },
+ "st8gd": {
+  "device": "x_dut.xc_1_9.xm1",
+  "model": "nfet_06v0",
+  "pair": "gd",
+  "a": "x_dut.wl_1_i",
+  "b": "x_dut.bl_9",
+  "region": "I",
+  "role": "cell"
+ },
+ "st8ds": {
+  "device": "x_dut.xc_1_9.xm1",
+  "model": "nfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.bl_9",
+  "b": "x_dut.xc_1_9.cn",
+  "region": "I",
+  "role": "cell"
+ },
+ "st9t12": {
+  "device": "x_dut.xc_1_9.xc1",
+  "model": "cap_nmos_03v3",
+  "pair": "t12",
+  "a": "x_dut.xc_1_9.cn",
+  "b": "x_dut.pl_1_i",
+  "region": "I",
+  "role": "cell"
+ },
+ "st10gs": {
+  "device": "x_dut.xc_1_10.xm1",
+  "model": "nfet_06v0",
+  "pair": "gs",
+  "a": "x_dut.wl_1_i",
+  "b": "x_dut.xc_1_10.cn",
+  "region": "I",
+  "role": "cell"
+ },
+ "st10gd": {
+  "device": "x_dut.xc_1_10.xm1",
+  "model": "nfet_06v0",
+  "pair": "gd",
+  "a": "x_dut.wl_1_i",
+  "b": "x_dut.bl_10",
+  "region": "I",
+  "role": "cell"
+ },
+ "st10ds": {
+  "device": "x_dut.xc_1_10.xm1",
+  "model": "nfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.bl_10",
+  "b": "x_dut.xc_1_10.cn",
+  "region": "I",
+  "role": "cell"
+ },
+ "st11t12": {
+  "device": "x_dut.xc_1_10.xc1",
+  "model": "cap_nmos_03v3",
+  "pair": "t12",
+  "a": "x_dut.xc_1_10.cn",
+  "b": "x_dut.pl_1_i",
+  "region": "I",
+  "role": "cell"
+ },
+ "st12gs": {
+  "device": "x_dut.xc_1_11.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "gs",
+  "a": "x_dut.wl_1_ii",
+  "b": "x_dut.xc_1_11.cn",
+  "region": "II",
+  "role": "cell"
+ },
+ "st12gd": {
+  "device": "x_dut.xc_1_11.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "gd",
+  "a": "x_dut.wl_1_ii",
+  "b": "x_dut.bl_11",
+  "region": "II",
+  "role": "cell"
+ },
+ "st12ds": {
+  "device": "x_dut.xc_1_11.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.bl_11",
+  "b": "x_dut.xc_1_11.cn",
+  "region": "II",
+  "role": "cell"
+ },
+ "st13t12": {
+  "device": "x_dut.xc_1_11.xc1",
+  "model": "cap_nmos_06v0",
+  "pair": "t12",
+  "a": "x_dut.xc_1_11.cn",
+  "b": "x_dut.pl_1_ii",
+  "region": "II",
+  "role": "cell"
+ },
+ "st14gs": {
+  "device": "x_dut.xc_1_12.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "gs",
+  "a": "x_dut.wl_1_ii",
+  "b": "x_dut.xc_1_12.cn",
+  "region": "II",
+  "role": "cell"
+ },
+ "st14gd": {
+  "device": "x_dut.xc_1_12.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "gd",
+  "a": "x_dut.wl_1_ii",
+  "b": "x_dut.bl_12",
+  "region": "II",
+  "role": "cell"
+ },
+ "st14ds": {
+  "device": "x_dut.xc_1_12.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.bl_12",
+  "b": "x_dut.xc_1_12.cn",
+  "region": "II",
+  "role": "cell"
+ },
+ "st15t12": {
+  "device": "x_dut.xc_1_12.xc1",
+  "model": "cap_nmos_06v0",
+  "pair": "t12",
+  "a": "x_dut.xc_1_12.cn",
+  "b": "x_dut.pl_1_ii",
+  "region": "II",
+  "role": "cell"
+ },
+ "st16gs": {
+  "device": "x_dut.xc_2_9.xm1",
+  "model": "nfet_06v0",
+  "pair": "gs",
+  "a": "x_dut.wl_2_i",
+  "b": "x_dut.xc_2_9.cn",
+  "region": "I",
+  "role": "cell"
+ },
+ "st16gd": {
+  "device": "x_dut.xc_2_9.xm1",
+  "model": "nfet_06v0",
+  "pair": "gd",
+  "a": "x_dut.wl_2_i",
+  "b": "x_dut.bl_9",
+  "region": "I",
+  "role": "cell"
+ },
+ "st16ds": {
+  "device": "x_dut.xc_2_9.xm1",
+  "model": "nfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.bl_9",
+  "b": "x_dut.xc_2_9.cn",
+  "region": "I",
+  "role": "cell"
+ },
+ "st17t12": {
+  "device": "x_dut.xc_2_9.xc1",
+  "model": "cap_nmos_03v3",
+  "pair": "t12",
+  "a": "x_dut.xc_2_9.cn",
+  "b": "x_dut.pl_2_i",
+  "region": "I",
+  "role": "cell"
+ },
+ "st18gs": {
+  "device": "x_dut.xc_2_10.xm1",
+  "model": "nfet_06v0",
+  "pair": "gs",
+  "a": "x_dut.wl_2_i",
+  "b": "x_dut.xc_2_10.cn",
+  "region": "I",
+  "role": "cell"
+ },
+ "st18gd": {
+  "device": "x_dut.xc_2_10.xm1",
+  "model": "nfet_06v0",
+  "pair": "gd",
+  "a": "x_dut.wl_2_i",
+  "b": "x_dut.bl_10",
+  "region": "I",
+  "role": "cell"
+ },
+ "st18ds": {
+  "device": "x_dut.xc_2_10.xm1",
+  "model": "nfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.bl_10",
+  "b": "x_dut.xc_2_10.cn",
+  "region": "I",
+  "role": "cell"
+ },
+ "st19t12": {
+  "device": "x_dut.xc_2_10.xc1",
+  "model": "cap_nmos_03v3",
+  "pair": "t12",
+  "a": "x_dut.xc_2_10.cn",
+  "b": "x_dut.pl_2_i",
+  "region": "I",
+  "role": "cell"
+ },
+ "st20gs": {
+  "device": "x_dut.xc_2_11.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "gs",
+  "a": "x_dut.wl_2_ii",
+  "b": "x_dut.xc_2_11.cn",
+  "region": "II",
+  "role": "cell"
+ },
+ "st20gd": {
+  "device": "x_dut.xc_2_11.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "gd",
+  "a": "x_dut.wl_2_ii",
+  "b": "x_dut.bl_11",
+  "region": "II",
+  "role": "cell"
+ },
+ "st20ds": {
+  "device": "x_dut.xc_2_11.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.bl_11",
+  "b": "x_dut.xc_2_11.cn",
+  "region": "II",
+  "role": "cell"
+ },
+ "st21t12": {
+  "device": "x_dut.xc_2_11.xc1",
+  "model": "cap_nmos_06v0",
+  "pair": "t12",
+  "a": "x_dut.xc_2_11.cn",
+  "b": "x_dut.pl_2_ii",
+  "region": "II",
+  "role": "cell"
+ },
+ "st22gs": {
+  "device": "x_dut.xc_2_12.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "gs",
+  "a": "x_dut.wl_2_ii",
+  "b": "x_dut.xc_2_12.cn",
+  "region": "II",
+  "role": "cell"
+ },
+ "st22gd": {
+  "device": "x_dut.xc_2_12.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "gd",
+  "a": "x_dut.wl_2_ii",
+  "b": "x_dut.bl_12",
+  "region": "II",
+  "role": "cell"
+ },
+ "st22ds": {
+  "device": "x_dut.xc_2_12.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.bl_12",
+  "b": "x_dut.xc_2_12.cn",
+  "region": "II",
+  "role": "cell"
+ },
+ "st23t12": {
+  "device": "x_dut.xc_2_12.xc1",
+  "model": "cap_nmos_06v0",
+  "pair": "t12",
+  "a": "x_dut.xc_2_12.cn",
+  "b": "x_dut.pl_2_ii",
+  "region": "II",
+  "role": "cell"
+ },
+ "st24gs": {
+  "device": "x_dut.xc_3_9.xm1",
+  "model": "nfet_06v0",
+  "pair": "gs",
+  "a": "x_dut.wl_3_i",
+  "b": "x_dut.xc_3_9.cn",
+  "region": "I",
+  "role": "cell"
+ },
+ "st24gd": {
+  "device": "x_dut.xc_3_9.xm1",
+  "model": "nfet_06v0",
+  "pair": "gd",
+  "a": "x_dut.wl_3_i",
+  "b": "x_dut.bl_9",
+  "region": "I",
+  "role": "cell"
+ },
+ "st24ds": {
+  "device": "x_dut.xc_3_9.xm1",
+  "model": "nfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.bl_9",
+  "b": "x_dut.xc_3_9.cn",
+  "region": "I",
+  "role": "cell"
+ },
+ "st25t12": {
+  "device": "x_dut.xc_3_9.xc1",
+  "model": "cap_nmos_03v3",
+  "pair": "t12",
+  "a": "x_dut.xc_3_9.cn",
+  "b": "x_dut.pl_3_i",
+  "region": "I",
+  "role": "cell"
+ },
+ "st26gs": {
+  "device": "x_dut.xc_3_10.xm1",
+  "model": "nfet_06v0",
+  "pair": "gs",
+  "a": "x_dut.wl_3_i",
+  "b": "x_dut.xc_3_10.cn",
+  "region": "I",
+  "role": "cell"
+ },
+ "st26gd": {
+  "device": "x_dut.xc_3_10.xm1",
+  "model": "nfet_06v0",
+  "pair": "gd",
+  "a": "x_dut.wl_3_i",
+  "b": "x_dut.bl_10",
+  "region": "I",
+  "role": "cell"
+ },
+ "st26ds": {
+  "device": "x_dut.xc_3_10.xm1",
+  "model": "nfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.bl_10",
+  "b": "x_dut.xc_3_10.cn",
+  "region": "I",
+  "role": "cell"
+ },
+ "st27t12": {
+  "device": "x_dut.xc_3_10.xc1",
+  "model": "cap_nmos_03v3",
+  "pair": "t12",
+  "a": "x_dut.xc_3_10.cn",
+  "b": "x_dut.pl_3_i",
+  "region": "I",
+  "role": "cell"
+ },
+ "st28gs": {
+  "device": "x_dut.xc_3_11.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "gs",
+  "a": "x_dut.wl_3_ii",
+  "b": "x_dut.xc_3_11.cn",
+  "region": "II",
+  "role": "cell"
+ },
+ "st28gd": {
+  "device": "x_dut.xc_3_11.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "gd",
+  "a": "x_dut.wl_3_ii",
+  "b": "x_dut.bl_11",
+  "region": "II",
+  "role": "cell"
+ },
+ "st28ds": {
+  "device": "x_dut.xc_3_11.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.bl_11",
+  "b": "x_dut.xc_3_11.cn",
+  "region": "II",
+  "role": "cell"
+ },
+ "st29t12": {
+  "device": "x_dut.xc_3_11.xc1",
+  "model": "cap_nmos_06v0",
+  "pair": "t12",
+  "a": "x_dut.xc_3_11.cn",
+  "b": "x_dut.pl_3_ii",
+  "region": "II",
+  "role": "cell"
+ },
+ "st30gs": {
+  "device": "x_dut.xc_3_12.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "gs",
+  "a": "x_dut.wl_3_ii",
+  "b": "x_dut.xc_3_12.cn",
+  "region": "II",
+  "role": "cell"
+ },
+ "st30gd": {
+  "device": "x_dut.xc_3_12.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "gd",
+  "a": "x_dut.wl_3_ii",
+  "b": "x_dut.bl_12",
+  "region": "II",
+  "role": "cell"
+ },
+ "st30ds": {
+  "device": "x_dut.xc_3_12.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.bl_12",
+  "b": "x_dut.xc_3_12.cn",
+  "region": "II",
+  "role": "cell"
+ },
+ "st31t12": {
+  "device": "x_dut.xc_3_12.xc1",
+  "model": "cap_nmos_06v0",
+  "pair": "t12",
+  "a": "x_dut.xc_3_12.cn",
+  "b": "x_dut.pl_3_ii",
+  "region": "II",
+  "role": "cell"
+ },
+ "st32gs": {
+  "device": "x_dut.xlc_9.xm3",
+  "model": "nfet_06v0",
+  "pair": "gs",
+  "a": "csel_9",
+  "b": "0",
+  "region": "I",
+  "role": "colls"
+ },
+ "st32gd": {
+  "device": "x_dut.xlc_9.xm3",
+  "model": "nfet_06v0",
+  "pair": "gd",
+  "a": "csel_9",
+  "b": "x_dut.cgb_9",
+  "region": "I",
+  "role": "colls"
+ },
+ "st32ds": {
+  "device": "x_dut.xlc_9.xm3",
+  "model": "nfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.cgb_9",
+  "b": "0",
+  "region": "I",
+  "role": "colls"
+ },
+ "st33gs": {
+  "device": "x_dut.xlc_9.xm4",
+  "model": "nfet_06v0",
+  "pair": "gs",
+  "a": "x_dut.xlc_9.inb",
+  "b": "0",
+  "region": "I",
+  "role": "colls"
+ },
+ "st33gd": {
+  "device": "x_dut.xlc_9.xm4",
+  "model": "nfet_06v0",
+  "pair": "gd",
+  "a": "x_dut.xlc_9.inb",
+  "b": "x_dut.cg_9",
+  "region": "I",
+  "role": "colls"
+ },
+ "st33ds": {
+  "device": "x_dut.xlc_9.xm4",
+  "model": "nfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.cg_9",
+  "b": "0",
+  "region": "I",
+  "role": "colls"
+ },
+ "st34gs": {
+  "device": "x_dut.xlc_9.xm5",
+  "model": "pfet_06v0",
+  "pair": "gs",
+  "a": "x_dut.cgb_9",
+  "b": "vddh_i",
+  "region": "I",
+  "role": "colls"
+ },
+ "st34gd": {
+  "device": "x_dut.xlc_9.xm5",
+  "model": "pfet_06v0",
+  "pair": "gd",
+  "a": "x_dut.cgb_9",
+  "b": "x_dut.cg_9",
+  "region": "I",
+  "role": "colls"
+ },
+ "st34ds": {
+  "device": "x_dut.xlc_9.xm5",
+  "model": "pfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.cg_9",
+  "b": "vddh_i",
+  "region": "I",
+  "role": "colls"
+ },
+ "st35gs": {
+  "device": "x_dut.xlc_9.xm6",
+  "model": "pfet_06v0",
+  "pair": "gs",
+  "a": "x_dut.cg_9",
+  "b": "vddh_i",
+  "region": "I",
+  "role": "colls"
+ },
+ "st35gd": {
+  "device": "x_dut.xlc_9.xm6",
+  "model": "pfet_06v0",
+  "pair": "gd",
+  "a": "x_dut.cg_9",
+  "b": "x_dut.cgb_9",
+  "region": "I",
+  "role": "colls"
+ },
+ "st35ds": {
+  "device": "x_dut.xlc_9.xm6",
+  "model": "pfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.cgb_9",
+  "b": "vddh_i",
+  "region": "I",
+  "role": "colls"
+ },
+ "st36gs": {
+  "device": "x_dut.xpc_9.xm1",
+  "model": "nfet_06v0",
+  "pair": "gs",
+  "a": "x_dut.cg_9",
+  "b": "x_dut.bl_9",
+  "region": "I",
+  "role": "colpg"
+ },
+ "st36gd": {
+  "device": "x_dut.xpc_9.xm1",
+  "model": "nfet_06v0",
+  "pair": "gd",
+  "a": "x_dut.cg_9",
+  "b": "blg_i",
+  "region": "I",
+  "role": "colpg"
+ },
+ "st36ds": {
+  "device": "x_dut.xpc_9.xm1",
+  "model": "nfet_06v0",
+  "pair": "ds",
+  "a": "blg_i",
+  "b": "x_dut.bl_9",
+  "region": "I",
+  "role": "colpg"
+ },
+ "st37gs": {
+  "device": "x_dut.xlc_10.xm3",
+  "model": "nfet_06v0",
+  "pair": "gs",
+  "a": "csel_10",
+  "b": "0",
+  "region": "I",
+  "role": "colls"
+ },
+ "st37gd": {
+  "device": "x_dut.xlc_10.xm3",
+  "model": "nfet_06v0",
+  "pair": "gd",
+  "a": "csel_10",
+  "b": "x_dut.cgb_10",
+  "region": "I",
+  "role": "colls"
+ },
+ "st37ds": {
+  "device": "x_dut.xlc_10.xm3",
+  "model": "nfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.cgb_10",
+  "b": "0",
+  "region": "I",
+  "role": "colls"
+ },
+ "st38gs": {
+  "device": "x_dut.xlc_10.xm4",
+  "model": "nfet_06v0",
+  "pair": "gs",
+  "a": "x_dut.xlc_10.inb",
+  "b": "0",
+  "region": "I",
+  "role": "colls"
+ },
+ "st38gd": {
+  "device": "x_dut.xlc_10.xm4",
+  "model": "nfet_06v0",
+  "pair": "gd",
+  "a": "x_dut.xlc_10.inb",
+  "b": "x_dut.cg_10",
+  "region": "I",
+  "role": "colls"
+ },
+ "st38ds": {
+  "device": "x_dut.xlc_10.xm4",
+  "model": "nfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.cg_10",
+  "b": "0",
+  "region": "I",
+  "role": "colls"
+ },
+ "st39gs": {
+  "device": "x_dut.xlc_10.xm5",
+  "model": "pfet_06v0",
+  "pair": "gs",
+  "a": "x_dut.cgb_10",
+  "b": "vddh_i",
+  "region": "I",
+  "role": "colls"
+ },
+ "st39gd": {
+  "device": "x_dut.xlc_10.xm5",
+  "model": "pfet_06v0",
+  "pair": "gd",
+  "a": "x_dut.cgb_10",
+  "b": "x_dut.cg_10",
+  "region": "I",
+  "role": "colls"
+ },
+ "st39ds": {
+  "device": "x_dut.xlc_10.xm5",
+  "model": "pfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.cg_10",
+  "b": "vddh_i",
+  "region": "I",
+  "role": "colls"
+ },
+ "st40gs": {
+  "device": "x_dut.xlc_10.xm6",
+  "model": "pfet_06v0",
+  "pair": "gs",
+  "a": "x_dut.cg_10",
+  "b": "vddh_i",
+  "region": "I",
+  "role": "colls"
+ },
+ "st40gd": {
+  "device": "x_dut.xlc_10.xm6",
+  "model": "pfet_06v0",
+  "pair": "gd",
+  "a": "x_dut.cg_10",
+  "b": "x_dut.cgb_10",
+  "region": "I",
+  "role": "colls"
+ },
+ "st40ds": {
+  "device": "x_dut.xlc_10.xm6",
+  "model": "pfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.cgb_10",
+  "b": "vddh_i",
+  "region": "I",
+  "role": "colls"
+ },
+ "st41gs": {
+  "device": "x_dut.xpc_10.xm1",
+  "model": "nfet_06v0",
+  "pair": "gs",
+  "a": "x_dut.cg_10",
+  "b": "x_dut.bl_10",
+  "region": "I",
+  "role": "colpg"
+ },
+ "st41gd": {
+  "device": "x_dut.xpc_10.xm1",
+  "model": "nfet_06v0",
+  "pair": "gd",
+  "a": "x_dut.cg_10",
+  "b": "blg_i",
+  "region": "I",
+  "role": "colpg"
+ },
+ "st41ds": {
+  "device": "x_dut.xpc_10.xm1",
+  "model": "nfet_06v0",
+  "pair": "ds",
+  "a": "blg_i",
+  "b": "x_dut.bl_10",
+  "region": "I",
+  "role": "colpg"
+ },
+ "st42gs": {
+  "device": "x_dut.xlc_11.xm3",
+  "model": "nfet_10v0_asym",
+  "pair": "gs",
+  "a": "csel_11",
+  "b": "0",
+  "region": "II",
+  "role": "colls"
+ },
+ "st42gd": {
+  "device": "x_dut.xlc_11.xm3",
+  "model": "nfet_10v0_asym",
+  "pair": "gd",
+  "a": "csel_11",
+  "b": "x_dut.cgb_11",
+  "region": "II",
+  "role": "colls"
+ },
+ "st42ds": {
+  "device": "x_dut.xlc_11.xm3",
+  "model": "nfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.cgb_11",
+  "b": "0",
+  "region": "II",
+  "role": "colls"
+ },
+ "st43gs": {
+  "device": "x_dut.xlc_11.xm4",
+  "model": "nfet_10v0_asym",
+  "pair": "gs",
+  "a": "x_dut.xlc_11.inb",
+  "b": "0",
+  "region": "II",
+  "role": "colls"
+ },
+ "st43gd": {
+  "device": "x_dut.xlc_11.xm4",
+  "model": "nfet_10v0_asym",
+  "pair": "gd",
+  "a": "x_dut.xlc_11.inb",
+  "b": "x_dut.cg_11",
+  "region": "II",
+  "role": "colls"
+ },
+ "st43ds": {
+  "device": "x_dut.xlc_11.xm4",
+  "model": "nfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.cg_11",
+  "b": "0",
+  "region": "II",
+  "role": "colls"
+ },
+ "st44gs": {
+  "device": "x_dut.xlc_11.xm5",
+  "model": "pfet_10v0_asym",
+  "pair": "gs",
+  "a": "x_dut.cgb_11",
+  "b": "vddh_ii",
+  "region": "II",
+  "role": "colls"
+ },
+ "st44gd": {
+  "device": "x_dut.xlc_11.xm5",
+  "model": "pfet_10v0_asym",
+  "pair": "gd",
+  "a": "x_dut.cgb_11",
+  "b": "x_dut.cg_11",
+  "region": "II",
+  "role": "colls"
+ },
+ "st44ds": {
+  "device": "x_dut.xlc_11.xm5",
+  "model": "pfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.cg_11",
+  "b": "vddh_ii",
+  "region": "II",
+  "role": "colls"
+ },
+ "st45gs": {
+  "device": "x_dut.xlc_11.xm6",
+  "model": "pfet_10v0_asym",
+  "pair": "gs",
+  "a": "x_dut.cg_11",
+  "b": "vddh_ii",
+  "region": "II",
+  "role": "colls"
+ },
+ "st45gd": {
+  "device": "x_dut.xlc_11.xm6",
+  "model": "pfet_10v0_asym",
+  "pair": "gd",
+  "a": "x_dut.cg_11",
+  "b": "x_dut.cgb_11",
+  "region": "II",
+  "role": "colls"
+ },
+ "st45ds": {
+  "device": "x_dut.xlc_11.xm6",
+  "model": "pfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.cgb_11",
+  "b": "vddh_ii",
+  "region": "II",
+  "role": "colls"
+ },
+ "st46gs": {
+  "device": "x_dut.xpc_11.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "gs",
+  "a": "x_dut.cg_11",
+  "b": "x_dut.bl_11",
+  "region": "II",
+  "role": "colpg"
+ },
+ "st46gd": {
+  "device": "x_dut.xpc_11.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "gd",
+  "a": "x_dut.cg_11",
+  "b": "blg_ii",
+  "region": "II",
+  "role": "colpg"
+ },
+ "st46ds": {
+  "device": "x_dut.xpc_11.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "ds",
+  "a": "blg_ii",
+  "b": "x_dut.bl_11",
+  "region": "II",
+  "role": "colpg"
+ },
+ "st47gs": {
+  "device": "x_dut.xlc_12.xm3",
+  "model": "nfet_10v0_asym",
+  "pair": "gs",
+  "a": "csel_12",
+  "b": "0",
+  "region": "II",
+  "role": "colls"
+ },
+ "st47gd": {
+  "device": "x_dut.xlc_12.xm3",
+  "model": "nfet_10v0_asym",
+  "pair": "gd",
+  "a": "csel_12",
+  "b": "x_dut.cgb_12",
+  "region": "II",
+  "role": "colls"
+ },
+ "st47ds": {
+  "device": "x_dut.xlc_12.xm3",
+  "model": "nfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.cgb_12",
+  "b": "0",
+  "region": "II",
+  "role": "colls"
+ },
+ "st48gs": {
+  "device": "x_dut.xlc_12.xm4",
+  "model": "nfet_10v0_asym",
+  "pair": "gs",
+  "a": "x_dut.xlc_12.inb",
+  "b": "0",
+  "region": "II",
+  "role": "colls"
+ },
+ "st48gd": {
+  "device": "x_dut.xlc_12.xm4",
+  "model": "nfet_10v0_asym",
+  "pair": "gd",
+  "a": "x_dut.xlc_12.inb",
+  "b": "x_dut.cg_12",
+  "region": "II",
+  "role": "colls"
+ },
+ "st48ds": {
+  "device": "x_dut.xlc_12.xm4",
+  "model": "nfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.cg_12",
+  "b": "0",
+  "region": "II",
+  "role": "colls"
+ },
+ "st49gs": {
+  "device": "x_dut.xlc_12.xm5",
+  "model": "pfet_10v0_asym",
+  "pair": "gs",
+  "a": "x_dut.cgb_12",
+  "b": "vddh_ii",
+  "region": "II",
+  "role": "colls"
+ },
+ "st49gd": {
+  "device": "x_dut.xlc_12.xm5",
+  "model": "pfet_10v0_asym",
+  "pair": "gd",
+  "a": "x_dut.cgb_12",
+  "b": "x_dut.cg_12",
+  "region": "II",
+  "role": "colls"
+ },
+ "st49ds": {
+  "device": "x_dut.xlc_12.xm5",
+  "model": "pfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.cg_12",
+  "b": "vddh_ii",
+  "region": "II",
+  "role": "colls"
+ },
+ "st50gs": {
+  "device": "x_dut.xlc_12.xm6",
+  "model": "pfet_10v0_asym",
+  "pair": "gs",
+  "a": "x_dut.cg_12",
+  "b": "vddh_ii",
+  "region": "II",
+  "role": "colls"
+ },
+ "st50gd": {
+  "device": "x_dut.xlc_12.xm6",
+  "model": "pfet_10v0_asym",
+  "pair": "gd",
+  "a": "x_dut.cg_12",
+  "b": "x_dut.cgb_12",
+  "region": "II",
+  "role": "colls"
+ },
+ "st50ds": {
+  "device": "x_dut.xlc_12.xm6",
+  "model": "pfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.cgb_12",
+  "b": "vddh_ii",
+  "region": "II",
+  "role": "colls"
+ },
+ "st51gs": {
+  "device": "x_dut.xpc_12.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "gs",
+  "a": "x_dut.cg_12",
+  "b": "x_dut.bl_12",
+  "region": "II",
+  "role": "colpg"
+ },
+ "st51gd": {
+  "device": "x_dut.xpc_12.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "gd",
+  "a": "x_dut.cg_12",
+  "b": "blg_ii",
+  "region": "II",
+  "role": "colpg"
+ },
+ "st51ds": {
+  "device": "x_dut.xpc_12.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "ds",
+  "a": "blg_ii",
+  "b": "x_dut.bl_12",
+  "region": "II",
+  "role": "colpg"
+ },
+ "st52gs": {
+  "device": "x_dut.xlr_0_i.xm3",
+  "model": "nfet_06v0",
+  "pair": "gs",
+  "a": "rsel_0",
+  "b": "0",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st52gd": {
+  "device": "x_dut.xlr_0_i.xm3",
+  "model": "nfet_06v0",
+  "pair": "gd",
+  "a": "rsel_0",
+  "b": "x_dut.rgb_0_i",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st52ds": {
+  "device": "x_dut.xlr_0_i.xm3",
+  "model": "nfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.rgb_0_i",
+  "b": "0",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st53gs": {
+  "device": "x_dut.xlr_0_i.xm4",
+  "model": "nfet_06v0",
+  "pair": "gs",
+  "a": "x_dut.xlr_0_i.inb",
+  "b": "0",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st53gd": {
+  "device": "x_dut.xlr_0_i.xm4",
+  "model": "nfet_06v0",
+  "pair": "gd",
+  "a": "x_dut.xlr_0_i.inb",
+  "b": "x_dut.wl_0_i",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st53ds": {
+  "device": "x_dut.xlr_0_i.xm4",
+  "model": "nfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.wl_0_i",
+  "b": "0",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st54gs": {
+  "device": "x_dut.xlr_0_i.xm5",
+  "model": "pfet_06v0",
+  "pair": "gs",
+  "a": "x_dut.rgb_0_i",
+  "b": "vddh_i",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st54gd": {
+  "device": "x_dut.xlr_0_i.xm5",
+  "model": "pfet_06v0",
+  "pair": "gd",
+  "a": "x_dut.rgb_0_i",
+  "b": "x_dut.wl_0_i",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st54ds": {
+  "device": "x_dut.xlr_0_i.xm5",
+  "model": "pfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.wl_0_i",
+  "b": "vddh_i",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st55gs": {
+  "device": "x_dut.xlr_0_i.xm6",
+  "model": "pfet_06v0",
+  "pair": "gs",
+  "a": "x_dut.wl_0_i",
+  "b": "vddh_i",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st55gd": {
+  "device": "x_dut.xlr_0_i.xm6",
+  "model": "pfet_06v0",
+  "pair": "gd",
+  "a": "x_dut.wl_0_i",
+  "b": "x_dut.rgb_0_i",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st55ds": {
+  "device": "x_dut.xlr_0_i.xm6",
+  "model": "pfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.rgb_0_i",
+  "b": "vddh_i",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st56gs": {
+  "device": "x_dut.xpr_0_i.xm1",
+  "model": "nfet_06v0",
+  "pair": "gs",
+  "a": "x_dut.wl_0_i",
+  "b": "plg_i",
+  "region": "I",
+  "role": "rowpg"
+ },
+ "st56gd": {
+  "device": "x_dut.xpr_0_i.xm1",
+  "model": "nfet_06v0",
+  "pair": "gd",
+  "a": "x_dut.wl_0_i",
+  "b": "x_dut.pl_0_i",
+  "region": "I",
+  "role": "rowpg"
+ },
+ "st56ds": {
+  "device": "x_dut.xpr_0_i.xm1",
+  "model": "nfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.pl_0_i",
+  "b": "plg_i",
+  "region": "I",
+  "role": "rowpg"
+ },
+ "st57gs": {
+  "device": "x_dut.xlr_1_i.xm3",
+  "model": "nfet_06v0",
+  "pair": "gs",
+  "a": "rsel_1",
+  "b": "0",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st57gd": {
+  "device": "x_dut.xlr_1_i.xm3",
+  "model": "nfet_06v0",
+  "pair": "gd",
+  "a": "rsel_1",
+  "b": "x_dut.rgb_1_i",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st57ds": {
+  "device": "x_dut.xlr_1_i.xm3",
+  "model": "nfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.rgb_1_i",
+  "b": "0",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st58gs": {
+  "device": "x_dut.xlr_1_i.xm4",
+  "model": "nfet_06v0",
+  "pair": "gs",
+  "a": "x_dut.xlr_1_i.inb",
+  "b": "0",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st58gd": {
+  "device": "x_dut.xlr_1_i.xm4",
+  "model": "nfet_06v0",
+  "pair": "gd",
+  "a": "x_dut.xlr_1_i.inb",
+  "b": "x_dut.wl_1_i",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st58ds": {
+  "device": "x_dut.xlr_1_i.xm4",
+  "model": "nfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.wl_1_i",
+  "b": "0",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st59gs": {
+  "device": "x_dut.xlr_1_i.xm5",
+  "model": "pfet_06v0",
+  "pair": "gs",
+  "a": "x_dut.rgb_1_i",
+  "b": "vddh_i",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st59gd": {
+  "device": "x_dut.xlr_1_i.xm5",
+  "model": "pfet_06v0",
+  "pair": "gd",
+  "a": "x_dut.rgb_1_i",
+  "b": "x_dut.wl_1_i",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st59ds": {
+  "device": "x_dut.xlr_1_i.xm5",
+  "model": "pfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.wl_1_i",
+  "b": "vddh_i",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st60gs": {
+  "device": "x_dut.xlr_1_i.xm6",
+  "model": "pfet_06v0",
+  "pair": "gs",
+  "a": "x_dut.wl_1_i",
+  "b": "vddh_i",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st60gd": {
+  "device": "x_dut.xlr_1_i.xm6",
+  "model": "pfet_06v0",
+  "pair": "gd",
+  "a": "x_dut.wl_1_i",
+  "b": "x_dut.rgb_1_i",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st60ds": {
+  "device": "x_dut.xlr_1_i.xm6",
+  "model": "pfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.rgb_1_i",
+  "b": "vddh_i",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st61gs": {
+  "device": "x_dut.xpr_1_i.xm1",
+  "model": "nfet_06v0",
+  "pair": "gs",
+  "a": "x_dut.wl_1_i",
+  "b": "plg_i",
+  "region": "I",
+  "role": "rowpg"
+ },
+ "st61gd": {
+  "device": "x_dut.xpr_1_i.xm1",
+  "model": "nfet_06v0",
+  "pair": "gd",
+  "a": "x_dut.wl_1_i",
+  "b": "x_dut.pl_1_i",
+  "region": "I",
+  "role": "rowpg"
+ },
+ "st61ds": {
+  "device": "x_dut.xpr_1_i.xm1",
+  "model": "nfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.pl_1_i",
+  "b": "plg_i",
+  "region": "I",
+  "role": "rowpg"
+ },
+ "st62gs": {
+  "device": "x_dut.xlr_2_i.xm3",
+  "model": "nfet_06v0",
+  "pair": "gs",
+  "a": "rsel_2",
+  "b": "0",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st62gd": {
+  "device": "x_dut.xlr_2_i.xm3",
+  "model": "nfet_06v0",
+  "pair": "gd",
+  "a": "rsel_2",
+  "b": "x_dut.rgb_2_i",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st62ds": {
+  "device": "x_dut.xlr_2_i.xm3",
+  "model": "nfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.rgb_2_i",
+  "b": "0",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st63gs": {
+  "device": "x_dut.xlr_2_i.xm4",
+  "model": "nfet_06v0",
+  "pair": "gs",
+  "a": "x_dut.xlr_2_i.inb",
+  "b": "0",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st63gd": {
+  "device": "x_dut.xlr_2_i.xm4",
+  "model": "nfet_06v0",
+  "pair": "gd",
+  "a": "x_dut.xlr_2_i.inb",
+  "b": "x_dut.wl_2_i",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st63ds": {
+  "device": "x_dut.xlr_2_i.xm4",
+  "model": "nfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.wl_2_i",
+  "b": "0",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st64gs": {
+  "device": "x_dut.xlr_2_i.xm5",
+  "model": "pfet_06v0",
+  "pair": "gs",
+  "a": "x_dut.rgb_2_i",
+  "b": "vddh_i",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st64gd": {
+  "device": "x_dut.xlr_2_i.xm5",
+  "model": "pfet_06v0",
+  "pair": "gd",
+  "a": "x_dut.rgb_2_i",
+  "b": "x_dut.wl_2_i",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st64ds": {
+  "device": "x_dut.xlr_2_i.xm5",
+  "model": "pfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.wl_2_i",
+  "b": "vddh_i",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st65gs": {
+  "device": "x_dut.xlr_2_i.xm6",
+  "model": "pfet_06v0",
+  "pair": "gs",
+  "a": "x_dut.wl_2_i",
+  "b": "vddh_i",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st65gd": {
+  "device": "x_dut.xlr_2_i.xm6",
+  "model": "pfet_06v0",
+  "pair": "gd",
+  "a": "x_dut.wl_2_i",
+  "b": "x_dut.rgb_2_i",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st65ds": {
+  "device": "x_dut.xlr_2_i.xm6",
+  "model": "pfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.rgb_2_i",
+  "b": "vddh_i",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st66gs": {
+  "device": "x_dut.xpr_2_i.xm1",
+  "model": "nfet_06v0",
+  "pair": "gs",
+  "a": "x_dut.wl_2_i",
+  "b": "plg_i",
+  "region": "I",
+  "role": "rowpg"
+ },
+ "st66gd": {
+  "device": "x_dut.xpr_2_i.xm1",
+  "model": "nfet_06v0",
+  "pair": "gd",
+  "a": "x_dut.wl_2_i",
+  "b": "x_dut.pl_2_i",
+  "region": "I",
+  "role": "rowpg"
+ },
+ "st66ds": {
+  "device": "x_dut.xpr_2_i.xm1",
+  "model": "nfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.pl_2_i",
+  "b": "plg_i",
+  "region": "I",
+  "role": "rowpg"
+ },
+ "st67gs": {
+  "device": "x_dut.xlr_3_i.xm3",
+  "model": "nfet_06v0",
+  "pair": "gs",
+  "a": "rsel_3",
+  "b": "0",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st67gd": {
+  "device": "x_dut.xlr_3_i.xm3",
+  "model": "nfet_06v0",
+  "pair": "gd",
+  "a": "rsel_3",
+  "b": "x_dut.rgb_3_i",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st67ds": {
+  "device": "x_dut.xlr_3_i.xm3",
+  "model": "nfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.rgb_3_i",
+  "b": "0",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st68gs": {
+  "device": "x_dut.xlr_3_i.xm4",
+  "model": "nfet_06v0",
+  "pair": "gs",
+  "a": "x_dut.xlr_3_i.inb",
+  "b": "0",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st68gd": {
+  "device": "x_dut.xlr_3_i.xm4",
+  "model": "nfet_06v0",
+  "pair": "gd",
+  "a": "x_dut.xlr_3_i.inb",
+  "b": "x_dut.wl_3_i",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st68ds": {
+  "device": "x_dut.xlr_3_i.xm4",
+  "model": "nfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.wl_3_i",
+  "b": "0",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st69gs": {
+  "device": "x_dut.xlr_3_i.xm5",
+  "model": "pfet_06v0",
+  "pair": "gs",
+  "a": "x_dut.rgb_3_i",
+  "b": "vddh_i",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st69gd": {
+  "device": "x_dut.xlr_3_i.xm5",
+  "model": "pfet_06v0",
+  "pair": "gd",
+  "a": "x_dut.rgb_3_i",
+  "b": "x_dut.wl_3_i",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st69ds": {
+  "device": "x_dut.xlr_3_i.xm5",
+  "model": "pfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.wl_3_i",
+  "b": "vddh_i",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st70gs": {
+  "device": "x_dut.xlr_3_i.xm6",
+  "model": "pfet_06v0",
+  "pair": "gs",
+  "a": "x_dut.wl_3_i",
+  "b": "vddh_i",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st70gd": {
+  "device": "x_dut.xlr_3_i.xm6",
+  "model": "pfet_06v0",
+  "pair": "gd",
+  "a": "x_dut.wl_3_i",
+  "b": "x_dut.rgb_3_i",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st70ds": {
+  "device": "x_dut.xlr_3_i.xm6",
+  "model": "pfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.rgb_3_i",
+  "b": "vddh_i",
+  "region": "I",
+  "role": "rowls"
+ },
+ "st71gs": {
+  "device": "x_dut.xpr_3_i.xm1",
+  "model": "nfet_06v0",
+  "pair": "gs",
+  "a": "x_dut.wl_3_i",
+  "b": "plg_i",
+  "region": "I",
+  "role": "rowpg"
+ },
+ "st71gd": {
+  "device": "x_dut.xpr_3_i.xm1",
+  "model": "nfet_06v0",
+  "pair": "gd",
+  "a": "x_dut.wl_3_i",
+  "b": "x_dut.pl_3_i",
+  "region": "I",
+  "role": "rowpg"
+ },
+ "st71ds": {
+  "device": "x_dut.xpr_3_i.xm1",
+  "model": "nfet_06v0",
+  "pair": "ds",
+  "a": "x_dut.pl_3_i",
+  "b": "plg_i",
+  "region": "I",
+  "role": "rowpg"
+ },
+ "st72gs": {
+  "device": "x_dut.xlr_0_ii.xm3",
+  "model": "nfet_10v0_asym",
+  "pair": "gs",
+  "a": "rsel_0",
+  "b": "0",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st72gd": {
+  "device": "x_dut.xlr_0_ii.xm3",
+  "model": "nfet_10v0_asym",
+  "pair": "gd",
+  "a": "rsel_0",
+  "b": "x_dut.rgb_0_ii",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st72ds": {
+  "device": "x_dut.xlr_0_ii.xm3",
+  "model": "nfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.rgb_0_ii",
+  "b": "0",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st73gs": {
+  "device": "x_dut.xlr_0_ii.xm4",
+  "model": "nfet_10v0_asym",
+  "pair": "gs",
+  "a": "x_dut.xlr_0_ii.inb",
+  "b": "0",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st73gd": {
+  "device": "x_dut.xlr_0_ii.xm4",
+  "model": "nfet_10v0_asym",
+  "pair": "gd",
+  "a": "x_dut.xlr_0_ii.inb",
+  "b": "x_dut.wl_0_ii",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st73ds": {
+  "device": "x_dut.xlr_0_ii.xm4",
+  "model": "nfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.wl_0_ii",
+  "b": "0",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st74gs": {
+  "device": "x_dut.xlr_0_ii.xm5",
+  "model": "pfet_10v0_asym",
+  "pair": "gs",
+  "a": "x_dut.rgb_0_ii",
+  "b": "vddh_ii",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st74gd": {
+  "device": "x_dut.xlr_0_ii.xm5",
+  "model": "pfet_10v0_asym",
+  "pair": "gd",
+  "a": "x_dut.rgb_0_ii",
+  "b": "x_dut.wl_0_ii",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st74ds": {
+  "device": "x_dut.xlr_0_ii.xm5",
+  "model": "pfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.wl_0_ii",
+  "b": "vddh_ii",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st75gs": {
+  "device": "x_dut.xlr_0_ii.xm6",
+  "model": "pfet_10v0_asym",
+  "pair": "gs",
+  "a": "x_dut.wl_0_ii",
+  "b": "vddh_ii",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st75gd": {
+  "device": "x_dut.xlr_0_ii.xm6",
+  "model": "pfet_10v0_asym",
+  "pair": "gd",
+  "a": "x_dut.wl_0_ii",
+  "b": "x_dut.rgb_0_ii",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st75ds": {
+  "device": "x_dut.xlr_0_ii.xm6",
+  "model": "pfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.rgb_0_ii",
+  "b": "vddh_ii",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st76gs": {
+  "device": "x_dut.xpr_0_ii.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "gs",
+  "a": "x_dut.wl_0_ii",
+  "b": "plg_ii",
+  "region": "II",
+  "role": "rowpg"
+ },
+ "st76gd": {
+  "device": "x_dut.xpr_0_ii.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "gd",
+  "a": "x_dut.wl_0_ii",
+  "b": "x_dut.pl_0_ii",
+  "region": "II",
+  "role": "rowpg"
+ },
+ "st76ds": {
+  "device": "x_dut.xpr_0_ii.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.pl_0_ii",
+  "b": "plg_ii",
+  "region": "II",
+  "role": "rowpg"
+ },
+ "st77gs": {
+  "device": "x_dut.xlr_1_ii.xm3",
+  "model": "nfet_10v0_asym",
+  "pair": "gs",
+  "a": "rsel_1",
+  "b": "0",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st77gd": {
+  "device": "x_dut.xlr_1_ii.xm3",
+  "model": "nfet_10v0_asym",
+  "pair": "gd",
+  "a": "rsel_1",
+  "b": "x_dut.rgb_1_ii",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st77ds": {
+  "device": "x_dut.xlr_1_ii.xm3",
+  "model": "nfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.rgb_1_ii",
+  "b": "0",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st78gs": {
+  "device": "x_dut.xlr_1_ii.xm4",
+  "model": "nfet_10v0_asym",
+  "pair": "gs",
+  "a": "x_dut.xlr_1_ii.inb",
+  "b": "0",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st78gd": {
+  "device": "x_dut.xlr_1_ii.xm4",
+  "model": "nfet_10v0_asym",
+  "pair": "gd",
+  "a": "x_dut.xlr_1_ii.inb",
+  "b": "x_dut.wl_1_ii",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st78ds": {
+  "device": "x_dut.xlr_1_ii.xm4",
+  "model": "nfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.wl_1_ii",
+  "b": "0",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st79gs": {
+  "device": "x_dut.xlr_1_ii.xm5",
+  "model": "pfet_10v0_asym",
+  "pair": "gs",
+  "a": "x_dut.rgb_1_ii",
+  "b": "vddh_ii",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st79gd": {
+  "device": "x_dut.xlr_1_ii.xm5",
+  "model": "pfet_10v0_asym",
+  "pair": "gd",
+  "a": "x_dut.rgb_1_ii",
+  "b": "x_dut.wl_1_ii",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st79ds": {
+  "device": "x_dut.xlr_1_ii.xm5",
+  "model": "pfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.wl_1_ii",
+  "b": "vddh_ii",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st80gs": {
+  "device": "x_dut.xlr_1_ii.xm6",
+  "model": "pfet_10v0_asym",
+  "pair": "gs",
+  "a": "x_dut.wl_1_ii",
+  "b": "vddh_ii",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st80gd": {
+  "device": "x_dut.xlr_1_ii.xm6",
+  "model": "pfet_10v0_asym",
+  "pair": "gd",
+  "a": "x_dut.wl_1_ii",
+  "b": "x_dut.rgb_1_ii",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st80ds": {
+  "device": "x_dut.xlr_1_ii.xm6",
+  "model": "pfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.rgb_1_ii",
+  "b": "vddh_ii",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st81gs": {
+  "device": "x_dut.xpr_1_ii.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "gs",
+  "a": "x_dut.wl_1_ii",
+  "b": "plg_ii",
+  "region": "II",
+  "role": "rowpg"
+ },
+ "st81gd": {
+  "device": "x_dut.xpr_1_ii.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "gd",
+  "a": "x_dut.wl_1_ii",
+  "b": "x_dut.pl_1_ii",
+  "region": "II",
+  "role": "rowpg"
+ },
+ "st81ds": {
+  "device": "x_dut.xpr_1_ii.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.pl_1_ii",
+  "b": "plg_ii",
+  "region": "II",
+  "role": "rowpg"
+ },
+ "st82gs": {
+  "device": "x_dut.xlr_2_ii.xm3",
+  "model": "nfet_10v0_asym",
+  "pair": "gs",
+  "a": "rsel_2",
+  "b": "0",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st82gd": {
+  "device": "x_dut.xlr_2_ii.xm3",
+  "model": "nfet_10v0_asym",
+  "pair": "gd",
+  "a": "rsel_2",
+  "b": "x_dut.rgb_2_ii",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st82ds": {
+  "device": "x_dut.xlr_2_ii.xm3",
+  "model": "nfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.rgb_2_ii",
+  "b": "0",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st83gs": {
+  "device": "x_dut.xlr_2_ii.xm4",
+  "model": "nfet_10v0_asym",
+  "pair": "gs",
+  "a": "x_dut.xlr_2_ii.inb",
+  "b": "0",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st83gd": {
+  "device": "x_dut.xlr_2_ii.xm4",
+  "model": "nfet_10v0_asym",
+  "pair": "gd",
+  "a": "x_dut.xlr_2_ii.inb",
+  "b": "x_dut.wl_2_ii",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st83ds": {
+  "device": "x_dut.xlr_2_ii.xm4",
+  "model": "nfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.wl_2_ii",
+  "b": "0",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st84gs": {
+  "device": "x_dut.xlr_2_ii.xm5",
+  "model": "pfet_10v0_asym",
+  "pair": "gs",
+  "a": "x_dut.rgb_2_ii",
+  "b": "vddh_ii",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st84gd": {
+  "device": "x_dut.xlr_2_ii.xm5",
+  "model": "pfet_10v0_asym",
+  "pair": "gd",
+  "a": "x_dut.rgb_2_ii",
+  "b": "x_dut.wl_2_ii",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st84ds": {
+  "device": "x_dut.xlr_2_ii.xm5",
+  "model": "pfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.wl_2_ii",
+  "b": "vddh_ii",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st85gs": {
+  "device": "x_dut.xlr_2_ii.xm6",
+  "model": "pfet_10v0_asym",
+  "pair": "gs",
+  "a": "x_dut.wl_2_ii",
+  "b": "vddh_ii",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st85gd": {
+  "device": "x_dut.xlr_2_ii.xm6",
+  "model": "pfet_10v0_asym",
+  "pair": "gd",
+  "a": "x_dut.wl_2_ii",
+  "b": "x_dut.rgb_2_ii",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st85ds": {
+  "device": "x_dut.xlr_2_ii.xm6",
+  "model": "pfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.rgb_2_ii",
+  "b": "vddh_ii",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st86gs": {
+  "device": "x_dut.xpr_2_ii.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "gs",
+  "a": "x_dut.wl_2_ii",
+  "b": "plg_ii",
+  "region": "II",
+  "role": "rowpg"
+ },
+ "st86gd": {
+  "device": "x_dut.xpr_2_ii.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "gd",
+  "a": "x_dut.wl_2_ii",
+  "b": "x_dut.pl_2_ii",
+  "region": "II",
+  "role": "rowpg"
+ },
+ "st86ds": {
+  "device": "x_dut.xpr_2_ii.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.pl_2_ii",
+  "b": "plg_ii",
+  "region": "II",
+  "role": "rowpg"
+ },
+ "st87gs": {
+  "device": "x_dut.xlr_3_ii.xm3",
+  "model": "nfet_10v0_asym",
+  "pair": "gs",
+  "a": "rsel_3",
+  "b": "0",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st87gd": {
+  "device": "x_dut.xlr_3_ii.xm3",
+  "model": "nfet_10v0_asym",
+  "pair": "gd",
+  "a": "rsel_3",
+  "b": "x_dut.rgb_3_ii",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st87ds": {
+  "device": "x_dut.xlr_3_ii.xm3",
+  "model": "nfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.rgb_3_ii",
+  "b": "0",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st88gs": {
+  "device": "x_dut.xlr_3_ii.xm4",
+  "model": "nfet_10v0_asym",
+  "pair": "gs",
+  "a": "x_dut.xlr_3_ii.inb",
+  "b": "0",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st88gd": {
+  "device": "x_dut.xlr_3_ii.xm4",
+  "model": "nfet_10v0_asym",
+  "pair": "gd",
+  "a": "x_dut.xlr_3_ii.inb",
+  "b": "x_dut.wl_3_ii",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st88ds": {
+  "device": "x_dut.xlr_3_ii.xm4",
+  "model": "nfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.wl_3_ii",
+  "b": "0",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st89gs": {
+  "device": "x_dut.xlr_3_ii.xm5",
+  "model": "pfet_10v0_asym",
+  "pair": "gs",
+  "a": "x_dut.rgb_3_ii",
+  "b": "vddh_ii",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st89gd": {
+  "device": "x_dut.xlr_3_ii.xm5",
+  "model": "pfet_10v0_asym",
+  "pair": "gd",
+  "a": "x_dut.rgb_3_ii",
+  "b": "x_dut.wl_3_ii",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st89ds": {
+  "device": "x_dut.xlr_3_ii.xm5",
+  "model": "pfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.wl_3_ii",
+  "b": "vddh_ii",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st90gs": {
+  "device": "x_dut.xlr_3_ii.xm6",
+  "model": "pfet_10v0_asym",
+  "pair": "gs",
+  "a": "x_dut.wl_3_ii",
+  "b": "vddh_ii",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st90gd": {
+  "device": "x_dut.xlr_3_ii.xm6",
+  "model": "pfet_10v0_asym",
+  "pair": "gd",
+  "a": "x_dut.wl_3_ii",
+  "b": "x_dut.rgb_3_ii",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st90ds": {
+  "device": "x_dut.xlr_3_ii.xm6",
+  "model": "pfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.rgb_3_ii",
+  "b": "vddh_ii",
+  "region": "II",
+  "role": "rowls"
+ },
+ "st91gs": {
+  "device": "x_dut.xpr_3_ii.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "gs",
+  "a": "x_dut.wl_3_ii",
+  "b": "plg_ii",
+  "region": "II",
+  "role": "rowpg"
+ },
+ "st91gd": {
+  "device": "x_dut.xpr_3_ii.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "gd",
+  "a": "x_dut.wl_3_ii",
+  "b": "x_dut.pl_3_ii",
+  "region": "II",
+  "role": "rowpg"
+ },
+ "st91ds": {
+  "device": "x_dut.xpr_3_ii.xm1",
+  "model": "nfet_10v0_asym",
+  "pair": "ds",
+  "a": "x_dut.pl_3_ii",
+  "b": "plg_ii",
+  "region": "II",
+  "role": "rowpg"
+ },
+ "st92gs": {
+  "device": "xpg_i.xmlsp1",
+  "model": "pfet_06v0",
+  "pair": "gs",
+  "a": "xpg_i.pgb",
+  "b": "vpp",
+  "region": "I",
+  "role": "progleg"
+ },
+ "st92gd": {
+  "device": "xpg_i.xmlsp1",
+  "model": "pfet_06v0",
+  "pair": "gd",
+  "a": "xpg_i.pgb",
+  "b": "xpg_i.pg",
+  "region": "I",
+  "role": "progleg"
+ },
+ "st92ds": {
+  "device": "xpg_i.xmlsp1",
+  "model": "pfet_06v0",
+  "pair": "ds",
+  "a": "xpg_i.pg",
+  "b": "vpp",
+  "region": "I",
+  "role": "progleg"
+ },
+ "st93gs": {
+  "device": "xpg_i.xmlsp2",
+  "model": "pfet_06v0",
+  "pair": "gs",
+  "a": "xpg_i.pg",
+  "b": "vpp",
+  "region": "I",
+  "role": "progleg"
+ },
+ "st93gd": {
+  "device": "xpg_i.xmlsp2",
+  "model": "pfet_06v0",
+  "pair": "gd",
+  "a": "xpg_i.pg",
+  "b": "xpg_i.pgb",
+  "region": "I",
+  "role": "progleg"
+ },
+ "st93ds": {
+  "device": "xpg_i.xmlsp2",
+  "model": "pfet_06v0",
+  "pair": "ds",
+  "a": "xpg_i.pgb",
+  "b": "vpp",
+  "region": "I",
+  "role": "progleg"
+ },
+ "st94gs": {
+  "device": "xpg_i.xmlsn1",
+  "model": "nfet_06v0",
+  "pair": "gs",
+  "a": "xpg_i.pon",
+  "b": "0",
+  "region": "I",
+  "role": "progleg"
+ },
+ "st94gd": {
+  "device": "xpg_i.xmlsn1",
+  "model": "nfet_06v0",
+  "pair": "gd",
+  "a": "xpg_i.pon",
+  "b": "xpg_i.pg",
+  "region": "I",
+  "role": "progleg"
+ },
+ "st94ds": {
+  "device": "xpg_i.xmlsn1",
+  "model": "nfet_06v0",
+  "pair": "ds",
+  "a": "xpg_i.pg",
+  "b": "0",
+  "region": "I",
+  "role": "progleg"
+ },
+ "st95gs": {
+  "device": "xpg_i.xmlsn2",
+  "model": "nfet_06v0",
+  "pair": "gs",
+  "a": "xpg_i.ponb",
+  "b": "0",
+  "region": "I",
+  "role": "progleg"
+ },
+ "st95gd": {
+  "device": "xpg_i.xmlsn2",
+  "model": "nfet_06v0",
+  "pair": "gd",
+  "a": "xpg_i.ponb",
+  "b": "xpg_i.pgb",
+  "region": "I",
+  "role": "progleg"
+ },
+ "st95ds": {
+  "device": "xpg_i.xmlsn2",
+  "model": "nfet_06v0",
+  "pair": "ds",
+  "a": "xpg_i.pgb",
+  "b": "0",
+  "region": "I",
+  "role": "progleg"
+ },
+ "st96gs": {
+  "device": "xpg_i.xmsw",
+  "model": "pfet_06v0",
+  "pair": "gs",
+  "a": "xpg_i.pg",
+  "b": "vpp",
+  "region": "I",
+  "role": "progleg"
+ },
+ "st96gd": {
+  "device": "xpg_i.xmsw",
+  "model": "pfet_06v0",
+  "pair": "gd",
+  "a": "xpg_i.pg",
+  "b": "xpg_i.rb_top",
+  "region": "I",
+  "role": "progleg"
+ },
+ "st96ds": {
+  "device": "xpg_i.xmsw",
+  "model": "pfet_06v0",
+  "pair": "ds",
+  "a": "xpg_i.rb_top",
+  "b": "vpp",
+  "region": "I",
+  "role": "progleg"
+ },
+ "st97t12": {
+  "device": "xpg_i.xrb",
+  "model": "ppolyf_u_2k_6p0",
+  "pair": "t12",
+  "a": "blp_i",
+  "b": "xpg_i.rb_top",
+  "region": "I",
+  "role": "progleg"
+ },
+ "st98gs": {
+  "device": "xrd_i.xmsw",
+  "model": "nfet_06v0",
+  "pair": "gs",
+  "a": "xrd_i.ron",
+  "b": "blr_i",
+  "region": "I",
+  "role": "readleg"
+ },
+ "st98gd": {
+  "device": "xrd_i.xmsw",
+  "model": "nfet_06v0",
+  "pair": "gd",
+  "a": "xrd_i.ron",
+  "b": "xrd_i.cs",
+  "region": "I",
+  "role": "readleg"
+ },
+ "st98ds": {
+  "device": "xrd_i.xmsw",
+  "model": "nfet_06v0",
+  "pair": "ds",
+  "a": "xrd_i.cs",
+  "b": "blr_i",
+  "region": "I",
+  "role": "readleg"
+ },
+ "st99gs": {
+  "device": "xrd_i.xmcl",
+  "model": "nfet_03v3",
+  "pair": "gs",
+  "a": "vclamp",
+  "b": "xrd_i.cs",
+  "region": "I",
+  "role": "readleg"
+ },
+ "st99gd": {
+  "device": "xrd_i.xmcl",
+  "model": "nfet_03v3",
+  "pair": "gd",
+  "a": "vclamp",
+  "b": "xrd_i.pin",
+  "region": "I",
+  "role": "readleg"
+ },
+ "st99ds": {
+  "device": "xrd_i.xmcl",
+  "model": "nfet_03v3",
+  "pair": "ds",
+  "a": "xrd_i.pin",
+  "b": "xrd_i.cs",
+  "region": "I",
+  "role": "readleg"
+ },
+ "st100gs": {
+  "device": "xrd_i.xmpi",
+  "model": "pfet_03v3",
+  "pair": "gs",
+  "a": "xrd_i.pin",
+  "b": "vdd",
+  "region": "I",
+  "role": "readleg"
+ },
+ "st100gd": {
+  "device": "xrd_i.xmpi",
+  "model": "pfet_03v3",
+  "pair": "gd",
+  "a": "xrd_i.pin",
+  "b": "xrd_i.pin",
+  "region": "I",
+  "role": "readleg"
+ },
+ "st100ds": {
+  "device": "xrd_i.xmpi",
+  "model": "pfet_03v3",
+  "pair": "ds",
+  "a": "xrd_i.pin",
+  "b": "vdd",
+  "region": "I",
+  "role": "readleg"
+ },
+ "st101gs": {
+  "device": "xrd_i.xmpo",
+  "model": "pfet_03v3",
+  "pair": "gs",
+  "a": "xrd_i.pin",
+  "b": "vdd",
+  "region": "I",
+  "role": "readleg"
+ },
+ "st101gd": {
+  "device": "xrd_i.xmpo",
+  "model": "pfet_03v3",
+  "pair": "gd",
+  "a": "xrd_i.pin",
+  "b": "sense_i",
+  "region": "I",
+  "role": "readleg"
+ },
+ "st101ds": {
+  "device": "xrd_i.xmpo",
+  "model": "pfet_03v3",
+  "pair": "ds",
+  "a": "sense_i",
+  "b": "vdd",
+  "region": "I",
+  "role": "readleg"
+ },
+ "st102gs": {
+  "device": "xrd_i.xmni",
+  "model": "nfet_03v3",
+  "pair": "gs",
+  "a": "iref_i",
+  "b": "0",
+  "region": "I",
+  "role": "readleg"
+ },
+ "st102gd": {
+  "device": "xrd_i.xmni",
+  "model": "nfet_03v3",
+  "pair": "gd",
+  "a": "iref_i",
+  "b": "iref_i",
+  "region": "I",
+  "role": "readleg"
+ },
+ "st102ds": {
+  "device": "xrd_i.xmni",
+  "model": "nfet_03v3",
+  "pair": "ds",
+  "a": "iref_i",
+  "b": "0",
+  "region": "I",
+  "role": "readleg"
+ },
+ "st103gs": {
+  "device": "xrd_i.xmno",
+  "model": "nfet_03v3",
+  "pair": "gs",
+  "a": "iref_i",
+  "b": "0",
+  "region": "I",
+  "role": "readleg"
+ },
+ "st103gd": {
+  "device": "xrd_i.xmno",
+  "model": "nfet_03v3",
+  "pair": "gd",
+  "a": "iref_i",
+  "b": "sense_i",
+  "region": "I",
+  "role": "readleg"
+ },
+ "st103ds": {
+  "device": "xrd_i.xmno",
+  "model": "nfet_03v3",
+  "pair": "ds",
+  "a": "sense_i",
+  "b": "0",
+  "region": "I",
+  "role": "readleg"
+ },
+ "st104gs": {
+  "device": "xpg_ii.xmlsp1",
+  "model": "pfet_06v0",
+  "pair": "gs",
+  "a": "xpg_ii.pgb",
+  "b": "vpp",
+  "region": "II",
+  "role": "progleg"
+ },
+ "st104gd": {
+  "device": "xpg_ii.xmlsp1",
+  "model": "pfet_06v0",
+  "pair": "gd",
+  "a": "xpg_ii.pgb",
+  "b": "xpg_ii.pg",
+  "region": "II",
+  "role": "progleg"
+ },
+ "st104ds": {
+  "device": "xpg_ii.xmlsp1",
+  "model": "pfet_06v0",
+  "pair": "ds",
+  "a": "xpg_ii.pg",
+  "b": "vpp",
+  "region": "II",
+  "role": "progleg"
+ },
+ "st105gs": {
+  "device": "xpg_ii.xmlsp2",
+  "model": "pfet_06v0",
+  "pair": "gs",
+  "a": "xpg_ii.pg",
+  "b": "vpp",
+  "region": "II",
+  "role": "progleg"
+ },
+ "st105gd": {
+  "device": "xpg_ii.xmlsp2",
+  "model": "pfet_06v0",
+  "pair": "gd",
+  "a": "xpg_ii.pg",
+  "b": "xpg_ii.pgb",
+  "region": "II",
+  "role": "progleg"
+ },
+ "st105ds": {
+  "device": "xpg_ii.xmlsp2",
+  "model": "pfet_06v0",
+  "pair": "ds",
+  "a": "xpg_ii.pgb",
+  "b": "vpp",
+  "region": "II",
+  "role": "progleg"
+ },
+ "st106gs": {
+  "device": "xpg_ii.xmlsn1",
+  "model": "nfet_06v0",
+  "pair": "gs",
+  "a": "xpg_ii.pon",
+  "b": "0",
+  "region": "II",
+  "role": "progleg"
+ },
+ "st106gd": {
+  "device": "xpg_ii.xmlsn1",
+  "model": "nfet_06v0",
+  "pair": "gd",
+  "a": "xpg_ii.pon",
+  "b": "xpg_ii.pg",
+  "region": "II",
+  "role": "progleg"
+ },
+ "st106ds": {
+  "device": "xpg_ii.xmlsn1",
+  "model": "nfet_06v0",
+  "pair": "ds",
+  "a": "xpg_ii.pg",
+  "b": "0",
+  "region": "II",
+  "role": "progleg"
+ },
+ "st107gs": {
+  "device": "xpg_ii.xmlsn2",
+  "model": "nfet_06v0",
+  "pair": "gs",
+  "a": "xpg_ii.ponb",
+  "b": "0",
+  "region": "II",
+  "role": "progleg"
+ },
+ "st107gd": {
+  "device": "xpg_ii.xmlsn2",
+  "model": "nfet_06v0",
+  "pair": "gd",
+  "a": "xpg_ii.ponb",
+  "b": "xpg_ii.pgb",
+  "region": "II",
+  "role": "progleg"
+ },
+ "st107ds": {
+  "device": "xpg_ii.xmlsn2",
+  "model": "nfet_06v0",
+  "pair": "ds",
+  "a": "xpg_ii.pgb",
+  "b": "0",
+  "region": "II",
+  "role": "progleg"
+ },
+ "st108gs": {
+  "device": "xpg_ii.xmsw",
+  "model": "pfet_06v0",
+  "pair": "gs",
+  "a": "xpg_ii.pg",
+  "b": "vpp",
+  "region": "II",
+  "role": "progleg"
+ },
+ "st108gd": {
+  "device": "xpg_ii.xmsw",
+  "model": "pfet_06v0",
+  "pair": "gd",
+  "a": "xpg_ii.pg",
+  "b": "xpg_ii.rb_top",
+  "region": "II",
+  "role": "progleg"
+ },
+ "st108ds": {
+  "device": "xpg_ii.xmsw",
+  "model": "pfet_06v0",
+  "pair": "ds",
+  "a": "xpg_ii.rb_top",
+  "b": "vpp",
+  "region": "II",
+  "role": "progleg"
+ },
+ "st109t12": {
+  "device": "xpg_ii.xrb",
+  "model": "ppolyf_u_2k_6p0",
+  "pair": "t12",
+  "a": "blp_ii",
+  "b": "xpg_ii.rb_top",
+  "region": "II",
+  "role": "progleg"
+ },
+ "st110gs": {
+  "device": "xrd_ii.xmsw",
+  "model": "nfet_06v0",
+  "pair": "gs",
+  "a": "xrd_ii.ron",
+  "b": "blr_ii",
+  "region": "II",
+  "role": "readleg"
+ },
+ "st110gd": {
+  "device": "xrd_ii.xmsw",
+  "model": "nfet_06v0",
+  "pair": "gd",
+  "a": "xrd_ii.ron",
+  "b": "xrd_ii.cs",
+  "region": "II",
+  "role": "readleg"
+ },
+ "st110ds": {
+  "device": "xrd_ii.xmsw",
+  "model": "nfet_06v0",
+  "pair": "ds",
+  "a": "xrd_ii.cs",
+  "b": "blr_ii",
+  "region": "II",
+  "role": "readleg"
+ },
+ "st111gs": {
+  "device": "xrd_ii.xmcl",
+  "model": "nfet_03v3",
+  "pair": "gs",
+  "a": "vclamp",
+  "b": "xrd_ii.cs",
+  "region": "II",
+  "role": "readleg"
+ },
+ "st111gd": {
+  "device": "xrd_ii.xmcl",
+  "model": "nfet_03v3",
+  "pair": "gd",
+  "a": "vclamp",
+  "b": "xrd_ii.pin",
+  "region": "II",
+  "role": "readleg"
+ },
+ "st111ds": {
+  "device": "xrd_ii.xmcl",
+  "model": "nfet_03v3",
+  "pair": "ds",
+  "a": "xrd_ii.pin",
+  "b": "xrd_ii.cs",
+  "region": "II",
+  "role": "readleg"
+ },
+ "st112gs": {
+  "device": "xrd_ii.xmpi",
+  "model": "pfet_03v3",
+  "pair": "gs",
+  "a": "xrd_ii.pin",
+  "b": "vdd",
+  "region": "II",
+  "role": "readleg"
+ },
+ "st112gd": {
+  "device": "xrd_ii.xmpi",
+  "model": "pfet_03v3",
+  "pair": "gd",
+  "a": "xrd_ii.pin",
+  "b": "xrd_ii.pin",
+  "region": "II",
+  "role": "readleg"
+ },
+ "st112ds": {
+  "device": "xrd_ii.xmpi",
+  "model": "pfet_03v3",
+  "pair": "ds",
+  "a": "xrd_ii.pin",
+  "b": "vdd",
+  "region": "II",
+  "role": "readleg"
+ },
+ "st113gs": {
+  "device": "xrd_ii.xmpo",
+  "model": "pfet_03v3",
+  "pair": "gs",
+  "a": "xrd_ii.pin",
+  "b": "vdd",
+  "region": "II",
+  "role": "readleg"
+ },
+ "st113gd": {
+  "device": "xrd_ii.xmpo",
+  "model": "pfet_03v3",
+  "pair": "gd",
+  "a": "xrd_ii.pin",
+  "b": "sense_ii",
+  "region": "II",
+  "role": "readleg"
+ },
+ "st113ds": {
+  "device": "xrd_ii.xmpo",
+  "model": "pfet_03v3",
+  "pair": "ds",
+  "a": "sense_ii",
+  "b": "vdd",
+  "region": "II",
+  "role": "readleg"
+ },
+ "st114gs": {
+  "device": "xrd_ii.xmni",
+  "model": "nfet_03v3",
+  "pair": "gs",
+  "a": "iref_ii",
+  "b": "0",
+  "region": "II",
+  "role": "readleg"
+ },
+ "st114gd": {
+  "device": "xrd_ii.xmni",
+  "model": "nfet_03v3",
+  "pair": "gd",
+  "a": "iref_ii",
+  "b": "iref_ii",
+  "region": "II",
+  "role": "readleg"
+ },
+ "st114ds": {
+  "device": "xrd_ii.xmni",
+  "model": "nfet_03v3",
+  "pair": "ds",
+  "a": "iref_ii",
+  "b": "0",
+  "region": "II",
+  "role": "readleg"
+ },
+ "st115gs": {
+  "device": "xrd_ii.xmno",
+  "model": "nfet_03v3",
+  "pair": "gs",
+  "a": "iref_ii",
+  "b": "0",
+  "region": "II",
+  "role": "readleg"
+ },
+ "st115gd": {
+  "device": "xrd_ii.xmno",
+  "model": "nfet_03v3",
+  "pair": "gd",
+  "a": "iref_ii",
+  "b": "sense_ii",
+  "region": "II",
+  "role": "readleg"
+ },
+ "st115ds": {
+  "device": "xrd_ii.xmno",
+  "model": "nfet_03v3",
+  "pair": "ds",
+  "a": "sense_ii",
+  "b": "0",
+  "region": "II",
+  "role": "readleg"
+ }
+}
