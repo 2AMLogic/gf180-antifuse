@@ -29,7 +29,6 @@ import hashlib
 import json
 import subprocess
 import sys
-import time
 from collections import defaultdict
 from pathlib import Path
 
@@ -39,9 +38,10 @@ sys.path.insert(0, str(HERE))
 import analyze as A  # noqa: E402
 import make_bench as B  # noqa: E402
 
+sys.path.insert(0, str(HERE.parents[1] / "sim"))
+from harness import klt as K  # noqa: E402
+
 G = B.G
-MAX_SUBMITS = 40
-RETRY_WAIT_S = 45
 REGION = {"I": "Region I (Candidate 1)", "II": "Region II (Candidate 2)", "III": "Region III (Candidate 3)"}
 BANDS = [b[0] for b in G.BANDS]
 
@@ -56,31 +56,7 @@ def git(*a):
 
 
 def run_klt(request: Path, backend: str | None, outdir: Path) -> dict:
-    cmd = ["klt", "sim", str(request), "--format", "json", "-o", str(outdir)]
-    if backend:
-        cmd += ["--backend", backend]
-    for attempt in range(1, MAX_SUBMITS + 1):
-        print(f"running (submit {attempt}/{MAX_SUBMITS}):", " ".join(cmd), flush=True)
-        p = subprocess.run(cmd, capture_output=True, text=True)
-        blob = p.stdout + p.stderr
-        # The fleet is shared: a concurrency-cap or no-capacity refusal is transient and is retried as the
-        # SAME batch request after a pause. Nothing else is retried, and a local run is never substituted.
-        if ("BATCH_MAX_CONCURRENT_INSTANCES" in blob or "batch_no_capacity" in blob) and attempt < MAX_SUBMITS:
-            print(f"  fleet refusal; waiting {RETRY_WAIT_S}s", flush=True)
-            time.sleep(RETRY_WAIT_S)
-            continue
-        break
-    try:
-        rep = json.loads(p.stdout)
-    except json.JSONDecodeError:
-        print(f"ERROR: klt sim produced no JSON (exit {p.returncode}).\n--- stderr ---\n{p.stderr[-3000:]}\n--- stdout ---\n"
-              f"{p.stdout[:2000]}", file=sys.stderr)
-        raise SystemExit(1)
-    if "error" in rep:
-        print(f"ERROR: klt sim reported an error (exit {p.returncode}); NOT falling back to a local run:\n"
-              f"{json.dumps(rep['error'], indent=2)}", file=sys.stderr)
-        raise SystemExit(1)
-    return rep
+    return K.run_klt_or_exit(request, outdir, backend, retry=K.FIXED_WAIT)
 
 
 def compact(rep: dict) -> dict:

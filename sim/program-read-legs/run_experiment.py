@@ -28,7 +28,6 @@ import argparse
 import json
 import os
 import shutil
-import subprocess
 import sys
 import time
 from pathlib import Path
@@ -40,6 +39,7 @@ sys.path.insert(0, str(SIM_DIR))
 sys.path.insert(0, str(THIS_DIR))
 
 import benches as B  # noqa: E402
+from harness import klt as K  # noqa: E402
 from harness import pdk as P  # noqa: E402
 from harness import report as R  # noqa: E402
 
@@ -157,20 +157,10 @@ def corner_label(c: dict) -> str:
 # ---------------------------------------------------------------------------
 
 def run_klt(request_path: Path, outdir: Path, backend: str | None) -> tuple[dict | None, str]:
-    klt = os.environ.get("KLT", "klt")
-    cmd = [klt, "sim", str(request_path), "-o", str(outdir), "--format", "json"]
-    if backend:
-        cmd += ["--backend", backend]
     env = dict(os.environ)
     env.setdefault("PDK_ROOT", str(Path.home() / ".ciel"))
-    try:
-        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=KLT_TIMEOUT_S, env=env)
-    except subprocess.TimeoutExpired:
-        return None, "klt sim timed out"
-    try:
-        return json.loads(proc.stdout), proc.stderr
-    except json.JSONDecodeError:
-        return None, (proc.stdout + proc.stderr)[-4000:]
+    return K.run_klt(request_path, outdir, backend, klt_cmd=[os.environ.get("KLT", "klt")],
+                     timeout_s=KLT_TIMEOUT_S, env=env)
 
 
 def meas_table(response: dict) -> dict[str, dict[str, float | None]]:
