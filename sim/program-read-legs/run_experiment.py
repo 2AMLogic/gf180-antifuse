@@ -40,6 +40,7 @@ sys.path.insert(0, str(THIS_DIR))
 
 import benches as B  # noqa: E402
 from harness import klt as K  # noqa: E402
+from harness import numfmt as NF  # noqa: E402
 from harness import pdk as P  # noqa: E402
 from harness import report as R  # noqa: E402
 
@@ -256,7 +257,7 @@ def analyze_margin(tab: dict, iref: float) -> dict:
 
 
 def sci(x) -> str:
-    return "n/a" if x is None else f"{x:.3e}"
+    return NF.sci(x, digits=3)
 
 
 # ---------------------------------------------------------------------------

@@ -71,6 +71,7 @@ CHAR_DIR = SIM_DIR / "cell-device-characterization"
 sys.path.insert(0, str(SIM_DIR))
 from harness import corners as C  # noqa: E402
 from harness import klt as K  # noqa: E402
+from harness import numfmt as NF  # noqa: E402
 from harness import pdk as P  # noqa: E402
 from harness import report as R  # noqa: E402
 
@@ -145,8 +146,7 @@ def rel_dev(x: float, ref: float) -> float:
     return abs(x - ref) / abs(ref)
 
 
-def fmt(x: float) -> str:
-    return f"{x:.6e}"
+fmt = NF.fmt
 
 
 def sg_tag(sizing: str, geom: str) -> str:
@@ -936,8 +936,7 @@ def iread_table(results: dict[str, BenchResult]) -> list[dict]:
 # ---------------------------------------------------------------------------
 
 
-def sci(x) -> str:
-    return "n/a" if x is None else f"{x:.4e}"
+sci = NF.sci
 
 
 def render_record(pdk, cand, rid: str, results: dict[str, BenchResult], params: dict,

@@ -12,9 +12,14 @@ stdlib only.
 from __future__ import annotations
 
 import re
+import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(REPO_ROOT / "sim"))
+from harness import numfmt as NF  # noqa: E402
+
+fmt = NF.fmt
 NETLISTS = REPO_ROOT / "design" / "netlists"
 
 # --- assumed / placeholder numbers (each one is labelled wherever reported) --
@@ -33,24 +38,8 @@ VPP_IDLE = 6.0               # V, worst-case (highest) VPP while the leg is off
 
 PDK_DESIGN = "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/design.ngspice"
 
-_SUFFIX = {"f": 1e-15, "p": 1e-12, "n": 1e-9, "u": 1e-6, "m": 1e-3, "k": 1e3}
-
-
-def spice_num(tok: str) -> float:
-    m = re.fullmatch(r"([0-9.]+(?:e[-+]?[0-9]+)?)([a-z]*)", tok.strip().lower())
-    if not m:
-        raise ValueError(tok)
-    return float(m.group(1)) * _SUFFIX.get(m.group(2), 1.0)
-
-
-def fmt(v: float) -> str:
-    return f"{v:.6e}"
-
-
 def cell_defaults(cell: str) -> dict[str, float]:
-    text = (NETLISTS / f"{cell}.spice").read_text()
-    line = next(l for l in text.splitlines() if l.startswith(".subckt"))
-    return {k: spice_num(v) for k, v in re.findall(r"(\w+)=([0-9.eE+-]+[a-z]*)", line)}
+    return NF.cell_defaults(NETLISTS / f"{cell}.spice")
 
 
 # Candidate -> bias conventions, carried over from

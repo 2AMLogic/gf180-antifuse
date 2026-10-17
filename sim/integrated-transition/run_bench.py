@@ -27,7 +27,6 @@ import datetime as dt
 import gzip
 import hashlib
 import json
-import subprocess
 import sys
 from collections import defaultdict
 from pathlib import Path
@@ -40,6 +39,7 @@ import make_bench as B  # noqa: E402
 
 sys.path.insert(0, str(HERE.parents[1] / "sim"))
 from harness import klt as K  # noqa: E402
+from harness import report as R  # noqa: E402
 
 G = B.G
 REGION = {"I": "Region I (Candidate 1)", "II": "Region II (Candidate 2)", "III": "Region III (Candidate 3)"}
@@ -47,7 +47,7 @@ BANDS = [b[0] for b in G.BANDS]
 
 
 def git(*a):
-    return subprocess.run(["git", "-C", str(REPO), *a], capture_output=True, text=True).stdout.strip()
+    return R.git_out(REPO, *a)
 
 
 # ---------------------------------------------------------------------------
@@ -461,7 +461,7 @@ def main():
     now = dt.datetime.now(dt.timezone.utc)
     record_id = a.analyze or a.record_id or f"{now:%Y%m%d-%H%M%S}-{git('rev-parse', '--short', 'HEAD')}"
     repdir = HERE / "reports" / record_id
-    clean = git("status", "--porcelain") == ""
+    clean = not R.git_is_dirty(REPO)
 
     todo = [(sl, p, t) for sl in slices for p in procs for t in B.TIER_POINTS]
     comps: dict = {sl: {} for sl in slices}
