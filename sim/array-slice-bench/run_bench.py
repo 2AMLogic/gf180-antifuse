@@ -34,7 +34,6 @@ import datetime as dt
 import hashlib
 import json
 import re
-import subprocess
 import sys
 from collections import defaultdict
 from pathlib import Path
@@ -48,6 +47,8 @@ import make_bench as B  # noqa: E402
 
 sys.path.insert(0, str(REPO / "sim"))
 from harness import klt as K  # noqa: E402
+from harness import numfmt as NF  # noqa: E402
+from harness import report as R  # noqa: E402
 
 # Grading thresholds. Bench acceptance criteria of THIS record, not spec numbers.
 ETA_MIN = 0.80          # selected-cell access-path current / ideal (V_BL / R_FIL)
@@ -61,12 +62,10 @@ R_FIL = B.R_FIL
 
 
 def git(*a):
-    return subprocess.run(["git", "-C", str(REPO), *a], capture_output=True, text=True).stdout.strip()
+    return R.git_out(REPO, *a)
 
 
-def _num(tok: str) -> float:
-    v, s = G._split_token(tok)
-    return v * (G._SUFFIX[s.lower()] if s else 1.0)
+_num = NF.spice_num
 
 
 def load_netlist_cells(sl):
@@ -344,7 +343,7 @@ def run_full_band(a) -> int:
 
     now = dt.datetime.now(dt.timezone.utc)
     record_id = a.record_id or f"{now:%Y%m%d-%H%M%S}-{git('rev-parse', '--short', 'HEAD')}-fullband"
-    clean = git("status", "--porcelain") == ""
+    clean = not R.git_is_dirty(REPO)
     bands = a.band or list(G.BAND_SLICES)
     rep_dir = HERE / "reports" / record_id
     reports: dict[tuple[str, str], dict[str, dict]] = {}
@@ -500,7 +499,7 @@ def main():
 
     now = dt.datetime.now(dt.timezone.utc)
     record_id = f"{now:%Y%m%d-%H%M%S}-{git('rev-parse', '--short', 'HEAD')}"
-    clean = git("status", "--porcelain") == ""
+    clean = not R.git_is_dirty(REPO)
     sections, rep_paths = [], []
     summary = {}
     worst_bad = 0

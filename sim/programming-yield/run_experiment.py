@@ -38,6 +38,7 @@ SIM_DIR = THIS_DIR.parent
 REPO_ROOT = SIM_DIR.parent
 sys.path.insert(0, str(SIM_DIR))
 from harness import corners as C  # noqa: E402
+from harness import numfmt as NF  # noqa: E402
 from harness import pdk as P  # noqa: E402
 from harness import report as R  # noqa: E402
 
@@ -83,8 +84,7 @@ def proc_seed(proc: str) -> int:
     return MC_SEED + 1000 * C.MOSCAP_CORNERS.index(proc)
 
 
-def fmt(x: float) -> str:
-    return BM.fmt(x)
+fmt = NF.fmt
 
 
 def conditions() -> list[dict]:
@@ -272,7 +272,7 @@ def quantile(xs: list[float], q: float) -> float:
 
 
 def sci(x) -> str:
-    return "n/a" if x is None or (isinstance(x, float) and math.isnan(x)) else f"{x:.4e}"
+    return NF.sci(x, nan_placeholder=True)
 
 
 @dataclass
