@@ -3,6 +3,13 @@
 Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 
+### 2026-10-17
+
+- **PR #113**: refactor(design): share xschem emitter between array and leg generators
+- **PR #112**: refactor(sim): share one klt sim submit helper across run scripts
+- **Issue #111** (closed): Consolidate four divergent run_klt wrappers in sim/ scripts into sim/harness
+- **Issue #110** (closed): Consolidate duplicated xschem emitter code in gen_array.py and gen_leg_schematics.py
+
 ### 2026-10-16
 
 - **PR #108**: sim: integrated program-to-read transition and stress bench with first fleet record

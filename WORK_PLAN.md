@@ -5,6 +5,7 @@
 
 Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a human merge decision is missing.
 
+- **#61**: feat: SPI register file RTL, bench and decision record
 - **#85**: layout: first drawn candidate-1 bitcell with klt drc (T1 2.analog, 3.analog); LVS blocked upstream
 - **#88**: sim: Candidate 2 klt campaign via version-matched client; regenerate signoff (#63)
 - **#92**: design+sim: Candidate 3 read bias (n-well tied to read rail) with PVT evidence
@@ -28,7 +29,6 @@ _None._
 Human-approved issues ready for implementation (`loom:issue`).
 
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4)
-- **#58**: design: SPI slave register file RTL and bench per architecture §5 (T1 items 1 and 9, digital partition)
 
 ## In Progress
 
@@ -46,6 +46,7 @@ _None._
 
 PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
+- **#61**: feat: SPI register file RTL, bench and decision record
 - **#85**: layout: first drawn candidate-1 bitcell with klt drc (T1 2.analog, 3.analog); LVS blocked upstream
 - **#88**: sim: Candidate 2 klt campaign via version-matched client; regenerate signoff (#63)
 - **#92**: design+sim: Candidate 3 read bias (n-well tied to read rail) with PVT evidence
@@ -75,13 +76,13 @@ _None._
 
 | Bucket | Count |
 |------|-------|
-| Operator merge-risk holds | 4 |
+| Operator merge-risk holds | 5 |
 | Very important | 0 |
 | Important | 2 |
-| Ready (`loom:issue`) | 2 |
+| Ready (`loom:issue`) | 1 |
 | In Progress (`loom:building`) | 1 |
 | PRs awaiting review | 0 |
-| Approved PRs awaiting merge | 4 |
+| Approved PRs awaiting merge | 5 |
 | Curated | 7 |
 | Architect / Hermit proposals | 0 |
 | Active epics | 1 |
