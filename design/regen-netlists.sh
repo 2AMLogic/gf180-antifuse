@@ -24,7 +24,10 @@
 # same way from design/array/array_library.sch. Their schematics for the array
 # and slices are emitted by design/gen_array.py, which this script runs first
 # (or, under --check, runs in --check mode to prove the committed schematics
-# are what the generator produces) - see that file's header.
+# are what the generator produces) - see that file's header. The program / read
+# leg schematics in design/cells/ come from design/tools/gen_leg_schematics.py,
+# which is run (or --check'd) the same way; both generators share
+# design/tools/xschem_emit.py.
 #
 # The only transformations applied to xschem's output are path normalization
 # and continuation-line unwrapping (see below):
@@ -84,9 +87,16 @@ if [[ "${CHECK_ONLY}" -eq 1 ]]; then
     exit 1
   }
   echo "ok: generated array/mux schematics reproduce exactly"
+  python3 -I "${DESIGN_DIR}/tools/gen_leg_schematics.py" --check >/dev/null || {
+    python3 -I "${DESIGN_DIR}/tools/gen_leg_schematics.py" --check >&2 || true
+    exit 1
+  }
+  echo "ok: generated leg schematics reproduce exactly"
 else
   python3 -I "${DESIGN_DIR}/gen_array.py" >/dev/null
   echo "regenerated array/mux schematics (design/gen_array.py)"
+  python3 -I "${DESIGN_DIR}/tools/gen_leg_schematics.py" >/dev/null
+  echo "regenerated leg schematics (design/tools/gen_leg_schematics.py)"
 fi
 
 SCRATCH="$(mktemp -d)"
