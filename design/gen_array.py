@@ -62,6 +62,11 @@ import sys
 from pathlib import Path
 
 DESIGN_DIR = Path(__file__).resolve().parent
+# Shared emitter. regen-netlists.sh runs this under `python3 -I`, which leaves
+# the script directory off sys.path, so tools/ is added explicitly.
+sys.path.insert(0, str(DESIGN_DIR / "tools"))
+from xschem_emit import Sch, sym_text, write_or_check  # noqa: E402
+
 CELL_NETLIST_DIR = DESIGN_DIR / "netlists"
 MUX_DIR = DESIGN_DIR / "mux"
 ARRAY_DIR = DESIGN_DIR / "array"
@@ -192,131 +197,6 @@ def cell_params(r: int, c: int) -> tuple[int, dict[str, str]]:
     }
 
 
-# ---------------------------------------------------------------------------
-# xschem text helpers
-# ---------------------------------------------------------------------------
-
-HEADER = "v {xschem version=3.4.7 file_version=1.2\n"
-
-
-def comment_block(lines: list[str]) -> str:
-    return "\n" + "".join(f"* {ln}\n".replace("* \n", "*\n") for ln in lines)
-
-
-class Sch:
-    def __init__(self, comment: list[str]):
-        self.comment = comment
-        self.body: list[str] = []
-        self.n = 0
-
-    def _id(self, prefix: str) -> str:
-        self.n += 1
-        return f"{prefix}{self.n}"
-
-    def lab(self, net: str, x: float, y: float) -> None:
-        self.body.append(
-            f"C {{devices/lab_pin.sym}} {x:g} {y:g} 0 0 {{name={self._id('l')} sig_type=std_logic lab={net}}}"
-        )
-
-    def port(self, kind: str, net: str, x: float, y: float) -> None:
-        self.body.append(f"C {{devices/{kind}.sym}} {x:g} {y:g} 0 0 {{name={self._id('p')} lab={net}}}")
-
-    def inst(self, sym: str, x: float, y: float, attrs: str) -> None:
-        self.body.append(f"C {{{sym}}} {x:g} {y:g} 0 0 {{{attrs}}}")
-
-    def text(self, s: str, x: float, y: float, size: float = 0.3) -> None:
-        self.body.append(f"T {{{s}}} {x:g} {y:g} 0 0 {size} {size} {{}}")
-
-    def render(self) -> str:
-        return (
-            HEADER
-            + comment_block(self.comment)
-            + "}\nG {}\nK {}\nV {}\nS {}\nE {}\n"
-            + "\n".join(self.body)
-            + "\n"
-        )
-
-
-def mos_attrs(kind: str, name: str, W: str, L: str) -> str:
-    """Instance attribute block for a PDK MOS, following the symbol template
-    (design/cells/*.sch do the same, substituting the W token into the area /
-    perimeter expressions)."""
-    if kind in ("nfet_03v3", "pfet_03v3", "nfet_06v0", "pfet_06v0"):
-        return (
-            f"name={name}\nL={L}\nW={W}\nnf=1\nm=1\n"
-            f"ad=\"'int((nf+1)/2) * {W}/nf * 0.18u'\"\n"
-            f"pd=\"'2*int((nf+1)/2) * ({W}/nf + 0.18u)'\"\n"
-            f"as=\"'int((nf+2)/2) * {W}/nf * 0.18u'\"\n"
-            f"ps=\"'2*int((nf+2)/2) * ({W}/nf + 0.18u)'\"\n"
-            f"nrd=\"'0.18u / {W}'\" nrs=\"'0.18u / {W}'\"\n"
-            f"sa=0 sb=0 sd=0\nmodel={kind}\nspiceprefix=X"
-        )
-    if kind == "nfet_10v0_asym":
-        return (
-            f"name={name}\nL={L}\nW={W}\nnf=1\nm=1\n"
-            f"ad=\"'{W} * 1.48u'\"\npd=\"'2 * ({W} + 1.48u)'\"\n"
-            f"as=\"'{W} * 0.48u'\"\nps=\"'2 * ({W} + 0.48u)'\"\n"
-            f"nrd=0 nrs=0\nsa=0 sb=0 sd=0\nmodel={kind}\nspiceprefix=X"
-        )
-    if kind == "pfet_10v0_asym":
-        return (
-            f"name={name}\nL={L}\nW={W}\nnf=1\nm=1\n"
-            f"ad=\"'{W} * 1.78u'\"\npd=\"'2 * ({W} + 1.78u)'\"\n"
-            f"as=\"'{W} * 0.48u'\"\nps=\"'2 * ({W} + 0.48u)'\"\n"
-            f"nrd=0 nrs=0\nsa=0 sb=0 sd=0\nmodel={kind}\nspiceprefix=X"
-        )
-    raise ValueError(kind)
-
-
-def place_mos(s: Sch, kind: str, name: str, x: float, y: float, W: str, L: str,
-              d: str, g: str, src: str, b: str) -> None:
-    """Place a PDK MOS and a net label on each of its four pins.
-
-    Pin offsets from the PDK symbols: nmos D(20,-30) G(-20,0) S(20,30) B(20,0);
-    pmos has D and S swapped (D(20,30), S(20,-30))."""
-    s.inst(f"symbols/{kind}.sym", x, y, mos_attrs(kind, name, W, L))
-    pmos = kind.startswith("pfet")
-    dy, sy = (30, -30) if pmos else (-30, 30)
-    s.lab(d, x + 20, y + dy)
-    s.lab(g, x - 20, y)
-    s.lab(src, x + 20, y + sy)
-    s.lab(b, x + 20, y)
-
-
-# ---------------------------------------------------------------------------
-# Symbols
-# ---------------------------------------------------------------------------
-
-
-def sym_text(pins_left: list[tuple[str, str]], pins_right: list[tuple[str, str]],
-             fmt: str, template: str, comment: list[str], label: str,
-             width: int = 160, pitch: int = 20) -> str:
-    """Rectangular subcircuit symbol. Pins are (name, dir)."""
-    rows = max(len(pins_left), len(pins_right))
-    half_h = (rows * pitch) // 2 + 20
-    half_w = width // 2
-    out = [HEADER + comment_block(comment) + "}", "G {}",
-           f"K {{type=subcircuit\nformat=\"{fmt}\"\ntemplate=\"{template}\"\n}}",
-           "V {}", "S {}", "E {}"]
-    out.append(f"L 4 {-half_w + 20} {-half_h} {half_w - 20} {-half_h} {{}}")
-    out.append(f"L 4 {-half_w + 20} {half_h} {half_w - 20} {half_h} {{}}")
-    out.append(f"L 4 {-half_w + 20} {-half_h} {-half_w + 20} {half_h} {{}}")
-    out.append(f"L 4 {half_w - 20} {-half_h} {half_w - 20} {half_h} {{}}")
-    for side, pins in ((-1, pins_left), (1, pins_right)):
-        top = -((len(pins) - 1) * pitch) // 2
-        for i, (nm, dr) in enumerate(pins):
-            y = top + i * pitch
-            x = side * half_w
-            out.append(f"L 4 {x} {y} {side * (half_w - 20)} {y} {{}}")
-            out.append(f"B 5 {x - 2.5:g} {y - 2.5:g} {x + 2.5:g} {y + 2.5:g} {{name={nm} dir={dr}}}")
-            tx = x + 4 if side < 0 else x - 4 - 7 * len(nm)
-            out.append(f"T {{{nm}}} {tx + (20 if side < 0 else -20) * 0:g} {y - 6:g} 0 0 0.2 0.2 {{}}")
-    out.append(f"T {{@symname}} {-half_w + 28} {-half_h + 4} 0 0 0.3 0.3 {{}}")
-    out.append(f"T {{@name}} {-half_w + 20} {-half_h - 14} 0 0 0.25 0.25 {{}}")
-    out.append(f"T {{{label}}} {-half_w + 28} {half_h - 14} 0 0 0.2 0.2 {{}}")
-    return "\n".join(out) + "\n"
-
-
 # NOTE for parameter names below: `ln` (and `exp`, `log`, ...) are ngspice
 # expression functions; a subcircuit parameter named `ln` makes `l=ln` fail to
 # evaluate. Hence wpdn/lpdn (pull-down) and wpup/lpup (pull-up).
@@ -363,14 +243,14 @@ def gen_ls(family: str) -> tuple[str, str]:
         ]
     s = Sch(LS_NOTE + [""] + fam_note)
     # logic-domain inverter (3.3 V thin oxide): INB = NOT IN
-    place_mos(s, "nfet_03v3", "M1", 0, 0, "2u", "0.28u", "INB", "IN", "VSS", "VSS")
-    place_mos(s, "pfet_03v3", "M2", 0, -120, "4u", "0.28u", "INB", "IN", "VDDL", "VDDL")
+    s.mos("nfet_03v3", "M1", 0, 0, "2u", "0.28u", "INB", "IN", "VSS", "VSS")
+    s.mos("pfet_03v3", "M2", 0, -120, "4u", "0.28u", "INB", "IN", "VDDL", "VDDL")
     # latch pull-downs (gate = logic-domain select)
-    place_mos(s, nk, "M3", 300, 0, "wpdn", "lpdn", "OUTB", "IN", "VSS", "VSS")
-    place_mos(s, nk, "M4", 600, 0, "wpdn", "lpdn", "OUT", "INB", "VSS", "VSS")
+    s.mos(nk, "M3", 300, 0, "wpdn", "lpdn", "OUTB", "IN", "VSS", "VSS")
+    s.mos(nk, "M4", 600, 0, "wpdn", "lpdn", "OUT", "INB", "VSS", "VSS")
     # latch pull-ups (cross-coupled)
-    place_mos(s, pk, "M5", 300, -140, "wpup", "lpup", "OUT", "OUTB", "VDDH", "VDDH")
-    place_mos(s, pk, "M6", 600, -140, "wpup", "lpup", "OUTB", "OUT", "VDDH", "VDDH")
+    s.mos(pk, "M5", 300, -140, "wpup", "lpup", "OUT", "OUTB", "VDDH", "VDDH")
+    s.mos(pk, "M6", 600, -140, "wpup", "lpup", "OUTB", "OUT", "VDDH", "VDDH")
     for i, (kind, nm) in enumerate((("ipin", "IN"), ("ipin", "VDDL"), ("ipin", "VSS"),
                                     ("opin", "OUT"), ("opin", "OUTB"), ("ipin", "VDDH"))):
         s.port(kind, nm, -200 + 0, -240 + 40 * i)
@@ -416,7 +296,7 @@ def gen_pg(family: str) -> tuple[str, str]:
         "open items for the operator'.",
     ]
     s = Sch(comment)
-    place_mos(s, k, "M1", 300, 0, "wpg", "lpg", "A", "G", "B", "VB")
+    s.mos(k, "M1", 300, 0, "wpg", "lpg", "A", "G", "B", "VB")
     for i, (kind, nm) in enumerate((("iopin", "A"), ("iopin", "B"), ("ipin", "G"), ("ipin", "VB"))):
         s.port(kind, nm, 0, -100 + 40 * i)
     s.text(f"Local HV pass-gate, {k}", -50, -160, 0.5)
@@ -596,26 +476,7 @@ def main() -> int:
     ap.add_argument("--check", action="store_true", help="diff against the committed sources; write nothing")
     args = ap.parse_args()
 
-    outputs = all_outputs()
-    rc = 0
-    for path, text in sorted(outputs.items()):
-        rel = path.relative_to(DESIGN_DIR.parent)
-        if args.check:
-            if not path.exists():
-                print(f"DRIFT: {rel} is missing", file=sys.stderr)
-                rc = 1
-            elif path.read_text() != text:
-                print(f"DRIFT: {rel} differs from a fresh generation", file=sys.stderr)
-                rc = 1
-            else:
-                print(f"ok: {rel} reproduces exactly")
-        else:
-            path.parent.mkdir(parents=True, exist_ok=True)
-            path.write_text(text)
-            print(f"wrote: {rel}")
-    if args.check and rc:
-        print("\nGenerated sources are out of date. Run design/gen_array.py.", file=sys.stderr)
-    return rc
+    return write_or_check(all_outputs(), DESIGN_DIR.parent, args.check, "design/gen_array.py")
 
 
 if __name__ == "__main__":

@@ -121,7 +121,7 @@ design (no Candidate 2 / 10 V variant yet).
 
 **These three schematics are generated**, by
 [`tools/gen_leg_schematics.py`](tools/gen_leg_schematics.py): it holds the
-device table and net list once and computes every pin coordinate from the PDK
+net list once and, through the shared emitter `tools/xschem_emit.py`, computes every pin coordinate from the PDK
 symbols, which a hand-typed `.sch` would have to do by eye. The output is an
 ordinary xschem schematic and `regen-netlists.sh` derives the netlists from it
 exactly as for the cells; edit in xschem and stop using the script, or edit
@@ -294,13 +294,14 @@ evidence — see below. The cornered per-region bench for the array slices is
 | `check-array.py` | Region-map drift check (see above). stdlib only. |
 | `cells/{leg_interlock,program_leg,read_leg}.sch` / `.sym` | Program-leg / read-leg blocks (generated, see above). |
 | `cells/leg_library.sch` | Netlist driver for the leg blocks. |
-| `tools/gen_leg_schematics.py` | Generator for the leg schematics and symbols. |
+| `tools/gen_leg_schematics.py` | Generator for the leg schematics and symbols. `--check` diffs instead of writing. |
+| `tools/xschem_emit.py` | Shared xschem emission helpers (`Sch`, MOS attribute templates, PDK pin offsets, symbol drawing) used by both generators. |
 | `tb/tb_legs.spice` | Leg elaboration + interlock truth-table deck for `check-netlists.sh`. |
 | `netlists/*.spice` | **Derived.** xschem's netlist export (cells, level shifters, pass-gates, array, slices). Do not edit; regenerate. |
 | `tb/tb_cell_candidateN.spice` | Elaboration / parameter-propagation decks for `check-netlists.sh`. Not evidence, not cornered. |
 | `breakdown/` | Behavioral breakdown-augmented wrappers `cell_candidateN_bd` around the unmodified netlists, plus the labelled-parameter file. Hand-written, not derived; see [`breakdown/README.md`](breakdown/README.md). |
 | `xschemrc` | Project xschem config: PDK library path, this repo's cells, `split_files`. |
-| `regen-netlists.sh` | Runs `gen_array.py`, then regenerates `netlists/` from `cells/` and `array/`. `--check` diffs instead of writing. |
+| `regen-netlists.sh` | Runs `gen_array.py` and `tools/gen_leg_schematics.py`, then regenerates `netlists/` from `cells/` and `array/`. `--check` diffs instead of writing. |
 | `check-netlists.sh` | Runs all five checks below. |
 
 ## Working with these sources
