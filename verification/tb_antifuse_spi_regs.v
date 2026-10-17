@@ -132,6 +132,7 @@ module tb_antifuse_spi_regs;
 
     // register addresses / helpers
     localparam A_ROW = 7'h00, A_COL = 7'h01, A_CTRL = 7'h02, A_PW = 7'h03, A_ST = 7'h04, A_RD = 7'h05;
+    localparam A_FIRE = 7'h78;      // FIRE command (spec/architecture.md section 5, amendment A1)
     localparam S_BUSY = 0, S_DONE = 1, S_VALID = 2, S_PERR = 3;
 
     task wait_idle; begin while (busy) @(posedge clk); tick(6); end endtask
@@ -141,7 +142,7 @@ module tb_antifuse_spi_regs;
     task prog_seq; input [7:0] r; input [7:0] c; input [7:0] w;
         begin
             xw(A_ROW, r); xw(A_COL, c); xw(A_PW, w);
-            xw(A_CTRL, 8'h01); xw(A_CTRL, 8'h03);
+            xw(A_CTRL, 8'h01); xw(A_FIRE, 8'h00);
             wait_idle;
         end
     endtask
@@ -248,7 +249,7 @@ module tb_antifuse_spi_regs;
             check(!prog_en, "arm alone emits no pulse");
             xr(A_CTRL); check(rd == 8'h01, "armed");
             tick(30); check(pulse_cnt == c0, "still no pulse before strobe");
-            xw(A_CTRL, 8'h03);
+            xw(A_FIRE, 8'h00);
             wait_idle;
             check(pulse_cnt == c0 + 1, "exactly one pulse");
             check(last_len == 20, "pulse length == PULSE_WIDTH cycles");
@@ -266,7 +267,7 @@ module tb_antifuse_spi_regs;
             hard_reset;
             // default (reset) code, SCLK idle during the pulse
             c0 = pulse_cnt;
-            xw(A_CTRL, 8'h01); xw(A_CTRL, 8'h03); wait_idle;
+            xw(A_CTRL, 8'h01); xw(A_FIRE, 8'h00); wait_idle;
             check(pulse_cnt == c0 + 1 && last_len == 1, "default code 0x01 -> 1 cycle");
             prog_seq(1, 1, 8'd1);   check(last_len == 1, "min code 1 -> 1 cycle");
             prog_seq(1, 1, 8'd16);  check(last_len == 16, "code 16 -> 16 cycles");
@@ -296,9 +297,13 @@ module tb_antifuse_spi_regs;
             begin_test("neg_strobe_without_arm");
             hard_reset; p0 = prog_cycles; c0 = pulse_cnt;
             xw(A_CTRL, 8'h02); tick(20);
-            st; check(rd[S_PERR] && !rd[S_BUSY], "strobe-only -> PROTOCOL_ERROR, not BUSY");
-            xw(A_CTRL, 8'h03);   // arm+strobe also needs a prior arm
+            st; check(rd[S_PERR] && !rd[S_BUSY], "CTRL strobe-only -> PROTOCOL_ERROR, not BUSY");
+            xw(A_FIRE, 8'h00);   // arm+strobe via CTRL: PROG_STROBE is not writable
             tick(20);
+            st; check(rd[S_PERR] && !rd[S_BUSY], "CTRL 0x03 -> PROTOCOL_ERROR, not BUSY");
+            xw(A_FIRE, 8'h00);   // FIRE needs a prior arm
+            tick(20);
+            st; check(rd[S_PERR] && !rd[S_BUSY], "FIRE while unarmed -> PROTOCOL_ERROR, not BUSY");
             check(prog_cycles == p0 && pulse_cnt == c0, "no program pulse");
             check(!prog_en, "prog_en low");
             end_test;
@@ -309,11 +314,13 @@ module tb_antifuse_spi_regs;
         begin
             begin_test("neg_arm_and_strobe_in_one_transaction");
             hard_reset; p0 = prog_cycles; c0 = pulse_cnt;
-            xw(A_CTRL, 8'h03); tick(40);
+            xw(A_FIRE, 8'h00); tick(40);
             check(pulse_cnt == c0 && prog_cycles == p0, "no pulse from combined write");
             xr(A_CTRL); check(rd == 8'h00, "combined write did not arm");
             xw(A_CTRL, 8'h02); tick(40);
             check(pulse_cnt == c0 && prog_cycles == p0, "no pulse from following strobe");
+            xw(A_FIRE, 8'h00); tick(40);
+            check(pulse_cnt == c0 && prog_cycles == p0, "no pulse from following FIRE");
             st; check(rd[S_PERR], "PROTOCOL_ERROR flagged");
             end_test;
         end
@@ -327,7 +334,7 @@ module tb_antifuse_spi_regs;
             tick(TB_TIMEOUT + 50);
             xr(A_CTRL); check(rd == 8'h00, "PROG_ARM auto-cleared after timeout");
             st; check(!rd[S_PERR], "timeout itself is not a protocol error");
-            xw(A_CTRL, 8'h03); tick(40);
+            xw(A_FIRE, 8'h00); tick(40);
             check(pulse_cnt == c0 && prog_cycles == p0, "no pulse after timeout");
             st; check(rd[S_PERR], "late strobe -> PROTOCOL_ERROR");
             end_test;
@@ -338,7 +345,7 @@ module tb_antifuse_spi_regs;
         begin
             begin_test("neg_stuck_high_strobe");
             hard_reset; p0 = prog_cycles; c0 = pulse_cnt;
-            for (i = 0; i < 4; i = i + 1) begin xw(A_CTRL, 8'h02); xw(A_CTRL, 8'h03); end
+            for (i = 0; i < 4; i = i + 1) begin xw(A_CTRL, 8'h02); xw(A_FIRE, 8'h00); end
             tick(40);
             check(pulse_cnt == c0 && prog_cycles == p0, "repeated strobe writes emit no pulse");
             // MOSI stuck high through one long frame: a single overlong frame
@@ -355,7 +362,7 @@ module tb_antifuse_spi_regs;
             begin_test("neg_repeated_strobe_after_completion");
             hard_reset; prog_seq(2, 3, 8'd5);
             c0 = pulse_cnt; p0 = prog_cycles;
-            xw(A_CTRL, 8'h03); xw(A_CTRL, 8'h02); tick(40);
+            xw(A_FIRE, 8'h00); xw(A_CTRL, 8'h02); tick(40);
             check(pulse_cnt == c0 && prog_cycles == p0, "no second pulse without re-arm");
             xr(A_CTRL); check(rd == 8'h00, "arm stayed cleared");
             end_test;
@@ -378,7 +385,7 @@ module tb_antifuse_spi_regs;
                 endcase
                 xr(A_CTRL); check(rd == 8'h00, "write while armed cleared PROG_ARM");
                 st; check(rd[S_PERR], "write while armed set PROTOCOL_ERROR");
-                xw(A_CTRL, 8'h03); tick(40);
+                xw(A_FIRE, 8'h00); tick(40);
                 check(pulse_cnt == c0 && prog_cycles == p0, "following strobe emits no pulse");
             end
             end_test;
@@ -395,7 +402,7 @@ module tb_antifuse_spi_regs;
                 c0 = pulse_cnt;
                 xw(A_CTRL, 8'h01);
                 // strobe frame: clock all 16 bits, then hold CS_N low until the target cycle
-                cs_low; send_bits(8, 32'h82); send_bits(8, 32'h03);
+                cs_low; send_bits(8, 32'hF8); send_bits(8, 32'h00);
                 while (cyc < arm_first_cyc + TB_TIMEOUT - 6 + trial) @(posedge clk);
                 #1 cs_n = 1'b1;
                 tick(TB_TIMEOUT / 8 + 40);
@@ -425,46 +432,172 @@ module tb_antifuse_spi_regs;
         end
     endtask
 
-    // Single-bit-fault regression: while armed, every CTRL value one bit away
-    // from the fire code (0x03) must be rejected and must not program.
-    task t_neg_single_bit_corrupt_while_armed;
-        integer k;
-        reg [7:0] v;
+    // ---- fault model and single-bit-fault coverage ----------------------------
+    // Fault model (spec/spi-register-implementation-decision.md, "Fault model"):
+    //   FM1  one MOSI bit of one 16-bit frame is inverted (any of 16 positions,
+    //        command or data byte);
+    //   FM2  at most one such fault per host sequence between resets, so every
+    //        other frame of the sequence is as the host intended;
+    //   FM3  one transaction-boundary fault: a missing or extra SCLK edge, a
+    //        spurious CS_N rise inside a frame, or a missed CS_N rise between
+    //        two frames.
+    // Claim: a program pulse needs a committed FIRE frame (command byte 0xF8)
+    // while armed, and no defined-register frame (command bytes 0x00..0x05 and
+    // 0x80..0x85, any data) is within Hamming distance 3 of 0xF8 -- so no
+    // fault in FM1..FM3 turns a host sequence that contains no FIRE into a pulse.
+
+    // Program-capable commands: every 8-bit command byte, three data bytes, armed
+    // and unarmed. Exactly the FIRE command with the arm in place may pulse.
+    task t_fire_only_via_fire_cmd;
+        integer cb, di, ar;
+        reg [7:0] cmdb, datb;
+        integer expect_n;
         begin
-            begin_test("single_bit_corrupted_ctrl_while_armed");
-            for (k = 0; k < 8; k = k + 1) begin
-                v = 8'h03 ^ (8'h01 << k);
-                hard_reset; c0 = pulse_cnt;
-                xw(A_ROW, 8'h00); xw(A_COL, 8'h00);
-                xw(A_CTRL, 8'h01);
-                xw(A_CTRL, v); wait_idle;
-                check(pulse_cnt == c0, "single-bit-corrupted CTRL while armed must not program");
-                st; check(rd[S_PERR], "single-bit-corrupted CTRL while armed sets PROTOCOL_ERROR");
-            end
+            begin_test("fire_only_via_fire_command_all_cmd_bytes");
+            sh = 4; expect_n = 0;
+            for (ar = 0; ar < 2; ar = ar + 1)
+                for (cb = 0; cb < 256; cb = cb + 1)
+                    for (di = 0; di < 3; di = di + 1) begin
+                        cmdb = cb;
+                        datb = (di == 0) ? 8'h00 : (di == 1) ? 8'h03 : 8'hFF;
+                        hard_reset; sh = 4; xw(A_PW, 8'd1);
+                        if (ar) xw(A_CTRL, 8'h01);
+                        c0 = pulse_cnt;
+                        xfer(cmdb, datb); tick(8);
+                        wait_idle;
+                        if (ar && cmdb == 8'hF8) begin
+                            expect_n = expect_n + 1;
+                            check(pulse_cnt == c0 + 1, "armed FIRE command pulses once");
+                        end else
+                            check(pulse_cnt == c0, "no pulse from any other command byte or state");
+                    end
+            check(expect_n == 3, "FIRE command was exercised");
+            sh = 8;
             end_test;
         end
     endtask
 
-    // Command-byte corruption: every non-firing frame the host legitimately
-    // issues while armed (DISARM write, reads of each register), with each of
-    // the 8 command bits flipped, must not program.
-    task t_single_bit_corrupted_cmd_while_armed;
-        integer k, f;
-        reg [7:0] c, d;
+    // CTRL carries no strobe: every CTRL data value, written while armed, leaves
+    // the pulse count unchanged (the pre-amendment fire code 0x03 included).
+    task t_ctrl_cannot_fire;
+        integer vv;
         begin
-            begin_test("single_bit_corrupted_cmd_while_armed");
-            for (f = 0; f < 7; f = f + 1) begin
-                for (k = 0; k < 8; k = k + 1) begin
-                    if (f == 0) begin c = 8'h82; d = 8'h00; end   // DISARM write
-                    else begin c = f - 1; d = 8'h00; end          // read of reg f-1
-                    c = c ^ (8'h01 << k);
-                    hard_reset; c0 = pulse_cnt;
-                    xw(A_ROW, 8'h00); xw(A_COL, 8'h00);
-                    xw(A_CTRL, 8'h01);
-                    xfer(c, d); wait_idle;
-                    check(pulse_cnt == c0, "single-bit-corrupted command byte while armed must not program");
+            begin_test("ctrl_write_cannot_fire_any_value");
+            sh = 4;
+            for (vv = 0; vv < 256; vv = vv + 1) begin
+                hard_reset; sh = 4; xw(A_CTRL, 8'h01); c0 = pulse_cnt;
+                xw(A_CTRL, vv); wait_idle;
+                check(pulse_cnt == c0, "no CTRL data value fires");
+            end
+            sh = 8;
+            end_test;
+        end
+    endtask
+
+    // FM1: every defined-register frame the host can legitimately issue (all 12
+    // command bytes, a spread of data bytes), each of its 16 bits flipped, in the
+    // armed and the unarmed state. None of the 2 x 12 x 6 x 16 faulted frames
+    // may produce a pulse.
+    task t_single_bit_flip_never_fires;
+        integer ar, ci, di, bit;
+        reg [7:0] cmdb, datb;
+        reg [15:0] fr;
+        begin
+            begin_test("single_bit_flip_of_any_register_frame_never_fires");
+            sh = 4;
+            for (ar = 0; ar < 2; ar = ar + 1)
+                for (ci = 0; ci < 12; ci = ci + 1)
+                    for (di = 0; di < 6; di = di + 1) begin
+                        cmdb = (ci < 6) ? ci : (8'h80 | (ci - 6));
+                        datb = (di == 0) ? 8'h00 : (di == 1) ? 8'h01 : (di == 2) ? 8'h03 :
+                               (di == 3) ? 8'h04 : (di == 4) ? 8'h07 : 8'hFF;
+                        for (bit = 0; bit < 16; bit = bit + 1) begin
+                            fr = {cmdb, datb} ^ (16'h0001 << bit);
+                            hard_reset; sh = 4; xw(A_PW, 8'd1);
+                            if (ar) xw(A_CTRL, 8'h01);
+                            c0 = pulse_cnt;
+                            xfer(fr[15:8], fr[7:0]); wait_idle;
+                            check(pulse_cnt == c0, "single-bit-flipped register frame must not program");
+                        end
+                    end
+            sh = 8;
+            end_test;
+        end
+    endtask
+
+    // FM1 on the legitimate sequence: arm, then a flip anywhere in the FIRE
+    // frame. A data-byte flip is still the host's FIRE (one pulse, as intended);
+    // a command-byte flip is no longer a FIRE: no pulse, PROTOCOL_ERROR, arm dropped.
+    task t_fire_frame_single_bit_flip;
+        integer bit;
+        reg [15:0] fr;
+        begin
+            begin_test("fire_frame_single_bit_flip_fail_safe");
+            sh = 4;
+            for (bit = 0; bit < 16; bit = bit + 1) begin
+                fr = 16'hF800 ^ (16'h0001 << bit);
+                hard_reset; sh = 4; xw(A_PW, 8'd1); xw(A_CTRL, 8'h01); c0 = pulse_cnt;
+                xfer(fr[15:8], fr[7:0]); wait_idle;
+                if (bit < 8) check(pulse_cnt == c0 + 1, "data-bit flip of FIRE is still the intended FIRE");
+                else begin
+                    check(pulse_cnt == c0, "command-bit flip of FIRE does not program");
+                    st; check(rd[S_PERR], "command-bit flip of FIRE -> PROTOCOL_ERROR");
+                    xr(A_CTRL); check(rd == 8'h00, "command-bit flip of FIRE dropped the arm");
                 end
             end
+            sh = 8;
+            end_test;
+        end
+    endtask
+
+    // FM3: transaction-boundary faults around the FIRE frame and its neighbours.
+    task t_boundary_faults_never_fire;
+        integer k, which;
+        reg [15:0] fr;
+        begin
+            begin_test("transaction_boundary_faults_never_fire");
+            sh = 4;
+            // (a) spurious CS_N rise inside a frame at every bit position: the
+            //     frame is split into two, neither of which is 16 bits.
+            for (which = 0; which < 2; which = which + 1) begin
+                fr = which ? 16'hF800 : 16'h8200;        // FIRE frame / DISARM frame
+                for (k = 1; k < 16; k = k + 1) begin
+                    hard_reset; sh = 4; xw(A_PW, 8'd1); xw(A_CTRL, 8'h01); c0 = pulse_cnt;
+                    cs_low; send_bits(k, fr >> (16 - k)); cs_high;
+                    cs_low; send_bits(16 - k, fr); cs_high; wait_idle;
+                    check(pulse_cnt == c0, "CS_N glitch inside a frame never programs");
+                    xr(A_CTRL); check(rd == 8'h00, "CS_N glitch dropped the arm");
+                end
+            end
+            // (b) missed CS_N rise between two frames (32 edges in one frame)
+            for (which = 0; which < 3; which = which + 1) begin
+                hard_reset; sh = 4; xw(A_PW, 8'd1); xw(A_CTRL, 8'h01); c0 = pulse_cnt;
+                cs_low;
+                case (which)
+                    0: begin send_bits(16, 32'h8200); send_bits(16, 32'hF800); end   // DISARM,FIRE
+                    1: begin send_bits(16, 32'h0400); send_bits(16, 32'hF800); end   // STATUS read,FIRE
+                    default: begin send_bits(16, 32'h8201); send_bits(16, 32'hF800); end // ARM,FIRE
+                endcase
+                cs_high; wait_idle;
+                check(pulse_cnt == c0, "merged frames (missed CS_N rise) never program");
+            end
+            // (c) one SCLK edge missing / extra inside a FIRE frame: not a 16-edge frame
+            for (which = 0; which < 2; which = which + 1) begin
+                for (k = 0; k < 16; k = k + 1) begin
+                    hard_reset; sh = 4; xw(A_PW, 8'd1); xw(A_CTRL, 8'h01); c0 = pulse_cnt;
+                    cs_low;
+                    if (which == 0) begin   // drop bit k from the stream
+                        if (k > 0) send_bits(k, 32'hF800 >> (16 - k));
+                        if (k < 15) send_bits(15 - k, 32'hF800);
+                    end else begin          // repeat bit k
+                        send_bits(k + 1, 32'hF800 >> (15 - k));
+                        send_bits(16 - k, 32'hF800 >> 0);
+                    end
+                    cs_high; wait_idle;
+                    check(pulse_cnt == c0, "missing/extra SCLK edge never programs");
+                end
+            end
+            sh = 8;
             end_test;
         end
     endtask
@@ -476,7 +609,7 @@ module tb_antifuse_spi_regs;
             xw(A_CTRL, 8'h01); xw(A_CTRL, 8'h00);
             xr(A_CTRL); check(rd == 8'h00, "CTRL=0 disarms");
             st; check(!rd[S_PERR], "disarm is not an error");
-            xw(A_CTRL, 8'h03); tick(40);
+            xw(A_FIRE, 8'h00); tick(40);
             check(pulse_cnt == c0, "strobe after disarm emits no pulse");
             prog_seq(0, 0, 8'd3); check(pulse_cnt == c0 + 1, "re-arm then strobe works");
             end_test;
@@ -489,11 +622,11 @@ module tb_antifuse_spi_regs;
         integer which;
         begin
             begin_test("busy_writes_rejected_during_program_pulse");
-            for (which = 0; which < 6; which = which + 1) begin
+            for (which = 0; which < 7; which = which + 1) begin
                 hard_reset; sh = 4;
                 xw(A_ROW, 4); xw(A_COL, 6); xw(A_PW, 8'd255);
                 xw(A_CTRL, 8'h01); c0 = pulse_cnt; r0 = read_cnt;
-                xw(A_CTRL, 8'h03);                         // pulse now running
+                xw(A_FIRE, 8'h00);                         // pulse now running
                 check(busy, "BUSY during pulse");
                 case (which)
                     0: xw(A_ROW, 8'h09);
@@ -501,9 +634,10 @@ module tb_antifuse_spi_regs;
                     2: xw(A_PW, 8'd3);
                     3: xw(A_CTRL, 8'h01);
                     4: xw(A_CTRL, 8'h04);
+                    5: xw(A_FIRE, 8'h00);                    // second FIRE while the pulse runs
                     default: st;
                 endcase
-                if (which == 5) check(rd[S_BUSY], "STATUS read during pulse shows BUSY");
+                if (which == 6) check(rd[S_BUSY], "STATUS read during pulse shows BUSY");
                 check(prog_en, "pulse still running after the transaction");
                 wait_idle;
                 check(pulse_cnt == c0 + 1 && last_len == 255, "single full-length pulse");
@@ -512,7 +646,7 @@ module tb_antifuse_spi_regs;
                 xr(A_PW); check(rd == 8'd255, "PULSE_WIDTH unchanged");
                 xr(A_CTRL); check(rd == 8'h00, "CTRL clear after pulse");
                 st;
-                if (which == 5) check(!rd[S_PERR], "legal STATUS read during pulse is not an error");
+                if (which == 6) check(!rd[S_PERR], "legal STATUS read during pulse is not an error");
                 else check(rd[S_PERR], "BUSY write -> PROTOCOL_ERROR");
                 sh = 8;
             end
@@ -557,10 +691,10 @@ module tb_antifuse_spi_regs;
             xr(A_CTRL); check(rd == 8'h00, "reset cleared PROG_ARM");
             xr(A_ROW); check(rd == 8'h00, "reset cleared ADDR_ROW");
             xr(A_PW); check(rd == 8'h01, "reset restored PULSE_WIDTH");
-            c0 = pulse_cnt; xw(A_CTRL, 8'h03); tick(40);
+            c0 = pulse_cnt; xw(A_FIRE, 8'h00); tick(40);
             check(pulse_cnt == c0, "strobe after reset emits no pulse");
             // reset in the middle of a pulse
-            hard_reset; sh = 4; xw(A_PW, 8'd200); xw(A_CTRL, 8'h01); c0 = pulse_cnt; xw(A_CTRL, 8'h03);
+            hard_reset; sh = 4; xw(A_PW, 8'd200); xw(A_CTRL, 8'h01); c0 = pulse_cnt; xw(A_FIRE, 8'h00);
             tick(20); check(prog_en, "pulse running");
             #1 rst_n = 0; #1 check(!prog_en && !busy, "prog_en drops immediately on reset");
             tick(4); rst_n = 1; tick(8);
@@ -645,7 +779,7 @@ module tb_antifuse_spi_regs;
             end
             // an invalid write must not retarget a following pulse to the aliased cell
             xw(A_ROW, 8'h80 | 8'd5); xw(A_COL, (1 << AW) | 8'd5);
-            xw(A_CTRL, 8'h01); xw(A_CTRL, 8'h03); wait_idle;
+            xw(A_CTRL, 8'h01); xw(A_FIRE, 8'h00); wait_idle;
             check(pulse_cnt == c0 + 1 && pulse_row == 1 && pulse_col == 1, "pulse lands on last valid cell, not alias");
             end_test;
         end
@@ -683,7 +817,7 @@ module tb_antifuse_spi_regs;
             cs_low; send_bits(15, 32'h4101); cs_high;
             xr(A_CTRL); check(rd == 8'h00, "malformed frame while armed drops the arm");
             xw(A_CTRL, 8'h01);
-            cs_low; send_bits(16, 32'h8203); send_bits(1, 0); cs_high;
+            cs_low; send_bits(16, 32'hF800); send_bits(1, 0); cs_high;
             tick(40);
             check(pulse_cnt == c0 && prog_cycles == p0, "no pulse from malformed strobe frames");
             // truncated write must not change a register
@@ -757,8 +891,11 @@ module tb_antifuse_spi_regs;
         t_neg_write_while_armed;
         t_arm_flag_duration;
         t_neg_arm_timeout_boundary;
-        t_neg_single_bit_corrupt_while_armed;
-        t_single_bit_corrupted_cmd_while_armed;
+        t_fire_only_via_fire_cmd;
+        t_ctrl_cannot_fire;
+        t_single_bit_flip_never_fires;
+        t_fire_frame_single_bit_flip;
+        t_boundary_faults_never_fire;
         t_disarm_and_rearm;
         t_neg_busy_writes_program;
         t_neg_busy_writes_read;

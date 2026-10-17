@@ -17,11 +17,13 @@ Nothing else.
 ```sh
 verification/run_spi_regs.sh          # simulate all configurations
 verification/run_spi_regs.sh --lint   # verilator --lint-only -Wall + iverilog -Wall
+verification/run_spi_regs.sh --quick  # N=32 configuration only
+verification/run_spi_mutations.sh     # mutation evidence (about 2 minutes)
 ```
 
 Exit status is nonzero if any check fails, a simulation does not report
 `RESULT: ALL ... PASSED`, a compile fails, or lint reports anything. Runtime
-is a few seconds. `RTL=path/to/variant.v` substitutes the DUT source (used for
+is about 30 seconds. `RTL=path/to/variant.v` substitutes the DUT source (used for
 mutation checks).
 
 ### Configurations
@@ -48,8 +50,19 @@ the settle is too short for a frame to fit, i.e. N = 32 config).
   `neg_target_or_width_write_while_armed` (row, column, width, out-of-range),
   `neg_arm_timeout_boundary` (commit one cycle inside the window fires, one
   cycle outside does not), `arm_flag_high_exactly_ARM_TIMEOUT_cycles`,
-  `single_bit_corrupted_ctrl_while_armed` (all eight one-bit neighbours of
-  the fire code), `disarm_write_and_rearm`, `reset_while_armed_and_while_active`
+  `disarm_write_and_rearm`, `reset_while_armed_and_while_active`
+- Single-bit-fault model (amendment A1; fault model FM1-FM3 and claims in
+  `spec/spi-register-implementation-decision.md`):
+  `fire_only_via_fire_command_all_cmd_bytes` (all 256 command bytes x 3 data
+  bytes x armed/unarmed; only `0xF8` while armed pulses),
+  `ctrl_write_cannot_fire_any_value` (all 256 `CTRL` values while armed),
+  `single_bit_flip_of_any_register_frame_never_fires` (12 command bytes x 6
+  data bytes x 16 bit positions x armed/unarmed),
+  `fire_frame_single_bit_flip_fail_safe` (command-bit flip: no pulse, error,
+  arm dropped; data-bit flip: still the intended `FIRE`),
+  `transaction_boundary_faults_never_fire` (CS_N glitch at every bit position,
+  merged frames from a missed CS_N rise, missing or extra SCLK edge at every
+  position)
 - `busy_writes_rejected_during_program_pulse`,
   `busy_writes_rejected_during_read_settle`
 - Read path: `read_strobe_rdata_and_settle` (sense 0 and 1, `READ_VALID`,
@@ -64,8 +77,14 @@ the settle is too short for a frame to fit, i.e. N = 32 config).
 
 ### Mutation check
 
-The interlock guard is the line tagged `// ARM-GUARD` in
-`rtl/antifuse_spi_regs.v` (`3'b011: if (arm) do_fire = 1'b1; else err = ...`).
-Replacing it with an unconditional `do_fire = 1'b1` makes
-`neg_strobe_without_arm` (and the other interlock cases) fail and the runner
-exit nonzero; restoring it passes. The recorded run is in the pull request.
+`verification/run_spi_mutations.sh` applies each of nine single-line
+mutations to a temporary copy of `rtl/antifuse_spi_regs.v`, runs the N = 32
+bench on it, and requires the bench to fail; the unmutated RTL must pass.
+Mutants: arm guard removed (the line tagged `// ARM-GUARD`); the pre-A1
+`CTRL` strobe code restored; `FIRE` decoded with a don't-care address bit
+(`0x79`, `0x7A`); a `ROW` or `PULSE_WIDTH` write of `0x03` while armed fires
+(the pre-A1 residual); `FIRE` accepted as a read command; overlong or
+truncated frames accepted. The runner exits nonzero if any mutant survives or
+fails to apply. The recorded run is in the pull request. The mutations show
+the named tests detect these removals; they do not prove no other fault
+exists outside the stated fault model.

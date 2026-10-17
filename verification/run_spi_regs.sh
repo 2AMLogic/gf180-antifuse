@@ -2,6 +2,7 @@
 # One-command cold start for the SPI register file bench.
 #   verification/run_spi_regs.sh          run the bench for all configurations
 #   verification/run_spi_regs.sh --lint   lint the RTL (verilator + iverilog) only
+#   verification/run_spi_regs.sh --quick  N=32 configuration only (mutation runs)
 # Exit status is nonzero if any check fails, any simulation does not report
 # "ALL ... TESTS PASSED", or lint reports anything.
 # RTL=<file> overrides the DUT source (used for the mutation demonstration).
@@ -47,7 +48,7 @@ run_cfg() {
 }
 
 run_cfg 32 8 4096     # ratified grid size, default settle
-run_cfg 20 200 2048   # second supported N (non power of two, 5-bit address), long settle for BUSY-write tests
+[ "${1:-}" = "--quick" ] || run_cfg 20 200 2048   # second supported N (non power of two, 5-bit address), long settle for BUSY-write tests
 
 if [ $status -eq 0 ]; then echo "ALL CONFIGURATIONS PASSED"; else echo "SUITE FAILED"; fi
 exit $status

@@ -1,7 +1,8 @@
 // antifuse_spi_regs.v -- SPI slave, register file and program/read sequencer
 //
 // Implements the register map, the enable-then-strobe program interlock and
-// the read sequence ratified in spec/architecture.md section 5, with the
+// the read sequence ratified in spec/architecture.md section 5 (as amended by
+// A1: the strobe is the FIRE command at address 0x78, not a CTRL bit), with the
 // design-stage choices recorded in spec/spi-register-implementation-decision.md.
 // Port, clock/reset and timing contract: rtl/README.md.
 //
@@ -48,6 +49,7 @@ module antifuse_spi_regs #(
 
     localparam AW = clog2(N);
     localparam CW = clog2(ARM_TIMEOUT + 1);
+    localparam [6:0] A_FIRE = 7'h78;           // FIRE command address (spec/architecture.md section 5, amendment A1)
     localparam [8:0] NV = N;                   // N as a 9-bit value (N = 256 fits)
 
     // synthesis translate_off
@@ -183,11 +185,13 @@ module antifuse_spi_regs #(
                         if (dat[7:3] != 5'b0) err = 1'b1;
                         else case (dat[2:0])
                             3'b000: do_disarm = 1'b1;
-                            3'b001: if (arm) err = 1'b1; else do_arm = 1'b1; // re-arm while armed is 1 bit from fire
-                            3'b011: if (arm) do_fire = 1'b1; else err = 1'b1; // ARM-GUARD
+                            3'b001: if (arm) err = 1'b1; else do_arm = 1'b1;
                             3'b100: if (arm) err = 1'b1; else do_read = 1'b1;
-                            default: err = 1'b1;
+                            default: err = 1'b1;              // incl. PROG_STROBE: not writable via CTRL
                         endcase
+                    end
+                    A_FIRE: begin                             // the only path to a program pulse
+                        if (arm) do_fire = 1'b1; else err = 1'b1; // ARM-GUARD
                     end
                     default: err = 1'b1;                      // RO register or unknown address
                 endcase

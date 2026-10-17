@@ -36,6 +36,24 @@ Unsupported values stop simulation at elaboration (`translate_off` block).
 | `sense_in` | in | Sensed cell state, 1 = programmed. Asynchronous; double-flop synchronized and sampled on the last `read_en` cycle. |
 | `busy` | out | `STATUS.BUSY`: pulse or read in progress. |
 
+### Host contract: program sequence (amendment A1)
+
+The program strobe is the `FIRE` command, not a `CTRL` bit. A host programs a
+cell with separate CS_N-low frames, in this order:
+
+1. write `ADDR_ROW` (`{0x80, row}`), `ADDR_COL` (`{0x81, col}`), and optionally
+   `PULSE_WIDTH` (`{0x83, code}`, code 1..255);
+2. arm: write `CTRL = 0x01` (`{0x82, 0x01}`);
+3. fire: write the `FIRE` command (`{0xF8, 0x00}`) within `ARM_TIMEOUT` `clk`
+   cycles of step 2's commit. The data byte is ignored; send `0x00`;
+4. poll `STATUS` (`{0x04, x}`) until `BUSY` clears and `PROG_DONE` is set.
+
+`CTRL` writes of `0x02`/`0x03` (the pre-A1 strobe bit) are rejected. `FIRE`
+while not armed, while `BUSY`, or in a frame of other than 16 edges is
+rejected and sets `PROTOCOL_ERROR`. Fault model, claims and evidence:
+[`spec/spi-register-implementation-decision.md`](../spec/spi-register-implementation-decision.md)
+§ "Amendment A1".
+
 ### Clock and reset contract
 
 - `clk` must be free-running and must not be gated while the block is in use;
@@ -61,7 +79,7 @@ Unsupported values stop simulation at elaboration (`translate_off` block).
 - MISO is launched on the SCLK falling edge (the first data bit at the
   falling edge after the 8th rising edge) and is stable at the rising edge;
   it is 0 during the command byte and released with `cs_n` high.
-- Arming window: the strobe frame must *commit* within `ARM_TIMEOUT` cycles of
+- Arming window: the `FIRE` frame must *commit* within `ARM_TIMEOUT` cycles of
   the arm commit, so one frame at the host's SCLK must fit comfortably (about
   `16 x T_SCLK`). Raise `ARM_TIMEOUT` for SCLK slower than ~`clk`/200.
 - Register behaviour, `CTRL` decode, error conditions, `BUSY` writes and flag
