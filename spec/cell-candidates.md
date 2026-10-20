@@ -48,6 +48,10 @@ LDMOS/LDPMOS models live in the adjacent
 Re-verify against whatever PDK version is actually checked out before relying
 on these names, since PDK/tooling versions can drift.
 
+*Re-pin (2026-10-15):* the forward-looking pin is now open_pdks
+`f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7` (fetched with ciel 2.6.1, `~/.ciel`); the 2026-08-20 check above
+was against `c6d73a3…` and is not re-dated. See [`pdk-pin-decision.md`](pdk-pin-decision.md).
+
 ### Verified MOS-capacitor (antifuse element) devices
 
 | Symbol | Oxide | Pins | Notes |
@@ -223,7 +227,8 @@ it.
   landing as decision records). Not cited for antifuse-specific content —
   those repos are not antifuse designs.
 - **GlobalFoundries gf180mcu open PDK** (`open_pdks`, commit
-  `c6d73a35f524070e85faff4a6a9eef49553ebc2b`, `sm141064.ngspice` and
+  `f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7` (re-pinned 2026-10-15; originally checked against
+  `c6d73a3…`), `sm141064.ngspice` and
   `smbb000149.ngspice` model files, `libs.tech/xschem/symbols`) — primary
   source for the verified device inventory and SPICE model behavior in this
   record.
