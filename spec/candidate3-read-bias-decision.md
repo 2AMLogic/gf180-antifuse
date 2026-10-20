@@ -7,7 +7,8 @@ ratified text: `spec/architecture.md`, `spec/cell-candidates.md`, `spec/program-
 records leave open (supply-domains rows 6, 10, 15; OI-3, OI-7, OI-8).
 **Date**: 2026-10-14
 **Scope**: Region III only (`cap_pmos_03v3` + `pfet_06v0`). Regions I and II keep the #62 read bias
-(BL = 1.0 V +-10 %, WL fully on, PL = 0), and their results are re-verified unchanged (see Evidence 5).
+(BL = 1.0 V +-10 %, WL fully on, PL = 0), and their committed #62 requests and decks regenerate byte-identically
+from the new code (`tests/test_c3_read_bias.py`, see Reproducing); no Candidate 1 or 2 result is re-simulated here.
 **Evidence**: `sim/cell-breakdown-model/records/20261014-104105-9220086.md` (fleet job
 `klt-sim-e568d2d9e4e6`, 45 PVT corners, all `pass`). Every programmed-cell current is **conditional on the
 assumed filament parameters** (`design/breakdown/breakdown_params.spice`: rf_med 10 kOhm, rf_wc 81.7 kOhm).
