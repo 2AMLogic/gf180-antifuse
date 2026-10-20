@@ -1,9 +1,11 @@
 # Decision Record: SPI Register File and Sequencer Implementation Choices
 
-**Status**: Ratified for this characterization die. Design-stage choices within
-the interface ratified in `spec/architecture.md` §5, plus **Amendment A1**
-(2026-10-17, below), the one place this record edits §5, under the operator
-ruling of 2026-10-17 (attended fleet-decide discussion 17, Q3 option 1).
+**Status**: Proposed; ratified only when this PR is merged by the operator's
+review path (the 2026-10-17 ruling authorizes amendment and PR preparation,
+not merge or signoff). Design-stage choices within the interface ratified in
+`spec/architecture.md` §5, plus **Amendment A1** (2026-10-17, below), the one
+place this record edits §5, under the operator ruling of 2026-10-17 (attended
+fleet-decide discussion 17, Q3 option 1).
 **Date**: 2026-10-08 (A1: 2026-10-17)
 **Scope**: The behaviour `spec/architecture.md` §5 explicitly leaves to the
 design stage — out-of-range `ADDR_ROW`/`ADDR_COL` writes, the meaning and
