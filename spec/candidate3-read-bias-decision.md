@@ -13,6 +13,15 @@ from the new code (`tests/test_c3_read_bias.py`, see Reproducing); no Candidate 
 `klt-sim-e568d2d9e4e6`, 45 PVT corners, all `pass`). Every programmed-cell current is **conditional on the
 assumed filament parameters** (`design/breakdown/breakdown_params.spice`: rf_med 10 kOhm, rf_wc 81.7 kOhm).
 Nothing here is a gf180 silicon measurement, and nothing establishes a safe read-disturb limit.
+**PDK revision**: the record was produced under open_pdks `c6d73a3` (gf180mcu_fd_pr `faef89e`), the pin in force
+on 2026-10-14; the repo has since pinned `f6eeac7` (fd_pr `b6866b8`, `spec/pdk-pin-decision.md`). The `pfet_06v0`
+model card and the `cap_pmos_03v3` subcircuit are textually identical in `models/ngspice/sm141064.*` at both fd_pr
+commits (checked 2026-10-20), so the re-pin does not change these results; the record keeps its revision, as
+`pdk-pin-decision.md` requires. The "6.0 V" and "3.3 V" figures used as limits here are the PDK's device voltage
+classes (the model-file header: "6.0V PMOS", "3.3v inversion-mode PMOS capacitor"), not published absolute-maximum
+terminal ratings, which the open PDK does not provide. `cap_pmos_03v3` is a two-terminal voltage-dependent
+capacitor in the model, with no junction or leakage element, so every capacitor-side leakage term is outside
+the model by construction.
 
 ## Problem
 
