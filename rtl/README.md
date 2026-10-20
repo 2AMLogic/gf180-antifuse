@@ -6,8 +6,10 @@ Synthesizable digital sources (Verilog-2001).
 |---|---|
 | [`antifuse_spi_regs.v`](antifuse_spi_regs.v) | SPI slave, register file and program/read sequencer for the register map in `spec/architecture.md` §5. Design-stage choices: [`spec/spi-register-implementation-decision.md`](../spec/spi-register-implementation-decision.md). |
 
-Not captured here: a synthesized gate-level netlist (tracked as a follow-up),
-and anything on the analog side of the abstract outputs below.
+| [`synth/`](synth/) | Synthesized gate-level netlist and `klt synthesize` report for `antifuse_spi_regs` (see [Synthesis](#synthesis)). |
+
+Not captured here: anything on the analog side of the abstract outputs below,
+and a gate-level simulation of the synthesized netlist (see Synthesis).
 
 ## `antifuse_spi_regs`
 
@@ -102,3 +104,45 @@ verification/run_spi_regs.sh --lint
 ```
 
 Both are clean (no warnings).
+
+### Synthesis
+
+```sh
+uvx --from "klayout-tools==0.6.0" klt synthesize rtl/synth/antifuse_spi_regs.synth.json \
+    --pdk gf180mcuD --format json > rtl/synth/antifuse_spi_regs.synth.report.json
+# the mapped netlist lands in rtl/synth/.klt/synthesize/<run_id>/antifuse_spi_regs_synth.v
+# (scratch, gitignored); rtl/synth/antifuse_spi_regs_synth.v is a copy of it.
+# Check a checkout without re-synthesizing (exit 0 = unchanged, 3 = drifted):
+uvx --from "klayout-tools==0.6.0" klt synthesize rtl/synth/antifuse_spi_regs.synth.json \
+    --pdk gf180mcuD --check rtl/synth/antifuse_spi_regs.synth.report.json --rerun
+```
+
+Request: Yosys, `gf180mcu_fd_sc_mcu7t5v0`, default parameters (N = 32,
+`ARM_TIMEOUT` 4096, `READ_SETTLE` 8). The request names no corner, so the tool
+picks the library's nominal one (`tt_025C_1v80`); that affects the ABC delay
+estimate, not the cell mapping evidence below. The `--check --rerun` pass above
+re-ran the flow and matched the committed report. Result (klayout-tools 0.6.0,
+Yosys 0.67, PDK gf180mcuD):
+
+| Quantity | Value |
+|---|---|
+| Instances | 423 (96 flip-flops: 92 `dffrnq_1`, 4 `dffsnq_1`) |
+| Area | 13820.98 um^2 (sequential 7182.69 um^2) |
+| Latches | 0 (`structural.latches`; the netlist also has no latch cells) |
+| Combinational loops / multi-driven nets | 0 / 0 (`structural`, from the tool) |
+| ABC critical-path estimate | 11269 ps, wire-free, pre-layout; not signoff timing |
+
+The full cell breakdown is `instance_counts_by_type` in the report. The one
+Yosys warning is the `translate_off` elaboration guard in the RTL.
+
+Not done:
+
+- **Gate-level simulation.** `verification/run_spi_regs.sh` cannot take the
+  netlist as `RTL=`: the bench reads RTL-internal signals (`dut.arm`,
+  `dut.commit_ev`, `dut.read_valid`) the netlist does not have, the netlist is
+  fixed at N = 32 so the N = 20 configuration cannot apply, and the
+  installed iverilog rejects the PDK cell models (`ifnone with an edge-sensitive
+  path is not supported`). The RTL bench is unchanged and covers the RTL only.
+- **Equivalence.** `klt synthesize --verify-equivalence` is combinational-only
+  and this block is sequential.
+- **Timing, place and route.** Nothing beyond the ABC estimate above.
