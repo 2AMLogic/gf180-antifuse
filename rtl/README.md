@@ -5,7 +5,6 @@ Synthesizable digital sources (Verilog-2001).
 | File | What it is |
 |---|---|
 | [`antifuse_spi_regs.v`](antifuse_spi_regs.v) | SPI slave, register file and program/read sequencer for the register map in `spec/architecture.md` §5. Design-stage choices: [`spec/spi-register-implementation-decision.md`](../spec/spi-register-implementation-decision.md). |
-
 | [`synth/`](synth/) | Synthesized gate-level netlist and `klt synthesize` report for `antifuse_spi_regs` (see [Synthesis](#synthesis)). |
 
 Not captured here: anything on the analog side of the abstract outputs below,
