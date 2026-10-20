@@ -3,6 +3,59 @@
 Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 
+### 2026-10-17
+
+- **PR #116**: refactor(sim): share number-parsing, formatting and git helpers in sim/harness
+- **Issue #114** (closed): Consolidate duplicated SPICE-number and record-format helpers into sim/harness
+- **PR #113**: refactor(design): share xschem emitter between array and leg generators
+- **PR #112**: refactor(sim): share one klt sim submit helper across run scripts
+- **Issue #111** (closed): Consolidate four divergent run_klt wrappers in sim/ scripts into sim/harness
+- **Issue #110** (closed): Consolidate duplicated xschem emitter code in gen_array.py and gen_leg_schematics.py
+
+### 2026-10-16
+
+- **PR #108**: sim: integrated program-to-read transition and stress bench with first fleet record
+- **Issue #73** (closed): sim: integrated program-to-read transition and voltage-stress bench
+- **PR #105**: sim: full-band addressing-stage leakage per region at read bias
+- **Issue #70** (closed): design: quantify full-band addressing leakage in the sense-margin budget
+- **PR #103**: sim: mismatch Monte Carlo for read-leg sense mirror against I_ref
+- **PR #96**: sim: PVT record for program/read legs from fleet batch run
+- **PR #69**: design: N=32 array, local HV pass-gate stage and level shifters as xschem sources + slice bench (#64)
+- **Issue #102** (closed): sim: mismatch Monte Carlo for read-leg sense mirror vs I_ref
+- **Issue #65** (closed): design: program leg (ballast + current limit) and read leg (sense amp + I_ref) schematics with worst-case margin bench
+- **Issue #64** (closed): design: capture the N=32 array, local HV pass-gate MUX and level shifters as xschem sources (analog partition)
+
+### 2026-10-15
+
+- **PR #100**: feat: pin open_pdks f6eeac7d and fail visibly on PDK revision mismatch
+- **PR #93**: sim: program/read-leg PVT evidence from the batch fleet (#65)
+- **Issue #98** (closed): Re-pin open_pdks to f6eeac7 and make PDK search verify the pinned revision (ciel 2.6.1)
+- **PR #91**: sim: programming-yield Monte Carlo campaign, yield-vs-condition per grid region (#66)
+- **PR #89**: sim: converge the breakdown-event transient at every PVT corner (#74)
+- **PR #83**: docs: README spec table and reproduction section
+- **PR #68**: design: program leg + read leg schematics, benches, ballast record (#65)
+- **Issue #79** (closed): docs: README spec table and reproduction section for T1 item 10
+- **Issue #74** (closed): sim: breakdown-event transient fails to converge at some PVT corners (cell-breakdown-model trigger bench)
+- **Issue #66** (closed): sim: programming-yield Monte Carlo campaign, yield-vs-condition per grid region (T1 item 6)
+
+### 2026-10-13
+
+- **PR #87**: docs: Auditor worker deployment discovery and handoff (#84)
+- **PR #82**: spec: measurement matrix and extraction protocol for yield, read margin and retention
+- **PR #81**: sim: reproducible per-split device characterization report (#72)
+- **PR #80**: spec: supply-domain inventory decision record
+- **PR #76**: design: behavioral breakdown-augmented cell model and single-cell bench (#62)
+- **PR #67**: sim: express the PVT corner campaign as klt sim requests (#63)
+- **Issue #84** (closed): Auditor Capability Request: klt unavailable for signoff verification
+- **Issue #78** (closed): spec: measurement matrix and extraction protocol for yield, read margin and retention per grid region
+- **Issue #77** (closed): spec: supply-domain inventory (net, voltage class, region, owner) for T1 item 11
+- **Issue #72** (closed): sim: reproducible per-split characterization report for T1 item 8
+- **Issue #62** (closed): design: behavioral breakdown-augmented model for the three antifuse cell candidates
+
+### 2026-10-09
+
+- **Issue #71** (closed): Auditor Capability Request: Python 3 unavailable for simulation runner smoke checks
+
 ### 2026-10-03
 
 - **PR #56**: docs: embed fleet burndown chart and fleet-ops firewall carve-out (#46)

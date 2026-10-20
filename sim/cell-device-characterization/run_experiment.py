@@ -52,6 +52,7 @@ TB_MOSCAP_TEMPLATE = (THIS_DIR / "testbench" / "tb_moscap_cv.spice").read_text()
 sys.path.insert(0, str(SIM_DIR))
 
 from harness import corners as C  # noqa: E402
+from harness import numfmt as NF  # noqa: E402
 from harness import pdk as P  # noqa: E402
 from harness import report as R  # noqa: E402
 from harness import runner as RUN  # noqa: E402
@@ -116,22 +117,7 @@ CANDIDATES: tuple[Candidate, ...] = (
 SIZING_LEVELS = ("min", "2x")   # access-device width multiplier
 GEOM_LEVELS = ("min", "2x")     # capacitor width (-> area) multiplier
 
-_SUFFIX = {"f": 1e-15, "p": 1e-12, "n": 1e-9, "u": 1e-6, "m": 1e-3, "k": 1e3, "meg": 1e6, "g": 1e9}
-
-
-def spice_num(token: str) -> float:
-    """Parse a SPICE numeric literal with an optional unit suffix."""
-    token = token.strip()
-    m = re.match(r"^([0-9.eE+-]+)([a-zA-Z]*)$", token)
-    if not m:
-        raise ValueError(f"cannot parse SPICE numeric literal: {token!r}")
-    mantissa, suffix = m.group(1), m.group(2).lower()
-    value = float(mantissa)
-    if suffix:
-        if suffix not in _SUFFIX:
-            raise ValueError(f"unknown SPICE unit suffix {suffix!r} in {token!r}")
-        value *= _SUFFIX[suffix]
-    return value
+spice_num = NF.spice_num
 
 
 def parse_defaults(netlist_path: Path) -> dict[str, float]:
@@ -150,8 +136,7 @@ def parse_defaults(netlist_path: Path) -> dict[str, float]:
     return {k: spice_num(v) for k, v in m.groupdict().items()}
 
 
-def fmt(value: float) -> str:
-    return f"{value:.6e}"
+fmt = NF.fmt
 
 
 def off_levels(candidate: Candidate) -> tuple[float, float, float]:
@@ -478,9 +463,7 @@ def derive_bounds(run: CandidateRun) -> dict:
 
 
 def sci(x: float | None) -> str:
-    if x is None:
-        return "N/A (corner not resolved -- see raw logs)"
-    return f"{x:.4e}"
+    return NF.sci(x, placeholder="N/A (corner not resolved -- see raw logs)")
 
 
 def render_record(pdk: P.PDKPaths, run: CandidateRun, dirty: bool) -> str:

@@ -1,0 +1,23 @@
+* expanding   symbol:  leg_interlock.sym # of pins=6
+** sym_path: design/cells/leg_interlock.sym
+** sch_path: design/cells/leg_interlock.sch
+.subckt leg_interlock PROG_EN READ_EN VDD VSS PON RON  lg=0.28u wn=1u wp=2u
+*.ipin PROG_EN
+*.ipin READ_EN
+*.iopin VDD
+*.iopin VSS
+*.opin PON
+*.opin RON
+XMN1 PENB PROG_EN VSS VSS nfet_03v3 L=lg W=wn nf=1 ad='int((nf+1)/2) * wn/nf * 0.18u' as='int((nf+2)/2) * wn/nf * 0.18u' pd='2*int((nf+1)/2) * (wn/nf + 0.18u)' ps='2*int((nf+2)/2) * (wn/nf + 0.18u)' nrd='0.18u / wn' nrs='0.18u / wn' sa=0 sb=0 sd=0 m=1
+XMP1 PENB PROG_EN VDD VDD pfet_03v3 L=lg W=wp nf=1 ad='int((nf+1)/2) * wp/nf * 0.18u' as='int((nf+2)/2) * wp/nf * 0.18u' pd='2*int((nf+1)/2) * (wp/nf + 0.18u)' ps='2*int((nf+2)/2) * (wp/nf + 0.18u)' nrd='0.18u / wp' nrs='0.18u / wp' sa=0 sb=0 sd=0 m=1
+XMN2 RENB READ_EN VSS VSS nfet_03v3 L=lg W=wn nf=1 ad='int((nf+1)/2) * wn/nf * 0.18u' as='int((nf+2)/2) * wn/nf * 0.18u' pd='2*int((nf+1)/2) * (wn/nf + 0.18u)' ps='2*int((nf+2)/2) * (wn/nf + 0.18u)' nrd='0.18u / wn' nrs='0.18u / wn' sa=0 sb=0 sd=0 m=1
+XMP2 RENB READ_EN VDD VDD pfet_03v3 L=lg W=wp nf=1 ad='int((nf+1)/2) * wp/nf * 0.18u' as='int((nf+2)/2) * wp/nf * 0.18u' pd='2*int((nf+1)/2) * (wp/nf + 0.18u)' ps='2*int((nf+2)/2) * (wp/nf + 0.18u)' nrd='0.18u / wp' nrs='0.18u / wp' sa=0 sb=0 sd=0 m=1
+XMP3a 3_mid PENB VDD VDD pfet_03v3 L=lg W=wp nf=1 ad='int((nf+1)/2) * wp/nf * 0.18u' as='int((nf+2)/2) * wp/nf * 0.18u' pd='2*int((nf+1)/2) * (wp/nf + 0.18u)' ps='2*int((nf+2)/2) * (wp/nf + 0.18u)' nrd='0.18u / wp' nrs='0.18u / wp' sa=0 sb=0 sd=0 m=1
+XMP3b PON READ_EN 3_mid VDD pfet_03v3 L=lg W=wp nf=1 ad='int((nf+1)/2) * wp/nf * 0.18u' as='int((nf+2)/2) * wp/nf * 0.18u' pd='2*int((nf+1)/2) * (wp/nf + 0.18u)' ps='2*int((nf+2)/2) * (wp/nf + 0.18u)' nrd='0.18u / wp' nrs='0.18u / wp' sa=0 sb=0 sd=0 m=1
+XMN3a PON PENB VSS VSS nfet_03v3 L=lg W=wn nf=1 ad='int((nf+1)/2) * wn/nf * 0.18u' as='int((nf+2)/2) * wn/nf * 0.18u' pd='2*int((nf+1)/2) * (wn/nf + 0.18u)' ps='2*int((nf+2)/2) * (wn/nf + 0.18u)' nrd='0.18u / wn' nrs='0.18u / wn' sa=0 sb=0 sd=0 m=1
+XMN3b PON READ_EN VSS VSS nfet_03v3 L=lg W=wn nf=1 ad='int((nf+1)/2) * wn/nf * 0.18u' as='int((nf+2)/2) * wn/nf * 0.18u' pd='2*int((nf+1)/2) * (wn/nf + 0.18u)' ps='2*int((nf+2)/2) * (wn/nf + 0.18u)' nrd='0.18u / wn' nrs='0.18u / wn' sa=0 sb=0 sd=0 m=1
+XMP4a 4_mid RENB VDD VDD pfet_03v3 L=lg W=wp nf=1 ad='int((nf+1)/2) * wp/nf * 0.18u' as='int((nf+2)/2) * wp/nf * 0.18u' pd='2*int((nf+1)/2) * (wp/nf + 0.18u)' ps='2*int((nf+2)/2) * (wp/nf + 0.18u)' nrd='0.18u / wp' nrs='0.18u / wp' sa=0 sb=0 sd=0 m=1
+XMP4b RON PROG_EN 4_mid VDD pfet_03v3 L=lg W=wp nf=1 ad='int((nf+1)/2) * wp/nf * 0.18u' as='int((nf+2)/2) * wp/nf * 0.18u' pd='2*int((nf+1)/2) * (wp/nf + 0.18u)' ps='2*int((nf+2)/2) * (wp/nf + 0.18u)' nrd='0.18u / wp' nrs='0.18u / wp' sa=0 sb=0 sd=0 m=1
+XMN4a RON RENB VSS VSS nfet_03v3 L=lg W=wn nf=1 ad='int((nf+1)/2) * wn/nf * 0.18u' as='int((nf+2)/2) * wn/nf * 0.18u' pd='2*int((nf+1)/2) * (wn/nf + 0.18u)' ps='2*int((nf+2)/2) * (wn/nf + 0.18u)' nrd='0.18u / wn' nrs='0.18u / wn' sa=0 sb=0 sd=0 m=1
+XMN4b RON PROG_EN VSS VSS nfet_03v3 L=lg W=wn nf=1 ad='int((nf+1)/2) * wn/nf * 0.18u' as='int((nf+2)/2) * wn/nf * 0.18u' pd='2*int((nf+1)/2) * (wn/nf + 0.18u)' ps='2*int((nf+2)/2) * (wn/nf + 0.18u)' nrd='0.18u / wn' nrs='0.18u / wn' sa=0 sb=0 sd=0 m=1
+.ends

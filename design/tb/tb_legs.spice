@@ -1,0 +1,40 @@
+* gf180-antifuse: elaboration + interlock truth-table check for the program
+* leg, read leg and leg_interlock netlists (design/netlists/).
+*
+* NOT a design result and NOT evidence: typical corner only, nothing cornered.
+* It proves the three derived netlists elaborate against the pinned PDK model
+* files (incl. the ppolyf_u_2k_6p0 ballast) and that the interlock block's
+* truth table is the one the legs rely on. The PVT bench for mutual exclusion
+* at the shared bit line lives in sim/program-read-legs/.
+*
+* Run through design/check-netlists.sh, which materializes models.spice.
+
+.include models.spice
+.include leg_interlock.spice
+.include program_leg.spice
+.include read_leg.spice
+
+VDD vdd 0 DC 3.3
+VPP vpp 0 DC 5.0
+VCL vclamp 0 DC 1.8
+
+* interlock truth table: (PROG_EN, READ_EN) = 00 10 01 11
+VP0 p0 0 DC 0
+VP1 p1 0 DC 3.3
+XI00 p0 p0 vdd 0 pon00 ron00 leg_interlock
+XI10 p1 p0 vdd 0 pon10 ron10 leg_interlock
+XI01 p0 p1 vdd 0 pon01 ron01 leg_interlock
+XI11 p1 p1 vdd 0 pon11 ron11 leg_interlock
+
+* both legs elaborated on one bit line, program leg enabled
+VBL bl 0 DC 1.0
+XPG p1 p0 vdd 0 bl vpp program_leg
+XRD p1 p0 vclamp iref vdd 0 bl sense rdata read_leg
+IREF 0 iref DC 1u
+
+.control
+op
+print v(pon00) v(ron00) v(pon10) v(ron10) v(pon01) v(ron01) v(pon11) v(ron11)
+print v(xpg.pg)
+.endc
+.end

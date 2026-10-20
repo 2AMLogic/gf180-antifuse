@@ -80,7 +80,22 @@ was claimed:
   grader cannot check (the same trap rule 2 below describes).
 - **Items 1, 2, 9, 10** accept any passing envelope; citing a sim report there
   would be exactly the false claim rule 2 forbids.
-- **Item 6** needs `klt yield` Monte Carlo evidence; none was produced.
+- **Item 6** needs `klt yield` Monte Carlo evidence; none was produced. Issue
+  #66 later added a programming-yield Monte Carlo campaign
+  (`sim/programming-yield/`), still **not cited** for this row, for three
+  reasons. (1) Its evidence form is `klt sim` `monte_carlo` reports plus a
+  per-sample success criterion applied by the experiment's own script
+  (latched state, current bound, and a read-margin lookup against a table
+  from a second request), not a `klt yield` envelope with per-measurement
+  limits; a composite criterion is not a limit on any one measurement. (2)
+  Every yield is conditional on **assumed** breakdown statistics
+  (`design/breakdown/breakdown_params.spice`: nothing is `measured`), so a
+  green item 6 would assert a statistical result about silicon that the
+  model cannot support. (3) Candidate 3 has no read-decision criterion at
+  the inherited placeholder bias (#75), so the campaign cannot span all
+  three regions on the read side. Closing the row needs measured breakdown
+  data in `measurements/` and a `klt yield` request whose limits express the
+  criterion.
 - **Item 8** (characterization report) needs a per-region `generic` envelope;
   none was produced. The per-region Markdown records stay the human-readable
   per-region result.
@@ -143,11 +158,11 @@ The boundary is the **level shifters** of `spec/architecture.md` §1.1 and the
 digital `STATUS`/`RDATA` registers; that comparator output is the analog
 partition's boundary pin on the read side.
 
-Neither partition has been captured as design sources yet beyond the three
-cell candidates (`design/README.md` is explicit that the array, MUX, sense
-path and SPI slave are specified at interface level only), so the boundary
-above is a statement about the ratified architecture, not about committed
-netlists.
+The analog partition's array, local pass-gate stage and level shifters are now
+captured as design sources (`design/README.md`); the sense path, program leg,
+digital partition and SPI slave are not, so the boundary above is still a
+statement about the ratified architecture rather than a fully committed
+netlist.
 
 ## Disclosures the grader reports but does not enforce
 

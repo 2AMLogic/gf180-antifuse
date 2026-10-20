@@ -20,7 +20,17 @@
 # is a netlist driver, not a circuit - see its header comment for why the cell
 # schematics are not netlisted directly.
 #
-# The only transformation applied to xschem's output is path normalization:
+# The array and addressing stage (design/array/, design/mux/) are netlisted the
+# same way from design/array/array_library.sch. Their schematics for the array
+# and slices are emitted by design/gen_array.py, which this script runs first
+# (or, under --check, runs in --check mode to prove the committed schematics
+# are what the generator produces) - see that file's header. The program / read
+# leg schematics in design/cells/ come from design/tools/gen_leg_schematics.py,
+# which is run (or --check'd) the same way; both generators share
+# design/tools/xschem_emit.py.
+#
+# The only transformations applied to xschem's output are path normalization
+# and continuation-line unwrapping (see below):
 # xschem stamps the absolute filesystem path of each schematic and symbol into
 # two "** sym_path:" / "** sch_path:" comment lines, which would otherwise make
 # the committed netlist depend on where the repository happens to be checked
@@ -33,9 +43,13 @@ DESIGN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${DESIGN_DIR}/.." && pwd)"
 CELLS_DIR="${DESIGN_DIR}/cells"
 NETLIST_DIR="${DESIGN_DIR}/netlists"
-DRIVER="${CELLS_DIR}/cell_library.sch"
+DRIVERS=("${CELLS_DIR}/cell_library.sch" "${CELLS_DIR}/leg_library.sch")
+ARRAY_DRIVER="${DESIGN_DIR}/array/array_library.sch"
 
-CELLS=(cell_candidate1 cell_candidate2 cell_candidate3)
+CELLS=(cell_candidate1 cell_candidate2 cell_candidate3 leg_interlock program_leg read_leg)
+# Netlists exported from ARRAY_DRIVER. array_32x32 and the slices are generated
+# schematics; the ls_/pg_ cells are the addressing-stage building blocks.
+ARRAY_NETLISTS=(ls_hv06 ls_hv10 pg_n06 pg_n10 array_32x32 slice_i_ii slice_ii_iii band_i band_ii band_iii)
 
 CHECK_ONLY=0
 case "${1:-}" in
@@ -44,7 +58,7 @@ case "${1:-}" in
   *)       echo "usage: $(basename "$0") [--check]" >&2; exit 2 ;;
 esac
 
-# PDK root resolution: $PDK_ROOT first, then ~/.volare - see
+# PDK root resolution: $PDK_ROOT first, then ~/.ciel (pinned revision verified) - see
 # design/lib-pdk-root.sh for the order and why it is shared with
 # check-netlists.sh. This script only drives xschem, so bare gf180mcuD is
 # enough of a candidate root to require.
@@ -60,6 +74,31 @@ if ! command -v xschem >/dev/null 2>&1; then
   exit 1
 fi
 
+# Sources first: the array/slice schematics are generated, so the netlists can
+# only be as current as they are. Under --check nothing is rewritten; the
+# generator just has to reproduce the committed sources byte for byte.
+if ! command -v python3 >/dev/null 2>&1; then
+  echo "ERROR: python3 not found on PATH (needed for design/gen_array.py)." >&2
+  exit 1
+fi
+if [[ "${CHECK_ONLY}" -eq 1 ]]; then
+  python3 -I "${DESIGN_DIR}/gen_array.py" --check >/dev/null || {
+    python3 -I "${DESIGN_DIR}/gen_array.py" --check >&2 || true
+    exit 1
+  }
+  echo "ok: generated array/mux schematics reproduce exactly"
+  python3 -I "${DESIGN_DIR}/tools/gen_leg_schematics.py" --check >/dev/null || {
+    python3 -I "${DESIGN_DIR}/tools/gen_leg_schematics.py" --check >&2 || true
+    exit 1
+  }
+  echo "ok: generated leg schematics reproduce exactly"
+else
+  python3 -I "${DESIGN_DIR}/gen_array.py" >/dev/null
+  echo "regenerated array/mux schematics (design/gen_array.py)"
+  python3 -I "${DESIGN_DIR}/tools/gen_leg_schematics.py" >/dev/null
+  echo "regenerated leg schematics (design/tools/gen_leg_schematics.py)"
+fi
+
 SCRATCH="$(mktemp -d)"
 trap 'rm -rf "${SCRATCH}"' EXIT
 
@@ -69,16 +108,34 @@ trap 'rm -rf "${SCRATCH}"' EXIT
 # what this script actually validates.
 XSCHEM_LOG="${SCRATCH}/xschem.log"
 set +e
-xschem -n -s -q -x -o "${SCRATCH}" --rcfile "${DESIGN_DIR}/xschemrc" "${DRIVER}" \
-  >"${XSCHEM_LOG}" 2>&1
+: >"${XSCHEM_LOG}"
+for DRIVER in "${DRIVERS[@]}"; do
+  xschem -n -s -q -x -o "${SCRATCH}" --rcfile "${DESIGN_DIR}/xschemrc" "${DRIVER}" \
+    >>"${XSCHEM_LOG}" 2>&1
+done
 set -e
 
+ARRAY_SCRATCH="${SCRATCH}/array"
+mkdir -p "${ARRAY_SCRATCH}"
+set +e
+xschem -n -s -q -x -o "${ARRAY_SCRATCH}" --rcfile "${DESIGN_DIR}/xschemrc" "${ARRAY_DRIVER}" \
+  >"${SCRATCH}/xschem-array.log" 2>&1
+set -e
+for nl in "${ARRAY_NETLISTS[@]}"; do
+  if [[ ! -f "${ARRAY_SCRATCH}/${nl}.spice" ]]; then
+    echo "ERROR: xschem did not emit ${nl}.spice from $(basename "${ARRAY_DRIVER}")." >&2
+    sed 's/^/    /' "${SCRATCH}/xschem-array.log" >&2
+    exit 1
+  fi
+  sed "s#${REPO_ROOT}/##g" "${ARRAY_SCRATCH}/${nl}.spice" >"${SCRATCH}/${nl}.spice"
+done
+
 # Normalize the absolute paths xschem stamps into the block header comments.
-for cell in "${CELLS[@]}"; do
+for cell in "${CELLS[@]}" "${ARRAY_NETLISTS[@]}"; do
   src="${SCRATCH}/${cell}.spice"
   if [[ ! -f "${src}" ]]; then
     echo "ERROR: xschem did not emit ${cell}.spice." >&2
-    echo "       Is ${cell}.sym instantiated in $(basename "${DRIVER}")," >&2
+    echo "       Is ${cell}.sym instantiated in a driver schematic (cell_library.sch / leg_library.sch)," >&2
     echo "       and is split_files set in design/xschemrc?" >&2
     echo "--- xschem output ---" >&2
     sed 's/^/    /' "${XSCHEM_LOG}" >&2
@@ -89,13 +146,21 @@ for cell in "${CELLS[@]}"; do
   # both hosts. Substituting through a temp file and moving it back is the one
   # spelling that is identical on both, and leaves no stray backup file behind
   # if sed fails (set -e aborts before the mv).
-  sed "s#${REPO_ROOT}/##g" "${src}" >"${src}.tmp"
+  #
+  # Second normalization: xschem's line-wrapping of long device lines differs
+  # between versions (3.4.4 wraps at a different column than 3.4.7), which is
+  # pure formatting. Continuation lines ("+ ...") are joined onto their parent
+  # line so the committed netlist does not depend on the xschem version.
+  sed "s#${REPO_ROOT}/##g" "${src}" \
+    | awk '/^\+/ { sub(/^\+ */, " "); buf = buf $0; next }
+           { if (buf != "") print buf; buf = $0 }
+           END { if (buf != "") print buf }' >"${src}.tmp"
   mv "${src}.tmp" "${src}"
 done
 
 status=0
 mkdir -p "${NETLIST_DIR}"
-for cell in "${CELLS[@]}"; do
+for cell in "${CELLS[@]}" "${ARRAY_NETLISTS[@]}"; do
   src="${SCRATCH}/${cell}.spice"
   dst="${NETLIST_DIR}/${cell}.spice"
   if [[ "${CHECK_ONLY}" -eq 1 ]]; then

@@ -1,0 +1,20 @@
+* gf180-antifuse sim/program-read-legs: corner preamble.
+*
+* klt sim emits its `.lib` cards BEFORE the netlist body's `.include`s, but
+* the gf180mcu model files read global parameters (fnoicor, sw_stat_global,
+* ...) that design.ngspice defines, and ngspice resolves them in file order.
+* A corners.process bundle is the only seam klt gives for a card ahead of
+* the model sections, so design.ngspice is pulled in as the FIRST section of
+* every bundle, through this one-section wrapper.
+.lib design
+.include $PDK_ROOT/gf180mcuD/libs.tech/ngspice/design.ngspice
+.endl design
+
+* Mismatch variant (Monte Carlo benches): the same globals, then the PDK's
+* per-instance mismatch switch (sw_stat_mismatch, default 0) turned ON. Global
+* process variation (sw_stat_global) stays 0, so a monte_carlo vary="mismatch"
+* request samples intra-die mismatch only, on top of the named PVT corner.
+.lib design_mm
+.include $PDK_ROOT/gf180mcuD/libs.tech/ngspice/design.ngspice
+.param sw_stat_mismatch=1
+.endl design_mm

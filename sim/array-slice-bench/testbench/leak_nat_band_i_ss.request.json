@@ -1,0 +1,183 @@
+{
+  "netlist": "tb_leak_nat_band_i_ss.spice",
+  "engine": "ngspice",
+  "models": {
+    "pdk": "gf180mcuD",
+    "lib": "libs.tech/ngspice/sm141064.ngspice"
+  },
+  "corners": {
+    "process": [
+      {
+        "name": "ss",
+        "sections": [
+          "ss",
+          "moscap_ss"
+        ]
+      }
+    ],
+    "supply_v": {
+      "vddl": [
+        2.97,
+        3.3,
+        3.63,
+        2.97,
+        3.3,
+        3.63,
+        2.97,
+        3.3,
+        3.63,
+        2.97,
+        3.3,
+        3.63,
+        2.97,
+        3.3,
+        3.63,
+        2.97,
+        3.3,
+        3.63,
+        2.97,
+        3.3,
+        3.63,
+        2.97,
+        3.3,
+        3.63,
+        2.97,
+        3.3,
+        3.63
+      ],
+      "vddh_i": [
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5
+      ],
+      "vbl_i": [
+        0.585,
+        0.585,
+        0.585,
+        0.65,
+        0.65,
+        0.65,
+        0.715,
+        0.715,
+        0.715,
+        0.63,
+        0.63,
+        0.63,
+        0.7,
+        0.7,
+        0.7,
+        0.77,
+        0.77,
+        0.77,
+        3.582,
+        3.582,
+        3.582,
+        3.98,
+        3.98,
+        3.98,
+        4.378,
+        4.378,
+        4.378
+      ]
+    },
+    "temperature_c": [
+      -40,
+      27,
+      125
+    ]
+  },
+  "analysis": {
+    "kind": "dc",
+    "args": "vdum 0 1 1"
+  },
+  "measurements": [
+    {
+      "name": "ibus",
+      "spice": ".meas dc ibus FIND i(vbl_I) AT=0",
+      "unit": "A"
+    },
+    {
+      "name": "nv_bl_0",
+      "spice": ".meas dc nv_bl_0 FIND v(x_dut.bl_0) AT=0",
+      "unit": "V"
+    },
+    {
+      "name": "nv_bl_1",
+      "spice": ".meas dc nv_bl_1 FIND v(x_dut.bl_1) AT=0",
+      "unit": "V"
+    },
+    {
+      "name": "nv_bl_2",
+      "spice": ".meas dc nv_bl_2 FIND v(x_dut.bl_2) AT=0",
+      "unit": "V"
+    },
+    {
+      "name": "nv_bl_3",
+      "spice": ".meas dc nv_bl_3 FIND v(x_dut.bl_3) AT=0",
+      "unit": "V"
+    },
+    {
+      "name": "nv_bl_4",
+      "spice": ".meas dc nv_bl_4 FIND v(x_dut.bl_4) AT=0",
+      "unit": "V"
+    },
+    {
+      "name": "nv_bl_5",
+      "spice": ".meas dc nv_bl_5 FIND v(x_dut.bl_5) AT=0",
+      "unit": "V"
+    },
+    {
+      "name": "nv_bl_6",
+      "spice": ".meas dc nv_bl_6 FIND v(x_dut.bl_6) AT=0",
+      "unit": "V"
+    },
+    {
+      "name": "nv_bl_7",
+      "spice": ".meas dc nv_bl_7 FIND v(x_dut.bl_7) AT=0",
+      "unit": "V"
+    },
+    {
+      "name": "nv_bl_8",
+      "spice": ".meas dc nv_bl_8 FIND v(x_dut.bl_8) AT=0",
+      "unit": "V"
+    },
+    {
+      "name": "nv_bl_9",
+      "spice": ".meas dc nv_bl_9 FIND v(x_dut.bl_9) AT=0",
+      "unit": "V"
+    },
+    {
+      "name": "nv_bl_10",
+      "spice": ".meas dc nv_bl_10 FIND v(x_dut.bl_10) AT=0",
+      "unit": "V"
+    }
+  ],
+  "options": {
+    "timeout_s": 600,
+    "keep_artifacts": false
+  }
+}
