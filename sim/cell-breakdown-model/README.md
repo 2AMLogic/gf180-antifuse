@@ -51,6 +51,9 @@ were on the batch fleet; the job IDs are in each record.
   bias.** At WL = 0 V with the n-well at 3.3 V, the PMOS access device is
   effectively off once the filament pulls CN low. I_prog_min is therefore
   not derivable until a Candidate 3 read bias is chosen (#75).
+  **Resolved by #75** (below): the `bias_op` bench compares nine read-bias
+  arrangements; the chosen one ties the n-well to the read rail.
+
 - **Candidate 2's window is narrow.** It has the narrowest window of the
   three, because its 25 µm LDNMOS access device leaks about 700× more than
   Candidate 1's at the fast/hot corner.
@@ -64,6 +67,50 @@ were on the batch fleet; the job IDs are in each record.
   V_bd through that leg at all**: the 10 V LDNMOS's junction clamps BL/CN
   near 11.9 V. These results are conditional on the assumed V_bd; see
   "Transient convergence (#74)".
+
+## Candidate 3 read bias (#75)
+
+`bias_op` is a sixth bench, Candidate 3 only, run on its own:
+
+```bash
+python3 sim/cell-breakdown-model/run_experiment.py --candidates 3 --benches bias_op
+```
+
+It is **not** part of the default bench list, so the #62 records and a
+default run are unchanged (`tests/test_c3_read_bias.py` regenerates the
+committed Candidate 1/2/3 requests and decks and requires byte equality).
+One `klt sim` request covers 45 PVT corners. Each of the nine
+`BIAS_SCENARIOS` is a set of instances in the same deck, with its own read
+rail (the swept `VBL` times a scale), selected-WL level and well drive
+(`fixed` volts, or `track` = the scaled rail plus an offset). For each
+scenario and each of the 4 sub-configurations it measures the BL current of:
+
+| Instance | Cell state | WL | Used for |
+|---|---|---|---|
+| `off_*` | unprogrammed | 3 OFF levels | `I_off` |
+| `offp_*` | programmed (median filament) | 3 OFF levels | `I_off` of an unselected programmed cell, the worst sneak case |
+| `un_*` | unprogrammed | scenario ON level | selected-unprogrammed current |
+| `pm_*`, `pw_*` | programmed (median, worst filament) | scenario ON level | `I_prog` |
+
+The programmed and unprogrammed cells share the scenario's rail and well in
+one solve. The leakage bound is recomputed per scenario:
+`I_sneak_max` = (N-1) x `I_off`, and the verdict uses the solver-floor-limited
+`I_zero,f` = (N-1) x max(`I_off`, abstol) + max(`I_sel,unprog`, abstol), since
+ngspice does not resolve currents below abstol (1e-12 A) and several
+scenarios return exactly 0.0 A. A scenario is feasible only with **no** failed
+corner (klt status other than `pass`, or a missing or `None` measurement:
+reported, never dropped) and min over corners of `I_prog` > max over corners
+of `I_zero,f`. It also records n-well/BL/CN voltages for junction polarity and
+gate-oxide checks.
+
+| Record | Outcome |
+|---|---|
+| [`20261014-104105-9220086`](records/20261014-104105-9220086.md) | All scenarios but the placeholder are feasible. Chosen: **`s3_vb_track`** (WL on 0 V, n-well = the read rail), `I_prog_min` 1.25 nA at `ss_-40c_bl0p90v`, `I_zero,f` 3.2e-11 A, window 39 at placeholder geometry. Decision: [`spec/candidate3-read-bias-decision.md`](../../spec/candidate3-read-bias-decision.md). |
+
+The placeholder scenario `s0_placeholder` reproduces the #62 failure exactly
+(4.8572e-15 A at `typical_27c_bl1p00v`, 2.4003e-13 A at `ss_-40c_bl0p90v`).
+Mismatch/Monte Carlo is not included. The conditional-on-assumed-filament
+caveat above applies throughout.
 
 ## Running it
 

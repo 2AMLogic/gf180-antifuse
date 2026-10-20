@@ -133,6 +133,47 @@ VARIANTS = {
 REGRESSION_VARIANTS = ("st", "b0", "b1")
 BIAS_TAGS = ("lo", "mid", "hi")
 
+# --- Candidate 3 read-bias study (issue #75) --------------------------------
+# One scenario = one complete read-bias arrangement for the Candidate 3 cell:
+# the read rail (BL = rail_scale x the swept VBL corner value), the selected
+# word-line level, and how the access device's n-well (VB) is driven. The
+# unselected word-line OFF levels are NOT a scenario axis: every scenario uses
+# the characterization experiment's own three PMOS OFF levels (VDD -/0/+ 0.3 V
+# with VDD = 3.3 V), so the leakage side is compared at identical WL stimulus.
+# Programmed and unprogrammed cells are always simulated at the SAME scenario
+# bias in the SAME deck (the issue's "same bias" requirement).
+#   vb_mode "fixed": VB = vb_v volts      "track": VB = BL rail + vb_v volts
+BIAS_BENCH = "bias_op"
+
+
+@dataclass(frozen=True)
+class ReadBias:
+    name: str
+    rail_scale: float
+    wl_on: float
+    vb_mode: str
+    vb_v: float
+    note: str
+
+
+BIAS_SCENARIOS: tuple[ReadBias, ...] = (
+    ReadBias("s0_placeholder", 1.0, 0.0, "fixed", 3.3,
+             "inherited placeholder: WL on = 0 V, n-well 3.3 V (reproduces #75)"),
+    ReadBias("s1_wl_neg1", 1.0, -1.0, "fixed", 3.3, "WL driven below ground (-1.0 V), n-well 3.3 V"),
+    ReadBias("s2_wl_neg2", 1.0, -2.0, "fixed", 3.3, "WL driven below ground (-2.0 V), n-well 3.3 V"),
+    ReadBias("s3_vb_track", 1.0, 0.0, "track", 0.0, "n-well lowered to the read rail (VB = BL), WL on = 0 V"),
+    ReadBias("s4_vb_fix1v", 1.0, 0.0, "fixed", 1.0, "n-well lowered to the NOMINAL read rail (fixed 1.0 V), WL on = 0 V"),
+    ReadBias("s5_rail1v8", 1.8, 0.0, "fixed", 3.3, "read rail raised to 1.8 V, WL on = 0 V, n-well 3.3 V"),
+    ReadBias("s6_rail1v8_vb_track", 1.8, 0.0, "track", 0.0, "read rail 1.8 V, n-well tied to the rail, WL on = 0 V"),
+    ReadBias("s7_vb_track_p0v3", 1.0, 0.0, "track", 0.3,
+             "sensitivity: n-well 0.3 V ABOVE the read rail (well-supply offset), WL on = 0 V"),
+    ReadBias("s8_vb_track_m0v3", 1.0, 0.0, "track", -0.3,
+             "sensitivity: n-well 0.3 V BELOW the read rail (source junction forward-biased 0.3 V), WL on = 0 V"),
+)
+BIAS_BY_NAME = {b.name: b for b in BIAS_SCENARIOS}
+# the scenario the decision record (spec/candidate3-read-bias-decision.md) adopts
+CHOSEN_C3_SCENARIO = "s3_vb_track"
+
 
 def within_tol(q: str, x: float, ref: float) -> bool:
     if q in GMIN_FLOOR:
@@ -283,6 +324,62 @@ def body_access(pdk, cand, defaults, body_dir: Path, bench: str, lib_root: str) 
                     out.append(f"VM_{t} BL B_{t} 0")
                     out.append(f"X_{t} B_{t} WLON PL VB {dut(cand, v, geo)}")
                     ac_probe(out, ms, t, F_RON)
+    return "\n".join(out) + "\n", ms
+
+
+def body_bias(pdk, cand, defaults, body_dir: Path, lib_root: str,
+              scenarios: tuple[ReadBias, ...] = BIAS_SCENARIOS) -> tuple[str, list[dict]]:
+    """bias_op (Candidate 3 only): per scenario and per access-sizing x
+    capacitor-geometry sub-configuration, at the swept corner:
+      off_*  unprogrammed cell, WL at an OFF level           -> I_off
+      offp_* PROGRAMMED cell (median filament), WL at an OFF level -> I_off,prog
+      un_*   unprogrammed cell, WL at the scenario ON level  -> selected-unprogrammed current
+      pm_*/pw_*  programmed cell (median / worst filament), WL at ON -> I_read
+    plus the selected-device terminal voltages (CN, BL rail, VB) of pm/pw."""
+    if cand.n != 3:
+        raise ValueError("bias_op is the Candidate 3 read-bias study (#75)")
+    lo, mid, hi = CHAR.off_levels(cand)
+    out = [body_header(pdk, body_dir, "Candidate 3 read-bias bench (bias_op)", cand, "bias_op", lib_root)]
+    out.append(f"VBL BL 0 DC {fmt(CHAR.V_READ_NOM)}")
+    out.append("VPL PL 0 DC 0")
+    out.append("VDMY DMY 0 DC 0")
+    out += [f"VWLLO WLLO 0 DC {fmt(lo)}", f"VWLMID WLMID 0 DC {fmt(mid)}", f"VWLHI WLHI 0 DC {fmt(hi)}"]
+    ms: list[dict] = []
+    for sc in scenarios:
+        n = sc.name
+        out.append(f"EBL_{n} BLS_{n} 0 BL 0 {fmt(sc.rail_scale)}")
+        if sc.vb_mode == "fixed":
+            out.append(f"VVB_{n} VB_{n} 0 DC {fmt(sc.vb_v)}")
+        elif sc.vb_mode == "track":
+            out.append(f"BVB_{n} VB_{n} 0 V = 'v(bls_{n}) + {fmt(sc.vb_v)}'")
+        else:
+            raise ValueError(sc.vb_mode)
+        out.append(f"VWLON_{n} WLON_{n} 0 DC {fmt(sc.wl_on)}")
+        ms.append(meas("dc", f"vbl_{n}", f"v(bls_{n})", DC_AT, "V"))
+        ms.append(meas("dc", f"vvb_{n}", f"v(vb_{n})", DC_AT, "V"))
+        for s_ in CHAR.SIZING_LEVELS:
+            for g in CHAR.GEOM_LEVELS:
+                geo = geometry(cand, defaults, s_, g)
+                sg = sg_tag(s_, g)
+                for b, wl in zip(BIAS_TAGS, ("WLLO", "WLMID", "WLHI")):
+                    t = f"off_{n}_{sg}_{b}"
+                    out.append(f"VM_{t} BLS_{n} B_{t} 0")
+                    out.append(f"X_{t} B_{t} {wl} PL VB_{n} {dut(cand, 'b1', geo)}")
+                    ms.append(meas("dc", f"i_{t}", f"i(vm_{t})", DC_AT, "A"))
+                for b, wl in zip(BIAS_TAGS, ("WLLO", "WLMID", "WLHI")):
+                    # the same OFF levels with the cell PROGRAMMED (CN pulled to PL by the
+                    # filament): the unselected-programmed-cell leakage, the worst sneak case
+                    t = f"offp_{n}_{sg}_{b}"
+                    out.append(f"VM_{t} BLS_{n} B_{t} 0")
+                    out.append(f"X_{t} B_{t} {wl} PL VB_{n} {dut(cand, 'pm', geo)}")
+                    ms.append(meas("dc", f"i_{t}", f"i(vm_{t})", DC_AT, "A"))
+                for v, kind in (("b1", "un"), ("pm", "pm"), ("pw", "pw")):
+                    t = f"{kind}_{n}_{sg}"
+                    out.append(f"VM_{t} BLS_{n} B_{t} 0")
+                    out.append(f"X_{t} B_{t} WLON_{n} PL VB_{n} {dut(cand, v, geo)}")
+                    ms.append(meas("dc", f"i_{t}", f"i(vm_{t})", DC_AT, "A"))
+                    if kind in ("pm", "pw"):
+                        ms.append(meas("dc", f"vcn_{t}", f"v(x_{t}.xc.cn)", DC_AT, "V"))
     return "\n".join(out) + "\n", ms
 
 
@@ -611,7 +708,15 @@ def derive(bench: str, raw: dict[str, float | None]) -> dict[str, float | None]:
     """Raw .meas values -> the quantities the characterization experiment
     reports (same definitions as its testbench templates)."""
     out: dict[str, float | None] = {}
-    if bench in ("access_op", "cap_op"):
+    if bench == BIAS_BENCH:
+        for name, x in raw.items():
+            if name.startswith("i_"):
+                kind, rest = name[2:].split("_", 1)
+                key = {"off": "ioff", "offp": "ioffp", "un": "iun", "pm": "iread_pm", "pw": "iread_pw"}[kind] + "_" + rest
+                out[key] = None if x is None else abs(x)
+            else:
+                out[name] = x
+    elif bench in ("access_op", "cap_op"):
         q = "ioff" if bench == "access_op" else "ilk"
         for name, x in raw.items():
             if not name.startswith("i_"):
@@ -660,7 +765,7 @@ def make_request(bench: str, cand, pdk: P.PDKPaths, measurements: list[dict], pa
         "measurements": measurements,
         "options": {"timeout_s": 300, "keep_artifacts": True},
     }
-    if bench.startswith("access"):
+    if bench.startswith("access") or bench == BIAS_BENCH:
         if two_lib:
             lib = "libs.tech/ngspice/smbb000149.ngspice"
             procs = [{"name": m, "sections": [m]} for m in C.MOS_CORNERS]
@@ -691,6 +796,7 @@ def make_request(bench: str, cand, pdk: P.PDKPaths, measurements: list[dict], pa
         return req
     req["analysis"] = {
         "access_op": {"kind": "dc", "args": DC_ARGS},
+        BIAS_BENCH: {"kind": "dc", "args": DC_ARGS},
         "access_ac": {"kind": "ac", "args": f"lin 3 {fmt(F_RON / 2)} {fmt(F_RON * 1.5)}"},
         "cap_op": {"kind": "dc", "args": DC_ARGS},
         "cap_ac": {"kind": "ac", "args": f"lin 3 {fmt(F_CV / 2)} {fmt(F_CV * 1.5)}"},
@@ -704,12 +810,14 @@ def make_request(bench: str, cand, pdk: P.PDKPaths, measurements: list[dict], pa
     return req
 
 
-BENCHES = ("access_op", "access_ac", "cap_op", "cap_ac", "trigger")
-ALL_BENCHES = BENCHES + CONV_BENCHES + (OPSTART_BENCH,)
+BENCHES = ("access_op", "access_ac", "cap_op", "cap_ac", "trigger")   # the #62 benches (default run)
+ALL_BENCHES = BENCHES + CONV_BENCHES + (OPSTART_BENCH, BIAS_BENCH)
 
 
 def build_body(bench: str, pdk, cand, defaults, body_dir: Path, lib_root: str,
                params: dict | None = None) -> tuple[str, list[dict]]:
+    if bench == BIAS_BENCH:
+        return body_bias(pdk, cand, defaults, body_dir, lib_root)
     if bench in CONV_BENCHES or bench == OPSTART_BENCH:
         assert params is not None
         return body_conv(pdk, cand, defaults, body_dir, lib_root,
@@ -737,7 +845,7 @@ def corner_key(bench: str, corner: dict, cand, params: dict) -> str:
     proc = corner["process"]
     temp = int(round(corner["temperature_c"]))
     sv = corner.get("supply_v") or {}
-    if bench.startswith("access"):
+    if bench.startswith("access") or bench == BIAS_BENCH:
         tok = C.fmt_node_supply("bl", sv["vbl"])
     elif bench == "trigger":
         inst = "a" if abs(sv.get("vampa", 0.0)) > 0 else "b"
@@ -931,6 +1039,112 @@ def iread_table(results: dict[str, BenchResult]) -> list[dict]:
     return rows
 
 
+
+# ---------------------------------------------------------------------------
+# Candidate 3 read-bias analysis (issue #75)
+# ---------------------------------------------------------------------------
+
+PFET06_RATING_V = 6.0          # spec/cell-candidates.md: pfet_06v0 6.0 V thick oxide
+JUNCTION_FWD_LIMIT_V = 0.4     # assumed: a p+/n-well junction forward-biased past this is not "reverse/zero bias"
+CAP_RATING_C3_V = 3.3          # cap_pmos_03v3 rated voltage
+
+
+def bias_stats(vals_by_corner: dict[str, dict[str, float | None]], corner_status: dict[str, str],
+               sc: ReadBias, n_grid: int = 32, floor: float = DEFAULT_ABSTOL) -> dict:
+    """Per-scenario summary from derived bias_op values {corner-id: {name: value}}.
+
+    Every corner that is not klt-`pass`, or lacks any of the scenario's current
+    measurements, is a FAILED corner: it is listed and makes the scenario
+    infeasible; it is never dropped from the verdict.
+    Per corner (worst over the 4 access-sizing x capacitor-geometry
+    sub-configurations, which are splits -- per-sub-config values are in `by_sg`):
+      i_off      max over {unprogrammed, programmed} x 3 OFF levels of the OFF current
+      i_sneak    (N-1) x i_off                      (spec/architecture.md Section 3 item 2)
+      i_sneak_f  (N-1) x max(i_off, floor)          solver-floor-limited bound
+      i_zero_f   i_sneak_f + max selected-unprogrammed current (floor-limited): the
+                 current an UNPROGRAMMED selected cell reads together with N-1 unselected cells
+      i_prog     min over sub-configs of the worst-filament programmed read current
+    """
+    n = n_grid - 1
+    rows, failed = {}, []
+    by_sg: dict[str, dict] = {}
+    for cid, vals in sorted(vals_by_corner.items()):
+        pref = (f"ioff_{sc.name}_", f"ioffp_{sc.name}_", f"iun_{sc.name}_", f"iread_pw_{sc.name}_", f"iread_pm_{sc.name}_")
+        mine = {k: v for k, v in vals.items() if k.startswith(pref)}
+        offs = [v for k, v in mine.items() if k.startswith((f"ioff_{sc.name}_", f"ioffp_{sc.name}_"))]
+        uns = [v for k, v in mine.items() if k.startswith(f"iun_{sc.name}_")]
+        pws = {k: v for k, v in mine.items() if k.startswith(f"iread_pw_{sc.name}_")}
+        pms = [v for k, v in mine.items() if k.startswith(f"iread_pm_{sc.name}_")]
+        st = corner_status.get(cid)
+        expect = 4 * 3 * 2 + 4 + 4 + 4   # off+offp, un, pw, pm
+        if st != "pass" or len(mine) != expect or any(v is None for v in mine.values()):
+            failed.append((cid, st, f"{sum(v is not None for v in mine.values())}/{expect} values"))
+            continue
+        i_off = max(offs)
+        un = max(max(uns), floor)
+        rows[cid] = {"i_off": i_off, "i_sneak": n * i_off, "i_sneak_f": n * max(i_off, floor),
+                     "i_zero_f": n * max(i_off, floor) + un, "i_un": max(uns),
+                     "i_prog": min(pws.values()), "i_prog_at": min(pws, key=pws.get).rsplit("_", 1)[-1],
+                     "i_prog_med": min(pms)}
+        for k, v in pws.items():
+            sg = k.rsplit("_", 1)[-1]
+            d = by_sg.setdefault(sg, {"prog": (math.inf, ""), "off": (0.0, ""), "un": (0.0, "")})
+            if v < d["prog"][0]:
+                d["prog"] = (v, cid)
+        for k, v in mine.items():
+            sg = k.rsplit("_", 1)[-1] if not k.startswith(("ioff_", "ioffp_")) else k.rsplit("_", 2)[-2]
+            d = by_sg.setdefault(sg, {"prog": (math.inf, ""), "off": (0.0, ""), "un": (0.0, "")})
+            if k.startswith(("ioff_", "ioffp_")) and v > d["off"][0]:
+                d["off"] = (v, cid)
+            if k.startswith("iun_") and v > d["un"][0]:
+                d["un"] = (v, cid)
+    out = {"scenario": sc.name, "rows": rows, "failed": failed, "by_sg": by_sg, "n": n, "floor": floor}
+    if rows:
+        wp = min(rows, key=lambda c: rows[c]["i_prog"])
+        ws = max(rows, key=lambda c: rows[c]["i_sneak"])
+        wz = max(rows, key=lambda c: rows[c]["i_zero_f"])
+        out.update({
+            "prog_min": rows[wp]["i_prog"], "prog_min_at": wp,
+            "sneak_max": rows[ws]["i_sneak"], "sneak_max_at": ws,
+            "zero_f_max": rows[wz]["i_zero_f"], "zero_f_max_at": wz,
+            "per_corner_ok": sum(r["i_prog"] > r["i_zero_f"] for r in rows.values()),
+            "per_corner_ok_meas": sum(r["i_prog"] > r["i_sneak"] for r in rows.values()),
+            "per_corner_bad": sorted(c for c, r in rows.items() if not r["i_prog"] > r["i_zero_f"]),
+        })
+        out["window"] = out["prog_min"] / out["zero_f_max"]
+        out["window_meas"] = out["prog_min"] / out["sneak_max"] if out["sneak_max"] > 0 else math.inf
+        out["common_iref"] = bool(out["prog_min"] > out["zero_f_max"] and not failed)
+    else:
+        out["common_iref"] = False
+    return out
+
+
+def bias_voltages(vals_by_corner: dict[str, dict[str, float | None]], sc: ReadBias,
+                  wl_off_levels: tuple[float, float, float]) -> dict:
+    """Selected-device terminal voltages and junction/oxide checks for one scenario,
+    from the measured rail/well/CN voltages (worst over corners and sub-configs)."""
+    vb_m, vd_m, vg_wl, vg_bl, stress = [], [], [], [], []
+    for vals in vals_by_corner.values():
+        vbl, vvb = vals.get(f"vbl_{sc.name}"), vals.get(f"vvb_{sc.name}")
+        cns = [v for k, v in vals.items() if k.startswith(f"vcn_pw_{sc.name}_") or k.startswith(f"vcn_pm_{sc.name}_")]
+        if vbl is None or vvb is None or not cns or any(c is None for c in cns):
+            continue
+        vb_m.append(vvb - vbl)                       # source (BL) -> well margin; < 0 = forward-biased
+        vd_m.append(vvb - max(cns))                  # drain (CN) -> well margin
+        wls = (sc.wl_on,) + tuple(wl_off_levels)
+        vg_wl.append(max(abs(w - vvb) for w in wls))  # gate-to-well
+        vg_bl.append(max(abs(w - vbl) for w in wls))  # gate-to-source/drain(BL)
+        stress.append(vbl)                           # oxide of the unprogrammed selected cell sees BL - PL(0)
+    if not vb_m:
+        return {}
+    return {"src_well_min": min(vb_m), "drn_well_min": min(vd_m), "gate_well_max": max(vg_wl),
+            "gate_bl_max": max(vg_bl), "cap_v_max": max(stress),
+            "fwd_ok": min(min(vb_m), min(vd_m)) > -JUNCTION_FWD_LIMIT_V,
+            "gate_ok": max(max(vg_wl), max(vg_bl)) <= PFET06_RATING_V,
+            "cap_ok": max(stress) <= CAP_RATING_C3_V}
+
+
+
 # ---------------------------------------------------------------------------
 # Record
 # ---------------------------------------------------------------------------
@@ -1040,6 +1254,143 @@ def render_record(pdk, cand, rid: str, results: dict[str, BenchResult], params: 
     if tr and tr.values:
         render_trigger(a, tr, cand, params)
     render_links(a, rid, stored_rid, pdk)
+    return "\n".join(L)
+
+
+
+def render_bias_record(pdk, cand, rid: str, results: dict[str, BenchResult], params: dict,
+                       dirty: bool | None, note: str | None = None) -> str:
+    """Record for the Candidate 3 read-bias study (#75). Every scenario is
+    reported -- feasible or not -- so the choice in
+    spec/candidate3-read-bias-decision.md can be audited against all alternatives."""
+    L: list[str] = []
+    a = L.append
+    r = results[BIAS_BENCH]
+    lo, mid, hi = CHAR.off_levels(cand)
+    stats = {sc.name: bias_stats(r.values, r.corner_status, sc) for sc in BIAS_SCENARIOS}
+    volt = {sc.name: bias_voltages(r.values, sc, (lo, mid, hi)) for sc in BIAS_SCENARIOS}
+    a(f"# Record {rid}")
+    a("")
+    a(f"- **Record ID**: {rid}")
+    a("- **Claim**: issue #75 -- Candidate 3 / Region III read bias. At the #62 placeholder bias (WL on = 0 V, "
+      "n-well 3.3 V) the programmed cell reads below `I_sneak_max`, so `spec/architecture.md#4-sense-scheme`'s "
+      "`I_sneak_max < I_ref < I_prog_min` has no solution. This record compares seven alternative read-bias "
+      "arrangements plus two well-offset sensitivities, each with the programmed and the unprogrammed cell "
+      "simulated at the SAME bias and the leakage bound recomputed at that bias, over the full PVT matrix. "
+      "Decision: `spec/candidate3-read-bias-decision.md`. Candidates 1 and 2 are not touched by this bench "
+      "(their records are the #62 ones).")
+    state = ("; working-tree state at run time not captured" if dirty is None
+             else (", dirty tree at run time)" if dirty else ")"))
+    a(f"- **Netlist provenance**: schematic (design/netlists/{cand.netlist} wrapped by "
+      "design/breakdown/cell_candidates_bd.spice" + state)
+    if note:
+        a(f"- **Run note**: {note}")
+    a("- **Model parameters**: assumed breakdown/filament parameters of `design/breakdown/breakdown_params.spice` "
+      f"(sha256 `{sha256(BD_DIR / 'breakdown_params.spice')}`); filament rf_med = "
+      f"{params['bd_rf_med']['value']:.4g} ohm, worst case rf_wc = "
+      f"{params['bd_rf_med']['value'] * math.exp(params['bd_zrf_wc']['value'] * params['bd_rf_sig']['value']):.4g} ohm "
+      f"(+{params['bd_zrf_wc']['value']:g} sigma). ALL programmed-cell currents below are CONDITIONAL on these "
+      "assumed filament resistances; none is a gf180 measurement.")
+    a(f"- **Corner matrix run** (one `klt sim` request, one deck, all scenarios as instances): MOS process "
+      f"{', '.join(C.MOS_CORNERS)} x {', '.join(str(t) for t in C.TEMPS_C)} degC x read-rail corner "
+      f"{CHAR.V_READ_NOM*0.9:.2f}/{CHAR.V_READ_NOM:.2f}/{CHAR.V_READ_NOM*1.1:.2f} V (scaled by each scenario's "
+      f"rail factor) = 45 corners; 4 access-sizing x capacitor-geometry sub-configurations per scenario. "
+      f"Geometry levels are the committed netlist's placeholder defaults and x2, NOT the ratified split-axis levels. "
+      f"Unselected-WL OFF levels {lo:g}/{mid:g}/{hi:g} V in every scenario.")
+    if r.klt_env:
+        e0 = r.klt_env
+        rm = e0.get("remote") or {}
+        a(f"- **Execution**: ngspice {e0.get('engine_version')} on the batch fleet (job "
+          f"`{rm.get('job_id')}`, runner klt {rm.get('runner_klt_version')}, client {rm.get('client_klt_version')}, "
+          f"`runner_compatibility: {rm.get('runner_compatibility')}`); models_lib sha256 `{e0.get('models_lib_sha256')}`.")
+    nerr = sum(1 for x in r.corner_status.values() if x != "pass")
+    a(f"- **Bench status**: klt `{r.status}`, {len(r.corner_status)} corners, {nerr} not `pass`"
+      + (f" -- ERROR: {r.error[:400]}" if r.error else ""))
+    a("- **Method**:")
+    a("  - `I_off` = max over {unprogrammed, programmed(median filament)} cells x 3 OFF levels x 4 sub-configs "
+      "of the BL current with WL at an OFF level and PL = 0. The programmed-OFF case is the worst sneak case "
+      "(CN pulled to PL, full V_DS across the OFF device) and is new relative to #62's unprogrammed-only `I_off`.")
+    a(f"  - `I_sneak_max` = (N-1) x `I_off`, N = {CHAR.N_GRID} (`spec/split-axis-plan.md`). Currents below "
+      f"abstol ({DEFAULT_ABSTOL:g} A) are not resolved by ngspice, and `gmin` = {CHAR.GMIN:g} S dominates them; the "
+      "**solver-floor-limited bound** `I_sneak,f` = (N-1) x max(`I_off`, abstol) is therefore the number the "
+      "verdict uses. Model leakage below abstol is UNRESOLVED: the raw values are exactly 0.0 A or +-k x 2^-54 "
+      "(machine-epsilon residue of both signs), i.e. solver roundoff, not model output, and `abs()` in the "
+      "derivation hides the sign. The bound is a resolution floor, not a bound on physical leakage and not a "
+      "prediction.")
+    a("  - `I_zero,f` = `I_sneak,f` + max(selected-unprogrammed current, abstol): the current an UNPROGRAMMED "
+      "selected cell reads together with the N-1 unselected cells. `I_prog` = worst-filament (rf_wc) programmed "
+      "read current, minimum over sub-configs. A bias is **feasible** iff, with no failed corner, "
+      "min over all corners of `I_prog` > max over all corners of `I_zero,f` (a single common `I_ref` exists; "
+      "the window is the ratio). The per-corner pass count (same-corner comparison) is also given.")
+    a("")
+    a("- **Result** (all scenarios; per-corner values in the per-scenario tables):")
+    a("")
+    a("  | Scenario | rail x | WL on [V] | n-well | failed corners | min I_prog [A] (corner) | max I_sneak_max [A] | max I_zero,f [A] | corners with I_prog > I_zero,f | window (I_prog min / I_zero,f max) | feasible |")
+    a("  |---|---|---|---|---|---|---|---|---|---|---|")
+    for sc in BIAS_SCENARIOS:
+        st = stats[sc.name]
+        vb = f"{sc.vb_v:g} V fixed" if sc.vb_mode == "fixed" else f"BL {sc.vb_v:+g} V"
+        if "prog_min" in st:
+            a(f"  | `{sc.name}` | {sc.rail_scale:g} | {sc.wl_on:g} | {vb} | {len(st['failed'])} | "
+              f"{sci(st['prog_min'])} (`{st['prog_min_at']}`) | {sci(st['sneak_max'])} | {sci(st['zero_f_max'])} | "
+              f"{st['per_corner_ok']}/{len(st['rows'])} | {st['window']:.3g} | **{'yes' if st['common_iref'] else 'NO'}** |")
+        else:
+            a(f"  | `{sc.name}` | {sc.rail_scale:g} | {sc.wl_on:g} | {vb} | {len(st['failed'])} | n/a | n/a | n/a | 0/0 | n/a | **NO** |")
+    a("")
+    a("- **Junction polarity and oxide checks** (worst over corners, from the measured BL/n-well/CN voltages of the "
+      f"programmed cells; limits: pfet_06v0 {PFET06_RATING_V:g} V, cap_pmos_03v3 {CAP_RATING_C3_V:g} V; a p+/n-well "
+      f"junction is called reverse/zero-biased if its forward bias stays under {JUNCTION_FWD_LIMIT_V:g} V -- an "
+      "ASSUMED screening limit, not a PDK number):")
+    a("")
+    a("  | Scenario | n-well minus BL, min [V] | n-well minus CN, min [V] | gate-to-well max [V] | gate-to-BL max [V] | cell oxide V (BL-PL) max [V] | junctions ok | gate ok | cap ok |")
+    a("  |---|---|---|---|---|---|---|---|---|")
+    for sc in BIAS_SCENARIOS:
+        v = volt[sc.name]
+        if not v:
+            a(f"  | `{sc.name}` | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a |")
+            continue
+        a(f"  | `{sc.name}` | {v['src_well_min']:+.3f} | {v['drn_well_min']:+.3f} | {v['gate_well_max']:.2f} | "
+          f"{v['gate_bl_max']:.2f} | {v['cap_v_max']:.2f} | {'yes' if v['fwd_ok'] else 'NO'} | "
+          f"{'yes' if v['gate_ok'] else 'NO'} | {'yes' if v['cap_ok'] else 'NO'} |")
+    a("")
+    for sc in BIAS_SCENARIOS:
+        st = stats[sc.name]
+        a(f"- **`{sc.name}`** -- {sc.note}")
+        if st["failed"]:
+            a(f"  - **FAILED / unresolved corners ({len(st['failed'])})**: "
+              + "; ".join(f"`{c}` (klt `{s_}`, {d})" for c, s_, d in st["failed"]))
+        if not st["rows"]:
+            a("  - no resolved corner")
+            continue
+        a(f"  - Per sub-configuration (access sizing s1/s2 x capacitor geometry g1/g2; splits are not averaged): "
+          + "; ".join(f"{sg}: min I_prog {sci(d['prog'][0])} (`{d['prog'][1]}`), max I_off {sci(d['off'][0])}, "
+                      f"max I_sel-unprog {sci(d['un'][0])}" for sg, d in sorted(st["by_sg"].items())))
+        if st["per_corner_bad"]:
+            a(f"  - corners where I_prog <= I_zero,f: {', '.join('`'+c+'`' for c in st['per_corner_bad'])}")
+        if sc.name == CHOSEN_C3_SCENARIO:
+            a("")
+            a("    | Corner | I_prog rf_wc, worst sub-config [A] | I_prog rf_med [A] | I_off (unprog/prog max) [A] | I_sneak_max [A] | I_zero,f [A] | I_prog / I_zero,f |")
+            a("    |---|---|---|---|---|---|---|")
+            for cid, row in st["rows"].items():
+                a(f"    | `{cid}` | {sci(row['i_prog'])} ({row['i_prog_at']}) | {sci(row['i_prog_med'])} | "
+                  f"{sci(row['i_off'])} | {sci(row['i_sneak'])} | {sci(row['i_zero_f'])} | {row['i_prog']/row['i_zero_f']:.3g} |")
+            a("")
+    chosen = stats[CHOSEN_C3_SCENARIO]
+    a(f"- **Chosen scenario (as adopted in the decision record)**: `{CHOSEN_C3_SCENARIO}`; feasible = "
+      f"**{chosen['common_iref']}**" + (f", window {chosen['window']:.3g}" if "window" in chosen else "")
+      + (f"; failed corners: {len(chosen['failed'])}" if chosen["failed"] else "") + ".")
+    a("- **Caveats**: conditional behavioral simulation, not silicon. Junction leakage, GIDL and well-to-substrate "
+      "terms beyond the PDK model are not characterized; read disturb is NOT established (the oxide voltage is "
+      "listed, the E-model parameters are assumed). Region III only; the program-leg overstress question is #90.")
+    a("- **Links**:")
+    a("  - Decision record: `spec/candidate3-read-bias-decision.md`")
+    a(f"  - Netlist snapshot: `sim/cell-breakdown-model/netlist-snapshots/{rid}.spice`")
+    a(f"  - Request, body, klt report, per-corner decks and logs: `sim/cell-breakdown-model/corners/{rid}/{BIAS_BENCH}/`")
+    a("  - Failure being fixed (placeholder bias): `sim/cell-breakdown-model/records/20261009-020416-66efd11.md`")
+    a(f"  - PDK: `{pdk.variant}`, open_pdks `{pdk.revision}` (submit host)")
+    a(f"- **Timestamp / author**: {time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())}, agent-builder")
+    a("- **Supersedes**: (none -- appends; `20261009-020416-66efd11` stays as the placeholder-bias record)")
+    a("")
     return "\n".join(L)
 
 
@@ -1611,7 +1962,9 @@ def results_from_reports(cand, rid: str, params: dict, benches=None) -> dict[str
 
 
 def render_any(pdk, cand, rid: str, results: dict[str, BenchResult], params: dict, dirty, note) -> str:
-    """A run that includes any #74 bench gets the convergence record."""
+    """A run that includes any #74 bench gets the convergence record; a bias_op-only run (#75) its own."""
+    if set(results) == {BIAS_BENCH}:
+        return render_bias_record(pdk, cand, rid, results, params, dirty, note)
     if any(b in CONV_BENCHES or b == OPSTART_BENCH for b in results):
         return render_conv_record(pdk, cand, rid, results, params, dirty, note)
     return render_record(pdk, cand, rid, results, params, dirty, stored_record_id(cand), note)
@@ -1634,7 +1987,9 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--pdk-root", default=None)
     ap.add_argument("--candidates", default="1,2,3")
     ap.add_argument("--benches", default=",".join(BENCHES),
-                    help=f"comma-separated; #62 benches {', '.join(BENCHES)}; #74 benches {', '.join(CONV_BENCHES)}")
+                    help=f"comma-separated; #62 benches {', '.join(BENCHES)} (default); #74 benches "
+                         f"{', '.join(CONV_BENCHES)}; `{BIAS_BENCH}` (Candidate 3 only, issue #75) must be run "
+                         "on its own and writes its own record")
     ap.add_argument("--campaign", choices=tuple(CAMPAIGNS), default=None,
                     help="conv74: the #62 trigger bench (control) + the single-instance trig1/prog benches "
                          "(raised-cosine edges); conv74c: the trigc/progc benches (C-infinity edges). "
@@ -1689,6 +2044,10 @@ def main(argv: list[str] | None = None) -> int:
     rc = 0
     for n in wanted:
         cand = by_n[n]
+        if BIAS_BENCH in benches and (benches != [BIAS_BENCH] or n != 3):
+            print(f"ERROR: {BIAS_BENCH} runs alone and for Candidate 3 only (--candidates 3 --benches {BIAS_BENCH})",
+                  file=sys.stderr)
+            return 3
         defaults = CHAR.parse_defaults(REPO_ROOT / "design" / "netlists" / cand.netlist)
         rid = R.allocate_record_id(THIS_DIR, REPO_ROOT)
         print(f"== Candidate {n} (Region {cand.region}) record {rid}")
