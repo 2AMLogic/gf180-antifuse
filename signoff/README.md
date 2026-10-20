@@ -106,6 +106,28 @@ was claimed:
   support a whole-block row regardless.
 
 
+## Synthesis evidence (issue #60): which rows moved, which did not
+
+`rtl/synth/antifuse_spi_regs.synth.report.json` is a `klt synthesize` response
+for the digital partition's SPI register file (reproduction in `rtl/README.md`).
+It is listed under `supporting_evidence` with a pinned `content_hash`, not
+under `evidence`.
+
+**Rows that moved: none.** All rows remain `unmet`; `report.json` is unchanged
+because nothing graded changed.
+
+- **Item 1 (digital)** is the row this evidence is for, but `klt signoff`
+  (0.6.0 and the host's 0.7.1.dev) does not recognise a `klt synthesize`
+  response: citing it under `1.digital` renders `unmet` /
+  `unrecognized_envelope` instead of `no_evidence`, a worse-looking row with
+  no more truth. It also covers only the SPI register file, not the global
+  row/column decoders of the digital partition. Tool gap filed upstream as
+  2AMLogic/klayout-tools#4015.
+- **Item 9** stays `unmet`: it is graded on "some passing envelope was cited"
+  with no relevance check (rule 2 below), the register-file bench emits
+  `RESULT:` lines, not a `klt` envelope, and item 9 covers the whole block,
+  whose analog benches are incomplete.
+
 ### Why this reads differently from the hand-maintained checklist
 
 Issue #10's checkbox list marks items 1, 5, and 9 met. Those annotations are
