@@ -308,8 +308,10 @@ guidance calls out explicitly:
 3. Host writes the `FIRE` command (A1; formerly `CTRL` with `PROG_STROBE=1`)
    in a **separate, subsequent** SPI transaction, within a bounded arm-timeout window. If the timeout
    elapses without a strobe, `PROG_ARM` auto-clears and the sequence must
-   restart from step 2 — a stuck-high `PROG_STROBE` line with no preceding
-   `PROG_ARM` write cannot fire a pulse. The timeout value is a
+   restart from step 2 — a `FIRE` with no preceding `PROG_ARM` write, or a
+   stuck-high `MOSI` line (every command byte then reads `0xFF`, an
+   unknown-address write), cannot fire a pulse (A1 wording; the pre-A1 text
+   spoke of a stuck-high `PROG_STROBE` line). The timeout value is a
    `design/`-stage constant, not fixed by this record.
 4. On `FIRE` committed while `PROG_ARM` is set (`PROG_STROBE` then reads 1): `BUSY` asserts,
    `READ_EN` is held disabled for the armed+pulse duration (§1.2), the
