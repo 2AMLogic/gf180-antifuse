@@ -18,8 +18,8 @@ klt signoff --manifest signoff/manifest.json --format json > signoff/report.json
 
 **Which `klt` build this verdict was graded with.** The committed
 `signoff/report.json` was regenerated (issue #63) by klayout-tools
-`0.6.0+g1eb3e4bfd0f5` (commit
-`1eb3e4bfd0f5957bb643fdecfde26c7badea2c67`) -- the report's own
+`0.7.0` (release; commit
+`0e2362bda7309829398a35d54efaa989d5806065`) -- the report's own
 `build.version` / `build.git_commit` fields. It replaces a report graded by
 `0.5.0+g32f69f811682`: the installed `klt` had moved to `0.6.0`, whose bundled
 checklist hashes differently, so the committed report had stopped matching a
@@ -39,8 +39,8 @@ doc) or on any drift from the committed report.
 
 `tier: null` — **0 of 22 T1 items met**, graded against
 `design-evidence-tiers.md` at
-`sha256:a561c23904a849080951c0750291f0edd99eca3f014996a2378153616a83cdaa`
-(the copy bundled in klayout-tools `0.6.0+g1eb3e4bfd0f5`, which is the
+`sha256:4c67ffc59128482d00f7d87cf446b6a96b9ab0c41ae5234098244e3052033335`
+(the copy bundled in klayout-tools `0.7.0`, which is the
 eleven-item checklist — item 11, "Power delivery (structural)", included).
 Both values are copied from the committed `signoff/report.json`
 (`source_doc_content_hash` and `build.version`); if a regenerated report
@@ -115,6 +115,18 @@ main). The only differences are the klt build identity, the checklist
 accessibility clause). **Rows moved: none** -- 22 `unmet`/`no_evidence`
 (plus the 3 `tier_not_supported` entries unchanged). `./signoff/verify.sh`
 passes.
+
+**Regeneration on 2026-10-20 (operator ruling, scope firewall).** The
+`0.7.1.dev256` report carried checklist text citing other 2AM repositories, which
+this repo's scope firewall does not allow. `report.json` was regraded, unedited,
+with the released klayout-tools `0.7.0` (run through `uvx --from
+"klayout-tools==0.7.0" klt signoff ...`, not the host install); that build's
+checklist text carries no such reference (`grep 2AMLogic signoff/report.json`
+finds nothing). Differences from the prior report are only the build identity,
+the grading ruleset id, `source_doc_content_hash`, and the checklist wording of
+items 20-21 notes. **Rows moved: none** -- still 22 `unmet`/`no_evidence`. Note
+`./signoff/verify.sh` reproduces this report only with klt `0.7.0` on PATH; a
+different build will report drift in `build.*` and the checklist hash.
 
 
 ## Synthesis evidence (issue #60): which rows moved, which did not
