@@ -1,0 +1,1360 @@
+* expanding   symbol:  array_32x32.sym # of pins=75
+** sym_path: design/array/array_32x32.sym
+** sch_path: design/array/array_32x32.sch
+.subckt array_32x32 RSEL_0 RSEL_1 RSEL_2 RSEL_3 RSEL_4 RSEL_5 RSEL_6 RSEL_7 RSEL_8 RSEL_9 RSEL_10 RSEL_11 RSEL_12 RSEL_13 RSEL_14 RSEL_15 RSEL_16 RSEL_17 RSEL_18 RSEL_19 RSEL_20 RSEL_21 RSEL_22 RSEL_23 RSEL_24 RSEL_25 RSEL_26 RSEL_27 RSEL_28 RSEL_29 RSEL_30 RSEL_31 CSEL_0 CSEL_1 CSEL_2 CSEL_3 CSEL_4 CSEL_5 CSEL_6 CSEL_7 CSEL_8 CSEL_9 CSEL_10 CSEL_11 CSEL_12 CSEL_13 CSEL_14 CSEL_15 CSEL_16 CSEL_17 CSEL_18 CSEL_19 CSEL_20 CSEL_21 CSEL_22 CSEL_23 CSEL_24 CSEL_25 CSEL_26 CSEL_27 CSEL_28 CSEL_29 CSEL_30 CSEL_31 BLG_I PLG_I BLG_II PLG_II BLG_III PLG_III VDDH_I VDDH_II VDDH_III VDDL VSS
+*.ipin RSEL_0
+*.ipin RSEL_1
+*.ipin RSEL_2
+*.ipin RSEL_3
+*.ipin RSEL_4
+*.ipin RSEL_5
+*.ipin RSEL_6
+*.ipin RSEL_7
+*.ipin RSEL_8
+*.ipin RSEL_9
+*.ipin RSEL_10
+*.ipin RSEL_11
+*.ipin RSEL_12
+*.ipin RSEL_13
+*.ipin RSEL_14
+*.ipin RSEL_15
+*.ipin RSEL_16
+*.ipin RSEL_17
+*.ipin RSEL_18
+*.ipin RSEL_19
+*.ipin RSEL_20
+*.ipin RSEL_21
+*.ipin RSEL_22
+*.ipin RSEL_23
+*.ipin RSEL_24
+*.ipin RSEL_25
+*.ipin RSEL_26
+*.ipin RSEL_27
+*.ipin RSEL_28
+*.ipin RSEL_29
+*.ipin RSEL_30
+*.ipin RSEL_31
+*.ipin CSEL_0
+*.ipin CSEL_1
+*.ipin CSEL_2
+*.ipin CSEL_3
+*.ipin CSEL_4
+*.ipin CSEL_5
+*.ipin CSEL_6
+*.ipin CSEL_7
+*.ipin CSEL_8
+*.ipin CSEL_9
+*.ipin CSEL_10
+*.ipin CSEL_11
+*.ipin CSEL_12
+*.ipin CSEL_13
+*.ipin CSEL_14
+*.ipin CSEL_15
+*.ipin CSEL_16
+*.ipin CSEL_17
+*.ipin CSEL_18
+*.ipin CSEL_19
+*.ipin CSEL_20
+*.ipin CSEL_21
+*.ipin CSEL_22
+*.ipin CSEL_23
+*.ipin CSEL_24
+*.ipin CSEL_25
+*.ipin CSEL_26
+*.ipin CSEL_27
+*.ipin CSEL_28
+*.ipin CSEL_29
+*.ipin CSEL_30
+*.ipin CSEL_31
+*.iopin BLG_I
+*.iopin PLG_I
+*.iopin BLG_II
+*.iopin PLG_II
+*.iopin BLG_III
+*.iopin PLG_III
+*.ipin VDDH_I
+*.ipin VDDH_II
+*.ipin VDDH_III
+*.ipin VDDL
+*.ipin VSS
+Xc_0_0 BL_0 WL_0_I PL_0_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_0_1 BL_1 WL_0_I PL_0_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_0_2 BL_2 WL_0_I PL_0_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_0_3 BL_3 WL_0_I PL_0_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_0_4 BL_4 WL_0_I PL_0_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_0_5 BL_5 WL_0_I PL_0_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_0_6 BL_6 WL_0_I PL_0_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_0_7 BL_7 WL_0_I PL_0_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_0_8 BL_8 WL_0_I PL_0_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_0_9 BL_9 WL_0_I PL_0_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_0_10 BL_10 WL_0_I PL_0_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_0_11 BL_11 WL_0_II PL_0_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_0_12 BL_12 WL_0_II PL_0_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_0_13 BL_13 WL_0_II PL_0_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_0_14 BL_14 WL_0_II PL_0_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_0_15 BL_15 WL_0_II PL_0_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_0_16 BL_16 WL_0_II PL_0_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_0_17 BL_17 WL_0_II PL_0_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_0_18 BL_18 WL_0_II PL_0_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_0_19 BL_19 WL_0_II PL_0_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_0_20 BL_20 WL_0_II PL_0_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_0_21 BL_21 WL_0_II PL_0_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_0_22 BL_22 WL_0_III PL_0_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_0_23 BL_23 WL_0_III PL_0_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_0_24 BL_24 WL_0_III PL_0_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_0_25 BL_25 WL_0_III PL_0_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_0_26 BL_26 WL_0_III PL_0_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_0_27 BL_27 WL_0_III PL_0_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_0_28 BL_28 WL_0_III PL_0_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_0_29 BL_29 WL_0_III PL_0_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_0_30 BL_30 WL_0_III PL_0_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_0_31 BL_31 WL_0_III PL_0_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_1_0 BL_0 WL_1_I PL_1_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_1_1 BL_1 WL_1_I PL_1_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_1_2 BL_2 WL_1_I PL_1_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_1_3 BL_3 WL_1_I PL_1_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_1_4 BL_4 WL_1_I PL_1_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_1_5 BL_5 WL_1_I PL_1_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_1_6 BL_6 WL_1_I PL_1_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_1_7 BL_7 WL_1_I PL_1_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_1_8 BL_8 WL_1_I PL_1_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_1_9 BL_9 WL_1_I PL_1_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_1_10 BL_10 WL_1_I PL_1_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_1_11 BL_11 WL_1_II PL_1_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_1_12 BL_12 WL_1_II PL_1_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_1_13 BL_13 WL_1_II PL_1_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_1_14 BL_14 WL_1_II PL_1_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_1_15 BL_15 WL_1_II PL_1_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_1_16 BL_16 WL_1_II PL_1_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_1_17 BL_17 WL_1_II PL_1_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_1_18 BL_18 WL_1_II PL_1_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_1_19 BL_19 WL_1_II PL_1_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_1_20 BL_20 WL_1_II PL_1_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_1_21 BL_21 WL_1_II PL_1_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_1_22 BL_22 WL_1_III PL_1_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_1_23 BL_23 WL_1_III PL_1_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_1_24 BL_24 WL_1_III PL_1_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_1_25 BL_25 WL_1_III PL_1_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_1_26 BL_26 WL_1_III PL_1_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_1_27 BL_27 WL_1_III PL_1_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_1_28 BL_28 WL_1_III PL_1_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_1_29 BL_29 WL_1_III PL_1_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_1_30 BL_30 WL_1_III PL_1_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_1_31 BL_31 WL_1_III PL_1_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_2_0 BL_0 WL_2_I PL_2_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_2_1 BL_1 WL_2_I PL_2_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_2_2 BL_2 WL_2_I PL_2_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_2_3 BL_3 WL_2_I PL_2_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_2_4 BL_4 WL_2_I PL_2_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_2_5 BL_5 WL_2_I PL_2_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_2_6 BL_6 WL_2_I PL_2_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_2_7 BL_7 WL_2_I PL_2_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_2_8 BL_8 WL_2_I PL_2_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_2_9 BL_9 WL_2_I PL_2_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_2_10 BL_10 WL_2_I PL_2_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_2_11 BL_11 WL_2_II PL_2_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_2_12 BL_12 WL_2_II PL_2_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_2_13 BL_13 WL_2_II PL_2_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_2_14 BL_14 WL_2_II PL_2_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_2_15 BL_15 WL_2_II PL_2_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_2_16 BL_16 WL_2_II PL_2_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_2_17 BL_17 WL_2_II PL_2_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_2_18 BL_18 WL_2_II PL_2_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_2_19 BL_19 WL_2_II PL_2_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_2_20 BL_20 WL_2_II PL_2_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_2_21 BL_21 WL_2_II PL_2_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_2_22 BL_22 WL_2_III PL_2_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_2_23 BL_23 WL_2_III PL_2_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_2_24 BL_24 WL_2_III PL_2_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_2_25 BL_25 WL_2_III PL_2_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_2_26 BL_26 WL_2_III PL_2_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_2_27 BL_27 WL_2_III PL_2_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_2_28 BL_28 WL_2_III PL_2_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_2_29 BL_29 WL_2_III PL_2_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_2_30 BL_30 WL_2_III PL_2_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_2_31 BL_31 WL_2_III PL_2_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_3_0 BL_0 WL_3_I PL_3_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_3_1 BL_1 WL_3_I PL_3_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_3_2 BL_2 WL_3_I PL_3_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_3_3 BL_3 WL_3_I PL_3_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_3_4 BL_4 WL_3_I PL_3_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_3_5 BL_5 WL_3_I PL_3_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_3_6 BL_6 WL_3_I PL_3_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_3_7 BL_7 WL_3_I PL_3_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_3_8 BL_8 WL_3_I PL_3_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_3_9 BL_9 WL_3_I PL_3_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_3_10 BL_10 WL_3_I PL_3_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_3_11 BL_11 WL_3_II PL_3_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_3_12 BL_12 WL_3_II PL_3_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_3_13 BL_13 WL_3_II PL_3_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_3_14 BL_14 WL_3_II PL_3_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_3_15 BL_15 WL_3_II PL_3_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_3_16 BL_16 WL_3_II PL_3_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_3_17 BL_17 WL_3_II PL_3_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_3_18 BL_18 WL_3_II PL_3_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_3_19 BL_19 WL_3_II PL_3_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_3_20 BL_20 WL_3_II PL_3_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_3_21 BL_21 WL_3_II PL_3_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_3_22 BL_22 WL_3_III PL_3_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_3_23 BL_23 WL_3_III PL_3_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_3_24 BL_24 WL_3_III PL_3_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_3_25 BL_25 WL_3_III PL_3_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_3_26 BL_26 WL_3_III PL_3_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_3_27 BL_27 WL_3_III PL_3_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_3_28 BL_28 WL_3_III PL_3_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_3_29 BL_29 WL_3_III PL_3_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_3_30 BL_30 WL_3_III PL_3_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_3_31 BL_31 WL_3_III PL_3_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_4_0 BL_0 WL_4_I PL_4_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_4_1 BL_1 WL_4_I PL_4_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_4_2 BL_2 WL_4_I PL_4_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_4_3 BL_3 WL_4_I PL_4_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_4_4 BL_4 WL_4_I PL_4_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_4_5 BL_5 WL_4_I PL_4_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_4_6 BL_6 WL_4_I PL_4_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_4_7 BL_7 WL_4_I PL_4_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_4_8 BL_8 WL_4_I PL_4_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_4_9 BL_9 WL_4_I PL_4_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_4_10 BL_10 WL_4_I PL_4_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_4_11 BL_11 WL_4_II PL_4_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_4_12 BL_12 WL_4_II PL_4_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_4_13 BL_13 WL_4_II PL_4_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_4_14 BL_14 WL_4_II PL_4_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_4_15 BL_15 WL_4_II PL_4_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_4_16 BL_16 WL_4_II PL_4_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_4_17 BL_17 WL_4_II PL_4_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_4_18 BL_18 WL_4_II PL_4_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_4_19 BL_19 WL_4_II PL_4_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_4_20 BL_20 WL_4_II PL_4_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_4_21 BL_21 WL_4_II PL_4_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_4_22 BL_22 WL_4_III PL_4_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_4_23 BL_23 WL_4_III PL_4_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_4_24 BL_24 WL_4_III PL_4_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_4_25 BL_25 WL_4_III PL_4_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_4_26 BL_26 WL_4_III PL_4_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_4_27 BL_27 WL_4_III PL_4_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_4_28 BL_28 WL_4_III PL_4_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_4_29 BL_29 WL_4_III PL_4_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_4_30 BL_30 WL_4_III PL_4_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_4_31 BL_31 WL_4_III PL_4_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_5_0 BL_0 WL_5_I PL_5_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_5_1 BL_1 WL_5_I PL_5_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_5_2 BL_2 WL_5_I PL_5_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_5_3 BL_3 WL_5_I PL_5_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_5_4 BL_4 WL_5_I PL_5_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_5_5 BL_5 WL_5_I PL_5_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_5_6 BL_6 WL_5_I PL_5_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_5_7 BL_7 WL_5_I PL_5_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_5_8 BL_8 WL_5_I PL_5_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_5_9 BL_9 WL_5_I PL_5_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_5_10 BL_10 WL_5_I PL_5_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_5_11 BL_11 WL_5_II PL_5_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_5_12 BL_12 WL_5_II PL_5_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_5_13 BL_13 WL_5_II PL_5_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_5_14 BL_14 WL_5_II PL_5_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_5_15 BL_15 WL_5_II PL_5_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_5_16 BL_16 WL_5_II PL_5_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_5_17 BL_17 WL_5_II PL_5_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_5_18 BL_18 WL_5_II PL_5_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_5_19 BL_19 WL_5_II PL_5_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_5_20 BL_20 WL_5_II PL_5_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_5_21 BL_21 WL_5_II PL_5_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_5_22 BL_22 WL_5_III PL_5_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_5_23 BL_23 WL_5_III PL_5_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_5_24 BL_24 WL_5_III PL_5_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_5_25 BL_25 WL_5_III PL_5_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_5_26 BL_26 WL_5_III PL_5_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_5_27 BL_27 WL_5_III PL_5_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_5_28 BL_28 WL_5_III PL_5_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_5_29 BL_29 WL_5_III PL_5_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_5_30 BL_30 WL_5_III PL_5_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_5_31 BL_31 WL_5_III PL_5_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_6_0 BL_0 WL_6_I PL_6_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_6_1 BL_1 WL_6_I PL_6_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_6_2 BL_2 WL_6_I PL_6_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_6_3 BL_3 WL_6_I PL_6_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_6_4 BL_4 WL_6_I PL_6_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_6_5 BL_5 WL_6_I PL_6_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_6_6 BL_6 WL_6_I PL_6_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_6_7 BL_7 WL_6_I PL_6_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_6_8 BL_8 WL_6_I PL_6_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_6_9 BL_9 WL_6_I PL_6_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_6_10 BL_10 WL_6_I PL_6_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_6_11 BL_11 WL_6_II PL_6_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_6_12 BL_12 WL_6_II PL_6_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_6_13 BL_13 WL_6_II PL_6_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_6_14 BL_14 WL_6_II PL_6_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_6_15 BL_15 WL_6_II PL_6_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_6_16 BL_16 WL_6_II PL_6_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_6_17 BL_17 WL_6_II PL_6_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_6_18 BL_18 WL_6_II PL_6_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_6_19 BL_19 WL_6_II PL_6_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_6_20 BL_20 WL_6_II PL_6_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_6_21 BL_21 WL_6_II PL_6_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_6_22 BL_22 WL_6_III PL_6_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_6_23 BL_23 WL_6_III PL_6_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_6_24 BL_24 WL_6_III PL_6_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_6_25 BL_25 WL_6_III PL_6_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_6_26 BL_26 WL_6_III PL_6_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_6_27 BL_27 WL_6_III PL_6_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_6_28 BL_28 WL_6_III PL_6_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_6_29 BL_29 WL_6_III PL_6_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_6_30 BL_30 WL_6_III PL_6_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_6_31 BL_31 WL_6_III PL_6_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_7_0 BL_0 WL_7_I PL_7_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_7_1 BL_1 WL_7_I PL_7_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_7_2 BL_2 WL_7_I PL_7_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_7_3 BL_3 WL_7_I PL_7_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_7_4 BL_4 WL_7_I PL_7_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_7_5 BL_5 WL_7_I PL_7_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_7_6 BL_6 WL_7_I PL_7_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_7_7 BL_7 WL_7_I PL_7_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_7_8 BL_8 WL_7_I PL_7_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_7_9 BL_9 WL_7_I PL_7_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_7_10 BL_10 WL_7_I PL_7_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_7_11 BL_11 WL_7_II PL_7_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_7_12 BL_12 WL_7_II PL_7_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_7_13 BL_13 WL_7_II PL_7_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_7_14 BL_14 WL_7_II PL_7_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_7_15 BL_15 WL_7_II PL_7_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_7_16 BL_16 WL_7_II PL_7_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_7_17 BL_17 WL_7_II PL_7_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_7_18 BL_18 WL_7_II PL_7_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_7_19 BL_19 WL_7_II PL_7_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_7_20 BL_20 WL_7_II PL_7_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_7_21 BL_21 WL_7_II PL_7_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_7_22 BL_22 WL_7_III PL_7_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_7_23 BL_23 WL_7_III PL_7_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_7_24 BL_24 WL_7_III PL_7_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_7_25 BL_25 WL_7_III PL_7_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_7_26 BL_26 WL_7_III PL_7_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_7_27 BL_27 WL_7_III PL_7_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_7_28 BL_28 WL_7_III PL_7_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_7_29 BL_29 WL_7_III PL_7_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_7_30 BL_30 WL_7_III PL_7_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_7_31 BL_31 WL_7_III PL_7_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_8_0 BL_0 WL_8_I PL_8_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_8_1 BL_1 WL_8_I PL_8_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_8_2 BL_2 WL_8_I PL_8_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_8_3 BL_3 WL_8_I PL_8_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_8_4 BL_4 WL_8_I PL_8_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_8_5 BL_5 WL_8_I PL_8_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_8_6 BL_6 WL_8_I PL_8_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_8_7 BL_7 WL_8_I PL_8_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_8_8 BL_8 WL_8_I PL_8_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_8_9 BL_9 WL_8_I PL_8_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_8_10 BL_10 WL_8_I PL_8_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_8_11 BL_11 WL_8_II PL_8_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_8_12 BL_12 WL_8_II PL_8_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_8_13 BL_13 WL_8_II PL_8_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_8_14 BL_14 WL_8_II PL_8_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_8_15 BL_15 WL_8_II PL_8_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_8_16 BL_16 WL_8_II PL_8_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_8_17 BL_17 WL_8_II PL_8_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_8_18 BL_18 WL_8_II PL_8_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_8_19 BL_19 WL_8_II PL_8_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_8_20 BL_20 WL_8_II PL_8_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_8_21 BL_21 WL_8_II PL_8_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_8_22 BL_22 WL_8_III PL_8_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_8_23 BL_23 WL_8_III PL_8_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_8_24 BL_24 WL_8_III PL_8_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_8_25 BL_25 WL_8_III PL_8_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_8_26 BL_26 WL_8_III PL_8_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_8_27 BL_27 WL_8_III PL_8_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_8_28 BL_28 WL_8_III PL_8_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_8_29 BL_29 WL_8_III PL_8_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_8_30 BL_30 WL_8_III PL_8_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_8_31 BL_31 WL_8_III PL_8_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_9_0 BL_0 WL_9_I PL_9_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_9_1 BL_1 WL_9_I PL_9_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_9_2 BL_2 WL_9_I PL_9_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_9_3 BL_3 WL_9_I PL_9_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_9_4 BL_4 WL_9_I PL_9_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_9_5 BL_5 WL_9_I PL_9_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_9_6 BL_6 WL_9_I PL_9_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_9_7 BL_7 WL_9_I PL_9_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_9_8 BL_8 WL_9_I PL_9_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_9_9 BL_9 WL_9_I PL_9_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_9_10 BL_10 WL_9_I PL_9_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_9_11 BL_11 WL_9_II PL_9_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_9_12 BL_12 WL_9_II PL_9_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_9_13 BL_13 WL_9_II PL_9_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_9_14 BL_14 WL_9_II PL_9_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_9_15 BL_15 WL_9_II PL_9_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_9_16 BL_16 WL_9_II PL_9_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_9_17 BL_17 WL_9_II PL_9_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_9_18 BL_18 WL_9_II PL_9_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_9_19 BL_19 WL_9_II PL_9_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_9_20 BL_20 WL_9_II PL_9_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_9_21 BL_21 WL_9_II PL_9_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_9_22 BL_22 WL_9_III PL_9_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_9_23 BL_23 WL_9_III PL_9_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_9_24 BL_24 WL_9_III PL_9_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_9_25 BL_25 WL_9_III PL_9_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_9_26 BL_26 WL_9_III PL_9_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_9_27 BL_27 WL_9_III PL_9_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_9_28 BL_28 WL_9_III PL_9_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_9_29 BL_29 WL_9_III PL_9_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_9_30 BL_30 WL_9_III PL_9_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_9_31 BL_31 WL_9_III PL_9_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_10_0 BL_0 WL_10_I PL_10_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_10_1 BL_1 WL_10_I PL_10_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_10_2 BL_2 WL_10_I PL_10_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_10_3 BL_3 WL_10_I PL_10_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_10_4 BL_4 WL_10_I PL_10_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_10_5 BL_5 WL_10_I PL_10_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_10_6 BL_6 WL_10_I PL_10_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_10_7 BL_7 WL_10_I PL_10_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_10_8 BL_8 WL_10_I PL_10_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_10_9 BL_9 WL_10_I PL_10_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_10_10 BL_10 WL_10_I PL_10_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_10_11 BL_11 WL_10_II PL_10_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_10_12 BL_12 WL_10_II PL_10_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_10_13 BL_13 WL_10_II PL_10_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_10_14 BL_14 WL_10_II PL_10_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_10_15 BL_15 WL_10_II PL_10_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_10_16 BL_16 WL_10_II PL_10_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_10_17 BL_17 WL_10_II PL_10_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_10_18 BL_18 WL_10_II PL_10_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_10_19 BL_19 WL_10_II PL_10_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_10_20 BL_20 WL_10_II PL_10_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_10_21 BL_21 WL_10_II PL_10_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_10_22 BL_22 WL_10_III PL_10_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_10_23 BL_23 WL_10_III PL_10_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_10_24 BL_24 WL_10_III PL_10_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_10_25 BL_25 WL_10_III PL_10_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_10_26 BL_26 WL_10_III PL_10_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_10_27 BL_27 WL_10_III PL_10_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_10_28 BL_28 WL_10_III PL_10_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_10_29 BL_29 WL_10_III PL_10_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_10_30 BL_30 WL_10_III PL_10_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_10_31 BL_31 WL_10_III PL_10_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_11_0 BL_0 WL_11_I PL_11_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_11_1 BL_1 WL_11_I PL_11_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_11_2 BL_2 WL_11_I PL_11_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_11_3 BL_3 WL_11_I PL_11_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_11_4 BL_4 WL_11_I PL_11_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_11_5 BL_5 WL_11_I PL_11_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_11_6 BL_6 WL_11_I PL_11_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_11_7 BL_7 WL_11_I PL_11_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_11_8 BL_8 WL_11_I PL_11_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_11_9 BL_9 WL_11_I PL_11_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_11_10 BL_10 WL_11_I PL_11_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_11_11 BL_11 WL_11_II PL_11_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_11_12 BL_12 WL_11_II PL_11_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_11_13 BL_13 WL_11_II PL_11_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_11_14 BL_14 WL_11_II PL_11_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_11_15 BL_15 WL_11_II PL_11_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_11_16 BL_16 WL_11_II PL_11_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_11_17 BL_17 WL_11_II PL_11_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_11_18 BL_18 WL_11_II PL_11_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_11_19 BL_19 WL_11_II PL_11_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_11_20 BL_20 WL_11_II PL_11_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_11_21 BL_21 WL_11_II PL_11_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_11_22 BL_22 WL_11_III PL_11_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_11_23 BL_23 WL_11_III PL_11_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_11_24 BL_24 WL_11_III PL_11_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_11_25 BL_25 WL_11_III PL_11_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_11_26 BL_26 WL_11_III PL_11_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_11_27 BL_27 WL_11_III PL_11_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_11_28 BL_28 WL_11_III PL_11_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_11_29 BL_29 WL_11_III PL_11_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_11_30 BL_30 WL_11_III PL_11_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_11_31 BL_31 WL_11_III PL_11_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_12_0 BL_0 WL_12_I PL_12_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_12_1 BL_1 WL_12_I PL_12_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_12_2 BL_2 WL_12_I PL_12_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_12_3 BL_3 WL_12_I PL_12_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_12_4 BL_4 WL_12_I PL_12_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_12_5 BL_5 WL_12_I PL_12_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_12_6 BL_6 WL_12_I PL_12_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_12_7 BL_7 WL_12_I PL_12_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_12_8 BL_8 WL_12_I PL_12_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_12_9 BL_9 WL_12_I PL_12_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_12_10 BL_10 WL_12_I PL_12_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_12_11 BL_11 WL_12_II PL_12_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_12_12 BL_12 WL_12_II PL_12_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_12_13 BL_13 WL_12_II PL_12_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_12_14 BL_14 WL_12_II PL_12_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_12_15 BL_15 WL_12_II PL_12_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_12_16 BL_16 WL_12_II PL_12_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_12_17 BL_17 WL_12_II PL_12_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_12_18 BL_18 WL_12_II PL_12_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_12_19 BL_19 WL_12_II PL_12_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_12_20 BL_20 WL_12_II PL_12_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_12_21 BL_21 WL_12_II PL_12_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_12_22 BL_22 WL_12_III PL_12_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_12_23 BL_23 WL_12_III PL_12_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_12_24 BL_24 WL_12_III PL_12_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_12_25 BL_25 WL_12_III PL_12_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_12_26 BL_26 WL_12_III PL_12_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_12_27 BL_27 WL_12_III PL_12_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_12_28 BL_28 WL_12_III PL_12_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_12_29 BL_29 WL_12_III PL_12_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_12_30 BL_30 WL_12_III PL_12_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_12_31 BL_31 WL_12_III PL_12_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_13_0 BL_0 WL_13_I PL_13_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_13_1 BL_1 WL_13_I PL_13_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_13_2 BL_2 WL_13_I PL_13_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_13_3 BL_3 WL_13_I PL_13_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_13_4 BL_4 WL_13_I PL_13_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_13_5 BL_5 WL_13_I PL_13_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_13_6 BL_6 WL_13_I PL_13_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_13_7 BL_7 WL_13_I PL_13_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_13_8 BL_8 WL_13_I PL_13_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_13_9 BL_9 WL_13_I PL_13_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_13_10 BL_10 WL_13_I PL_13_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_13_11 BL_11 WL_13_II PL_13_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_13_12 BL_12 WL_13_II PL_13_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_13_13 BL_13 WL_13_II PL_13_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_13_14 BL_14 WL_13_II PL_13_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_13_15 BL_15 WL_13_II PL_13_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_13_16 BL_16 WL_13_II PL_13_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_13_17 BL_17 WL_13_II PL_13_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_13_18 BL_18 WL_13_II PL_13_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_13_19 BL_19 WL_13_II PL_13_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_13_20 BL_20 WL_13_II PL_13_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_13_21 BL_21 WL_13_II PL_13_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_13_22 BL_22 WL_13_III PL_13_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_13_23 BL_23 WL_13_III PL_13_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_13_24 BL_24 WL_13_III PL_13_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_13_25 BL_25 WL_13_III PL_13_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_13_26 BL_26 WL_13_III PL_13_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_13_27 BL_27 WL_13_III PL_13_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_13_28 BL_28 WL_13_III PL_13_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_13_29 BL_29 WL_13_III PL_13_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_13_30 BL_30 WL_13_III PL_13_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_13_31 BL_31 WL_13_III PL_13_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_14_0 BL_0 WL_14_I PL_14_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_14_1 BL_1 WL_14_I PL_14_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_14_2 BL_2 WL_14_I PL_14_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_14_3 BL_3 WL_14_I PL_14_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_14_4 BL_4 WL_14_I PL_14_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_14_5 BL_5 WL_14_I PL_14_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_14_6 BL_6 WL_14_I PL_14_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_14_7 BL_7 WL_14_I PL_14_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_14_8 BL_8 WL_14_I PL_14_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_14_9 BL_9 WL_14_I PL_14_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_14_10 BL_10 WL_14_I PL_14_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_14_11 BL_11 WL_14_II PL_14_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_14_12 BL_12 WL_14_II PL_14_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_14_13 BL_13 WL_14_II PL_14_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_14_14 BL_14 WL_14_II PL_14_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_14_15 BL_15 WL_14_II PL_14_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_14_16 BL_16 WL_14_II PL_14_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_14_17 BL_17 WL_14_II PL_14_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_14_18 BL_18 WL_14_II PL_14_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_14_19 BL_19 WL_14_II PL_14_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_14_20 BL_20 WL_14_II PL_14_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_14_21 BL_21 WL_14_II PL_14_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_14_22 BL_22 WL_14_III PL_14_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_14_23 BL_23 WL_14_III PL_14_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_14_24 BL_24 WL_14_III PL_14_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_14_25 BL_25 WL_14_III PL_14_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_14_26 BL_26 WL_14_III PL_14_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_14_27 BL_27 WL_14_III PL_14_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_14_28 BL_28 WL_14_III PL_14_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_14_29 BL_29 WL_14_III PL_14_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_14_30 BL_30 WL_14_III PL_14_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_14_31 BL_31 WL_14_III PL_14_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_15_0 BL_0 WL_15_I PL_15_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_15_1 BL_1 WL_15_I PL_15_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_15_2 BL_2 WL_15_I PL_15_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_15_3 BL_3 WL_15_I PL_15_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_15_4 BL_4 WL_15_I PL_15_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_15_5 BL_5 WL_15_I PL_15_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_15_6 BL_6 WL_15_I PL_15_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_15_7 BL_7 WL_15_I PL_15_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_15_8 BL_8 WL_15_I PL_15_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_15_9 BL_9 WL_15_I PL_15_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_15_10 BL_10 WL_15_I PL_15_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_15_11 BL_11 WL_15_II PL_15_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_15_12 BL_12 WL_15_II PL_15_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_15_13 BL_13 WL_15_II PL_15_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_15_14 BL_14 WL_15_II PL_15_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_15_15 BL_15 WL_15_II PL_15_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_15_16 BL_16 WL_15_II PL_15_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_15_17 BL_17 WL_15_II PL_15_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_15_18 BL_18 WL_15_II PL_15_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_15_19 BL_19 WL_15_II PL_15_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_15_20 BL_20 WL_15_II PL_15_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_15_21 BL_21 WL_15_II PL_15_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_15_22 BL_22 WL_15_III PL_15_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_15_23 BL_23 WL_15_III PL_15_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_15_24 BL_24 WL_15_III PL_15_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_15_25 BL_25 WL_15_III PL_15_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_15_26 BL_26 WL_15_III PL_15_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_15_27 BL_27 WL_15_III PL_15_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_15_28 BL_28 WL_15_III PL_15_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_15_29 BL_29 WL_15_III PL_15_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_15_30 BL_30 WL_15_III PL_15_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_15_31 BL_31 WL_15_III PL_15_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_16_0 BL_0 WL_16_I PL_16_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_16_1 BL_1 WL_16_I PL_16_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_16_2 BL_2 WL_16_I PL_16_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_16_3 BL_3 WL_16_I PL_16_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_16_4 BL_4 WL_16_I PL_16_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_16_5 BL_5 WL_16_I PL_16_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_16_6 BL_6 WL_16_I PL_16_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_16_7 BL_7 WL_16_I PL_16_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_16_8 BL_8 WL_16_I PL_16_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_16_9 BL_9 WL_16_I PL_16_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_16_10 BL_10 WL_16_I PL_16_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_16_11 BL_11 WL_16_II PL_16_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_16_12 BL_12 WL_16_II PL_16_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_16_13 BL_13 WL_16_II PL_16_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_16_14 BL_14 WL_16_II PL_16_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_16_15 BL_15 WL_16_II PL_16_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_16_16 BL_16 WL_16_II PL_16_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_16_17 BL_17 WL_16_II PL_16_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_16_18 BL_18 WL_16_II PL_16_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_16_19 BL_19 WL_16_II PL_16_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_16_20 BL_20 WL_16_II PL_16_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_16_21 BL_21 WL_16_II PL_16_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_16_22 BL_22 WL_16_III PL_16_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_16_23 BL_23 WL_16_III PL_16_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_16_24 BL_24 WL_16_III PL_16_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_16_25 BL_25 WL_16_III PL_16_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_16_26 BL_26 WL_16_III PL_16_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_16_27 BL_27 WL_16_III PL_16_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_16_28 BL_28 WL_16_III PL_16_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_16_29 BL_29 WL_16_III PL_16_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_16_30 BL_30 WL_16_III PL_16_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_16_31 BL_31 WL_16_III PL_16_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_17_0 BL_0 WL_17_I PL_17_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_17_1 BL_1 WL_17_I PL_17_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_17_2 BL_2 WL_17_I PL_17_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_17_3 BL_3 WL_17_I PL_17_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_17_4 BL_4 WL_17_I PL_17_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_17_5 BL_5 WL_17_I PL_17_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_17_6 BL_6 WL_17_I PL_17_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_17_7 BL_7 WL_17_I PL_17_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_17_8 BL_8 WL_17_I PL_17_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_17_9 BL_9 WL_17_I PL_17_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_17_10 BL_10 WL_17_I PL_17_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_17_11 BL_11 WL_17_II PL_17_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_17_12 BL_12 WL_17_II PL_17_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_17_13 BL_13 WL_17_II PL_17_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_17_14 BL_14 WL_17_II PL_17_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_17_15 BL_15 WL_17_II PL_17_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_17_16 BL_16 WL_17_II PL_17_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_17_17 BL_17 WL_17_II PL_17_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_17_18 BL_18 WL_17_II PL_17_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_17_19 BL_19 WL_17_II PL_17_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_17_20 BL_20 WL_17_II PL_17_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_17_21 BL_21 WL_17_II PL_17_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_17_22 BL_22 WL_17_III PL_17_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_17_23 BL_23 WL_17_III PL_17_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_17_24 BL_24 WL_17_III PL_17_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_17_25 BL_25 WL_17_III PL_17_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_17_26 BL_26 WL_17_III PL_17_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_17_27 BL_27 WL_17_III PL_17_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_17_28 BL_28 WL_17_III PL_17_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_17_29 BL_29 WL_17_III PL_17_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_17_30 BL_30 WL_17_III PL_17_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_17_31 BL_31 WL_17_III PL_17_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_18_0 BL_0 WL_18_I PL_18_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_18_1 BL_1 WL_18_I PL_18_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_18_2 BL_2 WL_18_I PL_18_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_18_3 BL_3 WL_18_I PL_18_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_18_4 BL_4 WL_18_I PL_18_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_18_5 BL_5 WL_18_I PL_18_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_18_6 BL_6 WL_18_I PL_18_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_18_7 BL_7 WL_18_I PL_18_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_18_8 BL_8 WL_18_I PL_18_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_18_9 BL_9 WL_18_I PL_18_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_18_10 BL_10 WL_18_I PL_18_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_18_11 BL_11 WL_18_II PL_18_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_18_12 BL_12 WL_18_II PL_18_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_18_13 BL_13 WL_18_II PL_18_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_18_14 BL_14 WL_18_II PL_18_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_18_15 BL_15 WL_18_II PL_18_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_18_16 BL_16 WL_18_II PL_18_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_18_17 BL_17 WL_18_II PL_18_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_18_18 BL_18 WL_18_II PL_18_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_18_19 BL_19 WL_18_II PL_18_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_18_20 BL_20 WL_18_II PL_18_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_18_21 BL_21 WL_18_II PL_18_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_18_22 BL_22 WL_18_III PL_18_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_18_23 BL_23 WL_18_III PL_18_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_18_24 BL_24 WL_18_III PL_18_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_18_25 BL_25 WL_18_III PL_18_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_18_26 BL_26 WL_18_III PL_18_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_18_27 BL_27 WL_18_III PL_18_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_18_28 BL_28 WL_18_III PL_18_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_18_29 BL_29 WL_18_III PL_18_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_18_30 BL_30 WL_18_III PL_18_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_18_31 BL_31 WL_18_III PL_18_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_19_0 BL_0 WL_19_I PL_19_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_19_1 BL_1 WL_19_I PL_19_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_19_2 BL_2 WL_19_I PL_19_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_19_3 BL_3 WL_19_I PL_19_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_19_4 BL_4 WL_19_I PL_19_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_19_5 BL_5 WL_19_I PL_19_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_19_6 BL_6 WL_19_I PL_19_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_19_7 BL_7 WL_19_I PL_19_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_19_8 BL_8 WL_19_I PL_19_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_19_9 BL_9 WL_19_I PL_19_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_19_10 BL_10 WL_19_I PL_19_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_19_11 BL_11 WL_19_II PL_19_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_19_12 BL_12 WL_19_II PL_19_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_19_13 BL_13 WL_19_II PL_19_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_19_14 BL_14 WL_19_II PL_19_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_19_15 BL_15 WL_19_II PL_19_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_19_16 BL_16 WL_19_II PL_19_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_19_17 BL_17 WL_19_II PL_19_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_19_18 BL_18 WL_19_II PL_19_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_19_19 BL_19 WL_19_II PL_19_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_19_20 BL_20 WL_19_II PL_19_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_19_21 BL_21 WL_19_II PL_19_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_19_22 BL_22 WL_19_III PL_19_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_19_23 BL_23 WL_19_III PL_19_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_19_24 BL_24 WL_19_III PL_19_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_19_25 BL_25 WL_19_III PL_19_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_19_26 BL_26 WL_19_III PL_19_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_19_27 BL_27 WL_19_III PL_19_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_19_28 BL_28 WL_19_III PL_19_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_19_29 BL_29 WL_19_III PL_19_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_19_30 BL_30 WL_19_III PL_19_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_19_31 BL_31 WL_19_III PL_19_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_20_0 BL_0 WL_20_I PL_20_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_20_1 BL_1 WL_20_I PL_20_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_20_2 BL_2 WL_20_I PL_20_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_20_3 BL_3 WL_20_I PL_20_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_20_4 BL_4 WL_20_I PL_20_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_20_5 BL_5 WL_20_I PL_20_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_20_6 BL_6 WL_20_I PL_20_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_20_7 BL_7 WL_20_I PL_20_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_20_8 BL_8 WL_20_I PL_20_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_20_9 BL_9 WL_20_I PL_20_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_20_10 BL_10 WL_20_I PL_20_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_20_11 BL_11 WL_20_II PL_20_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_20_12 BL_12 WL_20_II PL_20_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_20_13 BL_13 WL_20_II PL_20_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_20_14 BL_14 WL_20_II PL_20_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_20_15 BL_15 WL_20_II PL_20_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_20_16 BL_16 WL_20_II PL_20_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_20_17 BL_17 WL_20_II PL_20_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_20_18 BL_18 WL_20_II PL_20_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_20_19 BL_19 WL_20_II PL_20_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_20_20 BL_20 WL_20_II PL_20_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_20_21 BL_21 WL_20_II PL_20_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_20_22 BL_22 WL_20_III PL_20_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_20_23 BL_23 WL_20_III PL_20_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_20_24 BL_24 WL_20_III PL_20_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_20_25 BL_25 WL_20_III PL_20_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_20_26 BL_26 WL_20_III PL_20_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_20_27 BL_27 WL_20_III PL_20_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_20_28 BL_28 WL_20_III PL_20_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_20_29 BL_29 WL_20_III PL_20_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_20_30 BL_30 WL_20_III PL_20_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_20_31 BL_31 WL_20_III PL_20_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_21_0 BL_0 WL_21_I PL_21_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_21_1 BL_1 WL_21_I PL_21_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_21_2 BL_2 WL_21_I PL_21_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_21_3 BL_3 WL_21_I PL_21_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_21_4 BL_4 WL_21_I PL_21_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_21_5 BL_5 WL_21_I PL_21_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_21_6 BL_6 WL_21_I PL_21_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_21_7 BL_7 WL_21_I PL_21_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_21_8 BL_8 WL_21_I PL_21_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_21_9 BL_9 WL_21_I PL_21_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_21_10 BL_10 WL_21_I PL_21_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_21_11 BL_11 WL_21_II PL_21_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_21_12 BL_12 WL_21_II PL_21_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_21_13 BL_13 WL_21_II PL_21_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_21_14 BL_14 WL_21_II PL_21_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_21_15 BL_15 WL_21_II PL_21_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_21_16 BL_16 WL_21_II PL_21_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_21_17 BL_17 WL_21_II PL_21_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_21_18 BL_18 WL_21_II PL_21_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_21_19 BL_19 WL_21_II PL_21_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_21_20 BL_20 WL_21_II PL_21_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_21_21 BL_21 WL_21_II PL_21_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_21_22 BL_22 WL_21_III PL_21_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_21_23 BL_23 WL_21_III PL_21_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_21_24 BL_24 WL_21_III PL_21_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_21_25 BL_25 WL_21_III PL_21_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_21_26 BL_26 WL_21_III PL_21_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_21_27 BL_27 WL_21_III PL_21_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_21_28 BL_28 WL_21_III PL_21_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_21_29 BL_29 WL_21_III PL_21_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_21_30 BL_30 WL_21_III PL_21_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_21_31 BL_31 WL_21_III PL_21_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_22_0 BL_0 WL_22_I PL_22_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_22_1 BL_1 WL_22_I PL_22_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_22_2 BL_2 WL_22_I PL_22_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_22_3 BL_3 WL_22_I PL_22_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_22_4 BL_4 WL_22_I PL_22_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_22_5 BL_5 WL_22_I PL_22_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_22_6 BL_6 WL_22_I PL_22_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_22_7 BL_7 WL_22_I PL_22_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_22_8 BL_8 WL_22_I PL_22_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_22_9 BL_9 WL_22_I PL_22_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_22_10 BL_10 WL_22_I PL_22_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_22_11 BL_11 WL_22_II PL_22_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_22_12 BL_12 WL_22_II PL_22_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_22_13 BL_13 WL_22_II PL_22_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_22_14 BL_14 WL_22_II PL_22_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_22_15 BL_15 WL_22_II PL_22_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_22_16 BL_16 WL_22_II PL_22_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_22_17 BL_17 WL_22_II PL_22_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_22_18 BL_18 WL_22_II PL_22_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_22_19 BL_19 WL_22_II PL_22_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_22_20 BL_20 WL_22_II PL_22_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_22_21 BL_21 WL_22_II PL_22_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_22_22 BL_22 WL_22_III PL_22_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_22_23 BL_23 WL_22_III PL_22_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_22_24 BL_24 WL_22_III PL_22_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_22_25 BL_25 WL_22_III PL_22_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_22_26 BL_26 WL_22_III PL_22_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_22_27 BL_27 WL_22_III PL_22_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_22_28 BL_28 WL_22_III PL_22_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_22_29 BL_29 WL_22_III PL_22_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_22_30 BL_30 WL_22_III PL_22_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_22_31 BL_31 WL_22_III PL_22_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_23_0 BL_0 WL_23_I PL_23_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_23_1 BL_1 WL_23_I PL_23_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_23_2 BL_2 WL_23_I PL_23_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_23_3 BL_3 WL_23_I PL_23_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_23_4 BL_4 WL_23_I PL_23_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_23_5 BL_5 WL_23_I PL_23_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_23_6 BL_6 WL_23_I PL_23_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_23_7 BL_7 WL_23_I PL_23_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_23_8 BL_8 WL_23_I PL_23_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_23_9 BL_9 WL_23_I PL_23_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_23_10 BL_10 WL_23_I PL_23_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_23_11 BL_11 WL_23_II PL_23_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_23_12 BL_12 WL_23_II PL_23_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_23_13 BL_13 WL_23_II PL_23_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_23_14 BL_14 WL_23_II PL_23_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_23_15 BL_15 WL_23_II PL_23_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_23_16 BL_16 WL_23_II PL_23_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_23_17 BL_17 WL_23_II PL_23_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_23_18 BL_18 WL_23_II PL_23_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_23_19 BL_19 WL_23_II PL_23_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_23_20 BL_20 WL_23_II PL_23_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_23_21 BL_21 WL_23_II PL_23_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_23_22 BL_22 WL_23_III PL_23_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_23_23 BL_23 WL_23_III PL_23_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_23_24 BL_24 WL_23_III PL_23_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_23_25 BL_25 WL_23_III PL_23_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_23_26 BL_26 WL_23_III PL_23_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_23_27 BL_27 WL_23_III PL_23_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_23_28 BL_28 WL_23_III PL_23_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_23_29 BL_29 WL_23_III PL_23_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_23_30 BL_30 WL_23_III PL_23_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_23_31 BL_31 WL_23_III PL_23_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_24_0 BL_0 WL_24_I PL_24_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_24_1 BL_1 WL_24_I PL_24_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_24_2 BL_2 WL_24_I PL_24_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_24_3 BL_3 WL_24_I PL_24_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_24_4 BL_4 WL_24_I PL_24_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_24_5 BL_5 WL_24_I PL_24_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_24_6 BL_6 WL_24_I PL_24_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_24_7 BL_7 WL_24_I PL_24_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_24_8 BL_8 WL_24_I PL_24_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_24_9 BL_9 WL_24_I PL_24_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_24_10 BL_10 WL_24_I PL_24_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_24_11 BL_11 WL_24_II PL_24_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_24_12 BL_12 WL_24_II PL_24_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_24_13 BL_13 WL_24_II PL_24_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_24_14 BL_14 WL_24_II PL_24_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_24_15 BL_15 WL_24_II PL_24_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_24_16 BL_16 WL_24_II PL_24_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_24_17 BL_17 WL_24_II PL_24_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_24_18 BL_18 WL_24_II PL_24_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_24_19 BL_19 WL_24_II PL_24_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_24_20 BL_20 WL_24_II PL_24_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_24_21 BL_21 WL_24_II PL_24_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_24_22 BL_22 WL_24_III PL_24_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_24_23 BL_23 WL_24_III PL_24_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_24_24 BL_24 WL_24_III PL_24_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_24_25 BL_25 WL_24_III PL_24_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_24_26 BL_26 WL_24_III PL_24_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_24_27 BL_27 WL_24_III PL_24_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_24_28 BL_28 WL_24_III PL_24_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_24_29 BL_29 WL_24_III PL_24_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_24_30 BL_30 WL_24_III PL_24_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_24_31 BL_31 WL_24_III PL_24_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_25_0 BL_0 WL_25_I PL_25_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_25_1 BL_1 WL_25_I PL_25_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_25_2 BL_2 WL_25_I PL_25_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_25_3 BL_3 WL_25_I PL_25_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_25_4 BL_4 WL_25_I PL_25_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_25_5 BL_5 WL_25_I PL_25_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_25_6 BL_6 WL_25_I PL_25_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_25_7 BL_7 WL_25_I PL_25_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_25_8 BL_8 WL_25_I PL_25_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_25_9 BL_9 WL_25_I PL_25_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_25_10 BL_10 WL_25_I PL_25_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_25_11 BL_11 WL_25_II PL_25_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_25_12 BL_12 WL_25_II PL_25_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_25_13 BL_13 WL_25_II PL_25_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_25_14 BL_14 WL_25_II PL_25_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_25_15 BL_15 WL_25_II PL_25_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_25_16 BL_16 WL_25_II PL_25_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_25_17 BL_17 WL_25_II PL_25_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_25_18 BL_18 WL_25_II PL_25_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_25_19 BL_19 WL_25_II PL_25_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_25_20 BL_20 WL_25_II PL_25_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_25_21 BL_21 WL_25_II PL_25_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_25_22 BL_22 WL_25_III PL_25_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_25_23 BL_23 WL_25_III PL_25_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_25_24 BL_24 WL_25_III PL_25_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_25_25 BL_25 WL_25_III PL_25_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_25_26 BL_26 WL_25_III PL_25_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_25_27 BL_27 WL_25_III PL_25_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_25_28 BL_28 WL_25_III PL_25_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_25_29 BL_29 WL_25_III PL_25_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_25_30 BL_30 WL_25_III PL_25_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_25_31 BL_31 WL_25_III PL_25_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_26_0 BL_0 WL_26_I PL_26_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_26_1 BL_1 WL_26_I PL_26_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_26_2 BL_2 WL_26_I PL_26_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_26_3 BL_3 WL_26_I PL_26_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_26_4 BL_4 WL_26_I PL_26_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_26_5 BL_5 WL_26_I PL_26_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_26_6 BL_6 WL_26_I PL_26_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_26_7 BL_7 WL_26_I PL_26_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_26_8 BL_8 WL_26_I PL_26_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_26_9 BL_9 WL_26_I PL_26_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_26_10 BL_10 WL_26_I PL_26_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_26_11 BL_11 WL_26_II PL_26_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_26_12 BL_12 WL_26_II PL_26_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_26_13 BL_13 WL_26_II PL_26_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_26_14 BL_14 WL_26_II PL_26_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_26_15 BL_15 WL_26_II PL_26_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_26_16 BL_16 WL_26_II PL_26_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_26_17 BL_17 WL_26_II PL_26_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_26_18 BL_18 WL_26_II PL_26_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_26_19 BL_19 WL_26_II PL_26_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_26_20 BL_20 WL_26_II PL_26_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_26_21 BL_21 WL_26_II PL_26_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_26_22 BL_22 WL_26_III PL_26_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_26_23 BL_23 WL_26_III PL_26_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_26_24 BL_24 WL_26_III PL_26_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_26_25 BL_25 WL_26_III PL_26_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_26_26 BL_26 WL_26_III PL_26_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_26_27 BL_27 WL_26_III PL_26_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_26_28 BL_28 WL_26_III PL_26_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_26_29 BL_29 WL_26_III PL_26_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_26_30 BL_30 WL_26_III PL_26_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_26_31 BL_31 WL_26_III PL_26_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_27_0 BL_0 WL_27_I PL_27_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_27_1 BL_1 WL_27_I PL_27_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_27_2 BL_2 WL_27_I PL_27_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_27_3 BL_3 WL_27_I PL_27_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_27_4 BL_4 WL_27_I PL_27_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_27_5 BL_5 WL_27_I PL_27_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_27_6 BL_6 WL_27_I PL_27_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_27_7 BL_7 WL_27_I PL_27_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_27_8 BL_8 WL_27_I PL_27_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_27_9 BL_9 WL_27_I PL_27_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_27_10 BL_10 WL_27_I PL_27_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_27_11 BL_11 WL_27_II PL_27_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_27_12 BL_12 WL_27_II PL_27_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_27_13 BL_13 WL_27_II PL_27_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_27_14 BL_14 WL_27_II PL_27_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_27_15 BL_15 WL_27_II PL_27_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_27_16 BL_16 WL_27_II PL_27_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_27_17 BL_17 WL_27_II PL_27_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_27_18 BL_18 WL_27_II PL_27_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_27_19 BL_19 WL_27_II PL_27_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_27_20 BL_20 WL_27_II PL_27_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_27_21 BL_21 WL_27_II PL_27_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_27_22 BL_22 WL_27_III PL_27_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_27_23 BL_23 WL_27_III PL_27_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_27_24 BL_24 WL_27_III PL_27_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_27_25 BL_25 WL_27_III PL_27_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_27_26 BL_26 WL_27_III PL_27_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_27_27 BL_27 WL_27_III PL_27_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_27_28 BL_28 WL_27_III PL_27_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_27_29 BL_29 WL_27_III PL_27_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_27_30 BL_30 WL_27_III PL_27_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_27_31 BL_31 WL_27_III PL_27_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_28_0 BL_0 WL_28_I PL_28_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_28_1 BL_1 WL_28_I PL_28_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_28_2 BL_2 WL_28_I PL_28_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_28_3 BL_3 WL_28_I PL_28_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_28_4 BL_4 WL_28_I PL_28_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_28_5 BL_5 WL_28_I PL_28_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_28_6 BL_6 WL_28_I PL_28_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_28_7 BL_7 WL_28_I PL_28_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_28_8 BL_8 WL_28_I PL_28_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_28_9 BL_9 WL_28_I PL_28_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_28_10 BL_10 WL_28_I PL_28_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_28_11 BL_11 WL_28_II PL_28_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_28_12 BL_12 WL_28_II PL_28_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_28_13 BL_13 WL_28_II PL_28_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_28_14 BL_14 WL_28_II PL_28_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_28_15 BL_15 WL_28_II PL_28_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_28_16 BL_16 WL_28_II PL_28_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_28_17 BL_17 WL_28_II PL_28_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_28_18 BL_18 WL_28_II PL_28_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_28_19 BL_19 WL_28_II PL_28_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_28_20 BL_20 WL_28_II PL_28_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_28_21 BL_21 WL_28_II PL_28_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_28_22 BL_22 WL_28_III PL_28_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_28_23 BL_23 WL_28_III PL_28_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_28_24 BL_24 WL_28_III PL_28_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_28_25 BL_25 WL_28_III PL_28_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_28_26 BL_26 WL_28_III PL_28_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_28_27 BL_27 WL_28_III PL_28_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_28_28 BL_28 WL_28_III PL_28_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_28_29 BL_29 WL_28_III PL_28_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_28_30 BL_30 WL_28_III PL_28_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_28_31 BL_31 WL_28_III PL_28_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_29_0 BL_0 WL_29_I PL_29_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_29_1 BL_1 WL_29_I PL_29_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_29_2 BL_2 WL_29_I PL_29_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_29_3 BL_3 WL_29_I PL_29_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_29_4 BL_4 WL_29_I PL_29_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_29_5 BL_5 WL_29_I PL_29_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_29_6 BL_6 WL_29_I PL_29_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_29_7 BL_7 WL_29_I PL_29_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_29_8 BL_8 WL_29_I PL_29_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_29_9 BL_9 WL_29_I PL_29_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_29_10 BL_10 WL_29_I PL_29_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_29_11 BL_11 WL_29_II PL_29_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_29_12 BL_12 WL_29_II PL_29_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_29_13 BL_13 WL_29_II PL_29_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_29_14 BL_14 WL_29_II PL_29_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_29_15 BL_15 WL_29_II PL_29_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_29_16 BL_16 WL_29_II PL_29_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_29_17 BL_17 WL_29_II PL_29_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_29_18 BL_18 WL_29_II PL_29_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_29_19 BL_19 WL_29_II PL_29_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_29_20 BL_20 WL_29_II PL_29_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_29_21 BL_21 WL_29_II PL_29_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_29_22 BL_22 WL_29_III PL_29_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_29_23 BL_23 WL_29_III PL_29_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_29_24 BL_24 WL_29_III PL_29_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_29_25 BL_25 WL_29_III PL_29_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_29_26 BL_26 WL_29_III PL_29_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_29_27 BL_27 WL_29_III PL_29_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_29_28 BL_28 WL_29_III PL_29_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_29_29 BL_29 WL_29_III PL_29_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_29_30 BL_30 WL_29_III PL_29_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_29_31 BL_31 WL_29_III PL_29_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_30_0 BL_0 WL_30_I PL_30_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_30_1 BL_1 WL_30_I PL_30_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_30_2 BL_2 WL_30_I PL_30_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_30_3 BL_3 WL_30_I PL_30_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_30_4 BL_4 WL_30_I PL_30_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_30_5 BL_5 WL_30_I PL_30_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_30_6 BL_6 WL_30_I PL_30_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_30_7 BL_7 WL_30_I PL_30_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_30_8 BL_8 WL_30_I PL_30_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_30_9 BL_9 WL_30_I PL_30_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_30_10 BL_10 WL_30_I PL_30_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_30_11 BL_11 WL_30_II PL_30_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_30_12 BL_12 WL_30_II PL_30_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_30_13 BL_13 WL_30_II PL_30_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_30_14 BL_14 WL_30_II PL_30_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_30_15 BL_15 WL_30_II PL_30_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_30_16 BL_16 WL_30_II PL_30_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_30_17 BL_17 WL_30_II PL_30_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_30_18 BL_18 WL_30_II PL_30_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_30_19 BL_19 WL_30_II PL_30_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_30_20 BL_20 WL_30_II PL_30_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_30_21 BL_21 WL_30_II PL_30_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_30_22 BL_22 WL_30_III PL_30_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_30_23 BL_23 WL_30_III PL_30_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_30_24 BL_24 WL_30_III PL_30_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_30_25 BL_25 WL_30_III PL_30_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_30_26 BL_26 WL_30_III PL_30_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_30_27 BL_27 WL_30_III PL_30_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_30_28 BL_28 WL_30_III PL_30_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_30_29 BL_29 WL_30_III PL_30_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_30_30 BL_30 WL_30_III PL_30_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_30_31 BL_31 WL_30_III PL_30_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_31_0 BL_0 WL_31_I PL_31_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_31_1 BL_1 WL_31_I PL_31_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_31_2 BL_2 WL_31_I PL_31_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_31_3 BL_3 WL_31_I PL_31_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_31_4 BL_4 WL_31_I PL_31_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_31_5 BL_5 WL_31_I PL_31_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_31_6 BL_6 WL_31_I PL_31_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_31_7 BL_7 WL_31_I PL_31_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_31_8 BL_8 WL_31_I PL_31_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_31_9 BL_9 WL_31_I PL_31_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_31_10 BL_10 WL_31_I PL_31_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_31_11 BL_11 WL_31_II PL_31_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_31_12 BL_12 WL_31_II PL_31_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_31_13 BL_13 WL_31_II PL_31_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_31_14 BL_14 WL_31_II PL_31_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_31_15 BL_15 WL_31_II PL_31_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_31_16 BL_16 WL_31_II PL_31_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_31_17 BL_17 WL_31_II PL_31_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_31_18 BL_18 WL_31_II PL_31_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_31_19 BL_19 WL_31_II PL_31_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_31_20 BL_20 WL_31_II PL_31_II VSS cell_candidate2 wcap=1e-6 lcap=1e-6 wacc=50u lacc=0.60u m=1
+Xc_31_21 BL_21 WL_31_II PL_31_II VSS cell_candidate2 wcap=2e-6 lcap=1e-6 wacc=25u lacc=0.60u m=1
+Xc_31_22 BL_22 WL_31_III PL_31_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_31_23 BL_23 WL_31_III PL_31_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_31_24 BL_24 WL_31_III PL_31_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_31_25 BL_25 WL_31_III PL_31_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_31_26 BL_26 WL_31_III PL_31_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_31_27 BL_27 WL_31_III PL_31_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_31_28 BL_28 WL_31_III PL_31_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_31_29 BL_29 WL_31_III PL_31_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u m=1
+Xc_31_30 BL_30 WL_31_III PL_31_III VDDH_III cell_candidate3 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+Xc_31_31 BL_31 WL_31_III PL_31_III VDDH_III cell_candidate3 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.55u m=1
+XLC_0 CSEL_0 VDDL VSS CG_0 CGB_0 VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPC_0 BLG_I CG_0 BL_0 VSS pg_n06 wpg=20u lpg=0.70u
+XLC_1 CSEL_1 VDDL VSS CG_1 CGB_1 VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPC_1 BLG_I CG_1 BL_1 VSS pg_n06 wpg=20u lpg=0.70u
+XLC_2 CSEL_2 VDDL VSS CG_2 CGB_2 VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPC_2 BLG_I CG_2 BL_2 VSS pg_n06 wpg=20u lpg=0.70u
+XLC_3 CSEL_3 VDDL VSS CG_3 CGB_3 VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPC_3 BLG_I CG_3 BL_3 VSS pg_n06 wpg=20u lpg=0.70u
+XLC_4 CSEL_4 VDDL VSS CG_4 CGB_4 VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPC_4 BLG_I CG_4 BL_4 VSS pg_n06 wpg=20u lpg=0.70u
+XLC_5 CSEL_5 VDDL VSS CG_5 CGB_5 VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPC_5 BLG_I CG_5 BL_5 VSS pg_n06 wpg=20u lpg=0.70u
+XLC_6 CSEL_6 VDDL VSS CG_6 CGB_6 VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPC_6 BLG_I CG_6 BL_6 VSS pg_n06 wpg=20u lpg=0.70u
+XLC_7 CSEL_7 VDDL VSS CG_7 CGB_7 VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPC_7 BLG_I CG_7 BL_7 VSS pg_n06 wpg=20u lpg=0.70u
+XLC_8 CSEL_8 VDDL VSS CG_8 CGB_8 VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPC_8 BLG_I CG_8 BL_8 VSS pg_n06 wpg=20u lpg=0.70u
+XLC_9 CSEL_9 VDDL VSS CG_9 CGB_9 VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPC_9 BLG_I CG_9 BL_9 VSS pg_n06 wpg=20u lpg=0.70u
+XLC_10 CSEL_10 VDDL VSS CG_10 CGB_10 VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPC_10 BLG_I CG_10 BL_10 VSS pg_n06 wpg=20u lpg=0.70u
+XLC_11 CSEL_11 VDDL VSS CG_11 CGB_11 VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPC_11 BLG_II CG_11 BL_11 VSS pg_n10 wpg=25u lpg=0.60u
+XLC_12 CSEL_12 VDDL VSS CG_12 CGB_12 VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPC_12 BLG_II CG_12 BL_12 VSS pg_n10 wpg=25u lpg=0.60u
+XLC_13 CSEL_13 VDDL VSS CG_13 CGB_13 VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPC_13 BLG_II CG_13 BL_13 VSS pg_n10 wpg=25u lpg=0.60u
+XLC_14 CSEL_14 VDDL VSS CG_14 CGB_14 VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPC_14 BLG_II CG_14 BL_14 VSS pg_n10 wpg=25u lpg=0.60u
+XLC_15 CSEL_15 VDDL VSS CG_15 CGB_15 VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPC_15 BLG_II CG_15 BL_15 VSS pg_n10 wpg=25u lpg=0.60u
+XLC_16 CSEL_16 VDDL VSS CG_16 CGB_16 VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPC_16 BLG_II CG_16 BL_16 VSS pg_n10 wpg=25u lpg=0.60u
+XLC_17 CSEL_17 VDDL VSS CG_17 CGB_17 VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPC_17 BLG_II CG_17 BL_17 VSS pg_n10 wpg=25u lpg=0.60u
+XLC_18 CSEL_18 VDDL VSS CG_18 CGB_18 VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPC_18 BLG_II CG_18 BL_18 VSS pg_n10 wpg=25u lpg=0.60u
+XLC_19 CSEL_19 VDDL VSS CG_19 CGB_19 VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPC_19 BLG_II CG_19 BL_19 VSS pg_n10 wpg=25u lpg=0.60u
+XLC_20 CSEL_20 VDDL VSS CG_20 CGB_20 VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPC_20 BLG_II CG_20 BL_20 VSS pg_n10 wpg=25u lpg=0.60u
+XLC_21 CSEL_21 VDDL VSS CG_21 CGB_21 VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPC_21 BLG_II CG_21 BL_21 VSS pg_n10 wpg=25u lpg=0.60u
+XLC_22 CSEL_22 VDDL VSS CG_22 CGB_22 VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPC_22 BLG_III CG_22 BL_22 VSS pg_n06 wpg=20u lpg=0.70u
+XLC_23 CSEL_23 VDDL VSS CG_23 CGB_23 VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPC_23 BLG_III CG_23 BL_23 VSS pg_n06 wpg=20u lpg=0.70u
+XLC_24 CSEL_24 VDDL VSS CG_24 CGB_24 VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPC_24 BLG_III CG_24 BL_24 VSS pg_n06 wpg=20u lpg=0.70u
+XLC_25 CSEL_25 VDDL VSS CG_25 CGB_25 VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPC_25 BLG_III CG_25 BL_25 VSS pg_n06 wpg=20u lpg=0.70u
+XLC_26 CSEL_26 VDDL VSS CG_26 CGB_26 VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPC_26 BLG_III CG_26 BL_26 VSS pg_n06 wpg=20u lpg=0.70u
+XLC_27 CSEL_27 VDDL VSS CG_27 CGB_27 VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPC_27 BLG_III CG_27 BL_27 VSS pg_n06 wpg=20u lpg=0.70u
+XLC_28 CSEL_28 VDDL VSS CG_28 CGB_28 VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPC_28 BLG_III CG_28 BL_28 VSS pg_n06 wpg=20u lpg=0.70u
+XLC_29 CSEL_29 VDDL VSS CG_29 CGB_29 VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPC_29 BLG_III CG_29 BL_29 VSS pg_n06 wpg=20u lpg=0.70u
+XLC_30 CSEL_30 VDDL VSS CG_30 CGB_30 VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPC_30 BLG_III CG_30 BL_30 VSS pg_n06 wpg=20u lpg=0.70u
+XLC_31 CSEL_31 VDDL VSS CG_31 CGB_31 VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPC_31 BLG_III CG_31 BL_31 VSS pg_n06 wpg=20u lpg=0.70u
+XLR_0_I RSEL_0 VDDL VSS WL_0_I RGB_0_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_0_I PL_0_I WL_0_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_1_I RSEL_1 VDDL VSS WL_1_I RGB_1_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_1_I PL_1_I WL_1_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_2_I RSEL_2 VDDL VSS WL_2_I RGB_2_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_2_I PL_2_I WL_2_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_3_I RSEL_3 VDDL VSS WL_3_I RGB_3_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_3_I PL_3_I WL_3_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_4_I RSEL_4 VDDL VSS WL_4_I RGB_4_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_4_I PL_4_I WL_4_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_5_I RSEL_5 VDDL VSS WL_5_I RGB_5_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_5_I PL_5_I WL_5_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_6_I RSEL_6 VDDL VSS WL_6_I RGB_6_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_6_I PL_6_I WL_6_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_7_I RSEL_7 VDDL VSS WL_7_I RGB_7_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_7_I PL_7_I WL_7_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_8_I RSEL_8 VDDL VSS WL_8_I RGB_8_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_8_I PL_8_I WL_8_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_9_I RSEL_9 VDDL VSS WL_9_I RGB_9_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_9_I PL_9_I WL_9_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_10_I RSEL_10 VDDL VSS WL_10_I RGB_10_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_10_I PL_10_I WL_10_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_11_I RSEL_11 VDDL VSS WL_11_I RGB_11_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_11_I PL_11_I WL_11_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_12_I RSEL_12 VDDL VSS WL_12_I RGB_12_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_12_I PL_12_I WL_12_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_13_I RSEL_13 VDDL VSS WL_13_I RGB_13_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_13_I PL_13_I WL_13_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_14_I RSEL_14 VDDL VSS WL_14_I RGB_14_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_14_I PL_14_I WL_14_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_15_I RSEL_15 VDDL VSS WL_15_I RGB_15_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_15_I PL_15_I WL_15_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_16_I RSEL_16 VDDL VSS WL_16_I RGB_16_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_16_I PL_16_I WL_16_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_17_I RSEL_17 VDDL VSS WL_17_I RGB_17_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_17_I PL_17_I WL_17_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_18_I RSEL_18 VDDL VSS WL_18_I RGB_18_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_18_I PL_18_I WL_18_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_19_I RSEL_19 VDDL VSS WL_19_I RGB_19_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_19_I PL_19_I WL_19_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_20_I RSEL_20 VDDL VSS WL_20_I RGB_20_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_20_I PL_20_I WL_20_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_21_I RSEL_21 VDDL VSS WL_21_I RGB_21_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_21_I PL_21_I WL_21_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_22_I RSEL_22 VDDL VSS WL_22_I RGB_22_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_22_I PL_22_I WL_22_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_23_I RSEL_23 VDDL VSS WL_23_I RGB_23_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_23_I PL_23_I WL_23_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_24_I RSEL_24 VDDL VSS WL_24_I RGB_24_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_24_I PL_24_I WL_24_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_25_I RSEL_25 VDDL VSS WL_25_I RGB_25_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_25_I PL_25_I WL_25_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_26_I RSEL_26 VDDL VSS WL_26_I RGB_26_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_26_I PL_26_I WL_26_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_27_I RSEL_27 VDDL VSS WL_27_I RGB_27_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_27_I PL_27_I WL_27_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_28_I RSEL_28 VDDL VSS WL_28_I RGB_28_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_28_I PL_28_I WL_28_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_29_I RSEL_29 VDDL VSS WL_29_I RGB_29_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_29_I PL_29_I WL_29_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_30_I RSEL_30 VDDL VSS WL_30_I RGB_30_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_30_I PL_30_I WL_30_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_31_I RSEL_31 VDDL VSS WL_31_I RGB_31_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_31_I PL_31_I WL_31_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_0_II RSEL_0 VDDL VSS WL_0_II RGB_0_II VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPR_0_II PL_0_II WL_0_II PLG_II VSS pg_n10 wpg=25u lpg=0.60u
+XLR_1_II RSEL_1 VDDL VSS WL_1_II RGB_1_II VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPR_1_II PL_1_II WL_1_II PLG_II VSS pg_n10 wpg=25u lpg=0.60u
+XLR_2_II RSEL_2 VDDL VSS WL_2_II RGB_2_II VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPR_2_II PL_2_II WL_2_II PLG_II VSS pg_n10 wpg=25u lpg=0.60u
+XLR_3_II RSEL_3 VDDL VSS WL_3_II RGB_3_II VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPR_3_II PL_3_II WL_3_II PLG_II VSS pg_n10 wpg=25u lpg=0.60u
+XLR_4_II RSEL_4 VDDL VSS WL_4_II RGB_4_II VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPR_4_II PL_4_II WL_4_II PLG_II VSS pg_n10 wpg=25u lpg=0.60u
+XLR_5_II RSEL_5 VDDL VSS WL_5_II RGB_5_II VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPR_5_II PL_5_II WL_5_II PLG_II VSS pg_n10 wpg=25u lpg=0.60u
+XLR_6_II RSEL_6 VDDL VSS WL_6_II RGB_6_II VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPR_6_II PL_6_II WL_6_II PLG_II VSS pg_n10 wpg=25u lpg=0.60u
+XLR_7_II RSEL_7 VDDL VSS WL_7_II RGB_7_II VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPR_7_II PL_7_II WL_7_II PLG_II VSS pg_n10 wpg=25u lpg=0.60u
+XLR_8_II RSEL_8 VDDL VSS WL_8_II RGB_8_II VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPR_8_II PL_8_II WL_8_II PLG_II VSS pg_n10 wpg=25u lpg=0.60u
+XLR_9_II RSEL_9 VDDL VSS WL_9_II RGB_9_II VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPR_9_II PL_9_II WL_9_II PLG_II VSS pg_n10 wpg=25u lpg=0.60u
+XLR_10_II RSEL_10 VDDL VSS WL_10_II RGB_10_II VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPR_10_II PL_10_II WL_10_II PLG_II VSS pg_n10 wpg=25u lpg=0.60u
+XLR_11_II RSEL_11 VDDL VSS WL_11_II RGB_11_II VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPR_11_II PL_11_II WL_11_II PLG_II VSS pg_n10 wpg=25u lpg=0.60u
+XLR_12_II RSEL_12 VDDL VSS WL_12_II RGB_12_II VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPR_12_II PL_12_II WL_12_II PLG_II VSS pg_n10 wpg=25u lpg=0.60u
+XLR_13_II RSEL_13 VDDL VSS WL_13_II RGB_13_II VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPR_13_II PL_13_II WL_13_II PLG_II VSS pg_n10 wpg=25u lpg=0.60u
+XLR_14_II RSEL_14 VDDL VSS WL_14_II RGB_14_II VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPR_14_II PL_14_II WL_14_II PLG_II VSS pg_n10 wpg=25u lpg=0.60u
+XLR_15_II RSEL_15 VDDL VSS WL_15_II RGB_15_II VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPR_15_II PL_15_II WL_15_II PLG_II VSS pg_n10 wpg=25u lpg=0.60u
+XLR_16_II RSEL_16 VDDL VSS WL_16_II RGB_16_II VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPR_16_II PL_16_II WL_16_II PLG_II VSS pg_n10 wpg=25u lpg=0.60u
+XLR_17_II RSEL_17 VDDL VSS WL_17_II RGB_17_II VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPR_17_II PL_17_II WL_17_II PLG_II VSS pg_n10 wpg=25u lpg=0.60u
+XLR_18_II RSEL_18 VDDL VSS WL_18_II RGB_18_II VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPR_18_II PL_18_II WL_18_II PLG_II VSS pg_n10 wpg=25u lpg=0.60u
+XLR_19_II RSEL_19 VDDL VSS WL_19_II RGB_19_II VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPR_19_II PL_19_II WL_19_II PLG_II VSS pg_n10 wpg=25u lpg=0.60u
+XLR_20_II RSEL_20 VDDL VSS WL_20_II RGB_20_II VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPR_20_II PL_20_II WL_20_II PLG_II VSS pg_n10 wpg=25u lpg=0.60u
+XLR_21_II RSEL_21 VDDL VSS WL_21_II RGB_21_II VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPR_21_II PL_21_II WL_21_II PLG_II VSS pg_n10 wpg=25u lpg=0.60u
+XLR_22_II RSEL_22 VDDL VSS WL_22_II RGB_22_II VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPR_22_II PL_22_II WL_22_II PLG_II VSS pg_n10 wpg=25u lpg=0.60u
+XLR_23_II RSEL_23 VDDL VSS WL_23_II RGB_23_II VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPR_23_II PL_23_II WL_23_II PLG_II VSS pg_n10 wpg=25u lpg=0.60u
+XLR_24_II RSEL_24 VDDL VSS WL_24_II RGB_24_II VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPR_24_II PL_24_II WL_24_II PLG_II VSS pg_n10 wpg=25u lpg=0.60u
+XLR_25_II RSEL_25 VDDL VSS WL_25_II RGB_25_II VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPR_25_II PL_25_II WL_25_II PLG_II VSS pg_n10 wpg=25u lpg=0.60u
+XLR_26_II RSEL_26 VDDL VSS WL_26_II RGB_26_II VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPR_26_II PL_26_II WL_26_II PLG_II VSS pg_n10 wpg=25u lpg=0.60u
+XLR_27_II RSEL_27 VDDL VSS WL_27_II RGB_27_II VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPR_27_II PL_27_II WL_27_II PLG_II VSS pg_n10 wpg=25u lpg=0.60u
+XLR_28_II RSEL_28 VDDL VSS WL_28_II RGB_28_II VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPR_28_II PL_28_II WL_28_II PLG_II VSS pg_n10 wpg=25u lpg=0.60u
+XLR_29_II RSEL_29 VDDL VSS WL_29_II RGB_29_II VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPR_29_II PL_29_II WL_29_II PLG_II VSS pg_n10 wpg=25u lpg=0.60u
+XLR_30_II RSEL_30 VDDL VSS WL_30_II RGB_30_II VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPR_30_II PL_30_II WL_30_II PLG_II VSS pg_n10 wpg=25u lpg=0.60u
+XLR_31_II RSEL_31 VDDL VSS WL_31_II RGB_31_II VDDH_II ls_hv10 wpdn=20u lpdn=0.60u wpup=5u lpup=0.60u
+XPR_31_II PL_31_II WL_31_II PLG_II VSS pg_n10 wpg=25u lpg=0.60u
+XLR_0_III RSEL_0 VDDL VSS RG_0_III WL_0_III VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_0_III PL_0_III RG_0_III PLG_III VSS pg_n06 wpg=20u lpg=0.70u
+XLR_1_III RSEL_1 VDDL VSS RG_1_III WL_1_III VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_1_III PL_1_III RG_1_III PLG_III VSS pg_n06 wpg=20u lpg=0.70u
+XLR_2_III RSEL_2 VDDL VSS RG_2_III WL_2_III VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_2_III PL_2_III RG_2_III PLG_III VSS pg_n06 wpg=20u lpg=0.70u
+XLR_3_III RSEL_3 VDDL VSS RG_3_III WL_3_III VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_3_III PL_3_III RG_3_III PLG_III VSS pg_n06 wpg=20u lpg=0.70u
+XLR_4_III RSEL_4 VDDL VSS RG_4_III WL_4_III VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_4_III PL_4_III RG_4_III PLG_III VSS pg_n06 wpg=20u lpg=0.70u
+XLR_5_III RSEL_5 VDDL VSS RG_5_III WL_5_III VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_5_III PL_5_III RG_5_III PLG_III VSS pg_n06 wpg=20u lpg=0.70u
+XLR_6_III RSEL_6 VDDL VSS RG_6_III WL_6_III VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_6_III PL_6_III RG_6_III PLG_III VSS pg_n06 wpg=20u lpg=0.70u
+XLR_7_III RSEL_7 VDDL VSS RG_7_III WL_7_III VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_7_III PL_7_III RG_7_III PLG_III VSS pg_n06 wpg=20u lpg=0.70u
+XLR_8_III RSEL_8 VDDL VSS RG_8_III WL_8_III VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_8_III PL_8_III RG_8_III PLG_III VSS pg_n06 wpg=20u lpg=0.70u
+XLR_9_III RSEL_9 VDDL VSS RG_9_III WL_9_III VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_9_III PL_9_III RG_9_III PLG_III VSS pg_n06 wpg=20u lpg=0.70u
+XLR_10_III RSEL_10 VDDL VSS RG_10_III WL_10_III VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_10_III PL_10_III RG_10_III PLG_III VSS pg_n06 wpg=20u lpg=0.70u
+XLR_11_III RSEL_11 VDDL VSS RG_11_III WL_11_III VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_11_III PL_11_III RG_11_III PLG_III VSS pg_n06 wpg=20u lpg=0.70u
+XLR_12_III RSEL_12 VDDL VSS RG_12_III WL_12_III VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_12_III PL_12_III RG_12_III PLG_III VSS pg_n06 wpg=20u lpg=0.70u
+XLR_13_III RSEL_13 VDDL VSS RG_13_III WL_13_III VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_13_III PL_13_III RG_13_III PLG_III VSS pg_n06 wpg=20u lpg=0.70u
+XLR_14_III RSEL_14 VDDL VSS RG_14_III WL_14_III VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_14_III PL_14_III RG_14_III PLG_III VSS pg_n06 wpg=20u lpg=0.70u
+XLR_15_III RSEL_15 VDDL VSS RG_15_III WL_15_III VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_15_III PL_15_III RG_15_III PLG_III VSS pg_n06 wpg=20u lpg=0.70u
+XLR_16_III RSEL_16 VDDL VSS RG_16_III WL_16_III VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_16_III PL_16_III RG_16_III PLG_III VSS pg_n06 wpg=20u lpg=0.70u
+XLR_17_III RSEL_17 VDDL VSS RG_17_III WL_17_III VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_17_III PL_17_III RG_17_III PLG_III VSS pg_n06 wpg=20u lpg=0.70u
+XLR_18_III RSEL_18 VDDL VSS RG_18_III WL_18_III VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_18_III PL_18_III RG_18_III PLG_III VSS pg_n06 wpg=20u lpg=0.70u
+XLR_19_III RSEL_19 VDDL VSS RG_19_III WL_19_III VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_19_III PL_19_III RG_19_III PLG_III VSS pg_n06 wpg=20u lpg=0.70u
+XLR_20_III RSEL_20 VDDL VSS RG_20_III WL_20_III VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_20_III PL_20_III RG_20_III PLG_III VSS pg_n06 wpg=20u lpg=0.70u
+XLR_21_III RSEL_21 VDDL VSS RG_21_III WL_21_III VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_21_III PL_21_III RG_21_III PLG_III VSS pg_n06 wpg=20u lpg=0.70u
+XLR_22_III RSEL_22 VDDL VSS RG_22_III WL_22_III VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_22_III PL_22_III RG_22_III PLG_III VSS pg_n06 wpg=20u lpg=0.70u
+XLR_23_III RSEL_23 VDDL VSS RG_23_III WL_23_III VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_23_III PL_23_III RG_23_III PLG_III VSS pg_n06 wpg=20u lpg=0.70u
+XLR_24_III RSEL_24 VDDL VSS RG_24_III WL_24_III VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_24_III PL_24_III RG_24_III PLG_III VSS pg_n06 wpg=20u lpg=0.70u
+XLR_25_III RSEL_25 VDDL VSS RG_25_III WL_25_III VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_25_III PL_25_III RG_25_III PLG_III VSS pg_n06 wpg=20u lpg=0.70u
+XLR_26_III RSEL_26 VDDL VSS RG_26_III WL_26_III VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_26_III PL_26_III RG_26_III PLG_III VSS pg_n06 wpg=20u lpg=0.70u
+XLR_27_III RSEL_27 VDDL VSS RG_27_III WL_27_III VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_27_III PL_27_III RG_27_III PLG_III VSS pg_n06 wpg=20u lpg=0.70u
+XLR_28_III RSEL_28 VDDL VSS RG_28_III WL_28_III VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_28_III PL_28_III RG_28_III PLG_III VSS pg_n06 wpg=20u lpg=0.70u
+XLR_29_III RSEL_29 VDDL VSS RG_29_III WL_29_III VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_29_III PL_29_III RG_29_III PLG_III VSS pg_n06 wpg=20u lpg=0.70u
+XLR_30_III RSEL_30 VDDL VSS RG_30_III WL_30_III VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_30_III PL_30_III RG_30_III PLG_III VSS pg_n06 wpg=20u lpg=0.70u
+XLR_31_III RSEL_31 VDDL VSS RG_31_III WL_31_III VDDH_III ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_31_III PL_31_III RG_31_III PLG_III VSS pg_n06 wpg=20u lpg=0.70u
+.ends

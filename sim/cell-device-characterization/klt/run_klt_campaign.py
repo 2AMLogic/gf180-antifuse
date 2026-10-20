@@ -41,6 +41,7 @@ EXP = HERE.parent
 REPO = EXP.parent.parent
 sys.path.insert(0, str(EXP.parent))
 
+from harness import numfmt as NF  # noqa: E402
 from harness import report as R  # noqa: E402
 
 REQ_DIR = HERE / "requests"
@@ -207,8 +208,7 @@ def legacy_grid(rec_id: str, sub: str):
     return ig, rg
 
 
-def sci(x):
-    return "n/a" if x is None else f"{x:.4e}"
+sci = NF.sci
 
 
 # ---------------------------------------------------------------------------

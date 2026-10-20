@@ -1,4 +1,3 @@
-
 * expanding   symbol:  cell_candidate3.sym # of pins=4
 ** sym_path: design/cells/cell_candidate3.sym
 ** sch_path: design/cells/cell_candidate3.sch
@@ -7,8 +6,6 @@
 *.iopin WL
 *.iopin PL
 *.iopin VB
-XM1 CN WL BL VB pfet_06v0 L=lacc W=wacc nf=1 ad='int((nf+1)/2) * wacc/nf * 0.18u' as='int((nf+2)/2) * wacc/nf * 0.18u' pd='2*int((nf+1)/2) * (wacc/nf + 0.18u)'
-+ ps='2*int((nf+2)/2) * (wacc/nf + 0.18u)' nrd='0.18u / wacc' nrs='0.18u / wacc' sa=0 sb=0 sd=0 m=1
+XM1 CN WL BL VB pfet_06v0 L=lacc W=wacc nf=1 ad='int((nf+1)/2) * wacc/nf * 0.18u' as='int((nf+2)/2) * wacc/nf * 0.18u' pd='2*int((nf+1)/2) * (wacc/nf + 0.18u)' ps='2*int((nf+2)/2) * (wacc/nf + 0.18u)' nrd='0.18u / wacc' nrs='0.18u / wacc' sa=0 sb=0 sd=0 m=1
 XC1 CN PL cap_pmos_03v3 c_width=wcap c_length=lcap m=1
 .ends
-

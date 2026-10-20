@@ -1,0 +1,417 @@
+#!/usr/bin/env python3
+"""Generate the slice-bench testbench decks and `klt sim` requests.
+
+    python3 sim/array-slice-bench/make_bench.py            write testbench/
+    python3 sim/array-slice-bench/make_bench.py --check    fail on drift
+
+Emits, per reduced slice in design/array/ (see design/gen_array.py SLICES):
+
+    testbench/tb_<slice>_<process>.spice      klt-sim circuit body (no .control/.end)
+    testbench/<slice>_<process>.request.json  the klt sim request: temperature x
+                                          (selected cell, supply level), one
+                                          request per process corner
+
+One request per process corner, not one request with a process axis: the 10 V
+LDMOS models live in a second library file (smbb000149.ngspice) whose section must
+track the process corner, which klt expresses as a per-section library object
+(`corners.process[].sections[].lib`). The batch fleet's runner image predates
+that feature (a request using it fails the job with exit 1 and no usable report),
+so each process corner's smbb section is selected by a `.lib` line in that
+corner's own netlist instead, and the request's process axis holds only
+sections of the one models.lib. The corner matrix is unchanged.
+
+The corner matrix is *expressed* here and executed by `klt sim`, never by a
+hand-rolled ngspice loop: on the dispatch workers KLT_SIM_BACKEND=batch sends it
+to the Spot batch fleet. See README.md.
+
+Bench stimulus (all placeholders, NOT programming conditions):
+  * one cell of the 4x4 slice is selected (its row select and column select at
+    VDDL, every other select at 0 V); each band's global bit-line bus BLG is held
+    at a per-band stand-in level; PLG (the return) sits at 0 V.
+  * the stock capacitor model blocks DC and has no post-breakdown state
+    (spec/cell-candidates.md flagged gap), and does not run in transient here, so
+    a conduction path would be invisible to an operating-point bench. Every cell
+    therefore gets a bench-only "filament stand-in": R_FIL across its capacitor
+    (CN to its row's PL) in series with a 0 V current-sense source. This is NOT a
+    programmed-cell model and says nothing about post-breakdown resistance; it
+    only makes "the access path conducts" observable as a DC current. It also
+    makes the bench a worst case for isolation: every cell is conductive-ready,
+    so any leaking access device shows up as filament current.
+  * the level-shifter rail VDDH and the BLG stand-in level are per band
+    (devices are 6 V-class; no breakdown model exists, spec/cell-candidates.md).
+  * the supply axis scales VDDL, every VDDH, every BLG stand-in and the select
+    high level together by -10% / nominal / +10%, indexed with the selection
+    (klt sim sweeps multiple supply_v keys together by index).
+
+Full-band leakage mode (issue #70): see the "Full-band leakage" section below and
+README.md. It adds three bench variants per band (design/netlists/band_*.spice,
+every column of one band) and process corner, written next to the slice files:
+
+    testbench/tb_leak_<variant>_<band>_<process>.spice
+    testbench/leak_<variant>_<band>_<process>.request.json
+
+with variants `pgoff` (every column OFF, each BL_c clamped to 0 V through a
+zero-volt-ammeter-equivalent source so the OFF pass-gate current is read
+directly), `nat` (every BL_c floating, natural DC steady state) and `sel` (one
+column selected at the read level: selected-path conduction).
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+TB_DIR = HERE / "testbench"
+sys.path.insert(0, str(HERE.parents[1] / "design"))
+import gen_array as G  # noqa: E402  (SLICES, BANDS, cell_params: geometry source of truth)
+
+VDDL = 3.3
+# band -> (VDDH rail, BLG step level). Placeholders - see module docstring.
+RAILS = {"I": (5.0, 3.0), "II": (5.5, 3.5), "III": (5.0, 3.0)}
+SUPPLY_SCALES = (0.9, 1.0, 1.1)
+R_FIL = 1e6   # bench-only filament stand-in, ohms - see module docstring
+
+PROCESS = {
+    "typical": ("typical", "moscap_typical"),
+    "ff": ("ff", "moscap_ff"),
+    "ss": ("ss", "moscap_ss"),
+    "fs": ("fs", "moscap_typical"),
+    "sf": ("sf", "moscap_typical"),
+}
+TEMPS = (-40, 27, 125)
+
+
+def window(sl):
+    r0, r1, c0, c1 = G.SLICES[sl]
+    return list(range(r0, r1 + 1)), list(range(c0, c1 + 1))
+
+
+def bands_in(cols):
+    return [b for b in G.BANDS if any(b[1] <= c <= b[2] for c in cols)]
+
+
+def selections(sl):
+    rows, cols = window(sl)
+    return [(r, c) for r in rows for c in cols]
+
+
+def netlist(sl: str, proc: str) -> str:
+    rows, cols = window(sl)
+    bands = bands_in(cols)
+    ports = ([f"RSEL_{r}" for r in rows] + [f"CSEL_{c}" for c in cols]
+             + [n for b in bands for n in (f"BLG_{b[0]}", f"PLG_{b[0]}")]
+             + [f"VDDH_{b[0]}" for b in bands] + ["VDDL", "VSS"])
+    L = [
+        f"* gf180-antifuse sim/array-slice-bench: {sl}, process corner {proc} (GENERATED by make_bench.py - do not edit)",
+        "* Circuit body for `klt sim`. The MOS and moscap sections come from the request's",
+        "* corner bundle; design.ngspice (global switches) and the 10 V LDMOS library's",
+        f"* matching section ({PROCESS[proc][0]}) are resolved from $PDK_ROOT on whichever host runs the corner.",
+        ".include $PDK_ROOT/gf180mcuD/libs.tech/ngspice/design.ngspice",
+        # quoted: an unquoted $PDK_ROOT in a .lib card inside an included file is
+        # silently not expanded by ngspice 46 (the section then never loads and the
+        # first LDMOS instance fails as an unknown subckt); .include does not need it.
+        f'.lib "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/smbb000149.ngspice" {PROCESS[proc][0]}',
+        "* derived netlists of the design under test (design/netlists/, never copied)",
+    ]
+    for nl in ("cell_candidate1", "cell_candidate2", "cell_candidate3", "ls_hv06", "ls_hv10",
+               "pg_n06", "pg_n10", sl):
+        L.append(f".include ../../../design/netlists/{nl}.spice")
+    L += ["", f"X_dut {' '.join(ports)} {sl}", ""]
+    L += [f"Vddl VDDL 0 DC {VDDL}", "Vss VSS 0 DC 0"]
+    for r in rows:
+        L.append(f"Vrsel{r} RSEL_{r} 0 DC 0")
+    for c in cols:
+        L.append(f"Vcsel{c} CSEL_{c} 0 DC 0")
+    L += ["", "* dummy sweep source: the dc analysis needs a swept source with a >0-width interval so",
+          "* `.meas dc ... AT=0` has something to interpolate; it drives nothing in the design",
+          "Vdum NDUM 0 DC 0", "Rdum NDUM 0 1k"]
+    L += ["", "* per-band rails, global bit-line bus stand-in level, return bus"]
+    for lab, *_ in bands:
+        vh, vb = RAILS[lab]
+        L += [f"Vddh_{lab} VDDH_{lab} 0 DC {vh}",
+              f"Vbl_{lab} BLG_{lab} 0 DC {vb}",
+              f"Vplg_{lab} PLG_{lab} 0 DC 0"]
+    L += ["", f"* bench-only filament stand-in ({R_FIL:g} ohm) across every cell capacitor,",
+          "* with a 0 V sense source: i(vfil_<row>_<col>) is that cell's access-path current"]
+    for r in rows:
+        for c in cols:
+            lab, _ = G.band_of_col(c)
+            L += [f"Rfil_{r}_{c} x_dut.xc_{r}_{c}.cn nf_{r}_{c} {R_FIL:g}",
+                  f"Vfil_{r}_{c} nf_{r}_{c} x_dut.pl_{r}_{lab} 0"]
+    return "\n".join(L) + "\n"
+
+
+def measurements(sl: str):
+    rows, cols = window(sl)
+    bands = bands_in(cols)
+    m = []
+
+    # Measurement names are all lower case: ngspice prints them lower-cased and the
+    # older fleet runner matches names case-sensitively against that output (an
+    # upper-case band label in a name came back as "produced no value").
+    # `.meas dc ... AT=0` on a two-point dc sweep of a dummy source, not `expr`: the fleet
+    # runner image has lagged the client and rejects `expr` measurement
+    # entries (klayout-tools#2894), while `spice` cards are universally accepted.
+    def add(name, expr, unit):
+        m.append({"name": name, "spice": f".meas dc {name} FIND {expr} AT=0", "unit": unit})
+
+    for r in rows:
+        for c in cols:
+            add(f"ifil_{r}_{c}", f"i(vfil_{r}_{c})", "A")
+    for c in cols:
+        add(f"nv_bl_{c}", f"v(x_dut.bl_{c})", "V")
+    for lab, *_ in bands:
+        add(f"ibus_{lab.lower()}", f"i(vbl_{lab})", "A")
+        add(f"iret_{lab.lower()}", f"i(vplg_{lab})", "A")
+        for r in rows:
+            add(f"nv_pl_{r}_{lab.lower()}", f"v(x_dut.pl_{r}_{lab})", "V")
+    return m
+
+
+def request(sl: str, proc: str) -> dict:
+    rows, cols = window(sl)
+    bands = bands_in(cols)
+    sels = selections(sl)
+    keys = {}
+    n = len(sels) * len(SUPPLY_SCALES)
+
+    def col(fn):
+        return [round(fn(sel, sc), 6) for sel in sels for sc in SUPPLY_SCALES]
+
+    keys["vddl"] = col(lambda s, k: VDDL * k)
+    for lab, *_ in bands:
+        vh, vb = RAILS[lab]
+        keys[f"vddh_{lab.lower()}"] = col(lambda s, k, vh=vh: vh * k)
+        keys[f"vbl_{lab.lower()}"] = col(lambda s, k, vb=vb: vb * k)
+    for r in rows:
+        keys[f"vrsel{r}"] = col(lambda s, k, r=r: VDDL * k if s[0] == r else 0.0)
+    for c in cols:
+        keys[f"vcsel{c}"] = col(lambda s, k, c=c: VDDL * k if s[1] == c else 0.0)
+    assert all(len(v) == n for v in keys.values())
+    return {
+        "netlist": f"tb_{sl}_{proc}.spice",
+        "engine": "ngspice",
+        "models": {"pdk": "gf180mcuD", "lib": "libs.tech/ngspice/sm141064.ngspice"},
+        "corners": {
+            "process": [{"name": proc, "sections": list(PROCESS[proc])}],
+            "supply_v": keys,
+            "temperature_c": list(TEMPS),
+        },
+        "analysis": {"kind": "dc", "args": "vdum 0 1 1"},
+        "measurements": measurements(sl),
+        "options": {"timeout_s": 600, "keep_artifacts": False},
+    }
+
+
+# ---------------------------------------------------------------------------
+# Full-band leakage (issue #70)
+# ---------------------------------------------------------------------------
+#
+# Question: how much current does the OFF-state addressing stage (the column
+# pass-gates of the band, all attached to the band's BLG bus = the assumed
+# sense node) draw at the READ bias, per region? Complements, never replaces,
+# the cell/access term: that is `31 x I_off` from
+# sim/cell-device-characterization (carried by run_bench.py, once).
+#
+# Sense-node levels (ASSUMED attachment: the read leg is not connected to the
+# array on main, design/README.md; #73 owns integration). The levels bracket
+# the bit-line voltages the #65 record reports at its worst-case rows
+# (sim/program-read-legs/records/20261015-151616-d3df921.md, "Read margin"
+# tables, `BL at worst (V)`): programmed side and unprogrammed side, per
+# candidate. Each level is also run at x0.9 / x1.0 / x1.1 (the VCLAMP +-10 %
+# tracking points of that record, approximated as a scaling of the level).
+READ_RECORD = "20261015-151616-d3df921"
+READ_LEVELS = {   # band -> ((name, volts), ...)
+    "I": (("prog_lo", 0.65), ("prog_hi", 0.70), ("unprog", 3.98)),
+    "II": (("prog_lo", 0.50), ("prog_hi", 0.68), ("unprog", 1.65)),
+    "III": (("prog", 1.06), ("unprog", 3.77)),
+}
+LEVEL_SCALES = (0.9, 1.0, 1.1)
+LEAK_VARIANTS = ("pgoff", "nat", "sel")
+
+
+def leak_band_label(name: str) -> str:
+    return G.band_of_col(G.BAND_SLICES[name][2])[0]
+
+
+def leak_window(name: str):
+    r0, r1, c0, c1 = G.BAND_SLICES[name]
+    return list(range(r0, r1 + 1)), list(range(c0, c1 + 1))
+
+
+def leak_selections(name: str):
+    """One representative cell per (capacitor level, access level)
+    sub-combination present in the band (first in row-major order)."""
+    rows, cols = leak_window(name)
+    c0 = next(lo for lab, lo, _h, _c in G.BANDS if lab == leak_band_label(name))
+    seen, out = set(), []
+    for r in rows:
+        for c in cols:
+            k = G.level_indices(r, c, c0)
+            if k not in seen:
+                seen.add(k)
+                out.append((r, c))
+    return out
+
+
+def leak_levels(name: str):
+    return READ_LEVELS[leak_band_label(name)]
+
+
+def leak_netlist(name: str, proc: str, variant: str) -> str:
+    assert variant in LEAK_VARIANTS
+    rows, cols = leak_window(name)
+    lab = leak_band_label(name)
+    ports = ([f"RSEL_{r}" for r in rows] + [f"CSEL_{c}" for c in cols]
+             + [f"BLG_{lab}", f"PLG_{lab}", f"VDDH_{lab}", "VDDL", "VSS"])
+    L = [
+        f"* gf180-antifuse sim/array-slice-bench: full-band leakage, {name}, variant {variant}, process corner {proc} (GENERATED by make_bench.py - do not edit)",
+        "* Circuit body for `klt sim`. See make_bench.py (Full-band leakage) and README.md.",
+        ".include $PDK_ROOT/gf180mcuD/libs.tech/ngspice/design.ngspice",
+        f'.lib "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/smbb000149.ngspice" {PROCESS[proc][0]}',
+        "* derived netlists of the design under test (design/netlists/, never copied)",
+    ]
+    for nl in ("cell_candidate1", "cell_candidate2", "cell_candidate3", "ls_hv06", "ls_hv10",
+               "pg_n06", "pg_n10", name):
+        L.append(f".include ../../../design/netlists/{nl}.spice")
+    L += ["", f"X_dut {' '.join(ports)} {name}", ""]
+    L += [f"Vddl VDDL 0 DC {VDDL}", "Vss VSS 0 DC 0"]
+    for r in rows:
+        L.append(f"Vrsel{r} RSEL_{r} 0 DC 0")
+    for c in cols:
+        L.append(f"Vcsel{c} CSEL_{c} 0 DC 0")
+    L += ["", "Vdum NDUM 0 DC 0", "Rdum NDUM 0 1k", "",
+          "* band rail, BLG = the assumed sense node held at the read level, PLG return",
+          f"Vddh_{lab} VDDH_{lab} 0 DC {RAILS[lab][0]}",
+          f"Vbl_{lab} BLG_{lab} 0 DC 0.5",
+          f"Vplg_{lab} PLG_{lab} 0 DC 0"]
+    if variant == "pgoff":
+        L += ["", "* every BL_c clamped at 0 V: the OFF column pass-gate sees the full BLG level across",
+              "* it and the cell access devices see V_DS = 0 (cell term is NOT in this variant).",
+              "* i(vcl_<c>) = current the pass-gate delivers into BL_c (positive = out of BLG)."]
+        L += [f"Vcl_{c} x_dut.bl_{c} 0 DC 0" for c in cols]
+    elif variant == "sel":
+        L += ["", f"* bench-only filament stand-in ({R_FIL:g} ohm) across every cell capacitor (see the",
+              "* slice bench above); the selected cell's path is the read path being checked"]
+        for r in rows:
+            for c in cols:
+                L += [f"Rfil_{r}_{c} x_dut.xc_{r}_{c}.cn nf_{r}_{c} {R_FIL:g}",
+                      f"Vfil_{r}_{c} nf_{r}_{c} x_dut.pl_{r}_{lab} 0"]
+    return "\n".join(L) + "\n"
+
+
+def leak_measurements(name: str, variant: str):
+    rows, cols = leak_window(name)
+    lab = leak_band_label(name)
+    m = []
+
+    def add(n, expr, unit):
+        m.append({"name": n, "spice": f".meas dc {n} FIND {expr} AT=0", "unit": unit})
+
+    add("ibus", f"i(vbl_{lab})", "A")
+    if variant == "pgoff":
+        for c in cols:
+            add(f"icl_{c}", f"i(vcl_{c})", "A")
+    elif variant == "nat":
+        for c in cols:
+            add(f"nv_bl_{c}", f"v(x_dut.bl_{c})", "V")
+    else:
+        add("iret", f"i(vplg_{lab})", "A")
+        for r in rows:
+            for c in cols:
+                add(f"ifil_{r}_{c}", f"i(vfil_{r}_{c})", "A")
+        for c in cols:
+            add(f"nv_bl_{c}", f"v(x_dut.bl_{c})", "V")
+        for r in rows:
+            add(f"nv_pl_{r}", f"v(x_dut.pl_{r}_{lab})", "V")
+    return m
+
+
+def leak_points(name: str, variant: str):
+    """Ordered operating points (index = klt supply_v index) of one request:
+    dicts with level name, BLG volts, supply scale, selected cell (sel only)."""
+    lab = leak_band_label(name)
+    pts = []
+    sels = leak_selections(name) if variant == "sel" else [None]
+    lscales = LEVEL_SCALES if variant != "sel" else (1.0,)
+    for sel in sels:
+        for lname, lv in leak_levels(name):
+            for ls in lscales:
+                for sc in SUPPLY_SCALES:
+                    pts.append({"level": lname, "level_scale": ls, "vbl": round(lv * ls, 6),
+                                "scale": sc, "sel": sel})
+    return pts
+
+
+def leak_request(name: str, proc: str, variant: str) -> dict:
+    rows, cols = leak_window(name)
+    lab = leak_band_label(name)
+    pts = leak_points(name, variant)
+    keys = {
+        "vddl": [round(VDDL * p["scale"], 6) for p in pts],
+        f"vddh_{lab.lower()}": [round(RAILS[lab][0] * p["scale"], 6) for p in pts],
+        f"vbl_{lab.lower()}": [p["vbl"] for p in pts],
+    }
+    if variant == "sel":
+        for r in rows:
+            keys[f"vrsel{r}"] = [round(VDDL * p["scale"], 6) if p["sel"][0] == r else 0.0 for p in pts]
+        for c in cols:
+            keys[f"vcsel{c}"] = [round(VDDL * p["scale"], 6) if p["sel"][1] == c else 0.0 for p in pts]
+    return {
+        "netlist": f"tb_leak_{variant}_{name}_{proc}.spice",
+        "engine": "ngspice",
+        "models": {"pdk": "gf180mcuD", "lib": "libs.tech/ngspice/sm141064.ngspice"},
+        "corners": {
+            "process": [{"name": proc, "sections": list(PROCESS[proc])}],
+            "supply_v": keys,
+            "temperature_c": list(TEMPS),
+        },
+        "analysis": {"kind": "dc", "args": "vdum 0 1 1"},
+        "measurements": leak_measurements(name, variant),
+        "options": {"timeout_s": 600, "keep_artifacts": False},
+    }
+
+
+def leak_outputs():
+    out = {}
+    for name in G.BAND_SLICES:
+        for proc in PROCESS:
+            for v in LEAK_VARIANTS:
+                out[TB_DIR / f"tb_leak_{v}_{name}_{proc}.spice"] = leak_netlist(name, proc, v)
+                out[TB_DIR / f"leak_{v}_{name}_{proc}.request.json"] = (
+                    json.dumps(leak_request(name, proc, v), indent=2) + "\n")
+    return out
+
+
+def outputs():
+    out = {}
+    for sl in G.SLICES:
+        for proc in PROCESS:
+            out[TB_DIR / f"tb_{sl}_{proc}.spice"] = netlist(sl, proc)
+            out[TB_DIR / f"{sl}_{proc}.request.json"] = json.dumps(request(sl, proc), indent=2) + "\n"
+    out.update(leak_outputs())
+    return out
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--check", action="store_true")
+    a = ap.parse_args()
+    rc = 0
+    for p, t in outputs().items():
+        if a.check:
+            if not p.exists() or p.read_text() != t:
+                print(f"DRIFT: {p.relative_to(HERE.parents[1])}", file=sys.stderr)
+                rc = 1
+        else:
+            p.parent.mkdir(parents=True, exist_ok=True)
+            p.write_text(t)
+            print(f"wrote: {p.relative_to(HERE.parents[1])}")
+    return rc
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

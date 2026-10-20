@@ -146,6 +146,12 @@
       "kind": "sim",
       "content_hash": "sha256:f6c4385c4de1323020dce7f13789c5acf7e12584a7f081d59fbe25c5a12cbbee",
       "backs": "cell-device-characterization access-device bench (I_off / R_on), per sub-configuration; see sim/cell-device-characterization/records/20261013-170230-b0bb935-c2.md"
+    },
+    {
+      "file": "rtl/synth/antifuse_spi_regs.synth.report.json",
+      "kind": "synthesize",
+      "content_hash": "sha256:8d5941b078132e24028cb7b67d397eb961471ad6e7b9eded0ab3188ef93b1edc",
+      "backs": "digital-partition synthesis of rtl/antifuse_spi_regs.v (N=32 defaults, gf180mcu_fd_sc_mcu7t5v0): cell breakdown, area, latch/comb-loop counts; see rtl/README.md"
     }
   ]
 }

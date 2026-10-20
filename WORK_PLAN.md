@@ -3,15 +3,23 @@
 <!-- guide:plan-body:start -->
 ## Operator Attention: Merge-Risk-Hold Pileup
 
-Judge-approved PRs stuck under a `loom:operator` merge-risk hold — implementation work is done, only a human merge decision is missing.
+Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a human merge decision is missing.
+
+- **#85**: layout: first drawn candidate-1 bitcell with klt drc (T1 2.analog, 3.analog); LVS blocked upstream
+- **#88**: sim: Candidate 2 klt campaign via version-matched client; regenerate signoff (#63)
+- **#94**: design: program bias scheme vs access-device ratings; PROPOSED decision record (#90)
+
+## Very Important
+
+`loom:very-important` (one counts per workspace); every stage takes these first.
 
 _None._
 
-## Operator Priority
+## Important
 
-Issues the operator starred (`loom:operator-priority`); land these first.
+`loom:important`; taken before unlabelled work.
 
-_None._
+- **#59**: layout: first drawn bitcell (candidate 1) with klt drc and klt lvs (T1 items 2, 3, 4, analog partition)
 
 ## Ready
 
@@ -23,7 +31,7 @@ Human-approved issues ready for implementation (`loom:issue`).
 
 Issues currently being built (`loom:building`).
 
-_None._
+- **#90**: design: program-leg access-device overstress at assumed V_bd; Candidate 2 not programmable via BL-driven leg
 
 ## PRs Awaiting Review
 
@@ -35,13 +43,21 @@ _None._
 
 PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
-_None._
+- **#85**: layout: first drawn candidate-1 bitcell with klt drc (T1 2.analog, 3.analog); LVS blocked upstream
+- **#88**: sim: Candidate 2 klt campaign via version-matched client; regenerate signoff (#63)
+- **#94**: design: program bias scheme vs access-device ratings; PROPOSED decision record (#90)
 
 ## Proposed
 
 Issues carrying `loom:curated`.
 
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4) *(curated)*
+- **#59**: layout: first drawn bitcell (candidate 1) with klt drc and klt lvs (T1 items 2, 3, 4, analog partition) *(curated)*
+- **#63**: sim: express the PVT corner campaign as a klt sim request and cite it in the signoff manifest *(curated)*
+- **#90**: design: program-leg access-device overstress at assumed V_bd; Candidate 2 not programmable via BL-driven leg *(curated)*
+- **#99**: Re-qualify reference sim records under open_pdks f6eeac7 as new records *(curated)*
+- **#117**: T1 items 1 and 9 (analog partition): attest the cell sources and testbenches with klt signoff --attest *(curated)*
+- **#119**: T1 item 11 (analog): klt erc supply spec from the supply-domain decision record, then cite ERC with item 4's LVS *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -53,15 +69,16 @@ _None._
 
 ## Backlog Balance
 
-| Tier | Count |
+| Bucket | Count |
 |------|-------|
-| Operator merge-risk holds | 0 |
-| Operator priority | 0 |
+| Operator merge-risk holds | 3 |
+| Very important | 0 |
+| Important | 1 |
 | Ready (`loom:issue`) | 1 |
-| In Progress (`loom:building`) | 0 |
+| In Progress (`loom:building`) | 1 |
 | PRs awaiting review | 0 |
-| Approved PRs awaiting merge | 0 |
-| Curated | 1 |
+| Approved PRs awaiting merge | 3 |
+| Curated | 7 |
 | Architect / Hermit proposals | 0 |
 | Active epics | 1 |
 <!-- guide:plan-body:end -->

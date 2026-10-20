@@ -170,9 +170,9 @@ distinction explicitly rather than reusing `wl_on` for both testbenches.
   device-family floor the acceptance criteria set (5 process × 3 temp = 15
   already, before the ×3 supply and ×4 sub-configuration multipliers).
 - **PDK revision**: `open_pdks c6d73a35f524070e85faff4a6a9eef49553ebc2b`
-  (`gf180mcuD`), verified present via `klt pdk list` at build time — matches
-  `spec/cell-candidates.md`'s pinned revision exactly; no discrepancy to
-  record. Re-verify before trusting a record produced on a different
+  (`gf180mcuD`), verified present via `klt pdk list` at build time (the pin
+  then in force; the forward-looking pin is now `f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7`, see
+  `spec/pdk-pin-decision.md`; this record's runs are not re-qualified here). Re-verify before trusting a record produced on a different
   machine; `run_experiment.py` prints the resolved variant and revision on
   every invocation.
 
@@ -239,7 +239,7 @@ Per candidate (= per `spec/split-axis-plan.md` region):
 ## Running it
 
 ```bash
-export PDK_ROOT=$HOME/.volare   # or GF180_PDK_PATH=$HOME/.volare/gf180mcuD
+export PDK_ROOT=$HOME/.ciel   # or GF180_PDK_PATH=$HOME/.ciel/gf180mcuD
 python3 sim/run_corners.py --check-env cell-device-characterization
 python3 sim/run_corners.py cell-device-characterization
 ```

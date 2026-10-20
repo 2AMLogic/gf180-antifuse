@@ -1,0 +1,82 @@
+{
+ "netlist": "offset.sp",
+ "models": {
+  "pdk": "gf180mcuD",
+  "lib": "libs.tech/ngspice/sm141064.ngspice"
+ },
+ "corners": {
+  "process": [
+   {
+    "name": "ss",
+    "sections": [
+     {
+      "lib": "sim/program-read-legs/models/preamble.lib",
+      "section": "design_mm"
+     },
+     "ss",
+     "moscap_ss",
+     "res_ss"
+    ]
+   }
+  ],
+  "supply_v": {
+   "VDD": [
+    2.97
+   ],
+   "VCLAMP": [
+    1.62
+   ]
+  },
+  "temperature_c": [
+   -40
+  ]
+ },
+ "analysis": {
+  "kind": "op",
+  "args": ""
+ },
+ "measurements": [
+  {
+   "name": "isense_o0",
+   "expr": "i(vsns_o0)"
+  },
+  {
+   "name": "vbl_o0",
+   "expr": "v(bl_o0)"
+  },
+  {
+   "name": "isense_o1",
+   "expr": "i(vsns_o1)"
+  },
+  {
+   "name": "vbl_o1",
+   "expr": "v(bl_o1)"
+  },
+  {
+   "name": "isense_o2",
+   "expr": "i(vsns_o2)"
+  },
+  {
+   "name": "vbl_o2",
+   "expr": "v(bl_o2)"
+  },
+  {
+   "name": "isense_o3",
+   "expr": "i(vsns_o3)"
+  },
+  {
+   "name": "vbl_o3",
+   "expr": "v(bl_o3)"
+  }
+ ],
+ "options": {
+  "keep_artifacts": true,
+  "timeout_s": 300,
+  "stage_model_inputs": true
+ },
+ "monte_carlo": {
+  "n": 200,
+  "seed": 20261016,
+  "vary": "mismatch"
+ }
+}

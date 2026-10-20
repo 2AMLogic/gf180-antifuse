@@ -1,0 +1,6 @@
+{
+  "engine": "yosys",
+  "sources": ["../antifuse_spi_regs.v"],
+  "hdl_toplevel": "antifuse_spi_regs",
+  "pdk": {"cell_library": "gf180mcu_fd_sc_mcu7t5v0"}
+}

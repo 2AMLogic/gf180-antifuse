@@ -67,3 +67,8 @@ def write_once(path: Path, content: str) -> None:
     if path.exists():
         raise FileExistsError(f"refusing to overwrite existing evidence file: {path}")
     path.write_text(content)
+
+
+def git_out(repo_root: Path, *args: str) -> str:
+    """Stripped stdout of ``git -C repo_root <args>`` ("" on any failure)."""
+    return subprocess.run(["git", "-C", str(repo_root), *args], capture_output=True, text=True).stdout.strip()
