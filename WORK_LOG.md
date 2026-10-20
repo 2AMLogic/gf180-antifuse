@@ -3,6 +3,15 @@
 Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 
+### 2026-10-20
+
+- **PR #122**: rtl: synthesize antifuse_spi_regs with klt and record the netlist and report
+- **Issue #60** (closed): rtl: synthesize antifuse_spi_regs against gf180mcu std cells and cite the netlist in the signoff manifest
+- **PR #61**: feat: SPI register file RTL, bench and decision record
+- **Issue #58** (closed): design: SPI slave register file RTL and bench per architecture §5 (T1 items 1 and 9, digital partition)
+- **PR #92**: design+sim: Candidate 3 read bias (n-well tied to read rail) with PVT evidence
+- **Issue #75** (closed): design: Candidate 3 read bias -- placeholder WL=0 V cannot read a programmed cell (I_prog_min undefined)
+
 ### 2026-10-17
 
 - **PR #116**: refactor(sim): share number-parsing, formatting and git helpers in sim/harness
