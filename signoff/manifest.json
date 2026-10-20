@@ -1,7 +1,12 @@
 {
   "block": "gf180-antifuse",
   "kind": "mixed-signal",
-  "evidence": {},
+  "evidence": {
+    "3.analog": {
+      "file": "layout/cell_candidate1/drc_report.json",
+      "content_hash": "sha256:796faa12f1c28f5c3ce7aebbee173bb9052abc2e0f31333c28dedbf142a1c6c6"
+    }
+  },
   "supporting_evidence": [
     {
       "file": "sim/cell-device-characterization/klt/runs/20261009-014137-8d6e70b/c1_access-2x_cap-2x/ioff/report.json",
