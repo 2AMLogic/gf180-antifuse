@@ -267,8 +267,9 @@ Candidate 2 cell record), and the `ls_*`/`pg_*` transistor sizes
   `BLG`/`PLG` buses yet, and the active compliance limit (the WL-bias second
   limit of `spec/architecture.md` §2, owned by the WL level shifter) and on-die
   `I_ref` generation are not designed.
-- **SPI slave and the global decode** - register map, address decode, control
-  logic. The digital partition is the *source* of `RSEL_<r>` / `CSEL_<c>`; the
+- **SPI slave, gate level and the global decode** - the register map and
+  sequencer RTL is captured (item 4 above); the synthesized netlist and the
+  physical decode are not. The digital partition is the *source* of `RSEL_<r>` / `CSEL_<c>`; the
   level shifters here are the first analog stage.
 - **Anything sized or timed.** No transistor in the addressing stage has been
   sized against a corner; the bench shows the structure conducts and isolates at

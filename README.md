@@ -30,9 +30,12 @@ published.
 The spec — cell candidates, N, split-axis plan, program/read architecture,
 and the measurement matrix — came first. The first design sources are now in
 `design/`: xschem schematics and derived netlists for the three ratified
-antifuse cell candidates. The array, row/column MUX, sense path and SPI slave
-are specified at the interface level only and are not captured yet — see
-`design/README.md` for what is and is not designed.
+antifuse cell candidates. The SPI slave, register file and program/read
+sequencer are captured as behavioural RTL in `rtl/` with a self-checking
+Icarus bench in `verification/` (no synthesized netlist yet). The program
+strobe is a dedicated `FIRE` command (amendment A1 of `spec/architecture.md` §5). The array,
+row/column MUX and sense path are specified at the interface level only and
+are not captured yet — see `design/README.md` for what is and is not designed.
 
 ## Spec table
 
@@ -89,6 +92,8 @@ issue #14 and is not present yet.
 |---|---|
 | `spec/` | Ratified targets, split-axis plan, decision records |
 | `design/` | Schematics (xschem), cell and array design |
+| `rtl/` | Digital sources (SPI register file and sequencer) |
+| `verification/` | RTL benches (Icarus), one-command runner |
 | `sim/` | ngspice testbenches + results — append-only evidence |
 | `layout/` | Layout, DRC/LVS via klayout-tools |
 | `measurements/` | Silicon results, recorded per grid region |

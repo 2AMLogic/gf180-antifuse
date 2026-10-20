@@ -263,6 +263,16 @@ values this architecture record invents.
 
 ## 5. SPI slave register map
 
+> **Amendment A1 (2026-10-17, operator ruling, discussion 17 Q3 option 1).**
+> The program strobe is no longer a `CTRL` bit write. It is a separate
+> write-only `FIRE` command at address `0x78` (command byte `0xF8`), chosen at
+> Hamming distance >= 4 from every defined-register command byte so one flipped
+> command bit cannot turn a register access into a fire. `CTRL.bit1`
+> (`PROG_STROBE`) is read-only status. Everything else in §5 is unchanged.
+> Fault model, claims, encoding rationale and evidence:
+> [`spi-register-implementation-decision.md`](spi-register-implementation-decision.md)
+> § "Amendment A1".
+
 **Physical/protocol layer.** SPI slave, mode 0 (CPOL=0, CPHA=0), MSB-first,
 4-wire (`SCLK`, `MOSI`, `MISO`, `CS_N`, active-low chip select). I/O pads
 assumed to be `gf180mcu_fd_io` cells at a logic-compatible I/O voltage
@@ -281,10 +291,11 @@ only the number of *valid* low-order bits changes).
 |---|---|---|---|---|---|
 | `0x00` | `ADDR_ROW` | 8 (low `ceil(log2(N))` bits valid) | R/W | `0x00` | Row address for the next program/read operation. Values `>= N` are out of range; behavior on out-of-range write is a `design/`-stage decision, but must not silently address a valid row (e.g., clamp-and-set `PROTOCOL_ERROR`, or ignore the write). |
 | `0x01` | `ADDR_COL` | 8 (low `ceil(log2(N))` bits valid) | R/W | `0x00` | Column address, same out-of-range handling as `ADDR_ROW`. |
-| `0x02` | `CTRL` | 8 | R/W | `0x00` | `bit0` = `PROG_ARM`, `bit1` = `PROG_STROBE`, `bit2` = `READ_STROBE`, `bits[7:3]` reserved (write 0). |
+| `0x02` | `CTRL` | 8 | R/W | `0x00` | `bit0` = `PROG_ARM`, `bit1` = `PROG_STROBE` (**read-only status after A1**: set while the pulse runs; a write with bit1 set is rejected), `bit2` = `READ_STROBE`, `bits[7:3]` reserved (write 0). |
 | `0x03` | `PULSE_WIDTH` | 8 | R/W | implementation-defined | Program pulse width control code (a direct cycle count or an index into a pulse-width table — `design/`-stage choice). Program pulse *width* is a split axis per CLAUDE.md, so it must be host-settable per operation, not a fixed hardware constant. Program pulse *voltage* is set by whatever supplies `VPP` (bench or on-die per sub-issue D), not by this register. |
 | `0x04` | `STATUS` | 8 | RO | `0x00` | `bit0` = `BUSY`, `bit1` = `PROG_DONE`, `bit2` = `READ_VALID`, `bit3` = `PROTOCOL_ERROR`, `bits[7:4]` reserved (read 0). |
 | `0x05` | `RDATA` | 8 | RO | `0x00` | `bit0` = sensed cell state from the last completed read (1 = programmed, 0 = unprogrammed/unselected), per §4. `bits[7:1]` reserved for a future multi-bit/analog readback extension — not used by this record. |
+| `0x78` | `FIRE` | command | WO (A1) | — | Program strobe command. Accepted only while `PROG_ARM=1` (set by an earlier committed transaction); otherwise rejected with `PROTOCOL_ERROR`. Data byte ignored (send `0x00`). Not readable (a read is an unknown-address read). |
 
 **Program sequence (enable-then-strobe interlock).** A single stray bit
 flip must not be able to trigger a program pulse — this is the
@@ -294,13 +305,15 @@ guidance calls out explicitly:
 1. Host writes `ADDR_ROW`, `ADDR_COL`.
 2. Host writes `CTRL` with `PROG_ARM=1`, `PROG_STROBE=0` — a dedicated SPI
    transaction that only arms, does not fire.
-3. Host writes `CTRL` with `PROG_STROBE=1` in a **separate, subsequent**
-   SPI transaction, within a bounded arm-timeout window. If the timeout
+3. Host writes the `FIRE` command (A1; formerly `CTRL` with `PROG_STROBE=1`)
+   in a **separate, subsequent** SPI transaction, within a bounded arm-timeout window. If the timeout
    elapses without a strobe, `PROG_ARM` auto-clears and the sequence must
-   restart from step 2 — a stuck-high `PROG_STROBE` line with no preceding
-   `PROG_ARM` write cannot fire a pulse. The timeout value is a
+   restart from step 2 — a `FIRE` with no preceding `PROG_ARM` write, or a
+   stuck-high `MOSI` line (every command byte then reads `0xFF`, an
+   unknown-address write), cannot fire a pulse (A1 wording; the pre-A1 text
+   spoke of a stuck-high `PROG_STROBE` line). The timeout value is a
    `design/`-stage constant, not fixed by this record.
-4. On `PROG_STROBE` observed while `PROG_ARM` is set: `BUSY` asserts,
+4. On `FIRE` committed while `PROG_ARM` is set (`PROG_STROBE` then reads 1): `BUSY` asserts,
    `READ_EN` is held disabled for the armed+pulse duration (§1.2), the
    program pulse fires for the duration encoded in `PULSE_WIDTH` at the
    `VPP` rail's voltage, through the selected row/column pass-gates (§1)
