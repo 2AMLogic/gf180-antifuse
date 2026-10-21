@@ -19,6 +19,7 @@ _None._
 
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4)
 - **#127**: Measure V_bd and carry Candidates 2 and 3 until then (operator ruling 2026-10-20)
+- **#130**: Re-run program- and read-bias benches with sourced V_bd and compare candidates
 
 ## Ready
 
@@ -30,14 +31,13 @@ Human-approved issues ready for implementation (`loom:issue`).
 
 Issues currently being built (`loom:building`).
 
-- **#128**: Source V_bd per candidate from primary data and plan a test structure
-- **#129**: Candidate 3 gate/well-drive program-bias bench
+_None._
 
 ## PRs Awaiting Review
 
 PRs waiting on Judge (`loom:review-requested`).
 
-- **#131**: docs: sourced gate-oxide V_bd per candidate and test-structure plan
+_None._
 
 ## Approved (Awaiting Merge)
 
@@ -53,8 +53,6 @@ Issues carrying `loom:curated`.
 - **#99**: Re-qualify reference sim records under open_pdks f6eeac7 as new records *(curated)*
 - **#117**: T1 items 1 and 9 (analog partition): attest the cell sources and testbenches with klt signoff --attest *(curated)*
 - **#119**: T1 item 11 (analog): klt erc supply spec from the supply-domain decision record, then cite ERC with item 4's LVS *(curated)*
-- **#128**: Source V_bd per candidate from primary data and plan a test structure *(curated)*
-- **#129**: Candidate 3 gate/well-drive program-bias bench *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -70,12 +68,12 @@ _None._
 |------|-------|
 | Operator merge-risk holds | 0 |
 | Very important | 0 |
-| Important | 2 |
+| Important | 3 |
 | Ready (`loom:issue`) | 1 |
-| In Progress (`loom:building`) | 2 |
-| PRs awaiting review | 1 |
+| In Progress (`loom:building`) | 0 |
+| PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 0 |
-| Curated | 6 |
+| Curated | 4 |
 | Architect / Hermit proposals | 0 |
 | Active epics | 1 |
 <!-- guide:plan-body:end -->
