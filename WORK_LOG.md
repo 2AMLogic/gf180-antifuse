@@ -5,6 +5,8 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-10-20
 
+- **PR #85**: layout: first drawn candidate-1 bitcell with klt drc (T1 2.analog, 3.analog); LVS blocked upstream
+- **Issue #59** (closed): layout: first drawn bitcell (candidate 1) with klt drc and klt lvs (T1 items 2, 3, 4, analog partition)
 - **PR #122**: rtl: synthesize antifuse_spi_regs with klt and record the netlist and report
 - **Issue #60** (closed): rtl: synthesize antifuse_spi_regs against gf180mcu std cells and cite the netlist in the signoff manifest
 - **PR #61**: feat: SPI register file RTL, bench and decision record
