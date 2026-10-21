@@ -47,7 +47,7 @@
 * deliberately the same across candidates")
 * ---------------------------------------------------------------------------
 
-* @param bd_ebd unit=V/m provenance=assumed -- median breakdown field at t = bd_tref (10 MV/cm). Order-of-magnitude choice for SiO2-class gate oxide; NOT a gf180 number (spec/cell-candidates.md: breakdown voltages are an open question). Sets V_bd(1 us) = bd_ebd*tox = 8.0 / 15.2 / 7.9 V for Candidates 1 / 2 / 3.
+* @param bd_ebd unit=V/m provenance=assumed -- median breakdown field at t = bd_tref (10 MV/cm). Order-of-magnitude choice for SiO2-class gate oxide; NOT a gf180 number (spec/cell-candidates.md: breakdown voltages are an open question). Sets V_bd(1 us) = bd_ebd*tox = 8.0 / 15.2 / 7.9 V for Candidates 1 / 2 / 3. Cross-checked, NOT replaced, against the PDK BVox spec (docs/breakdown-vbd-sources.md): its ramp/current condition is unstated so it cannot be placed at bd_tref.
 .param bd_ebd = 1.0e9
 * @param bd_tref unit=s provenance=assumed -- the time scale bd_ebd is quoted at; 1 us is within the program-pulse-width range a bench-supplied VPP can produce, which keeps the reference point inside the regime the program path will actually exercise.
 .param bd_tref = 1.0e-6
