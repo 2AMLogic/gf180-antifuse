@@ -102,11 +102,18 @@ was claimed:
 - **Item 8** (characterization report) needs a per-region `generic` envelope;
   none was produced. The per-region Markdown records stay the human-readable
   per-region result.
-- **Candidate 2 (Region II) is not covered**: its fleet requests failed (see
-  `sim/cell-device-characterization/README.md`, "klt sim campaign"), so
-  `supporting_evidence` cites only the 16 passing Candidate 1 / Candidate 3
-  reports. A cited sim report that does not span all three regions could not
-  support a whole-block row regardless.
+- **Candidate 2 (Region II)** failed on the fleet in the first run
+  (`20261009-014137-8d6e70b`) and again on 2026-10-13 with a client newer than
+  the fleet runner's 0.7.0, which the runner refuses. A version-matched (0.7.0)
+  resubmission passed, run `20261013-170230-b0bb935`; its 8 reports are now
+  also under `supporting_evidence`, which cites 24 access-device reports
+  covering all three candidates. The capacitor C-V bench is still not
+  migrated, so coverage of the analog partition is incomplete regardless, and
+  no graded row is claimed from these reports.
+
+**Rows moved by this PR: none.** The Candidate 2 reports are ungraded
+`supporting_evidence`; `report.json` is unchanged because nothing graded
+changed.
 
 
 ## Synthesis evidence (issue #60): which rows moved, which did not
