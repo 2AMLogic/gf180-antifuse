@@ -5,7 +5,7 @@
 
 Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a human merge decision is missing.
 
-- **#94**: design: program bias scheme vs access-device ratings; PROPOSED decision record (#90)
+_None._
 
 ## Very Important
 
@@ -18,6 +18,7 @@ _None._
 `loom:important`; taken before unlabelled work.
 
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4)
+- **#127**: Measure V_bd and carry Candidates 2 and 3 until then (operator ruling 2026-10-20)
 
 ## Ready
 
@@ -29,29 +30,31 @@ Human-approved issues ready for implementation (`loom:issue`).
 
 Issues currently being built (`loom:building`).
 
-- **#90**: design: program-leg access-device overstress at assumed V_bd; Candidate 2 not programmable via BL-driven leg
+- **#128**: Source V_bd per candidate from primary data and plan a test structure
+- **#129**: Candidate 3 gate/well-drive program-bias bench
 
 ## PRs Awaiting Review
 
 PRs waiting on Judge (`loom:review-requested`).
 
-_None._
+- **#131**: docs: sourced gate-oxide V_bd per candidate and test-structure plan
 
 ## Approved (Awaiting Merge)
 
 PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
-- **#94**: design: program bias scheme vs access-device ratings; PROPOSED decision record (#90)
+_None._
 
 ## Proposed
 
 Issues carrying `loom:curated`.
 
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4) *(curated)*
-- **#90**: design: program-leg access-device overstress at assumed V_bd; Candidate 2 not programmable via BL-driven leg *(curated)*
 - **#99**: Re-qualify reference sim records under open_pdks f6eeac7 as new records *(curated)*
 - **#117**: T1 items 1 and 9 (analog partition): attest the cell sources and testbenches with klt signoff --attest *(curated)*
 - **#119**: T1 item 11 (analog): klt erc supply spec from the supply-domain decision record, then cite ERC with item 4's LVS *(curated)*
+- **#128**: Source V_bd per candidate from primary data and plan a test structure *(curated)*
+- **#129**: Candidate 3 gate/well-drive program-bias bench *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -65,14 +68,14 @@ _None._
 
 | Bucket | Count |
 |------|-------|
-| Operator merge-risk holds | 1 |
+| Operator merge-risk holds | 0 |
 | Very important | 0 |
-| Important | 1 |
+| Important | 2 |
 | Ready (`loom:issue`) | 1 |
-| In Progress (`loom:building`) | 1 |
-| PRs awaiting review | 0 |
-| Approved PRs awaiting merge | 1 |
-| Curated | 5 |
+| In Progress (`loom:building`) | 2 |
+| PRs awaiting review | 1 |
+| Approved PRs awaiting merge | 0 |
+| Curated | 6 |
 | Architect / Hermit proposals | 0 |
 | Active epics | 1 |
 <!-- guide:plan-body:end -->
