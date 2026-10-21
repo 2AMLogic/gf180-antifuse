@@ -5,6 +5,8 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-10-21
 
+- **PR #94**: design: program bias scheme vs access-device ratings; PROPOSED decision record (#90)
+- **Issue #90** (closed): design: program-leg access-device overstress at assumed V_bd; Candidate 2 not programmable via BL-driven leg
 - **PR #88**: sim: Candidate 2 klt campaign via version-matched client; regenerate signoff (#63)
 - **Issue #63** (closed): sim: express the PVT corner campaign as a klt sim request and cite it in the signoff manifest
 
