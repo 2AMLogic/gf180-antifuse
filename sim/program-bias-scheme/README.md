@@ -44,6 +44,7 @@ and cannot repair (see the proposed decision record).
 |---|---|
 | `plb_st`, `plb_b1m`, `plb_b1l` | VPP pulse (signed level, the #62 / #74 levels) -> ideal ballast (V_bd / 500 uA placeholder, as in the BL-driven bench) -> **PL**; BL = 0 V through an ammeter; WL, VB static at the #62 "on" bias. Variants: stock cell, element enabled at the median / low Weibull quantile. |
 | `plu_st` | The same PL pulse on an **unselected** stock cell: WL at its OFF level, BL = 0 V, CN floating. Shows the stress an unselected cell's access device sees when PL carries the program pulse. |
+| `gwa_*`, `gwb_*` (`st`, `b1m`, `b1l`) | **Candidate 3 only** (#129): the `plb` leg with the access device's gate (WL) and n-well tie (VB) set per scheme instead of the #62 "on" bias. `gwa`: WL -3.3 V, VB 0 V (well tie lowered to the BL return level). `gwb`: WL -6.0 V, VB 0 V (stronger gate drive). Same six pairs, same 45 corners, same signed PL levels. Opt-in: `--candidates 3 --benches gwa_st,gwa_b1m,gwa_b1l,gwb_st,gwb_b1m,gwb_b1l`. The record ends with a per-level verdict: in-rating corners / attempted corners per bench, and whether any bench holds at every corner of a level. |
 
 The deck helpers, the C-infinity pulse edge, `tran ... uic`, one cell per
 deck, per-corner failure accounting, and the 45-corner grid are reused from
@@ -56,6 +57,8 @@ A corner that does not converge stays in the denominator.
 ```
 python3 sim/program-bias-scheme/run_experiment.py --retabulate        # no simulation
 python3 sim/program-bias-scheme/run_experiment.py --candidates 1,2,3  # batch fleet, 4 benches x 45 corners per candidate
+python3 sim/program-bias-scheme/run_experiment.py --candidates 3 --benches gwa_st,gwa_b1m,gwa_b1l,gwb_st,gwb_b1m,gwb_b1l  # batch fleet, 6 benches x 45 corners
+python3 sim/program-bias-scheme/run_experiment.py --candidates 3 --benches gwa_st,gwa_b1m,gwa_b1l,gwb_st,gwb_b1m,gwb_b1l --resume RECORD_ID  # finish an interrupted batch run (only benches without a report are resubmitted)
 python3 sim/program-bias-scheme/run_experiment.py --smoke 1:plb_b1m:3 # ONE local corner, debug only, records nothing
 ```
 
@@ -77,4 +80,5 @@ The default mode submits to the batch fleet (`KLT_SIM_BACKEND=batch` /
 - Single cell per deck: array-level effects (shared PL, unselected cells in
   the selected row, sneak paths) are not simulated, except for the single
   unselected-cell `plu` case.
+- The gate/well-drive benches (`gwa`, `gwb`) try two static (WL, VB) pairs; "no scheme keeps all six pairs in rating" is a statement about those pairs, not about every possible drive. `corners/20261021-024938-9f8fa78` is an interrupted first attempt (submitter killed after 2 of 6 benches by a tool time limit), kept as evidence, no record.
 - Process corners only; no Monte Carlo (the yield curve is #66).

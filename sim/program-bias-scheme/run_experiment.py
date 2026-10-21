@@ -377,6 +377,10 @@ def gwd_verdict(a, cand, params, results: dict, rating: float, n: int) -> None:
     a("    " + ("At least one scheme keeps every pair in rating at some level (rows above)." if anywhere else
                 "**Result: no gate/well scheme tried keeps all six pairs in rating at any stress level.**"))
     a("")
+    a("    Reading note: the `_st` benches have no breakdown element, so they show only the stress of the pulse on "
+      "an intact cell; a program event is represented by the `_b1m` / `_b1l` benches (element enabled), which are "
+      "the rows to compare per level. Conditional on the assumed V_bd; #130 supersedes with sourced values.")
+    a("")
 
 
 def render_pl(pdk, cand, rid: str, params: dict, results: dict, note: str | None) -> str:
@@ -496,6 +500,9 @@ def main(argv: list[str] | None = None) -> int:
                          ") are opt-in: --candidates 3 --benches " + ",".join(GWD_BENCHES))
     ap.add_argument("--retabulate", action="store_true", help="re-tabulate existing BL-driven evidence (no sim)")
     ap.add_argument("--smoke", default=None, metavar="N:BENCH[:LEVEL_INDEX]", help="ONE local corner (debug probe, no record)")
+    ap.add_argument("--resume", default=None, metavar="RECORD_ID",
+                    help="finish an interrupted batch run of ONE candidate: benches with a saved report.json are "
+                         "reloaded, the rest are submitted into the same corners/RECORD_ID/ (no new record id)")
     ap.add_argument("--render", default=None, metavar="RECORD_ID",
                     help="(re)write records/RECORD_ID.md from saved reports of ONE candidate; no simulation")
     ap.add_argument("--note", default=None)
@@ -547,13 +554,18 @@ def main(argv: list[str] | None = None) -> int:
     for n in wanted:
         cand = by_n[n]
         defaults = CHAR.parse_defaults(REPO_ROOT / "design" / "netlists" / cand.netlist)
-        rid = R.allocate_record_id(THIS_DIR, REPO_ROOT)
-        print(f"== Candidate {n} (Region {cand.region}) record {rid}")
-        R.write_once(THIS_DIR / "corners" / rid / "run-provenance.json",
-                     json.dumps({"git_sha": R.git_short_sha(REPO_ROOT), "dirty": dirty}) + "\n")
-        results = {}
+        rid = args.resume or R.allocate_record_id(THIS_DIR, REPO_ROOT)
+        print(f"== Candidate {n} (Region {cand.region}) record {rid}" + (" (resumed)" if args.resume else ""))
+        if not args.resume:
+            R.write_once(THIS_DIR / "corners" / rid / "run-provenance.json",
+                         json.dumps({"git_sha": R.git_short_sha(REPO_ROOT), "dirty": dirty}) + "\n")
+        results = load_saved(cand, rid, params) if args.resume else {}
         for bench in benches:
+            if bench in results:
+                continue
             bdir = THIS_DIR / "corners" / rid / bench
+            if args.resume and bdir.exists():
+                shutil.rmtree(bdir)   # interrupted submit: no report.json, nothing to preserve but the request
             bdir.mkdir(parents=True, exist_ok=False)
             body, ms = body_pl(pdk, cand, defaults, bdir, CB.FLEET_PDK_VARIANT_DIR, bench, params)
             R.write_once(bdir / "body.spice", body)
