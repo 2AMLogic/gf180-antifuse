@@ -3,6 +3,11 @@
 Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 
+### 2026-10-21
+
+- **PR #88**: sim: Candidate 2 klt campaign via version-matched client; regenerate signoff (#63)
+- **Issue #63** (closed): sim: express the PVT corner campaign as a klt sim request and cite it in the signoff manifest
+
 ### 2026-10-20
 
 - **PR #85**: layout: first drawn candidate-1 bitcell with klt drc (T1 2.analog, 3.analog); LVS blocked upstream
