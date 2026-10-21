@@ -67,13 +67,28 @@ CHAR = CB.CHAR
 # "progc" = BL-driven program leg), per candidate.
 EXISTING_PROGC = {1: "20261014-001717-86afd07", 2: "20261014-001720-86afd07", 3: "20261014-001723-86afd07"}
 
-BENCHES = ("plb_st", "plb_b1m", "plb_b1l", "plu_st")
+LEGACY_BENCHES = ("plb_st", "plb_b1m", "plb_b1l", "plu_st")
+# Candidate 3 gate/well-drive benches (#129): the PL-driven leg of `plb`, with the access device's
+# gate (WL) and n-well tie (VB) levels set per scheme instead of the #62 "on" bias. Static levels
+# [V], Candidate 3 only (PMOS access, rating 6 V); the pulse is the same signed PL level.
+GWD_DRIVE = {
+    "gwa": {"wl": -3.3, "vb": 0.0, "desc": "WL -3.3 V (the #62 on level), n-well tie lowered from +3.3 V to 0 V (the BL return level)"},
+    "gwb": {"wl": -6.0, "vb": 0.0, "desc": "WL -6.0 V (stronger gate drive), n-well tie 0 V (the BL return level)"},
+}
+GWD_VARIANTS = ("st", "b1m", "b1l")
+GWD_BENCHES = tuple(f"{s}_{v}" for s in GWD_DRIVE for v in GWD_VARIANTS)
+BENCHES = LEGACY_BENCHES + GWD_BENCHES
 BENCH_DESC = {
     "plb_st": "PL-driven through ballast, selected cell, stock cell (no breakdown element)",
     "plb_b1m": "PL-driven through ballast, selected cell, element enabled, median quantile (ubd=0.5)",
     "plb_b1l": f"PL-driven through ballast, selected cell, element enabled, low quantile (ubd={CB.UBD_LOW})",
     "plu_st": "PL pulse on an UNSELECTED stock cell (WL at OFF level, BL = 0 V, CN floating)",
 }
+_VAR_DESC = {"st": "stock cell (no breakdown element)", "b1m": "element enabled, median quantile (ubd=0.5)",
+             "b1l": f"element enabled, low quantile (ubd={CB.UBD_LOW})"}
+for _s, _d in GWD_DRIVE.items():
+    for _v in GWD_VARIANTS:
+        BENCH_DESC[f"{_s}_{_v}"] = f"gate/well drive `{_s}` ({_d['desc']}), {_VAR_DESC[_v]}"
 ACCESS_PAIRS = CB.ACCESS_PAIRS
 PAIR_LABEL = {k: f"{k}: {CB.TERMINAL_PAIRS[k][0].upper()}-{CB.TERMINAL_PAIRS[k][1].upper()}" for k in CB.TERMINAL_PAIRS}
 TRIGC_KEY = "trigc_st"   # corner-id/level convention shared with the PL-driven #74 benches
@@ -103,9 +118,15 @@ def body_pl(pdk, cand, defaults, body_dir: Path, lib_root: str, bench: str, para
     out.append(f"RBAL VPP PLM {CB.fmt(CB.prog_rballast(cand, params))}")
     out.append("VPLM PLM PL DC 0")                     # ammeter: program (return-side) current
     out.append("VBL BL 0 DC 0")                        # bit line at the 0 V return, through an ammeter
-    wl = cand.moscap_wl_on if scheme == "plb" else off_level(cand)
+    if scheme in GWD_DRIVE:
+        if cand.n != 3:
+            raise ValueError(f"bench {bench} is defined for Candidate 3 only")
+        wl, vb = GWD_DRIVE[scheme]["wl"], GWD_DRIVE[scheme]["vb"]
+    else:
+        wl = cand.moscap_wl_on if scheme == "plb" else off_level(cand)
+        vb = cand.vb
     out.append(f"VWL WL 0 DC {CB.fmt(wl)}")
-    out.append(f"VVB VB 0 DC {CB.fmt(cand.vb)}")
+    out.append(f"VVB VB 0 DC {CB.fmt(vb)}")
     # Plate-line (pad / routing) shunt capacitance. Without it the ballasted PL node is a
     # high-impedance node that stalls the `uic` start of the moscap macro (timestep collapse at
     # -40 C and at the slow corner on the fleet; found in #90). 100 fF is a PLACEHOLDER.
@@ -264,13 +285,13 @@ def level_summary(a, cand, params, res, stim: str, rating: float) -> None:
     a("")
 
 
-def common_header(a, cand, rid: str, params: dict, claim: str, note: str | None) -> None:
+def common_header(a, cand, rid: str, params: dict, claim: str, note: str | None, issue: int = 90) -> None:
     rating = CB.ACCESS_RATING_V[cand.n]
     vbd = CB.vbd_ref(cand, params)
     a(f"# Record {rid}")
     a("")
     a(f"- **Record ID**: {rid}")
-    a(f"- **Claim**: issue #90 -- Candidate {cand.n} / Region {cand.region}: {claim} Terminal-pair extremes are "
+    a(f"- **Claim**: issue #{issue} -- Candidate {cand.n} / Region {cand.region}: {claim} Terminal-pair extremes are "
       f"logged per PVT corner against the ratified {rating:g} V rating of "
       f"`{CHAR.CANDIDATES[cand.n - 1].access_model}` (`spec/cell-candidates.md`). CONDITIONAL ON THE ASSUMED "
       f"breakdown parameters: V_bd(t_ref) = bd_ebd x c{cand.n}_bd_tox = **{vbd:.2f} V** (assumed, not a gf180 "
@@ -322,18 +343,68 @@ def render_retab(pdk, cand, rid: str, params: dict, note: str | None) -> str:
     return "\n".join(L)
 
 
+def gwd_verdict(a, cand, params, results: dict, rating: float, n: int) -> None:
+    """Per stress level and gate/well scheme: how many attempted corners keep ALL six access-device
+    pairs within the rating, over the whole transient. A non-converged corner is in the denominator
+    and never counts as in rating. Levels are never merged."""
+    a(f"  - **({n}) Verdict: does any gate/well scheme keep all six pairs within {rating:g} V?** A corner is "
+      "\"in rating\" when it converged and every pair's largest |V| over the whole transient is <= the rating. "
+      "Cells are in-rating corners / attempted corners (non-converged corners stay in the denominator); "
+      "the last column names the scheme/variant benches that hold at EVERY attempted corner of that level.")
+    a("")
+    benches = [b for b in GWD_BENCHES if b in results and results[b].values]
+    a("    | Level | " + " | ".join(f"`{b}`" for b in benches) + " | all-corners-in-rating benches |")
+    a("    |" + "---|" * (len(benches) + 2))
+    anywhere = False
+    for h in ["rated"] + [f"{f:g}x" for f in CB.TRIG_FRACTIONS]:
+        cells, holds = [], []
+        for b in benches:
+            r = results[b]
+            cids = [c for c in r.values if CB.level_label(cand, params, "trigc", CB.corner_level(c)) == h]
+            ok = 0
+            for c in cids:
+                if r.outcome[c]["kind"] != "pass":
+                    continue
+                xs = [CB.abs_extreme(r.values[c], k) for k in ACCESS_PAIRS]
+                if all(x is not None and x <= rating for x in xs):
+                    ok += 1
+            cells.append(f"{ok}/{len(cids)}")
+            if cids and ok == len(cids):
+                holds.append(f"`{b}`")
+        anywhere = anywhere or bool(holds)
+        a(f"    | {h} | " + " | ".join(cells) + " | " + (", ".join(holds) if holds else "**none**") + " |")
+    a("")
+    a("    " + ("At least one scheme keeps every pair in rating at some level (rows above)." if anywhere else
+                "**Result: no gate/well scheme tried keeps all six pairs in rating at any stress level.**"))
+    a("")
+    a("    Reading note: the `_st` benches have no breakdown element, so they show only the stress of the pulse on "
+      "an intact cell; a program event is represented by the `_b1m` / `_b1l` benches (element enabled), which are "
+      "the rows to compare per level. Conditional on the assumed V_bd; #130 supersedes with sourced values.")
+    a("")
+
+
 def render_pl(pdk, cand, rid: str, params: dict, results: dict, note: str | None) -> str:
     rating = CB.ACCESS_RATING_V[cand.n]
     L: list[str] = []
     a = L.append
+    gwd = any(b in results for b in GWD_BENCHES)
     common_header(a, cand, rid, params,
-                  "PL-driven program scheme with a return-side ballast (the alternative to the BL-driven leg), "
-                  "evaluated on the batch fleet; `plu_st` shows the unselected-cell consequence.", note)
+                  ("Candidate 3 gate/well-drive program bench (PL-driven leg, WL and n-well tie varied per scheme), "
+                   "evaluated on the batch fleet; the verdict table states per stress level whether any scheme keeps "
+                   "all six pairs in rating." if gwd else
+                   "PL-driven program scheme with a return-side ballast (the alternative to the BL-driven leg), "
+                   "evaluated on the batch fleet; `plu_st` shows the unselected-cell consequence."),
+                  note, issue=129 if gwd else 90)
     a(f"- **Scheme (PL-driven, `plb`)**: VPP pulse (signed level, same magnitudes as the BL-driven bench) -> "
       f"ballast {CB.prog_rballast(cand, params)/1e3:.4g} kOhm (same PLACEHOLDER as the BL-driven bench: V_bd / "
       f"500 uA; ideal resistor) -> PL; BL = 0 V through an ammeter; WL static at {cand.moscap_wl_on:g} V (the #62 "
       f"\"on\" bias); VB static at {cand.vb:g} V. The access device therefore carries only the program current times "
       "its on-resistance, not VPP.")
+    drv = [(k, v) for k, v in GWD_DRIVE.items() if any(b.startswith(k + "_") for b in results)]
+    for k, v in drv:
+        a(f"- **Gate/well drive (`{k}`, Candidate 3 only)**: same PL pulse, ballast and BL = 0 V as `plb`, with static "
+          f"WL = {v['wl']:g} V and n-well VB = {v['vb']:g} V instead of the #62 \"on\" bias "
+          f"({cand.moscap_wl_on:g} V / {cand.vb:g} V). {v['desc']}.")
     a(f"- **Unselected-cell scheme (`plu`)**: the same PL pulse, stock cell, WL at its OFF level "
       f"({off_level(cand):g} V), BL = 0 V; CN is floating (no DC path but gmin), so it is set by capacitive "
       "coupling from PL.")
@@ -363,7 +434,7 @@ def render_pl(pdk, cand, rid: str, params: dict, results: dict, note: str | None
             a(f"    | | ERROR: {r.error[:300]!r} | | | | | | | |")
     a("")
     n = 2
-    for b in ("plb_b1m", "plb_b1l", "plb_st", "plu_st"):
+    for b in ("plb_b1m", "plb_b1l", "plb_st", "plu_st") + GWD_BENCHES:
         r = results.get(b)
         if r is None or not r.values:
             continue
@@ -376,6 +447,8 @@ def render_pl(pdk, cand, rid: str, params: dict, results: dict, note: str | None
         a("")
         per_corner_table(a, cand, params, r, "trigc", rating, "ipl")
         n += 1
+    if any(b in results for b in GWD_BENCHES):
+        gwd_verdict(a, cand, params, results, rating, n)
     a("- **Links**:")
     a(f"  - Requests, bodies, klt reports, per-corner decks and logs: `sim/program-bias-scheme/corners/{rid}/<bench>/`")
     a(f"  - Netlist snapshot: `sim/program-bias-scheme/netlist-snapshots/{rid}.spice`")
@@ -422,9 +495,14 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--pdk-root", default=None)
     ap.add_argument("--candidates", default="1,2,3")
-    ap.add_argument("--benches", default=",".join(BENCHES))
+    ap.add_argument("--benches", default=",".join(LEGACY_BENCHES),
+                    help="comma list; the Candidate 3 gate/well benches (" + ",".join(GWD_BENCHES) +
+                         ") are opt-in: --candidates 3 --benches " + ",".join(GWD_BENCHES))
     ap.add_argument("--retabulate", action="store_true", help="re-tabulate existing BL-driven evidence (no sim)")
     ap.add_argument("--smoke", default=None, metavar="N:BENCH[:LEVEL_INDEX]", help="ONE local corner (debug probe, no record)")
+    ap.add_argument("--resume", default=None, metavar="RECORD_ID",
+                    help="finish an interrupted batch run of ONE candidate: benches with a saved report.json are "
+                         "reloaded, the rest are submitted into the same corners/RECORD_ID/ (no new record id)")
     ap.add_argument("--render", default=None, metavar="RECORD_ID",
                     help="(re)write records/RECORD_ID.md from saved reports of ONE candidate; no simulation")
     ap.add_argument("--note", default=None)
@@ -468,18 +546,26 @@ def main(argv: list[str] | None = None) -> int:
     if unknown:
         print(f"ERROR: unknown bench(es) {unknown}", file=sys.stderr)
         return 2
+    if any(b in GWD_BENCHES for b in benches) and wanted != [3]:
+        print("ERROR: the gate/well-drive benches are defined for Candidate 3 only (--candidates 3)", file=sys.stderr)
+        return 2
     dirty = R.git_is_dirty(REPO_ROOT)
     rc = 0
     for n in wanted:
         cand = by_n[n]
         defaults = CHAR.parse_defaults(REPO_ROOT / "design" / "netlists" / cand.netlist)
-        rid = R.allocate_record_id(THIS_DIR, REPO_ROOT)
-        print(f"== Candidate {n} (Region {cand.region}) record {rid}")
-        R.write_once(THIS_DIR / "corners" / rid / "run-provenance.json",
-                     json.dumps({"git_sha": R.git_short_sha(REPO_ROOT), "dirty": dirty}) + "\n")
-        results = {}
+        rid = args.resume or R.allocate_record_id(THIS_DIR, REPO_ROOT)
+        print(f"== Candidate {n} (Region {cand.region}) record {rid}" + (" (resumed)" if args.resume else ""))
+        if not args.resume:
+            R.write_once(THIS_DIR / "corners" / rid / "run-provenance.json",
+                         json.dumps({"git_sha": R.git_short_sha(REPO_ROOT), "dirty": dirty}) + "\n")
+        results = load_saved(cand, rid, params) if args.resume else {}
         for bench in benches:
+            if bench in results:
+                continue
             bdir = THIS_DIR / "corners" / rid / bench
+            if args.resume and bdir.exists():
+                shutil.rmtree(bdir)   # interrupted submit: no report.json, nothing to preserve but the request
             bdir.mkdir(parents=True, exist_ok=False)
             body, ms = body_pl(pdk, cand, defaults, bdir, CB.FLEET_PDK_VARIANT_DIR, bench, params)
             R.write_once(bdir / "body.spice", body)

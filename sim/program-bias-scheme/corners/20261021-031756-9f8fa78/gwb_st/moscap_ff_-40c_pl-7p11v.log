@@ -1,0 +1,38 @@
+
+Note: No compatibility mode selected!
+
+
+Circuit: * klt sim -- generated corner deck, do not edit
+
+Doing analysis at TEMP = -40.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+Operating point simulation skipped by 'uic',
+  now using transient initial conditions.
+
+No. of Data Rows : 2053
+
+  Measurements for Transient Analysis
+
+mx_ox               =  7.11916e+00 at=  1.09469e-06
+mn_ox               =  -1.80388e-01 at=  1.00000e-10
+mx_wc               =  -5.81955e+00 at=  1.00000e-10
+mn_wc               =  -6.00007e+00 at=  1.11547e-05
+mx_wb               =  -6.00000e+00 at=  2.00000e-05
+mn_wb               =  -6.00000e+00 at=  2.00000e-05
+mx_bc               =  1.80449e-01 at=  1.00000e-10
+mn_bc               =  -7.34629e-05 at=  1.11547e-05
+mx_cj               =  7.34629e-05 at=  1.11547e-05
+mn_cj               =  -1.80449e-01 at=  1.00000e-10
+mx_bj               =  0.00000e+00 at=  2.00000e-05
+mn_bj               =  0.00000e+00 at=  2.00000e-05
+mx_gb               =  -6.00000e+00 at=  2.00000e-05
+mn_gb               =  -6.00000e+00 at=  2.00000e-05
+vox_mid             =  7.11000e+00
+vcn_mid             =  1.23536e-11
+vcn_end             =  3.50304e-12
+ipl_mid             =  -2.96466e-19
+ipl_mx              =  1.42981e-05 at=  1.11547e-05
+ipl_mn              =  -1.42981e-05 at=  1.05469e-06
+
+ngspice-46 done
