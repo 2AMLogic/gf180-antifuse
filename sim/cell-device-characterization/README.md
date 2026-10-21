@@ -322,19 +322,14 @@ Reproduction against the legacy records, stated tolerance **1 % relative**
 (The sub-0.1 % residual is the legacy logs' 7-significant-figure print; both
 sides are the same ngspice 46 bench.)
 
-**Candidate 2 failed on the fleet; no local fallback was run.** Every
-Candidate 2 request came back as `batch_job_failed` ("finished 'failed' without
-a usable report: job command exited 1") for every unit. Isolation probes (each a
-tiny batch or single-corner local request): the same Candidate 2 request passes
-as a single unit on the fleet, passes multi-unit on `local-parallel`, and
-returns an ordinary per-corner netlist error when the per-section model library
-(`smbb000149`, `{"lib", "section"}` form) is removed; a hard-coded `.lib` of
-that library in the body did not resolve on the fleet. The per-section-library
-form with more than one unit is therefore the failing feature on the current
-fleet runner (same class as the runner-skew reports already open on the
-klayout-tools tracker; a generic comment was added). Per the host rule the
-Candidate 2 grid was not run locally. Its legacy record remains the only
-Region II evidence.
+**Candidate 2 failed on the fleet in this run; no local fallback was run.**
+Every Candidate 2 request came back as `batch_job_failed` ("finished 'failed'
+without a usable report: job command exited 1") for every unit. Isolation
+probes at the time (each a tiny batch or single-corner local request): the same
+request passed as a single unit on the fleet, passed multi-unit on
+`local-parallel`, and returned an ordinary per-corner netlist error when the
+per-section model library (`smbb000149`) was removed. Candidate 2 is closed
+out by the follow-up runs below.
 
 Separately, the first submission attempt hit the fleet's shared concurrency
 cap for several Candidate 1 / Candidate 3 requests (verbatim in
@@ -342,3 +337,45 @@ cap for several Candidate 1 / Candidate 3 requests (verbatim in
 + 1 requested exceeds BATCH_MAX_CONCURRENT_INSTANCES=8"); those requests were
 re-submitted to the batch backend one at a time with `--resume` and all
 passed.
+
+### Follow-up runs: Candidate 2 (2026-10-13)
+
+The installed client is `klt 0.7.1.dev256`; the fleet runner image runs
+`klt 0.7.0` and **refuses a newer client**. Run `20261013-165427-b0bb935`
+(client 0.7.1.dev256, backend `batch`, all 8 Candidate 2 requests) therefore
+failed on every unit with, verbatim: `batch job ... finished 'failed' (job
+command exited 87): the job's klt reported: the fleet runner runs klt 0.7.0 but
+the submitting client is 0.7.1.dev256+gaf7a43de415a -- the request was not run
+(update the runner image or use a compatible client)`. That run and its record
+(`records/20261013-165427-b0bb935-c2.md`, all sub-configurations "NOT RESOLVED")
+are kept as append-only evidence. The same warning also reported that the
+requests exceed the fleet's 3600 s whole-job ceiling on the conservative serial
+bound (135 and 45 units x 300 s); the jobs nevertheless completed (see below),
+so it is advisory, but `request.remote.hosts` sharding is the stated remedy if
+a run ever times out.
+
+Run `20261013-170230-b0bb935` re-submitted the identical checked-in Candidate 2
+requests to the batch backend with a version-matched client
+(`KLT_CMD='uvx --from klayout-tools==0.7.0 klt' python3 klt/run_klt_campaign.py --candidates 2 --parallel 1`;
+`KLT_CMD` is a launcher override added to the script, default `klt`). All 8
+requests passed: ioff 135/135 and ron 45/45 corners per sub-configuration,
+no errored or missing corner. Record:
+`records/20261013-170230-b0bb935-c2.md` (job ids in the record and in each
+report's `environment.remote`). This also means the earlier "per-section
+library fails multi-unit on the fleet" diagnosis was not reproduced with a
+matching client; the cause of the earlier exit-1 failures was not re-isolated
+and should not be assumed to be version skew.
+
+| Region / candidate | `I_sneak_max` klt vs legacy | `R_on` klt vs legacy | max deviation, grid I_off / R_on | within 1 % |
+|---|---|---|---|---|
+| II / 2 | 7.2887e-09 A vs 7.2887e-09 A | 6.5490e+01 ohm vs 65.49 ohm | 7.0e-05 / 4.1e-07 | yes (180 grid values) |
+
+With this, the access-device bench reproduces the legacy `I_sneak_max`
+(31 x I_off at `ff_125c_bl1p10v`) and `R_on` (`ss_-40c_bl0p90v`) for all three
+candidates within 1 % relative (Candidates 1/3 from run `20261009-014137-8d6e70b`,
+Candidate 2 from `20261013-170230-b0bb935`). These are the named fast/hot and
+slow/cold corners, maximised within each region only; not a global maximum and
+not an average across regions or sub-configurations. No absolute floor was
+needed: every legacy value is far above zero (gmin-floor-limited I_off,
+>= 1e-13 A scale, compared relatively). The capacitor C-V bench remains
+unmigrated.
