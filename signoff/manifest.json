@@ -5,6 +5,10 @@
     "3.analog": {
       "file": "layout/cell_candidate1/drc_report.json",
       "content_hash": "sha256:796faa12f1c28f5c3ce7aebbee173bb9052abc2e0f31333c28dedbf142a1c6c6"
+    },
+    "11.analog": {
+      "file": "layout/cell_candidate1/erc_report.json",
+      "content_hash": "sha256:796faa12f1c28f5c3ce7aebbee173bb9052abc2e0f31333c28dedbf142a1c6c6"
     }
   },
   "supporting_evidence": [
