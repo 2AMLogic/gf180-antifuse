@@ -32,8 +32,6 @@ _None._
 Issues currently being built (`loom:building`).
 
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4)
-- **#120**: T1 item 11 (analog): run klt erc on first bitcell and cite as 11.analog
-- **#140**: T1 item 4 (analog): klt lvs on candidate 1 now runs but reports mismatch; resolve and cite 4.analog
 
 ## PRs Awaiting Review
 
@@ -45,8 +43,7 @@ _None._
 
 PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
-- **#141**: feat: cite klt erc envelope as 11.analog and record the missing LVS half
-- **#142**: fix(layout): add MOS-cap marker so candidate-1 LVS matches; cite 4.analog
+_None._
 
 ## Proposed
 
@@ -55,8 +52,6 @@ Issues carrying `loom:curated`.
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4) *(curated)*
 - **#99**: Re-qualify reference sim records under open_pdks f6eeac7 as new records *(curated)*
 - **#117**: T1 items 1 and 9 (analog partition): attest the cell sources and testbenches with klt signoff --attest *(curated)*
-- **#120**: T1 item 11 (analog): run klt erc on first bitcell and cite as 11.analog *(curated)*
-- **#140**: T1 item 4 (analog): klt lvs on candidate 1 now runs but reports mismatch; resolve and cite 4.analog *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -74,10 +69,10 @@ Issues carrying `loom:curated`.
 | Very important | 0 |
 | Important | 3 |
 | Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 3 |
+| In Progress (`loom:building`) | 1 |
 | PRs awaiting review | 0 |
-| Approved PRs awaiting merge | 2 |
-| Curated | 5 |
+| Approved PRs awaiting merge | 0 |
+| Curated | 3 |
 | Architect / Hermit proposals | 1 |
 | Active epics | 1 |
 <!-- guide:plan-body:end -->
