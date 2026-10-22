@@ -39,7 +39,7 @@ doc) or on any drift from the committed report.
 
 ## Current verdict
 
-`tier: null` — **1 of 22 T1 items met** (analog partition), graded against
+`tier: null` — **2 of 22 T1 items met** (analog partition), graded against
 `design-evidence-tiers.md` at
 `sha256:4c67ffc59128482d00f7d87cf446b6a96b9ab0c41ae5234098244e3052033335`
 (the copy bundled in klayout-tools `0.7.0`, which is the
@@ -51,8 +51,8 @@ changes either, this paragraph moves with it.
 | Item | State | What it rests on |
 |---|---|---|
 | 2.analog Layout | unmet, `no_evidence` | Deliberately uncited per the operator ruling of 2026-10-13: the committed `layout/cell_candidate1/cell_candidate1.gds` (reproducible via `python3 layout/cell_candidate1/generate.py --check`) covers one bitcell of one candidate, and layout evidence for item 2 must cover the array. The GDS and its `--check` reproducibility remain committed; the row re-cites when array-level layout exists. |
-| 3.analog DRC clean | met | `layout/cell_candidate1/drc_report.json`, `status: clean`, pinned to the GDS sha256. Accepted as evidence for this row only (operator ruling 2026-10-13). Coverage disclosure below. |
-| 4.analog LVS clean | unmet, `no_evidence` | No report exists: `klt lvs` cannot compare a MOS capacitor (upstream 2AMLogic/klayout-tools#2919, #2953). See `layout/README.md`. |
+| 3.analog DRC clean | met | `layout/cell_candidate1/drc_report.json`, `status: clean`, pinned to the GDS sha256 (regenerated with `0.7.0` after the MOS-capacitor marker was added to the GDS). Accepted as evidence for this row only (operator ruling 2026-10-13). Coverage disclosure below. |
+| 4.analog LVS clean | met | `layout/cell_candidate1/lvs_report.json`, `status: match`, pinned to the GDS sha256. The MOS capacitor is unsubstituted (no `device_map`, no waiver). Read the report's warnings before relying on it: capacitor `A`/`P` and `C` are not compared (`layout/README.md`, "LVS"). That report was produced by the host dev `klt 0.7.1.dev2422+g3676721c4e71`, because no released klt can run it; the grading itself is `0.7.0`. |
 
 Every other row remains `unmet`, reason `no_evidence`. The layout evidence
 above covers **one bitcell of candidate 1**, not the array, the multiplexers,
