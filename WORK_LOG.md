@@ -5,6 +5,10 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-10-22
 
+- **PR #142**: fix(layout): add MOS-cap marker so candidate-1 LVS matches; cite 4.analog
+- **Issue #140** (closed): T1 item 4 (analog): klt lvs on candidate 1 now runs but reports mismatch; resolve and cite 4.analog
+- **PR #141**: feat: cite klt erc envelope as 11.analog and record the missing LVS half
+- **Issue #120** (closed): T1 item 11 (analog): run klt erc on first bitcell and cite as 11.analog
 - **PR #138**: docs: add klt erc supply spec and gap table for item 11
 - **Issue #119** (closed): T1 item 11 (analog): klt erc supply spec from the supply-domain decision record, then cite ERC with item 4's LVS
 
