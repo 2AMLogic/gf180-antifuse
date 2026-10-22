@@ -55,7 +55,7 @@ Issues carrying `loom:curated`.
 
 ## Proposed (Architect / Hermit)
 
-- **#135**: Remove docs/auditor-worker-handoff.md: stale, unreferenced record for closed #84 *(hermit)*
+_None._
 
 ## Epics
 
@@ -73,7 +73,7 @@ Issues carrying `loom:curated`.
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 0 |
 | Curated | 3 |
-| Architect / Hermit proposals | 1 |
+| Architect / Hermit proposals | 0 |
 | Active epics | 1 |
 <!-- guide:plan-body:end -->
 
