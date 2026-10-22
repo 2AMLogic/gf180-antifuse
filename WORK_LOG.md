@@ -3,6 +3,11 @@
 Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 
+### 2026-10-22
+
+- **PR #138**: docs: add klt erc supply spec and gap table for item 11
+- **Issue #119** (closed): T1 item 11 (analog): klt erc supply spec from the supply-domain decision record, then cite ERC with item 4's LVS
+
 ### 2026-10-21
 
 - **PR #133**: sim: add Candidate 3 gate/well-drive program-bias benches and record
