@@ -53,8 +53,9 @@ changes either, this paragraph moves with it.
 | 2.analog Layout | unmet, `no_evidence` | Deliberately uncited per the operator ruling of 2026-10-13: the committed `layout/cell_candidate1/cell_candidate1.gds` (reproducible via `python3 layout/cell_candidate1/generate.py --check`) covers one bitcell of one candidate, and layout evidence for item 2 must cover the array. The GDS and its `--check` reproducibility remain committed; the row re-cites when array-level layout exists. |
 | 3.analog DRC clean | met | `layout/cell_candidate1/drc_report.json`, `status: clean`, pinned to the GDS sha256. Accepted as evidence for this row only (operator ruling 2026-10-13). Coverage disclosure below. |
 | 4.analog LVS clean | unmet, `no_evidence` | No report exists: `klt lvs` cannot compare a MOS capacitor (upstream 2AMLogic/klayout-tools#2919, #2953). See `layout/README.md`. |
+| 11.analog Power delivery (structural) | unmet, `wrong_kind` | Only the `klt erc` half is cited (`layout/cell_candidate1/erc_report.json`, pinned to the GDS sha256); the LVS half is missing, so the compound item has no `lvs` part to grade. See "Item 11" below. |
 
-Every other row remains `unmet`, reason `no_evidence`. The layout evidence
+Every other row except 11.analog remains `unmet`, reason `no_evidence`. The layout evidence
 above covers **one bitcell of candidate 1**, not the array, the multiplexers,
 the pass gates or any program or sense path. The `klt sim` reports added by
 issue #63 sit under the ungraded `supporting_evidence` key (next section) and
@@ -202,10 +203,36 @@ Item 11 ("Power delivery (structural)") is a structural supply and tie check:
 `klt erc` connectivity and `erc.missing_tie` on the declared supply nets,
 paired with item 4's LVS `net_correspondence`. It is **not** an IR-drop or
 electromigration claim. The supply spec `layout/erc/supplies.json` (see
-`layout/erc/README.md`) is an input only and grades nothing: `11.analog` stays
-`unmet` until the layout-dependent run lands (issue #120). The spec also
-covers only the rows of `spec/supply-domains-decision.md` that are settled;
-the rest are listed as gaps there.
+`layout/erc/README.md`) is the ERC input. Issue #120 ran it on the first drawn
+bitcell (`klt erc layout/cell_candidate1/cell_candidate1.gds
+layout/erc/supplies.json --top cell_candidate1 --findings-only`, klayout-tools
+`0.7.0`; run from `layout/cell_candidate1/` so the recorded paths resolve
+against the report's directory; re-check with `cd layout/cell_candidate1 && klt erc --check erc_report.json`) and cites the envelope
+`layout/cell_candidate1/erc_report.json` as `11.analog`.
+
+**`11.analog` is `unmet` (`wrong_kind`) because the LVS half is missing.**
+Item 11 is a compound citation (a `klt erc` run plus the LVS report item 4
+grades). No clean LVS report exists (item 4 is `unmet`, `no_evidence`; a
+current `klt lvs` run reports a mismatch with only `BL` and `WL` paired, tracked
+in issue #140), and no `device_map` or waiver was used to force one. The ERC
+half, taken alone:
+
+- `erc_status: clean_partial`, zero findings, `gate_count: 2` (both
+  `erc.floating_gate` checks passed).
+- The one declared supply net, `VB` (`ties[0]`, n-well tie, Region III), was
+  **not checked**: `erc_coverage.skipped` carries
+  `erc.missing_tie:["vb_nwell_region_iii"]` with reason `empty_well_region`
+  (the cell draws no Nwell). A clean ERC therefore says nothing about `VB`.
+- `VB` is absent from the LVS `net_correspondence` (no cited LVS report; the
+  uncited mismatch run paired only `BL` and `WL`).
+- No `nets[]` supply nets are declared, so `erc.supply_short` and
+  `erc.unconnected_net` were not computed; the rows listed as gaps in
+  `layout/erc/README.md` remain gaps.
+- Run with `--findings-only` (no gf180mcu antenna table exists in `klt erc
+  --pdk`), so the antenna verdict is `not_checked`.
+
+The item flips only when a clean LVS report is cited alongside this envelope
+and `VB` is checked (an Nwell region exists to tie).
 
 ## Disclosures the grader reports but does not enforce
 
