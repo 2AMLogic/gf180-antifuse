@@ -2,9 +2,9 @@
 
 `supplies.json` is the `klt erc` spec derived from the supply-domain inventory
 `spec/supply-domains-decision.md` (rows 1 to 17). It is an **input** only: no
-ERC has been run on a layout and no evidence envelope exists. Item 11 stays
-`unmet` until the layout-dependent half (issue #120) runs `klt erc` and cites
-the result with item 4's LVS report.
+ERC envelope is cited from this directory; the run on the first bitcell is
+`layout/cell_candidate1/erc_report.json` (issue #120). Item 11 stays `unmet`
+until item 4's LVS report is clean and cited with it (see `signoff/README.md`).
 
 Nothing here resolves an open item (OI-n) of the decision record. A row that
 depends on an unresolved OI is a gap below, not a guessed net.
