@@ -196,6 +196,17 @@ digital partition and SPI slave are not, so the boundary above is still a
 statement about the ratified architecture rather than a fully committed
 netlist.
 
+### Item 11: what it does and does not prove here
+
+Item 11 ("Power delivery (structural)") is a structural supply and tie check:
+`klt erc` connectivity and `erc.missing_tie` on the declared supply nets,
+paired with item 4's LVS `net_correspondence`. It is **not** an IR-drop or
+electromigration claim. The supply spec `layout/erc/supplies.json` (see
+`layout/erc/README.md`) is an input only and grades nothing: `11.analog` stays
+`unmet` until the layout-dependent run lands (issue #120). The spec also
+covers only the rows of `spec/supply-domains-decision.md` that are settled;
+the rest are listed as gaps there.
+
 ## Disclosures the grader reports but does not enforce
 
 Two T1 items require the claimant to disclose coverage alongside the verdict,
