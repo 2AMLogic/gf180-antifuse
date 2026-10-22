@@ -5,6 +5,8 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-10-22
 
+- **PR #146**: docs: remove stale #84 auditor-worker handoff record
+- **Issue #135** (closed): Remove docs/auditor-worker-handoff.md: stale, unreferenced record for closed #84
 - **PR #142**: fix(layout): add MOS-cap marker so candidate-1 LVS matches; cite 4.analog
 - **Issue #140** (closed): T1 item 4 (analog): klt lvs on candidate 1 now runs but reports mismatch; resolve and cite 4.analog
 - **PR #141**: feat: cite klt erc envelope as 11.analog and record the missing LVS half
