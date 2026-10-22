@@ -17,11 +17,15 @@ no claim about breakdown behaviour.
 | `generate.py` | Deterministic generator (`klt gen mos_array` x2, `klt draw` for two Metal1 straps, `klt gen-compose` explicit placement). `--check` regenerates and compares the committed GDS byte-for-byte. |
 | `cell_candidate1.gds` | Generated layout, top cell `cell_candidate1`, pins/labels `BL`, `WL`, `PL`, `VB`. |
 | `drc_report.json` | `klt drc --deck gf180mcu --top cell_candidate1` report (status `clean`, 0 violations). |
-| `lvs_request.json`, `lvs_reference.spice` | The LVS request and its reference netlist. **No `lvs_report.json` exists**: see "LVS: stopped at a tool gap". |
+| `lvs_request.json`, `lvs_reference.spice` | The LVS request and its reference netlist. |
+| `lvs_report.json` | `klt lvs lvs_request.json` report (status `match`, 0 errors); see "LVS". |
 
-Toolchain: every artifact here was produced by `klt 0.7.0+g4cbdfa769875`
-(klayout 0.30.12, PDK `gf180mcuA`, open_pdks `c6d73a35f524070e85faff4a6a9eef49553ebc2b`),
-the host-installed build; no tool was installed or changed. Regenerate with
+Toolchain: `cell_candidate1.gds` and `drc_report.json` were produced with the
+released `klt 0.7.0` (`uvx --from klayout-tools==0.7.0`), klayout 0.30.12, PDK
+`gf180mcuA`. `lvs_report.json` was produced by the host's `klt
+0.7.1.dev2422+g3676721c4e71`: `0.7.0` has no MOS-capacitor device class and
+cannot run this LVS, and no released version newer than `0.7.0` exists yet. No
+tool was installed or changed. Regenerate with
 `python3 layout/cell_candidate1/generate.py` and verify with `--check`.
 
 ### Geometry point
@@ -48,9 +52,12 @@ schematic defaults.
 
 - The capacitor is a thin-oxide NMOS gate over COMP with source and drain
   strapped together on net CN (a MOS capacitor). It is drawn as a plain
-  transistor from `mos_array`: **it carries no PDK MOS-capacitor marker
-  layer**, because `klt gen` has no MOS-capacitor primitive (upstream
-  2AMLogic/klayout-tools#2953).
+  transistor from `mos_array`, and `generate.py` adds the PDK MOS-capacitor
+  marker (`MOS_CAP_MK`, 166/5) as a hand-placed rectangle over its COMP island,
+  because `klt gen` has no MOS-capacitor primitive (upstream
+  2AMLogic/klayout-tools#2953). Without that marker the extraction deck reads
+  the gate as an `nfet` (see "LVS"). The marker is not drawn over the access
+  device.
 - Each device sits inside its own P+ tap ring (Metal1 over contacts), so
   neither body floats. The two rings are strapped on the north side (`VB`).
   Both devices are NMOS in the p-substrate; no well is needed or drawn.
@@ -63,7 +70,7 @@ schematic defaults.
 `klt drc --deck gf180mcu --top cell_candidate1`: `status: clean`, 0 violations,
 deck `gf180mcu` content hash
 `sha256:9babf6fd5d623fea50d380168ebf8f7c0f0f6e70eb7d89b221476dc47c7f6a85`,
-input GDS `sha256:796faa12f1c28f5c3ce7aebbee173bb9052abc2e0f31333c28dedbf142a1c6c6`
+input GDS `sha256:4fa502d0b9775f4dd8ba42fd2292c0a70edf83e3c528f52550a2ba4d1d9f44de`
 (the report's `provenance.input.content_hash`). A first placement at 3.9 um
 pitch drew a Pplus spacing violation between the two tap rings; the committed
 cell uses a 4.2 um pitch. The rule was not waived.
@@ -72,7 +79,8 @@ Coverage block quoted from `drc_report.json` (`coverage.deck_scope`,
 `coverage.layers_in_stream_without_rules`, `coverage.rules_skipped`). The 34
 skipped rules are all reported as `no_applicable_geometry` in
 `coverage.inapplicable` (no such layers are drawn), which includes
-`pplus.enclosing.comp.1`; layer 34/10 is the Metal1 label purpose.
+`pplus.enclosing.comp.1`; layer 34/10 is the Metal1 label purpose and 166/5 is the MOS-capacitor
+marker (the deck has no rule on it, so DRC does not check its placement).
 
 ```json
 {
@@ -91,7 +99,8 @@ skipped rules are all reported as `no_applicable_geometry` in
     "9.1 Bond Pad"
   ],
   "layers_in_stream_without_rules": [
-    "34/10"
+    "34/10",
+    "166/5"
   ],
   "rules_skipped": [
     "bjt.separation.comp.1",
@@ -148,28 +157,38 @@ skipped rules are all reported as `no_applicable_geometry` in
 - Layout-versus-programming-voltage suitability (thin-oxide device in a
   program path) is a design-intent matter this deck cannot judge.
 
-### LVS: stopped at a tool gap
+### LVS
 
 `lvs_request.json` runs `klt lvs` with the gf180mcu extraction deck against
-`lvs_reference.spice`, which is the schematic's netlist
-(`design/netlists/cell_candidate1.spice`, unchanged) with its subcircuit
-parameters resolved to the drawn literals. `klt lvs` exits 1 and writes no
-report:
+`lvs_reference.spice` (the schematic's netlist,
+`design/netlists/cell_candidate1.spice`, unchanged, with its subcircuit
+parameters resolved to the drawn literals). The reference keeps
+`cap_nmos_03v3` for the capacitor; no `device_map` and no waiver is used.
 
-    subcircuit 'cap_nmos_03v3' is not a known device for the requested deck
-    (known: cap_mim_2f0_m4m5_noshield, nfet_03v3, nfet_06v0, pfet_03v3, pfet_06v0, ppolyf_u, ...)
+`lvs_report.json`: `status: match`, `error_count: 0`, layout sha256 pinned to
+the committed GDS; `klt lvs --check lvs_report.json` exits 0. Nets paired:
+`BL`, `WL`, `PL`, `VB` and the internal strap `CN`.
 
-Two upstream gaps stop it. The gf180mcu extraction deck has no MOS-capacitor
-device class (already filed: 2AMLogic/klayout-tools#2919). Running the
-original netlist directly fails earlier, because the `subckt-call` reference
-form rejects parametrised values (`parameter 'L' value 'lacc' is not a plain
-numeric literal`); that and the missing generator primitive are in
-2AMLogic/klayout-tools#2953. Per the issue's stop-and-file path, no waiver or
-`device_map` workaround was applied: mapping the capacitor onto a MOSFET with
-tied source and drain would make the compare pass by substituting the device
-under test.
+**Why it first reported a mismatch (a layout error).** klt `0.7.1.dev2422`
+extracted the capacitor as an `nfet` and so reported `device.unmatched` for
+`nfet` (layout) and `CAP_NMOS_03V3` (reference), plus the dependent `topology`
+errors and unpaired `PL`/`VB`. The deck recognises a MOS capacitor only as a
+COMP island under `MOS_CAP_MK` (166/5); the committed cell had no such marker.
+The reference netlist and the request were right. The fix is the marker in
+`generate.py`, with the GDS regenerated. The cap's drawn size, the connectivity
+and DRC (`clean`) did not change.
 
-For information only (this is not LVS evidence): `klt extract` reads the
-drawn cell as two NMOS devices, `nfet_03v3` (L=0.28 W=0.42, gate `PL`, S and D
-both on one net, body `VB`) and `nfet_06v0` (L=0.7 W=0.42, gate `WL`, drain
-`BL`, source on that same net, body `VB`), which is the intended topology.
+**What the match does not establish.** The report carries three warnings that
+bound it:
+
+- `device.geometry_not_compared`: the capacitor's `A` and `P` are secondary
+  parameters, so the capacitor's geometry is not verified by this compare.
+- `device.placeholder_value`: the `subckt-call` reference form gives the
+  capacitor a placeholder `C` of 0, so its capacitance is not a real
+  comparison either. Capacitor identity, terminal connectivity and the
+  `nfet_06v0` access device's parameters are what was compared.
+- the `pfet`/`bjt` topology warnings are classes with no devices on either
+  side.
+
+The capacitor's drawn size (W 0.42 um, L 0.28 um) therefore rests on
+`generate.py` and the extraction (`klt extract`), not on this LVS.

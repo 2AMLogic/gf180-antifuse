@@ -43,6 +43,7 @@ L_ACC = 0.70       # um, 6 V device minimum drawn length (schematic lacc)
 DX = 4.2           # um, access-block x offset (keeps Pplus spacing >= 0.4)
 GAP = {"ring_gap_um": 1.0, "ring_gap_offset_um": -0.7}
 METAL1 = [34, 0]
+MOS_CAP_MK = [166, 5]
 # Ports are located in each block's local frame (reported by klt gen); the
 # straps below are in the composed frame: cap block at (0,0), access at (DX,0).
 STRAPS = {"shapes": [
@@ -50,6 +51,10 @@ STRAPS = {"shapes": [
     {"layer": METAL1, "rect_um": [0.06, 0.06, DX + 0.36, 0.36]},
     # VB: tie both tap rings together along the north side
     {"layer": METAL1, "rect_um": [0.64, 2.49, DX + 0.85, 2.91]},
+    # MOS-capacitor marker (MOS_CAP_MK) over the cap block's COMP island
+    # (0,0)-(1.28,0.42); this is what makes the deck read the thin-oxide gate
+    # as cap_nmos_03v3 instead of an nfet. Not drawn over the access device.
+    {"layer": MOS_CAP_MK, "rect_um": [-0.1, -0.1, 1.38, 0.52]},
 ]}
 
 
