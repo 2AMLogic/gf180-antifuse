@@ -3,6 +3,12 @@
 Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 
+### 2026-10-23
+
+- **PR #152**: feat: store new sim evidence via klt artifact, commit only manifests
+- **PR #155**: rtl: add one-hot row/column decoder, digital top and synth report
+- **Issue #150** (closed): rtl: global row/column one-hot decoders per architecture §1.1, with exhaustive bench and klt synthesize report (T1 item 1, digital partition)
+
 ### 2026-10-22
 
 - **PR #146**: docs: remove stale #84 auditor-worker handoff record
