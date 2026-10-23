@@ -70,6 +70,7 @@ CHAR_DIR = SIM_DIR / "cell-device-characterization"
 
 sys.path.insert(0, str(SIM_DIR))
 from harness import corners as C  # noqa: E402
+from harness import evidence_store as ES  # noqa: E402
 from harness import klt as K  # noqa: E402
 from harness import numfmt as NF  # noqa: E402
 from harness import pdk as P  # noqa: E402
@@ -2078,6 +2079,7 @@ def main(argv: list[str] | None = None) -> int:
         R.write_once(THIS_DIR / "records" / f"{rid}.md",
                      render_any(pdk, cand, rid, results, params, dirty, args.note))
         print(f"   record: records/{rid}.md")
+        rc |= ES.publish_for_runner("cell-breakdown-model", rid, THIS_DIR / "corners" / rid, REPO_ROOT)
     return rc
 
 

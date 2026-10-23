@@ -47,6 +47,7 @@ REPO_ROOT = SIM_DIR.parent
 CB_DIR = SIM_DIR / "cell-breakdown-model"
 
 sys.path.insert(0, str(SIM_DIR))
+from harness import evidence_store as ES  # noqa: E402
 from harness import pdk as P  # noqa: E402
 from harness import report as R  # noqa: E402
 
@@ -587,6 +588,7 @@ def main(argv: list[str] | None = None) -> int:
         R.write_once(THIS_DIR / "netlist-snapshots" / f"{rid}.spice", CB.snapshot(cand))
         R.write_once(THIS_DIR / "records" / f"{rid}.md", render_pl(pdk, cand, rid, params, results, args.note))
         print(f"   record: records/{rid}.md")
+        rc |= ES.publish_for_runner("program-bias-scheme", rid, THIS_DIR / "corners" / rid, REPO_ROOT)
         time.sleep(1.1)
     return rc
 

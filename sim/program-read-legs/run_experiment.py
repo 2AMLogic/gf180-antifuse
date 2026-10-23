@@ -39,6 +39,7 @@ sys.path.insert(0, str(SIM_DIR))
 sys.path.insert(0, str(THIS_DIR))
 
 import benches as B  # noqa: E402
+from harness import evidence_store as ES  # noqa: E402
 from harness import klt as K  # noqa: E402
 from harness import numfmt as NF  # noqa: E402
 from harness import pdk as P  # noqa: E402
@@ -584,7 +585,9 @@ def run_mc(args, pdk, preamble: Path) -> int:
     rec = render_mc_record(record_id, pdk, dirty, args.mc_n, sections, unevidenced, failures, remotes)
     R.write_once(THIS_DIR / "records" / f"{record_id}.md", rec)
     print(f"record: sim/program-read-legs/records/{record_id}.md")
-    return 1 if (failures or unevidenced) else 0
+    rc = 1 if (failures or unevidenced) else 0
+    rc |= ES.publish_for_runner("program-read-legs", record_id, THIS_DIR / "corners" / record_id, REPO_ROOT)
+    return rc
 
 
 def render_mc_record(record_id, pdk, dirty, n, sections, unevidenced, failures, remotes) -> str:
@@ -800,7 +803,9 @@ def main(argv: list[str] | None = None) -> int:
     rec = render_record(record_id, pdk, dirty, wanted, sections, unevidenced, failures)
     R.write_once(THIS_DIR / "records" / f"{record_id}.md", rec)
     print(f"record: sim/program-read-legs/records/{record_id}.md")
-    return 1 if (failures or unevidenced) else 0
+    rc = 1 if (failures or unevidenced) else 0
+    rc |= ES.publish_for_runner("program-read-legs", record_id, THIS_DIR / "corners" / record_id, REPO_ROOT)
+    return rc
 
 
 def render_record(record_id, pdk, dirty, wanted, sections, unevidenced, failures) -> str:
