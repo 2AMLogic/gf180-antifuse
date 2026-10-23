@@ -38,6 +38,7 @@ SIM_DIR = THIS_DIR.parent
 REPO_ROOT = SIM_DIR.parent
 sys.path.insert(0, str(SIM_DIR))
 from harness import corners as C  # noqa: E402
+from harness import evidence_store as ES  # noqa: E402
 from harness import numfmt as NF  # noqa: E402
 from harness import pdk as P  # noqa: E402
 from harness import report as R  # noqa: E402
@@ -878,6 +879,7 @@ def main(argv: list[str] | None = None) -> int:
         R.write_once(THIS_DIR / "records" / f"{rid}.md",
                      render_record(pdk, cand, rid, groups, readtab, rerr, params, dirty, args.ibound, args.n, args.note))
         print(f"   record: records/{rid}.md")
+        rc |= ES.publish_for_runner("programming-yield", rid, base, REPO_ROOT)
     return rc
 
 

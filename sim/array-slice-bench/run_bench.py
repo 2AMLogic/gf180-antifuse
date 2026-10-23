@@ -46,6 +46,7 @@ import gen_array as G  # noqa: E402
 import make_bench as B  # noqa: E402
 
 sys.path.insert(0, str(REPO / "sim"))
+from harness import evidence_store as ES  # noqa: E402
 from harness import klt as K  # noqa: E402
 from harness import numfmt as NF  # noqa: E402
 from harness import report as R  # noqa: E402
@@ -543,6 +544,8 @@ def main():
         "provenance and thresholds). Regions are never averaged together.\n\n"
         + "\n".join("\n".join(s) for s in sections))
     print(f"wrote {rec.relative_to(REPO)} and {meas.relative_to(REPO)}")
+    if ES.publish_for_runner("array-slice-bench", record_id, HERE / "reports" / record_id, REPO):
+        return 1
     return 0 if worst_bad == 0 else 3
 
 

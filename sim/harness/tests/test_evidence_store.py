@@ -111,6 +111,17 @@ class EvidenceStoreTest(unittest.TestCase):
             E.publish_run("bench", "rid", run, self.root, klt_cmd=self.klt, env=self.env)
         self.assertEqual(self.tracked_tree(), [])
 
+    def test_publish_for_runner_ok_and_fail_closed(self):
+        run = self.tmp / "run"
+        run.mkdir()
+        (run / "c1.log").write_text("x")
+        self.assertEqual(E.publish_for_runner("bench", "rid", run, self.root, klt_cmd=self.klt, env=self.env), 0)
+        run2 = self.tmp / "run2"
+        run2.mkdir()
+        (run2 / "c1.log").write_text("x")
+        self.assertEqual(E.publish_for_runner("bench", "rid2", run2, self.root, klt_cmd=self.klt, env={}), 1)
+        self.assertFalse(E.manifest_path(self.root, "bench", "rid2").exists())
+
 
 if __name__ == "__main__":
     unittest.main()
