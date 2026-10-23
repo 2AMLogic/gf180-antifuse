@@ -4,6 +4,23 @@ Digital (RTL) verification. Analog evidence lives in `sim/`; nothing here is
 SPICE, and a pass here is a behavioural check of `rtl/`, not timing or
 synthesis evidence.
 
+## One-hot decoder bench
+
+Files: [`tb_antifuse_decode.v`](tb_antifuse_decode.v) (exhaustive
+self-checking bench), [`run_decode.sh`](run_decode.sh) (runner).
+
+```sh
+verification/run_decode.sh          # N = 32, 20, 2, 256
+verification/run_decode.sh --lint   # decoder and digital top, verilator + iverilog
+```
+
+Every `(en, idx)` pair is checked, including `idx >= N` at N = 20 (not a
+power of two). `en = 0` and `idx >= N` must give all zeros; `en = 1`,
+`idx < N` must give exactly one hot line, `sel[idx]`. Exit status is nonzero on
+any `FAIL`, a missing `RESULT: ALL ... PASSED`, a compile failure or a lint
+warning. `RTL=path/to/variant.v` substitutes the decoder (a mutant that drops
+`en`, shifts the index by one, or turns `==` into `>=` all exit nonzero).
+
 ## SPI register file bench
 
 Files: [`tb_antifuse_spi_regs.v`](tb_antifuse_spi_regs.v) (self-checking

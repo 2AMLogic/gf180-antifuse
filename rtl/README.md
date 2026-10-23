@@ -5,10 +5,44 @@ Synthesizable digital sources (Verilog-2001).
 | File | What it is |
 |---|---|
 | [`antifuse_spi_regs.v`](antifuse_spi_regs.v) | SPI slave, register file and program/read sequencer for the register map in `spec/architecture.md` §5. Design-stage choices: [`spec/spi-register-implementation-decision.md`](../spec/spi-register-implementation-decision.md). |
-| [`synth/`](synth/) | Synthesized gate-level netlist and `klt synthesize` report for `antifuse_spi_regs` (see [Synthesis](#synthesis)). |
+| [`antifuse_decode.v`](antifuse_decode.v) | Binary index to one-hot select decoder with enable (see [`antifuse_decode`](#antifuse_decode)). |
+| [`antifuse_digital_top.v`](antifuse_digital_top.v) | Digital-partition top: `antifuse_spi_regs` plus one `antifuse_decode` per axis (see [`antifuse_digital_top`](#antifuse_digital_top)). |
+| [`synth/`](synth/) | Synthesized gate-level netlists and `klt synthesize` reports for `antifuse_spi_regs` and `antifuse_digital_top` (see [Synthesis](#synthesis)). |
 
 Not captured here: anything on the analog side of the abstract outputs below,
 and a gate-level simulation of the synthesized netlist (see Synthesis).
+
+## `antifuse_decode`
+
+Global row/column decoder of `spec/architecture.md` §1.1: `sel[i] = en & (idx == i)`.
+Purely combinational.
+
+| Name | Dir | Description |
+|---|---|---|
+| `N` (parameter, default 32) | | Number of select lines, supported 2..256; unsupported values stop simulation at elaboration (`translate_off` block). |
+| `idx[clog2(N)-1:0]` | in | Binary index. |
+| `en` | in | Low forces every line to 0. |
+| `sel[N-1:0]` | out | One-hot select. For `idx >= N` (non-power-of-two `N`) all zeros. |
+
+"Exactly one line hot" holds only for `en = 1` and `idx < N`; every other
+input gives all zeros.
+
+## `antifuse_digital_top`
+
+Instantiates `antifuse_spi_regs` and two `antifuse_decode` (row, column).
+Parameters `N`, `ARM_TIMEOUT`, `READ_SETTLE` pass through. Ports are those of
+`antifuse_spi_regs` (unchanged, including the binary `row_sel`/`col_sel`) plus
+`row_onehot[N-1:0]` and `col_onehot[N-1:0]`.
+
+Decoder enable: `prog_en | read_en`. No row or column line is selected while
+idle; during a program pulse or a read leg the addressed row and column lines
+are hot. `prog_en` and `read_en` are already mutually exclusive and
+`read_en` is held off for the whole armed state (§1.2), so the enable adds no
+new interlock path. This choice is the design's, not the spec's: §1.2 fixes
+the legs' interlock and §1.3 requires every other pass-gate OFF during an
+operation, and the enable is the narrowest term that satisfies both. The
+level shifters and pass gates driven by these lines are the analog partition
+and are not captured here.
 
 ## `antifuse_spi_regs`
 
@@ -104,6 +138,14 @@ verification/run_spi_regs.sh --lint
 
 Both are clean (no warnings).
 
+```sh
+verification/run_decode.sh --lint
+# = verilator --lint-only -Wall / iverilog -g2005 -Wall on antifuse_decode.v,
+#   and on antifuse_digital_top.v with antifuse_spi_regs.v and antifuse_decode.v
+```
+
+Clean as well.
+
 ### Synthesis
 
 ```sh
@@ -134,7 +176,35 @@ Yosys 0.67, PDK gf180mcuD):
 The full cell breakdown is `instance_counts_by_type` in the report. The one
 Yosys warning is the `translate_off` elaboration guard in the RTL.
 
-Not done:
+### Synthesis: `antifuse_digital_top`
+
+```sh
+uvx --from "klayout-tools==0.6.0" klt synthesize rtl/synth/antifuse_digital_top.synth.json \
+    --pdk gf180mcuD --format json > rtl/synth/antifuse_digital_top.synth.report.json
+# rtl/synth/antifuse_digital_top_synth.v is a copy of the mapped netlist, as above.
+uvx --from "klayout-tools==0.6.0" klt synthesize rtl/synth/antifuse_digital_top.synth.json \
+    --pdk gf180mcuD --check rtl/synth/antifuse_digital_top.synth.report.json --rerun
+```
+
+Same flow and library as above, default parameters (N = 32), top
+`antifuse_digital_top`. The `--check --rerun` pass matched the committed
+report (exit 0). Result (klayout-tools 0.6.0, Yosys 0.67, PDK gf180mcuD):
+
+| Quantity | Value |
+|---|---|
+| Instances | 532 (96 flip-flops, unchanged from `antifuse_spi_regs`: the decoders are combinational) |
+| Area | 15893.25 um^2 (sequential 7182.69 um^2) |
+| Latches | 0 (`structural.latches`) |
+| Combinational loops / multi-driven nets | 0 / 0 (`structural`, from the tool) |
+| ABC critical-path estimate | 13621 ps, wire-free, pre-layout; not signoff timing |
+
+The one Yosys warning is the `translate_off` elaboration guard in the RTL.
+Decoder function is checked at RTL by `verification/run_decode.sh`; there is no
+gate-level simulation of this netlist (same limits as below). This report is
+not cited in `signoff/manifest.json`: `klt signoff` does not read synthesize
+responses (klayout-tools#4015).
+
+Not done (for either netlist):
 
 - **Gate-level simulation.** `verification/run_spi_regs.sh` cannot take the
   netlist as `RTL=`: the bench reads RTL-internal signals (`dut.arm`,
