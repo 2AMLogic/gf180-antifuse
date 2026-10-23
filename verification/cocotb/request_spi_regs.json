@@ -1,0 +1,9 @@
+{
+  "schema": "klt.functional_verification.request/1",
+  "engine": "icarus",
+  "sources": ["../../rtl/antifuse_spi_regs.v"],
+  "hdl_toplevel": "antifuse_spi_regs",
+  "testbench": { "module": "test_spi_regs" },
+  "options": { "timescale": ["1ns", "1ps"], "random_seed": 1 },
+  "parameters": { "N": 32, "ARM_TIMEOUT": 300, "READ_SETTLE": 8 }
+}
