@@ -32,22 +32,18 @@ _None._
 Issues currently being built (`loom:building`).
 
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4)
-- **#149**: Adopt the common artifact store for sim evidence (manifests in git, bytes via klt artifact)
-- **#150**: rtl: global row/column one-hot decoders per architecture §1.1, with exhaustive bench and klt synthesize report (T1 item 1, digital partition)
-- **#151**: verification: port-only cocotb suite for antifuse_spi_regs run through klt functional-verification (T1 items 5/7/9 groundwork, digital partition)
 
 ## PRs Awaiting Review
 
 PRs waiting on Judge (`loom:review-requested`).
 
-- **#152**: feat: store new sim evidence via klt artifact, commit only manifests
-- **#155**: rtl: add one-hot row/column decoder, digital top and synth report
+_None._
 
 ## Approved (Awaiting Merge)
 
 PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
-- **#154**: verification: port-only cocotb suite for SPI register block with mutation evidence
+_None._
 
 ## Proposed
 
@@ -56,13 +52,10 @@ Issues carrying `loom:curated`.
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4) *(curated)*
 - **#99**: Re-qualify reference sim records under open_pdks f6eeac7 as new records *(curated)*
 - **#117**: T1 items 1 and 9 (analog partition): attest the cell sources and testbenches with klt signoff --attest *(curated)*
-- **#149**: Adopt the common artifact store for sim evidence (manifests in git, bytes via klt artifact) *(curated)*
-- **#150**: rtl: global row/column one-hot decoders per architecture §1.1, with exhaustive bench and klt synthesize report (T1 item 1, digital partition) *(curated)*
-- **#151**: verification: port-only cocotb suite for antifuse_spi_regs run through klt functional-verification (T1 items 5/7/9 groundwork, digital partition) *(curated)*
 
 ## Proposed (Architect / Hermit)
 
-_None._
+- **#158**: Retire legacy local-ngspice grid driver in cell-device-characterization (superseded by klt campaign) *(hermit)*
 
 ## Epics
 
@@ -76,11 +69,11 @@ _None._
 | Very important | 0 |
 | Important | 3 |
 | Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 4 |
-| PRs awaiting review | 2 |
-| Approved PRs awaiting merge | 1 |
-| Curated | 6 |
-| Architect / Hermit proposals | 0 |
+| In Progress (`loom:building`) | 1 |
+| PRs awaiting review | 0 |
+| Approved PRs awaiting merge | 0 |
+| Curated | 3 |
+| Architect / Hermit proposals | 1 |
 | Active epics | 1 |
 <!-- guide:plan-body:end -->
 
