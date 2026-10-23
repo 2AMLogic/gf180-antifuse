@@ -88,3 +88,45 @@ truncated frames accepted. The runner exits nonzero if any mutant survives or
 fails to apply. The recorded run is in the pull request. The mutations show
 the named tests detect these removals; they do not prove no other fault
 exists outside the stated fault model.
+
+## Port-only cocotb suite (`klt functional-verification`)
+
+Files in [`cocotb/`](cocotb): `test_spi_regs.py` (the suite),
+`request_spi_regs.json` (Icarus, `rtl/antifuse_spi_regs.v`, N = 32,
+READ_SETTLE = 8, `ARM_TIMEOUT` elaborated to 300 so the timeout tests are
+short; the constants at the top of the test module must match the request's
+`parameters`), `mutation_proposals.json` (eight byte-exact mutants, grouped
+by rejection case), `report_spi_regs.json` (committed `--mutations` report:
+baseline plus per-mutant verdicts; its `log_path`/`results_xml` fields point
+at the scratch output directory of the recorded run).
+
+The suite touches only top-level ports, so the same module can later be
+pointed at a netlist view (not done here; see `rtl/README.md`). It is
+additive: the Verilog bench above stays as the RTL-internal evidence.
+
+It covers every register in `spec/architecture.md` section 5 including reset
+values and out-of-range `ROW`/`COL`, the arm-then-`FIRE` sequence, the
+rejection cases (`FIRE` unarmed, `FIRE` while busy, wrong frame length), the
+arm timeout and its boundary (a FIRE accepted at the window edge, rejected one
+cycle later), the `PULSE_WIDTH` and `READ_SETTLE` cycle counts, and a
+per-cycle check that `prog_en` and `read_en` are never high together.
+
+**Cold start, from the repo root.** The host `klt` may lack cocotb; use a
+throwaway environment pinned to the same `klt` revision:
+
+```sh
+KLT='uvx --from klayout-tools[functional-verification]@git+https://github.com/2AMLogic/klayout-tools.git@6bb7cf2336776b9f768fab21c678ee8a2c54e709 klt'
+$KLT functional-verification verification/cocotb/request_spi_regs.json --format json
+$KLT functional-verification verification/cocotb/request_spi_regs.json \
+     --mutations verification/cocotb/mutation_proposals.json --format json
+grep -n 'dut\.' verification/cocotb/test_spi_regs.py   # port names only
+```
+
+Mutants killed (recorded run, 21/21 tests pass, score 1.0): `FIRE` unarmed
+(`arm_guard_removed`, `fire_on_read_command`, `fire_address_partial_decode_0x79`,
+`fire_address_partial_decode_0x7A`), `FIRE` while busy
+(`busy_write_guard_removed`), bad frame length (`overlong_frame_accepted`,
+`truncated_frame_accepted`, `frame_bad_never_errors`). The `READ_SETTLE = 8`
+configuration cannot fit a rejected-write frame inside a read, so the
+write-rejected-while-reading case stays with the Verilog bench's N = 20
+configuration.

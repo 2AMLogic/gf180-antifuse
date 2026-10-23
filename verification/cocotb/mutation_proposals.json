@@ -1,0 +1,80 @@
+{
+  "schema": "klt.functional_verification.mutation_proposals/1",
+  "scope": [
+    "../../rtl/antifuse_spi_regs.v"
+  ],
+  "proposals": [
+    {
+      "index": 1,
+      "category": "fire_unarmed/arm_guard_removed",
+      "file": "../../rtl/antifuse_spi_regs.v",
+      "line": 194,
+      "original_code": "if (arm) do_fire = 1'b1; else err = 1'b1; // ARM-GUARD",
+      "mutated_code": "do_fire = 1'b1; // ARM-GUARD",
+      "detectability_argument": "With the arm guard gone a FIRE with no preceding arm pulses prog_en; any test that FIREs unarmed and watches prog_en kills it."
+    },
+    {
+      "index": 2,
+      "category": "fire_unarmed/fire_on_read_command",
+      "file": "../../rtl/antifuse_spi_regs.v",
+      "line": 199,
+      "original_code": "if (a > 7'h05) err = 1'b1;",
+      "mutated_code": "if (a > 7'h05) err = 1'b1; if (a == A_FIRE && arm) do_fire = 1'b1;",
+      "detectability_argument": "A READ of address 0x78 while armed pulses; the unknown-address read test and the armed command-byte sweep observe prog_en."
+    },
+    {
+      "index": 3,
+      "category": "fire_unarmed/fire_address_partial_decode_0x79",
+      "file": "../../rtl/antifuse_spi_regs.v",
+      "line": 193,
+      "original_code": "A_FIRE: begin ",
+      "mutated_code": "A_FIRE, 7'h79: begin",
+      "detectability_argument": "A write to 0x79 while armed pulses; the command-byte sweep while armed sees prog_en."
+    },
+    {
+      "index": 4,
+      "category": "fire_unarmed/fire_address_partial_decode_0x7A",
+      "file": "../../rtl/antifuse_spi_regs.v",
+      "line": 193,
+      "original_code": "A_FIRE: begin ",
+      "mutated_code": "A_FIRE, 7'h7A: begin",
+      "detectability_argument": "A write to 0x7A while armed pulses; the command-byte sweep while armed sees prog_en."
+    },
+    {
+      "index": 5,
+      "category": "fire_while_busy/busy_write_guard_removed",
+      "file": "../../rtl/antifuse_spi_regs.v",
+      "line": 170,
+      "original_code": "if (busy_i) err = 1'b1; ",
+      "mutated_code": "if (1'b0) err = 1'b1; ",
+      "detectability_argument": "A second FIRE (and any register write) during the pulse is no longer rejected, so it reloads the pulse counter and the measured pulse length exceeds PULSE_WIDTH; PROTOCOL_ERROR is also not set."
+    },
+    {
+      "index": 6,
+      "category": "bad_frame_length/overlong_frame_accepted",
+      "file": "../../rtl/antifuse_spi_regs.v",
+      "line": 155,
+      "original_code": "wire        frame_ok  = (bitcnt == 5'd16);",
+      "mutated_code": "wire        frame_ok  = (bitcnt >= 5'd16);",
+      "detectability_argument": "A 17- or 18-bit frame commits as a normal frame instead of PROTOCOL_ERROR; the overlong-frame tests see a PERR miss or a committed write/pulse."
+    },
+    {
+      "index": 7,
+      "category": "bad_frame_length/truncated_frame_accepted",
+      "file": "../../rtl/antifuse_spi_regs.v",
+      "line": 155,
+      "original_code": "wire        frame_ok  = (bitcnt == 5'd16);",
+      "mutated_code": "wire        frame_ok  = (bitcnt >= 5'd15);",
+      "detectability_argument": "A 15-bit frame commits; the truncated-frame tests see a missing PROTOCOL_ERROR or a register change."
+    },
+    {
+      "index": 8,
+      "category": "bad_frame_length/frame_bad_never_errors",
+      "file": "../../rtl/antifuse_spi_regs.v",
+      "line": 156,
+      "original_code": "wire        frame_bad = (bitcnt != 5'd0) && (bitcnt != 5'd16);",
+      "mutated_code": "wire        frame_bad = 1'b0;",
+      "detectability_argument": "Wrong-length frames no longer set PROTOCOL_ERROR; bad_frame_length_sets_protocol_error reads STATUS and misses the flag."
+    }
+  ]
+}

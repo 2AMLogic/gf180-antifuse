@@ -165,6 +165,12 @@
       "kind": "synthesize",
       "content_hash": "sha256:8d5941b078132e24028cb7b67d397eb961471ad6e7b9eded0ab3188ef93b1edc",
       "backs": "digital-partition synthesis of rtl/antifuse_spi_regs.v (N=32 defaults, gf180mcu_fd_sc_mcu7t5v0): cell breakdown, area, latch/comb-loop counts; see rtl/README.md"
+    },
+    {
+      "file": "verification/cocotb/report_spi_regs.json",
+      "kind": "functional-verification",
+      "content_hash": "sha256:b4f7169199edb5740cad4bb75a9ece5c8590ea223f0ebbc4c213da8cd46614a8",
+      "backs": "port-only cocotb suite for rtl/antifuse_spi_regs.v (N=32, ARM_TIMEOUT=300, READ_SETTLE=8): 21/21 tests pass, 8/8 mutants killed; see verification/README.md"
     }
   ]
 }
