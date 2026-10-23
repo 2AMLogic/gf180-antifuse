@@ -52,6 +52,7 @@ TB_MOSCAP_TEMPLATE = (THIS_DIR / "testbench" / "tb_moscap_cv.spice").read_text()
 sys.path.insert(0, str(SIM_DIR))
 
 from harness import corners as C  # noqa: E402
+from harness import evidence_store as ES  # noqa: E402
 from harness import numfmt as NF  # noqa: E402
 from harness import pdk as P  # noqa: E402
 from harness import report as R  # noqa: E402
@@ -622,6 +623,8 @@ def main(argv: list[str] | None = None) -> int:
         record_path = experiment_dir / "records" / f"{run.record_id}.md"
         R.write_once(record_path, record_md)
         print(f"   record: {record_path.relative_to(REPO_ROOT)}")
+        overall_rc |= ES.publish_for_runner("cell-device-characterization", run.record_id,
+                                            experiment_dir / "corners" / run.record_id, REPO_ROOT)
 
         if run.n_failed:
             overall_rc = 1

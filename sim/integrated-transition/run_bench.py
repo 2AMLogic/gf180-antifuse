@@ -38,6 +38,7 @@ import analyze as A  # noqa: E402
 import make_bench as B  # noqa: E402
 
 sys.path.insert(0, str(HERE.parents[1] / "sim"))
+from harness import evidence_store as ES  # noqa: E402
 from harness import klt as K  # noqa: E402
 from harness import report as R  # noqa: E402
 
@@ -505,7 +506,7 @@ def main():
     if a.analyze:
         return 0
     write_records(record_id, all_rows, stress, comps, bad_total, clean, now, paths)
-    return 0
+    return ES.publish_for_runner("integrated-transition", record_id, repdir, REPO)
 
 
 if __name__ == "__main__":
