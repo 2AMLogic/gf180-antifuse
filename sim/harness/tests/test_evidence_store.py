@@ -95,6 +95,22 @@ class EvidenceStoreTest(unittest.TestCase):
         with self.assertRaises(E.EvidenceStoreError):
             self.store()
 
+    def test_publish_run_keeps_corner_paths(self):
+        run = self.tmp / "run"
+        (run / "ss_-40c" / "regionA").mkdir(parents=True)
+        (run / "ss_-40c" / "regionA" / "x.log").write_text("x")
+        (run / "ff_125c").mkdir()
+        (run / "ff_125c" / "y.log").write_text("yy")
+        rows = E.publish_run("bench", "rid", run, self.root, klt_cmd=self.klt, env=self.env)
+        self.assertEqual({r["name"] for r in rows}, {"ss_-40c/regionA/x.log", "ff_125c/y.log"})
+
+    def test_publish_empty_run_fails_closed(self):
+        run = self.tmp / "empty"
+        run.mkdir()
+        with self.assertRaises(E.EvidenceStoreError):
+            E.publish_run("bench", "rid", run, self.root, klt_cmd=self.klt, env=self.env)
+        self.assertEqual(self.tracked_tree(), [])
+
 
 if __name__ == "__main__":
     unittest.main()

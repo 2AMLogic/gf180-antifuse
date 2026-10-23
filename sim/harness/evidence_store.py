@@ -96,3 +96,20 @@ def store_run(bench: str, run_id: str, files: dict[str, Path], repo_root: Path, 
         dest.parent.mkdir(parents=True, exist_ok=True)
         shutil.move(str(tmp_manifest), dest)
     return [{"name": e["name"], "size": e["size"], "sha256": e["sha256"]} for e in entries]
+
+
+def collect_run_files(run_dir: Path, prefix: str = "") -> dict[str, Path]:
+    """Map every regular file under ``run_dir`` to an entry name relative to it.
+
+    Keeps the ``<corner-id>`` / region path components in the name so stored
+    objects stay separable per corner and per region.
+    """
+    run_dir = Path(run_dir)
+    return {f"{prefix}{p.relative_to(run_dir).as_posix()}": p
+            for p in sorted(run_dir.rglob("*")) if p.is_file()}
+
+
+def publish_run(bench: str, run_id: str, run_dir: Path, repo_root: Path, *,
+                klt_cmd=("klt",), env: dict[str, str] | None = None) -> list[dict]:
+    """Store everything under ``run_dir`` for one run; return the record's object rows."""
+    return store_run(bench, run_id, collect_run_files(run_dir), repo_root, klt_cmd=klt_cmd, env=env)
