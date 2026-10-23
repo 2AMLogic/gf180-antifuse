@@ -20,6 +20,7 @@ import json
 import os
 import shutil
 import subprocess
+import sys
 import tempfile
 from pathlib import Path
 
@@ -113,3 +114,19 @@ def publish_run(bench: str, run_id: str, run_dir: Path, repo_root: Path, *,
                 klt_cmd=("klt",), env: dict[str, str] | None = None) -> list[dict]:
     """Store everything under ``run_dir`` for one run; return the record's object rows."""
     return store_run(bench, run_id, collect_run_files(run_dir), repo_root, klt_cmd=klt_cmd, env=env)
+
+
+def publish_for_runner(bench: str, run_id: str, run_dir: Path, repo_root: Path, *,
+                       klt_cmd=("klt",), env: dict[str, str] | None = None) -> int:
+    """Runner entry point: publish ``run_dir`` and return a process exit code.
+
+    Prints the manifest path on success; on ``EvidenceStoreError`` prints the
+    reason and returns 1 (nothing is written, no bytes are committed).
+    """
+    try:
+        rows = publish_run(bench, run_id, run_dir, repo_root, klt_cmd=klt_cmd, env=env)
+    except EvidenceStoreError as exc:
+        print(f"ERROR: evidence not stored: {exc}", file=sys.stderr)
+        return 1
+    print(f"   manifest: {manifest_path(repo_root, bench, run_id).relative_to(repo_root)} ({len(rows)} objects)")
+    return 0
