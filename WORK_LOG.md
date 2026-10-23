@@ -5,6 +5,8 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-10-23
 
+- **PR #163**: feat(sim): publish evidence manifests from five more sim runners
+- **Issue #160** (closed): Wire publish_for_runner into the remaining five sim runners
 - **PR #161**: feat(sim): wire evidence publishing into two runners and add live klt manifest
 - **PR #157**: feat(sim): add publish_run helper for storing whole run directories
 - **PR #154**: verification: port-only cocotb suite for SPI register block with mutation evidence
