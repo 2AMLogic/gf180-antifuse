@@ -134,6 +134,21 @@ goes to the batch fleet on the dispatch workers) instead of the stdlib
 `harness/` runner above, and is not wired into `run_corners.py`. It still keeps
 this directory's record / append-only conventions; see its README.
 
+## Evidence store (new runs)
+
+Runs adopting the fleet artifact store (`sim/harness/evidence_store.py`) do
+not commit raw outputs. They are staged in the git-ignored
+`sim/.artifact-scratch/`, stored with `klt artifact put`, and only
+`manifests/artifacts/<bench>-<run-id>.manifest.json` plus the usual
+`records/<record-id>.md` (with a name/size/sha256 table per object, entry
+names keeping the `<corner-id>` and any region/sub-configuration path) are
+committed. The writer fails closed: no `$KLT_ARTIFACT_BROKER`, a `klt` without
+`artifact put`, or an unreachable broker exits nonzero and writes nothing.
+`scripts/check_artifact_manifests.py` validates manifests (`artifact:` URIs
+only, no storage locators, no stored object also committed). Pre-adoption
+records keep their committed bytes; nothing already under `sim/` is modified,
+moved or deleted.
+
 ## Append-only rule
 
 `records/*.md`, `netlist-snapshots/*.spice` and `corners/**/*.log` are never

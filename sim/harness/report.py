@@ -72,3 +72,10 @@ def write_once(path: Path, content: str) -> None:
 def git_out(repo_root: Path, *args: str) -> str:
     """Stripped stdout of ``git -C repo_root <args>`` ("" on any failure)."""
     return subprocess.run(["git", "-C", str(repo_root), *args], capture_output=True, text=True).stdout.strip()
+
+
+def object_table(entries: list[dict]) -> str:
+    """Markdown table of stored objects (name, size, sha256) for a record."""
+    rows = ["| Name | Size (bytes) | sha256 |", "|---|---|---|"]
+    rows += [f"| {e['name']} | {e['size']} | {e['sha256']} |" for e in sorted(entries, key=lambda e: e["name"])]
+    return "\n".join(rows) + "\n"
