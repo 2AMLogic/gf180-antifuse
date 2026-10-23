@@ -5,6 +5,12 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-10-23
 
+- **PR #161**: feat(sim): wire evidence publishing into two runners and add live klt manifest
+- **PR #157**: feat(sim): add publish_run helper for storing whole run directories
+- **PR #154**: verification: port-only cocotb suite for SPI register block with mutation evidence
+- **Issue #153** (closed): Live verification of artifact-store evidence writer (real klt put/verify) and runner wiring
+- **Issue #151** (closed): verification: port-only cocotb suite for antifuse_spi_regs run through klt functional-verification (T1 items 5/7/9 groundwork, digital partition)
+- **Issue #149** (closed): Adopt the common artifact store for sim evidence (manifests in git, bytes via klt artifact)
 - **PR #152**: feat: store new sim evidence via klt artifact, commit only manifests
 - **PR #155**: rtl: add one-hot row/column decoder, digital top and synth report
 - **Issue #150** (closed): rtl: global row/column one-hot decoders per architecture §1.1, with exhaustive bench and klt synthesize report (T1 item 1, digital partition)
