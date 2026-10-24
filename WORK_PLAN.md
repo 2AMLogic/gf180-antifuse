@@ -25,7 +25,7 @@ _None._
 
 Human-approved issues ready for implementation (`loom:issue`).
 
-_None._
+- **#158**: Retire legacy local-ngspice grid driver in cell-device-characterization (superseded by klt campaign)
 
 ## In Progress
 
@@ -68,7 +68,7 @@ Issues carrying `loom:curated`.
 | Operator merge-risk holds | 0 |
 | Very important | 0 |
 | Important | 3 |
-| Ready (`loom:issue`) | 0 |
+| Ready (`loom:issue`) | 1 |
 | In Progress (`loom:building`) | 1 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 0 |
