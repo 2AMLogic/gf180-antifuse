@@ -173,8 +173,7 @@ distinction explicitly rather than reusing `wl_on` for both testbenches.
   (`gf180mcuD`), verified present via `klt pdk list` at build time (the pin
   then in force; the forward-looking pin is now `f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7`, see
   `spec/pdk-pin-decision.md`; this record's runs are not re-qualified here). Re-verify before trusting a record produced on a different
-  machine; `run_experiment.py` prints the resolved variant and revision on
-  every invocation.
+  machine.
 
 ### Placeholder stimulus values (not ratified spec numbers)
 
@@ -238,35 +237,31 @@ Per candidate (= per `spec/split-axis-plan.md` region):
 
 ## Running it
 
+The PVT grid runs as a `klt sim` campaign (next section); on a dispatch worker
+it goes to the Spot batch fleet and is never looped locally:
+
 ```bash
-export PDK_ROOT=$HOME/.ciel   # or GF180_PDK_PATH=$HOME/.ciel/gf180mcuD
-python3 sim/run_corners.py --check-env cell-device-characterization
 python3 sim/run_corners.py cell-device-characterization
+# equivalently
+python3 sim/cell-device-characterization/klt/run_klt_campaign.py --candidates 1,2,3
 ```
 
-or directly:
-
-```bash
-python3 sim/cell-device-characterization/run_experiment.py --candidates 1,2,3 -j 8
-```
-
-`-j` controls how many ngspice invocations run in parallel (default 8);
-`--candidates` restricts to a subset (e.g. `--candidates 1` while
-iterating). A full 3-candidate run (648 ngspice invocations) takes a few
-seconds on a typical dev machine. Every run mints fresh record-ids and
-never overwrites `corners/`, `netlist-snapshots/` or `records/` — re-running
-this command is always safe and always produces new, additional evidence,
-per `sim/README.md`'s append-only rule. Generated per-corner decks live
-under `corners/<record-id>/*/.work/` (git-ignored, disposable — a failing
-corner can be reproduced by hand with `ngspice -b <that path>/deck.spice`).
+The legacy local-ngspice driver (one `ngspice -b` per corner, `-j 8`) was
+retired by operator ruling (#158). Its committed `corners/`, `netlist-snapshots/`
+and `records/` remain as append-only evidence, and `run_experiment.py` is kept
+as the shared candidate/parameter library that
+`sim/cell-breakdown-model/run_experiment.py` loads. Every klt run mints a
+fresh run id and never overwrites existing evidence, per `sim/README.md`'s
+append-only rule.
 
 ## klt sim campaign (issue #63)
 
 The access-device bench (sections 1 and 2 above: `I_off`, `R_on`) is also
 expressed as a checked-in `klt sim` request set, so the PVT corner grid goes to
 the Spot batch fleet as a request instead of being looped locally. The legacy
-harness above is **unchanged and still the authoritative record** until a human
-retires it; the klt records supplement it.
+local-ngspice driver is retired (#158); the klt campaign is now the way to
+regenerate this bench, and the committed legacy logs/records remain the
+append-only reproduction baseline.
 
 ```bash
 python3 sim/cell-device-characterization/klt/mk_klt_requests.py        # regenerate klt/requests/ (deterministic)

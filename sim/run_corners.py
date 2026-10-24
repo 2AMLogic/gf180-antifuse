@@ -3,11 +3,12 @@
 experiment in this repo.
 
     python3 sim/run_corners.py --list
-    python3 sim/run_corners.py --check-env cell-device-characterization
     python3 sim/run_corners.py cell-device-characterization [-- <experiment args>]
 
 stdlib only, no venv. Per sim/README.md, each experiment slug owns its own
-`run_experiment.py` (imported here as a library) rather than a single
+`run_experiment.py` (imported here as a library; for
+cell-device-characterization that is the klt campaign driver, which submits
+to the batch fleet) rather than a single
 generic corner-grid contract -- this dispatcher's job is discovery and a
 single documented invocation, not re-implementing per-experiment logic.
 """
@@ -22,7 +23,7 @@ from pathlib import Path
 SIM_DIR = Path(__file__).resolve().parent
 
 EXPERIMENTS = {
-    "cell-device-characterization": SIM_DIR / "cell-device-characterization" / "run_experiment.py",
+    "cell-device-characterization": SIM_DIR / "cell-device-characterization" / "klt" / "run_klt_campaign.py",
     "program-read-legs": SIM_DIR / "program-read-legs" / "run_experiment.py",
     "cell-breakdown-model": SIM_DIR / "cell-breakdown-model" / "run_experiment.py",
     "programming-yield": SIM_DIR / "programming-yield" / "run_experiment.py",

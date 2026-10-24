@@ -170,12 +170,12 @@ at a gf180mcu install:
 
 ```bash
 python3 sim/run_corners.py --list
-python3 sim/run_corners.py --check-env cell-device-characterization
 python3 sim/run_corners.py cell-device-characterization
 ```
 
 `sim/run_corners.py` is a thin dispatcher: it resolves an experiment slug to
-that experiment's own `sim/<slug>/run_experiment.py` and calls its `main()`.
+that experiment's own driver (`sim/<slug>/run_experiment.py`; for
+`cell-device-characterization`, `klt/run_klt_campaign.py`) and calls its `main()`.
 Per the "multi-sub-configuration experiments" note above, each experiment
 owns its own corner grid and record format rather than being forced through
 one generic contract — `run_corners.py`'s job is discovery and a single
