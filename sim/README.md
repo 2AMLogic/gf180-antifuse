@@ -33,7 +33,7 @@ Each testbench topic gets its own experiment directory:
 sim/
   harness/                            shared PDK-resolution / record-writer
                                        machinery (pdk.py, corners.py,
-                                       report.py, runner.py) -- stdlib only
+                                       report.py) -- stdlib only
   run_corners.py                      the one cold-start entry point (see
                                        below)
   <experiment-slug>/                  e.g. cell-device-characterization
@@ -131,7 +131,7 @@ record per sub-configuration.
 
 `sim/array-slice-bench/` expresses its PVT grid as a `klt sim` request (so it
 goes to the batch fleet on the dispatch workers) instead of the stdlib
-`harness/` runner above, and is not wired into `run_corners.py`. It still keeps
+`run_corners.py` flow above, and is not wired into it. It still keeps
 this directory's record / append-only conventions; see its README.
 
 ## Evidence store (new runs)
