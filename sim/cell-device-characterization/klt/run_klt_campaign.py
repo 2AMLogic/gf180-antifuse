@@ -295,7 +295,7 @@ def render_record(rundir: Path, run_id: str, n: int, summary: dict) -> str:
     L.append("  - Request set + generator: `sim/cell-device-characterization/klt/`")
     L.append(f"  - klt reports (cited from `signoff/manifest.json` where applicable): `sim/cell-device-characterization/klt/runs/{run_id}/`")
     L.append(f"- **Timestamp / author**: {time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())}, agent-builder")
-    L.append(f"- **Supersedes**: (none -- supplements legacy record `{leg_id}`, which stays authoritative until a human retires the old harness)")
+    L.append(f"- **Supersedes**: (none -- supplements legacy record `{leg_id}`; the legacy driver is retired (#158), its committed logs and record remain the reproduction baseline)")
     L.append("")
     return "\n".join(L)
 
