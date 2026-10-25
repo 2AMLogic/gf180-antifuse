@@ -25,7 +25,7 @@ _None._
 
 Human-approved issues ready for implementation (`loom:issue`).
 
-- **#158**: Retire legacy local-ngspice grid driver in cell-device-characterization (superseded by klt campaign)
+_None._
 
 ## In Progress
 
@@ -55,7 +55,7 @@ Issues carrying `loom:curated`.
 
 ## Proposed (Architect / Hermit)
 
-- **#158**: Retire legacy local-ngspice grid driver in cell-device-characterization (superseded by klt campaign) *(hermit)*
+_None._
 
 ## Epics
 
@@ -68,12 +68,12 @@ Issues carrying `loom:curated`.
 | Operator merge-risk holds | 0 |
 | Very important | 0 |
 | Important | 3 |
-| Ready (`loom:issue`) | 1 |
+| Ready (`loom:issue`) | 0 |
 | In Progress (`loom:building`) | 1 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 0 |
 | Curated | 3 |
-| Architect / Hermit proposals | 1 |
+| Architect / Hermit proposals | 0 |
 | Active epics | 1 |
 <!-- guide:plan-body:end -->
 
