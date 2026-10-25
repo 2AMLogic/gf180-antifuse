@@ -3,6 +3,15 @@
 Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 
+### 2026-10-24
+
+- **PR #170**: chore(sim): remove unused ngspice deck runner
+- **Issue #169** (closed): Remove sim/harness/runner.py: unused ngspice deck runner
+- **PR #168**: docs: update README sim rows for klt campaign path
+- **Issue #167** (closed): README sim status table still lists removed --check-env / local grid command
+- **PR #166**: refactor(sim): retire legacy local-ngspice grid driver
+- **Issue #158** (closed): Retire legacy local-ngspice grid driver in cell-device-characterization (superseded by klt campaign)
+
 ### 2026-10-23
 
 - **PR #163**: feat(sim): publish evidence manifests from five more sim runners
