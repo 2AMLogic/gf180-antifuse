@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "kind": "generic",
+  "status": "pass",
+  "t1_item": 1,
+  "summary": "T1 item 1 (Design sources): 7/7 attestation checks passed (klt signoff --attest)",
+  "source": "signoff/inventories/item-1-digital.json",
+  "attestation": {
+    "producer": "klt signoff --attest",
+    "inventory_schema_version": 1,
+    "hash_algorithm": "sha256-raw-bytes",
+    "check_count": 7,
+    "passed_count": 7,
+    "checks": [
+      {
+        "check": "present",
+        "role": "source",
+        "path": "rtl/antifuse_decode.v",
+        "passed": true,
+        "content_hash": "sha256:614c57cdfec400f1c6e54e222d51a4887c5f399a20983fe53ee087cae8c53d39"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "rtl/antifuse_digital_top.v",
+        "passed": true,
+        "content_hash": "sha256:597552fc4d030331252b1ffa2e60eb4f61bc918095f14bd6813fefe0921419ac"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "rtl/antifuse_spi_regs.v",
+        "passed": true,
+        "content_hash": "sha256:53b277b3772fa7f31663999664ddc698024880db0a926562add982201eba8379"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/synth/antifuse_digital_top_synth.v",
+        "passed": true,
+        "content_hash": "sha256:fbfd2c8044ecdee829d2f3f5b23904763bab8c38ef377848d0b9bf430ff8df4b"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/synth/antifuse_spi_regs_synth.v",
+        "passed": true,
+        "content_hash": "sha256:1a59d52e3ac06e56d49dec65832a72a4b9432082715b327db26f822a92005804"
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/synth/antifuse_digital_top_synth.v",
+        "generator": "klt synthesize",
+        "argv": [
+          "klt",
+          "synthesize",
+          "rtl/synth/antifuse_digital_top.synth.json",
+          "--pdk",
+          "gf180mcuD",
+          "--check",
+          "rtl/synth/antifuse_digital_top.synth.report.json",
+          "--rerun"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/synth/antifuse_spi_regs_synth.v",
+        "generator": "klt synthesize",
+        "argv": [
+          "klt",
+          "synthesize",
+          "rtl/synth/antifuse_spi_regs.synth.json",
+          "--pdk",
+          "gf180mcuD",
+          "--check",
+          "rtl/synth/antifuse_spi_regs.synth.report.json",
+          "--rerun"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      }
+    ]
+  },
+  "provenance": {
+    "klt_version": "0.8.0",
+    "klayout_version": null,
+    "pdk": null,
+    "deck": null,
+    "input": {
+      "path": {
+        "path": "signoff/inventories/item-1-digital.json",
+        "scope": "repo"
+      },
+      "content_hash": "sha256:8dafc6f3c571ba85bb33813fb34e74bb932356192f5e28ae24dcd9f598a5b228"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "t1-attestation-inventory",
+  "t1_item": 1,
+  "description": "T1 item 1 (Design sources), digital partition: the three RTL sources and the two derived synthesized netlists, each netlist with a klt synthesize --rerun freshness check.",
+  "sources": [
+    "rtl/antifuse_decode.v",
+    "rtl/antifuse_digital_top.v",
+    "rtl/antifuse_spi_regs.v"
+  ],
+  "derived": [
+    {
+      "path": "rtl/synth/antifuse_digital_top_synth.v",
+      "generator": "klt synthesize",
+      "check": {
+        "argv": ["klt", "synthesize", "rtl/synth/antifuse_digital_top.synth.json", "--pdk", "gf180mcuD", "--check", "rtl/synth/antifuse_digital_top.synth.report.json", "--rerun"],
+        "cwd": "."
+      }
+    },
+    {
+      "path": "rtl/synth/antifuse_spi_regs_synth.v",
+      "generator": "klt synthesize",
+      "check": {
+        "argv": ["klt", "synthesize", "rtl/synth/antifuse_spi_regs.synth.json", "--pdk", "gf180mcuD", "--check", "rtl/synth/antifuse_spi_regs.synth.report.json", "--rerun"],
+        "cwd": "."
+      }
+    }
+  ]
+}
