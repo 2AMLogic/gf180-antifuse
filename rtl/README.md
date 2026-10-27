@@ -149,12 +149,12 @@ Clean as well.
 ### Synthesis
 
 ```sh
-uvx --from "klayout-tools==0.6.0" klt synthesize rtl/synth/antifuse_spi_regs.synth.json \
+uvx --from "klayout-tools==0.8.0" klt synthesize rtl/synth/antifuse_spi_regs.synth.json \
     --pdk gf180mcuD --format json > rtl/synth/antifuse_spi_regs.synth.report.json
 # the mapped netlist lands in rtl/synth/.klt/synthesize/<run_id>/antifuse_spi_regs_synth.v
 # (scratch, gitignored); rtl/synth/antifuse_spi_regs_synth.v is a copy of it.
 # Check a checkout without re-synthesizing (exit 0 = unchanged, 3 = drifted):
-uvx --from "klayout-tools==0.6.0" klt synthesize rtl/synth/antifuse_spi_regs.synth.json \
+uvx --from "klayout-tools==0.8.0" klt synthesize rtl/synth/antifuse_spi_regs.synth.json \
     --pdk gf180mcuD --check rtl/synth/antifuse_spi_regs.synth.report.json --rerun
 ```
 
@@ -162,7 +162,7 @@ Request: Yosys, `gf180mcu_fd_sc_mcu7t5v0`, default parameters (N = 32,
 `ARM_TIMEOUT` 4096, `READ_SETTLE` 8). The request names no corner, so the tool
 picks the library's nominal one (`tt_025C_1v80`); that affects the ABC delay
 estimate, not the cell mapping evidence below. The `--check --rerun` pass above
-re-ran the flow and matched the committed report. Result (klayout-tools 0.6.0,
+re-ran the flow and matched the committed report. Result (reports regenerated with klayout-tools 0.8.0; netlists and figures unchanged from 0.6.0,
 Yosys 0.67, PDK gf180mcuD):
 
 | Quantity | Value |
@@ -179,16 +179,16 @@ Yosys warning is the `translate_off` elaboration guard in the RTL.
 ### Synthesis: `antifuse_digital_top`
 
 ```sh
-uvx --from "klayout-tools==0.6.0" klt synthesize rtl/synth/antifuse_digital_top.synth.json \
+uvx --from "klayout-tools==0.8.0" klt synthesize rtl/synth/antifuse_digital_top.synth.json \
     --pdk gf180mcuD --format json > rtl/synth/antifuse_digital_top.synth.report.json
 # rtl/synth/antifuse_digital_top_synth.v is a copy of the mapped netlist, as above.
-uvx --from "klayout-tools==0.6.0" klt synthesize rtl/synth/antifuse_digital_top.synth.json \
+uvx --from "klayout-tools==0.8.0" klt synthesize rtl/synth/antifuse_digital_top.synth.json \
     --pdk gf180mcuD --check rtl/synth/antifuse_digital_top.synth.report.json --rerun
 ```
 
 Same flow and library as above, default parameters (N = 32), top
 `antifuse_digital_top`. The `--check --rerun` pass matched the committed
-report (exit 0). Result (klayout-tools 0.6.0, Yosys 0.67, PDK gf180mcuD):
+report (exit 0). Result (reports regenerated with klayout-tools 0.8.0; netlists and figures unchanged from 0.6.0, Yosys 0.67, PDK gf180mcuD):
 
 | Quantity | Value |
 |---|---|
@@ -200,9 +200,9 @@ report (exit 0). Result (klayout-tools 0.6.0, Yosys 0.67, PDK gf180mcuD):
 
 The one Yosys warning is the `translate_off` elaboration guard in the RTL.
 Decoder function is checked at RTL by `verification/run_decode.sh`; there is no
-gate-level simulation of this netlist (same limits as below). This report is
-not cited in `signoff/manifest.json`: `klt signoff` does not read synthesize
-responses (klayout-tools#4015).
+gate-level simulation of this netlist (same limits as below). Both
+`--check --rerun` commands are the freshness checks in
+`signoff/inventories/item-1-digital.json`, which backs `1.digital`.
 
 Not done (for either netlist):
 
