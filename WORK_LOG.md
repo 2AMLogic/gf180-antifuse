@@ -5,6 +5,10 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-10-27
 
+- **PR #188**: feat: cite klt drc report as 3.digital and add run_drc.sh
+- **Issue #175** (closed): T1 item 3 (DRC clean, digital partition): klt drc on the routed digital GDS
+- **PR #187**: fix: clear routed-GDS DRC via tapcell pitch and PDN split-cut removal
+- **Issue #186** (closed): Routed digital GDS fails klt drc: 5937 violations across 9 rules
 - **PR #181**: feat: attest digital testbenches for item 9 and regrade signoff with klt 0.8.0
 - **Issue #173** (closed): T1 item 9 (Testbenches shipped, digital partition): attest the iverilog and cocotb benches with klt signoff --attest 9
 - **PR #180**: feat(rtl): route antifuse_digital_top with a PDN and cite it as 2.digital

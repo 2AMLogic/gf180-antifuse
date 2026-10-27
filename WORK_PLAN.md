@@ -5,7 +5,7 @@
 
 Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a human merge decision is missing.
 
-_None._
+- **#183**: build: wire package.json test/check scripts to the repo's real checks
 
 ## Very Important
 
@@ -32,19 +32,20 @@ _None._
 Issues currently being built (`loom:building`).
 
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4)
-- **#174**: T1 item 2 (Layout, digital partition): klt place-and-route of antifuse_digital_top with a PDN, committed routed GDS
+- **#182**: Wire package.json check scripts to the repo's real checks (currently vacuous exit 0)
+- **#184**: Consolidate five duplicated .subckt cell-default parsers onto sim/harness/numfmt.py
 
 ## PRs Awaiting Review
 
 PRs waiting on Judge (`loom:review-requested`).
 
-_None._
+- **#189**: refactor: route cell-default parsing through numfmt.parse_defaults
 
 ## Approved (Awaiting Merge)
 
 PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
-_None._
+- **#183**: build: wire package.json test/check scripts to the repo's real checks
 
 ## Proposed
 
@@ -53,8 +54,7 @@ Issues carrying `loom:curated`.
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4) *(curated)*
 - **#99**: Re-qualify reference sim records under open_pdks f6eeac7 as new records *(curated)*
 - **#117**: T1 items 1 and 9 (analog partition): attest the cell sources and testbenches with klt signoff --attest *(curated)*
-- **#172**: T1 item 1 (Design sources, digital partition): attest the RTL and synthesized netlists with klt signoff --attest 1 *(curated)*
-- **#174**: T1 item 2 (Layout, digital partition): klt place-and-route of antifuse_digital_top with a PDN, committed routed GDS *(curated)*
+- **#176**: T1 item 4 (LVS clean, digital partition): klt lvs against the gate-level netlist with power_connectivity *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -68,14 +68,14 @@ _None._
 
 | Bucket | Count |
 |------|-------|
-| Operator merge-risk holds | 0 |
+| Operator merge-risk holds | 1 |
 | Very important | 0 |
 | Important | 3 |
 | Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 2 |
-| PRs awaiting review | 0 |
-| Approved PRs awaiting merge | 0 |
-| Curated | 5 |
+| In Progress (`loom:building`) | 3 |
+| PRs awaiting review | 1 |
+| Approved PRs awaiting merge | 1 |
+| Curated | 4 |
 | Architect / Hermit proposals | 0 |
 | Active epics | 1 |
 <!-- guide:plan-body:end -->
