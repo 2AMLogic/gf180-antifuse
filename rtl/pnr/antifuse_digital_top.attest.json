@@ -4,15 +4,15 @@
   "t1_item": 2,
   "status": "pass",
   "source": "rtl/pnr/antifuse_digital_top.pnr.report.json",
-  "summary": "antifuse_digital_top routed GDS (N=32) from klt place-and-route: stage_reached=route, power.pdn=True, tapcell_master=gf180mcu_fd_sc_mcu7t5v0__filltie, tapcells=55, route_drc_violation_count=0. Evidence of reproducible P&R only; not DRC, LVS or timing sign-off.",
+  "summary": "antifuse_digital_top routed GDS (N=32) from klt place-and-route: stage_reached=route, power.pdn=True, tapcell_master=gf180mcu_fd_sc_mcu7t5v0__filltie, tapcells=220, route_drc_violation_count=0. Evidence of reproducible P&R only; not DRC, LVS or timing sign-off.",
   "provenance": {
-    "klt_version": "0.7.0",
+    "klt_version": "0.8.0",
     "input": {
       "path": {
         "path": "rtl/pnr/antifuse_digital_top.gds",
         "scope": "repo"
       },
-      "content_hash": "sha256:0d80d382a57ce6c3ff938ca91574bdfc5cf1c62a22f4775fb04c7707a3a3fd52",
+      "content_hash": "sha256:03876d4efa5f4deb8a6f551f8fd63b0e35ca522e31790d5eba7c0c53bf9422a9",
       "role": "layout"
     }
   }
