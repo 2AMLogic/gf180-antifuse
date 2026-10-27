@@ -65,7 +65,9 @@ DESIGN_DIR = Path(__file__).resolve().parent
 # Shared emitter. regen-netlists.sh runs this under `python3 -I`, which leaves
 # the script directory off sys.path, so tools/ is added explicitly.
 sys.path.insert(0, str(DESIGN_DIR / "tools"))
+sys.path.insert(0, str(DESIGN_DIR.parent / "sim"))
 from xschem_emit import Sch, sym_text, write_or_check  # noqa: E402
+from harness import numfmt  # noqa: E402
 
 CELL_NETLIST_DIR = DESIGN_DIR / "netlists"
 MUX_DIR = DESIGN_DIR / "mux"
@@ -142,15 +144,11 @@ def cell_defaults(cand: int) -> dict[str, str]:
     """wcap/lcap/wacc/lacc subcircuit defaults, read (not copied) from the
     committed derived cell netlist - the same source sim/ reads."""
     text = (CELL_NETLIST_DIR / f"cell_candidate{cand}.spice").read_text()
-    m = re.search(
-        r"\.subckt\s+cell_candidate\d\s+\S+\s+\S+\s+\S+\s+\S+\s+"
-        r"wcap=(?P<wcap>\S+)\s+lcap=(?P<lcap>\S+)\s+"
-        r"wacc=(?P<wacc>\S+)\s+lacc=(?P<lacc>\S+)",
-        text,
-    )
-    if not m:
+    d = numfmt.parse_defaults(text, raw=True)
+    keys = ("wcap", "lcap", "wacc", "lacc")
+    if not set(keys) <= d.keys():
         raise SystemExit(f"gen_array: no parameterized .subckt line in cell_candidate{cand}.spice")
-    return m.groupdict()
+    return {k: d[k] for k in keys}
 
 
 def level_indices(r: int, c: int, c0: int) -> tuple[int, int]:
