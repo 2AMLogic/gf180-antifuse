@@ -4,6 +4,10 @@ Digital (RTL) verification. Analog evidence lives in `sim/`; nothing here is
 SPICE, and a pass here is a behavioural check of `rtl/`, not timing or
 synthesis evidence.
 
+The single attested cold start for the digital partition is
+`verification/run_digital_cold_start.sh` (both Verilog benches plus the cocotb
+request, through a pinned `uvx` klt); see `signoff/README.md`.
+
 ## One-hot decoder bench
 
 Files: [`tb_antifuse_decode.v`](tb_antifuse_decode.v) (exhaustive
