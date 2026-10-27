@@ -5,7 +5,7 @@
   "tier": null,
   "t1_item_count": 22,
   "build_t1_item_count": 22,
-  "t1_met_count": 3,
+  "t1_met_count": 4,
   "source_doc": "docs/design-evidence-tiers.md",
   "source_doc_content_hash": "sha256:a26b90262320d0fbd32b3f549a02b6300832706041797a559d8bf6bdb62efdc7",
   "build": {
@@ -86,10 +86,29 @@
       "partition": "digital",
       "text": "committed routed GDS/OASIS from place-and-route, reproducibly generated from the gate-level netlist (P&R script/flow committed, not a one-off hand edit). For the same full-custom sub-case, this item is satisfied instead by the Analog column's artifact: committed GDS/OASIS, reproducibly generated or with documented provenance \u2014 hand-drawn layout, not P&R output.",
       "notes": [],
-      "status": "unmet",
-      "reason": "no_evidence",
+      "status": "met",
+      "reason": null,
       "graded_by_build": true,
-      "citation": null
+      "citation": {
+        "file": "rtl/pnr/antifuse_digital_top.attest.json",
+        "command": null,
+        "kind": "generic",
+        "check_status": "pass",
+        "content_hash": "sha256:0d80d382a57ce6c3ff938ca91574bdfc5cf1c62a22f4775fb04c7707a3a3fd52",
+        "input_verified": true,
+        "exit_status": 0,
+        "artifact_binding": {
+          "t1_item": 2,
+          "path": {
+            "path": "rtl/pnr/antifuse_digital_top.gds",
+            "scope": "repo"
+          },
+          "content_hash": "sha256:0d80d382a57ce6c3ff938ca91574bdfc5cf1c62a22f4775fb04c7707a3a3fd52",
+          "input_verified": true,
+          "summary": "antifuse_digital_top routed GDS (N=32) from klt place-and-route: stage_reached=route, power.pdn=True, tapcell_master=gf180mcu_fd_sc_mcu7t5v0__filltie, tapcells=55, route_drc_violation_count=0. Evidence of reproducible P&R only; not DRC, LVS or timing sign-off.",
+          "source": "rtl/pnr/antifuse_digital_top.pnr.report.json"
+        }
+      }
     },
     {
       "tier": "T1",
