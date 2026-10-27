@@ -1,0 +1,12 @@
+{
+  "engine": "openroad",
+  "netlist": "../synth/antifuse_digital_top_synth.v",
+  "hdl_toplevel": "antifuse_digital_top",
+  "pdk": {"cell_library": "gf180mcu_fd_sc_mcu7t5v0"},
+  "floorplan": {"method": "utilization", "utilization_pct": 35, "site": "GF018hv5v_mcu_sc7", "core_margin_um": 10},
+  "io": {"layer_h": "Metal3", "layer_v": "Metal2"},
+  "constraints": {"clock_port": "clk", "clock_period_ns": 50},
+  "power": {"power_net": "VDD", "ground_net": "VSS", "preset": "gf180mcu_7t_6M"},
+  "seed": 1,
+  "target_stage": "route"
+}

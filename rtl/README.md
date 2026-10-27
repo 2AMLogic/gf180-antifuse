@@ -214,4 +214,41 @@ Not done (for either netlist):
   path is not supported`). The RTL bench is unchanged and covers the RTL only.
 - **Equivalence.** `klt synthesize --verify-equivalence` is combinational-only
   and this block is sequential.
-- **Timing, place and route.** Nothing beyond the ABC estimate above.
+- **Timing.** Nothing beyond the ABC estimate above and the unsigned P&R figures under "Place-and-route".
+
+## Place-and-route
+
+`antifuse_digital_top` at the default **N = 32** (the array size captured in
+the RTL; a different ratified N means a re-run, not a redesign), routed from
+`synth/antifuse_digital_top_synth.v` with `klt place-and-route` (klayout-tools
+0.7.0, OpenROAD `26Q3-1510-g6cb3f2b704`, PDK gf180mcuD, `gf180mcu_fd_sc_mcu7t5v0`).
+One local single-unit run, about 4 minutes.
+
+```sh
+rtl/pnr/run_pnr.sh            # re-run, refresh the committed artifacts
+rtl/pnr/run_pnr.sh --check    # cheap provenance check, no OpenROAD
+rtl/pnr/run_pnr.sh --rerun    # full re-run diffed against the committed report
+```
+
+| File | What it is |
+|---|---|
+| [`pnr/antifuse_digital_top.pnr.json`](pnr/antifuse_digital_top.pnr.json) | The request: 35 % utilization, 10 um core margin, `power.preset: gf180mcu_7t_6M` (PDN on Metal1/4/5 plus tapcells, endcaps, fill), seed 1. |
+| `pnr/antifuse_digital_top.pnr.report.json` | The `klt place-and-route` response, with host paths rewritten repo-relative by the script. |
+| `pnr/antifuse_digital_top.{gds,def}`, `pnr/antifuse_digital_top_routed.v` | Routed GDS, DEF and the as-built netlist (CTS buffers and fill included): the reference a later LVS run should use. |
+| `pnr/antifuse_digital_top.attest.json` | The T1 item 2 attestation, written by `pnr/attest.py` and cited as `2.digital` in `signoff/manifest.json`. |
+
+Result: status `ok`, stage `route`, `power.pdn: true`, tapcell master
+`gf180mcu_fd_sc_mcu7t5v0__filltie` (55 tapcells, 106 endcaps), 0 antenna and 0
+route DRC violations, die 54333 um^2, 38 % utilization.
+
+Not claimed, and not part of this change:
+
+- **Pin plan.** klt 0.7.0 exposes only the pin layers (`io.layer_h`/`layer_v`);
+  OpenROAD places the ports itself. The pins are not placed to match the
+  analog interface, so any analog/digital integration needs its own plan.
+- **Timing is not signed off.** The 50 ns `clk` target is a P&R input chosen
+  here, not a spec value. With it, `ss_125C_1v62` shows setup slack -3.48 ns,
+  `ss_n40C_1v62` -0.07 ns, and that corner has 15 max-transition and 1
+  max-capacitance violations (`corners[]` in the report). No STA sign-off was
+  run.
+- **DRC, LVS and power-delivery checks** of this layout are separate items.
