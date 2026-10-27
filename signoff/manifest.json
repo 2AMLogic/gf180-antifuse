@@ -4,11 +4,15 @@
   "evidence": {
     "2.digital": {
       "file": "rtl/pnr/antifuse_digital_top.attest.json",
-      "content_hash": "sha256:0d80d382a57ce6c3ff938ca91574bdfc5cf1c62a22f4775fb04c7707a3a3fd52"
+      "content_hash": "sha256:03876d4efa5f4deb8a6f551f8fd63b0e35ca522e31790d5eba7c0c53bf9422a9"
     },
     "1.digital": {
       "file": "signoff/attestations/item-1-digital.json",
       "content_hash": "sha256:8dafc6f3c571ba85bb33813fb34e74bb932356192f5e28ae24dcd9f598a5b228"
+    },
+    "3.digital": {
+      "file": "rtl/pnr/antifuse_digital_top.drc.json",
+      "content_hash": "sha256:03876d4efa5f4deb8a6f551f8fd63b0e35ca522e31790d5eba7c0c53bf9422a9"
     },
     "3.analog": {
       "file": "layout/cell_candidate1/drc_report.json",
