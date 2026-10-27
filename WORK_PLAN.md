@@ -32,6 +32,7 @@ _None._
 Issues currently being built (`loom:building`).
 
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4)
+- **#174**: T1 item 2 (Layout, digital partition): klt place-and-route of antifuse_digital_top with a PDN, committed routed GDS
 
 ## PRs Awaiting Review
 
@@ -52,6 +53,8 @@ Issues carrying `loom:curated`.
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4) *(curated)*
 - **#99**: Re-qualify reference sim records under open_pdks f6eeac7 as new records *(curated)*
 - **#117**: T1 items 1 and 9 (analog partition): attest the cell sources and testbenches with klt signoff --attest *(curated)*
+- **#172**: T1 item 1 (Design sources, digital partition): attest the RTL and synthesized netlists with klt signoff --attest 1 *(curated)*
+- **#174**: T1 item 2 (Layout, digital partition): klt place-and-route of antifuse_digital_top with a PDN, committed routed GDS *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -69,10 +72,10 @@ _None._
 | Very important | 0 |
 | Important | 3 |
 | Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 1 |
+| In Progress (`loom:building`) | 2 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 0 |
-| Curated | 3 |
+| Curated | 5 |
 | Architect / Hermit proposals | 0 |
 | Active epics | 1 |
 <!-- guide:plan-body:end -->
