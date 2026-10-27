@@ -53,6 +53,9 @@ from pathlib import Path
 DESIGN = Path(__file__).resolve().parent
 ROOT = DESIGN.parent
 SPEC = ROOT / "spec" / "split-axis-plan.md"
+CELL_PARAMS = ("wcap", "lcap", "wacc", "lacc")
+sys.path.insert(0, str(ROOT / "sim"))
+from harness import numfmt  # noqa: E402
 NL = DESIGN / "netlists"
 N = 32
 SLICES = ("slice_i_ii", "slice_ii_iii")
@@ -124,11 +127,10 @@ def logical_lines(path: Path) -> list[str]:
 
 
 def cell_defaults(cand: int) -> dict[str, float]:
-    text = (NL / f"cell_candidate{cand}.spice").read_text()
-    m = re.search(r"\.subckt\s+cell_candidate\d\s+\S+\s+\S+\s+\S+\s+\S+\s+wcap=(\S+)\s+lcap=(\S+)\s+wacc=(\S+)\s+lacc=(\S+)", text)
-    if not m:
+    d = numfmt.cell_defaults(NL / f"cell_candidate{cand}.spice")
+    if not set(CELL_PARAMS) <= d.keys():
         raise SystemExit(f"check-array: no parameterized .subckt in cell_candidate{cand}.spice")
-    return dict(zip(("wcap", "lcap", "wacc", "lacc"), map(num, m.groups())))
+    return {k: d[k] for k in CELL_PARAMS}
 
 
 def parse_instances(path: Path):

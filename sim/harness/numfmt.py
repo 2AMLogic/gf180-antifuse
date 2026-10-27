@@ -46,9 +46,15 @@ def sci(x, placeholder: str = "n/a", digits: int = 4, nan_placeholder: bool = Fa
     return f"{x:.{digits}e}"
 
 
+def parse_defaults(text: str, raw: bool = False) -> dict:
+    """``name=value`` parameter defaults off the first ``.subckt`` line of cell
+    netlist ``text``: floats, or the literal tokens as written if ``raw``."""
+    line = next(l for l in text.splitlines() if l.startswith(".subckt"))
+    return {k: v if raw else spice_num(v)
+            for k, v in re.findall(r"(\w+)=([0-9.eE+-]+[a-zA-Z]*)", line)}
+
+
 def cell_defaults(netlist: Path) -> dict[str, float]:
     """``name=value`` parameter defaults off the ``.subckt`` line of a committed
     cell netlist (read, not hand-copied)."""
-    text = Path(netlist).read_text()
-    line = next(l for l in text.splitlines() if l.startswith(".subckt"))
-    return {k: spice_num(v) for k, v in re.findall(r"(\w+)=([0-9.eE+-]+[a-zA-Z]*)", line)}
+    return parse_defaults(Path(netlist).read_text())

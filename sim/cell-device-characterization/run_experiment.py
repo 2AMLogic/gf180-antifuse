@@ -90,16 +90,11 @@ def parse_defaults(netlist_path: Path) -> dict[str, float]:
     """Pull wcap/lcap/wacc/lacc subcircuit-parameter defaults out of the
     committed netlist's `.subckt` line -- read, not hand-copied, so this
     never drifts from the actual committed geometry defaults."""
-    text = netlist_path.read_text()
-    m = re.search(
-        r"\.subckt\s+\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+"
-        r"wcap=(?P<wcap>\S+)\s+lcap=(?P<lcap>\S+)\s+"
-        r"wacc=(?P<wacc>\S+)\s+lacc=(?P<lacc>\S+)",
-        text,
-    )
-    if not m:
+    d = NF.cell_defaults(netlist_path)
+    keys = ("wcap", "lcap", "wacc", "lacc")
+    if not set(keys) <= d.keys():
         raise ValueError(f"could not find .subckt parameter defaults in {netlist_path}")
-    return {k: spice_num(v) for k, v in m.groupdict().items()}
+    return {k: d[k] for k in keys}
 
 
 def off_levels(candidate: Candidate) -> tuple[float, float, float]:

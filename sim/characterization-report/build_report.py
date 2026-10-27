@@ -39,6 +39,8 @@ from pathlib import Path
 GENERATOR_VERSION = 1
 HERE = Path(__file__).resolve().parent
 DEFAULT_ROOT = HERE.parent.parent
+sys.path.insert(0, str(HERE.parent))
+from harness import numfmt  # noqa: E402
 
 SCOPE_STATEMENT = (
     "This report covers antifuse cell DEVICE characterization only (access-device "
@@ -244,8 +246,9 @@ def load_record(root: Path, manifest: dict, sel: dict, sup_map: dict):
 
     # --- geometry from the frozen snapshot
     snap = (root / snap_path).read_text()
-    m = re.search(r"\.subckt\s+\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+wcap=(\S+)\s+lcap=(\S+)\s+wacc=(\S+)\s+lacc=(\S+)", snap)
-    geom_defaults = {"wcap": m.group(1), "lcap": m.group(2), "wacc": m.group(3), "lacc": m.group(4)} if m else None
+    keys = ("wcap", "lcap", "wacc", "lacc")
+    d = numfmt.parse_defaults(snap, raw=True)
+    geom_defaults = {k: d[k] for k in keys} if set(keys) <= d.keys() else None
     region["geometry_note"] = (
         "Levels 'min' and '2x' are the committed netlist's subcircuit-parameter defaults "
         "and a x2 width; they are placeholders, NOT the ratified split-axis levels."

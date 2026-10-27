@@ -56,6 +56,12 @@ class CellDefaults(unittest.TestCase):
         d = N.cell_defaults(REPO / "design" / "netlists" / "cell_candidate1.spice")
         self.assertEqual(d, {"wcap": 1e-6, "lcap": 1e-6, "wacc": 0.30e-6, "lacc": 0.70e-6})
 
+    def test_parse_defaults_text_floats_and_raw(self):
+        text = "* c\n.subckt cell_x BL WL PL VB  wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u\n"
+        self.assertEqual(N.parse_defaults(text)["wacc"], 0.30e-6)
+        self.assertEqual(N.parse_defaults(text, raw=True),
+                         {"wcap": "1e-6", "lcap": "1e-6", "wacc": "0.30u", "lacc": "0.55u"})
+
 
 if __name__ == "__main__":
     unittest.main()
