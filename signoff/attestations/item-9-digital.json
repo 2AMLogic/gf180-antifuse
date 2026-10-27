@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "kind": "generic",
+  "status": "pass",
+  "t1_item": 9,
+  "summary": "T1 item 9 (Testbenches shipped): 10/10 attestation checks passed (klt signoff --attest)",
+  "source": "signoff/inventories/item-9-digital.json",
+  "attestation": {
+    "producer": "klt signoff --attest",
+    "inventory_schema_version": 1,
+    "hash_algorithm": "sha256-raw-bytes",
+    "check_count": 10,
+    "passed_count": 10,
+    "checks": [
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "verification/cocotb/request_spi_regs.json",
+        "passed": true,
+        "content_hash": "sha256:a963617b502546f1f8492875ea44a9f6e20173865bc38e693681d696e8f1672d"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "verification/cocotb/test_spi_regs.py",
+        "passed": true,
+        "content_hash": "sha256:a8601cda3e866447eee5245ce0476c3d6b9237d1f97f18d4749e309ccb8cbf53"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "verification/run_decode.sh",
+        "passed": true,
+        "content_hash": "sha256:609a70c00e77230b5a38983ae70ca9edbfaf1255d581ac965682a4d94283f7ed"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "verification/run_spi_mutations.sh",
+        "passed": true,
+        "content_hash": "sha256:a21bb903c5e918a96090c0c1951d335714690470ec655b237d29d43d01b56652"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "verification/run_spi_regs.sh",
+        "passed": true,
+        "content_hash": "sha256:7e9b776c8e422765f6d0cdf976222c4c93b78798cc3c4a952fa9b56b8350e788"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "verification/tb_antifuse_decode.v",
+        "passed": true,
+        "content_hash": "sha256:ac1f734525412d75a93dd5fd7ef0e663c26b60c210724847e9496192759fa37e"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "verification/tb_antifuse_spi_regs.v",
+        "passed": true,
+        "content_hash": "sha256:0cc8b7aadf26ea31739faa8b09aae5b668be264400e2f715a13bb6c2ee89468d"
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "argv": [
+          "verification/run_digital_cold_start.sh"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "pin",
+        "role": "pdk",
+        "passed": true,
+        "value": {
+          "name": "gf180mcu",
+          "revision": "f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
+        }
+      },
+      {
+        "check": "pin",
+        "role": "tools",
+        "passed": true,
+        "value": {
+          "cocotb": "2.1.0",
+          "iverilog": "13.0",
+          "klt": "0.8.0"
+        }
+      }
+    ]
+  },
+  "provenance": {
+    "klt_version": "0.8.0",
+    "klayout_version": null,
+    "pdk": null,
+    "deck": null,
+    "input": {
+      "path": {
+        "path": "signoff/inventories/item-9-digital.json",
+        "scope": "repo"
+      },
+      "content_hash": "sha256:9de9885208fb24ea0c535002f1ff8fd768026e6c4278e325362fdd321745b619"
+    }
+  }
+}
