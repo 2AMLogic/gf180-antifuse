@@ -3,7 +3,8 @@
   "engine": "yosys",
   "engine_version": "0.67+post",
   "hdl_toplevel": "antifuse_digital_top",
-  "run_id": "run-575c8c6e6bd84c30b5d992519cf575f0",
+  "parameters": {},
+  "run_id": "run-485e9ea09a284145b4795881e2393154",
   "status": "ok",
   "instance_count": 532,
   "area_um2": 15893.248,
@@ -72,7 +73,14 @@
     "critical_path_ps": 13621.41,
     "delay_target_ps": null
   },
+  "clock_targets": {
+    "clocks": [],
+    "delay_target_ps": null,
+    "delay_target_basis": "none",
+    "per_clock_enforced": false
+  },
   "sta": null,
+  "sta_unavailable_reason": "the optional klt_statime_native extension is not installed (it is not shipped with the published klayout-tools package), so no gate-level static timing analysis was attempted -- from a repo checkout, run `uv sync --group statime` (or `maturin develop --release` inside native/statime/) and re-run to populate `sta`; from an installed package, `klt sta` with a `verilog` request gives a netlist-level timing estimate (needs OpenSTA)",
   "structural": {
     "latches": 0,
     "expected_latches": 0,
@@ -80,6 +88,14 @@
     "comb_loops": 0,
     "multi_driven": 0,
     "has_critical": false
+  },
+  "cell_exclusions": {
+    "mode": "additive",
+    "requested": [],
+    "library_defaults": [],
+    "effective": [],
+    "validated": null,
+    "engine_supports_dont_use": null
   },
   "warnings": {
     "total": 1,
@@ -94,25 +110,39 @@
       }
     ]
   },
+  "memory_mapping": {
+    "status": "none_detected",
+    "reason": null,
+    "modules": [],
+    "script_path": {
+      "path": "rtl/synth/.klt/synthesize/run-485e9ea09a284145b4795881e2393154/antifuse_digital_top_memory_evidence.ys",
+      "scope": "repo"
+    }
+  },
+  "blackbox_modules": [],
   "netlist_path": {
-    "path": "rtl/synth/.klt/synthesize/run-575c8c6e6bd84c30b5d992519cf575f0/antifuse_digital_top_synth.v",
+    "path": "rtl/synth/.klt/synthesize/run-485e9ea09a284145b4795881e2393154/antifuse_digital_top_synth.v",
     "scope": "repo"
   },
+  "netlist_sha256": "fbfd2c8044ecdee829d2f3f5b23904763bab8c38ef377848d0b9bf430ff8df4b",
   "script_path": {
-    "path": "rtl/synth/.klt/synthesize/run-575c8c6e6bd84c30b5d992519cf575f0/synth_antifuse_digital_top.ys",
+    "path": "rtl/synth/.klt/synthesize/run-485e9ea09a284145b4795881e2393154/synth_antifuse_digital_top.ys",
     "scope": "repo"
   },
   "run_script_path": {
-    "path": "rtl/synth/.klt/synthesize/run-575c8c6e6bd84c30b5d992519cf575f0/synth_antifuse_digital_top.run.ys",
+    "path": "rtl/synth/.klt/synthesize/run-485e9ea09a284145b4795881e2393154/synth_antifuse_digital_top.run.ys",
     "scope": "repo"
   },
   "provenance": {
-    "klt_version": "0.6.0",
+    "klt_version": "0.8.0",
     "klayout_version": "0.30.12",
     "pdk": {
       "name": "gf180mcuD",
       "source": "search root: ~/.ciel",
-      "version": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
+      "version": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7",
+      "ambiguous_sources": [
+        "search root: ~/.volare"
+      ]
     },
     "deck": {
       "name": "gf180mcu_fd_sc_mcu7t5v0__tt_025C_1v80",
@@ -122,7 +152,8 @@
     "input": {
       "content_hash": "sha256:4cea3116a1afe40dd993e20f1cfd0a13b89c8cd889d609b41da556937dfd0cb1",
       "role": "source"
-    }
+    },
+    "parameters": {}
   },
   "equivalence": null,
   "restructuring": null,
