@@ -3,6 +3,15 @@
 Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 
+### 2026-10-27
+
+- **PR #181**: feat: attest digital testbenches for item 9 and regrade signoff with klt 0.8.0
+- **Issue #173** (closed): T1 item 9 (Testbenches shipped, digital partition): attest the iverilog and cocotb benches with klt signoff --attest 9
+- **PR #180**: feat(rtl): route antifuse_digital_top with a PDN and cite it as 2.digital
+- **Issue #174** (closed): T1 item 2 (Layout, digital partition): klt place-and-route of antifuse_digital_top with a PDN, committed routed GDS
+- **PR #179**: signoff: attest T1 item 1 (digital) via klt signoff --attest; regrade with klayout-tools 0.8.0
+- **Issue #172** (closed): T1 item 1 (Design sources, digital partition): attest the RTL and synthesized netlists with klt signoff --attest 1
+
 ### 2026-10-24
 
 - **PR #170**: chore(sim): remove unused ngspice deck runner
