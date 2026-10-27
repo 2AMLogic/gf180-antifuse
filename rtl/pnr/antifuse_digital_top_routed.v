@@ -452,11 +452,11 @@ module antifuse_digital_top (busy,
     .Z(clknet_3_7__leaf_clk));
  gf180mcu_fd_sc_mcu7t5v0__clkinv_8 clkload0 (.I(clknet_3_0__leaf_clk));
  gf180mcu_fd_sc_mcu7t5v0__inv_4 clkload1 (.I(clknet_3_1__leaf_clk));
- gf180mcu_fd_sc_mcu7t5v0__clkinv_8 clkload2 (.I(clknet_3_2__leaf_clk));
+ gf180mcu_fd_sc_mcu7t5v0__inv_4 clkload2 (.I(clknet_3_2__leaf_clk));
  gf180mcu_fd_sc_mcu7t5v0__inv_4 clkload3 (.I(clknet_3_3__leaf_clk));
- gf180mcu_fd_sc_mcu7t5v0__inv_4 clkload4 (.I(clknet_3_4__leaf_clk));
+ gf180mcu_fd_sc_mcu7t5v0__inv_3 clkload4 (.I(clknet_3_4__leaf_clk));
  gf180mcu_fd_sc_mcu7t5v0__clkinv_2 clkload5 (.I(clknet_3_5__leaf_clk));
- gf180mcu_fd_sc_mcu7t5v0__clkinv_2 clkload6 (.I(clknet_3_6__leaf_clk));
+ gf180mcu_fd_sc_mcu7t5v0__inv_4 clkload6 (.I(clknet_3_6__leaf_clk));
  gf180mcu_fd_sc_mcu7t5v0__nand2_2 \u_col_dec/_23_  (.A1(col_sel[0]),
     .A2(col_sel[1]),
     .ZN(\u_col_dec/_00_ ));
@@ -1814,7 +1814,7 @@ module antifuse_digital_top (busy,
     .Q(\u_regs/rd_cnt [1]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_649_  (.D(\u_regs/_039_ ),
     .RN(\u_regs/net3 ),
-    .CLK(clknet_3_6__leaf_clk),
+    .CLK(clknet_3_7__leaf_clk),
     .Q(\u_regs/rd_cnt [2]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_650_  (.D(\u_regs/_038_ ),
     .RN(\u_regs/net3 ),
@@ -1842,7 +1842,7 @@ module antifuse_digital_top (busy,
     .Q(col_sel[0]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_656_  (.D(\u_regs/_033_ ),
     .RN(\u_regs/net3 ),
-    .CLK(clknet_3_4__leaf_clk),
+    .CLK(clknet_3_5__leaf_clk),
     .Q(col_sel[1]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_657_  (.D(\u_regs/_030_ ),
     .RN(\u_regs/net3 ),
@@ -1850,7 +1850,7 @@ module antifuse_digital_top (busy,
     .Q(col_sel[2]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_658_  (.D(\u_regs/_029_ ),
     .RN(\u_regs/net3 ),
-    .CLK(clknet_3_7__leaf_clk),
+    .CLK(clknet_3_6__leaf_clk),
     .Q(col_sel[3]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_659_  (.D(\u_regs/_012_ ),
     .RN(\u_regs/net3 ),
@@ -1870,7 +1870,7 @@ module antifuse_digital_top (busy,
     .Q(row_sel[2]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_663_  (.D(\u_regs/_024_ ),
     .RN(\u_regs/net3 ),
-    .CLK(clknet_3_7__leaf_clk),
+    .CLK(clknet_3_6__leaf_clk),
     .Q(row_sel[3]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_664_  (.D(\u_regs/_022_ ),
     .RN(\u_regs/net3 ),
@@ -1882,7 +1882,7 @@ module antifuse_digital_top (busy,
     .Q(\u_regs/perr ));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_666_  (.D(\u_regs/_019_ ),
     .RN(\u_regs/net3 ),
-    .CLK(clknet_3_5__leaf_clk),
+    .CLK(clknet_3_4__leaf_clk),
     .Q(\u_regs/rd_byte [0]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_667_  (.D(\u_regs/_018_ ),
     .RN(\u_regs/net3 ),
@@ -1902,7 +1902,7 @@ module antifuse_digital_top (busy,
     .Q(\u_regs/rd_byte [4]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_671_  (.D(\u_regs/_014_ ),
     .RN(\u_regs/net3 ),
-    .CLK(clknet_3_1__leaf_clk),
+    .CLK(clknet_3_4__leaf_clk),
     .Q(\u_regs/rd_byte [5]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_672_  (.D(\u_regs/_013_ ),
     .RN(\u_regs/net3 ),
@@ -1914,11 +1914,11 @@ module antifuse_digital_top (busy,
     .Q(\u_regs/rd_byte [7]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_674_  (.D(\u_regs/_008_ ),
     .RN(\u_regs/net3 ),
-    .CLK(clknet_3_2__leaf_clk),
+    .CLK(clknet_3_0__leaf_clk),
     .Q(\u_regs/arm_cnt [0]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_675_  (.D(\u_regs/_007_ ),
     .RN(\u_regs/net3 ),
-    .CLK(clknet_3_0__leaf_clk),
+    .CLK(clknet_3_1__leaf_clk),
     .Q(\u_regs/arm_cnt [1]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_676_  (.D(\u_regs/_006_ ),
     .RN(\u_regs/net3 ),
@@ -1938,15 +1938,15 @@ module antifuse_digital_top (busy,
     .Q(\u_regs/arm_cnt [5]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_680_  (.D(\u_regs/_080_ ),
     .RN(\u_regs/net3 ),
-    .CLK(clknet_3_2__leaf_clk),
+    .CLK(clknet_3_0__leaf_clk),
     .Q(\u_regs/arm_cnt [6]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_681_  (.D(\u_regs/_079_ ),
     .RN(\u_regs/net3 ),
-    .CLK(clknet_3_2__leaf_clk),
+    .CLK(clknet_3_0__leaf_clk),
     .Q(\u_regs/arm_cnt [7]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_682_  (.D(\u_regs/_078_ ),
     .RN(\u_regs/net3 ),
-    .CLK(clknet_3_2__leaf_clk),
+    .CLK(clknet_3_0__leaf_clk),
     .Q(\u_regs/arm_cnt [8]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_683_  (.D(\u_regs/_077_ ),
     .RN(\u_regs/net3 ),
@@ -1962,7 +1962,7 @@ module antifuse_digital_top (busy,
     .Q(\u_regs/arm_cnt [11]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_686_  (.D(\u_regs/_031_ ),
     .RN(\u_regs/net3 ),
-    .CLK(clknet_3_3__leaf_clk),
+    .CLK(clknet_3_2__leaf_clk),
     .Q(\u_regs/arm_cnt [12]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_687_  (.D(\u_regs/_073_ ),
     .RN(\u_regs/net3 ),
@@ -1978,15 +1978,15 @@ module antifuse_digital_top (busy,
     .Q(\u_regs/cmd [2]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_690_  (.D(\u_regs/_070_ ),
     .RN(\u_regs/net3 ),
-    .CLK(clknet_3_0__leaf_clk),
+    .CLK(clknet_3_1__leaf_clk),
     .Q(\u_regs/cmd [3]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_691_  (.D(\u_regs/_069_ ),
     .RN(\u_regs/net3 ),
-    .CLK(clknet_3_0__leaf_clk),
+    .CLK(clknet_3_1__leaf_clk),
     .Q(\u_regs/cmd [4]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_692_  (.D(\u_regs/_068_ ),
     .RN(\u_regs/net3 ),
-    .CLK(clknet_3_0__leaf_clk),
+    .CLK(clknet_3_1__leaf_clk),
     .Q(\u_regs/cmd [5]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_693_  (.D(\u_regs/_066_ ),
     .RN(\u_regs/net3 ),
@@ -2006,7 +2006,7 @@ module antifuse_digital_top (busy,
     .Q(\u_regs/pw_r [0]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_697_  (.D(\u_regs/_055_ ),
     .RN(\u_regs/net3 ),
-    .CLK(clknet_3_6__leaf_clk),
+    .CLK(clknet_3_3__leaf_clk),
     .Q(\u_regs/pw_r [1]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_698_  (.D(\u_regs/_054_ ),
     .RN(\u_regs/net3 ),
@@ -2018,7 +2018,7 @@ module antifuse_digital_top (busy,
     .Q(\u_regs/pw_r [3]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_700_  (.D(\u_regs/_051_ ),
     .RN(\u_regs/net3 ),
-    .CLK(clknet_3_6__leaf_clk),
+    .CLK(clknet_3_3__leaf_clk),
     .Q(\u_regs/pw_r [4]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_701_  (.D(\u_regs/_049_ ),
     .RN(\u_regs/net3 ),
@@ -2026,11 +2026,11 @@ module antifuse_digital_top (busy,
     .Q(\u_regs/pw_r [5]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_702_  (.D(\u_regs/_048_ ),
     .RN(\u_regs/net3 ),
-    .CLK(clknet_3_3__leaf_clk),
+    .CLK(clknet_3_2__leaf_clk),
     .Q(\u_regs/pw_r [6]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_703_  (.D(\u_regs/_052_ ),
     .RN(\u_regs/net3 ),
-    .CLK(clknet_3_3__leaf_clk),
+    .CLK(clknet_3_2__leaf_clk),
     .Q(\u_regs/pw_r [7]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_704_  (.D(\u_regs/_047_ ),
     .RN(\u_regs/net3 ),
@@ -2038,7 +2038,7 @@ module antifuse_digital_top (busy,
     .Q(\u_regs/pw_cnt [0]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_705_  (.D(\u_regs/_046_ ),
     .RN(\u_regs/net3 ),
-    .CLK(clknet_3_6__leaf_clk),
+    .CLK(clknet_3_2__leaf_clk),
     .Q(\u_regs/pw_cnt [1]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_706_  (.D(\u_regs/_045_ ),
     .RN(\u_regs/net3 ),
@@ -2058,11 +2058,11 @@ module antifuse_digital_top (busy,
     .Q(\u_regs/pw_cnt [5]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_710_  (.D(\u_regs/_021_ ),
     .RN(\u_regs/net3 ),
-    .CLK(clknet_3_3__leaf_clk),
+    .CLK(clknet_3_2__leaf_clk),
     .Q(\u_regs/pw_cnt [6]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_711_  (.D(\u_regs/_056_ ),
     .RN(\u_regs/net3 ),
-    .CLK(clknet_3_3__leaf_clk),
+    .CLK(clknet_3_2__leaf_clk),
     .Q(\u_regs/pw_cnt [7]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_712_  (.D(\u_regs/_009_ ),
     .RN(\u_regs/net3 ),
@@ -2082,7 +2082,7 @@ module antifuse_digital_top (busy,
     .Q(\u_regs/dat [3]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_716_  (.D(\u_regs/_063_ ),
     .RN(\u_regs/net3 ),
-    .CLK(clknet_3_6__leaf_clk),
+    .CLK(clknet_3_7__leaf_clk),
     .Q(\u_regs/dat [4]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_717_  (.D(\u_regs/_062_ ),
     .RN(\u_regs/net3 ),
@@ -2094,11 +2094,11 @@ module antifuse_digital_top (busy,
     .Q(\u_regs/dat [6]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_719_  (.D(\u_regs/_060_ ),
     .RN(\u_regs/net3 ),
-    .CLK(clknet_3_3__leaf_clk),
+    .CLK(clknet_3_2__leaf_clk),
     .Q(\u_regs/dat [7]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_720_  (.D(\u_regs/_020_ ),
     .RN(\u_regs/net3 ),
-    .CLK(clknet_3_5__leaf_clk),
+    .CLK(clknet_3_4__leaf_clk),
     .Q(\u_regs/bitcnt [0]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_721_  (.D(\u_regs/_011_ ),
     .RN(\u_regs/net3 ),
@@ -2110,11 +2110,11 @@ module antifuse_digital_top (busy,
     .Q(\u_regs/bitcnt [2]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_723_  (.D(\u_regs/_058_ ),
     .RN(\u_regs/net3 ),
-    .CLK(clknet_3_1__leaf_clk),
+    .CLK(clknet_3_4__leaf_clk),
     .Q(\u_regs/bitcnt [3]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_724_  (.D(\u_regs/_067_ ),
     .RN(\u_regs/net3 ),
-    .CLK(clknet_3_1__leaf_clk),
+    .CLK(clknet_3_4__leaf_clk),
     .Q(\u_regs/bitcnt [4]));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_725_  (.D(\u_regs/_082_ ),
     .RN(\u_regs/net3 ),
@@ -2122,11 +2122,11 @@ module antifuse_digital_top (busy,
     .Q(\u_regs/miso_r ));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_726_  (.D(\u_regs/_083_ ),
     .RN(\u_regs/net3 ),
-    .CLK(clknet_3_2__leaf_clk),
+    .CLK(clknet_3_3__leaf_clk),
     .Q(\u_regs/prog_done ));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_727_  (.D(\u_regs/_000_ ),
     .RN(\u_regs/net3 ),
-    .CLK(clknet_3_2__leaf_clk),
+    .CLK(clknet_3_3__leaf_clk),
     .Q(\u_regs/arm ));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_728_  (.D(\u_regs/_002_ ),
     .RN(\u_regs/net3 ),
@@ -2166,7 +2166,7 @@ module antifuse_digital_top (busy,
     .Q(\u_regs/mosi_1 ));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_737_  (.D(\u_regs/mosi_1 ),
     .RN(\u_regs/net3 ),
-    .CLK(clknet_3_4__leaf_clk),
+    .CLK(clknet_3_5__leaf_clk),
     .Q(\u_regs/mosi_2 ));
  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1 \u_regs/_738_  (.D(sense_in),
     .RN(\u_regs/net3 ),

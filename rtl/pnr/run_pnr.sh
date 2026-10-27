@@ -8,7 +8,7 @@ set -euo pipefail
 # Run from the repo root: the dockerized openroad wrapper mounts only $PWD, and
 # the netlist (rtl/synth) is outside rtl/pnr.
 cd "$(dirname "$0")/../.."
-KLT=${KLT_CMD:-uvx --from klayout-tools==0.7.0 klt}
+KLT=${KLT_CMD:-uvx --from klayout-tools==0.8.0 klt}
 D=rtl/pnr
 REQ=$D/antifuse_digital_top.pnr.json
 REPORT=$D/antifuse_digital_top.pnr.report.json
