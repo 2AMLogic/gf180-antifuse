@@ -41,7 +41,7 @@ doc) or on any drift from the committed report.
 
 ## Current verdict
 
-`tier: null` — **3 of 22 T1 items met** (two analog, one digital), graded against
+`tier: null` — **4 of 22 T1 items met** (two analog, two digital), graded against
 `design-evidence-tiers.md` at
 `sha256:a26b90262320d0fbd32b3f549a02b6300832706041797a559d8bf6bdb62efdc7`
 (the copy bundled in klayout-tools `0.8.0`, which is the
