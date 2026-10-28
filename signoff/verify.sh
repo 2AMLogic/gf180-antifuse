@@ -62,8 +62,16 @@ with open(report_path) as fh:
         if item.get("tier") == "T1" and item.get("id") is not None
     }
 
-for item, entry in (manifest.get("evidence") or {}).items():
-    where = f"evidence[{item!r}]"
+# Item 11's compound citation is a list of {file, content_hash} parts (klt erc
+# plus item 4's LVS report); check each part exactly as a single citation.
+checks = []
+for item, cited in (manifest.get("evidence") or {}).items():
+    if isinstance(cited, list):
+        checks.extend((item, f"evidence[{item!r}][{n}]", part) for n, part in enumerate(cited))
+    else:
+        checks.append((item, f"evidence[{item!r}]", cited))
+
+for item, where, entry in checks:
     match = re.fullmatch(r"(\d+)(?:\.(analog|digital))?", str(item))
     if not match:
         problems.append(

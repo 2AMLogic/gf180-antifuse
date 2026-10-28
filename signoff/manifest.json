@@ -22,10 +22,16 @@
       "file": "layout/cell_candidate1/lvs_report.json",
       "content_hash": "sha256:4fa502d0b9775f4dd8ba42fd2292c0a70edf83e3c528f52550a2ba4d1d9f44de"
     },
-    "11.analog": {
-      "file": "layout/cell_candidate1/erc_report.json",
-      "content_hash": "sha256:4fa502d0b9775f4dd8ba42fd2292c0a70edf83e3c528f52550a2ba4d1d9f44de"
-    },
+    "11.analog": [
+      {
+        "file": "layout/cell_candidate1/erc_report.json",
+        "content_hash": "sha256:4fa502d0b9775f4dd8ba42fd2292c0a70edf83e3c528f52550a2ba4d1d9f44de"
+      },
+      {
+        "file": "layout/cell_candidate1/lvs_report.json",
+        "content_hash": "sha256:4fa502d0b9775f4dd8ba42fd2292c0a70edf83e3c528f52550a2ba4d1d9f44de"
+      }
+    ],
     "9.digital": {
       "file": "signoff/attestations/item-9-digital.json",
       "content_hash": "sha256:9de9885208fb24ea0c535002f1ff8fd768026e6c4278e325362fdd321745b619"

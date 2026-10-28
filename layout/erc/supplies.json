@@ -14,12 +14,16 @@
     { "name": "via3", "layer": "40/0", "between": ["metal3", "metal4"] },
     { "name": "via4", "layer": "41/0", "between": ["metal4", "metal5"] }
   ],
+  "nets": [
+    { "name": "VB", "kind": "supply", "islands": 1 }
+  ],
   "ties": [
     {
-      "name": "vb_nwell_region_iii",
-      "well_layer": "21/0",
+      "name": "vb_psub_region_i",
+      "well_layer": null,
+      "well_boxes": [[-1.23, -1.23, 2.51, 3.07], [2.97, -1.23, 7.13, 3.07]],
       "tap_layer": "22/0",
-      "tap_requires": ["32/0"],
+      "tap_requires": ["31/0"],
       "connect_to": "metal1",
       "net": "VB"
     }

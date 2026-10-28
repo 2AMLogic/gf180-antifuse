@@ -1,7 +1,10 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "engine": "klayout",
-  "layout": "cell_candidate1.gds",
+  "layout": {
+    "path": "layout/cell_candidate1/cell_candidate1.gds",
+    "scope": "repo"
+  },
   "reference": "lvs_reference.spice",
   "top": "cell_candidate1",
   "reference_top": "CELL_CANDIDATE1",
@@ -134,13 +137,13 @@
     "extracted_netlist": null
   },
   "provenance": {
-    "klt_version": "0.7.1.dev2422+g3676721c4e71",
+    "klt_version": "0.8.0",
     "klayout_version": "0.30.12",
     "pdk": null,
     "deck": {
       "name": "gf180mcu",
       "content_hash": "sha256:0eb6df1bafc5106ec50bd58479dbd7cda36bb685f1ef18cd3a2244a6e7e48666",
-      "released": false,
+      "released": true,
       "options": {
         "metal_top": "9K",
         "mim_cap": "cap_mim_2f0_m4m5_noshield",
