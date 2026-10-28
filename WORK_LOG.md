@@ -3,6 +3,11 @@
 Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 
+### 2026-10-28
+
+- **PR #193**: feat(sim): V_bd sensitivity re-run records and per-candidate comparison
+- **Issue #130** (closed): Re-run program- and read-bias benches with sourced V_bd and compare candidates
+
 ### 2026-10-27
 
 - **PR #189**: refactor: route cell-default parsing through numfmt.parse_defaults
