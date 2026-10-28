@@ -294,9 +294,12 @@ def common_header(a, cand, rid: str, params: dict, claim: str, note: str | None,
     a(f"- **Record ID**: {rid}")
     a(f"- **Claim**: issue #{issue} -- Candidate {cand.n} / Region {cand.region}: {claim} Terminal-pair extremes are "
       f"logged per PVT corner against the ratified {rating:g} V rating of "
-      f"`{CHAR.CANDIDATES[cand.n - 1].access_model}` (`spec/cell-candidates.md`). CONDITIONAL ON THE ASSUMED "
-      f"breakdown parameters: V_bd(t_ref) = bd_ebd x c{cand.n}_bd_tox = **{vbd:.2f} V** (assumed, not a gf180 "
-      "number; `design/breakdown/breakdown_params.spice`, unchanged).")
+      f"`{CHAR.CANDIDATES[cand.n - 1].access_model}` (`spec/cell-candidates.md`). "
+      + (f"V_BD SENSITIVITY POINT (not a parameter update, see the sensitivity bullet below): V_bd(t_ref) = "
+         f"**{vbd:.2f} V** from the primary-sourced BVox, every other breakdown parameter still ASSUMED."
+         if CB.VBD_EBD_OVERRIDE is not None else
+         f"CONDITIONAL ON THE ASSUMED breakdown parameters: V_bd(t_ref) = bd_ebd x c{cand.n}_bd_tox = "
+         f"**{vbd:.2f} V** (assumed, not a gf180 number; `design/breakdown/breakdown_params.spice`, unchanged)."))
     if note:
         a(f"- **Run note**: {note}")
     a(f"- **Corner matrix**: {', '.join(CB.C.MOSCAP_CORNERS)} (MOS typical) x {', '.join(str(t) for t in CB.C.TEMPS_C)} "
@@ -307,8 +310,8 @@ def common_header(a, cand, rid: str, params: dict, claim: str, note: str | None,
       "corner; level summaries take the worst corner WITHIN one level only.")
 
 
-def render_retab(pdk, cand, rid: str, params: dict, note: str | None) -> str:
-    src = EXISTING_PROGC[cand.n]
+def render_retab(pdk, cand, rid: str, params: dict, note: str | None, src: str | None = None) -> str:
+    src = src or EXISTING_PROGC[cand.n]
     res = CB.results_from_reports(cand, src, params, benches=("progc_st", "progc_b1m", "progc_b1l"))
     rating = CB.ACCESS_RATING_V[cand.n]
     L: list[str] = []
@@ -500,6 +503,9 @@ def main(argv: list[str] | None = None) -> int:
                     help="comma list; the Candidate 3 gate/well benches (" + ",".join(GWD_BENCHES) +
                          ") are opt-in: --candidates 3 --benches " + ",".join(GWD_BENCHES))
     ap.add_argument("--retabulate", action="store_true", help="re-tabulate existing BL-driven evidence (no sim)")
+    ap.add_argument("--retab-src", default=None, metavar="RECORD_ID",
+                    help="with --retabulate and ONE candidate: re-tabulate this cell-breakdown-model record's "
+                         "progc_* reports (a #130 sensitivity run) instead of the #62/#74 original")
     ap.add_argument("--smoke", default=None, metavar="N:BENCH[:LEVEL_INDEX]", help="ONE local corner (debug probe, no record)")
     ap.add_argument("--resume", default=None, metavar="RECORD_ID",
                     help="finish an interrupted batch run of ONE candidate: benches with a saved report.json are "
@@ -542,10 +548,20 @@ def main(argv: list[str] | None = None) -> int:
                                    CB.sensitivity_block(args.vbd_case, cand.n, params)))
         return 0
     if args.retabulate:
+        if args.retab_src and len(wanted) != 1:
+            print("ERROR: --retab-src applies to exactly one candidate", file=sys.stderr)
+            return 2
         for n in wanted:
             cand = by_n[n]
+            params = CB.apply_vbd_case(base_params, args.vbd_case, n)
+            if args.vbd_case and not args.retab_src:
+                print("ERROR: --vbd-case with --retabulate needs --retab-src (the sensitivity run's record id)",
+                      file=sys.stderr)
+                return 2
             rid = R.allocate_record_id(THIS_DIR, REPO_ROOT)
-            R.write_once(THIS_DIR / "records" / f"{rid}.md", render_retab(pdk, cand, rid, params, args.note))
+            R.write_once(THIS_DIR / "records" / f"{rid}.md",
+                         CB.tag_record(render_retab(pdk, cand, rid, params, args.note, args.retab_src),
+                                       CB.sensitivity_block(args.vbd_case, n, params)))
             print(f"Candidate {n}: records/{rid}.md (re-tabulation, no simulation)")
             time.sleep(1.1)
         return 0
