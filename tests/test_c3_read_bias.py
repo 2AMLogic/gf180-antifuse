@@ -30,6 +30,8 @@ def _load():
 
 X = _load()
 BY_N = {c.n: c for c in X.CHAR.CANDIDATES}
+# the lib root the committed #62/#74 decks were generated with (new runs use $PDK_ROOT, #130)
+HISTORICAL_LIB_ROOT = "/opt/pdk/gf180mcuD"
 
 
 def fake_pdk(tmp: Path):
@@ -248,7 +250,7 @@ class OtherCandidatesUnchanged(unittest.TestCase):
         for rid, bench, n, body in self._committed():
             cand = BY_N[n]
             defaults = X.CHAR.parse_defaults(ROOT / "design" / "netlists" / cand.netlist)
-            _, ms = X.build_body(bench, pdk, cand, defaults, body.parent, X.FLEET_PDK_VARIANT_DIR)
+            _, ms = X.build_body(bench, pdk, cand, defaults, body.parent, HISTORICAL_LIB_ROOT)
             want = json.loads((body.parent / "request.json").read_text())
             got = X.make_request(bench, cand, pdk, ms, params)
             self.assertEqual(got, want, f"{rid} {bench} candidate {n}")
@@ -261,7 +263,7 @@ class OtherCandidatesUnchanged(unittest.TestCase):
         for rid, bench, n, body in self._committed():
             cand = BY_N[n]
             defaults = X.CHAR.parse_defaults(ROOT / "design" / "netlists" / cand.netlist)
-            got, _ = X.build_body(bench, pdk, cand, defaults, body.parent, X.FLEET_PDK_VARIANT_DIR)
+            got, _ = X.build_body(bench, pdk, cand, defaults, body.parent, HISTORICAL_LIB_ROOT)
             self.assertEqual(got.split(marker, 1)[1], body.read_text().split(marker, 1)[1],
                              f"{rid} {bench} candidate {n}")
 
