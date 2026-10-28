@@ -5,6 +5,8 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-10-27
 
+- **PR #189**: refactor: route cell-default parsing through numfmt.parse_defaults
+- **Issue #184** (closed): Consolidate five duplicated .subckt cell-default parsers onto sim/harness/numfmt.py
 - **PR #188**: feat: cite klt drc report as 3.digital and add run_drc.sh
 - **Issue #175** (closed): T1 item 3 (DRC clean, digital partition): klt drc on the routed digital GDS
 - **PR #187**: fix: clear routed-GDS DRC via tapcell pitch and PDN split-cut removal
