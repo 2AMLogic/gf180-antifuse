@@ -507,6 +507,9 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--render", default=None, metavar="RECORD_ID",
                     help="(re)write records/RECORD_ID.md from saved reports of ONE candidate; no simulation")
     ap.add_argument("--note", default=None)
+    ap.add_argument("--vbd-case", choices=tuple(CB.SOURCED_VBD), default=None,
+                    help="V_bd sensitivity point (#130): per-candidate override of bd_ebd to the sourced BVox "
+                         "typ/floor value; the shared parameter file is not changed")
     ap.add_argument("--klt", default="klt")
     args = ap.parse_args(argv)
     CB.KLT_CMD[:] = args.klt.split()
@@ -518,20 +521,25 @@ def main(argv: list[str] | None = None) -> int:
     if not shutil.which(CB.KLT_CMD[0]):
         print(f"ERROR: {CB.KLT_CMD[0]} not on PATH", file=sys.stderr)
         return 3
-    params, perr = CB.CHECK.parse_params((CB.BD_DIR / "breakdown_params.spice").read_text())
+    base_params, perr = CB.CHECK.parse_params((CB.BD_DIR / "breakdown_params.spice").read_text())
     if perr:
         print("ERROR: breakdown_params.spice fails provenance checks", file=sys.stderr)
         return 3
+    params = base_params
     by_n = {c.n: c for c in CHAR.CANDIDATES}
     wanted = [int(x) for x in args.candidates.split(",") if x.strip()]
 
     if args.smoke:
         n, bench, *ix = args.smoke.split(":")
-        return smoke(pdk, by_n[int(n)], bench, params, int(ix[0]) if ix else 3)
+        return smoke(pdk, by_n[int(n)], bench, CB.apply_vbd_case(base_params, args.vbd_case, int(n)),
+                     int(ix[0]) if ix else 3)
     if args.render:
         cand = by_n[wanted[0]]
+        params = CB.apply_vbd_case(base_params, args.vbd_case, cand.n)
         res = load_saved(cand, args.render, params)
-        R.write_once(THIS_DIR / "records" / f"{args.render}.md", render_pl(pdk, cand, args.render, params, res, args.note))
+        R.write_once(THIS_DIR / "records" / f"{args.render}.md",
+                     CB.tag_record(render_pl(pdk, cand, args.render, params, res, args.note),
+                                   CB.sensitivity_block(args.vbd_case, cand.n, params)))
         return 0
     if args.retabulate:
         for n in wanted:
@@ -554,6 +562,7 @@ def main(argv: list[str] | None = None) -> int:
     rc = 0
     for n in wanted:
         cand = by_n[n]
+        params = CB.apply_vbd_case(base_params, args.vbd_case, n)
         defaults = CHAR.parse_defaults(REPO_ROOT / "design" / "netlists" / cand.netlist)
         rid = args.resume or R.allocate_record_id(THIS_DIR, REPO_ROOT)
         print(f"== Candidate {n} (Region {cand.region}) record {rid}" + (" (resumed)" if args.resume else ""))
@@ -586,7 +595,8 @@ def main(argv: list[str] | None = None) -> int:
             if res.status not in ("pass", "pass_partial"):
                 rc = 1
         R.write_once(THIS_DIR / "netlist-snapshots" / f"{rid}.spice", CB.snapshot(cand))
-        R.write_once(THIS_DIR / "records" / f"{rid}.md", render_pl(pdk, cand, rid, params, results, args.note))
+        R.write_once(THIS_DIR / "records" / f"{rid}.md", CB.tag_record(render_pl(pdk, cand, rid, params, results, args.note),
+                                   CB.sensitivity_block(args.vbd_case, n, params)))
         print(f"   record: records/{rid}.md")
         rc |= ES.publish_for_runner("program-bias-scheme", rid, THIS_DIR / "corners" / rid, REPO_ROOT)
         time.sleep(1.1)

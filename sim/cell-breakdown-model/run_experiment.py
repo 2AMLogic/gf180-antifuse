@@ -190,6 +190,63 @@ def rel_dev(x: float, ref: float) -> float:
 
 fmt = NF.fmt
 
+# --- V_bd sensitivity points (issue #130) -----------------------------------
+# Primary-sourced |BVox| per candidate (docs/breakdown-vbd-sources.md section 2, source S1: GF180MCU PDK
+# electrical specs 5.4): typical and spec floor [V]. The shared `bd_ebd` model parameter is NOT changed
+# (operator ruling on #130); a sensitivity run overrides it PER CANDIDATE in the generated deck only, as
+# bd_ebd = V_bd / tox. This reads the sourced BVox as the model's V_bd(t_ref): S1 states no ramp/current
+# condition, so that identification is an ASSUMPTION, which is why every such record is a sensitivity
+# point and not a parameter update.
+SOURCED_VBD = {"typ": {1: 9.0, 2: 16.0, 3: 8.8}, "floor": {1: 7.0, 2: 12.0, 3: 7.0}}
+# bd_ebd [V/m] the current run injects into every deck after the wrapper include; None = file value.
+VBD_EBD_OVERRIDE: float | None = None
+
+
+def apply_vbd_case(params: dict, case: str | None, n: int) -> dict:
+    """Params for a V_bd sensitivity point (a copy; the parsed file values are not touched). Also arms
+    the deck override. case None = the assumed file values, no override."""
+    global VBD_EBD_OVERRIDE
+    if case is None:
+        VBD_EBD_OVERRIDE = None
+        return params
+    ebd = SOURCED_VBD[case][n] / params[f"c{n}_bd_tox"]["value"]
+    VBD_EBD_OVERRIDE = ebd
+    out = {k: dict(v) for k, v in params.items()}
+    out["bd_ebd"]["value"] = ebd
+    out["bd_ebd"]["provenance"] = "sensitivity"
+    return out
+
+
+def sensitivity_block(case: str | None, n: int, params: dict) -> str:
+    """Markdown bullet inserted into a record of a sensitivity run ('' for an assumed-V_bd run)."""
+    if case is None:
+        return ""
+    tox = params[f"c{n}_bd_tox"]["value"]
+    assumed = 1.0e9 * tox
+    return (
+        f"- **V_bd SENSITIVITY POINT (`{case}`), NOT a parameter update** (issue #130, operator ruling on "
+        f"2AMLogic/gf180-antifuse#130): this record re-runs the bench with Candidate {n}'s gate-oxide V_bd(t_ref) set "
+        f"to the primary-sourced BVox {case} value **{SOURCED_VBD[case][n]:g} V** "
+        f"(`docs/breakdown-vbd-sources.md` section 2, S1), via a per-candidate `.param bd_ebd = "
+        f"{VBD_EBD_OVERRIDE:.6g}` (= V_bd / tox, tox = {tox:.3g} m) injected into the generated deck after the wrapper "
+        f"include. The shared `bd_ebd` in `design/breakdown/breakdown_params.spice` is unchanged (sha256 "
+        f"`{sha256(BD_DIR / 'breakdown_params.spice')}`, still 1.0e9 V/m = {assumed:.2f} V for this candidate). The "
+        "identification of sourced BVox with the model's V_bd at t_ref = 1 us is an ASSUMPTION (BVox has no stated "
+        "ramp/current condition); every other breakdown and filament parameter stays `assumed`. Compare against "
+        "the assumed-V_bd records per candidate and per stress level; levels are never merged.\n"
+    )
+
+
+def tag_record(text: str, block: str) -> str:
+    """Insert the sensitivity block right after the record's `- **Record ID**` line."""
+    if not block:
+        return text
+    lines = text.split("\n")
+    for i, ln in enumerate(lines):
+        if ln.startswith("- **Record ID**"):
+            return "\n".join(lines[:i + 1] + [block.rstrip("\n")] + lines[i + 1:])
+    raise ValueError("record has no Record ID line to attach the sensitivity block to")
+
 
 def sg_tag(sizing: str, geom: str) -> str:
     return f"s{1 if sizing == 'min' else 2}g{1 if geom == 'min' else 2}"
@@ -252,6 +309,8 @@ def body_header(pdk: P.PDKPaths, body_dir: Path, title: str, cand, bench: str, l
         + second_lib(cand, bench, lib_root)
         + opts + "\n"
         + f".include {rel_from(body_dir, WRAPPERS)}\n"
+        + (f"* V_bd sensitivity point (issue #130): per-candidate override of the shared bd_ebd\n"
+           f".param bd_ebd = {VBD_EBD_OVERRIDE:.9g}\n" if VBD_EBD_OVERRIDE is not None else "")
     )
 
 
@@ -1971,14 +2030,16 @@ def render_any(pdk, cand, rid: str, results: dict[str, BenchResult], params: dic
     return render_record(pdk, cand, rid, results, params, dirty, stored_record_id(cand), note)
 
 
-def render_only(pdk, cand, rid: str, params: dict, note: str | None = None) -> int:
+def render_only(pdk, cand, rid: str, params: dict, note: str | None = None, vbd_case: str | None = None) -> int:
     results = results_from_reports(cand, rid, params)
     if not results:
         print(f"ERROR: no saved reports under corners/{rid}/", file=sys.stderr)
         return 2
     prov_file = THIS_DIR / "corners" / rid / "run-provenance.json"
     dirty = json.loads(prov_file.read_text())["dirty"] if prov_file.is_file() else None
-    R.write_once(THIS_DIR / "records" / f"{rid}.md", render_any(pdk, cand, rid, results, params, dirty, note))
+    R.write_once(THIS_DIR / "records" / f"{rid}.md",
+                 tag_record(render_any(pdk, cand, rid, results, params, dirty, note),
+                            sensitivity_block(vbd_case, cand.n, params)))
     print(f"record: records/{rid}.md (rendered from saved reports)")
     return 0
 
@@ -1999,6 +2060,9 @@ def main(argv: list[str] | None = None) -> int:
                     help="run ONE corner of ONE bench locally (debug probe; writes no record)")
     ap.add_argument("--check-env", action="store_true")
     ap.add_argument("--note", default=None, help="free-text run note carried into the record(s)")
+    ap.add_argument("--vbd-case", choices=tuple(SOURCED_VBD), default=None,
+                    help="V_bd sensitivity point (#130): per-candidate override of bd_ebd to the sourced BVox "
+                         "typ/floor value; the shared parameter file is not changed")
     ap.add_argument("--render", default=None, metavar="RECORD_ID",
                     help="(re)write records/RECORD_ID.md from the saved corners/RECORD_ID/*/report.json "
                          "of ONE candidate (--candidates N); runs no simulation. Refuses to overwrite.")
@@ -2016,11 +2080,12 @@ def main(argv: list[str] | None = None) -> int:
     if not shutil.which(KLT_CMD[0]):
         print(f"ERROR: {KLT_CMD[0]} not on PATH", file=sys.stderr)
         return 3
-    params, perr = CHECK.parse_params((BD_DIR / "breakdown_params.spice").read_text())
+    base_params, perr = CHECK.parse_params((BD_DIR / "breakdown_params.spice").read_text())
     if perr:
         print("ERROR: breakdown_params.spice fails provenance checks; run design/breakdown/check_params.py",
               file=sys.stderr)
         return 3
+    params = base_params
     print(f"PDK: {pdk.variant} at {pdk.variant_dir} (open_pdks {pdk.revision})")
     if args.check_env:
         print("klt + PDK + parameter file OK.")
@@ -2028,10 +2093,12 @@ def main(argv: list[str] | None = None) -> int:
 
     by_n = {c.n: c for c in CHAR.CANDIDATES}
     if args.render:
-        return render_only(pdk, by_n[int(args.candidates)], args.render, params, args.note)
+        n = int(args.candidates)
+        return render_only(pdk, by_n[n], args.render, apply_vbd_case(base_params, args.vbd_case, n), args.note,
+                           args.vbd_case)
     if args.smoke:
         n, bench, *pick = args.smoke.split(":")
-        return smoke(pdk, by_n[int(n)], bench, params, pick or None)
+        return smoke(pdk, by_n[int(n)], bench, apply_vbd_case(base_params, args.vbd_case, int(n)), pick or None)
 
     wanted = [int(x) for x in args.candidates.split(",") if x.strip()]
     benches = [b for b in args.benches.split(",") if b.strip()]
@@ -2045,6 +2112,7 @@ def main(argv: list[str] | None = None) -> int:
     rc = 0
     for n in wanted:
         cand = by_n[n]
+        params = apply_vbd_case(base_params, args.vbd_case, n)
         if BIAS_BENCH in benches and (benches != [BIAS_BENCH] or n != 3):
             print(f"ERROR: {BIAS_BENCH} runs alone and for Candidate 3 only (--candidates 3 --benches {BIAS_BENCH})",
                   file=sys.stderr)
@@ -2077,7 +2145,8 @@ def main(argv: list[str] | None = None) -> int:
                 rc = 1
         R.write_once(THIS_DIR / "netlist-snapshots" / f"{rid}.spice", snapshot(cand))
         R.write_once(THIS_DIR / "records" / f"{rid}.md",
-                     render_any(pdk, cand, rid, results, params, dirty, args.note))
+                     tag_record(render_any(pdk, cand, rid, results, params, dirty, args.note),
+                                sensitivity_block(args.vbd_case, n, params)))
         print(f"   record: records/{rid}.md")
         rc |= ES.publish_for_runner("cell-breakdown-model", rid, THIS_DIR / "corners" / rid, REPO_ROOT)
     return rc
