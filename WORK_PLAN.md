@@ -19,27 +19,26 @@ _None._
 
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4)
 - **#127**: Measure V_bd and carry Candidates 2 and 3 until then (operator ruling 2026-10-20)
-- **#130**: Re-run program- and read-bias benches with sourced V_bd and compare candidates
 
 ## Ready
 
 Human-approved issues ready for implementation (`loom:issue`).
 
-_None._
+- **#196**: T1 item 11 (power delivery, analog): replace the antenna-only ERC citation with a supply-net ERC + LVS compound citation
 
 ## In Progress
 
 Issues currently being built (`loom:building`).
 
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4)
-- **#130**: Re-run program- and read-bias benches with sourced V_bd and compare candidates
 - **#182**: Wire package.json check scripts to the repo's real checks (currently vacuous exit 0)
+- **#197**: T1 item 2 (layout, analog): artifact-anchored envelope binding cell_candidate1.gds and its generator
 
 ## PRs Awaiting Review
 
 PRs waiting on Judge (`loom:review-requested`).
 
-- **#193**: feat(sim): V_bd sensitivity re-run records and per-candidate comparison
+- **#198**: feat(signoff): cite item-2 analog layout envelope for cell_candidate1
 
 ## Approved (Awaiting Merge)
 
@@ -55,6 +54,8 @@ Issues carrying `loom:curated`.
 - **#99**: Re-qualify reference sim records under open_pdks f6eeac7 as new records *(curated)*
 - **#117**: T1 items 1 and 9 (analog partition): attest the cell sources and testbenches with klt signoff --attest *(curated)*
 - **#176**: T1 item 4 (LVS clean, digital partition): klt lvs against the gate-level netlist with power_connectivity *(curated)*
+- **#196**: T1 item 11 (power delivery, analog): replace the antenna-only ERC citation with a supply-net ERC + LVS compound citation *(curated)*
+- **#197**: T1 item 2 (layout, analog): artifact-anchored envelope binding cell_candidate1.gds and its generator *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -70,12 +71,12 @@ _None._
 |------|-------|
 | Operator merge-risk holds | 1 |
 | Very important | 0 |
-| Important | 3 |
-| Ready (`loom:issue`) | 0 |
+| Important | 2 |
+| Ready (`loom:issue`) | 1 |
 | In Progress (`loom:building`) | 3 |
 | PRs awaiting review | 1 |
 | Approved PRs awaiting merge | 1 |
-| Curated | 4 |
+| Curated | 6 |
 | Architect / Hermit proposals | 0 |
 | Active epics | 1 |
 <!-- guide:plan-body:end -->
