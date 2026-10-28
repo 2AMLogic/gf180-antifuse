@@ -82,3 +82,17 @@ The default mode submits to the batch fleet (`KLT_SIM_BACKEND=batch` /
   unselected-cell `plu` case.
 - The gate/well-drive benches (`gwa`, `gwb`) try two static (WL, VB) pairs; "no scheme keeps all six pairs in rating" is a statement about those pairs, not about every possible drive. `corners/20261021-024938-9f8fa78` is an interrupted first attempt (submitter killed after 2 of 6 benches by a tool time limit), kept as evidence, no record.
 - Process corners only; no Monte Carlo (the yield curve is #66).
+
+## V_bd sensitivity runs (#130)
+
+`--vbd-case typ|floor` (here and in `sim/cell-breakdown-model/run_experiment.py`) re-runs a bench with each
+candidate's V_bd(t_ref) set to the primary-sourced BVox of `docs/breakdown-vbd-sources.md` (typ 9 / 16 / 8.8 V,
+floor 7 / 12 / 7 V). It overrides `bd_ebd` per candidate as `.param bd_ebd = V_bd / tox` in the generated deck; the
+shared `design/breakdown/breakdown_params.spice` is unchanged, and every record carries a "V_bd SENSITIVITY POINT"
+bullet. The identification of BVox with V_bd at t_ref = 1 us is an assumption; these are sensitivity points, not
+parameter updates. The re-tabulation of a sensitivity run's BL-driven leg is
+`--retabulate --candidates N --vbd-case CASE --retab-src RECORD_ID` (RECORD_ID = the fresh
+`sim/cell-breakdown-model` `progc_*` run). `compare_vbd.py` writes the per-candidate, per-level comparison against the
+assumed-V_bd records from the run ids in `vbd-sensitivity-runs.json`; its output is
+`spec/vbd-sensitivity-comparison-proposed.md`. Batch runs name this host's PDK variant dir in the body and export
+`PDK_ROOT` to its parent (klt >= 0.8 refuses an absolute `.lib` outside `$PDK_ROOT`).
