@@ -105,8 +105,9 @@ BATCH_OPTS = {"runner_version_check": "warn", "capacity_wait_s": 1800}
 # request, bounded -- never fall back to a local run.
 # The executing host's gf180mcuD variant directory, needed for the one model
 # library Candidate 2 loads from the body (README "Two model libraries").
-# Observed in fleet-generated corner decks: `.lib /opt/pdk/gf180mcuD/...`.
-FLEET_PDK_VARIANT_DIR = "/opt/pdk/gf180mcuD"
+# Observed in fleet-generated corner decks: `.lib /opt/pdk/gf180mcuD/...`; klt >= 0.8 rejects that absolute path
+# in a body (not under $PDK_ROOT), so the body names it through $PDK_ROOT (resolved on the executing host).
+FLEET_PDK_VARIANT_DIR = "$PDK_ROOT/gf180mcuD"
 DEFAULT_RELTOL = 1e-3          # ngspice default reltol
 DEFAULT_ABSTOL = 1e-12         # ngspice default abstol (A)
 # Quantity classes for the regression criterion (README "Regression
