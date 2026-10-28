@@ -1,0 +1,2144 @@
+{
+  "netlist": "body.spice",
+  "engine": "ngspice",
+  "backend": "batch",
+  "batch": {
+    "runner_version_check": "warn",
+    "capacity_wait_s": 1800
+  },
+  "measurements": [
+    {
+      "name": "vbl_s0_placeholder",
+      "spice": ".meas dc vbl_s0_placeholder FIND v(bls_s0_placeholder) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "vvb_s0_placeholder",
+      "spice": ".meas dc vvb_s0_placeholder FIND v(vb_s0_placeholder) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s0_placeholder_s1g1_lo",
+      "spice": ".meas dc i_off_s0_placeholder_s1g1_lo FIND i(vm_off_s0_placeholder_s1g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s0_placeholder_s1g1_mid",
+      "spice": ".meas dc i_off_s0_placeholder_s1g1_mid FIND i(vm_off_s0_placeholder_s1g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s0_placeholder_s1g1_hi",
+      "spice": ".meas dc i_off_s0_placeholder_s1g1_hi FIND i(vm_off_s0_placeholder_s1g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s0_placeholder_s1g1_lo",
+      "spice": ".meas dc i_offp_s0_placeholder_s1g1_lo FIND i(vm_offp_s0_placeholder_s1g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s0_placeholder_s1g1_mid",
+      "spice": ".meas dc i_offp_s0_placeholder_s1g1_mid FIND i(vm_offp_s0_placeholder_s1g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s0_placeholder_s1g1_hi",
+      "spice": ".meas dc i_offp_s0_placeholder_s1g1_hi FIND i(vm_offp_s0_placeholder_s1g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s0_placeholder_s1g1",
+      "spice": ".meas dc i_un_s0_placeholder_s1g1 FIND i(vm_un_s0_placeholder_s1g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s0_placeholder_s1g1",
+      "spice": ".meas dc i_pm_s0_placeholder_s1g1 FIND i(vm_pm_s0_placeholder_s1g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s0_placeholder_s1g1",
+      "spice": ".meas dc vcn_pm_s0_placeholder_s1g1 FIND v(x_pm_s0_placeholder_s1g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s0_placeholder_s1g1",
+      "spice": ".meas dc i_pw_s0_placeholder_s1g1 FIND i(vm_pw_s0_placeholder_s1g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s0_placeholder_s1g1",
+      "spice": ".meas dc vcn_pw_s0_placeholder_s1g1 FIND v(x_pw_s0_placeholder_s1g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s0_placeholder_s1g2_lo",
+      "spice": ".meas dc i_off_s0_placeholder_s1g2_lo FIND i(vm_off_s0_placeholder_s1g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s0_placeholder_s1g2_mid",
+      "spice": ".meas dc i_off_s0_placeholder_s1g2_mid FIND i(vm_off_s0_placeholder_s1g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s0_placeholder_s1g2_hi",
+      "spice": ".meas dc i_off_s0_placeholder_s1g2_hi FIND i(vm_off_s0_placeholder_s1g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s0_placeholder_s1g2_lo",
+      "spice": ".meas dc i_offp_s0_placeholder_s1g2_lo FIND i(vm_offp_s0_placeholder_s1g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s0_placeholder_s1g2_mid",
+      "spice": ".meas dc i_offp_s0_placeholder_s1g2_mid FIND i(vm_offp_s0_placeholder_s1g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s0_placeholder_s1g2_hi",
+      "spice": ".meas dc i_offp_s0_placeholder_s1g2_hi FIND i(vm_offp_s0_placeholder_s1g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s0_placeholder_s1g2",
+      "spice": ".meas dc i_un_s0_placeholder_s1g2 FIND i(vm_un_s0_placeholder_s1g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s0_placeholder_s1g2",
+      "spice": ".meas dc i_pm_s0_placeholder_s1g2 FIND i(vm_pm_s0_placeholder_s1g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s0_placeholder_s1g2",
+      "spice": ".meas dc vcn_pm_s0_placeholder_s1g2 FIND v(x_pm_s0_placeholder_s1g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s0_placeholder_s1g2",
+      "spice": ".meas dc i_pw_s0_placeholder_s1g2 FIND i(vm_pw_s0_placeholder_s1g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s0_placeholder_s1g2",
+      "spice": ".meas dc vcn_pw_s0_placeholder_s1g2 FIND v(x_pw_s0_placeholder_s1g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s0_placeholder_s2g1_lo",
+      "spice": ".meas dc i_off_s0_placeholder_s2g1_lo FIND i(vm_off_s0_placeholder_s2g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s0_placeholder_s2g1_mid",
+      "spice": ".meas dc i_off_s0_placeholder_s2g1_mid FIND i(vm_off_s0_placeholder_s2g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s0_placeholder_s2g1_hi",
+      "spice": ".meas dc i_off_s0_placeholder_s2g1_hi FIND i(vm_off_s0_placeholder_s2g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s0_placeholder_s2g1_lo",
+      "spice": ".meas dc i_offp_s0_placeholder_s2g1_lo FIND i(vm_offp_s0_placeholder_s2g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s0_placeholder_s2g1_mid",
+      "spice": ".meas dc i_offp_s0_placeholder_s2g1_mid FIND i(vm_offp_s0_placeholder_s2g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s0_placeholder_s2g1_hi",
+      "spice": ".meas dc i_offp_s0_placeholder_s2g1_hi FIND i(vm_offp_s0_placeholder_s2g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s0_placeholder_s2g1",
+      "spice": ".meas dc i_un_s0_placeholder_s2g1 FIND i(vm_un_s0_placeholder_s2g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s0_placeholder_s2g1",
+      "spice": ".meas dc i_pm_s0_placeholder_s2g1 FIND i(vm_pm_s0_placeholder_s2g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s0_placeholder_s2g1",
+      "spice": ".meas dc vcn_pm_s0_placeholder_s2g1 FIND v(x_pm_s0_placeholder_s2g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s0_placeholder_s2g1",
+      "spice": ".meas dc i_pw_s0_placeholder_s2g1 FIND i(vm_pw_s0_placeholder_s2g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s0_placeholder_s2g1",
+      "spice": ".meas dc vcn_pw_s0_placeholder_s2g1 FIND v(x_pw_s0_placeholder_s2g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s0_placeholder_s2g2_lo",
+      "spice": ".meas dc i_off_s0_placeholder_s2g2_lo FIND i(vm_off_s0_placeholder_s2g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s0_placeholder_s2g2_mid",
+      "spice": ".meas dc i_off_s0_placeholder_s2g2_mid FIND i(vm_off_s0_placeholder_s2g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s0_placeholder_s2g2_hi",
+      "spice": ".meas dc i_off_s0_placeholder_s2g2_hi FIND i(vm_off_s0_placeholder_s2g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s0_placeholder_s2g2_lo",
+      "spice": ".meas dc i_offp_s0_placeholder_s2g2_lo FIND i(vm_offp_s0_placeholder_s2g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s0_placeholder_s2g2_mid",
+      "spice": ".meas dc i_offp_s0_placeholder_s2g2_mid FIND i(vm_offp_s0_placeholder_s2g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s0_placeholder_s2g2_hi",
+      "spice": ".meas dc i_offp_s0_placeholder_s2g2_hi FIND i(vm_offp_s0_placeholder_s2g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s0_placeholder_s2g2",
+      "spice": ".meas dc i_un_s0_placeholder_s2g2 FIND i(vm_un_s0_placeholder_s2g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s0_placeholder_s2g2",
+      "spice": ".meas dc i_pm_s0_placeholder_s2g2 FIND i(vm_pm_s0_placeholder_s2g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s0_placeholder_s2g2",
+      "spice": ".meas dc vcn_pm_s0_placeholder_s2g2 FIND v(x_pm_s0_placeholder_s2g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s0_placeholder_s2g2",
+      "spice": ".meas dc i_pw_s0_placeholder_s2g2 FIND i(vm_pw_s0_placeholder_s2g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s0_placeholder_s2g2",
+      "spice": ".meas dc vcn_pw_s0_placeholder_s2g2 FIND v(x_pw_s0_placeholder_s2g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "vbl_s1_wl_neg1",
+      "spice": ".meas dc vbl_s1_wl_neg1 FIND v(bls_s1_wl_neg1) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "vvb_s1_wl_neg1",
+      "spice": ".meas dc vvb_s1_wl_neg1 FIND v(vb_s1_wl_neg1) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s1_wl_neg1_s1g1_lo",
+      "spice": ".meas dc i_off_s1_wl_neg1_s1g1_lo FIND i(vm_off_s1_wl_neg1_s1g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s1_wl_neg1_s1g1_mid",
+      "spice": ".meas dc i_off_s1_wl_neg1_s1g1_mid FIND i(vm_off_s1_wl_neg1_s1g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s1_wl_neg1_s1g1_hi",
+      "spice": ".meas dc i_off_s1_wl_neg1_s1g1_hi FIND i(vm_off_s1_wl_neg1_s1g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s1_wl_neg1_s1g1_lo",
+      "spice": ".meas dc i_offp_s1_wl_neg1_s1g1_lo FIND i(vm_offp_s1_wl_neg1_s1g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s1_wl_neg1_s1g1_mid",
+      "spice": ".meas dc i_offp_s1_wl_neg1_s1g1_mid FIND i(vm_offp_s1_wl_neg1_s1g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s1_wl_neg1_s1g1_hi",
+      "spice": ".meas dc i_offp_s1_wl_neg1_s1g1_hi FIND i(vm_offp_s1_wl_neg1_s1g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s1_wl_neg1_s1g1",
+      "spice": ".meas dc i_un_s1_wl_neg1_s1g1 FIND i(vm_un_s1_wl_neg1_s1g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s1_wl_neg1_s1g1",
+      "spice": ".meas dc i_pm_s1_wl_neg1_s1g1 FIND i(vm_pm_s1_wl_neg1_s1g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s1_wl_neg1_s1g1",
+      "spice": ".meas dc vcn_pm_s1_wl_neg1_s1g1 FIND v(x_pm_s1_wl_neg1_s1g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s1_wl_neg1_s1g1",
+      "spice": ".meas dc i_pw_s1_wl_neg1_s1g1 FIND i(vm_pw_s1_wl_neg1_s1g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s1_wl_neg1_s1g1",
+      "spice": ".meas dc vcn_pw_s1_wl_neg1_s1g1 FIND v(x_pw_s1_wl_neg1_s1g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s1_wl_neg1_s1g2_lo",
+      "spice": ".meas dc i_off_s1_wl_neg1_s1g2_lo FIND i(vm_off_s1_wl_neg1_s1g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s1_wl_neg1_s1g2_mid",
+      "spice": ".meas dc i_off_s1_wl_neg1_s1g2_mid FIND i(vm_off_s1_wl_neg1_s1g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s1_wl_neg1_s1g2_hi",
+      "spice": ".meas dc i_off_s1_wl_neg1_s1g2_hi FIND i(vm_off_s1_wl_neg1_s1g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s1_wl_neg1_s1g2_lo",
+      "spice": ".meas dc i_offp_s1_wl_neg1_s1g2_lo FIND i(vm_offp_s1_wl_neg1_s1g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s1_wl_neg1_s1g2_mid",
+      "spice": ".meas dc i_offp_s1_wl_neg1_s1g2_mid FIND i(vm_offp_s1_wl_neg1_s1g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s1_wl_neg1_s1g2_hi",
+      "spice": ".meas dc i_offp_s1_wl_neg1_s1g2_hi FIND i(vm_offp_s1_wl_neg1_s1g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s1_wl_neg1_s1g2",
+      "spice": ".meas dc i_un_s1_wl_neg1_s1g2 FIND i(vm_un_s1_wl_neg1_s1g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s1_wl_neg1_s1g2",
+      "spice": ".meas dc i_pm_s1_wl_neg1_s1g2 FIND i(vm_pm_s1_wl_neg1_s1g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s1_wl_neg1_s1g2",
+      "spice": ".meas dc vcn_pm_s1_wl_neg1_s1g2 FIND v(x_pm_s1_wl_neg1_s1g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s1_wl_neg1_s1g2",
+      "spice": ".meas dc i_pw_s1_wl_neg1_s1g2 FIND i(vm_pw_s1_wl_neg1_s1g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s1_wl_neg1_s1g2",
+      "spice": ".meas dc vcn_pw_s1_wl_neg1_s1g2 FIND v(x_pw_s1_wl_neg1_s1g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s1_wl_neg1_s2g1_lo",
+      "spice": ".meas dc i_off_s1_wl_neg1_s2g1_lo FIND i(vm_off_s1_wl_neg1_s2g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s1_wl_neg1_s2g1_mid",
+      "spice": ".meas dc i_off_s1_wl_neg1_s2g1_mid FIND i(vm_off_s1_wl_neg1_s2g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s1_wl_neg1_s2g1_hi",
+      "spice": ".meas dc i_off_s1_wl_neg1_s2g1_hi FIND i(vm_off_s1_wl_neg1_s2g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s1_wl_neg1_s2g1_lo",
+      "spice": ".meas dc i_offp_s1_wl_neg1_s2g1_lo FIND i(vm_offp_s1_wl_neg1_s2g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s1_wl_neg1_s2g1_mid",
+      "spice": ".meas dc i_offp_s1_wl_neg1_s2g1_mid FIND i(vm_offp_s1_wl_neg1_s2g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s1_wl_neg1_s2g1_hi",
+      "spice": ".meas dc i_offp_s1_wl_neg1_s2g1_hi FIND i(vm_offp_s1_wl_neg1_s2g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s1_wl_neg1_s2g1",
+      "spice": ".meas dc i_un_s1_wl_neg1_s2g1 FIND i(vm_un_s1_wl_neg1_s2g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s1_wl_neg1_s2g1",
+      "spice": ".meas dc i_pm_s1_wl_neg1_s2g1 FIND i(vm_pm_s1_wl_neg1_s2g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s1_wl_neg1_s2g1",
+      "spice": ".meas dc vcn_pm_s1_wl_neg1_s2g1 FIND v(x_pm_s1_wl_neg1_s2g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s1_wl_neg1_s2g1",
+      "spice": ".meas dc i_pw_s1_wl_neg1_s2g1 FIND i(vm_pw_s1_wl_neg1_s2g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s1_wl_neg1_s2g1",
+      "spice": ".meas dc vcn_pw_s1_wl_neg1_s2g1 FIND v(x_pw_s1_wl_neg1_s2g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s1_wl_neg1_s2g2_lo",
+      "spice": ".meas dc i_off_s1_wl_neg1_s2g2_lo FIND i(vm_off_s1_wl_neg1_s2g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s1_wl_neg1_s2g2_mid",
+      "spice": ".meas dc i_off_s1_wl_neg1_s2g2_mid FIND i(vm_off_s1_wl_neg1_s2g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s1_wl_neg1_s2g2_hi",
+      "spice": ".meas dc i_off_s1_wl_neg1_s2g2_hi FIND i(vm_off_s1_wl_neg1_s2g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s1_wl_neg1_s2g2_lo",
+      "spice": ".meas dc i_offp_s1_wl_neg1_s2g2_lo FIND i(vm_offp_s1_wl_neg1_s2g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s1_wl_neg1_s2g2_mid",
+      "spice": ".meas dc i_offp_s1_wl_neg1_s2g2_mid FIND i(vm_offp_s1_wl_neg1_s2g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s1_wl_neg1_s2g2_hi",
+      "spice": ".meas dc i_offp_s1_wl_neg1_s2g2_hi FIND i(vm_offp_s1_wl_neg1_s2g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s1_wl_neg1_s2g2",
+      "spice": ".meas dc i_un_s1_wl_neg1_s2g2 FIND i(vm_un_s1_wl_neg1_s2g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s1_wl_neg1_s2g2",
+      "spice": ".meas dc i_pm_s1_wl_neg1_s2g2 FIND i(vm_pm_s1_wl_neg1_s2g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s1_wl_neg1_s2g2",
+      "spice": ".meas dc vcn_pm_s1_wl_neg1_s2g2 FIND v(x_pm_s1_wl_neg1_s2g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s1_wl_neg1_s2g2",
+      "spice": ".meas dc i_pw_s1_wl_neg1_s2g2 FIND i(vm_pw_s1_wl_neg1_s2g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s1_wl_neg1_s2g2",
+      "spice": ".meas dc vcn_pw_s1_wl_neg1_s2g2 FIND v(x_pw_s1_wl_neg1_s2g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "vbl_s2_wl_neg2",
+      "spice": ".meas dc vbl_s2_wl_neg2 FIND v(bls_s2_wl_neg2) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "vvb_s2_wl_neg2",
+      "spice": ".meas dc vvb_s2_wl_neg2 FIND v(vb_s2_wl_neg2) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s2_wl_neg2_s1g1_lo",
+      "spice": ".meas dc i_off_s2_wl_neg2_s1g1_lo FIND i(vm_off_s2_wl_neg2_s1g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s2_wl_neg2_s1g1_mid",
+      "spice": ".meas dc i_off_s2_wl_neg2_s1g1_mid FIND i(vm_off_s2_wl_neg2_s1g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s2_wl_neg2_s1g1_hi",
+      "spice": ".meas dc i_off_s2_wl_neg2_s1g1_hi FIND i(vm_off_s2_wl_neg2_s1g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s2_wl_neg2_s1g1_lo",
+      "spice": ".meas dc i_offp_s2_wl_neg2_s1g1_lo FIND i(vm_offp_s2_wl_neg2_s1g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s2_wl_neg2_s1g1_mid",
+      "spice": ".meas dc i_offp_s2_wl_neg2_s1g1_mid FIND i(vm_offp_s2_wl_neg2_s1g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s2_wl_neg2_s1g1_hi",
+      "spice": ".meas dc i_offp_s2_wl_neg2_s1g1_hi FIND i(vm_offp_s2_wl_neg2_s1g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s2_wl_neg2_s1g1",
+      "spice": ".meas dc i_un_s2_wl_neg2_s1g1 FIND i(vm_un_s2_wl_neg2_s1g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s2_wl_neg2_s1g1",
+      "spice": ".meas dc i_pm_s2_wl_neg2_s1g1 FIND i(vm_pm_s2_wl_neg2_s1g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s2_wl_neg2_s1g1",
+      "spice": ".meas dc vcn_pm_s2_wl_neg2_s1g1 FIND v(x_pm_s2_wl_neg2_s1g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s2_wl_neg2_s1g1",
+      "spice": ".meas dc i_pw_s2_wl_neg2_s1g1 FIND i(vm_pw_s2_wl_neg2_s1g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s2_wl_neg2_s1g1",
+      "spice": ".meas dc vcn_pw_s2_wl_neg2_s1g1 FIND v(x_pw_s2_wl_neg2_s1g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s2_wl_neg2_s1g2_lo",
+      "spice": ".meas dc i_off_s2_wl_neg2_s1g2_lo FIND i(vm_off_s2_wl_neg2_s1g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s2_wl_neg2_s1g2_mid",
+      "spice": ".meas dc i_off_s2_wl_neg2_s1g2_mid FIND i(vm_off_s2_wl_neg2_s1g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s2_wl_neg2_s1g2_hi",
+      "spice": ".meas dc i_off_s2_wl_neg2_s1g2_hi FIND i(vm_off_s2_wl_neg2_s1g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s2_wl_neg2_s1g2_lo",
+      "spice": ".meas dc i_offp_s2_wl_neg2_s1g2_lo FIND i(vm_offp_s2_wl_neg2_s1g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s2_wl_neg2_s1g2_mid",
+      "spice": ".meas dc i_offp_s2_wl_neg2_s1g2_mid FIND i(vm_offp_s2_wl_neg2_s1g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s2_wl_neg2_s1g2_hi",
+      "spice": ".meas dc i_offp_s2_wl_neg2_s1g2_hi FIND i(vm_offp_s2_wl_neg2_s1g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s2_wl_neg2_s1g2",
+      "spice": ".meas dc i_un_s2_wl_neg2_s1g2 FIND i(vm_un_s2_wl_neg2_s1g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s2_wl_neg2_s1g2",
+      "spice": ".meas dc i_pm_s2_wl_neg2_s1g2 FIND i(vm_pm_s2_wl_neg2_s1g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s2_wl_neg2_s1g2",
+      "spice": ".meas dc vcn_pm_s2_wl_neg2_s1g2 FIND v(x_pm_s2_wl_neg2_s1g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s2_wl_neg2_s1g2",
+      "spice": ".meas dc i_pw_s2_wl_neg2_s1g2 FIND i(vm_pw_s2_wl_neg2_s1g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s2_wl_neg2_s1g2",
+      "spice": ".meas dc vcn_pw_s2_wl_neg2_s1g2 FIND v(x_pw_s2_wl_neg2_s1g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s2_wl_neg2_s2g1_lo",
+      "spice": ".meas dc i_off_s2_wl_neg2_s2g1_lo FIND i(vm_off_s2_wl_neg2_s2g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s2_wl_neg2_s2g1_mid",
+      "spice": ".meas dc i_off_s2_wl_neg2_s2g1_mid FIND i(vm_off_s2_wl_neg2_s2g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s2_wl_neg2_s2g1_hi",
+      "spice": ".meas dc i_off_s2_wl_neg2_s2g1_hi FIND i(vm_off_s2_wl_neg2_s2g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s2_wl_neg2_s2g1_lo",
+      "spice": ".meas dc i_offp_s2_wl_neg2_s2g1_lo FIND i(vm_offp_s2_wl_neg2_s2g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s2_wl_neg2_s2g1_mid",
+      "spice": ".meas dc i_offp_s2_wl_neg2_s2g1_mid FIND i(vm_offp_s2_wl_neg2_s2g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s2_wl_neg2_s2g1_hi",
+      "spice": ".meas dc i_offp_s2_wl_neg2_s2g1_hi FIND i(vm_offp_s2_wl_neg2_s2g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s2_wl_neg2_s2g1",
+      "spice": ".meas dc i_un_s2_wl_neg2_s2g1 FIND i(vm_un_s2_wl_neg2_s2g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s2_wl_neg2_s2g1",
+      "spice": ".meas dc i_pm_s2_wl_neg2_s2g1 FIND i(vm_pm_s2_wl_neg2_s2g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s2_wl_neg2_s2g1",
+      "spice": ".meas dc vcn_pm_s2_wl_neg2_s2g1 FIND v(x_pm_s2_wl_neg2_s2g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s2_wl_neg2_s2g1",
+      "spice": ".meas dc i_pw_s2_wl_neg2_s2g1 FIND i(vm_pw_s2_wl_neg2_s2g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s2_wl_neg2_s2g1",
+      "spice": ".meas dc vcn_pw_s2_wl_neg2_s2g1 FIND v(x_pw_s2_wl_neg2_s2g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s2_wl_neg2_s2g2_lo",
+      "spice": ".meas dc i_off_s2_wl_neg2_s2g2_lo FIND i(vm_off_s2_wl_neg2_s2g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s2_wl_neg2_s2g2_mid",
+      "spice": ".meas dc i_off_s2_wl_neg2_s2g2_mid FIND i(vm_off_s2_wl_neg2_s2g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s2_wl_neg2_s2g2_hi",
+      "spice": ".meas dc i_off_s2_wl_neg2_s2g2_hi FIND i(vm_off_s2_wl_neg2_s2g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s2_wl_neg2_s2g2_lo",
+      "spice": ".meas dc i_offp_s2_wl_neg2_s2g2_lo FIND i(vm_offp_s2_wl_neg2_s2g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s2_wl_neg2_s2g2_mid",
+      "spice": ".meas dc i_offp_s2_wl_neg2_s2g2_mid FIND i(vm_offp_s2_wl_neg2_s2g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s2_wl_neg2_s2g2_hi",
+      "spice": ".meas dc i_offp_s2_wl_neg2_s2g2_hi FIND i(vm_offp_s2_wl_neg2_s2g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s2_wl_neg2_s2g2",
+      "spice": ".meas dc i_un_s2_wl_neg2_s2g2 FIND i(vm_un_s2_wl_neg2_s2g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s2_wl_neg2_s2g2",
+      "spice": ".meas dc i_pm_s2_wl_neg2_s2g2 FIND i(vm_pm_s2_wl_neg2_s2g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s2_wl_neg2_s2g2",
+      "spice": ".meas dc vcn_pm_s2_wl_neg2_s2g2 FIND v(x_pm_s2_wl_neg2_s2g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s2_wl_neg2_s2g2",
+      "spice": ".meas dc i_pw_s2_wl_neg2_s2g2 FIND i(vm_pw_s2_wl_neg2_s2g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s2_wl_neg2_s2g2",
+      "spice": ".meas dc vcn_pw_s2_wl_neg2_s2g2 FIND v(x_pw_s2_wl_neg2_s2g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "vbl_s3_vb_track",
+      "spice": ".meas dc vbl_s3_vb_track FIND v(bls_s3_vb_track) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "vvb_s3_vb_track",
+      "spice": ".meas dc vvb_s3_vb_track FIND v(vb_s3_vb_track) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s3_vb_track_s1g1_lo",
+      "spice": ".meas dc i_off_s3_vb_track_s1g1_lo FIND i(vm_off_s3_vb_track_s1g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s3_vb_track_s1g1_mid",
+      "spice": ".meas dc i_off_s3_vb_track_s1g1_mid FIND i(vm_off_s3_vb_track_s1g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s3_vb_track_s1g1_hi",
+      "spice": ".meas dc i_off_s3_vb_track_s1g1_hi FIND i(vm_off_s3_vb_track_s1g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s3_vb_track_s1g1_lo",
+      "spice": ".meas dc i_offp_s3_vb_track_s1g1_lo FIND i(vm_offp_s3_vb_track_s1g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s3_vb_track_s1g1_mid",
+      "spice": ".meas dc i_offp_s3_vb_track_s1g1_mid FIND i(vm_offp_s3_vb_track_s1g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s3_vb_track_s1g1_hi",
+      "spice": ".meas dc i_offp_s3_vb_track_s1g1_hi FIND i(vm_offp_s3_vb_track_s1g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s3_vb_track_s1g1",
+      "spice": ".meas dc i_un_s3_vb_track_s1g1 FIND i(vm_un_s3_vb_track_s1g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s3_vb_track_s1g1",
+      "spice": ".meas dc i_pm_s3_vb_track_s1g1 FIND i(vm_pm_s3_vb_track_s1g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s3_vb_track_s1g1",
+      "spice": ".meas dc vcn_pm_s3_vb_track_s1g1 FIND v(x_pm_s3_vb_track_s1g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s3_vb_track_s1g1",
+      "spice": ".meas dc i_pw_s3_vb_track_s1g1 FIND i(vm_pw_s3_vb_track_s1g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s3_vb_track_s1g1",
+      "spice": ".meas dc vcn_pw_s3_vb_track_s1g1 FIND v(x_pw_s3_vb_track_s1g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s3_vb_track_s1g2_lo",
+      "spice": ".meas dc i_off_s3_vb_track_s1g2_lo FIND i(vm_off_s3_vb_track_s1g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s3_vb_track_s1g2_mid",
+      "spice": ".meas dc i_off_s3_vb_track_s1g2_mid FIND i(vm_off_s3_vb_track_s1g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s3_vb_track_s1g2_hi",
+      "spice": ".meas dc i_off_s3_vb_track_s1g2_hi FIND i(vm_off_s3_vb_track_s1g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s3_vb_track_s1g2_lo",
+      "spice": ".meas dc i_offp_s3_vb_track_s1g2_lo FIND i(vm_offp_s3_vb_track_s1g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s3_vb_track_s1g2_mid",
+      "spice": ".meas dc i_offp_s3_vb_track_s1g2_mid FIND i(vm_offp_s3_vb_track_s1g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s3_vb_track_s1g2_hi",
+      "spice": ".meas dc i_offp_s3_vb_track_s1g2_hi FIND i(vm_offp_s3_vb_track_s1g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s3_vb_track_s1g2",
+      "spice": ".meas dc i_un_s3_vb_track_s1g2 FIND i(vm_un_s3_vb_track_s1g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s3_vb_track_s1g2",
+      "spice": ".meas dc i_pm_s3_vb_track_s1g2 FIND i(vm_pm_s3_vb_track_s1g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s3_vb_track_s1g2",
+      "spice": ".meas dc vcn_pm_s3_vb_track_s1g2 FIND v(x_pm_s3_vb_track_s1g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s3_vb_track_s1g2",
+      "spice": ".meas dc i_pw_s3_vb_track_s1g2 FIND i(vm_pw_s3_vb_track_s1g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s3_vb_track_s1g2",
+      "spice": ".meas dc vcn_pw_s3_vb_track_s1g2 FIND v(x_pw_s3_vb_track_s1g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s3_vb_track_s2g1_lo",
+      "spice": ".meas dc i_off_s3_vb_track_s2g1_lo FIND i(vm_off_s3_vb_track_s2g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s3_vb_track_s2g1_mid",
+      "spice": ".meas dc i_off_s3_vb_track_s2g1_mid FIND i(vm_off_s3_vb_track_s2g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s3_vb_track_s2g1_hi",
+      "spice": ".meas dc i_off_s3_vb_track_s2g1_hi FIND i(vm_off_s3_vb_track_s2g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s3_vb_track_s2g1_lo",
+      "spice": ".meas dc i_offp_s3_vb_track_s2g1_lo FIND i(vm_offp_s3_vb_track_s2g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s3_vb_track_s2g1_mid",
+      "spice": ".meas dc i_offp_s3_vb_track_s2g1_mid FIND i(vm_offp_s3_vb_track_s2g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s3_vb_track_s2g1_hi",
+      "spice": ".meas dc i_offp_s3_vb_track_s2g1_hi FIND i(vm_offp_s3_vb_track_s2g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s3_vb_track_s2g1",
+      "spice": ".meas dc i_un_s3_vb_track_s2g1 FIND i(vm_un_s3_vb_track_s2g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s3_vb_track_s2g1",
+      "spice": ".meas dc i_pm_s3_vb_track_s2g1 FIND i(vm_pm_s3_vb_track_s2g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s3_vb_track_s2g1",
+      "spice": ".meas dc vcn_pm_s3_vb_track_s2g1 FIND v(x_pm_s3_vb_track_s2g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s3_vb_track_s2g1",
+      "spice": ".meas dc i_pw_s3_vb_track_s2g1 FIND i(vm_pw_s3_vb_track_s2g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s3_vb_track_s2g1",
+      "spice": ".meas dc vcn_pw_s3_vb_track_s2g1 FIND v(x_pw_s3_vb_track_s2g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s3_vb_track_s2g2_lo",
+      "spice": ".meas dc i_off_s3_vb_track_s2g2_lo FIND i(vm_off_s3_vb_track_s2g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s3_vb_track_s2g2_mid",
+      "spice": ".meas dc i_off_s3_vb_track_s2g2_mid FIND i(vm_off_s3_vb_track_s2g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s3_vb_track_s2g2_hi",
+      "spice": ".meas dc i_off_s3_vb_track_s2g2_hi FIND i(vm_off_s3_vb_track_s2g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s3_vb_track_s2g2_lo",
+      "spice": ".meas dc i_offp_s3_vb_track_s2g2_lo FIND i(vm_offp_s3_vb_track_s2g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s3_vb_track_s2g2_mid",
+      "spice": ".meas dc i_offp_s3_vb_track_s2g2_mid FIND i(vm_offp_s3_vb_track_s2g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s3_vb_track_s2g2_hi",
+      "spice": ".meas dc i_offp_s3_vb_track_s2g2_hi FIND i(vm_offp_s3_vb_track_s2g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s3_vb_track_s2g2",
+      "spice": ".meas dc i_un_s3_vb_track_s2g2 FIND i(vm_un_s3_vb_track_s2g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s3_vb_track_s2g2",
+      "spice": ".meas dc i_pm_s3_vb_track_s2g2 FIND i(vm_pm_s3_vb_track_s2g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s3_vb_track_s2g2",
+      "spice": ".meas dc vcn_pm_s3_vb_track_s2g2 FIND v(x_pm_s3_vb_track_s2g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s3_vb_track_s2g2",
+      "spice": ".meas dc i_pw_s3_vb_track_s2g2 FIND i(vm_pw_s3_vb_track_s2g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s3_vb_track_s2g2",
+      "spice": ".meas dc vcn_pw_s3_vb_track_s2g2 FIND v(x_pw_s3_vb_track_s2g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "vbl_s4_vb_fix1v",
+      "spice": ".meas dc vbl_s4_vb_fix1v FIND v(bls_s4_vb_fix1v) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "vvb_s4_vb_fix1v",
+      "spice": ".meas dc vvb_s4_vb_fix1v FIND v(vb_s4_vb_fix1v) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s4_vb_fix1v_s1g1_lo",
+      "spice": ".meas dc i_off_s4_vb_fix1v_s1g1_lo FIND i(vm_off_s4_vb_fix1v_s1g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s4_vb_fix1v_s1g1_mid",
+      "spice": ".meas dc i_off_s4_vb_fix1v_s1g1_mid FIND i(vm_off_s4_vb_fix1v_s1g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s4_vb_fix1v_s1g1_hi",
+      "spice": ".meas dc i_off_s4_vb_fix1v_s1g1_hi FIND i(vm_off_s4_vb_fix1v_s1g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s4_vb_fix1v_s1g1_lo",
+      "spice": ".meas dc i_offp_s4_vb_fix1v_s1g1_lo FIND i(vm_offp_s4_vb_fix1v_s1g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s4_vb_fix1v_s1g1_mid",
+      "spice": ".meas dc i_offp_s4_vb_fix1v_s1g1_mid FIND i(vm_offp_s4_vb_fix1v_s1g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s4_vb_fix1v_s1g1_hi",
+      "spice": ".meas dc i_offp_s4_vb_fix1v_s1g1_hi FIND i(vm_offp_s4_vb_fix1v_s1g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s4_vb_fix1v_s1g1",
+      "spice": ".meas dc i_un_s4_vb_fix1v_s1g1 FIND i(vm_un_s4_vb_fix1v_s1g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s4_vb_fix1v_s1g1",
+      "spice": ".meas dc i_pm_s4_vb_fix1v_s1g1 FIND i(vm_pm_s4_vb_fix1v_s1g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s4_vb_fix1v_s1g1",
+      "spice": ".meas dc vcn_pm_s4_vb_fix1v_s1g1 FIND v(x_pm_s4_vb_fix1v_s1g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s4_vb_fix1v_s1g1",
+      "spice": ".meas dc i_pw_s4_vb_fix1v_s1g1 FIND i(vm_pw_s4_vb_fix1v_s1g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s4_vb_fix1v_s1g1",
+      "spice": ".meas dc vcn_pw_s4_vb_fix1v_s1g1 FIND v(x_pw_s4_vb_fix1v_s1g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s4_vb_fix1v_s1g2_lo",
+      "spice": ".meas dc i_off_s4_vb_fix1v_s1g2_lo FIND i(vm_off_s4_vb_fix1v_s1g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s4_vb_fix1v_s1g2_mid",
+      "spice": ".meas dc i_off_s4_vb_fix1v_s1g2_mid FIND i(vm_off_s4_vb_fix1v_s1g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s4_vb_fix1v_s1g2_hi",
+      "spice": ".meas dc i_off_s4_vb_fix1v_s1g2_hi FIND i(vm_off_s4_vb_fix1v_s1g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s4_vb_fix1v_s1g2_lo",
+      "spice": ".meas dc i_offp_s4_vb_fix1v_s1g2_lo FIND i(vm_offp_s4_vb_fix1v_s1g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s4_vb_fix1v_s1g2_mid",
+      "spice": ".meas dc i_offp_s4_vb_fix1v_s1g2_mid FIND i(vm_offp_s4_vb_fix1v_s1g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s4_vb_fix1v_s1g2_hi",
+      "spice": ".meas dc i_offp_s4_vb_fix1v_s1g2_hi FIND i(vm_offp_s4_vb_fix1v_s1g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s4_vb_fix1v_s1g2",
+      "spice": ".meas dc i_un_s4_vb_fix1v_s1g2 FIND i(vm_un_s4_vb_fix1v_s1g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s4_vb_fix1v_s1g2",
+      "spice": ".meas dc i_pm_s4_vb_fix1v_s1g2 FIND i(vm_pm_s4_vb_fix1v_s1g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s4_vb_fix1v_s1g2",
+      "spice": ".meas dc vcn_pm_s4_vb_fix1v_s1g2 FIND v(x_pm_s4_vb_fix1v_s1g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s4_vb_fix1v_s1g2",
+      "spice": ".meas dc i_pw_s4_vb_fix1v_s1g2 FIND i(vm_pw_s4_vb_fix1v_s1g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s4_vb_fix1v_s1g2",
+      "spice": ".meas dc vcn_pw_s4_vb_fix1v_s1g2 FIND v(x_pw_s4_vb_fix1v_s1g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s4_vb_fix1v_s2g1_lo",
+      "spice": ".meas dc i_off_s4_vb_fix1v_s2g1_lo FIND i(vm_off_s4_vb_fix1v_s2g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s4_vb_fix1v_s2g1_mid",
+      "spice": ".meas dc i_off_s4_vb_fix1v_s2g1_mid FIND i(vm_off_s4_vb_fix1v_s2g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s4_vb_fix1v_s2g1_hi",
+      "spice": ".meas dc i_off_s4_vb_fix1v_s2g1_hi FIND i(vm_off_s4_vb_fix1v_s2g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s4_vb_fix1v_s2g1_lo",
+      "spice": ".meas dc i_offp_s4_vb_fix1v_s2g1_lo FIND i(vm_offp_s4_vb_fix1v_s2g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s4_vb_fix1v_s2g1_mid",
+      "spice": ".meas dc i_offp_s4_vb_fix1v_s2g1_mid FIND i(vm_offp_s4_vb_fix1v_s2g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s4_vb_fix1v_s2g1_hi",
+      "spice": ".meas dc i_offp_s4_vb_fix1v_s2g1_hi FIND i(vm_offp_s4_vb_fix1v_s2g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s4_vb_fix1v_s2g1",
+      "spice": ".meas dc i_un_s4_vb_fix1v_s2g1 FIND i(vm_un_s4_vb_fix1v_s2g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s4_vb_fix1v_s2g1",
+      "spice": ".meas dc i_pm_s4_vb_fix1v_s2g1 FIND i(vm_pm_s4_vb_fix1v_s2g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s4_vb_fix1v_s2g1",
+      "spice": ".meas dc vcn_pm_s4_vb_fix1v_s2g1 FIND v(x_pm_s4_vb_fix1v_s2g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s4_vb_fix1v_s2g1",
+      "spice": ".meas dc i_pw_s4_vb_fix1v_s2g1 FIND i(vm_pw_s4_vb_fix1v_s2g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s4_vb_fix1v_s2g1",
+      "spice": ".meas dc vcn_pw_s4_vb_fix1v_s2g1 FIND v(x_pw_s4_vb_fix1v_s2g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s4_vb_fix1v_s2g2_lo",
+      "spice": ".meas dc i_off_s4_vb_fix1v_s2g2_lo FIND i(vm_off_s4_vb_fix1v_s2g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s4_vb_fix1v_s2g2_mid",
+      "spice": ".meas dc i_off_s4_vb_fix1v_s2g2_mid FIND i(vm_off_s4_vb_fix1v_s2g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s4_vb_fix1v_s2g2_hi",
+      "spice": ".meas dc i_off_s4_vb_fix1v_s2g2_hi FIND i(vm_off_s4_vb_fix1v_s2g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s4_vb_fix1v_s2g2_lo",
+      "spice": ".meas dc i_offp_s4_vb_fix1v_s2g2_lo FIND i(vm_offp_s4_vb_fix1v_s2g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s4_vb_fix1v_s2g2_mid",
+      "spice": ".meas dc i_offp_s4_vb_fix1v_s2g2_mid FIND i(vm_offp_s4_vb_fix1v_s2g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s4_vb_fix1v_s2g2_hi",
+      "spice": ".meas dc i_offp_s4_vb_fix1v_s2g2_hi FIND i(vm_offp_s4_vb_fix1v_s2g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s4_vb_fix1v_s2g2",
+      "spice": ".meas dc i_un_s4_vb_fix1v_s2g2 FIND i(vm_un_s4_vb_fix1v_s2g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s4_vb_fix1v_s2g2",
+      "spice": ".meas dc i_pm_s4_vb_fix1v_s2g2 FIND i(vm_pm_s4_vb_fix1v_s2g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s4_vb_fix1v_s2g2",
+      "spice": ".meas dc vcn_pm_s4_vb_fix1v_s2g2 FIND v(x_pm_s4_vb_fix1v_s2g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s4_vb_fix1v_s2g2",
+      "spice": ".meas dc i_pw_s4_vb_fix1v_s2g2 FIND i(vm_pw_s4_vb_fix1v_s2g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s4_vb_fix1v_s2g2",
+      "spice": ".meas dc vcn_pw_s4_vb_fix1v_s2g2 FIND v(x_pw_s4_vb_fix1v_s2g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "vbl_s5_rail1v8",
+      "spice": ".meas dc vbl_s5_rail1v8 FIND v(bls_s5_rail1v8) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "vvb_s5_rail1v8",
+      "spice": ".meas dc vvb_s5_rail1v8 FIND v(vb_s5_rail1v8) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s5_rail1v8_s1g1_lo",
+      "spice": ".meas dc i_off_s5_rail1v8_s1g1_lo FIND i(vm_off_s5_rail1v8_s1g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s5_rail1v8_s1g1_mid",
+      "spice": ".meas dc i_off_s5_rail1v8_s1g1_mid FIND i(vm_off_s5_rail1v8_s1g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s5_rail1v8_s1g1_hi",
+      "spice": ".meas dc i_off_s5_rail1v8_s1g1_hi FIND i(vm_off_s5_rail1v8_s1g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s5_rail1v8_s1g1_lo",
+      "spice": ".meas dc i_offp_s5_rail1v8_s1g1_lo FIND i(vm_offp_s5_rail1v8_s1g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s5_rail1v8_s1g1_mid",
+      "spice": ".meas dc i_offp_s5_rail1v8_s1g1_mid FIND i(vm_offp_s5_rail1v8_s1g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s5_rail1v8_s1g1_hi",
+      "spice": ".meas dc i_offp_s5_rail1v8_s1g1_hi FIND i(vm_offp_s5_rail1v8_s1g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s5_rail1v8_s1g1",
+      "spice": ".meas dc i_un_s5_rail1v8_s1g1 FIND i(vm_un_s5_rail1v8_s1g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s5_rail1v8_s1g1",
+      "spice": ".meas dc i_pm_s5_rail1v8_s1g1 FIND i(vm_pm_s5_rail1v8_s1g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s5_rail1v8_s1g1",
+      "spice": ".meas dc vcn_pm_s5_rail1v8_s1g1 FIND v(x_pm_s5_rail1v8_s1g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s5_rail1v8_s1g1",
+      "spice": ".meas dc i_pw_s5_rail1v8_s1g1 FIND i(vm_pw_s5_rail1v8_s1g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s5_rail1v8_s1g1",
+      "spice": ".meas dc vcn_pw_s5_rail1v8_s1g1 FIND v(x_pw_s5_rail1v8_s1g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s5_rail1v8_s1g2_lo",
+      "spice": ".meas dc i_off_s5_rail1v8_s1g2_lo FIND i(vm_off_s5_rail1v8_s1g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s5_rail1v8_s1g2_mid",
+      "spice": ".meas dc i_off_s5_rail1v8_s1g2_mid FIND i(vm_off_s5_rail1v8_s1g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s5_rail1v8_s1g2_hi",
+      "spice": ".meas dc i_off_s5_rail1v8_s1g2_hi FIND i(vm_off_s5_rail1v8_s1g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s5_rail1v8_s1g2_lo",
+      "spice": ".meas dc i_offp_s5_rail1v8_s1g2_lo FIND i(vm_offp_s5_rail1v8_s1g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s5_rail1v8_s1g2_mid",
+      "spice": ".meas dc i_offp_s5_rail1v8_s1g2_mid FIND i(vm_offp_s5_rail1v8_s1g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s5_rail1v8_s1g2_hi",
+      "spice": ".meas dc i_offp_s5_rail1v8_s1g2_hi FIND i(vm_offp_s5_rail1v8_s1g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s5_rail1v8_s1g2",
+      "spice": ".meas dc i_un_s5_rail1v8_s1g2 FIND i(vm_un_s5_rail1v8_s1g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s5_rail1v8_s1g2",
+      "spice": ".meas dc i_pm_s5_rail1v8_s1g2 FIND i(vm_pm_s5_rail1v8_s1g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s5_rail1v8_s1g2",
+      "spice": ".meas dc vcn_pm_s5_rail1v8_s1g2 FIND v(x_pm_s5_rail1v8_s1g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s5_rail1v8_s1g2",
+      "spice": ".meas dc i_pw_s5_rail1v8_s1g2 FIND i(vm_pw_s5_rail1v8_s1g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s5_rail1v8_s1g2",
+      "spice": ".meas dc vcn_pw_s5_rail1v8_s1g2 FIND v(x_pw_s5_rail1v8_s1g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s5_rail1v8_s2g1_lo",
+      "spice": ".meas dc i_off_s5_rail1v8_s2g1_lo FIND i(vm_off_s5_rail1v8_s2g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s5_rail1v8_s2g1_mid",
+      "spice": ".meas dc i_off_s5_rail1v8_s2g1_mid FIND i(vm_off_s5_rail1v8_s2g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s5_rail1v8_s2g1_hi",
+      "spice": ".meas dc i_off_s5_rail1v8_s2g1_hi FIND i(vm_off_s5_rail1v8_s2g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s5_rail1v8_s2g1_lo",
+      "spice": ".meas dc i_offp_s5_rail1v8_s2g1_lo FIND i(vm_offp_s5_rail1v8_s2g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s5_rail1v8_s2g1_mid",
+      "spice": ".meas dc i_offp_s5_rail1v8_s2g1_mid FIND i(vm_offp_s5_rail1v8_s2g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s5_rail1v8_s2g1_hi",
+      "spice": ".meas dc i_offp_s5_rail1v8_s2g1_hi FIND i(vm_offp_s5_rail1v8_s2g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s5_rail1v8_s2g1",
+      "spice": ".meas dc i_un_s5_rail1v8_s2g1 FIND i(vm_un_s5_rail1v8_s2g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s5_rail1v8_s2g1",
+      "spice": ".meas dc i_pm_s5_rail1v8_s2g1 FIND i(vm_pm_s5_rail1v8_s2g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s5_rail1v8_s2g1",
+      "spice": ".meas dc vcn_pm_s5_rail1v8_s2g1 FIND v(x_pm_s5_rail1v8_s2g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s5_rail1v8_s2g1",
+      "spice": ".meas dc i_pw_s5_rail1v8_s2g1 FIND i(vm_pw_s5_rail1v8_s2g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s5_rail1v8_s2g1",
+      "spice": ".meas dc vcn_pw_s5_rail1v8_s2g1 FIND v(x_pw_s5_rail1v8_s2g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s5_rail1v8_s2g2_lo",
+      "spice": ".meas dc i_off_s5_rail1v8_s2g2_lo FIND i(vm_off_s5_rail1v8_s2g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s5_rail1v8_s2g2_mid",
+      "spice": ".meas dc i_off_s5_rail1v8_s2g2_mid FIND i(vm_off_s5_rail1v8_s2g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s5_rail1v8_s2g2_hi",
+      "spice": ".meas dc i_off_s5_rail1v8_s2g2_hi FIND i(vm_off_s5_rail1v8_s2g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s5_rail1v8_s2g2_lo",
+      "spice": ".meas dc i_offp_s5_rail1v8_s2g2_lo FIND i(vm_offp_s5_rail1v8_s2g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s5_rail1v8_s2g2_mid",
+      "spice": ".meas dc i_offp_s5_rail1v8_s2g2_mid FIND i(vm_offp_s5_rail1v8_s2g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s5_rail1v8_s2g2_hi",
+      "spice": ".meas dc i_offp_s5_rail1v8_s2g2_hi FIND i(vm_offp_s5_rail1v8_s2g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s5_rail1v8_s2g2",
+      "spice": ".meas dc i_un_s5_rail1v8_s2g2 FIND i(vm_un_s5_rail1v8_s2g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s5_rail1v8_s2g2",
+      "spice": ".meas dc i_pm_s5_rail1v8_s2g2 FIND i(vm_pm_s5_rail1v8_s2g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s5_rail1v8_s2g2",
+      "spice": ".meas dc vcn_pm_s5_rail1v8_s2g2 FIND v(x_pm_s5_rail1v8_s2g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s5_rail1v8_s2g2",
+      "spice": ".meas dc i_pw_s5_rail1v8_s2g2 FIND i(vm_pw_s5_rail1v8_s2g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s5_rail1v8_s2g2",
+      "spice": ".meas dc vcn_pw_s5_rail1v8_s2g2 FIND v(x_pw_s5_rail1v8_s2g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "vbl_s6_rail1v8_vb_track",
+      "spice": ".meas dc vbl_s6_rail1v8_vb_track FIND v(bls_s6_rail1v8_vb_track) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "vvb_s6_rail1v8_vb_track",
+      "spice": ".meas dc vvb_s6_rail1v8_vb_track FIND v(vb_s6_rail1v8_vb_track) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s6_rail1v8_vb_track_s1g1_lo",
+      "spice": ".meas dc i_off_s6_rail1v8_vb_track_s1g1_lo FIND i(vm_off_s6_rail1v8_vb_track_s1g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s6_rail1v8_vb_track_s1g1_mid",
+      "spice": ".meas dc i_off_s6_rail1v8_vb_track_s1g1_mid FIND i(vm_off_s6_rail1v8_vb_track_s1g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s6_rail1v8_vb_track_s1g1_hi",
+      "spice": ".meas dc i_off_s6_rail1v8_vb_track_s1g1_hi FIND i(vm_off_s6_rail1v8_vb_track_s1g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s6_rail1v8_vb_track_s1g1_lo",
+      "spice": ".meas dc i_offp_s6_rail1v8_vb_track_s1g1_lo FIND i(vm_offp_s6_rail1v8_vb_track_s1g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s6_rail1v8_vb_track_s1g1_mid",
+      "spice": ".meas dc i_offp_s6_rail1v8_vb_track_s1g1_mid FIND i(vm_offp_s6_rail1v8_vb_track_s1g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s6_rail1v8_vb_track_s1g1_hi",
+      "spice": ".meas dc i_offp_s6_rail1v8_vb_track_s1g1_hi FIND i(vm_offp_s6_rail1v8_vb_track_s1g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s6_rail1v8_vb_track_s1g1",
+      "spice": ".meas dc i_un_s6_rail1v8_vb_track_s1g1 FIND i(vm_un_s6_rail1v8_vb_track_s1g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s6_rail1v8_vb_track_s1g1",
+      "spice": ".meas dc i_pm_s6_rail1v8_vb_track_s1g1 FIND i(vm_pm_s6_rail1v8_vb_track_s1g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s6_rail1v8_vb_track_s1g1",
+      "spice": ".meas dc vcn_pm_s6_rail1v8_vb_track_s1g1 FIND v(x_pm_s6_rail1v8_vb_track_s1g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s6_rail1v8_vb_track_s1g1",
+      "spice": ".meas dc i_pw_s6_rail1v8_vb_track_s1g1 FIND i(vm_pw_s6_rail1v8_vb_track_s1g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s6_rail1v8_vb_track_s1g1",
+      "spice": ".meas dc vcn_pw_s6_rail1v8_vb_track_s1g1 FIND v(x_pw_s6_rail1v8_vb_track_s1g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s6_rail1v8_vb_track_s1g2_lo",
+      "spice": ".meas dc i_off_s6_rail1v8_vb_track_s1g2_lo FIND i(vm_off_s6_rail1v8_vb_track_s1g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s6_rail1v8_vb_track_s1g2_mid",
+      "spice": ".meas dc i_off_s6_rail1v8_vb_track_s1g2_mid FIND i(vm_off_s6_rail1v8_vb_track_s1g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s6_rail1v8_vb_track_s1g2_hi",
+      "spice": ".meas dc i_off_s6_rail1v8_vb_track_s1g2_hi FIND i(vm_off_s6_rail1v8_vb_track_s1g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s6_rail1v8_vb_track_s1g2_lo",
+      "spice": ".meas dc i_offp_s6_rail1v8_vb_track_s1g2_lo FIND i(vm_offp_s6_rail1v8_vb_track_s1g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s6_rail1v8_vb_track_s1g2_mid",
+      "spice": ".meas dc i_offp_s6_rail1v8_vb_track_s1g2_mid FIND i(vm_offp_s6_rail1v8_vb_track_s1g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s6_rail1v8_vb_track_s1g2_hi",
+      "spice": ".meas dc i_offp_s6_rail1v8_vb_track_s1g2_hi FIND i(vm_offp_s6_rail1v8_vb_track_s1g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s6_rail1v8_vb_track_s1g2",
+      "spice": ".meas dc i_un_s6_rail1v8_vb_track_s1g2 FIND i(vm_un_s6_rail1v8_vb_track_s1g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s6_rail1v8_vb_track_s1g2",
+      "spice": ".meas dc i_pm_s6_rail1v8_vb_track_s1g2 FIND i(vm_pm_s6_rail1v8_vb_track_s1g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s6_rail1v8_vb_track_s1g2",
+      "spice": ".meas dc vcn_pm_s6_rail1v8_vb_track_s1g2 FIND v(x_pm_s6_rail1v8_vb_track_s1g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s6_rail1v8_vb_track_s1g2",
+      "spice": ".meas dc i_pw_s6_rail1v8_vb_track_s1g2 FIND i(vm_pw_s6_rail1v8_vb_track_s1g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s6_rail1v8_vb_track_s1g2",
+      "spice": ".meas dc vcn_pw_s6_rail1v8_vb_track_s1g2 FIND v(x_pw_s6_rail1v8_vb_track_s1g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s6_rail1v8_vb_track_s2g1_lo",
+      "spice": ".meas dc i_off_s6_rail1v8_vb_track_s2g1_lo FIND i(vm_off_s6_rail1v8_vb_track_s2g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s6_rail1v8_vb_track_s2g1_mid",
+      "spice": ".meas dc i_off_s6_rail1v8_vb_track_s2g1_mid FIND i(vm_off_s6_rail1v8_vb_track_s2g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s6_rail1v8_vb_track_s2g1_hi",
+      "spice": ".meas dc i_off_s6_rail1v8_vb_track_s2g1_hi FIND i(vm_off_s6_rail1v8_vb_track_s2g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s6_rail1v8_vb_track_s2g1_lo",
+      "spice": ".meas dc i_offp_s6_rail1v8_vb_track_s2g1_lo FIND i(vm_offp_s6_rail1v8_vb_track_s2g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s6_rail1v8_vb_track_s2g1_mid",
+      "spice": ".meas dc i_offp_s6_rail1v8_vb_track_s2g1_mid FIND i(vm_offp_s6_rail1v8_vb_track_s2g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s6_rail1v8_vb_track_s2g1_hi",
+      "spice": ".meas dc i_offp_s6_rail1v8_vb_track_s2g1_hi FIND i(vm_offp_s6_rail1v8_vb_track_s2g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s6_rail1v8_vb_track_s2g1",
+      "spice": ".meas dc i_un_s6_rail1v8_vb_track_s2g1 FIND i(vm_un_s6_rail1v8_vb_track_s2g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s6_rail1v8_vb_track_s2g1",
+      "spice": ".meas dc i_pm_s6_rail1v8_vb_track_s2g1 FIND i(vm_pm_s6_rail1v8_vb_track_s2g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s6_rail1v8_vb_track_s2g1",
+      "spice": ".meas dc vcn_pm_s6_rail1v8_vb_track_s2g1 FIND v(x_pm_s6_rail1v8_vb_track_s2g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s6_rail1v8_vb_track_s2g1",
+      "spice": ".meas dc i_pw_s6_rail1v8_vb_track_s2g1 FIND i(vm_pw_s6_rail1v8_vb_track_s2g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s6_rail1v8_vb_track_s2g1",
+      "spice": ".meas dc vcn_pw_s6_rail1v8_vb_track_s2g1 FIND v(x_pw_s6_rail1v8_vb_track_s2g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s6_rail1v8_vb_track_s2g2_lo",
+      "spice": ".meas dc i_off_s6_rail1v8_vb_track_s2g2_lo FIND i(vm_off_s6_rail1v8_vb_track_s2g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s6_rail1v8_vb_track_s2g2_mid",
+      "spice": ".meas dc i_off_s6_rail1v8_vb_track_s2g2_mid FIND i(vm_off_s6_rail1v8_vb_track_s2g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s6_rail1v8_vb_track_s2g2_hi",
+      "spice": ".meas dc i_off_s6_rail1v8_vb_track_s2g2_hi FIND i(vm_off_s6_rail1v8_vb_track_s2g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s6_rail1v8_vb_track_s2g2_lo",
+      "spice": ".meas dc i_offp_s6_rail1v8_vb_track_s2g2_lo FIND i(vm_offp_s6_rail1v8_vb_track_s2g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s6_rail1v8_vb_track_s2g2_mid",
+      "spice": ".meas dc i_offp_s6_rail1v8_vb_track_s2g2_mid FIND i(vm_offp_s6_rail1v8_vb_track_s2g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s6_rail1v8_vb_track_s2g2_hi",
+      "spice": ".meas dc i_offp_s6_rail1v8_vb_track_s2g2_hi FIND i(vm_offp_s6_rail1v8_vb_track_s2g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s6_rail1v8_vb_track_s2g2",
+      "spice": ".meas dc i_un_s6_rail1v8_vb_track_s2g2 FIND i(vm_un_s6_rail1v8_vb_track_s2g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s6_rail1v8_vb_track_s2g2",
+      "spice": ".meas dc i_pm_s6_rail1v8_vb_track_s2g2 FIND i(vm_pm_s6_rail1v8_vb_track_s2g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s6_rail1v8_vb_track_s2g2",
+      "spice": ".meas dc vcn_pm_s6_rail1v8_vb_track_s2g2 FIND v(x_pm_s6_rail1v8_vb_track_s2g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s6_rail1v8_vb_track_s2g2",
+      "spice": ".meas dc i_pw_s6_rail1v8_vb_track_s2g2 FIND i(vm_pw_s6_rail1v8_vb_track_s2g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s6_rail1v8_vb_track_s2g2",
+      "spice": ".meas dc vcn_pw_s6_rail1v8_vb_track_s2g2 FIND v(x_pw_s6_rail1v8_vb_track_s2g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "vbl_s7_vb_track_p0v3",
+      "spice": ".meas dc vbl_s7_vb_track_p0v3 FIND v(bls_s7_vb_track_p0v3) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "vvb_s7_vb_track_p0v3",
+      "spice": ".meas dc vvb_s7_vb_track_p0v3 FIND v(vb_s7_vb_track_p0v3) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s7_vb_track_p0v3_s1g1_lo",
+      "spice": ".meas dc i_off_s7_vb_track_p0v3_s1g1_lo FIND i(vm_off_s7_vb_track_p0v3_s1g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s7_vb_track_p0v3_s1g1_mid",
+      "spice": ".meas dc i_off_s7_vb_track_p0v3_s1g1_mid FIND i(vm_off_s7_vb_track_p0v3_s1g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s7_vb_track_p0v3_s1g1_hi",
+      "spice": ".meas dc i_off_s7_vb_track_p0v3_s1g1_hi FIND i(vm_off_s7_vb_track_p0v3_s1g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s7_vb_track_p0v3_s1g1_lo",
+      "spice": ".meas dc i_offp_s7_vb_track_p0v3_s1g1_lo FIND i(vm_offp_s7_vb_track_p0v3_s1g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s7_vb_track_p0v3_s1g1_mid",
+      "spice": ".meas dc i_offp_s7_vb_track_p0v3_s1g1_mid FIND i(vm_offp_s7_vb_track_p0v3_s1g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s7_vb_track_p0v3_s1g1_hi",
+      "spice": ".meas dc i_offp_s7_vb_track_p0v3_s1g1_hi FIND i(vm_offp_s7_vb_track_p0v3_s1g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s7_vb_track_p0v3_s1g1",
+      "spice": ".meas dc i_un_s7_vb_track_p0v3_s1g1 FIND i(vm_un_s7_vb_track_p0v3_s1g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s7_vb_track_p0v3_s1g1",
+      "spice": ".meas dc i_pm_s7_vb_track_p0v3_s1g1 FIND i(vm_pm_s7_vb_track_p0v3_s1g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s7_vb_track_p0v3_s1g1",
+      "spice": ".meas dc vcn_pm_s7_vb_track_p0v3_s1g1 FIND v(x_pm_s7_vb_track_p0v3_s1g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s7_vb_track_p0v3_s1g1",
+      "spice": ".meas dc i_pw_s7_vb_track_p0v3_s1g1 FIND i(vm_pw_s7_vb_track_p0v3_s1g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s7_vb_track_p0v3_s1g1",
+      "spice": ".meas dc vcn_pw_s7_vb_track_p0v3_s1g1 FIND v(x_pw_s7_vb_track_p0v3_s1g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s7_vb_track_p0v3_s1g2_lo",
+      "spice": ".meas dc i_off_s7_vb_track_p0v3_s1g2_lo FIND i(vm_off_s7_vb_track_p0v3_s1g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s7_vb_track_p0v3_s1g2_mid",
+      "spice": ".meas dc i_off_s7_vb_track_p0v3_s1g2_mid FIND i(vm_off_s7_vb_track_p0v3_s1g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s7_vb_track_p0v3_s1g2_hi",
+      "spice": ".meas dc i_off_s7_vb_track_p0v3_s1g2_hi FIND i(vm_off_s7_vb_track_p0v3_s1g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s7_vb_track_p0v3_s1g2_lo",
+      "spice": ".meas dc i_offp_s7_vb_track_p0v3_s1g2_lo FIND i(vm_offp_s7_vb_track_p0v3_s1g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s7_vb_track_p0v3_s1g2_mid",
+      "spice": ".meas dc i_offp_s7_vb_track_p0v3_s1g2_mid FIND i(vm_offp_s7_vb_track_p0v3_s1g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s7_vb_track_p0v3_s1g2_hi",
+      "spice": ".meas dc i_offp_s7_vb_track_p0v3_s1g2_hi FIND i(vm_offp_s7_vb_track_p0v3_s1g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s7_vb_track_p0v3_s1g2",
+      "spice": ".meas dc i_un_s7_vb_track_p0v3_s1g2 FIND i(vm_un_s7_vb_track_p0v3_s1g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s7_vb_track_p0v3_s1g2",
+      "spice": ".meas dc i_pm_s7_vb_track_p0v3_s1g2 FIND i(vm_pm_s7_vb_track_p0v3_s1g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s7_vb_track_p0v3_s1g2",
+      "spice": ".meas dc vcn_pm_s7_vb_track_p0v3_s1g2 FIND v(x_pm_s7_vb_track_p0v3_s1g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s7_vb_track_p0v3_s1g2",
+      "spice": ".meas dc i_pw_s7_vb_track_p0v3_s1g2 FIND i(vm_pw_s7_vb_track_p0v3_s1g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s7_vb_track_p0v3_s1g2",
+      "spice": ".meas dc vcn_pw_s7_vb_track_p0v3_s1g2 FIND v(x_pw_s7_vb_track_p0v3_s1g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s7_vb_track_p0v3_s2g1_lo",
+      "spice": ".meas dc i_off_s7_vb_track_p0v3_s2g1_lo FIND i(vm_off_s7_vb_track_p0v3_s2g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s7_vb_track_p0v3_s2g1_mid",
+      "spice": ".meas dc i_off_s7_vb_track_p0v3_s2g1_mid FIND i(vm_off_s7_vb_track_p0v3_s2g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s7_vb_track_p0v3_s2g1_hi",
+      "spice": ".meas dc i_off_s7_vb_track_p0v3_s2g1_hi FIND i(vm_off_s7_vb_track_p0v3_s2g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s7_vb_track_p0v3_s2g1_lo",
+      "spice": ".meas dc i_offp_s7_vb_track_p0v3_s2g1_lo FIND i(vm_offp_s7_vb_track_p0v3_s2g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s7_vb_track_p0v3_s2g1_mid",
+      "spice": ".meas dc i_offp_s7_vb_track_p0v3_s2g1_mid FIND i(vm_offp_s7_vb_track_p0v3_s2g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s7_vb_track_p0v3_s2g1_hi",
+      "spice": ".meas dc i_offp_s7_vb_track_p0v3_s2g1_hi FIND i(vm_offp_s7_vb_track_p0v3_s2g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s7_vb_track_p0v3_s2g1",
+      "spice": ".meas dc i_un_s7_vb_track_p0v3_s2g1 FIND i(vm_un_s7_vb_track_p0v3_s2g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s7_vb_track_p0v3_s2g1",
+      "spice": ".meas dc i_pm_s7_vb_track_p0v3_s2g1 FIND i(vm_pm_s7_vb_track_p0v3_s2g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s7_vb_track_p0v3_s2g1",
+      "spice": ".meas dc vcn_pm_s7_vb_track_p0v3_s2g1 FIND v(x_pm_s7_vb_track_p0v3_s2g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s7_vb_track_p0v3_s2g1",
+      "spice": ".meas dc i_pw_s7_vb_track_p0v3_s2g1 FIND i(vm_pw_s7_vb_track_p0v3_s2g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s7_vb_track_p0v3_s2g1",
+      "spice": ".meas dc vcn_pw_s7_vb_track_p0v3_s2g1 FIND v(x_pw_s7_vb_track_p0v3_s2g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s7_vb_track_p0v3_s2g2_lo",
+      "spice": ".meas dc i_off_s7_vb_track_p0v3_s2g2_lo FIND i(vm_off_s7_vb_track_p0v3_s2g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s7_vb_track_p0v3_s2g2_mid",
+      "spice": ".meas dc i_off_s7_vb_track_p0v3_s2g2_mid FIND i(vm_off_s7_vb_track_p0v3_s2g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s7_vb_track_p0v3_s2g2_hi",
+      "spice": ".meas dc i_off_s7_vb_track_p0v3_s2g2_hi FIND i(vm_off_s7_vb_track_p0v3_s2g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s7_vb_track_p0v3_s2g2_lo",
+      "spice": ".meas dc i_offp_s7_vb_track_p0v3_s2g2_lo FIND i(vm_offp_s7_vb_track_p0v3_s2g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s7_vb_track_p0v3_s2g2_mid",
+      "spice": ".meas dc i_offp_s7_vb_track_p0v3_s2g2_mid FIND i(vm_offp_s7_vb_track_p0v3_s2g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s7_vb_track_p0v3_s2g2_hi",
+      "spice": ".meas dc i_offp_s7_vb_track_p0v3_s2g2_hi FIND i(vm_offp_s7_vb_track_p0v3_s2g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s7_vb_track_p0v3_s2g2",
+      "spice": ".meas dc i_un_s7_vb_track_p0v3_s2g2 FIND i(vm_un_s7_vb_track_p0v3_s2g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s7_vb_track_p0v3_s2g2",
+      "spice": ".meas dc i_pm_s7_vb_track_p0v3_s2g2 FIND i(vm_pm_s7_vb_track_p0v3_s2g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s7_vb_track_p0v3_s2g2",
+      "spice": ".meas dc vcn_pm_s7_vb_track_p0v3_s2g2 FIND v(x_pm_s7_vb_track_p0v3_s2g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s7_vb_track_p0v3_s2g2",
+      "spice": ".meas dc i_pw_s7_vb_track_p0v3_s2g2 FIND i(vm_pw_s7_vb_track_p0v3_s2g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s7_vb_track_p0v3_s2g2",
+      "spice": ".meas dc vcn_pw_s7_vb_track_p0v3_s2g2 FIND v(x_pw_s7_vb_track_p0v3_s2g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "vbl_s8_vb_track_m0v3",
+      "spice": ".meas dc vbl_s8_vb_track_m0v3 FIND v(bls_s8_vb_track_m0v3) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "vvb_s8_vb_track_m0v3",
+      "spice": ".meas dc vvb_s8_vb_track_m0v3 FIND v(vb_s8_vb_track_m0v3) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s8_vb_track_m0v3_s1g1_lo",
+      "spice": ".meas dc i_off_s8_vb_track_m0v3_s1g1_lo FIND i(vm_off_s8_vb_track_m0v3_s1g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s8_vb_track_m0v3_s1g1_mid",
+      "spice": ".meas dc i_off_s8_vb_track_m0v3_s1g1_mid FIND i(vm_off_s8_vb_track_m0v3_s1g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s8_vb_track_m0v3_s1g1_hi",
+      "spice": ".meas dc i_off_s8_vb_track_m0v3_s1g1_hi FIND i(vm_off_s8_vb_track_m0v3_s1g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s8_vb_track_m0v3_s1g1_lo",
+      "spice": ".meas dc i_offp_s8_vb_track_m0v3_s1g1_lo FIND i(vm_offp_s8_vb_track_m0v3_s1g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s8_vb_track_m0v3_s1g1_mid",
+      "spice": ".meas dc i_offp_s8_vb_track_m0v3_s1g1_mid FIND i(vm_offp_s8_vb_track_m0v3_s1g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s8_vb_track_m0v3_s1g1_hi",
+      "spice": ".meas dc i_offp_s8_vb_track_m0v3_s1g1_hi FIND i(vm_offp_s8_vb_track_m0v3_s1g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s8_vb_track_m0v3_s1g1",
+      "spice": ".meas dc i_un_s8_vb_track_m0v3_s1g1 FIND i(vm_un_s8_vb_track_m0v3_s1g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s8_vb_track_m0v3_s1g1",
+      "spice": ".meas dc i_pm_s8_vb_track_m0v3_s1g1 FIND i(vm_pm_s8_vb_track_m0v3_s1g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s8_vb_track_m0v3_s1g1",
+      "spice": ".meas dc vcn_pm_s8_vb_track_m0v3_s1g1 FIND v(x_pm_s8_vb_track_m0v3_s1g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s8_vb_track_m0v3_s1g1",
+      "spice": ".meas dc i_pw_s8_vb_track_m0v3_s1g1 FIND i(vm_pw_s8_vb_track_m0v3_s1g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s8_vb_track_m0v3_s1g1",
+      "spice": ".meas dc vcn_pw_s8_vb_track_m0v3_s1g1 FIND v(x_pw_s8_vb_track_m0v3_s1g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s8_vb_track_m0v3_s1g2_lo",
+      "spice": ".meas dc i_off_s8_vb_track_m0v3_s1g2_lo FIND i(vm_off_s8_vb_track_m0v3_s1g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s8_vb_track_m0v3_s1g2_mid",
+      "spice": ".meas dc i_off_s8_vb_track_m0v3_s1g2_mid FIND i(vm_off_s8_vb_track_m0v3_s1g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s8_vb_track_m0v3_s1g2_hi",
+      "spice": ".meas dc i_off_s8_vb_track_m0v3_s1g2_hi FIND i(vm_off_s8_vb_track_m0v3_s1g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s8_vb_track_m0v3_s1g2_lo",
+      "spice": ".meas dc i_offp_s8_vb_track_m0v3_s1g2_lo FIND i(vm_offp_s8_vb_track_m0v3_s1g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s8_vb_track_m0v3_s1g2_mid",
+      "spice": ".meas dc i_offp_s8_vb_track_m0v3_s1g2_mid FIND i(vm_offp_s8_vb_track_m0v3_s1g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s8_vb_track_m0v3_s1g2_hi",
+      "spice": ".meas dc i_offp_s8_vb_track_m0v3_s1g2_hi FIND i(vm_offp_s8_vb_track_m0v3_s1g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s8_vb_track_m0v3_s1g2",
+      "spice": ".meas dc i_un_s8_vb_track_m0v3_s1g2 FIND i(vm_un_s8_vb_track_m0v3_s1g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s8_vb_track_m0v3_s1g2",
+      "spice": ".meas dc i_pm_s8_vb_track_m0v3_s1g2 FIND i(vm_pm_s8_vb_track_m0v3_s1g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s8_vb_track_m0v3_s1g2",
+      "spice": ".meas dc vcn_pm_s8_vb_track_m0v3_s1g2 FIND v(x_pm_s8_vb_track_m0v3_s1g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s8_vb_track_m0v3_s1g2",
+      "spice": ".meas dc i_pw_s8_vb_track_m0v3_s1g2 FIND i(vm_pw_s8_vb_track_m0v3_s1g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s8_vb_track_m0v3_s1g2",
+      "spice": ".meas dc vcn_pw_s8_vb_track_m0v3_s1g2 FIND v(x_pw_s8_vb_track_m0v3_s1g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s8_vb_track_m0v3_s2g1_lo",
+      "spice": ".meas dc i_off_s8_vb_track_m0v3_s2g1_lo FIND i(vm_off_s8_vb_track_m0v3_s2g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s8_vb_track_m0v3_s2g1_mid",
+      "spice": ".meas dc i_off_s8_vb_track_m0v3_s2g1_mid FIND i(vm_off_s8_vb_track_m0v3_s2g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s8_vb_track_m0v3_s2g1_hi",
+      "spice": ".meas dc i_off_s8_vb_track_m0v3_s2g1_hi FIND i(vm_off_s8_vb_track_m0v3_s2g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s8_vb_track_m0v3_s2g1_lo",
+      "spice": ".meas dc i_offp_s8_vb_track_m0v3_s2g1_lo FIND i(vm_offp_s8_vb_track_m0v3_s2g1_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s8_vb_track_m0v3_s2g1_mid",
+      "spice": ".meas dc i_offp_s8_vb_track_m0v3_s2g1_mid FIND i(vm_offp_s8_vb_track_m0v3_s2g1_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s8_vb_track_m0v3_s2g1_hi",
+      "spice": ".meas dc i_offp_s8_vb_track_m0v3_s2g1_hi FIND i(vm_offp_s8_vb_track_m0v3_s2g1_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s8_vb_track_m0v3_s2g1",
+      "spice": ".meas dc i_un_s8_vb_track_m0v3_s2g1 FIND i(vm_un_s8_vb_track_m0v3_s2g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s8_vb_track_m0v3_s2g1",
+      "spice": ".meas dc i_pm_s8_vb_track_m0v3_s2g1 FIND i(vm_pm_s8_vb_track_m0v3_s2g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s8_vb_track_m0v3_s2g1",
+      "spice": ".meas dc vcn_pm_s8_vb_track_m0v3_s2g1 FIND v(x_pm_s8_vb_track_m0v3_s2g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s8_vb_track_m0v3_s2g1",
+      "spice": ".meas dc i_pw_s8_vb_track_m0v3_s2g1 FIND i(vm_pw_s8_vb_track_m0v3_s2g1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s8_vb_track_m0v3_s2g1",
+      "spice": ".meas dc vcn_pw_s8_vb_track_m0v3_s2g1 FIND v(x_pw_s8_vb_track_m0v3_s2g1.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_off_s8_vb_track_m0v3_s2g2_lo",
+      "spice": ".meas dc i_off_s8_vb_track_m0v3_s2g2_lo FIND i(vm_off_s8_vb_track_m0v3_s2g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s8_vb_track_m0v3_s2g2_mid",
+      "spice": ".meas dc i_off_s8_vb_track_m0v3_s2g2_mid FIND i(vm_off_s8_vb_track_m0v3_s2g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_off_s8_vb_track_m0v3_s2g2_hi",
+      "spice": ".meas dc i_off_s8_vb_track_m0v3_s2g2_hi FIND i(vm_off_s8_vb_track_m0v3_s2g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s8_vb_track_m0v3_s2g2_lo",
+      "spice": ".meas dc i_offp_s8_vb_track_m0v3_s2g2_lo FIND i(vm_offp_s8_vb_track_m0v3_s2g2_lo) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s8_vb_track_m0v3_s2g2_mid",
+      "spice": ".meas dc i_offp_s8_vb_track_m0v3_s2g2_mid FIND i(vm_offp_s8_vb_track_m0v3_s2g2_mid) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_offp_s8_vb_track_m0v3_s2g2_hi",
+      "spice": ".meas dc i_offp_s8_vb_track_m0v3_s2g2_hi FIND i(vm_offp_s8_vb_track_m0v3_s2g2_hi) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_un_s8_vb_track_m0v3_s2g2",
+      "spice": ".meas dc i_un_s8_vb_track_m0v3_s2g2 FIND i(vm_un_s8_vb_track_m0v3_s2g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_pm_s8_vb_track_m0v3_s2g2",
+      "spice": ".meas dc i_pm_s8_vb_track_m0v3_s2g2 FIND i(vm_pm_s8_vb_track_m0v3_s2g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pm_s8_vb_track_m0v3_s2g2",
+      "spice": ".meas dc vcn_pm_s8_vb_track_m0v3_s2g2 FIND v(x_pm_s8_vb_track_m0v3_s2g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    },
+    {
+      "name": "i_pw_s8_vb_track_m0v3_s2g2",
+      "spice": ".meas dc i_pw_s8_vb_track_m0v3_s2g2 FIND i(vm_pw_s8_vb_track_m0v3_s2g2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "vcn_pw_s8_vb_track_m0v3_s2g2",
+      "spice": ".meas dc vcn_pw_s8_vb_track_m0v3_s2g2 FIND v(x_pw_s8_vb_track_m0v3_s2g2.xc.cn) AT=0.000000e+00",
+      "unit": "V"
+    }
+  ],
+  "options": {
+    "timeout_s": 300,
+    "keep_artifacts": true
+  },
+  "corners": {
+    "process": [
+      {
+        "name": "typical",
+        "sections": [
+          "typical",
+          "moscap_typical"
+        ]
+      },
+      {
+        "name": "ff",
+        "sections": [
+          "ff",
+          "moscap_typical"
+        ]
+      },
+      {
+        "name": "ss",
+        "sections": [
+          "ss",
+          "moscap_typical"
+        ]
+      },
+      {
+        "name": "fs",
+        "sections": [
+          "fs",
+          "moscap_typical"
+        ]
+      },
+      {
+        "name": "sf",
+        "sections": [
+          "sf",
+          "moscap_typical"
+        ]
+      }
+    ],
+    "supply_v": {
+      "vbl": [
+        0.9,
+        1.0,
+        1.1
+      ]
+    },
+    "temperature_c": [
+      -40.0,
+      27.0,
+      125.0
+    ]
+  },
+  "models": {
+    "pdk": "gf180mcuD",
+    "lib": "libs.tech/ngspice/sm141064.ngspice"
+  },
+  "analysis": {
+    "kind": "dc",
+    "args": "VDMY -1 1 1"
+  }
+}

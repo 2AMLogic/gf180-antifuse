@@ -294,9 +294,12 @@ def common_header(a, cand, rid: str, params: dict, claim: str, note: str | None,
     a(f"- **Record ID**: {rid}")
     a(f"- **Claim**: issue #{issue} -- Candidate {cand.n} / Region {cand.region}: {claim} Terminal-pair extremes are "
       f"logged per PVT corner against the ratified {rating:g} V rating of "
-      f"`{CHAR.CANDIDATES[cand.n - 1].access_model}` (`spec/cell-candidates.md`). CONDITIONAL ON THE ASSUMED "
-      f"breakdown parameters: V_bd(t_ref) = bd_ebd x c{cand.n}_bd_tox = **{vbd:.2f} V** (assumed, not a gf180 "
-      "number; `design/breakdown/breakdown_params.spice`, unchanged).")
+      f"`{CHAR.CANDIDATES[cand.n - 1].access_model}` (`spec/cell-candidates.md`). "
+      + (f"V_BD SENSITIVITY POINT (not a parameter update, see the sensitivity bullet below): V_bd(t_ref) = "
+         f"**{vbd:.2f} V** from the primary-sourced BVox, every other breakdown parameter still ASSUMED."
+         if CB.VBD_EBD_OVERRIDE is not None else
+         f"CONDITIONAL ON THE ASSUMED breakdown parameters: V_bd(t_ref) = bd_ebd x c{cand.n}_bd_tox = "
+         f"**{vbd:.2f} V** (assumed, not a gf180 number; `design/breakdown/breakdown_params.spice`, unchanged)."))
     if note:
         a(f"- **Run note**: {note}")
     a(f"- **Corner matrix**: {', '.join(CB.C.MOSCAP_CORNERS)} (MOS typical) x {', '.join(str(t) for t in CB.C.TEMPS_C)} "
@@ -307,8 +310,8 @@ def common_header(a, cand, rid: str, params: dict, claim: str, note: str | None,
       "corner; level summaries take the worst corner WITHIN one level only.")
 
 
-def render_retab(pdk, cand, rid: str, params: dict, note: str | None) -> str:
-    src = EXISTING_PROGC[cand.n]
+def render_retab(pdk, cand, rid: str, params: dict, note: str | None, src: str | None = None) -> str:
+    src = src or EXISTING_PROGC[cand.n]
     res = CB.results_from_reports(cand, src, params, benches=("progc_st", "progc_b1m", "progc_b1l"))
     rating = CB.ACCESS_RATING_V[cand.n]
     L: list[str] = []
@@ -500,6 +503,9 @@ def main(argv: list[str] | None = None) -> int:
                     help="comma list; the Candidate 3 gate/well benches (" + ",".join(GWD_BENCHES) +
                          ") are opt-in: --candidates 3 --benches " + ",".join(GWD_BENCHES))
     ap.add_argument("--retabulate", action="store_true", help="re-tabulate existing BL-driven evidence (no sim)")
+    ap.add_argument("--retab-src", default=None, metavar="RECORD_ID",
+                    help="with --retabulate and ONE candidate: re-tabulate this cell-breakdown-model record's "
+                         "progc_* reports (a #130 sensitivity run) instead of the #62/#74 original")
     ap.add_argument("--smoke", default=None, metavar="N:BENCH[:LEVEL_INDEX]", help="ONE local corner (debug probe, no record)")
     ap.add_argument("--resume", default=None, metavar="RECORD_ID",
                     help="finish an interrupted batch run of ONE candidate: benches with a saved report.json are "
@@ -507,6 +513,9 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--render", default=None, metavar="RECORD_ID",
                     help="(re)write records/RECORD_ID.md from saved reports of ONE candidate; no simulation")
     ap.add_argument("--note", default=None)
+    ap.add_argument("--vbd-case", choices=tuple(CB.SOURCED_VBD), default=None,
+                    help="V_bd sensitivity point (#130): per-candidate override of bd_ebd to the sourced BVox "
+                         "typ/floor value; the shared parameter file is not changed")
     ap.add_argument("--klt", default="klt")
     args = ap.parse_args(argv)
     CB.KLT_CMD[:] = args.klt.split()
@@ -518,26 +527,41 @@ def main(argv: list[str] | None = None) -> int:
     if not shutil.which(CB.KLT_CMD[0]):
         print(f"ERROR: {CB.KLT_CMD[0]} not on PATH", file=sys.stderr)
         return 3
-    params, perr = CB.CHECK.parse_params((CB.BD_DIR / "breakdown_params.spice").read_text())
+    base_params, perr = CB.CHECK.parse_params((CB.BD_DIR / "breakdown_params.spice").read_text())
     if perr:
         print("ERROR: breakdown_params.spice fails provenance checks", file=sys.stderr)
         return 3
+    params = base_params
     by_n = {c.n: c for c in CHAR.CANDIDATES}
     wanted = [int(x) for x in args.candidates.split(",") if x.strip()]
 
     if args.smoke:
         n, bench, *ix = args.smoke.split(":")
-        return smoke(pdk, by_n[int(n)], bench, params, int(ix[0]) if ix else 3)
+        return smoke(pdk, by_n[int(n)], bench, CB.apply_vbd_case(base_params, args.vbd_case, int(n)),
+                     int(ix[0]) if ix else 3)
     if args.render:
         cand = by_n[wanted[0]]
+        params = CB.apply_vbd_case(base_params, args.vbd_case, cand.n)
         res = load_saved(cand, args.render, params)
-        R.write_once(THIS_DIR / "records" / f"{args.render}.md", render_pl(pdk, cand, args.render, params, res, args.note))
+        R.write_once(THIS_DIR / "records" / f"{args.render}.md",
+                     CB.tag_record(render_pl(pdk, cand, args.render, params, res, args.note),
+                                   CB.sensitivity_block(args.vbd_case, cand.n, params)))
         return 0
     if args.retabulate:
+        if args.retab_src and len(wanted) != 1:
+            print("ERROR: --retab-src applies to exactly one candidate", file=sys.stderr)
+            return 2
         for n in wanted:
             cand = by_n[n]
+            params = CB.apply_vbd_case(base_params, args.vbd_case, n)
+            if args.vbd_case and not args.retab_src:
+                print("ERROR: --vbd-case with --retabulate needs --retab-src (the sensitivity run's record id)",
+                      file=sys.stderr)
+                return 2
             rid = R.allocate_record_id(THIS_DIR, REPO_ROOT)
-            R.write_once(THIS_DIR / "records" / f"{rid}.md", render_retab(pdk, cand, rid, params, args.note))
+            R.write_once(THIS_DIR / "records" / f"{rid}.md",
+                         CB.tag_record(render_retab(pdk, cand, rid, params, args.note, args.retab_src),
+                                       CB.sensitivity_block(args.vbd_case, n, params)))
             print(f"Candidate {n}: records/{rid}.md (re-tabulation, no simulation)")
             time.sleep(1.1)
         return 0
@@ -554,6 +578,7 @@ def main(argv: list[str] | None = None) -> int:
     rc = 0
     for n in wanted:
         cand = by_n[n]
+        params = CB.apply_vbd_case(base_params, args.vbd_case, n)
         defaults = CHAR.parse_defaults(REPO_ROOT / "design" / "netlists" / cand.netlist)
         rid = args.resume or R.allocate_record_id(THIS_DIR, REPO_ROOT)
         print(f"== Candidate {n} (Region {cand.region}) record {rid}" + (" (resumed)" if args.resume else ""))
@@ -568,7 +593,7 @@ def main(argv: list[str] | None = None) -> int:
             if args.resume and bdir.exists():
                 shutil.rmtree(bdir)   # interrupted submit: no report.json, nothing to preserve but the request
             bdir.mkdir(parents=True, exist_ok=False)
-            body, ms = body_pl(pdk, cand, defaults, bdir, CB.FLEET_PDK_VARIANT_DIR, bench, params)
+            body, ms = body_pl(pdk, cand, defaults, bdir, CB.fleet_lib_root(pdk), bench, params)
             R.write_once(bdir / "body.spice", body)
             req = make_request(bench, cand, pdk, ms, params)
             R.write_once(bdir / "request.json", json.dumps(req, indent=2) + "\n")
@@ -586,7 +611,8 @@ def main(argv: list[str] | None = None) -> int:
             if res.status not in ("pass", "pass_partial"):
                 rc = 1
         R.write_once(THIS_DIR / "netlist-snapshots" / f"{rid}.spice", CB.snapshot(cand))
-        R.write_once(THIS_DIR / "records" / f"{rid}.md", render_pl(pdk, cand, rid, params, results, args.note))
+        R.write_once(THIS_DIR / "records" / f"{rid}.md", CB.tag_record(render_pl(pdk, cand, rid, params, results, args.note),
+                                   CB.sensitivity_block(args.vbd_case, n, params)))
         print(f"   record: records/{rid}.md")
         rc |= ES.publish_for_runner("program-bias-scheme", rid, THIS_DIR / "corners" / rid, REPO_ROOT)
         time.sleep(1.1)

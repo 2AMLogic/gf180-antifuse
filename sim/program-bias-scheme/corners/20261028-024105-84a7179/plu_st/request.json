@@ -1,0 +1,162 @@
+{
+  "netlist": "body.spice",
+  "engine": "ngspice",
+  "backend": "batch",
+  "batch": {
+    "runner_version_check": "warn",
+    "capacity_wait_s": 1800
+  },
+  "measurements": [
+    {
+      "name": "mx_ox",
+      "spice": ".meas tran mx_ox MAX v(dox)",
+      "unit": "V"
+    },
+    {
+      "name": "mn_ox",
+      "spice": ".meas tran mn_ox MIN v(dox)",
+      "unit": "V"
+    },
+    {
+      "name": "mx_wc",
+      "spice": ".meas tran mx_wc MAX v(dwc)",
+      "unit": "V"
+    },
+    {
+      "name": "mn_wc",
+      "spice": ".meas tran mn_wc MIN v(dwc)",
+      "unit": "V"
+    },
+    {
+      "name": "mx_wb",
+      "spice": ".meas tran mx_wb MAX v(dwb)",
+      "unit": "V"
+    },
+    {
+      "name": "mn_wb",
+      "spice": ".meas tran mn_wb MIN v(dwb)",
+      "unit": "V"
+    },
+    {
+      "name": "mx_bc",
+      "spice": ".meas tran mx_bc MAX v(dbc)",
+      "unit": "V"
+    },
+    {
+      "name": "mn_bc",
+      "spice": ".meas tran mn_bc MIN v(dbc)",
+      "unit": "V"
+    },
+    {
+      "name": "mx_cj",
+      "spice": ".meas tran mx_cj MAX v(dcj)",
+      "unit": "V"
+    },
+    {
+      "name": "mn_cj",
+      "spice": ".meas tran mn_cj MIN v(dcj)",
+      "unit": "V"
+    },
+    {
+      "name": "mx_bj",
+      "spice": ".meas tran mx_bj MAX v(dbj)",
+      "unit": "V"
+    },
+    {
+      "name": "mn_bj",
+      "spice": ".meas tran mn_bj MIN v(dbj)",
+      "unit": "V"
+    },
+    {
+      "name": "mx_gb",
+      "spice": ".meas tran mx_gb MAX v(dgb)",
+      "unit": "V"
+    },
+    {
+      "name": "mn_gb",
+      "spice": ".meas tran mn_gb MIN v(dgb)",
+      "unit": "V"
+    },
+    {
+      "name": "vox_mid",
+      "spice": ".meas tran vox_mid FIND v(dox) AT=6.100000e-06",
+      "unit": "V"
+    },
+    {
+      "name": "vcn_mid",
+      "spice": ".meas tran vcn_mid FIND v(xdut.cn) AT=6.100000e-06",
+      "unit": "V"
+    },
+    {
+      "name": "vcn_end",
+      "spice": ".meas tran vcn_end FIND v(xdut.cn) AT=1.990000e-05",
+      "unit": "V"
+    },
+    {
+      "name": "ipl_mid",
+      "spice": ".meas tran ipl_mid FIND i(vplm) AT=6.100000e-06",
+      "unit": "A"
+    },
+    {
+      "name": "ipl_mx",
+      "spice": ".meas tran ipl_mx MAX i(vplm)",
+      "unit": "A"
+    },
+    {
+      "name": "ipl_mn",
+      "spice": ".meas tran ipl_mn MIN i(vplm)",
+      "unit": "A"
+    }
+  ],
+  "options": {
+    "timeout_s": 300,
+    "keep_artifacts": true
+  },
+  "corners": {
+    "process": [
+      {
+        "name": "moscap_typical",
+        "sections": [
+          "typical",
+          "moscap_typical"
+        ]
+      },
+      {
+        "name": "moscap_ff",
+        "sections": [
+          "typical",
+          "moscap_ff"
+        ]
+      },
+      {
+        "name": "moscap_ss",
+        "sections": [
+          "typical",
+          "moscap_ss"
+        ]
+      }
+    ],
+    "temperature_c": [
+      -40.0,
+      27.0,
+      125.0
+    ],
+    "supply_v": {
+      "vamp": [
+        6.0,
+        14.4,
+        15.2,
+        16.0,
+        17.6
+      ]
+    }
+  },
+  "models": {
+    "pdk": "gf180mcuD",
+    "lib": "libs.tech/ngspice/sm141064.ngspice"
+  },
+  "analysis": {
+    "kind": "tran",
+    "args": "1.000000e-08 2.000000e-05 uic"
+  }
+}
