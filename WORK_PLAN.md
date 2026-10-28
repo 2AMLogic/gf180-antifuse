@@ -24,7 +24,7 @@ _None._
 
 Human-approved issues ready for implementation (`loom:issue`).
 
-- **#196**: T1 item 11 (power delivery, analog): replace the antenna-only ERC citation with a supply-net ERC + LVS compound citation
+_None._
 
 ## In Progress
 
@@ -54,7 +54,6 @@ Issues carrying `loom:curated`.
 - **#99**: Re-qualify reference sim records under open_pdks f6eeac7 as new records *(curated)*
 - **#117**: T1 items 1 and 9 (analog partition): attest the cell sources and testbenches with klt signoff --attest *(curated)*
 - **#176**: T1 item 4 (LVS clean, digital partition): klt lvs against the gate-level netlist with power_connectivity *(curated)*
-- **#196**: T1 item 11 (power delivery, analog): replace the antenna-only ERC citation with a supply-net ERC + LVS compound citation *(curated)*
 - **#197**: T1 item 2 (layout, analog): artifact-anchored envelope binding cell_candidate1.gds and its generator *(curated)*
 
 ## Proposed (Architect / Hermit)
@@ -72,11 +71,11 @@ _None._
 | Operator merge-risk holds | 1 |
 | Very important | 0 |
 | Important | 2 |
-| Ready (`loom:issue`) | 1 |
+| Ready (`loom:issue`) | 0 |
 | In Progress (`loom:building`) | 3 |
 | PRs awaiting review | 1 |
 | Approved PRs awaiting merge | 1 |
-| Curated | 6 |
+| Curated | 5 |
 | Architect / Hermit proposals | 0 |
 | Active epics | 1 |
 <!-- guide:plan-body:end -->
