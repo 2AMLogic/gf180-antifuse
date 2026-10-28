@@ -1,10 +1,15 @@
 # layout/erc/ -- `klt erc` supply spec
 
-`supplies.json` is the `klt erc` spec derived from the supply-domain inventory
+`supplies.json` is the `klt erc` spec for the first drawn bitcell
+(`cell_candidate1`, Region I), derived from the supply-domain inventory
 `spec/supply-domains-decision.md` (rows 1 to 17). It is an **input** only: no
 ERC envelope is cited from this directory; the run on the first bitcell is
-`layout/cell_candidate1/erc_report.json` (issue #120). Item 11 stays `unmet`
-until item 4's LVS report is clean and cited with it (see `signoff/README.md`).
+`layout/cell_candidate1/erc_report.json` (issues #120, #196), cited with item
+4's LVS report as `11.analog` (see `signoff/README.md`).
+`supplies_region_iii.json` is the previous spec (the Region III n-well tie
+only, no `nets[]`), kept for a future Region III layout; it is not run against
+`cell_candidate1`, which draws no Nwell (the tie would be skipped as
+`empty_well_region`, and a skipped tie cannot grade item 11).
 
 Nothing here resolves an open item (OI-n) of the decision record. A row that
 depends on an unresolved OI is a gap below, not a guessed net.
@@ -14,9 +19,11 @@ depends on an unresolved OI is a gap below, not a guessed net.
 | Block | Source |
 |---|---|
 | `stackup[]` (poly as `gate` with `active_layer`, Metal1 to Metal5 with label layers) and `vias[]` | gf180mcu GDS layer/datatype numbers: metals, vias and label datatypes from the PDK `gf180mcu.map` (`libs.tech/klayout/tech/gf180mcu.map`, ciel gf180mcu revision `f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7`, identical in variants A to D); Comp 22/0, Poly2 30/0, Nwell 21/0, Pplus 31/0, Nplus 32/0, Contact 33/0 from the klayout-tools `gf180mcu` deck (`LAYER_NAMES`, klayout-tools `ff97d692`). |
-| `ties[0]` `vb_nwell_region_iii` | Row 15. |
+| `nets[0]` `VB` (`kind: supply`, `islands: 1`) | Row 14, Region I only; see "The one declared net". |
+| `ties[0]` `vb_psub_region_i` | Row 14. p-substrate tie: `well_layer: null`, asserted `well_boxes`, tap = Comp 22/0 intersect Pplus 31/0, wired to Metal1, net `VB`. |
+| `supplies_region_iii.json` `ties[0]` `vb_nwell_region_iii` | Row 15 (not run on `cell_candidate1`). |
 
-No `nets[]` entry is declared; see "Why no `nets[]`".
+No other `nets[]` entry is declared; see "The one declared net".
 
 ## Row mapping (exactly one disposition per row)
 
@@ -35,28 +42,40 @@ No `nets[]` entry is declared; see "Why no `nets[]`".
 | 11 | Sense-amp supply, `I_ref` | gap | Not stated in any record (OI-8). |
 | 12 | `PL` | gap | Which array rail it ties to is OI-6. |
 | 13 | `VSS_ANALOG` | gap | Placeholder name; separate from row 2 or not is OI-6. |
-| 14 | `VB`, Regions I and II (p-substrate tie) | gap | Not expressible without layout geometry: a native-substrate tie needs `well_layer: null` plus asserted `well_boxes`, i.e. coordinates. Declared with the layout in #120. Not an OI and not a schema limit. |
-| 15 | `VB`, Region III (n-well tie) | declared | `ties[0]`: Nwell 21/0, tap = Comp 22/0 intersect Nplus 32/0, wired to Metal1, net `VB`. |
+| 14 | `VB`, Region I (p-substrate tie) | declared | `nets[0]` and `ties[0]` of `supplies.json`, checked on `cell_candidate1` (issue #196). Region II is not drawn: still a gap. |
+| 15 | `VB`, Region III (n-well tie) | declared, not run | `supplies_region_iii.json` `ties[0]`: Nwell 21/0, tap = Comp 22/0 intersect Nplus 32/0, wired to Metal1, net `VB`. No Region III layout exists yet. |
 | 16 | Pass-gate and level-shifter bulk/well ties | gap | Assignment is OI-3. |
 | 17 | Capacitor body/well tie | gap | No separate tie net is defined; the second terminal is `PL` (row 12, OI-6). |
 
 Region I, II and III stay distinct: rows 3 to 5 and 14/15 are separate rows and
 none is averaged into another.
 
-## Why no `nets[]`
+## The one declared net
 
-The only rows with a non-placeholder name are `VPP` (rows 3 to 5) and `VB`
-(rows 14, 15). A `nets[]` entry carries an `islands` count, so declaring
-`VPP` would assert one of the topologies OI-3 leaves open, and a single `VB`
-entry would assert that the p-substrate tie of rows 14 and the n-well tie of
-row 15 are one net. Both would be guesses, so `erc.supply_short`,
-`erc.unconnected_net` and the other net findings are not computed by this
-spec. `ties[0]` names `VB` directly and does not need a `nets[]` entry.
-Adding net entries needs OI-3 and OI-6 resolved through `spec/` with a
-decision record.
+`nets[0]` is `VB` with `islands: 1`, scoped to the single Region I cell
+`cell_candidate1` (row 14). It asserts only that the two p-tap rings of this
+one bitcell are strapped into one `VB` island; it does **not** assert that
+rows 14 and 15 are one net (the Region III n-well tie lives in the separate
+`supplies_region_iii.json`). Every other net stays a gap in the table above:
+`VPP` (rows 3 to 5) would fix an island count that OI-3 leaves open, and the
+placeholder-named rails and `PL` wait on OI-1, OI-2, OI-6 and OI-8. Adding any
+of them needs those OIs resolved through `spec/` with a decision record.
 
-The program-voltage domain is therefore covered only as the explicit gap of
-rows 3 to 5 (OI-3); it is not dropped.
+`well_boxes` is a caller **assertion** (a native p-substrate has no drawn well
+layer): the two boxes are the extents of the cap-block and access-block tap
+rings (`Pplus` 31/0 outlines), which together cover all but ~5.5 % of the cell
+extent (`extent_uncovered_fraction: 0.055` in `erc_coverage.well_assertion_coverage`);
+the drawn tap area is 11.79 um2, none of it uncovered. The result is therefore
+a tie check against the asserted substrate region (`checked_by_well_assertion`),
+not against a drawn tub.
+
+The program-voltage domain is covered only as the explicit gap of rows 3 to 5
+(OI-3); it is not dropped.
+
+Regenerate (klayout-tools `0.8.0`, from `layout/cell_candidate1/`):
+`uvx --from klayout-tools==0.8.0 klt erc cell_candidate1.gds ../erc/supplies.json --top cell_candidate1 --findings-only --format json > erc_report.json`.
+The run is `--findings-only` (no gf180mcu antenna table), so `status` stays
+`not_checked`; `erc_status` is `clean`, `erc_finding_count: 0`.
 
 ## Validation
 

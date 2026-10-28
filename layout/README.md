@@ -22,10 +22,10 @@ no claim about breakdown behaviour.
 
 Toolchain: `cell_candidate1.gds` and `drc_report.json` were produced with the
 released `klt 0.7.0` (`uvx --from klayout-tools==0.7.0`), klayout 0.30.12, PDK
-`gf180mcuA`. `lvs_report.json` was produced by the host's `klt
-0.7.1.dev2422+g3676721c4e71`: `0.7.0` has no MOS-capacitor device class and
-cannot run this LVS, and no released version newer than `0.7.0` exists yet. No
-tool was installed or changed. Regenerate with
+`gf180mcuA`. `lvs_report.json` and `erc_report.json` were produced by the released
+`klt 0.8.0` (`uvx --from klayout-tools==0.8.0`, issue #196); `0.7.0` has no
+MOS-capacitor device class and cannot run this LVS, and the report was first
+produced by a dev build. No tool was installed or changed. Regenerate with
 `python3 layout/cell_candidate1/generate.py` and verify with `--check`.
 
 ### Geometry point

@@ -1,11 +1,15 @@
 {
-  "schema_version": 1,
-  "file": "cell_candidate1.gds",
+  "schema_version": 2,
+  "file": {
+    "path": "layout/cell_candidate1/cell_candidate1.gds",
+    "scope": "repo"
+  },
   "spec": "../erc/supplies.json",
   "pdk": null,
   "findings_only": true,
   "gate_role": "poly",
   "gate_count": 2,
+  "antenna_tables_omitted": false,
   "gates": [
     {
       "gate_id": "gate0",
@@ -144,10 +148,21 @@
       ]
     }
   ],
-  "nets": [],
+  "nets": [
+    {
+      "name": "VB",
+      "matched_islands": 1,
+      "expected_islands": 1,
+      "roles": [],
+      "unlabelled_islands": null,
+      "unlabelled_area_um2": null,
+      "unlabelled_bbox": null,
+      "unlabelled_allowed_islands": null
+    }
+  ],
   "erc_findings": [],
   "erc_finding_count": 0,
-  "erc_status": "clean_partial",
+  "erc_status": "clean",
   "status": "not_checked",
   "coverage": {
     "scope": "antenna",
@@ -219,35 +234,38 @@
     "known": true,
     "checked": [
       "erc.floating_gate:[\"gate0\"]",
-      "erc.floating_gate:[\"gate1\"]"
+      "erc.floating_gate:[\"gate1\"]",
+      "erc.missing_tie:[\"vb_psub_region_i\"]",
+      "erc.net_connectivity:[\"VB\"]"
     ],
-    "skipped": [
-      {
-        "id": "erc.missing_tie:[\"vb_nwell_region_iii\"]",
-        "reason": "empty_well_region"
-      }
-    ],
-    "inapplicable": [
-      {
-        "id": "erc.net_connectivity:[]",
-        "reason": "no_nets_declared"
-      }
-    ],
+    "skipped": [],
+    "inapplicable": [],
     "unknown": [],
     "nothing_checked": false,
     "nothing_checked_reasons": [],
     "checked_by_assertion": [],
-    "checked_by_well_assertion": [],
+    "checked_by_well_assertion": [
+      "erc.missing_tie:[\"vb_psub_region_i\"]"
+    ],
     "layers_in_stream_without_declaration": [
-      "31/0",
+      "32/0",
       "55/0",
       "166/5"
     ],
-    "well_assertion_coverage": []
+    "well_assertion_coverage": [
+      {
+        "id": "erc.missing_tie:[\"vb_psub_region_i\"]",
+        "tap_layer": "22/0",
+        "drawn_tap_area_um2": 11.7852,
+        "uncovered_tap_area_um2": 0.0,
+        "uncovered_tap_fraction": 0.0,
+        "extent_uncovered_fraction": 0.055024
+      }
+    ]
   },
   "ties_disclosure": null,
   "provenance": {
-    "klt_version": "0.7.0",
+    "klt_version": "0.8.0",
     "klayout_version": "0.30.12",
     "pdk": null,
     "deck": null,
@@ -256,7 +274,7 @@
       "role": "layout"
     },
     "spec": {
-      "content_hash": "sha256:f01a79ad938b64f8c98c459bc01d062a37f78bc08863bd2257d1bf4a6234d954"
+      "content_hash": "sha256:9bdec5f77be3b14636820544f8ce4812e181fefa81696ca023ba25087451a1a7"
     },
     "devices": [],
     "net_exclusions": [],
