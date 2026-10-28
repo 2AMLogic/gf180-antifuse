@@ -25,7 +25,7 @@ _None._
 
 Human-approved issues ready for implementation (`loom:issue`).
 
-_None._
+- **#130**: Re-run program- and read-bias benches with sourced V_bd and compare candidates
 
 ## In Progress
 
@@ -33,13 +33,12 @@ Issues currently being built (`loom:building`).
 
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4)
 - **#182**: Wire package.json check scripts to the repo's real checks (currently vacuous exit 0)
-- **#184**: Consolidate five duplicated .subckt cell-default parsers onto sim/harness/numfmt.py
 
 ## PRs Awaiting Review
 
 PRs waiting on Judge (`loom:review-requested`).
 
-- **#189**: refactor: route cell-default parsing through numfmt.parse_defaults
+_None._
 
 ## Approved (Awaiting Merge)
 
@@ -71,9 +70,9 @@ _None._
 | Operator merge-risk holds | 1 |
 | Very important | 0 |
 | Important | 3 |
-| Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 3 |
-| PRs awaiting review | 1 |
+| Ready (`loom:issue`) | 1 |
+| In Progress (`loom:building`) | 2 |
+| PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 1 |
 | Curated | 4 |
 | Architect / Hermit proposals | 0 |
