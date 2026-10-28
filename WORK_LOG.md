@@ -5,6 +5,8 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-10-28
 
+- **PR #200**: feat: cite compound ERC+LVS evidence as 11.analog at klt 0.8.0
+- **Issue #196** (closed): T1 item 11 (Power delivery, analog partition): cite compound ERC+LVS evidence
 - **PR #193**: feat(sim): V_bd sensitivity re-run records and per-candidate comparison
 - **Issue #130** (closed): Re-run program- and read-bias benches with sourced V_bd and compare candidates
 
