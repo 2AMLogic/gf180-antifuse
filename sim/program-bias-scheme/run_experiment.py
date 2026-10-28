@@ -593,7 +593,7 @@ def main(argv: list[str] | None = None) -> int:
             if args.resume and bdir.exists():
                 shutil.rmtree(bdir)   # interrupted submit: no report.json, nothing to preserve but the request
             bdir.mkdir(parents=True, exist_ok=False)
-            body, ms = body_pl(pdk, cand, defaults, bdir, CB.FLEET_PDK_VARIANT_DIR, bench, params)
+            body, ms = body_pl(pdk, cand, defaults, bdir, CB.fleet_lib_root(pdk), bench, params)
             R.write_once(bdir / "body.spice", body)
             req = make_request(bench, cand, pdk, ms, params)
             R.write_once(bdir / "request.json", json.dumps(req, indent=2) + "\n")

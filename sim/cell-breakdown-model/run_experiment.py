@@ -105,9 +105,17 @@ BATCH_OPTS = {"runner_version_check": "warn", "capacity_wait_s": 1800}
 # request, bounded -- never fall back to a local run.
 # The executing host's gf180mcuD variant directory, needed for the one model
 # library Candidate 2 loads from the body (README "Two model libraries").
-# Observed in fleet-generated corner decks: `.lib /opt/pdk/gf180mcuD/...`; klt >= 0.8 rejects that absolute path
-# in a body (not under $PDK_ROOT), so the body names it through $PDK_ROOT (resolved on the executing host).
-FLEET_PDK_VARIANT_DIR = "$PDK_ROOT/gf180mcuD"
+# Observed in fleet-generated corner decks: `.lib /opt/pdk/gf180mcuD/...`.
+FLEET_PDK_VARIANT_DIR = "/opt/pdk/gf180mcuD"
+
+
+def fleet_lib_root(pdk: P.PDKPaths) -> str:
+    """The `.lib` root for a batch body. klt >= 0.8 refuses an absolute target outside this host's $PDK_ROOT
+    (the old fixed /opt/pdk path) and rewrites one under it to $PDK_ROOT/<rel> for the runner, so a batch run
+    names this host's own variant dir and exports PDK_ROOT to its parent (process environment only)."""
+    import os
+    os.environ.setdefault("PDK_ROOT", str(pdk.variant_dir.parent))
+    return str(pdk.variant_dir)
 DEFAULT_RELTOL = 1e-3          # ngspice default reltol
 DEFAULT_ABSTOL = 1e-12         # ngspice default abstol (A)
 # Quantity classes for the regression criterion (README "Regression
@@ -2127,7 +2135,7 @@ def main(argv: list[str] | None = None) -> int:
         for bench in benches:
             bdir = THIS_DIR / "corners" / rid / bench
             bdir.mkdir(parents=True, exist_ok=False)  # corners/<rid>/ itself exists (run-provenance.json)
-            body, ms = build_body(bench, pdk, cand, defaults, bdir, FLEET_PDK_VARIANT_DIR, params)
+            body, ms = build_body(bench, pdk, cand, defaults, bdir, fleet_lib_root(pdk), params)
             R.write_once(bdir / "body.spice", body)
             req = make_request(bench, cand, pdk, ms, params)
             R.write_once(bdir / "request.json", json.dumps(req, indent=2) + "\n")
