@@ -5,6 +5,8 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-10-29
 
+- **PR #220**: docs: add Run 3 direct-pad bench plan and record template
+- **Issue #212** (closed): Run 3 test chip: bench measurement plan (V_bd, R_prog, read margin)
 - **PR #214**: feat: draw candidate 3 bitcell layout with DRC/LVS/ERC evidence
 - **PR #217**: docs: first-principles gate-oxide V_bd(t_pulse) model with generator and tests
 - **Issue #205** (closed): Model gate-oxide V_bd and TDDB versus pulse width for thin and thick gf180 oxides
