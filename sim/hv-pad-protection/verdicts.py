@@ -68,7 +68,8 @@ def check_corner(kind: str, level: float, vbd: float, cand: int, vals: dict, bal
     if kind == "astd":
         if (_v(vals, "vpad_max") or 0.0) > STD_PAD_MAX_V:
             out.append("rating:pad-over-5.5V")
-        if (_v(vals, "idvdd_max") or 0.0) > INJECT_I:
+        # late-hold current into the shared rails; the peak includes start-up charging
+        if max(_v(vals, "idvdd_hold") or 0.0, _v(vals, "idvss_hold") or 0.0) > INJECT_I:
             out.append("rating:rail-injection")
     if (kind == "c1" or ballast) and (_v(vals, "vr_max") or 0.0) > BALLAST_AREA_V:
         out.append("rating:ballast-over-6V-area(open)")

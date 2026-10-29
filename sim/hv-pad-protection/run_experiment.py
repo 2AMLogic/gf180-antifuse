@@ -164,8 +164,8 @@ def body(bench: str, bd: dict, cand, pdk, defaults: dict, vbd: float) -> tuple[s
               f"BIP IPD 0 V = '(v(vpp)-v(pad))/{fnum(R_SRC)}'"]
     if bd["path"] == "std":
         o += [f"VDV DVDDX 0 DC {DVDD_STD}", "RDV DVDDX DVDD 0.5", "CDV DVDD 0 1.0e-9",
-              "XPAD PAD DVDD 0 std_pad_asig5v", "VPLM PAD PL DC 0",
-              "BDV IDVDD 0 V = '(v(dvdd)-v(dvddx))/0.5'"]
+              "VSSS DVSSX 0 DC 0", "XPAD PAD DVDD DVSSX std_pad_asig5v", "VPLM PAD PL DC 0",
+              "BDV IDVDD 0 V = '(v(dvdd)-v(dvddx))/0.5'", "BSV IDVSS 0 V = 'abs(i(vsss))'"]
     elif bd["path"] == "direct":
         o += ["XPD PAD PL hv_pad_direct"]
     else:
@@ -193,13 +193,13 @@ def body(bench: str, bd: dict, cand, pdk, defaults: dict, vbd: float) -> tuple[s
     if bd["path"] == "ballast":
         ms.append(("vr_max", "DRP"))
     if bd["path"] == "std":
-        ms.append(("idvdd_max", "IDVDD"))
+        ms += [("idvdd_hold", "IDVDD"), ("idvss_hold", "IDVSS")]
     if "jn" in bd:
         ms += [("ijn_max", "IJN"), ("ijn_hold", "IJN")]
     if "nb" in bd:
         ms += [("voxj_max", "DOXJ"), ("ifilj_max", "IFILJ")]
     t_hold = T1 + rp["tr"] + 0.9 * rp["tw"]     # late in the hold, edge currents settled
-    meas = [{"name": n, "spice": (f".meas tran {n} FIND v({node.lower()}) AT={fnum(t_hold)}" if n == "ijn_hold"
+    meas = [{"name": n, "spice": (f".meas tran {n} FIND v({node.lower()}) AT={fnum(t_hold)}" if n.endswith("_hold")
                                   else f".meas tran {n} MAX v({node.lower()})"),
              "unit": "A" if n.startswith("i") else "V"} for n, node in ms]
     return "\n".join(o) + "\n", meas
@@ -238,7 +238,7 @@ def sci(x) -> str:
 
 
 def render_bench(a, bench: str, bd: dict, rows: list[dict], vbd: float) -> None:
-    keys = [k for k in ("vpad_max", "vpl_max", "vox_max", "vr_max", "ipad_max", "ifil_max", "ijn_max", "ijn_hold", "idvdd_max",
+    keys = [k for k in ("vpad_max", "vpl_max", "vox_max", "vr_max", "ipad_max", "ifil_max", "ijn_max", "ijn_hold", "idvdd_hold", "idvss_hold",
                         "voxj_max", "ifilj_max") if any(k in r["vals"] for r in rows)]
     a(f"#### `{bench}` ({sum(r['status'] == 'pass' for r in rows)}/{len(rows)} corners converged)")
     a("")

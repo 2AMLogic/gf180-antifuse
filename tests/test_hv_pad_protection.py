@@ -44,9 +44,19 @@ def test_clamped_plate_is_a_function_failure():
 
 
 def test_standard_pad_rail_injection_and_pad_rating():
-    vals = {"vox_max": 6.5, "ifil_max": 6e-9, "vpad_max": 6.5, "idvdd_max": 0.1}
+    vals = {"vox_max": 6.5, "ifil_max": 6e-9, "vpad_max": 6.5, "idvdd_hold": 0.1}
     codes = V.check_corner("astd", 15.96, 15.2, 2, vals)
     assert {"rating:pad-over-5.5V", "rating:rail-injection", "function:cell-voltage-short"} <= set(codes)
+
+
+def test_standard_pad_negative_drive_injects_into_dvss():
+    vals = {"vox_max": 1.0, "ifil_max": 1e-9, "vpad_max": 1.0, "idvdd_hold": 0.0, "idvss_hold": 4e-3}
+    assert "rating:rail-injection" in V.check_corner("astd", -8.69, 7.9, 3, vals)
+
+
+def test_standard_pad_start_up_charging_is_not_injection():
+    vals = {"vox_max": 4.0, "ifil_max": 4e-9, "vpad_max": 4.0, "idvdd_hold": 0.0, "idvss_hold": 0.0, "idvdd_max": 1.4e-3}
+    assert V.check_corner("astd", 4.0, 8.0, 1, vals) == []
 
 
 def test_ballast_area_flag_only_with_ballast():
