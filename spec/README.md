@@ -11,3 +11,4 @@ Ratified targets, the split-axis plan, and decision records. Spec changes land h
 - [`supply-domains-decision.md`](supply-domains-decision.md) — supply-domain inventory (supply and return nets, domain-crossing rule, open items)
 - [`pdk-pin-decision.md`](pdk-pin-decision.md) — open_pdks pin and fail-visible PDK revision check
 - [`candidate3-read-bias-decision.md`](candidate3-read-bias-decision.md) — Candidate 3 (Region III) read bias: n-well tied to the read rail
+- [`run3-test-chip-floorplan.md`](run3-test-chip-floorplan.md) — Run 3 quarter-slot test chip: instance counts, pad budget, core-area budget (proposed)
