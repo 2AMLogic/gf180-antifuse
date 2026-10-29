@@ -11,6 +11,12 @@ retention), their pass/fail criteria, SPI sequences and required fields live in
 - `TEMPLATE.md` — record template. Copy it; do not fill it in place.
 - `records/<record-id>.md` — one file per record (create the file; the
   directory is kept by `records/.gitkeep`).
+- `TEMPLATE-run3.md` — template for the Run 3 direct-pad chip (no SPI path).
+- `run3/records/<record-id>.md` — one file per Run 3 record, one record per
+  measurement cell M1..M8 and quantity (V_bd yield, resistance, read margin),
+  keyed by PL pad name. Defined in `spec/run3-bench-plan.md`; the format check
+  below does **not** cover this directory (it is SPI-specific). Results stay
+  per measurement cell; no record or table pools cells.
 
 ## One record = one measurement cell
 
