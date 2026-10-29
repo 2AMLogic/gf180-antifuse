@@ -18,13 +18,17 @@ _None._
 `loom:important`; taken before unlabelled work.
 
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4)
-- **#127**: Measure V_bd and carry Candidates 2 and 3 until then (operator ruling 2026-10-20)
+- **#203**: wafer.space Run 3 quarter slot: cut-down antifuse breakdown test chip (GDS due 2026-12-16)
+- **#204**: First-principles breakdown models: gate-oxide V_bd/TDDB for all candidates and well-junction avalanche for Candidate 3
+- **#205**: Model gate-oxide V_bd and TDDB versus pulse width for thin and thick gf180 oxides
+- **#208**: Model Candidate 3 well-junction avalanche breakdown and decide whether an in-rating program scheme exists
+- **#209**: Model post-breakdown filament resistance and programmed-cell read margin
 
 ## Ready
 
 Human-approved issues ready for implementation (`loom:issue`).
 
-_None._
+- **#209**: Model post-breakdown filament resistance and programmed-cell read margin
 
 ## In Progress
 
@@ -32,13 +36,17 @@ Issues currently being built (`loom:building`).
 
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4)
 - **#182**: Wire package.json check scripts to the repo's real checks (currently vacuous exit 0)
-- **#197**: T1 item 2 (layout, analog): artifact-anchored envelope binding cell_candidate1.gds and its generator
+- **#205**: Model gate-oxide V_bd and TDDB versus pulse width for thin and thick gf180 oxides
+- **#206**: Run 3 test chip: top-level floorplan, instance counts and pad budget
+- **#207**: Run 3 test chip: Candidate 2 and Candidate 3 bitcell layouts
+- **#208**: Model Candidate 3 well-junction avalanche breakdown and decide whether an in-rating program scheme exists
+- **#210**: Run 3 test chip: program-voltage (8-16 V) pad and protection approach
 
 ## PRs Awaiting Review
 
 PRs waiting on Judge (`loom:review-requested`).
 
-- **#198**: feat(signoff): cite item-2 analog layout envelope for cell_candidate1
+_None._
 
 ## Approved (Awaiting Merge)
 
@@ -54,7 +62,12 @@ Issues carrying `loom:curated`.
 - **#99**: Re-qualify reference sim records under open_pdks f6eeac7 as new records *(curated)*
 - **#117**: T1 items 1 and 9 (analog partition): attest the cell sources and testbenches with klt signoff --attest *(curated)*
 - **#176**: T1 item 4 (LVS clean, digital partition): klt lvs against the gate-level netlist with power_connectivity *(curated)*
-- **#197**: T1 item 2 (layout, analog): artifact-anchored envelope binding cell_candidate1.gds and its generator *(curated)*
+- **#205**: Model gate-oxide V_bd and TDDB versus pulse width for thin and thick gf180 oxides *(curated)*
+- **#206**: Run 3 test chip: top-level floorplan, instance counts and pad budget *(curated)*
+- **#207**: Run 3 test chip: Candidate 2 and Candidate 3 bitcell layouts *(curated)*
+- **#208**: Model Candidate 3 well-junction avalanche breakdown and decide whether an in-rating program scheme exists *(curated)*
+- **#209**: Model post-breakdown filament resistance and programmed-cell read margin *(curated)*
+- **#210**: Run 3 test chip: program-voltage (8-16 V) pad and protection approach *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -63,6 +76,7 @@ _None._
 ## Epics
 
 - **#10**: Track the gap to T1 sim-validated / bronze (klayout-tools design-evidence tiers)
+- **#203**: wafer.space Run 3 quarter slot: cut-down antifuse breakdown test chip (GDS due 2026-12-16)
 
 ## Backlog Balance
 
@@ -70,14 +84,14 @@ _None._
 |------|-------|
 | Operator merge-risk holds | 1 |
 | Very important | 0 |
-| Important | 2 |
-| Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 3 |
-| PRs awaiting review | 1 |
+| Important | 6 |
+| Ready (`loom:issue`) | 1 |
+| In Progress (`loom:building`) | 7 |
+| PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 1 |
-| Curated | 5 |
+| Curated | 10 |
 | Architect / Hermit proposals | 0 |
-| Active epics | 1 |
+| Active epics | 2 |
 <!-- guide:plan-body:end -->
 
 The sections above reflect labels. Issue #14 already has implementation PR #15,

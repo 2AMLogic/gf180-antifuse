@@ -3,6 +3,11 @@
 Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 
+### 2026-10-29
+
+- **Issue #197** (closed): T1 item 2 (layout, analog): artifact-anchored envelope binding cell_candidate1.gds and its generator
+- **Issue #127** (closed): Measure V_bd and carry Candidates 2 and 3 until then (operator ruling 2026-10-20)
+
 ### 2026-10-28
 
 - **PR #200**: feat: cite compound ERC+LVS evidence as 11.analog at klt 0.8.0
