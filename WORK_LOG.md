@@ -5,6 +5,13 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-10-29
 
+- **PR #214**: feat: draw candidate 3 bitcell layout with DRC/LVS/ERC evidence
+- **PR #217**: docs: first-principles gate-oxide V_bd(t_pulse) model with generator and tests
+- **Issue #205** (closed): Model gate-oxide V_bd and TDDB versus pulse width for thin and thick gf180 oxides
+- **PR #216**: docs: add compliance-limited filament resistance model and read-margin comparison
+- **Issue #209** (closed): Model post-breakdown filament resistance and programmed-cell read margin
+- **PR #215**: docs: add Run 3 test chip floorplan, instance counts and pad budget
+- **Issue #206** (closed): Run 3 test chip: top-level floorplan, instance counts and pad budget
 - **Issue #197** (closed): T1 item 2 (layout, analog): artifact-anchored envelope binding cell_candidate1.gds and its generator
 - **Issue #127** (closed): Measure V_bd and carry Candidates 2 and 3 until then (operator ruling 2026-10-20)
 
