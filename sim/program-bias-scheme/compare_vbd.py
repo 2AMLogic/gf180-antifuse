@@ -11,23 +11,15 @@ The run manifest `vbd-sensitivity-runs.json` names the record ids of the typ / f
 """
 from __future__ import annotations
 
-import importlib.util
 import json
 import sys
 from pathlib import Path
 
 THIS_DIR = Path(__file__).resolve().parent
+sys.path.insert(0, str(THIS_DIR.parent))
+from harness.modload import load_module  # noqa: E402
 
-
-def _load(path: Path, name: str):
-    spec = importlib.util.spec_from_file_location(name, path)
-    mod = importlib.util.module_from_spec(spec)
-    sys.modules[name] = mod
-    spec.loader.exec_module(mod)
-    return mod
-
-
-PBS = _load(THIS_DIR / "run_experiment.py", "sim_pbs_cmp")
+PBS = load_module(THIS_DIR / "run_experiment.py", "sim_pbs_cmp")
 CB = PBS.CB
 CASES = ("assumed", "typ", "floor")
 LEVELS = ["rated"] + [f"{f:g}x" for f in CB.TRIG_FRACTIONS]

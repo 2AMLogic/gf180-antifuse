@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import importlib.util
 import sys
 from pathlib import Path
 
@@ -13,14 +12,11 @@ sys.path.insert(0, str(SIM))
 sys.path.insert(0, str(SIM / "hv-pad-protection"))
 
 import verdicts as V  # noqa: E402
+from harness.modload import load_module  # noqa: E402
 
 
 def _runner():
-    spec = importlib.util.spec_from_file_location("hv_pad_run", SIM / "hv-pad-protection" / "run_experiment.py")
-    mod = importlib.util.module_from_spec(spec)
-    sys.modules["hv_pad_run"] = mod
-    spec.loader.exec_module(mod)
-    return mod
+    return load_module(SIM / "hv-pad-protection" / "run_experiment.py", "hv_pad_run")
 
 
 GOOD = {"vox_max": 15.1, "ifil_max": 1.2e-3}

@@ -3,21 +3,18 @@
 Limiting cases and monotonicity of the closed-form model, the parameter table's
 provenance rule, and agreement between the note and the generator script.
 """
-import importlib.util
 import math
 import sys
 import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "sim"))
+from harness.modload import load_module  # noqa: E402
 
 
 def _load():
-    spec = importlib.util.spec_from_file_location("breakdown_oxide_model", ROOT / "scripts" / "breakdown_oxide_model.py")
-    mod = importlib.util.module_from_spec(spec)
-    sys.modules["breakdown_oxide_model"] = mod
-    spec.loader.exec_module(mod)
-    return mod
+    return load_module(ROOT / "scripts" / "breakdown_oxide_model.py", "breakdown_oxide_model")
 
 
 M = _load()
