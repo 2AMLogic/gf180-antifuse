@@ -230,6 +230,8 @@ re-measurement, a correction or an exclusion revision is a new record whose
 - `spec/cell-candidates.md` (candidates; post-breakdown model gap).
 - `spec/program-voltage-decision.md` (`VPP` is bench-supplied, so pulse
   voltage is a recorded condition, not a register).
+- `spec/run3-bench-plan.md`: the direct-pad (no SPI) counterpart for the Run 3
+  test chip; this record is unchanged by it.
 - `sim/README.md`, `sim/cell-device-characterization/README.md` (append-only
   rule; per-region record shape).
 
