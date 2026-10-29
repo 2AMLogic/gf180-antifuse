@@ -1,0 +1,103 @@
+{
+  "netlist": "body.spice",
+  "engine": "ngspice",
+  "backend": "batch",
+  "batch": {
+    "runner_version_check": "warn",
+    "capacity_wait_s": 1800
+  },
+  "models": {
+    "pdk": "gf180mcuD",
+    "lib": "libs.tech/ngspice/sm141064.ngspice"
+  },
+  "corners": {
+    "process": [
+      {
+        "name": "typical",
+        "sections": [
+          "typical",
+          "moscap_typical",
+          "res_typical",
+          "diode_typical"
+        ]
+      },
+      {
+        "name": "ff",
+        "sections": [
+          "ff",
+          "moscap_ff",
+          "res_ff",
+          "diode_ff"
+        ]
+      },
+      {
+        "name": "ss",
+        "sections": [
+          "ss",
+          "moscap_ss",
+          "res_ss",
+          "diode_ss"
+        ]
+      }
+    ],
+    "supply_v": {
+      "vamp": [
+        7.6,
+        14.44,
+        15.96,
+        16.72,
+        17.6
+      ]
+    },
+    "temperature_c": [
+      -40.0,
+      27.0,
+      125.0
+    ]
+  },
+  "analysis": {
+    "kind": "tran",
+    "args": "1.000000e-07 2.610000e-04 uic"
+  },
+  "measurements": [
+    {
+      "name": "vpad_max",
+      "spice": ".meas tran vpad_max MAX v(apad)",
+      "unit": "V"
+    },
+    {
+      "name": "vpl_max",
+      "spice": ".meas tran vpl_max MAX v(apl)",
+      "unit": "V"
+    },
+    {
+      "name": "vox_max",
+      "spice": ".meas tran vox_max MAX v(dox)",
+      "unit": "V"
+    },
+    {
+      "name": "ifil_max",
+      "spice": ".meas tran ifil_max MAX v(ifil)",
+      "unit": "A"
+    },
+    {
+      "name": "ipad_max",
+      "spice": ".meas tran ipad_max MAX v(ipd)",
+      "unit": "A"
+    },
+    {
+      "name": "voxj_max",
+      "spice": ".meas tran voxj_max MAX v(doxj)",
+      "unit": "V"
+    },
+    {
+      "name": "ifilj_max",
+      "spice": ".meas tran ifilj_max MAX v(ifilj)",
+      "unit": "A"
+    }
+  ],
+  "options": {
+    "timeout_s": 300,
+    "keep_artifacts": true
+  }
+}
