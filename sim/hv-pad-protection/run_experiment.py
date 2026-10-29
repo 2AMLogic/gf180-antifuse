@@ -195,11 +195,13 @@ def body(bench: str, bd: dict, cand, pdk, defaults: dict, vbd: float) -> tuple[s
     if bd["path"] == "std":
         ms.append(("idvdd_max", "IDVDD"))
     if "jn" in bd:
-        ms.append(("ijn_max", "IJN"))
+        ms += [("ijn_max", "IJN"), ("ijn_hold", "IJN")]
     if "nb" in bd:
         ms += [("voxj_max", "DOXJ"), ("ifilj_max", "IFILJ")]
-    meas = [{"name": n, "spice": f".meas tran {n} MAX v({node.lower()})",
-             "unit": "A" if n.startswith(("i", "ifil")) else "V"} for n, node in ms]
+    t_hold = T1 + rp["tr"] + 0.9 * rp["tw"]     # late in the hold, edge currents settled
+    meas = [{"name": n, "spice": (f".meas tran {n} FIND v({node.lower()}) AT={fnum(t_hold)}" if n == "ijn_hold"
+                                  else f".meas tran {n} MAX v({node.lower()})"),
+             "unit": "A" if n.startswith("i") else "V"} for n, node in ms]
     return "\n".join(o) + "\n", meas
 
 
@@ -236,7 +238,7 @@ def sci(x) -> str:
 
 
 def render_bench(a, bench: str, bd: dict, rows: list[dict], vbd: float) -> None:
-    keys = [k for k in ("vpad_max", "vpl_max", "vox_max", "vr_max", "ipad_max", "ifil_max", "ijn_max", "idvdd_max",
+    keys = [k for k in ("vpad_max", "vpl_max", "vox_max", "vr_max", "ipad_max", "ifil_max", "ijn_max", "ijn_hold", "idvdd_max",
                         "voxj_max", "ifilj_max") if any(k in r["vals"] for r in rows)]
     a(f"#### `{bench}` ({sum(r['status'] == 'pass' for r in rows)}/{len(rows)} corners converged)")
     a("")

@@ -35,7 +35,7 @@ CAP_RATED_V = {1: 3.3, 2: 6.0, 3: 3.3}
 
 TRIP_I = 1e-6          # A; filament current above this means the cell programmed
 INJECT_I = 1e-6        # A; current into a shared rail above this is injection
-JUNCTION_I = 1e-6      # A; junction current above this means it conducts
+JUNCTION_I = 1e-6      # A; late-hold junction current above this means it conducts
 INTENDED_FRAC = 0.98   # cell must reach this fraction of min(level, V_bd)
 
 
@@ -72,7 +72,10 @@ def check_corner(kind: str, level: float, vbd: float, cand: int, vals: dict, bal
             out.append("rating:rail-injection")
     if (kind == "c1" or ballast) and (_v(vals, "vr_max") or 0.0) > BALLAST_AREA_V:
         out.append("rating:ballast-over-6V-area(open)")
-    if kind == "jn" and (_v(vals, "ijn_max") or 0.0) > JUNCTION_I:
+    # Steady-state (late-hold) current: the peak includes C dV/dt of the junction
+    # capacitance on the 100 ns edge, which is not conduction.
+    ij = _v(vals, "ijn_hold")
+    if kind == "jn" and ij is not None and ij > JUNCTION_I:
         out.append("rating:junction-conducts")
     if kind == "nb":
         if (_v(vals, "voxj_max") or 0.0) > CAP_RATED_V[cand]:
