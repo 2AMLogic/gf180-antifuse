@@ -1,0 +1,38 @@
+* gf180-antifuse: program-voltage (PL) pad paths for the Run 3 direct-pad chip
+* (issue #210, part of #203). Hand-written netlist, no xschem schematic: every
+* path below is two passive elements at most. Evidence and decision:
+* spec/hv-pad-protection-decision.md, sim/hv-pad-protection/.
+*
+* The sim runner (sim/hv-pad-protection/run_experiment.py) reads this file at
+* run time and inlines it into each batch deck; nothing here is copied by hand.
+*
+* Three paths from the bond pad PAD to the cell's private plate node PL:
+*
+*   std_pad_asig5v   REJECTED. The ESD diodes of the standard analog pad cell
+*                    gf180mcu_fd_io__asig_5p0, copied VERBATIM from
+*                    libs.ref/gf180mcu_fd_io/spice/gf180mcu_fd_io.spice (the
+*                    decoupling cap D0/X1 is omitted: it is not on the pad).
+*                    Both diodes are to the shared DVDD / DVSS rails.
+*   hv_pad_direct    REJECTED. Bare pad wired straight to PL. No device.
+*   hv_pad_ballast   CHOSEN. Bare pad (no pad cell, no connection to any shared
+*                    rail), one series ppolyf_u_2k_6p0 per PL, at the geometry
+*                    of the committed program-leg ballast (design/netlists/
+*                    program_leg.spice: rb_w = 2u, rb_l = 7.5u). Its voltage
+*                    rating is OPEN (spec/leg-design-record.md section 3).
+
+* Standard pad cell: PAD to DVSS and PAD to DVDD clamp diodes (verbatim).
+.subckt std_pad_asig5v PAD DVDD DVSS
+D2 DVSS PAD diode_nd2ps_06v0 m=4.0 area=150e-12 pj=106e-6
+D3 PAD DVDD diode_pd2nw_06v0 m=4.0 area=150e-12 pj=106e-6
+.ends std_pad_asig5v
+
+* Bare pad wired to the plate: the two names are one node. A 0 V source keeps
+* the pad current measurable as i(VPADI).
+.subckt hv_pad_direct PAD PL
+VPADI PAD PL DC 0
+.ends hv_pad_direct
+
+* Bare pad, series ballast to the plate. VSS is the resistor's body terminal.
+.subckt hv_pad_ballast PAD PL VSS rb_w=2u rb_l=7.5u
+XRB PAD PL VSS ppolyf_u_2k_6p0 r_width=rb_w r_length=rb_l m=1
+.ends hv_pad_ballast
