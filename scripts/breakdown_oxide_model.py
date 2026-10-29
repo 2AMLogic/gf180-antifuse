@@ -20,6 +20,10 @@ import sys
 from dataclasses import dataclass, replace
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import gen_blocks  # noqa: E402
+from gen_blocks import block_re, table  # noqa: E402,F401
+
 ROOT = Path(__file__).resolve().parent.parent
 PARAMS_FILE = ROOT / "design" / "breakdown" / "breakdown_params.spice"
 NOTE = ROOT / "docs" / "breakdown-oxide-model.md"
@@ -127,12 +131,6 @@ def model(n: int, beta: str = "perc", **kw) -> Model:
 
 def g(x: float) -> str:
     return f"{x:.3g}"
-
-
-def table(head: list[str], rows: list[list[str]]) -> str:
-    out = ["| " + " | ".join(head) + " |", "|" + "|".join("---" for _ in head) + "|"]
-    out += ["| " + " | ".join(r) + " |" for r in rows]
-    return "\n".join(out)
 
 
 def dec(gamma: float) -> float:
@@ -335,43 +333,16 @@ def render() -> dict[str, str]:
     return {k: f() for k, f in BLOCKS.items()}
 
 
-def block_re(name: str) -> re.Pattern:
-    return re.compile(rf"(<!-- gen:{name} -->\n)(.*?)(\n<!-- /gen:{name} -->)", re.S)
-
-
 def check(note: Path = NOTE) -> list[str]:
-    text = note.read_text()
-    bad = []
-    for k, v in render().items():
-        m = block_re(k).search(text)
-        if not m:
-            bad.append(f"{k}: block missing")
-        elif m.group(2) != v:
-            bad.append(f"{k}: differs from script output")
-    return bad
+    return gen_blocks.check(render(), note)
 
 
 def update(note: Path = NOTE) -> None:
-    text = note.read_text()
-    for k, v in render().items():
-        text, n = block_re(k).subn(lambda m: m.group(1) + v + m.group(3), text)
-        if n != 1:
-            sys.exit(f"{note}: block {k} not found exactly once")
-    note.write_text(text)
+    gen_blocks.update(render(), note)
 
 
 def main(argv: list[str]) -> int:
-    if "--check" in argv:
-        bad = check()
-        for b in bad:
-            print("FAIL", b)
-        return 1 if bad else 0
-    if "--update" in argv:
-        update()
-        return 0
-    for k, v in render().items():
-        print(f"<!-- gen:{k} -->\n{v}\n<!-- /gen:{k} -->\n")
-    return 0
+    return gen_blocks.main(render(), NOTE, argv)
 
 
 if __name__ == "__main__":

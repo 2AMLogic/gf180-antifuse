@@ -11,6 +11,7 @@ _spec = importlib.util.spec_from_file_location("bfm", ROOT / "scripts" / "breakd
 M = importlib.util.module_from_spec(_spec)
 sys.modules["bfm"] = M
 _spec.loader.exec_module(M)
+import gen_blocks  # noqa: E402  (scripts/ is on sys.path via the module load above)
 NOTE = ROOT / "docs" / "breakdown-filament-model.md"
 SPICE = (ROOT / "design" / "breakdown" / "breakdown_params.spice").read_text()
 
@@ -36,12 +37,11 @@ class Inputs(unittest.TestCase):
 
 class Model(unittest.TestCase):
     def test_note_and_script_agree(self):
-        have = M.extract(NOTE.read_text())
-        gen = M.render()
-        self.assertEqual(set(have), set(gen))
-        for k in gen:
-            self.assertEqual(have[k], gen[k], k)
-        self.assertEqual(M.main(["--check", str(NOTE)]), 0)
+        text = NOTE.read_text()
+        for k in M.render():
+            self.assertEqual(len(gen_blocks.block_re(k).findall(text)), 1, k)
+        self.assertEqual(gen_blocks.check(M.render(), NOTE), [])
+        self.assertEqual(M.main(["--check"]), 0)
 
     def test_reproduces_baseline_at_matching_compliance(self):
         # no compliance spread, intrinsic sigma only: +3 sigma at I_c = 100 uA is 81.7 kOhm

@@ -19,17 +19,21 @@ reproduces that baseline exactly at the matching compliance.
 
 Usage:
     scripts/breakdown_filament_model.py            # print all tables
-    scripts/breakdown_filament_model.py --check docs/breakdown-filament-model.md
+    scripts/breakdown_filament_model.py --check    # fail if the note's tables differ
+    scripts/breakdown_filament_model.py --update   # rewrite the note's tables
 """
 from __future__ import annotations
 
-import argparse
 import math
-import re
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import gen_blocks  # noqa: E402
+from gen_blocks import table  # noqa: E402
+
 ROOT = Path(__file__).resolve().parent.parent
+NOTE = ROOT / "docs" / "breakdown-filament-model.md"
 
 # --- existing (read-only) inputs, from design/breakdown/breakdown_params.spice
 # and sim/cell-breakdown-model/README.md; tests/ re-derive them from the files.
@@ -137,12 +141,6 @@ def si_i(x: float) -> str:
     return f"{x*1e6:.4g} µA" if x >= 1e-6 else f"{x*1e9:.4g} nA" if x >= 1e-9 else f"{x*1e12:.4g} pA"
 
 
-def table(head: list[str], rows: list[list[str]]) -> str:
-    out = ["| " + " | ".join(head) + " |", "|" + "|".join("---" for _ in head) + "|"]
-    out += ["| " + " | ".join(r) + " |" for r in rows]
-    return "\n".join(out)
-
-
 def t_params() -> str:
     return table(["Parameter", "Value", "Unit", "Source", "Uncertainty"],
                  [[n, f"{v:.4g}", u, s, unc] for n, v, u, s, unc in PARAMS])
@@ -234,27 +232,8 @@ def render() -> dict[str, str]:
     return {k: f() for k, f in SECTIONS.items()}
 
 
-def extract(note: str) -> dict[str, str]:
-    pat = re.compile(r"<!-- BEGIN GENERATED: (\w+) -->\n(.*?)\n<!-- END GENERATED: \1 -->", re.S)
-    return {m.group(1): m.group(2) for m in pat.finditer(note)}
-
-
 def main(argv: list[str] | None = None) -> int:
-    ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("--check", metavar="NOTE", help="fail if NOTE's generated tables differ")
-    a = ap.parse_args(argv)
-    gen = render()
-    if not a.check:
-        for k, v in gen.items():
-            print(f"<!-- BEGIN GENERATED: {k} -->\n{v}\n<!-- END GENERATED: {k} -->\n")
-        return 0
-    have = extract(Path(a.check).read_text())
-    bad = [k for k in gen if have.get(k) != gen[k]]
-    if bad:
-        print(f"stale or missing generated tables in {a.check}: {', '.join(bad)}", file=sys.stderr)
-        return 1
-    print("note and script agree")
-    return 0
+    return gen_blocks.main(render(), NOTE, sys.argv[1:] if argv is None else argv)
 
 
 if __name__ == "__main__":

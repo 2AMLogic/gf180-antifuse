@@ -43,7 +43,7 @@ reproduce the existing baseline exactly.
 
 ## 3. Parameters
 
-<!-- BEGIN GENERATED: params -->
+<!-- gen:params -->
 | Parameter | Value | Unit | Source | Uncertainty |
 |---|---|---|---|---|
 | V_f,thin | 1 | V | assumed | x/÷ 2.5 |
@@ -54,7 +54,7 @@ reproduce the existing baseline exactly.
 | sig_Ic | 0.3 | ln | assumed | 0 to 0.6 (ballast + VPP + access-device spread) |
 | p (filament I-V exponent) | 1 | 1 | assumed | 1 to 2 (nonlinear table) |
 | Z_wc | 3 | 1 | assumed | = bd_zrf_wc |
-<!-- END GENERATED: params -->
+<!-- /gen:params -->
 
 Existing assumed values for comparison: `bd_rf_med` = 10 kΩ, `bd_rf_sig` = 0.7,
 `bd_zrf_wc` = 3, giving 81.7 kΩ at +3σ. The existing value is ohmic and
@@ -62,7 +62,7 @@ independent of compliance; the model replaces that with the dependence above.
 
 ## 4. R_filament versus compliance current, per oxide flavour
 
-<!-- BEGIN GENERATED: rf -->
+<!-- gen:rf -->
 sig_tot = 0.762 ln-units (x2.14 per sigma).
 
 | I_c | thin R_med | thin R(+3σ) | thick R_med | thick R(+3σ) |
@@ -73,7 +73,7 @@ sig_tot = 0.762 ln-units (x2.14 per sigma).
 | 300 µA | 3.33 kΩ | 32.7 kΩ | 6.33 kΩ | 62.2 kΩ |
 | 500 µA | 2 kΩ | 19.6 kΩ | 3.8 kΩ | 37.3 kΩ |
 | 1000 µA | 1 kΩ | 9.82 kΩ | 1.9 kΩ | 18.7 kΩ |
-<!-- END GENERATED: rf -->
+<!-- /gen:rf -->
 
 Thin oxide covers Candidates 1 and 3, thick oxide Candidate 2
 (`spec/split-axis-plan.md` region map).
@@ -87,7 +87,7 @@ the point value of the worst-corner leakage, `I_sneak_max` = 9.8192e-12 A
 3.2e-11 A for C3. Any oxide-leakage tail of a stressed-but-unbroken cell is not
 modelled; this is a gap.
 
-<!-- BEGIN GENERATED: margin -->
+<!-- gen:margin -->
 Worst corner `ss_125c_bl0p90v` (rail 0.9 V). Derived R_acc: C1 26.1 kΩ, C2 0.306 kΩ. 'ratio' = I_prog_min / existing assumed-model value.
 
 | I_c | R(+3σ) thin / thick | C1 I_prog_min | C1 ratio | C1 / I_sneak_max | C2 I_prog_min | C2 ratio | C2 / I_sneak_max |
@@ -102,7 +102,7 @@ Worst corner `ss_125c_bl0p90v` (rail 0.9 V). Derived R_acc: C1 26.1 kΩ, C2 0.30
 
 Compliance at which the +3σ filament equals the assumed 81.7 kΩ: thin 120.3 µA, thick 228.6 µA.
 Candidate 3 (`s3_vb_track`): I_prog_min 1.25 nA at `ss_-40c_bl0p90v` implies an effective access resistance of 720 MΩ, 8817x the assumed filament: a filament change moves I_prog_min by under 1 % until R_f(+3σ) exceeds 7.2 MΩ, so Candidate 3 is access-limited and this model does not change its margin (window 3.91e+01 unchanged).
-<!-- END GENERATED: margin -->
+<!-- /gen:margin -->
 
 Reading: the existing 81.7 kΩ worst case is equivalent to a compliance of
 roughly 120 µA (thin) or 230 µA (thick) in this model. Below that the existing
@@ -114,7 +114,7 @@ actually reached is the quantity that decides this, and it is not yet known.
 
 ### 5.1 Sensitivity to `alpha` and `sig_Ic`
 
-<!-- BEGIN GENERATED: sens -->
+<!-- gen:sens -->
 | alpha | sig_Ic | sig_tot | thin R(+3σ) @30 µA | C1 I_prog_min @30 µA | thin R(+3σ) @500 µA | C1 I_prog_min @500 µA |
 |---|---|---|---|---|---|---|
 | 0.5 | 0.0 | 0.700 | 149 kΩ | 5.137 µA | 36.5 kΩ | 14.37 µA |
@@ -123,7 +123,7 @@ actually reached is the quantity that decides this, and it is not yet known.
 | 1.0 | 0.0 | 0.700 | 272 kΩ | 3.017 µA | 16.3 kΩ | 21.2 µA |
 | 1.0 | 0.3 | 0.762 | 327 kΩ | 2.546 µA | 19.6 kΩ | 19.66 µA |
 | 1.0 | 0.6 | 0.922 | 530 kΩ | 1.619 µA | 31.8 kΩ | 15.54 µA |
-<!-- END GENERATED: sens -->
+<!-- /gen:sens -->
 
 ## 6. Does the non-ohmic read regime matter?
 
@@ -131,7 +131,7 @@ If the filament I-V is `I = I_c' (V/V_f)^p` with `p > 1`, the current at a read
 bias below `V_f` is below the ohmic extrapolation. `p` is `assumed`
 (1 to 2).
 
-<!-- BEGIN GENERATED: nonlinear -->
+<!-- gen:nonlinear -->
 | Cand. | I_c | R(+3σ) | V across filament (ohmic) | I(p=1.5)/I(ohmic) | I(p=2)/I(ohmic) |
 |---|---|---|---|---|---|
 | C1 | 30 µA | 327 kΩ | 0.834 V | 0.922 | 0.853 |
@@ -140,7 +140,7 @@ bias below `V_f` is below the ohmic extrapolation. `p` is `assumed`
 | C2 | 30 µA | 622 kΩ | 0.900 V | 0.688 | 0.474 |
 | C2 | 100 µA | 187 kΩ | 0.899 V | 0.688 | 0.474 |
 | C2 | 500 µA | 37.3 kΩ | 0.893 V | 0.688 | 0.474 |
-<!-- END GENERATED: nonlinear -->
+<!-- /gen:nonlinear -->
 
 Reasoning: it matters, and more for Candidate 2. The thick-oxide filament has a
 chord reference `V_f` = 1.9 V while the read bias is at most 0.9 V, and with a
@@ -160,7 +160,7 @@ programmed resistance can be measured per candidate and per program condition.
 Per-region records only; do not pool across candidates or compliance settings
 (`CLAUDE.md`, `spec/measurement-matrix.md`).
 
-<!-- BEGIN GENERATED: predictions -->
+<!-- gen:predictions -->
 | Cand. | I_c | R_f median | R_f ±3σ band | median I_read (0.9 V, worst-corner access) | +3σ I_read |
 |---|---|---|---|---|---|
 | C1 | 30 µA | 33.3 kΩ | 3.39 kΩ to 327 kΩ | 15.14 µA | 2.546 µA |
@@ -169,7 +169,7 @@ Per-region records only; do not pool across candidates or compliance settings
 | C2 | 30 µA | 63.3 kΩ | 6.45 kΩ to 622 kΩ | 14.14 µA | 1.446 µA |
 | C2 | 100 µA | 19 kΩ | 1.93 kΩ to 187 kΩ | 46.62 µA | 4.814 µA |
 | C2 | 500 µA | 3.8 kΩ | 0.387 kΩ to 37.3 kΩ | 219.2 µA | 23.92 µA |
-<!-- END GENERATED: predictions -->
+<!-- /gen:predictions -->
 
 Falsification criteria (a criterion is falsified by a measured value outside
 its band at the stated condition, with enough cells for a quantile estimate;
