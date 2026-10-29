@@ -192,3 +192,55 @@ bound it:
 
 The capacitor's drawn size (W 0.42 um, L 0.28 um) therefore rests on
 `generate.py` and the extraction (`klt extract`), not on this LVS.
+
+## cell_candidate3/ -- bitcell of candidate 3 (PMOS polarity variant), one cell only
+
+`layout/cell_candidate3/` holds one bitcell of candidate 3
+(`spec/cell-candidates.md`): a thin-oxide PMOS capacitor (`cap_pmos_03v3`) in
+series with a 6.0 V PMOS access device (`pfet_06v0`), per
+`design/cells/cell_candidate3.sch`. Same artifact set as `cell_candidate1/`
+(`generate.py` with `--check`, GDS, `drc_report.json`, `lvs_request.json`,
+`lvs_reference.spice`, `lvs_report.json`, `erc_report.json`). One cell of one
+candidate, not the array; no claim about breakdown behaviour.
+
+Toolchain: released `klt 0.8.0` (`uvx --from klayout-tools==0.8.0`), PDK
+`gf180mcuA`; no tool was installed or changed. Geometry point as for candidate
+1 (Minimum x Minimum, generator width floor 0.42 um): cap W 0.42 um x L 0.28 um,
+access W 0.42 um x L 0.55 um (schematic `lacc`). The same clamp deviation
+applies (schematic `wacc` is 0.30 um); `lvs_reference.spice` carries drawn
+values.
+
+- **Terminals.** BL is the access **source**, CN the access **drain** (as in
+  the schematic, mirror of the NMOS candidates). Access gate is WL; cap gate is
+  PL; cap source and drain are strapped on CN. The MOS-capacitor marker
+  (166/5) is hand-placed over the cap COMP island, as for candidate 1
+  (2AMLogic/klayout-tools#2953).
+- **Well connection (stated).** Each device sits in its own N-well with an N+
+  tap ring (Metal1 over contacts). The two tap rings are strapped on the north
+  side as `VB`, so the access well and the capacitor well are one net, `VB`.
+  Nothing connects `VB` to a supply here; it must be held at the most positive
+  potential the cell sees (array-level decision, deferred). Well-junction
+  breakdown, the known concern of this candidate, is **not** examined by this
+  layout or by DRC/LVS.
+- **Pitch.** The first placement at 4.2 um (candidate 1's pitch) violated
+  `nwell.space.1` and `nplus.space.1`; the committed cell uses 4.8 um. Not waived.
+- **DRC.** `klt drc --deck gf180mcu --top cell_candidate3`: `status: clean`,
+  0 violations. Layers in stream without rules: 34/10 (labels), 166/5 (cap
+  marker). The candidate-1 caveat applies: Dualgate is not modelled for the
+  6 V rules, so the access device is checked against the 3.3 V thresholds.
+- **LVS.** `status: match`, 0 errors (`klt lvs --check lvs_report.json` run
+  from the cell directory exits 0). Same bounds as candidate 1: the capacitor's
+  geometry and capacitance are not compared.
+- **ERC.** `klt erc ... layout/erc/supplies_region_iii.json` (the existing
+  n-well tie spec): `erc_status: clean`, 0 findings, `erc.missing_tie` for the
+  n-well tie checked. Antenna checks were skipped (no antenna PDK data).
+
+## cell_candidate2/ -- NOT drawn (tool gap)
+
+Candidate 2 (`cap_nmos_06v0` + `nfet_10v0_asym`) is not drawn. `klt gen` has no
+generator for the 10 V drain-extended device, `--list-pdk-pcells` finds no PDK
+PCell library, and the curated DRC deck has no rules for the 10 V module
+layers, so a hand-drawn device would be unchecked. The gap is filed generically
+as 2AMLogic/klayout-tools#4568. No device was substituted. The schematic's
+source/drain assignment (d -> BL, s -> CN) is the one the layout must follow
+when drawn; the assignment statement in the layout is still owed.
