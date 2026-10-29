@@ -5,6 +5,10 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-10-29
 
+- **PR #224**: refactor: share generated-table helpers between breakdown model scripts
+- **Issue #222** (closed): Consolidate duplicated generated-block helpers in breakdown model scripts
+- **PR #221**: docs: propose bare-pad PL approach for the program voltage with PVT pad-path evidence
+- **Issue #210** (closed): Run 3 test chip: program-voltage (8-16 V) pad and protection approach
 - **PR #220**: docs: add Run 3 direct-pad bench plan and record template
 - **Issue #212** (closed): Run 3 test chip: bench measurement plan (V_bd, R_prog, read margin)
 - **PR #214**: feat: draw candidate 3 bitcell layout with DRC/LVS/ERC evidence
