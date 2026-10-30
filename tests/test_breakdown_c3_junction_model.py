@@ -131,7 +131,7 @@ class NoteAgreement(unittest.TestCase):
         self.assertTrue(NOTE.exists())
 
     def test_generated_tables_match_script(self):
-        self.assertEqual(M.check_note(NOTE), [])
+        self.assertEqual(M.gen_blocks.check(M.render(), NOTE), [])
 
     def test_check_flags_a_tampered_table(self):
         import tempfile
@@ -140,7 +140,7 @@ class NoteAgreement(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             p = Path(d) / "n.md"
             p.write_text(text)
-            self.assertIn("stress", M.check_note(p))
+            self.assertIn("stress: differs from script output", M.gen_blocks.check(M.render(), p))
 
 
 if __name__ == "__main__":

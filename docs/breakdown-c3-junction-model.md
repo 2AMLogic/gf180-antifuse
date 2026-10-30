@@ -91,31 +91,31 @@ is.
 PDK-anchored range (tolerance, and temperature from -40 degC with the largest
 alpha to 125 degC with the largest alpha):
 
-<!-- BEGIN GENERATED:pdk-anchor -->
+<!-- gen:pdk-anchor -->
 | Junction (PDK model card) | `bv` [V] | Low [V] | High [V] | Equivalent planar-abrupt doping [cm^-3] |
 |---|---|---|---|---|
 | p+ / n-well, drain and source (`diode_pd2nw_06v0`, `pfet_06v0` bvd = bvs) | 10.5 | 7.56 | 14.45 | 1.06e+17 |
 | n-well / p-substrate (`diode_nw2ps_06v0`) | 14.0 | 10.07 | 19.27 | 7.22e+16 |
-<!-- END GENERATED:pdk-anchor -->
+<!-- /gen:pdk-anchor -->
 
 The model-card 10.5 V corresponds to an n-well doping near 1e17 cm^-3 in the
 planar abrupt model, inside the assumed doping range.
 
 Doping-profile route, over the assumed ranges:
 
-<!-- BEGIN GENERATED:profile-range -->
+<!-- gen:profile-range -->
 | Junction | Doping range [cm^-3] (assumed) | Planar abrupt V_B at 27 degC [V] | With curvature 0.6-1.0, -40..125 degC [V] |
 |---|---|---|---|
 | p+ / n-well (n-well side) | 5e+16 to 2e+17 | 6.5 to 18.4 | 3.5 to 21.1 |
 | n-well / p-substrate (substrate side) | 1e+15 to 1e+16 | 61.6 to 346.6 | 33.3 to 397.6 |
-<!-- END GENERATED:profile-range -->
+<!-- /gen:profile-range -->
 
 The doping route alone spans a factor of about 6 for the p+/n-well junction,
 too wide to decide any arrangement; it is reported as the sensitivity
 statement, and the PDK anchor carries the verdict. Sensitivity to each
 parameter:
 
-<!-- BEGIN GENERATED:sensitivity -->
+<!-- gen:sensitivity -->
 Nominal point: N = 1e+17 cm^-3, curvature 0.8, 27 degC; V_B = 8.77 V.
 
 | Parameter (varied alone) | Low value | High value | V_B at low [V] | V_B at high [V] | Swing [V] |
@@ -126,7 +126,7 @@ Nominal point: N = 1e+17 cm^-3, curvature 0.8, 27 degC; V_B = 8.77 V.
 | alpha [1/K] at 125 degC | 0.0005 | 0.0015 | 9.20 | 10.06 | 0.86 |
 
 Log-sensitivity of the planar abrupt model: d ln V_B / d ln N = -0.75 (a factor 2 in doping is a factor 1.68 in V_B).
-<!-- END GENERATED:sensitivity -->
+<!-- /gen:sensitivity -->
 
 Doping is the dominant parameter (9.5 V swing over the assumed range), then
 the curvature derating (4.4 V). Temperature moves the result by under 1.5 V.
@@ -152,7 +152,7 @@ typ 8.8 V / floor 7.0 V of `docs/breakdown-vbd-sources.md` (S1), run by #130.
 This is the oxide range of the sibling issue's S1 fallback; the sibling note
 #205 has not been merged into this tree and its range is not used.
 
-<!-- BEGIN GENERATED:stress -->
+<!-- gen:stress -->
 | Arrangement | Oxide V_bd case | V_bd [V] | p+ drain / n-well `cj` [V] | p+ source / n-well `bj` [V] | n-well / p-substrate [V] |
 |---|---|---|---|---|---|
 | `bl` | assumed | 7.9 | 11.07 | 3.57 | 11.2 |
@@ -167,7 +167,7 @@ This is the oxide range of the sibling issue's S1 fallback; the sibling note
 | `gwb` | assumed | 7.9 | 6.34 | 0.00 | 0.0 |
 | `gwb` | typ | 8.8 | 7.43 | 0.00 | 0.0 |
 | `gwb` | floor | 7.0 | 5.54 | 0.00 | 0.0 |
-<!-- END GENERATED:stress -->
+<!-- /gen:stress -->
 
 ## 5. Verdict per arrangement
 
@@ -179,7 +179,7 @@ pairs over the 6 V class rating in the same records at 1x (#90, #129, #130);
 those counts are not computed here and are why a junction verdict is not the
 whole answer: a device-rating failure is independent of the junction.
 
-<!-- BEGIN GENERATED:verdict -->
+<!-- gen:verdict -->
 p+/n-well bounds [7.56, 14.45] V (nominal 10.5 V); n-well/p-substrate bounds [10.07, 19.27] V (nominal 14.0 V).
 
 | Arrangement | V_bd case | p+/n-well stress [V] | Margin to nominal / to low bound [V] | p+/n-well verdict | n-well/substrate stress [V] | Margin to nominal / to low bound [V] | n-well/substrate verdict | Access pairs over 6 V (records) |
@@ -196,7 +196,7 @@ p+/n-well bounds [7.56, 14.45] V (nominal 10.5 V); n-well/p-substrate bounds [10
 | `gwb` | assumed | 6.34 | +4.16 / +1.22 | IN-RATING | 0.0 | +14.0 / +10.1 | IN-RATING | 3 |
 | `gwb` | typ | 7.43 | +3.07 / +0.13 | IN-RATING | 0.0 | +14.0 / +10.1 | IN-RATING | 3 |
 | `gwb` | floor | 5.54 | +4.96 / +2.02 | IN-RATING | 0.0 | +14.0 / +10.1 | IN-RATING | 1 |
-<!-- END GENERATED:verdict -->
+<!-- /gen:verdict -->
 
 Reading it, per the stated uncertainty:
 
@@ -231,7 +231,7 @@ The largest n-well doping for which the planar abrupt model stays above the
 stress at -40 degC with the largest alpha (curvature 1.0, so this is the most
 favourable reading):
 
-<!-- BEGIN GENERATED:critical-doping -->
+<!-- gen:critical-doping -->
 | Arrangement | V_bd case | Stress [V] | Largest n-well doping that keeps the junction below avalanche, planar abrupt, -40 degC [cm^-3] |
 |---|---|---|---|
 | `bl` | assumed | 11.07 | 8.57e+16 |
@@ -246,7 +246,7 @@ favourable reading):
 | `gwb` | assumed | 6.34 | 1.80e+17 |
 | `gwb` | typ | 7.43 | 1.46e+17 |
 | `gwb` | floor | 5.54 | 2.16e+17 |
-<!-- END GENERATED:critical-doping -->
+<!-- /gen:critical-doping -->
 
 Against a p+/n-well doping of about 1.1e17 cm^-3 implied by the card, `gwa`
 and `gwb` clear their limits and `bl` / `plb` do not (7.7e16 to 9.8e16).
@@ -319,7 +319,8 @@ in `gwa` / `gwb` programming at oxide-breakdown voltage.
 
 ```bash
 python3 scripts/breakdown_c3_junction_model.py                       # print every table
-python3 scripts/breakdown_c3_junction_model.py --check docs/breakdown-c3-junction-model.md
+python3 scripts/breakdown_c3_junction_model.py --check                       # compare this note to the script
+python3 scripts/breakdown_c3_junction_model.py --update                      # rewrite the generated tables in place
 python3 -m unittest tests.test_breakdown_c3_junction_model
 ```
 
