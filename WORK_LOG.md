@@ -5,6 +5,8 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-10-29
 
+- **PR #183**: build: wire package.json test/check scripts to the repo's real checks
+- **Issue #182** (closed): Wire package.json check scripts to the repo's real checks (currently vacuous exit 0)
 - **PR #224**: refactor: share generated-table helpers between breakdown model scripts
 - **Issue #222** (closed): Consolidate duplicated generated-block helpers in breakdown model scripts
 - **PR #221**: docs: propose bare-pad PL approach for the program voltage with PVT pad-path evidence
