@@ -20,7 +20,6 @@ _None._
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4)
 - **#203**: wafer.space Run 3 quarter slot: cut-down antifuse breakdown test chip (GDS due 2026-12-16)
 - **#204**: First-principles breakdown models: gate-oxide V_bd/TDDB for all candidates and well-junction avalanche for Candidate 3
-- **#208**: Model Candidate 3 well-junction avalanche breakdown and decide whether an in-rating program scheme exists
 
 ## Ready
 
@@ -39,7 +38,6 @@ Issues currently being built (`loom:building`).
 
 PRs waiting on Judge (`loom:review-requested`).
 
-- **#218**: docs: model Candidate 3 well-junction avalanche per program-bias arrangement
 - **#228**: refactor: share file-path module loader in sim/harness
 
 ## Approved (Awaiting Merge)
@@ -57,7 +55,6 @@ Issues carrying `loom:curated`.
 - **#117**: T1 items 1 and 9 (analog partition): attest the cell sources and testbenches with klt signoff --attest *(curated)*
 - **#176**: T1 item 4 (LVS clean, digital partition): klt lvs against the gate-level netlist with power_connectivity *(curated)*
 - **#207**: Run 3 test chip: Candidate 2 and Candidate 3 bitcell layouts *(curated)*
-- **#208**: Model Candidate 3 well-junction avalanche breakdown and decide whether an in-rating program scheme exists *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -74,12 +71,12 @@ _None._
 |------|-------|
 | Operator merge-risk holds | 0 |
 | Very important | 0 |
-| Important | 4 |
+| Important | 3 |
 | Ready (`loom:issue`) | 0 |
 | In Progress (`loom:building`) | 2 |
-| PRs awaiting review | 2 |
+| PRs awaiting review | 1 |
 | Approved PRs awaiting merge | 0 |
-| Curated | 6 |
+| Curated | 5 |
 | Architect / Hermit proposals | 0 |
 | Active epics | 2 |
 <!-- guide:plan-body:end -->

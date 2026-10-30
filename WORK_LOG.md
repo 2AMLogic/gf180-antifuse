@@ -3,6 +3,13 @@
 Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 
+### 2026-10-30
+
+- **PR #231**: refactor: use shared gen_blocks plumbing in C3 junction model script
+- **Issue #230** (closed): Remove duplicate generated-block plumbing in breakdown_c3_junction_model.py (use gen_blocks)
+- **PR #218**: docs: model Candidate 3 well-junction avalanche per program-bias arrangement
+- **Issue #208** (closed): Model Candidate 3 well-junction avalanche breakdown and decide whether an in-rating program scheme exists
+
 ### 2026-10-29
 
 - **PR #183**: build: wire package.json test/check scripts to the repo's real checks
