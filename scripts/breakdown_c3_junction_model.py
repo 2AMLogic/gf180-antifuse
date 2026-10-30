@@ -18,14 +18,17 @@ records. Nothing here is measured, and nothing changes a ratified spec.
 
 Usage:
     python3 scripts/breakdown_c3_junction_model.py            # print all tables
-    python3 scripts/breakdown_c3_junction_model.py --check docs/breakdown-c3-junction-model.md
+    python3 scripts/breakdown_c3_junction_model.py --check    # compare the note to this script
+    python3 scripts/breakdown_c3_junction_model.py --update   # rewrite the note's tables
 """
-import argparse
-import re
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import gen_blocks  # noqa: E402
+
 ROOT = Path(__file__).resolve().parent.parent
+NOTE = ROOT / "docs" / "breakdown-c3-junction-model.md"
 
 # ---------------------------------------------------------------------------
 # Parameters. Provenance tags: pdk = read from the PDK model file, assumed = ours.
@@ -235,36 +238,13 @@ TABLES = {
 }
 
 
-def generated_block(name: str) -> str:
-    return f"<!-- BEGIN GENERATED:{name} -->\n{TABLES[name]()}\n<!-- END GENERATED:{name} -->"
+def render() -> dict[str, str]:
+    return {name: fn() for name, fn in TABLES.items()}
 
 
-def check_note(path: Path) -> list:
-    """Names of generated blocks in the note that differ from the script's output."""
-    text = path.read_text()
-    bad = []
-    for name in TABLES:
-        m = re.search(rf"<!-- BEGIN GENERATED:{re.escape(name)} -->\n(.*?)\n<!-- END GENERATED:{re.escape(name)} -->", text, re.S)
-        if m is None or m.group(1) != TABLES[name]():
-            bad.append(name)
-    return bad
-
-
-def main(argv=None) -> int:
-    ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("--check", metavar="NOTE", help="exit 1 if a generated table in NOTE differs from this script's output")
-    args = ap.parse_args(argv)
-    if args.check:
-        bad = check_note(Path(args.check))
-        if bad:
-            print("generated blocks out of date or missing: " + ", ".join(bad), file=sys.stderr)
-            return 1
-        print("note matches script output")
-        return 0
-    for name in TABLES:
-        print(f"### {name}\n\n{generated_block(name)}\n")
-    return 0
+def main(argv: list[str]) -> int:
+    return gen_blocks.main(render(), NOTE, argv)
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(main(sys.argv[1:]))
