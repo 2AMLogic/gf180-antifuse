@@ -44,17 +44,14 @@ HERE = Path(__file__).resolve().parent
 EXP = HERE.parent
 REPO = EXP.parent.parent
 sys.path.insert(0, str(EXP))
-
-import importlib.util  # noqa: E402
-
-_spec = importlib.util.spec_from_file_location("run_experiment", EXP / "run_experiment.py")
-RE = importlib.util.module_from_spec(_spec)
-sys.modules["run_experiment"] = RE
-_spec.loader.exec_module(RE)
+sys.path.insert(0, str(EXP.parent))
 
 from harness import corners as C  # noqa: E402
 from harness import numfmt as NF  # noqa: E402
 from harness import pdk as P  # noqa: E402
+from harness.modload import load_module  # noqa: E402
+
+RE = load_module(EXP / "run_experiment.py", "run_experiment")
 
 REQ_DIR = HERE / "requests"
 PDK_VARIANT = "gf180mcuD"

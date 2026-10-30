@@ -16,11 +16,12 @@ single documented invocation, not re-implementing per-experiment logic.
 from __future__ import annotations
 
 import argparse
-import importlib.util
 import sys
 from pathlib import Path
 
 SIM_DIR = Path(__file__).resolve().parent
+sys.path.insert(0, str(SIM_DIR))
+from harness.modload import load_module  # noqa: E402
 
 EXPERIMENTS = {
     "cell-device-characterization": SIM_DIR / "cell-device-characterization" / "klt" / "run_klt_campaign.py",
@@ -33,12 +34,7 @@ EXPERIMENTS = {
 def load_experiment_main(slug: str):
     path = EXPERIMENTS[slug]
     mod_name = f"sim_experiment_{slug.replace('-', '_')}"
-    spec = importlib.util.spec_from_file_location(mod_name, path)
-    module = importlib.util.module_from_spec(spec)
-    assert spec.loader is not None
-    sys.modules[mod_name] = module
-    spec.loader.exec_module(module)
-    return module.main
+    return load_module(path, mod_name).main
 
 
 def main(argv: list[str] | None = None) -> int:

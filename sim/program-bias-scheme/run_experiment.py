@@ -34,7 +34,6 @@ here relaxes or edits a ratified spec.
 from __future__ import annotations
 
 import argparse
-import importlib.util
 import json
 import shutil
 import sys
@@ -48,20 +47,12 @@ CB_DIR = SIM_DIR / "cell-breakdown-model"
 
 sys.path.insert(0, str(SIM_DIR))
 from harness import evidence_store as ES  # noqa: E402
+from harness.modload import load_module  # noqa: E402
 from harness import pdk as P  # noqa: E402
 from harness import report as R  # noqa: E402
 
 
-def _load(path: Path, name: str):
-    spec = importlib.util.spec_from_file_location(name, path)
-    mod = importlib.util.module_from_spec(spec)
-    assert spec.loader is not None
-    sys.modules[name] = mod
-    spec.loader.exec_module(mod)
-    return mod
-
-
-CB = _load(CB_DIR / "run_experiment.py", "sim_cb_lib")
+CB = load_module(CB_DIR / "run_experiment.py", "sim_cb_lib")
 CHAR = CB.CHAR
 
 # Existing BL-driven fleet records (cell-breakdown-model, C-infinity edges,

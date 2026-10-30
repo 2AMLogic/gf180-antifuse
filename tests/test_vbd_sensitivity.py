@@ -4,7 +4,6 @@ The override must (a) leave the parsed shared parameters and the parameter file 
 (b) set bd_ebd per candidate to sourced V_bd / tox, (c) reach the generated deck after the
 wrapper include, (d) be absent from the assumed-V_bd decks, and (e) tag the record.
 """
-import importlib.util
 import sys
 import tempfile
 import types
@@ -13,14 +12,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "sim"))
+from harness.modload import load_module  # noqa: E402
 
 
 def _load():
-    spec = importlib.util.spec_from_file_location("bdm_vbd_run_experiment", ROOT / "sim" / "cell-breakdown-model" / "run_experiment.py")
-    mod = importlib.util.module_from_spec(spec)
-    sys.modules["bdm_vbd_run_experiment"] = mod
-    spec.loader.exec_module(mod)
-    return mod
+    return load_module(ROOT / "sim" / "cell-breakdown-model" / "run_experiment.py", "bdm_vbd_run_experiment")
 
 
 X = _load()

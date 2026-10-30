@@ -6,7 +6,6 @@ Candidate 3's historical placeholder benches) generate exactly the decks and
 requests committed by the #62 records. unittest; also runs under pytest. No
 simulator is invoked.
 """
-import importlib.util
 import json
 import re
 import sys
@@ -18,14 +17,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 EXP = ROOT / "sim" / "cell-breakdown-model"
 sys.path.insert(0, str(ROOT / "sim"))
+from harness.modload import load_module  # noqa: E402
 
 
 def _load():
-    spec = importlib.util.spec_from_file_location("bdm_run_experiment", EXP / "run_experiment.py")
-    mod = importlib.util.module_from_spec(spec)
-    sys.modules["bdm_run_experiment"] = mod
-    spec.loader.exec_module(mod)
-    return mod
+    return load_module(EXP / "run_experiment.py", "bdm_run_experiment")
 
 
 X = _load()

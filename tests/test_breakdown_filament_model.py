@@ -1,5 +1,4 @@
 """Tests for the post-breakdown filament model (issue #209). unittest; no simulator."""
-import importlib.util
 import math
 import re
 import sys
@@ -7,10 +6,10 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-_spec = importlib.util.spec_from_file_location("bfm", ROOT / "scripts" / "breakdown_filament_model.py")
-M = importlib.util.module_from_spec(_spec)
-sys.modules["bfm"] = M
-_spec.loader.exec_module(M)
+sys.path.insert(0, str(ROOT / "sim"))
+from harness.modload import load_module  # noqa: E402
+
+M = load_module(ROOT / "scripts" / "breakdown_filament_model.py", "bfm")
 import gen_blocks  # noqa: E402  (scripts/ is on sys.path via the module load above)
 NOTE = ROOT / "docs" / "breakdown-filament-model.md"
 SPICE = (ROOT / "design" / "breakdown" / "breakdown_params.spice").read_text()

@@ -23,7 +23,6 @@ from __future__ import annotations
 
 import argparse
 import gzip
-import importlib.util
 import json
 import math
 import re
@@ -39,21 +38,13 @@ REPO_ROOT = SIM_DIR.parent
 sys.path.insert(0, str(SIM_DIR))
 from harness import corners as C  # noqa: E402
 from harness import evidence_store as ES  # noqa: E402
+from harness.modload import load_module  # noqa: E402
 from harness import numfmt as NF  # noqa: E402
 from harness import pdk as P  # noqa: E402
 from harness import report as R  # noqa: E402
 
 
-def _load(path: Path, name: str):
-    spec = importlib.util.spec_from_file_location(name, path)
-    mod = importlib.util.module_from_spec(spec)
-    assert spec.loader is not None
-    sys.modules[name] = mod
-    spec.loader.exec_module(mod)
-    return mod
-
-
-BM = _load(SIM_DIR / "cell-breakdown-model" / "run_experiment.py", "sim_bdmodel_lib")
+BM = load_module(SIM_DIR / "cell-breakdown-model" / "run_experiment.py", "sim_bdmodel_lib")
 CHAR = BM.CHAR
 CHECK = BM.CHECK
 BD_DIR = BM.BD_DIR

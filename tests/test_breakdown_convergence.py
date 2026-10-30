@@ -5,17 +5,15 @@ No simulation is run: these check failure classification, attribution,
 grid accounting (failed corners stay in the denominator), the corner-id
 parsing the per-level tables rely on, and the threshold prediction.
 """
-import importlib.util
 import sys
 import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-_spec = importlib.util.spec_from_file_location(
-    "bd_run_experiment", ROOT / "sim" / "cell-breakdown-model" / "run_experiment.py")
-RE = importlib.util.module_from_spec(_spec)
-sys.modules["bd_run_experiment"] = RE
-_spec.loader.exec_module(RE)
+sys.path.insert(0, str(ROOT / "sim"))
+from harness.modload import load_module  # noqa: E402
+
+RE = load_module(ROOT / "sim" / "cell-breakdown-model" / "run_experiment.py", "bd_run_experiment")
 
 PARAMS, PERR = RE.CHECK.parse_params((RE.BD_DIR / "breakdown_params.spice").read_text())
 CAND = {c.n: c for c in RE.CHAR.CANDIDATES}

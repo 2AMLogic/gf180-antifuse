@@ -51,7 +51,6 @@ from __future__ import annotations
 
 import argparse
 import hashlib
-import importlib.util
 import json
 import math
 import re
@@ -72,25 +71,17 @@ sys.path.insert(0, str(SIM_DIR))
 from harness import corners as C  # noqa: E402
 from harness import evidence_store as ES  # noqa: E402
 from harness import klt as K  # noqa: E402
+from harness.modload import load_module  # noqa: E402
 from harness import numfmt as NF  # noqa: E402
 from harness import pdk as P  # noqa: E402
 from harness import report as R  # noqa: E402
 
 
-def _load(path: Path, name: str):
-    spec = importlib.util.spec_from_file_location(name, path)
-    mod = importlib.util.module_from_spec(spec)
-    assert spec.loader is not None
-    sys.modules[name] = mod
-    spec.loader.exec_module(mod)
-    return mod
-
-
 # The existing characterization experiment is imported as a library, not
 # copied: candidate definitions, OFF-bias levels, C-V bias points, the read
 # rail, gmin and the geometry levels are therefore identical by construction.
-CHAR = _load(CHAR_DIR / "run_experiment.py", "sim_char_lib")
-CHECK = _load(BD_DIR / "check_params.py", "bd_check_params")
+CHAR = load_module(CHAR_DIR / "run_experiment.py", "sim_char_lib")
+CHECK = load_module(BD_DIR / "check_params.py", "bd_check_params")
 
 # --- bench constants (stimulus placeholders, documented in README) ---------
 KLT_BACKEND = "batch"
