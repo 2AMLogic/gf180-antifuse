@@ -5,6 +5,9 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-10-30
 
+- **PR #228**: refactor: share file-path module loader in sim/harness
+- **Issue #227** (closed): Consolidate duplicated importlib module-loader boilerplate into sim/harness
+- **Issue #204** (closed): First-principles breakdown models: gate-oxide V_bd/TDDB for all candidates and well-junction avalanche for Candidate 3
 - **PR #231**: refactor: use shared gen_blocks plumbing in C3 junction model script
 - **Issue #230** (closed): Remove duplicate generated-block plumbing in breakdown_c3_junction_model.py (use gen_blocks)
 - **PR #218**: docs: model Candidate 3 well-junction avalanche per program-bias arrangement

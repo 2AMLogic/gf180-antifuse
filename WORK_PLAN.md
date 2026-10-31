@@ -19,7 +19,7 @@ _None._
 
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4)
 - **#203**: wafer.space Run 3 quarter slot: cut-down antifuse breakdown test chip (GDS due 2026-12-16)
-- **#204**: First-principles breakdown models: gate-oxide V_bd/TDDB for all candidates and well-junction avalanche for Candidate 3
+- **#207**: Run 3 test chip: Candidate 2 and Candidate 3 bitcell layouts
 
 ## Ready
 
@@ -32,13 +32,12 @@ _None._
 Issues currently being built (`loom:building`).
 
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4)
-- **#227**: Consolidate duplicated importlib module-loader boilerplate into sim/harness
 
 ## PRs Awaiting Review
 
 PRs waiting on Judge (`loom:review-requested`).
 
-- **#228**: refactor: share file-path module loader in sim/harness
+_None._
 
 ## Approved (Awaiting Merge)
 
@@ -73,8 +72,8 @@ _None._
 | Very important | 0 |
 | Important | 3 |
 | Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 2 |
-| PRs awaiting review | 1 |
+| In Progress (`loom:building`) | 1 |
+| PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 0 |
 | Curated | 5 |
 | Architect / Hermit proposals | 0 |
