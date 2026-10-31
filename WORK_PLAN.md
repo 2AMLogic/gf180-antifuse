@@ -49,6 +49,7 @@ _None._
 
 Issues carrying `loom:curated`.
 
+- **#12**: Champion: Merge-Risk Hold Digest *(curated)*
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4) *(curated)*
 - **#99**: Re-qualify reference sim records under open_pdks f6eeac7 as new records *(curated)*
 - **#117**: T1 items 1 and 9 (analog partition): attest the cell sources and testbenches with klt signoff --attest *(curated)*
@@ -75,7 +76,7 @@ _None._
 | In Progress (`loom:building`) | 1 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 0 |
-| Curated | 5 |
+| Curated | 6 |
 | Architect / Hermit proposals | 0 |
 | Active epics | 2 |
 <!-- guide:plan-body:end -->
