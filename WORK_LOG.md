@@ -5,6 +5,10 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-05
 
+- **PR #241**: refactor(sim): share one .measure scalar parser via harness.numfmt
+- **PR #240**: refactor(layout): share bitcell generator flow across candidates
+- **Issue #239** (closed): Consolidate three duplicated .measure scalar parsers onto sim/harness/numfmt.py
+- **Issue #238** (closed): Consolidate duplicated bitcell generate.py plumbing across candidate layouts
 - **PR #236**: feat(design): add xschem-free analog cold start and --skip-regen
 - **Issue #235** (closed): Add a worker-safe, single-corner analog cold-start entry point for the item-9 inventory
 
