@@ -11,7 +11,6 @@ committed `corners/` logs and `records/` stay as append-only evidence.
 
 from __future__ import annotations
 
-import re
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -130,14 +129,7 @@ def moscap_substitutions(candidate: Candidate) -> dict[str, float]:
 # ---------------------------------------------------------------------------
 
 
-def parse_scalar(output: str, name: str) -> float | None:
-    m = re.search(rf"^\s*{re.escape(name)}\s*=\s*([0-9eE.+-]+)\s*$", output, re.MULTILINE)
-    if not m:
-        return None
-    try:
-        return float(m.group(1))
-    except ValueError:
-        return None
+parse_scalar = NF.parse_scalar
 
 
 def sizing_multiplier(level: str) -> float:

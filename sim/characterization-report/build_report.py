@@ -86,9 +86,6 @@ SUPERSESSION_POLICY = (
     "informational 'unselected_same_region' notes, never silently preferred."
 )
 
-_SCALAR = r"^\s*{name}\s*=\s*([0-9eE.+-]+)\s*$"
-
-
 def sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
@@ -107,14 +104,7 @@ def logs_tree_digest(root: Path, logs_dir: Path) -> str | None:
     return sha256_bytes("".join(lines).encode())
 
 
-def parse_scalar(text: str, name: str):
-    m = re.search(_SCALAR.format(name=re.escape(name)), text, re.MULTILINE)
-    if not m:
-        return None
-    try:
-        return float(m.group(1))
-    except ValueError:
-        return None
+parse_scalar = numfmt.parse_scalar
 
 
 def supply_volts(token: str) -> float:

@@ -979,7 +979,7 @@ def stored_value(rid: str, sizing: str, geom: str, cid: str, name: str) -> float
     p = CHAR_DIR / "corners" / rid / f"access-{sizing}_cap-{geom}" / f"{cid}.log"
     if not p.is_file():
         return None
-    return CHAR.parse_scalar(p.read_text(), name)
+    return NF.parse_scalar(p.read_text(), name)
 
 
 def stored_headline(rid: str) -> dict:
