@@ -2,7 +2,12 @@
 #
 # Check the committed cell netlists in design/netlists/.
 #
-#   design/check-netlists.sh
+#   design/check-netlists.sh [--skip-regen]
+#
+# --skip-regen skips step 1 (the reproducibility step, including the generator
+# --check runs inside regen-netlists.sh) so the script needs no xschem; steps
+# 2-6 are unchanged. design/run_analog_cold_start.sh uses it. Without the flag
+# the behaviour is exactly as before.
 #
 # Four checks, all of which must pass:
 #
@@ -48,6 +53,18 @@
 
 set -euo pipefail
 
+SKIP_REGEN=0
+for arg in "$@"; do
+  case "${arg}" in
+    --skip-regen) SKIP_REGEN=1 ;;
+    *)
+      echo "ERROR: unknown argument: ${arg}" >&2
+      echo "usage: design/check-netlists.sh [--skip-regen]" >&2
+      exit 2
+      ;;
+  esac
+done
+
 DESIGN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 CELLS=(cell_candidate1 cell_candidate2 cell_candidate3)
@@ -74,8 +91,12 @@ if ! command -v ngspice >/dev/null 2>&1; then
   exit 1
 fi
 
-echo "== 1. netlist reproducibility =="
-"${DESIGN_DIR}/regen-netlists.sh" --check
+if [[ "${SKIP_REGEN}" -eq 0 ]]; then
+  echo "== 1. netlist reproducibility =="
+  "${DESIGN_DIR}/regen-netlists.sh" --check
+else
+  echo "== 1. netlist reproducibility == SKIPPED (--skip-regen)"
+fi
 
 SCRATCH="$(mktemp -d)"
 trap 'rm -rf "${SCRATCH}"' EXIT
