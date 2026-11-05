@@ -3,6 +3,11 @@
 Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 
+### 2026-11-05
+
+- **PR #236**: feat(design): add xschem-free analog cold start and --skip-regen
+- **Issue #235** (closed): Add a worker-safe, single-corner analog cold-start entry point for the item-9 inventory
+
 ### 2026-10-30
 
 - **PR #228**: refactor: share file-path module loader in sim/harness
