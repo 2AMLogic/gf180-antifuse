@@ -333,6 +333,20 @@ Check everything:
 design/check-netlists.sh
 ```
 
+Check everything except xschem reproducibility (needs `ngspice` and the pinned
+PDK, not `xschem`; this is the worker-safe entry point):
+
+```sh
+design/run_analog_cold_start.sh
+```
+
+It runs `check-netlists.sh --skip-regen`, which skips step 1 below (including
+the generator `--check` runs inside `regen-netlists.sh`) and prints
+`== 1. netlist reproducibility == SKIPPED (--skip-regen)` so the log never
+implies it ran. Steps 2-6 are unchanged; it ends with
+`ANALOG COLD START PASSED` or `FAILED`. Typical corner, elaboration and
+mechanism only: not a result.
+
 which asserts, in order:
 
 1. **Reproducibility** — the generated array/mux sources are byte-identical to
