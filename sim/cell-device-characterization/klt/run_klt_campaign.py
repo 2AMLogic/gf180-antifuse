@@ -181,8 +181,7 @@ def legacy_record_for(n: int):
 
 
 def legacy_scalar(log: Path, name: str):
-    m = re.search(rf"^\s*{name}\s*=\s*([0-9eE.+-]+)\s*$", log.read_text(), re.MULTILINE)
-    return float(m.group(1)) if m else None
+    return NF.parse_scalar(log.read_text(), name)
 
 
 def fmt_v(v: float) -> str:

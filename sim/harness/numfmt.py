@@ -54,6 +54,18 @@ def parse_defaults(text: str, raw: bool = False) -> dict:
             for k, v in re.findall(r"(\w+)=([0-9.eE+-]+[a-zA-Z]*)", line)}
 
 
+def parse_scalar(text: str, name: str) -> float | None:
+    """``name = <float>`` scalar off an ngspice ``.measure`` log ``text``;
+    None when the line is absent or the value is not a float."""
+    m = re.search(rf"^\s*{re.escape(name)}\s*=\s*([0-9eE.+-]+)\s*$", text, re.MULTILINE)
+    if not m:
+        return None
+    try:
+        return float(m.group(1))
+    except ValueError:
+        return None
+
+
 def cell_defaults(netlist: Path) -> dict[str, float]:
     """``name=value`` parameter defaults off the ``.subckt`` line of a committed
     cell netlist (read, not hand-copied)."""

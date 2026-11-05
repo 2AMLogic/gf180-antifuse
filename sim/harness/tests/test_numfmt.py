@@ -62,6 +62,14 @@ class CellDefaults(unittest.TestCase):
         self.assertEqual(N.parse_defaults(text, raw=True),
                          {"wcap": "1e-6", "lcap": "1e-6", "wacc": "0.30u", "lacc": "0.55u"})
 
+    def test_parse_scalar(self):
+        log = "ron                 =  1.234e+03\n  ioff_lo = -5.0e-12 \nbad = 1.2.3\nxron = 7\n"
+        self.assertEqual(N.parse_scalar(log, "ron"), 1234.0)
+        self.assertEqual(N.parse_scalar(log, "ioff_lo"), -5.0e-12)
+        self.assertIsNone(N.parse_scalar(log, "bad"))
+        self.assertIsNone(N.parse_scalar(log, "missing"))
+        self.assertIsNone(N.parse_scalar(log, "o.."))  # name is escaped, not a regex
+
 
 if __name__ == "__main__":
     unittest.main()
