@@ -14,7 +14,7 @@ no claim about breakdown behaviour.
 
 | File | What it is |
 |---|---|
-| `generate.py` | Deterministic generator (`klt gen mos_array` x2, `klt draw` for two Metal1 straps, `klt gen-compose` explicit placement). `--check` regenerates and compares the committed GDS byte-for-byte. |
+| `generate.py` | Deterministic generator: this candidate's parameters (flavor, `L_ACC`, `DX`, strap/marker rectangles, placement, pin map) plus a call into the shared `layout/bitcell_gen.py`, which runs the flow (`klt gen mos_array` x2, `klt draw` for two Metal1 straps, `klt gen-compose` explicit placement). `--check` regenerates and compares the committed GDS byte-for-byte. |
 | `cell_candidate1.gds` | Generated layout, top cell `cell_candidate1`, pins/labels `BL`, `WL`, `PL`, `VB`. |
 | `drc_report.json` | `klt drc --deck gf180mcu --top cell_candidate1` report (status `clean`, 0 violations). |
 | `lvs_request.json`, `lvs_reference.spice` | The LVS request and its reference netlist. |
@@ -26,7 +26,12 @@ released `klt 0.7.0` (`uvx --from klayout-tools==0.7.0`), klayout 0.30.12, PDK
 `klt 0.8.0` (`uvx --from klayout-tools==0.8.0`, issue #196); `0.7.0` has no
 MOS-capacitor device class and cannot run this LVS, and the report was first
 produced by a dev build. No tool was installed or changed. Regenerate with
-`python3 layout/cell_candidate1/generate.py` and verify with `--check`.
+`python3 layout/cell_candidate1/generate.py` and verify with `--check`. The generators
+need `klt` on PATH; to pin it without touching the host tool, run
+`uvx --from klayout-tools==0.8.0 python3 layout/cell_candidate1/generate.py --check`
+(`0.8.0` reproduces both committed GDS files; `0.7.0` drifts). Per-candidate
+geometry stays in each `generate.py`; only the flow and `--check` live in
+`layout/bitcell_gen.py`.
 
 ### Geometry point
 
