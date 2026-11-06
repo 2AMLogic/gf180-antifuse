@@ -1,0 +1,37 @@
+* klt sim -- generated corner deck, do not edit
+.lib /opt/pdk/gf180mcuD/libs.tech/ngspice/sm141064.ngspice typical
+.lib /opt/pdk/gf180mcuD/libs.tech/ngspice/sm141064.ngspice moscap_ss
+.include /var/tmp/eda-job-klt-sim-2a9a0315af8f/inputs/netlist.cir
+.temp 125.0
+.meas tran mx_ox MAX v(dox)
+.meas tran mn_ox MIN v(dox)
+.meas tran mx_wc MAX v(dwc)
+.meas tran mn_wc MIN v(dwc)
+.meas tran mx_wb MAX v(dwb)
+.meas tran mn_wb MIN v(dwb)
+.meas tran mx_bc MAX v(dbc)
+.meas tran mn_bc MIN v(dbc)
+.meas tran mx_cj MAX v(dcj)
+.meas tran mn_cj MIN v(dcj)
+.meas tran mx_bj MAX v(dbj)
+.meas tran mn_bj MIN v(dbj)
+.meas tran mx_gb MAX v(dgb)
+.meas tran mn_gb MIN v(dgb)
+.meas tran vox_mid FIND v(dox) AT=6.100000e-06
+.meas tran vcn_mid FIND v(xdut.xc.cn) AT=6.100000e-06
+.meas tran vbl_mid FIND v(bl) AT=6.100000e-06
+.meas tran vpl_mid FIND v(pl) AT=6.100000e-06
+.meas tran vcn_end FIND v(xdut.xc.cn) AT=1.990000e-05
+.meas tran ibl_mid FIND i(vbl) AT=6.100000e-06
+.meas tran ibl_mx MAX i(vbl)
+.meas tran ibl_mn MIN i(vbl)
+.meas tran st FIND v(xdut.xbd.st) AT=1.990000e-05
+.meas tran dmg FIND v(xdut.xbd.dmg) AT=1.990000e-05
+.meas tran st_mid FIND v(xdut.xbd.st) AT=6.100000e-06
+.control
+save all
+alter vamp=-8.69
+tran 1.000000e-08 2.000000e-05 uic
+quit
+.endc
+.end
