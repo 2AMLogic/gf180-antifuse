@@ -2021,6 +2021,25 @@ def results_from_reports(cand, rid: str, params: dict, benches=None) -> dict[str
     return results
 
 
+def set_supersedes(text: str, prior: str | None) -> str:
+    """Replace the record's `- **Supersedes**` line when --supersedes names the earlier-PDK record it re-qualifies."""
+    if not prior:
+        return text
+    new = (f"- **Supersedes**: `{prior}` (PDK re-pin, open_pdks `c6d73a3...` -> `{P.PINNED_OPEN_PDKS[:8]}...`; "
+           "that record is unchanged and stays as evidence)")
+    return "\n".join(new if ln.startswith("- **Supersedes**") else ln for ln in text.split("\n"))
+
+
+def parse_supersedes(spec: str | None) -> dict[int, str]:
+    """`1=RID,2=RID,3=RID` -> {1: RID, ...}."""
+    out: dict[int, str] = {}
+    for part in (spec or "").split(","):
+        if part.strip():
+            n, rid = part.split("=")
+            out[int(n)] = rid.strip()
+    return out
+
+
 def render_any(pdk, cand, rid: str, results: dict[str, BenchResult], params: dict, dirty, note) -> str:
     """A run that includes any #74 bench gets the convergence record; a bias_op-only run (#75) its own."""
     if set(results) == {BIAS_BENCH}:
@@ -2066,6 +2085,9 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--render", default=None, metavar="RECORD_ID",
                     help="(re)write records/RECORD_ID.md from the saved corners/RECORD_ID/*/report.json "
                          "of ONE candidate (--candidates N); runs no simulation. Refuses to overwrite.")
+    ap.add_argument("--supersedes", default=None, metavar="N=RID[,N=RID...]",
+                    help="per candidate, the earlier-PDK record this run re-qualifies; written into the new "
+                         "record's Supersedes field (the old record is not touched)")
     ap.add_argument("--klt", default="klt",
                     help="klt command (space-separated), e.g. a version-pinned `uvx --from ... klt` to "
                          "pre-flight a request against the fleet runner's klt with --smoke")
@@ -2101,6 +2123,7 @@ def main(argv: list[str] | None = None) -> int:
         return smoke(pdk, by_n[int(n)], bench, apply_vbd_case(base_params, args.vbd_case, int(n)), pick or None)
 
     wanted = [int(x) for x in args.candidates.split(",") if x.strip()]
+    supersedes = parse_supersedes(args.supersedes)
     benches = [b for b in args.benches.split(",") if b.strip()]
     if args.campaign:
         benches = list(CAMPAIGNS[args.campaign])
@@ -2145,7 +2168,8 @@ def main(argv: list[str] | None = None) -> int:
                 rc = 1
         R.write_once(THIS_DIR / "netlist-snapshots" / f"{rid}.spice", snapshot(cand))
         R.write_once(THIS_DIR / "records" / f"{rid}.md",
-                     tag_record(render_any(pdk, cand, rid, results, params, dirty, args.note),
+                     tag_record(set_supersedes(render_any(pdk, cand, rid, results, params, dirty, args.note),
+                                               supersedes.get(n)),
                                 sensitivity_block(args.vbd_case, n, params)))
         print(f"   record: records/{rid}.md")
         rc |= ES.publish_for_runner("cell-breakdown-model", rid, THIS_DIR / "corners" / rid, REPO_ROOT)
