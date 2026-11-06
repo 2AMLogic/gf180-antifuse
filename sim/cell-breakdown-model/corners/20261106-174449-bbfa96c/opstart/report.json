@@ -1,0 +1,3023 @@
+{
+  "schema_version": 3,
+  "netlist": {
+    "path": "sim/cell-breakdown-model/corners/20261106-174449-bbfa96c/opstart/body.spice",
+    "scope": "repo"
+  },
+  "status": "pass",
+  "corner_count": 9,
+  "passed": 9,
+  "failed": 0,
+  "errored": 0,
+  "inconclusive": 0,
+  "diagnostic_counts": {
+    "by_code": {},
+    "by_severity": {},
+    "corners_with_diagnostics": 0
+  },
+  "metrics": {
+    "sim__corner__count": 9,
+    "sim__corner__passed_count": 9,
+    "sim__corner__failed_count": 0,
+    "sim__corner__errored_count": 0,
+    "sim__corner__inconclusive_count": 0
+  },
+  "environment": {
+    "engine": "ngspice",
+    "engine_version": "46",
+    "ngspice_binary": "/usr/local/bin/ngspice",
+    "engine_build": {
+      "version_banner": "******\n** ngspice-46 : Circuit level simulation program\n** Compiled with KLU Direct Linear Solver\n** The U. C. Berkeley CAD Group\n** Copyright 1985-1994, Regents of the University of California.\n** Copyright 2001-2025, The ngspice team.\n** Please get your ngspice manual from https://ngspice.sourceforge.io/docs.html\n** Please file your bug-reports at http://ngspice.sourceforge.net/bugrep.html\n** Creation Date: Thu Oct  1 23:51:59 UTC 2026\n******",
+      "binary_sha256": "dc859418bedd0478ff439a2d3e2e09f4386a7f4d5e3f17671953e101a000cc60",
+      "probe": "ok",
+      "reason": null
+    },
+    "models_lib": {
+      "path": null,
+      "scope": "external"
+    },
+    "models_lib_sha256": "f6f4a96e18fc5ad11270ad3451aaecc7ac37fc81eb61e15b0d7d94c7bc594a24",
+    "models_lib_sha256_scope": "client",
+    "netlist_sha256": "44cd577ed419abc3a363c3fc909c7df2e08b2e3c5274c630c6848d13e9e6bc12",
+    "netlist_closure": [
+      {
+        "path": "sim/cell-breakdown-model/corners/20261106-174449-bbfa96c/opstart/body.spice",
+        "scope": "repo",
+        "sha256": "44cd577ed419abc3a363c3fc909c7df2e08b2e3c5274c630c6848d13e9e6bc12"
+      },
+      {
+        "path": "design/breakdown/cell_candidates_bd.spice",
+        "scope": "repo",
+        "sha256": "d45eb4614a4e1d0744cd231c51fd12c38559fd610d8029ce1b4ae3242b218696"
+      },
+      {
+        "path": "design/netlists/cell_candidate1.spice",
+        "scope": "repo",
+        "sha256": "9462f2cdbc3afeed9fe5b5d102440ae49b8b87b3d5c877eacac03862e714e835"
+      },
+      {
+        "path": "design/netlists/cell_candidate2.spice",
+        "scope": "repo",
+        "sha256": "098c687185762fbfbda720bf3513ca337adbec8a12fe1bf82d22f84038c36a2d"
+      },
+      {
+        "path": "design/netlists/cell_candidate3.spice",
+        "scope": "repo",
+        "sha256": "9e9c8417377629212af73a547d24a5c7d618c901b24b00319fe087c764739f22"
+      },
+      {
+        "path": "design/breakdown/breakdown_params.spice",
+        "scope": "repo",
+        "sha256": "33dfcdf713cd1fcb6413f8ee79d3ea2b0667ae9ebebc0cb57123d676e873e87a"
+      },
+      {
+        "path": "design/breakdown/af_breakdown.spice",
+        "scope": "repo",
+        "sha256": "25fd7893964727ea67dfa0e0832dc3908f652c9998a666dbaf98b6ed9f8f4486"
+      }
+    ],
+    "netlist_identity": "sha256:35337be6582d8df3dac02b422bbde14d42a91950143d66c05cb4808be0197135",
+    "remote": {
+      "provider": "aws-batch-fleet",
+      "job_id": "klt-sim-c8aad5e9411d",
+      "region": "us-east-1",
+      "instance_id": "i-0cb4427e91ef8f69a",
+      "instance_type": "c7i.8xlarge",
+      "availability_zone": "us-east-1a",
+      "ami_id": "ami-095c25ae241a4d360",
+      "lifecycle": "spot",
+      "spot": true,
+      "state": "done",
+      "exit_code": "0",
+      "concurrency": "2",
+      "physical_cores": "16",
+      "elapsed_seconds": 27,
+      "client_submitted_at": "2026-11-06T17:44:49.531265Z",
+      "client_launched_at": "2026-11-06T17:45:09.805902Z",
+      "client_status_terminal_at": "2026-11-06T17:46:11.819609Z",
+      "client_collected_at": "2026-11-06T17:46:12.642181Z",
+      "runner_klt_version": "0.9.0",
+      "client_klt_version": "0.9.2.dev103+g9f4cec35997a",
+      "runner_compatibility": "match",
+      "worker_environment": {
+        "capture": "ok",
+        "simulator": {
+          "requested_binary": "ngspice",
+          "binary_source": "PATH",
+          "selected_path": "/usr/local/bin/ngspice",
+          "version_banner": "******\n** ngspice-46 : Circuit level simulation program\n** Compiled with KLU Direct Linear Solver\n** The U. C. Berkeley CAD Group\n** Copyright 1985-1994, Regents of the University of California.\n** Copyright 2001-2025, The ngspice team.\n** Please get your ngspice manual from https://ngspice.sourceforge.io/docs.html\n** Please file your bug-reports at http://ngspice.sourceforge.net/bugrep.html\n** Creation Date: Thu Oct  1 23:51:59 UTC 2026\n******\n",
+          "version_probe": "ok"
+        },
+        "pdk": {
+          "variant": "gf180mcuD",
+          "root": "/opt/pdk",
+          "stamp_scheme": "sources-sha256",
+          "stamp_sha256": "4ca10280ae9f293aa1ff69f0060a52e0026929111bda881503717469b429ce67",
+          "stamp_text": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7",
+          "models_staged": false,
+          "stamp_scope": "executed"
+        },
+        "cpu_model": "Intel(R) Xeon(R) Platinum 8488C",
+        "omp_num_threads": null,
+        "image_manifest": null,
+        "model_inputs": null,
+        "diagnostics": [],
+        "pdk_stamp_comparison": {
+          "status": "match"
+        },
+        "engine_build_comparison": {
+          "status": "match"
+        }
+      },
+      "runner_model_inputs": null,
+      "job_ceiling": {
+        "basis": "conservative_serial_bound",
+        "unit_count": 9,
+        "per_unit_timeout_s": 300,
+        "overhead_s": 120.0,
+        "job_bound_s": 2820.0,
+        "max_job_seconds": 3600.0,
+        "max_job_seconds_source": "fleet_config",
+        "exceeds_ceiling": false,
+        "check": "warn",
+        "max_units_per_job": 11,
+        "recommended_hosts": 1
+      }
+    },
+    "engine_host": "worker",
+    "client_ngspice_binary": "/home/ubuntu/.local/bin/ngspice",
+    "backend": {
+      "resolved": "batch",
+      "source": "request",
+      "requested": "batch"
+    }
+  },
+  "coverage": {
+    "corners_simulated": 9,
+    "measurements_declared": 22,
+    "measurements_with_limits": 0,
+    "unrecognized_limit_keys": [],
+    "schema_version": 1,
+    "known": true,
+    "checked": [
+      "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"ibl_mid\"]/observation",
+      "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"ibl_mn\"]/observation",
+      "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"ibl_mx\"]/observation",
+      "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"mn_bc\"]/observation",
+      "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"mn_bj\"]/observation",
+      "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"mn_cj\"]/observation",
+      "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"mn_gb\"]/observation",
+      "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"mn_ox\"]/observation",
+      "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"mn_wb\"]/observation",
+      "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"mn_wc\"]/observation",
+      "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"mx_bc\"]/observation",
+      "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"mx_bj\"]/observation",
+      "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"mx_cj\"]/observation",
+      "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"mx_gb\"]/observation",
+      "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"mx_ox\"]/observation",
+      "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"mx_wb\"]/observation",
+      "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"mx_wc\"]/observation",
+      "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"vbl_mid\"]/observation",
+      "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"vcn_end\"]/observation",
+      "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"vcn_mid\"]/observation",
+      "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"vox_mid\"]/observation",
+      "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"vpl_mid\"]/observation",
+      "measurement:[1,\"moscap_typical/-3.300V/27C\",\"ibl_mid\"]/observation",
+      "measurement:[1,\"moscap_typical/-3.300V/27C\",\"ibl_mn\"]/observation",
+      "measurement:[1,\"moscap_typical/-3.300V/27C\",\"ibl_mx\"]/observation",
+      "measurement:[1,\"moscap_typical/-3.300V/27C\",\"mn_bc\"]/observation",
+      "measurement:[1,\"moscap_typical/-3.300V/27C\",\"mn_bj\"]/observation",
+      "measurement:[1,\"moscap_typical/-3.300V/27C\",\"mn_cj\"]/observation",
+      "measurement:[1,\"moscap_typical/-3.300V/27C\",\"mn_gb\"]/observation",
+      "measurement:[1,\"moscap_typical/-3.300V/27C\",\"mn_ox\"]/observation",
+      "measurement:[1,\"moscap_typical/-3.300V/27C\",\"mn_wb\"]/observation",
+      "measurement:[1,\"moscap_typical/-3.300V/27C\",\"mn_wc\"]/observation",
+      "measurement:[1,\"moscap_typical/-3.300V/27C\",\"mx_bc\"]/observation",
+      "measurement:[1,\"moscap_typical/-3.300V/27C\",\"mx_bj\"]/observation",
+      "measurement:[1,\"moscap_typical/-3.300V/27C\",\"mx_cj\"]/observation",
+      "measurement:[1,\"moscap_typical/-3.300V/27C\",\"mx_gb\"]/observation",
+      "measurement:[1,\"moscap_typical/-3.300V/27C\",\"mx_ox\"]/observation",
+      "measurement:[1,\"moscap_typical/-3.300V/27C\",\"mx_wb\"]/observation",
+      "measurement:[1,\"moscap_typical/-3.300V/27C\",\"mx_wc\"]/observation",
+      "measurement:[1,\"moscap_typical/-3.300V/27C\",\"vbl_mid\"]/observation",
+      "measurement:[1,\"moscap_typical/-3.300V/27C\",\"vcn_end\"]/observation",
+      "measurement:[1,\"moscap_typical/-3.300V/27C\",\"vcn_mid\"]/observation",
+      "measurement:[1,\"moscap_typical/-3.300V/27C\",\"vox_mid\"]/observation",
+      "measurement:[1,\"moscap_typical/-3.300V/27C\",\"vpl_mid\"]/observation",
+      "measurement:[2,\"moscap_typical/-3.300V/125C\",\"ibl_mid\"]/observation",
+      "measurement:[2,\"moscap_typical/-3.300V/125C\",\"ibl_mn\"]/observation",
+      "measurement:[2,\"moscap_typical/-3.300V/125C\",\"ibl_mx\"]/observation",
+      "measurement:[2,\"moscap_typical/-3.300V/125C\",\"mn_bc\"]/observation",
+      "measurement:[2,\"moscap_typical/-3.300V/125C\",\"mn_bj\"]/observation",
+      "measurement:[2,\"moscap_typical/-3.300V/125C\",\"mn_cj\"]/observation",
+      "measurement:[2,\"moscap_typical/-3.300V/125C\",\"mn_gb\"]/observation",
+      "measurement:[2,\"moscap_typical/-3.300V/125C\",\"mn_ox\"]/observation",
+      "measurement:[2,\"moscap_typical/-3.300V/125C\",\"mn_wb\"]/observation",
+      "measurement:[2,\"moscap_typical/-3.300V/125C\",\"mn_wc\"]/observation",
+      "measurement:[2,\"moscap_typical/-3.300V/125C\",\"mx_bc\"]/observation",
+      "measurement:[2,\"moscap_typical/-3.300V/125C\",\"mx_bj\"]/observation",
+      "measurement:[2,\"moscap_typical/-3.300V/125C\",\"mx_cj\"]/observation",
+      "measurement:[2,\"moscap_typical/-3.300V/125C\",\"mx_gb\"]/observation",
+      "measurement:[2,\"moscap_typical/-3.300V/125C\",\"mx_ox\"]/observation",
+      "measurement:[2,\"moscap_typical/-3.300V/125C\",\"mx_wb\"]/observation",
+      "measurement:[2,\"moscap_typical/-3.300V/125C\",\"mx_wc\"]/observation",
+      "measurement:[2,\"moscap_typical/-3.300V/125C\",\"vbl_mid\"]/observation",
+      "measurement:[2,\"moscap_typical/-3.300V/125C\",\"vcn_end\"]/observation",
+      "measurement:[2,\"moscap_typical/-3.300V/125C\",\"vcn_mid\"]/observation",
+      "measurement:[2,\"moscap_typical/-3.300V/125C\",\"vox_mid\"]/observation",
+      "measurement:[2,\"moscap_typical/-3.300V/125C\",\"vpl_mid\"]/observation",
+      "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"ibl_mid\"]/observation",
+      "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"ibl_mn\"]/observation",
+      "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"ibl_mx\"]/observation",
+      "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"mn_bc\"]/observation",
+      "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"mn_bj\"]/observation",
+      "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"mn_cj\"]/observation",
+      "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"mn_gb\"]/observation",
+      "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"mn_ox\"]/observation",
+      "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"mn_wb\"]/observation",
+      "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"mn_wc\"]/observation",
+      "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"mx_bc\"]/observation",
+      "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"mx_bj\"]/observation",
+      "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"mx_cj\"]/observation",
+      "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"mx_gb\"]/observation",
+      "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"mx_ox\"]/observation",
+      "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"mx_wb\"]/observation",
+      "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"mx_wc\"]/observation",
+      "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"vbl_mid\"]/observation",
+      "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"vcn_end\"]/observation",
+      "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"vcn_mid\"]/observation",
+      "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"vox_mid\"]/observation",
+      "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"vpl_mid\"]/observation",
+      "measurement:[4,\"moscap_ff/-3.300V/27C\",\"ibl_mid\"]/observation",
+      "measurement:[4,\"moscap_ff/-3.300V/27C\",\"ibl_mn\"]/observation",
+      "measurement:[4,\"moscap_ff/-3.300V/27C\",\"ibl_mx\"]/observation",
+      "measurement:[4,\"moscap_ff/-3.300V/27C\",\"mn_bc\"]/observation",
+      "measurement:[4,\"moscap_ff/-3.300V/27C\",\"mn_bj\"]/observation",
+      "measurement:[4,\"moscap_ff/-3.300V/27C\",\"mn_cj\"]/observation",
+      "measurement:[4,\"moscap_ff/-3.300V/27C\",\"mn_gb\"]/observation",
+      "measurement:[4,\"moscap_ff/-3.300V/27C\",\"mn_ox\"]/observation",
+      "measurement:[4,\"moscap_ff/-3.300V/27C\",\"mn_wb\"]/observation",
+      "measurement:[4,\"moscap_ff/-3.300V/27C\",\"mn_wc\"]/observation",
+      "measurement:[4,\"moscap_ff/-3.300V/27C\",\"mx_bc\"]/observation",
+      "measurement:[4,\"moscap_ff/-3.300V/27C\",\"mx_bj\"]/observation",
+      "measurement:[4,\"moscap_ff/-3.300V/27C\",\"mx_cj\"]/observation",
+      "measurement:[4,\"moscap_ff/-3.300V/27C\",\"mx_gb\"]/observation",
+      "measurement:[4,\"moscap_ff/-3.300V/27C\",\"mx_ox\"]/observation",
+      "measurement:[4,\"moscap_ff/-3.300V/27C\",\"mx_wb\"]/observation",
+      "measurement:[4,\"moscap_ff/-3.300V/27C\",\"mx_wc\"]/observation",
+      "measurement:[4,\"moscap_ff/-3.300V/27C\",\"vbl_mid\"]/observation",
+      "measurement:[4,\"moscap_ff/-3.300V/27C\",\"vcn_end\"]/observation",
+      "measurement:[4,\"moscap_ff/-3.300V/27C\",\"vcn_mid\"]/observation",
+      "measurement:[4,\"moscap_ff/-3.300V/27C\",\"vox_mid\"]/observation",
+      "measurement:[4,\"moscap_ff/-3.300V/27C\",\"vpl_mid\"]/observation",
+      "measurement:[5,\"moscap_ff/-3.300V/125C\",\"ibl_mid\"]/observation",
+      "measurement:[5,\"moscap_ff/-3.300V/125C\",\"ibl_mn\"]/observation",
+      "measurement:[5,\"moscap_ff/-3.300V/125C\",\"ibl_mx\"]/observation",
+      "measurement:[5,\"moscap_ff/-3.300V/125C\",\"mn_bc\"]/observation",
+      "measurement:[5,\"moscap_ff/-3.300V/125C\",\"mn_bj\"]/observation",
+      "measurement:[5,\"moscap_ff/-3.300V/125C\",\"mn_cj\"]/observation",
+      "measurement:[5,\"moscap_ff/-3.300V/125C\",\"mn_gb\"]/observation",
+      "measurement:[5,\"moscap_ff/-3.300V/125C\",\"mn_ox\"]/observation",
+      "measurement:[5,\"moscap_ff/-3.300V/125C\",\"mn_wb\"]/observation",
+      "measurement:[5,\"moscap_ff/-3.300V/125C\",\"mn_wc\"]/observation",
+      "measurement:[5,\"moscap_ff/-3.300V/125C\",\"mx_bc\"]/observation",
+      "measurement:[5,\"moscap_ff/-3.300V/125C\",\"mx_bj\"]/observation",
+      "measurement:[5,\"moscap_ff/-3.300V/125C\",\"mx_cj\"]/observation",
+      "measurement:[5,\"moscap_ff/-3.300V/125C\",\"mx_gb\"]/observation",
+      "measurement:[5,\"moscap_ff/-3.300V/125C\",\"mx_ox\"]/observation",
+      "measurement:[5,\"moscap_ff/-3.300V/125C\",\"mx_wb\"]/observation",
+      "measurement:[5,\"moscap_ff/-3.300V/125C\",\"mx_wc\"]/observation",
+      "measurement:[5,\"moscap_ff/-3.300V/125C\",\"vbl_mid\"]/observation",
+      "measurement:[5,\"moscap_ff/-3.300V/125C\",\"vcn_end\"]/observation",
+      "measurement:[5,\"moscap_ff/-3.300V/125C\",\"vcn_mid\"]/observation",
+      "measurement:[5,\"moscap_ff/-3.300V/125C\",\"vox_mid\"]/observation",
+      "measurement:[5,\"moscap_ff/-3.300V/125C\",\"vpl_mid\"]/observation",
+      "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"ibl_mid\"]/observation",
+      "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"ibl_mn\"]/observation",
+      "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"ibl_mx\"]/observation",
+      "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"mn_bc\"]/observation",
+      "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"mn_bj\"]/observation",
+      "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"mn_cj\"]/observation",
+      "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"mn_gb\"]/observation",
+      "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"mn_ox\"]/observation",
+      "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"mn_wb\"]/observation",
+      "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"mn_wc\"]/observation",
+      "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"mx_bc\"]/observation",
+      "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"mx_bj\"]/observation",
+      "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"mx_cj\"]/observation",
+      "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"mx_gb\"]/observation",
+      "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"mx_ox\"]/observation",
+      "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"mx_wb\"]/observation",
+      "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"mx_wc\"]/observation",
+      "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"vbl_mid\"]/observation",
+      "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"vcn_end\"]/observation",
+      "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"vcn_mid\"]/observation",
+      "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"vox_mid\"]/observation",
+      "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"vpl_mid\"]/observation",
+      "measurement:[7,\"moscap_ss/-3.300V/27C\",\"ibl_mid\"]/observation",
+      "measurement:[7,\"moscap_ss/-3.300V/27C\",\"ibl_mn\"]/observation",
+      "measurement:[7,\"moscap_ss/-3.300V/27C\",\"ibl_mx\"]/observation",
+      "measurement:[7,\"moscap_ss/-3.300V/27C\",\"mn_bc\"]/observation",
+      "measurement:[7,\"moscap_ss/-3.300V/27C\",\"mn_bj\"]/observation",
+      "measurement:[7,\"moscap_ss/-3.300V/27C\",\"mn_cj\"]/observation",
+      "measurement:[7,\"moscap_ss/-3.300V/27C\",\"mn_gb\"]/observation",
+      "measurement:[7,\"moscap_ss/-3.300V/27C\",\"mn_ox\"]/observation",
+      "measurement:[7,\"moscap_ss/-3.300V/27C\",\"mn_wb\"]/observation",
+      "measurement:[7,\"moscap_ss/-3.300V/27C\",\"mn_wc\"]/observation",
+      "measurement:[7,\"moscap_ss/-3.300V/27C\",\"mx_bc\"]/observation",
+      "measurement:[7,\"moscap_ss/-3.300V/27C\",\"mx_bj\"]/observation",
+      "measurement:[7,\"moscap_ss/-3.300V/27C\",\"mx_cj\"]/observation",
+      "measurement:[7,\"moscap_ss/-3.300V/27C\",\"mx_gb\"]/observation",
+      "measurement:[7,\"moscap_ss/-3.300V/27C\",\"mx_ox\"]/observation",
+      "measurement:[7,\"moscap_ss/-3.300V/27C\",\"mx_wb\"]/observation",
+      "measurement:[7,\"moscap_ss/-3.300V/27C\",\"mx_wc\"]/observation",
+      "measurement:[7,\"moscap_ss/-3.300V/27C\",\"vbl_mid\"]/observation",
+      "measurement:[7,\"moscap_ss/-3.300V/27C\",\"vcn_end\"]/observation",
+      "measurement:[7,\"moscap_ss/-3.300V/27C\",\"vcn_mid\"]/observation",
+      "measurement:[7,\"moscap_ss/-3.300V/27C\",\"vox_mid\"]/observation",
+      "measurement:[7,\"moscap_ss/-3.300V/27C\",\"vpl_mid\"]/observation",
+      "measurement:[8,\"moscap_ss/-3.300V/125C\",\"ibl_mid\"]/observation",
+      "measurement:[8,\"moscap_ss/-3.300V/125C\",\"ibl_mn\"]/observation",
+      "measurement:[8,\"moscap_ss/-3.300V/125C\",\"ibl_mx\"]/observation",
+      "measurement:[8,\"moscap_ss/-3.300V/125C\",\"mn_bc\"]/observation",
+      "measurement:[8,\"moscap_ss/-3.300V/125C\",\"mn_bj\"]/observation",
+      "measurement:[8,\"moscap_ss/-3.300V/125C\",\"mn_cj\"]/observation",
+      "measurement:[8,\"moscap_ss/-3.300V/125C\",\"mn_gb\"]/observation",
+      "measurement:[8,\"moscap_ss/-3.300V/125C\",\"mn_ox\"]/observation",
+      "measurement:[8,\"moscap_ss/-3.300V/125C\",\"mn_wb\"]/observation",
+      "measurement:[8,\"moscap_ss/-3.300V/125C\",\"mn_wc\"]/observation",
+      "measurement:[8,\"moscap_ss/-3.300V/125C\",\"mx_bc\"]/observation",
+      "measurement:[8,\"moscap_ss/-3.300V/125C\",\"mx_bj\"]/observation",
+      "measurement:[8,\"moscap_ss/-3.300V/125C\",\"mx_cj\"]/observation",
+      "measurement:[8,\"moscap_ss/-3.300V/125C\",\"mx_gb\"]/observation",
+      "measurement:[8,\"moscap_ss/-3.300V/125C\",\"mx_ox\"]/observation",
+      "measurement:[8,\"moscap_ss/-3.300V/125C\",\"mx_wb\"]/observation",
+      "measurement:[8,\"moscap_ss/-3.300V/125C\",\"mx_wc\"]/observation",
+      "measurement:[8,\"moscap_ss/-3.300V/125C\",\"vbl_mid\"]/observation",
+      "measurement:[8,\"moscap_ss/-3.300V/125C\",\"vcn_end\"]/observation",
+      "measurement:[8,\"moscap_ss/-3.300V/125C\",\"vcn_mid\"]/observation",
+      "measurement:[8,\"moscap_ss/-3.300V/125C\",\"vox_mid\"]/observation",
+      "measurement:[8,\"moscap_ss/-3.300V/125C\",\"vpl_mid\"]/observation"
+    ],
+    "skipped": [],
+    "inapplicable": [
+      {
+        "id": "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"ibl_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"ibl_mn\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"ibl_mx\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"mn_bc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"mn_bj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"mn_cj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"mn_gb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"mn_ox\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"mn_wb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"mn_wc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"mx_bc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"mx_bj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"mx_cj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"mx_gb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"mx_ox\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"mx_wb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"mx_wc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"vbl_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"vcn_end\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"vcn_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"vox_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"moscap_typical/-3.300V/-40C\",\"vpl_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"moscap_typical/-3.300V/27C\",\"ibl_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"moscap_typical/-3.300V/27C\",\"ibl_mn\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"moscap_typical/-3.300V/27C\",\"ibl_mx\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"moscap_typical/-3.300V/27C\",\"mn_bc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"moscap_typical/-3.300V/27C\",\"mn_bj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"moscap_typical/-3.300V/27C\",\"mn_cj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"moscap_typical/-3.300V/27C\",\"mn_gb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"moscap_typical/-3.300V/27C\",\"mn_ox\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"moscap_typical/-3.300V/27C\",\"mn_wb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"moscap_typical/-3.300V/27C\",\"mn_wc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"moscap_typical/-3.300V/27C\",\"mx_bc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"moscap_typical/-3.300V/27C\",\"mx_bj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"moscap_typical/-3.300V/27C\",\"mx_cj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"moscap_typical/-3.300V/27C\",\"mx_gb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"moscap_typical/-3.300V/27C\",\"mx_ox\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"moscap_typical/-3.300V/27C\",\"mx_wb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"moscap_typical/-3.300V/27C\",\"mx_wc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"moscap_typical/-3.300V/27C\",\"vbl_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"moscap_typical/-3.300V/27C\",\"vcn_end\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"moscap_typical/-3.300V/27C\",\"vcn_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"moscap_typical/-3.300V/27C\",\"vox_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"moscap_typical/-3.300V/27C\",\"vpl_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"moscap_typical/-3.300V/125C\",\"ibl_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"moscap_typical/-3.300V/125C\",\"ibl_mn\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"moscap_typical/-3.300V/125C\",\"ibl_mx\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"moscap_typical/-3.300V/125C\",\"mn_bc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"moscap_typical/-3.300V/125C\",\"mn_bj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"moscap_typical/-3.300V/125C\",\"mn_cj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"moscap_typical/-3.300V/125C\",\"mn_gb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"moscap_typical/-3.300V/125C\",\"mn_ox\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"moscap_typical/-3.300V/125C\",\"mn_wb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"moscap_typical/-3.300V/125C\",\"mn_wc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"moscap_typical/-3.300V/125C\",\"mx_bc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"moscap_typical/-3.300V/125C\",\"mx_bj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"moscap_typical/-3.300V/125C\",\"mx_cj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"moscap_typical/-3.300V/125C\",\"mx_gb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"moscap_typical/-3.300V/125C\",\"mx_ox\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"moscap_typical/-3.300V/125C\",\"mx_wb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"moscap_typical/-3.300V/125C\",\"mx_wc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"moscap_typical/-3.300V/125C\",\"vbl_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"moscap_typical/-3.300V/125C\",\"vcn_end\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"moscap_typical/-3.300V/125C\",\"vcn_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"moscap_typical/-3.300V/125C\",\"vox_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"moscap_typical/-3.300V/125C\",\"vpl_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"ibl_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"ibl_mn\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"ibl_mx\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"mn_bc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"mn_bj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"mn_cj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"mn_gb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"mn_ox\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"mn_wb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"mn_wc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"mx_bc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"mx_bj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"mx_cj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"mx_gb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"mx_ox\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"mx_wb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"mx_wc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"vbl_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"vcn_end\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"vcn_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"vox_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"moscap_ff/-3.300V/-40C\",\"vpl_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"moscap_ff/-3.300V/27C\",\"ibl_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"moscap_ff/-3.300V/27C\",\"ibl_mn\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"moscap_ff/-3.300V/27C\",\"ibl_mx\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"moscap_ff/-3.300V/27C\",\"mn_bc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"moscap_ff/-3.300V/27C\",\"mn_bj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"moscap_ff/-3.300V/27C\",\"mn_cj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"moscap_ff/-3.300V/27C\",\"mn_gb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"moscap_ff/-3.300V/27C\",\"mn_ox\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"moscap_ff/-3.300V/27C\",\"mn_wb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"moscap_ff/-3.300V/27C\",\"mn_wc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"moscap_ff/-3.300V/27C\",\"mx_bc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"moscap_ff/-3.300V/27C\",\"mx_bj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"moscap_ff/-3.300V/27C\",\"mx_cj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"moscap_ff/-3.300V/27C\",\"mx_gb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"moscap_ff/-3.300V/27C\",\"mx_ox\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"moscap_ff/-3.300V/27C\",\"mx_wb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"moscap_ff/-3.300V/27C\",\"mx_wc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"moscap_ff/-3.300V/27C\",\"vbl_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"moscap_ff/-3.300V/27C\",\"vcn_end\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"moscap_ff/-3.300V/27C\",\"vcn_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"moscap_ff/-3.300V/27C\",\"vox_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"moscap_ff/-3.300V/27C\",\"vpl_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"moscap_ff/-3.300V/125C\",\"ibl_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"moscap_ff/-3.300V/125C\",\"ibl_mn\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"moscap_ff/-3.300V/125C\",\"ibl_mx\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"moscap_ff/-3.300V/125C\",\"mn_bc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"moscap_ff/-3.300V/125C\",\"mn_bj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"moscap_ff/-3.300V/125C\",\"mn_cj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"moscap_ff/-3.300V/125C\",\"mn_gb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"moscap_ff/-3.300V/125C\",\"mn_ox\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"moscap_ff/-3.300V/125C\",\"mn_wb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"moscap_ff/-3.300V/125C\",\"mn_wc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"moscap_ff/-3.300V/125C\",\"mx_bc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"moscap_ff/-3.300V/125C\",\"mx_bj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"moscap_ff/-3.300V/125C\",\"mx_cj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"moscap_ff/-3.300V/125C\",\"mx_gb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"moscap_ff/-3.300V/125C\",\"mx_ox\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"moscap_ff/-3.300V/125C\",\"mx_wb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"moscap_ff/-3.300V/125C\",\"mx_wc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"moscap_ff/-3.300V/125C\",\"vbl_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"moscap_ff/-3.300V/125C\",\"vcn_end\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"moscap_ff/-3.300V/125C\",\"vcn_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"moscap_ff/-3.300V/125C\",\"vox_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"moscap_ff/-3.300V/125C\",\"vpl_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"ibl_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"ibl_mn\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"ibl_mx\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"mn_bc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"mn_bj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"mn_cj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"mn_gb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"mn_ox\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"mn_wb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"mn_wc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"mx_bc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"mx_bj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"mx_cj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"mx_gb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"mx_ox\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"mx_wb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"mx_wc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"vbl_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"vcn_end\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"vcn_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"vox_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"moscap_ss/-3.300V/-40C\",\"vpl_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"moscap_ss/-3.300V/27C\",\"ibl_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"moscap_ss/-3.300V/27C\",\"ibl_mn\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"moscap_ss/-3.300V/27C\",\"ibl_mx\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"moscap_ss/-3.300V/27C\",\"mn_bc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"moscap_ss/-3.300V/27C\",\"mn_bj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"moscap_ss/-3.300V/27C\",\"mn_cj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"moscap_ss/-3.300V/27C\",\"mn_gb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"moscap_ss/-3.300V/27C\",\"mn_ox\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"moscap_ss/-3.300V/27C\",\"mn_wb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"moscap_ss/-3.300V/27C\",\"mn_wc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"moscap_ss/-3.300V/27C\",\"mx_bc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"moscap_ss/-3.300V/27C\",\"mx_bj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"moscap_ss/-3.300V/27C\",\"mx_cj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"moscap_ss/-3.300V/27C\",\"mx_gb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"moscap_ss/-3.300V/27C\",\"mx_ox\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"moscap_ss/-3.300V/27C\",\"mx_wb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"moscap_ss/-3.300V/27C\",\"mx_wc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"moscap_ss/-3.300V/27C\",\"vbl_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"moscap_ss/-3.300V/27C\",\"vcn_end\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"moscap_ss/-3.300V/27C\",\"vcn_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"moscap_ss/-3.300V/27C\",\"vox_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"moscap_ss/-3.300V/27C\",\"vpl_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"moscap_ss/-3.300V/125C\",\"ibl_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"moscap_ss/-3.300V/125C\",\"ibl_mn\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"moscap_ss/-3.300V/125C\",\"ibl_mx\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"moscap_ss/-3.300V/125C\",\"mn_bc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"moscap_ss/-3.300V/125C\",\"mn_bj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"moscap_ss/-3.300V/125C\",\"mn_cj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"moscap_ss/-3.300V/125C\",\"mn_gb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"moscap_ss/-3.300V/125C\",\"mn_ox\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"moscap_ss/-3.300V/125C\",\"mn_wb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"moscap_ss/-3.300V/125C\",\"mn_wc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"moscap_ss/-3.300V/125C\",\"mx_bc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"moscap_ss/-3.300V/125C\",\"mx_bj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"moscap_ss/-3.300V/125C\",\"mx_cj\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"moscap_ss/-3.300V/125C\",\"mx_gb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"moscap_ss/-3.300V/125C\",\"mx_ox\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"moscap_ss/-3.300V/125C\",\"mx_wb\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"moscap_ss/-3.300V/125C\",\"mx_wc\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"moscap_ss/-3.300V/125C\",\"vbl_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"moscap_ss/-3.300V/125C\",\"vcn_end\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"moscap_ss/-3.300V/125C\",\"vcn_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"moscap_ss/-3.300V/125C\",\"vox_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"moscap_ss/-3.300V/125C\",\"vpl_mid\"]/limits",
+        "reason": "characterization_without_limits"
+      }
+    ],
+    "unknown": [],
+    "nothing_checked": false,
+    "nothing_checked_reasons": []
+  },
+  "provenance": {
+    "klt_version": "0.9.2.dev103+g9f4cec35997a",
+    "klt_git_commit": "9f4cec35997a8d52de2037a8b0ab278232da5e70",
+    "klt_reinstall_spec": "klayout-tools @ git+https://github.com/2AMLogic/klayout-tools@9f4cec35997a8d52de2037a8b0ab278232da5e70",
+    "klayout_version": "0.30.13",
+    "pdk": {
+      "name": "gf180mcuD",
+      "source": "PDK_ROOT environment variable",
+      "version": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7",
+      "ambiguous_sources": [
+        "search root: ~/.volare"
+      ]
+    },
+    "deck": {
+      "name": "sm141064.ngspice",
+      "content_hash": "sha256:f6f4a96e18fc5ad11270ad3451aaecc7ac37fc81eb61e15b0d7d94c7bc594a24",
+      "released": false
+    },
+    "input": {
+      "content_hash": "sha256:44cd577ed419abc3a363c3fc909c7df2e08b2e3c5274c630c6848d13e9e6bc12",
+      "role": "netlist"
+    }
+  },
+  "measurements": [
+    {
+      "name": "mx_ox",
+      "unit": "V",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "moscap_typical/-3.300V/-40C",
+        "value": 3.3,
+        "margin": null
+      }
+    },
+    {
+      "name": "mn_ox",
+      "unit": "V",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "moscap_typical/-3.300V/-40C",
+        "value": -1.37378e-07,
+        "margin": null
+      }
+    },
+    {
+      "name": "mx_wc",
+      "unit": "V",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "moscap_typical/-3.300V/-40C",
+        "value": -3.2999,
+        "margin": null
+      }
+    },
+    {
+      "name": "mn_wc",
+      "unit": "V",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "moscap_typical/-3.300V/-40C",
+        "value": -3.3001,
+        "margin": null
+      }
+    },
+    {
+      "name": "mx_wb",
+      "unit": "V",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "moscap_typical/-3.300V/-40C",
+        "value": -3.3,
+        "margin": null
+      }
+    },
+    {
+      "name": "mn_wb",
+      "unit": "V",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "moscap_typical/-3.300V/-40C",
+        "value": -3.3,
+        "margin": null
+      }
+    },
+    {
+      "name": "mx_bc",
+      "unit": "V",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "moscap_typical/-3.300V/-40C",
+        "value": 0.000102127,
+        "margin": null
+      }
+    },
+    {
+      "name": "mn_bc",
+      "unit": "V",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "moscap_typical/-3.300V/-40C",
+        "value": -0.000102152,
+        "margin": null
+      }
+    },
+    {
+      "name": "mx_cj",
+      "unit": "V",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "moscap_typical/-3.300V/-40C",
+        "value": -3.2999,
+        "margin": null
+      }
+    },
+    {
+      "name": "mn_cj",
+      "unit": "V",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "moscap_typical/-3.300V/-40C",
+        "value": -3.3001,
+        "margin": null
+      }
+    },
+    {
+      "name": "mx_bj",
+      "unit": "V",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "moscap_typical/-3.300V/-40C",
+        "value": -3.3,
+        "margin": null
+      }
+    },
+    {
+      "name": "mn_bj",
+      "unit": "V",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "moscap_typical/-3.300V/-40C",
+        "value": -3.3,
+        "margin": null
+      }
+    },
+    {
+      "name": "mx_gb",
+      "unit": "V",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "moscap_typical/-3.300V/-40C",
+        "value": -6.6,
+        "margin": null
+      }
+    },
+    {
+      "name": "mn_gb",
+      "unit": "V",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "moscap_typical/-3.300V/-40C",
+        "value": -6.6,
+        "margin": null
+      }
+    },
+    {
+      "name": "vox_mid",
+      "unit": "V",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "moscap_typical/-3.300V/-40C",
+        "value": 3.3,
+        "margin": null
+      }
+    },
+    {
+      "name": "vcn_mid",
+      "unit": "V",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "moscap_typical/-3.300V/-40C",
+        "value": 1.05025e-08,
+        "margin": null
+      }
+    },
+    {
+      "name": "vbl_mid",
+      "unit": "V",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "moscap_typical/-3.300V/-40C",
+        "value": 0.0,
+        "margin": null
+      }
+    },
+    {
+      "name": "vpl_mid",
+      "unit": "V",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "moscap_typical/-3.300V/-40C",
+        "value": -3.3,
+        "margin": null
+      }
+    },
+    {
+      "name": "vcn_end",
+      "unit": "V",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "moscap_typical/-3.300V/-40C",
+        "value": 1.28584e-08,
+        "margin": null
+      }
+    },
+    {
+      "name": "ibl_mid",
+      "unit": "A",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "moscap_typical/-3.300V/-40C",
+        "value": -1.2194e-12,
+        "margin": null
+      }
+    },
+    {
+      "name": "ibl_mx",
+      "unit": "A",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "moscap_typical/-3.300V/-40C",
+        "value": 2.62437e-09,
+        "margin": null
+      }
+    },
+    {
+      "name": "ibl_mn",
+      "unit": "A",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "moscap_typical/-3.300V/-40C",
+        "value": -2.61852e-09,
+        "margin": null
+      }
+    }
+  ],
+  "corners": [
+    {
+      "corner_id": "moscap_typical/-3.300V/-40C",
+      "process": "moscap_typical",
+      "supply_v": {
+        "vamp": -3.3
+      },
+      "temperature_c": -40.0,
+      "status": "pass",
+      "runtime_s": 0.274,
+      "peak_rss_bytes": 49627136,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "mx_ox",
+          "value": 3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_ox",
+          "value": -1.37378e-07,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_wc",
+          "value": -3.2999,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_wc",
+          "value": -3.3001,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_wb",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_wb",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_bc",
+          "value": 0.000102127,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_bc",
+          "value": -0.000102152,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_cj",
+          "value": -3.2999,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_cj",
+          "value": -3.3001,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_bj",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_bj",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_gb",
+          "value": -6.6,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_gb",
+          "value": -6.6,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vox_mid",
+          "value": 3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vcn_mid",
+          "value": 1.05025e-08,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vbl_mid",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vpl_mid",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vcn_end",
+          "value": 1.28584e-08,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ibl_mid",
+          "value": -1.2194e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ibl_mx",
+          "value": 2.62437e-09,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ibl_mn",
+          "value": -2.61852e-09,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-99/sim/cell-breakdown-model/corners/20261106-174449-bbfa96c/opstart/.work/klt/moscap_typical_n3p300V_n40C/ngspice.log",
+        "raw": null,
+        "waveform": null,
+        "deck": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-99/sim/cell-breakdown-model/corners/20261106-174449-bbfa96c/opstart/.work/klt/moscap_typical_n3p300V_n40C/corner.cir"
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "moscap_typical/-3.300V/27C",
+      "process": "moscap_typical",
+      "supply_v": {
+        "vamp": -3.3
+      },
+      "temperature_c": 27.0,
+      "status": "pass",
+      "runtime_s": 0.269,
+      "peak_rss_bytes": 49627136,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "mx_ox",
+          "value": 3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_ox",
+          "value": -4.54698e-08,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_wc",
+          "value": -3.29986,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_wc",
+          "value": -3.30014,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_wb",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_wb",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_bc",
+          "value": 0.000135567,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_bc",
+          "value": -0.000135599,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_cj",
+          "value": -3.29986,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_cj",
+          "value": -3.30014,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_bj",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_bj",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_gb",
+          "value": -6.6,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_gb",
+          "value": -6.6,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vox_mid",
+          "value": 3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vcn_mid",
+          "value": 1.64162e-08,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vbl_mid",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vpl_mid",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vcn_end",
+          "value": 1.70885e-08,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ibl_mid",
+          "value": -1.21443e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ibl_mx",
+          "value": 2.624e-09,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ibl_mn",
+          "value": -2.61799e-09,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-99/sim/cell-breakdown-model/corners/20261106-174449-bbfa96c/opstart/.work/klt/moscap_typical_n3p300V_27C/ngspice.log",
+        "raw": null,
+        "waveform": null,
+        "deck": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-99/sim/cell-breakdown-model/corners/20261106-174449-bbfa96c/opstart/.work/klt/moscap_typical_n3p300V_27C/corner.cir"
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "moscap_typical/-3.300V/125C",
+      "process": "moscap_typical",
+      "supply_v": {
+        "vamp": -3.3
+      },
+      "temperature_c": 125.0,
+      "status": "pass",
+      "runtime_s": 0.269,
+      "peak_rss_bytes": 49627136,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "mx_ox",
+          "value": 3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_ox",
+          "value": 3.80797e-09,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_wc",
+          "value": -3.29983,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_wc",
+          "value": -3.30017,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_wb",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_wb",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_bc",
+          "value": 0.000174808,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_bc",
+          "value": -0.000174853,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_cj",
+          "value": -3.29983,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_cj",
+          "value": -3.30017,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_bj",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_bj",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_gb",
+          "value": -6.6,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_gb",
+          "value": -6.6,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vox_mid",
+          "value": 3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vcn_mid",
+          "value": 2.43364e-08,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vbl_mid",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vpl_mid",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vcn_end",
+          "value": 2.44833e-08,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ibl_mid",
+          "value": -1.15166e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ibl_mx",
+          "value": 2.62356e-09,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ibl_mn",
+          "value": -2.61728e-09,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-99/sim/cell-breakdown-model/corners/20261106-174449-bbfa96c/opstart/.work/klt/moscap_typical_n3p300V_125C/ngspice.log",
+        "raw": null,
+        "waveform": null,
+        "deck": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-99/sim/cell-breakdown-model/corners/20261106-174449-bbfa96c/opstart/.work/klt/moscap_typical_n3p300V_125C/corner.cir"
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "moscap_ff/-3.300V/-40C",
+      "process": "moscap_ff",
+      "supply_v": {
+        "vamp": -3.3
+      },
+      "temperature_c": -40.0,
+      "status": "pass",
+      "runtime_s": 0.267,
+      "peak_rss_bytes": 49627136,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "mx_ox",
+          "value": 3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_ox",
+          "value": -1.19519e-07,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_wc",
+          "value": -3.29991,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_wc",
+          "value": -3.30009,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_wb",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_wb",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_bc",
+          "value": 9.19127e-05,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_bc",
+          "value": -9.19388e-05,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_cj",
+          "value": -3.29991,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_cj",
+          "value": -3.30009,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_bj",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_bj",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_gb",
+          "value": -6.6,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_gb",
+          "value": -6.6,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vox_mid",
+          "value": 3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vcn_mid",
+          "value": 1.067e-08,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vbl_mid",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vpl_mid",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vcn_end",
+          "value": 1.28702e-08,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ibl_mid",
+          "value": -1.04524e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ibl_mx",
+          "value": 2.36204e-09,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ibl_mn",
+          "value": -2.35661e-09,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-99/sim/cell-breakdown-model/corners/20261106-174449-bbfa96c/opstart/.work/klt/moscap_ff_n3p300V_n40C/ngspice.log",
+        "raw": null,
+        "waveform": null,
+        "deck": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-99/sim/cell-breakdown-model/corners/20261106-174449-bbfa96c/opstart/.work/klt/moscap_ff_n3p300V_n40C/corner.cir"
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "moscap_ff/-3.300V/27C",
+      "process": "moscap_ff",
+      "supply_v": {
+        "vamp": -3.3
+      },
+      "temperature_c": 27.0,
+      "status": "pass",
+      "runtime_s": 0.274,
+      "peak_rss_bytes": 49627136,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "mx_ox",
+          "value": 3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_ox",
+          "value": -4.26867e-08,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_wc",
+          "value": -3.29988,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_wc",
+          "value": -3.30012,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_wb",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_wb",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_bc",
+          "value": 0.000122008,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_bc",
+          "value": -0.000122042,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_cj",
+          "value": -3.29988,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_cj",
+          "value": -3.30012,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_bj",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_bj",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_gb",
+          "value": -6.6,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_gb",
+          "value": -6.6,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vox_mid",
+          "value": 3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vcn_mid",
+          "value": 1.64586e-08,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vbl_mid",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vpl_mid",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vcn_end",
+          "value": 1.70878e-08,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ibl_mid",
+          "value": -1.03969e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ibl_mx",
+          "value": 2.3617e-09,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ibl_mn",
+          "value": -2.35614e-09,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-99/sim/cell-breakdown-model/corners/20261106-174449-bbfa96c/opstart/.work/klt/moscap_ff_n3p300V_27C/ngspice.log",
+        "raw": null,
+        "waveform": null,
+        "deck": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-99/sim/cell-breakdown-model/corners/20261106-174449-bbfa96c/opstart/.work/klt/moscap_ff_n3p300V_27C/corner.cir"
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "moscap_ff/-3.300V/125C",
+      "process": "moscap_ff",
+      "supply_v": {
+        "vamp": -3.3
+      },
+      "temperature_c": 125.0,
+      "status": "pass",
+      "runtime_s": 0.269,
+      "peak_rss_bytes": 49627136,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "mx_ox",
+          "value": 3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_ox",
+          "value": 3.47669e-09,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_wc",
+          "value": -3.29984,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_wc",
+          "value": -3.30016,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_wb",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_wb",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_bc",
+          "value": 0.000157325,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_bc",
+          "value": -0.000157372,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_cj",
+          "value": -3.29984,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_cj",
+          "value": -3.30016,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_bj",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_bj",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_gb",
+          "value": -6.6,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_gb",
+          "value": -6.6,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vox_mid",
+          "value": 3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vcn_mid",
+          "value": 2.43448e-08,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vbl_mid",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vpl_mid",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vcn_end",
+          "value": 2.4483e-08,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ibl_mid",
+          "value": -9.755e-13,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ibl_mx",
+          "value": 2.36132e-09,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ibl_mn",
+          "value": -2.3555e-09,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-99/sim/cell-breakdown-model/corners/20261106-174449-bbfa96c/opstart/.work/klt/moscap_ff_n3p300V_125C/ngspice.log",
+        "raw": null,
+        "waveform": null,
+        "deck": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-99/sim/cell-breakdown-model/corners/20261106-174449-bbfa96c/opstart/.work/klt/moscap_ff_n3p300V_125C/corner.cir"
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "moscap_ss/-3.300V/-40C",
+      "process": "moscap_ss",
+      "supply_v": {
+        "vamp": -3.3
+      },
+      "temperature_c": -40.0,
+      "status": "pass",
+      "runtime_s": 0.267,
+      "peak_rss_bytes": 49627136,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "mx_ox",
+          "value": 3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_ox",
+          "value": -1.56449e-07,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_wc",
+          "value": -3.29989,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_wc",
+          "value": -3.30011,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_wb",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_wb",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_bc",
+          "value": 0.000112341,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_bc",
+          "value": -0.000112365,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_cj",
+          "value": -3.29989,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_cj",
+          "value": -3.30011,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_bj",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_bj",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_gb",
+          "value": -6.6,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_gb",
+          "value": -6.6,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vox_mid",
+          "value": 3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vcn_mid",
+          "value": 1.03463e-08,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vbl_mid",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vpl_mid",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vcn_end",
+          "value": 1.28479e-08,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ibl_mid",
+          "value": -1.39151e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ibl_mx",
+          "value": 2.8867e-09,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ibl_mn",
+          "value": -2.88043e-09,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-99/sim/cell-breakdown-model/corners/20261106-174449-bbfa96c/opstart/.work/klt/moscap_ss_n3p300V_n40C/ngspice.log",
+        "raw": null,
+        "waveform": null,
+        "deck": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-99/sim/cell-breakdown-model/corners/20261106-174449-bbfa96c/opstart/.work/klt/moscap_ss_n3p300V_n40C/corner.cir"
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "moscap_ss/-3.300V/27C",
+      "process": "moscap_ss",
+      "supply_v": {
+        "vamp": -3.3
+      },
+      "temperature_c": 27.0,
+      "status": "pass",
+      "runtime_s": 0.269,
+      "peak_rss_bytes": 49627136,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "mx_ox",
+          "value": 3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_ox",
+          "value": -4.79507e-08,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_wc",
+          "value": -3.29985,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_wc",
+          "value": -3.30015,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_wb",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_wb",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_bc",
+          "value": 0.000149125,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_bc",
+          "value": -0.000149156,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_cj",
+          "value": -3.29985,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_cj",
+          "value": -3.30015,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_bj",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_bj",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_gb",
+          "value": -6.6,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_gb",
+          "value": -6.6,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vox_mid",
+          "value": 3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vcn_mid",
+          "value": 1.63777e-08,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vbl_mid",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vpl_mid",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vcn_end",
+          "value": 1.70893e-08,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ibl_mid",
+          "value": -1.38729e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ibl_mx",
+          "value": 2.88628e-09,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ibl_mn",
+          "value": -2.87984e-09,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-99/sim/cell-breakdown-model/corners/20261106-174449-bbfa96c/opstart/.work/klt/moscap_ss_n3p300V_27C/ngspice.log",
+        "raw": null,
+        "waveform": null,
+        "deck": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-99/sim/cell-breakdown-model/corners/20261106-174449-bbfa96c/opstart/.work/klt/moscap_ss_n3p300V_27C/corner.cir"
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "moscap_ss/-3.300V/125C",
+      "process": "moscap_ss",
+      "supply_v": {
+        "vamp": -3.3
+      },
+      "temperature_c": 125.0,
+      "status": "pass",
+      "runtime_s": 0.272,
+      "peak_rss_bytes": 49627136,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "mx_ox",
+          "value": 3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_ox",
+          "value": 9.77063e-09,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_wc",
+          "value": -3.29981,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_wc",
+          "value": -3.30019,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_wb",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_wb",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_bc",
+          "value": 0.000192291,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_bc",
+          "value": -0.000192334,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_cj",
+          "value": -3.29981,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_cj",
+          "value": -3.30019,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_bj",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_bj",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mx_gb",
+          "value": -6.6,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "mn_gb",
+          "value": -6.6,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vox_mid",
+          "value": 3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vcn_mid",
+          "value": 2.43288e-08,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vbl_mid",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vpl_mid",
+          "value": -3.3,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vcn_end",
+          "value": 2.44836e-08,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ibl_mid",
+          "value": -1.32602e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ibl_mx",
+          "value": 2.88579e-09,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ibl_mn",
+          "value": -2.87906e-09,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-99/sim/cell-breakdown-model/corners/20261106-174449-bbfa96c/opstart/.work/klt/moscap_ss_n3p300V_125C/ngspice.log",
+        "raw": null,
+        "waveform": null,
+        "deck": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-99/sim/cell-breakdown-model/corners/20261106-174449-bbfa96c/opstart/.work/klt/moscap_ss_n3p300V_125C/corner.cir"
+      },
+      "monte_carlo": null
+    }
+  ]
+}
