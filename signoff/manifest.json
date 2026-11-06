@@ -193,6 +193,12 @@
       "kind": "functional-verification",
       "content_hash": "sha256:b4f7169199edb5740cad4bb75a9ece5c8590ea223f0ebbc4c213da8cd46614a8",
       "backs": "port-only cocotb suite for rtl/antifuse_spi_regs.v (N=32, ARM_TIMEOUT=300, READ_SETTLE=8): 21/21 tests pass, 8/8 mutants killed; see verification/README.md"
+    },
+    {
+      "file": "rtl/sta/antifuse_digital_top.sta.report.json",
+      "kind": "sta",
+      "content_hash": "sha256:f6ca8e4f4e0f5341b8bf3bb2ad5a1ff723dd11e25b3b5f908353a081539a669a",
+      "backs": "post-route SPEF-annotated klt sta of the routed antifuse_digital_top at the 15 corners of the P&R report (50 ns clk); setup fails at ss_125C_1v62 and ss_n40C_1v62, so not citable for item 5; see rtl/README.md"
     }
   ]
 }

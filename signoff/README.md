@@ -125,6 +125,26 @@ was claimed:
 changed.
 
 
+## Item 5 (digital): post-route STA is supporting evidence, not a citation (issue #250)
+
+`rtl/sta/antifuse_digital_top.sta.report.json` is a `klt sta` report of the
+routed `antifuse_digital_top` across all 15 corners of the place-and-route
+report, annotated with a SPEF extracted from the routed GDS (all 544 design
+nets annotated at every corner). It is listed under `supporting_evidence`
+(kind `sta`) and **not** under `evidence`, so `5.digital` stays `unmet`,
+`no_evidence`. Two reasons, either sufficient:
+
+- Item 5's `sta` citation passes only when every corner has non-negative setup
+  and hold slack. `ss_125C_1v62` (setup -5.533 ns) and `ss_n40C_1v62`
+  (-2.231 ns) fail setup at the 50 ns target.
+- The item also needs a `klt functional-verification` report for the routed
+  design; none exists. The cocotb report under `supporting_evidence` covers
+  the register block's RTL only.
+
+`report.json` is unchanged. Citing the report would turn a failing timing
+result into a green row, which rule 2 below forbids. Figures are in
+`rtl/README.md`, "Place-and-route".
+
 ## Item 1 (digital): synthesis evidence (issues #60, #172)
 
 `1.digital` is cited from a `klt signoff --attest` envelope, not from the
