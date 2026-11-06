@@ -3,6 +3,10 @@
 Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 
+### 2026-11-06
+
+- **PR #243**: sim: re-qualify device characterization under open_pdks f6eeac7d
+
 ### 2026-11-05
 
 - **PR #241**: refactor(sim): share one .measure scalar parser via harness.numfmt
