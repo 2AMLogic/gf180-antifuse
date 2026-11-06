@@ -1,0 +1,12 @@
+{
+  "file": "../pnr/antifuse_digital_top.gds",
+  "top": "antifuse_digital_top",
+  "deck": "gf180mcu",
+  "pdk": "gf180mcuD",
+  "parasitics": true,
+  "def_net_names": true,
+  "spef": "antifuse_digital_top.spef",
+  "def_net_connections": "../pnr/antifuse_digital_top.def",
+  "def_pins": "../pnr/antifuse_digital_top.def",
+  "no_netlist": true
+}

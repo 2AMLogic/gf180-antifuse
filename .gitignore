@@ -101,3 +101,4 @@ rtl/synth/.klt/
 /.loom-local/
 # <<< loom-managed <<<
 rtl/pnr/.klt/
+rtl/sta/.klt/
