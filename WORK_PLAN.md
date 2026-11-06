@@ -31,7 +31,7 @@ Human-approved issues ready for implementation (`loom:issue`).
 
 Issues currently being built (`loom:building`).
 
-- **#99**: Re-qualify reference sim records under open_pdks f6eeac7 as new records
+_None._
 
 ## PRs Awaiting Review
 
@@ -73,7 +73,7 @@ _None._
 | Very important | 0 |
 | Important | 3 |
 | Ready (`loom:issue`) | 1 |
-| In Progress (`loom:building`) | 1 |
+| In Progress (`loom:building`) | 0 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 0 |
 | Curated | 6 |
