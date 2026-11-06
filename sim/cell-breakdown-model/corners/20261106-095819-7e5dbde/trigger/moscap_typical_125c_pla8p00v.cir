@@ -1,0 +1,21 @@
+* klt sim -- generated corner deck, do not edit
+.lib /opt/pdk/gf180mcuD/libs.tech/ngspice/sm141064.ngspice typical
+.lib /opt/pdk/gf180mcuD/libs.tech/ngspice/sm141064.ngspice moscap_typical
+.include /var/tmp/eda-job-klt-sim-f0bf093aeabc/inputs/netlist.cir
+.temp 125.0
+.meas tran st_a FIND v(xa.xbd.st) AT=1.990000e-05
+.meas tran dmg_a FIND v(xa.xbd.dmg) AT=1.990000e-05
+.meas tran vcn_a FIND v(xa.xc.cn) AT=6.100000e-06
+.meas tran vpl_a FIND v(pla) AT=6.100000e-06
+.meas tran st_b FIND v(xb.xbd.st) AT=1.990000e-05
+.meas tran dmg_b FIND v(xb.xbd.dmg) AT=1.990000e-05
+.meas tran vcn_b FIND v(xb.xc.cn) AT=6.100000e-06
+.meas tran vpl_b FIND v(plb) AT=6.100000e-06
+.control
+save all
+alter vampa=8.0
+alter vampb=0.0
+tran 1.000000e-08 2.000000e-05 uic
+quit
+.endc
+.end
