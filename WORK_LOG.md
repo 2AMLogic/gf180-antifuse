@@ -5,6 +5,12 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-06
 
+- **PR #251**: rtl: add post-route SPEF-annotated 15-corner klt sta for the routed digital block
+- **Issue #250** (closed): Post-route SPEF-annotated multi-corner klt sta for routed antifuse_digital_top
+- **PR #249**: sim: re-qualify the cell-breakdown-model #74 opstart campaign under open_pdks f6eeac7d
+- **PR #248**: sim: re-qualify breakdown-model C-infinity edge convergence campaign under open_pdks f6eeac7d
+- **PR #247**: sim: re-qualify breakdown-model #74 convergence campaign under open_pdks f6eeac7d
+- **PR #246**: sim: re-qualify breakdown-model static, trigger and read-bias benches under open_pdks f6eeac7d
 - **PR #243**: sim: re-qualify device characterization under open_pdks f6eeac7d
 
 ### 2026-11-05
