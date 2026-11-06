@@ -42,6 +42,7 @@ REPO = EXP.parent.parent
 sys.path.insert(0, str(EXP.parent))
 
 from harness import numfmt as NF  # noqa: E402
+from harness import pdk as PDK  # noqa: E402
 from harness import report as R  # noqa: E402
 
 REQ_DIR = HERE / "requests"
@@ -169,6 +170,21 @@ def grid_ron(points):
 # ---------------------------------------------------------------------------
 
 
+def pdk_field() -> str:
+    """Record field naming the open_pdks revision the local tree verifies as."""
+    try:
+        p = PDK.resolve_pdk()
+        return f"open_pdks `{p.revision}` (verified from `{p.variant}/SOURCES`; pin `{PDK.PINNED_OPEN_PDKS}`)"
+    except PDK.PDKNotFoundError as e:
+        return f"UNVERIFIED -- pin `{PDK.PINNED_OPEN_PDKS}`, local tree not confirmed ({e})"
+
+
+def prior_klt_record(n: int, rid: str):
+    """Latest earlier klt-campaign record for candidate n (the one this run re-qualifies)."""
+    prior = sorted(r.stem for r in (EXP / "records").glob(f"2*-c{n}.md") if r.stem != rid)
+    return prior[-1] if prior else None
+
+
 def legacy_record_for(n: int):
     """-> (record_id, record_text) of the legacy first-run record for candidate n."""
     for rec in sorted((EXP / "records").glob("2*.md")):
@@ -230,6 +246,7 @@ def render_record(rundir: Path, run_id: str, n: int, summary: dict) -> str:
         "(`spec/split-axis-plan.md`, `spec/cell-candidates.md`). Re-expression of the access-device "
         "bench as a `klt sim` request set; the capacitor C-V bench is NOT part of this record."
     )
+    L.append(f"- **PDK revision**: {pdk_field()}; fleet runner image bakes the same revision (2AMLogic/2am#6871)")
     L.append(f"- **Netlist provenance**: schematic (`design/netlists/cell_candidate{n}.spice`, included unchanged)")
     L.append("- **Corner matrix run** (every axis below is a `klt sim` request axis except geometry/sizing):")
     L.append("  - Access-device MOS process: typical, ff, ss, fs, sf (bundled with `moscap_typical`"
@@ -294,7 +311,8 @@ def render_record(rundir: Path, run_id: str, n: int, summary: dict) -> str:
     L.append("  - Request set + generator: `sim/cell-device-characterization/klt/`")
     L.append(f"  - klt reports (cited from `signoff/manifest.json` where applicable): `sim/cell-device-characterization/klt/runs/{run_id}/`")
     L.append(f"- **Timestamp / author**: {time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())}, agent-builder")
-    L.append(f"- **Supersedes**: (none -- supplements legacy record `{leg_id}`; the legacy driver is retired (#158), its committed logs and record remain the reproduction baseline)")
+    prior = prior_klt_record(n, rid)
+    L.append(f"- **Supersedes**: {('`' + prior + '`') if prior else '(none)'} (PDK re-pin, open_pdks `c6d73a3...` -> `{PDK.PINNED_OPEN_PDKS[:8]}...`; that record is unchanged). Legacy reproduction baseline `{leg_id}` (driver retired, #158) is still compared against above.")
     L.append("")
     return "\n".join(L)
 
