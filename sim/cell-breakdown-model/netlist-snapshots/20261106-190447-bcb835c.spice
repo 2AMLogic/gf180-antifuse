@@ -1,0 +1,244 @@
+* ===== design/netlists/cell_candidate2.spice =====
+* expanding   symbol:  cell_candidate2.sym # of pins=4
+** sym_path: design/cells/cell_candidate2.sym
+** sch_path: design/cells/cell_candidate2.sch
+.subckt cell_candidate2 BL WL PL VB  wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u
+*.iopin BL
+*.iopin WL
+*.iopin PL
+*.iopin VB
+XM1 BL WL CN VB nfet_10v0_asym L=lacc W=wacc nf=1 ad='wacc * 1.48u' as='wacc * 0.48u' pd='2 * (wacc + 1.48u)' ps='2 * (wacc + 0.48u)' nrd=0 nrs=0 sa=0 sb=0 sd=0 m=1
+XC1 CN PL cap_nmos_06v0 c_width=wcap c_length=lcap m=1
+.ends
+
+* ===== design/breakdown/cell_candidates_bd.spice =====
+* gf180-antifuse: breakdown-augmented wrappers for the three ratified cell
+* candidates (issue #62).
+*
+* WRAPS, DOES NOT EDIT OR COPY. Each cell_candidateN_bd instantiates the
+* committed, xschem-derived subcircuit design/netlists/cell_candidateN.spice
+* unchanged (as XC) and attaches the behavioral breakdown element
+* (af_breakdown.spice) across that subcircuit's internal capacitor node and
+* its PL port -- i.e. in parallel with the stock MOS capacitor XC1. The
+* internal node is reached by its hierarchical name XC.CN, which ngspice
+* resolves to the same flattened node as the cell's own CN; no device line
+* of the cell is repeated here, so the wrapper cannot drift from the
+* schematic.
+*
+* Candidate 2's nfet_10v0_asym access device keeps its ratified orientation
+* (drain -> BL, source -> CN; design/README.md) because the wrapper passes
+* BL/WL/PL/VB straight through to the unmodified subcircuit.
+*
+* Ports: identical to the stock cells -- BL WL PL VB.
+* Parameters:
+*   wcap lcap wacc lacc   forwarded unchanged; defaults are the committed
+*                         netlists' own placeholder defaults (design/README.md:
+*                         "placeholders, not design values")
+*   bden                  1 = breakdown element active, 0 = disabled (the
+*                         element is still instantiated but carries exactly
+*                         zero current -- used by the regression bench)
+*   prog                  1 = force the programmed (broken-down) state
+*   dyn                   1 = integrate damage (transient analyses only)
+*   ubd                   per-instance breakdown-time quantile, (0,1)
+*   zrf                   per-instance filament-resistance draw, in sigmas
+*
+* Include order: this file pulls in the three committed netlists, the
+* element and the parameter file by paths relative to itself. The PDK model
+* libraries (sm141064.ngspice sections, smbb000149.ngspice for Candidate 2,
+* design.ngspice's global switches) are the including deck's job, exactly as
+* for the stock cells.
+
+.include ../netlists/cell_candidate1.spice
+.include ../netlists/cell_candidate2.spice
+.include ../netlists/cell_candidate3.spice
+.include breakdown_params.spice
+.include af_breakdown.spice
+
+.subckt cell_candidate1_bd BL WL PL VB wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u
++ bden=1 prog=0 dyn=0 ubd=0.5 zrf=0
+XC BL WL PL VB cell_candidate1 wcap=wcap lcap=lcap wacc=wacc lacc=lacc
+XBD XC.CN PL af_breakdown en=bden prog=prog dyn=dyn ubd=ubd zrf=zrf tox=c1_bd_tox
+.ends cell_candidate1_bd
+
+.subckt cell_candidate2_bd BL WL PL VB wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u
++ bden=1 prog=0 dyn=0 ubd=0.5 zrf=0
+XC BL WL PL VB cell_candidate2 wcap=wcap lcap=lcap wacc=wacc lacc=lacc
+XBD XC.CN PL af_breakdown en=bden prog=prog dyn=dyn ubd=ubd zrf=zrf tox=c2_bd_tox
+.ends cell_candidate2_bd
+
+.subckt cell_candidate3_bd BL WL PL VB wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u
++ bden=1 prog=0 dyn=0 ubd=0.5 zrf=0
+XC BL WL PL VB cell_candidate3 wcap=wcap lcap=lcap wacc=wacc lacc=lacc
+XBD XC.CN PL af_breakdown en=bden prog=prog dyn=dyn ubd=ubd zrf=zrf tox=c3_bd_tox
+.ends cell_candidate3_bd
+
+* ===== design/breakdown/af_breakdown.spice =====
+* gf180-antifuse: behavioral gate-oxide breakdown element (issue #62).
+*
+* ngspice-native (B-sources + one capacitor), no Verilog-A / OSDI. Placed in
+* PARALLEL with a cell's stock MOS-capacitor (between its gate plate and its
+* body plate) by the wrappers in cell_candidates_bd.spice -- it never
+* replaces or edits the stock cap_* model, which keeps supplying the
+* pre-breakdown C-V exactly as before.
+*
+* Every physical number this element uses is a subcircuit parameter that the
+* wrappers fill in from breakdown_params.spice, where each value carries a
+* provenance label (assumed / literature / measured). The defaults on the
+* .subckt line below are mode switches and median quantiles only:
+*   en=0     element disabled (default OFF: an instance that forgets to opt in
+*            contributes exactly zero current)
+*   prog=0   not forced programmed
+*   dyn=0    damage integrator idle (static/op benches)
+*   ubd=0.5  median of the per-instance breakdown-time distribution
+*   zrf=0    median of the per-instance filament-resistance distribution
+* and the physical defaults point at the global Candidate-1 / shared names in
+* breakdown_params.spice (so this file has no numeric physics of its own).
+*
+* Terminals: a = gate plate (the cell's internal node CN), b = body plate (PL).
+*
+* ---------------------------------------------------------------------------
+* Model (full derivation and limits: design/breakdown/README.md)
+* ---------------------------------------------------------------------------
+*  Oxide field        E(t)   = |V(a,b)| / tox          (flat-band / surface
+*                                                         potential ignored)
+*  Median time-to-BD  t50(E) = tref * exp(-gam * (E - ebd))      (E-model)
+*  Instance quantile  tq     = (ln(1/(1-ubd)) / ln 2)^(1/beta)    (Weibull,
+*                              equals 1 at ubd = 0.5)
+*  Damage (Miner)     dD/dt  = dyn * en * ( 1/(tq * t50(E)) + sd/tcomp )
+*                                                                  D(0) = 0
+*  Dynamic state      sd     = smoothstep((D - 1) / dw)       (0 for D <= 1)
+*  Breakdown state    s      = max(prog, sd)
+*  Filament current   I(a->b)= en * s * V(a,b) / rf,  rf = rfmed*exp(rfsig*zrf)
+*
+* Breakdown initiates when the accumulated damage D reaches 1 (Miner's rule
+* over the E-model time-to-breakdown); the sd/tcomp term then completes the
+* event in ~tcomp regardless of how far the forming filament has pulled the
+* oxide voltage down. D only ever increases (dD/dt >= 0), so once s reaches 1
+* it stays at 1 for the rest of a transient: the breakdown event is latched
+* without a hysteretic switch. ubd is the per-instance stochastic breakdown-threshold
+* parameter (it shifts the instance's breakdown field by ln(tq)/gam) and zrf
+* the per-instance filament-resistance draw -- a Monte Carlo deck draws them
+* per instance, e.g. ubd={aunif(0.5,0.4999)} zrf={agauss(0,1,1)}.
+*
+* dyn=1 is for TRANSIENT analyses only. In an .op the integrator capacitor is
+* open and D would settle to rate*rdleak, which is not a damage integral;
+* static benches use dyn=0 with prog=0 (unprogrammed) or prog=1 (programmed).
+* With en=0 every B-source evaluates to exactly 0 A with zero derivative, so
+* the stock cell's solution is unchanged (the regression in
+* sim/cell-breakdown-model/ checks this).
+
+.subckt af_breakdown a b
++ en=0 prog=0 dyn=0 ubd=0.5 zrf=0
++ tox=c1_bd_tox ebd=bd_ebd tref=bd_tref gam=bd_gam beta=bd_beta
++ rfmed=bd_rf_med rfsig=bd_rf_sig tcomp=bd_tcomp
++ dw=bd_num_dw cdmg=bd_num_cdmg rdleak=bd_num_rdleak xmax=bd_num_xmax
+.param tq = 'pow(ln(1/(1-ubd))/ln(2), 1/beta)'
+.param rf = 'rfmed*exp(rfsig*zrf)'
+* damage integrator: current dD/dt into a 1 F capacitor, so V(dmg) = D.
+* Two terms: the field-driven E-model rate, and a completion term that is
+* nonzero only once the event has initiated (D > 1, so sd > 0). Without the
+* second term a partly-formed filament collapses V(a,b), the E-model rate
+* collapses with it, and D stalls just above 1 with the state half-on -- a
+* numerical artefact, not hard breakdown, which runs away once initiated.
+Bdmg 0 dmg I = 'dyn*en*(exp(min(gam*(abs(v(a,b))/tox - ebd), xmax))/(tq*tref) + v(sd)/tcomp)'
+Cdmg dmg 0 {cdmg}
+Rdmg dmg 0 {rdleak}
+* dynamic breakdown state: smoothstep of D over [1, 1+dw]
+Bsd sd 0 V = 'pow(min(max((v(dmg)-1)/dw, 0), 1), 2)*(3-2*min(max((v(dmg)-1)/dw, 0), 1))'
+* latched breakdown state, 0 (intact) .. 1 (broken down), exposed as V(st)
+Bst st 0 V = 'max(prog, v(sd))'
+* post-breakdown filament: ohmic, gated by the state
+Bfil a b I = 'en*v(st)*v(a,b)/rf'
+* observability probes (issue #66): this instance's own per-instance draws as node
+* voltages, V(ubdn) = ubd and V(zrfn) = zrf. ngspice re-evaluates a random .param
+* (aunif/agauss) at EACH reference, so a deck cannot read back "the value the instance
+* used" from its own copy of the .param; the instance has to report it. Output-only: both
+* are voltage sources to ground that nothing reads, so the cell's equations are unchanged.
+Bubdn ubdn 0 V = 'ubd'
+Bzrfn zrfn 0 V = 'zrf'
+.ends af_breakdown
+
+* ===== design/breakdown/breakdown_params.spice =====
+* gf180-antifuse: parameters for the behavioral breakdown element (issue #62).
+*
+* ONE FILE, EVERY NUMBER LABELLED. Each .param below is immediately preceded
+* by exactly one annotation line of the form
+*
+*   * @param <name> unit=<unit> provenance=<assumed|literature|measured> -- <why>
+*
+* and design/breakdown/check_params.py fails if any .param lacks one, if a
+* label is outside that set, or if anything is labelled `measured` while
+* measurements/ holds no data (it holds none today, so nothing here is
+* measured).
+*
+* What the labels mean here:
+*   literature  read out of a published source that is named in the note
+*               (for this file: the gf180mcu open PDK model files, at the
+*               open_pdks revision spec/cell-candidates.md pins). Nothing is
+*               labelled literature on the strength of "commonly quoted".
+*   assumed     chosen by this model, with the reasoning written next to it.
+*               spec/cell-candidates.md records the gate-oxide breakdown
+*               voltages of both oxide flavors as an open question; every
+*               breakdown-kinetics and filament number below is therefore an
+*               assumption, NOT a property of this process. Results computed
+*               from them are conditional on them.
+*   measured    from this repo's measurements/ -- none yet.
+*
+* Do not tune these to make a result pass; change them only with a stated
+* reason (and a new sim/ record, since records are append-only).
+
+* ---------------------------------------------------------------------------
+* Oxide thickness per candidate (gate-plate dielectric of the antifuse cap)
+* ---------------------------------------------------------------------------
+* The stock cap_* subcircuits carry no toxe of their own (they are a bare
+* C-V tanh fit); spec/cell-candidates.md associates each cap with the oxide
+* of the matching MOS flavor, and these are that flavor's typical-section
+* toxe. Process skew of tox (the PDK's mc_toxe / *_tox corner offsets) is
+* deliberately NOT propagated into the breakdown field -- see README.
+
+* @param c1_bd_tox unit=m provenance=literature -- cap_nmos_03v3: nfet_03v3 typical toxe, sm141064.ngspice `nfet_03v3_tox = 8e-009 + ...`, as cited in spec/cell-candidates.md
+.param c1_bd_tox = 8.0e-9
+* @param c2_bd_tox unit=m provenance=literature -- cap_nmos_06v0: nfet_06v0 toxe, sm141064.ngspice `toxe = '1.52e-008+nfet_06v0_tox'` (nfet_06v0_tox = 0 in typical), as cited in spec/cell-candidates.md
+.param c2_bd_tox = 1.52e-8
+* @param c3_bd_tox unit=m provenance=literature -- cap_pmos_03v3: pfet_03v3 typical toxe, sm141064.ngspice `pfet_03v3_tox = '7.9e-009 + ...'` (not stated in spec/cell-candidates.md; read from the same pinned PDK file)
+.param c3_bd_tox = 7.9e-9
+
+* ---------------------------------------------------------------------------
+* Breakdown kinetics (shared by all three candidates -- see README "what is
+* deliberately the same across candidates")
+* ---------------------------------------------------------------------------
+
+* @param bd_ebd unit=V/m provenance=assumed -- median breakdown field at t = bd_tref (10 MV/cm). Order-of-magnitude choice for SiO2-class gate oxide; NOT a gf180 number (spec/cell-candidates.md: breakdown voltages are an open question). Sets V_bd(1 us) = bd_ebd*tox = 8.0 / 15.2 / 7.9 V for Candidates 1 / 2 / 3. Cross-checked, NOT replaced, against the PDK BVox spec (docs/breakdown-vbd-sources.md): its ramp/current condition is unstated so it cannot be placed at bd_tref.
+.param bd_ebd = 1.0e9
+* @param bd_tref unit=s provenance=assumed -- the time scale bd_ebd is quoted at; 1 us is within the program-pulse-width range a bench-supplied VPP can produce, which keeps the reference point inside the regime the program path will actually exercise.
+.param bd_tref = 1.0e-6
+* @param bd_gam unit=m/V provenance=assumed -- E-model field acceleration, ln(10)*3 per MV/cm (3 decades of time-to-breakdown per MV/cm). Chosen as the smallest round value for which a rated-bias oxide survives >10 years under this model (Candidate 1 at 3.3 V: t50 ~ 4e11 s); a smaller value would make the model predict read-disturb breakdown that the PDK's own voltage rating rules out.
+.param bd_gam = 6.9e-8
+* @param bd_beta unit=1 provenance=assumed -- Weibull shape of the per-instance time-to-breakdown distribution. Mid-range choice; at bd_gam it spreads the instance breakdown field from about -0.63 MV/cm (0.1% quantile) to +0.22 MV/cm (99.9% quantile) around bd_ebd.
+.param bd_beta = 1.5
+* @param bd_tcomp unit=s provenance=assumed -- completion time of the hard-breakdown event once initiated (damage D past 1). Placeholder; only needs to be short against any program pulse width of interest (>= ~100 ns), so a 10 ns value makes pulse width, not this constant, decide whether a cell programs.
+.param bd_tcomp = 1.0e-8
+
+* ---------------------------------------------------------------------------
+* Post-breakdown filament (shared by all three candidates)
+* ---------------------------------------------------------------------------
+
+* @param bd_rf_med unit=ohm provenance=assumed -- median post-breakdown filament resistance, treated as ohmic. Placeholder in the kOhm-class range; in reality it depends on program compliance current, which this model does not couple to.
+.param bd_rf_med = 1.0e4
+* @param bd_rf_sig unit=1 provenance=assumed -- log-normal sigma of the filament resistance, ln-units (one sigma = x2.0). Placeholder spread.
+.param bd_rf_sig = 0.7
+* @param bd_zrf_wc unit=1 provenance=assumed -- worst-case filament quantile used for I_prog_min: +3 sigma (rf = bd_rf_med*exp(3*bd_rf_sig) = 81.7 kOhm), i.e. 99.87% of programmed cells are assumed to read at least this well.
+.param bd_zrf_wc = 3
+
+* ---------------------------------------------------------------------------
+* Numerical-only parameters (no physical meaning; chosen for solver health)
+* ---------------------------------------------------------------------------
+
+* @param bd_num_dw unit=1 provenance=assumed -- width of the smooth 0->1 state transition in damage units (state rises over D = 1.00..1.05). Numerical: avoids a step discontinuity in the B-source.
+.param bd_num_dw = 0.05
+* @param bd_num_cdmg unit=F provenance=assumed -- damage integrator capacitance; 1 F makes V(dmg) equal the dimensionless damage D. Numerical scale only.
+.param bd_num_cdmg = 1
+* @param bd_num_rdleak unit=ohm provenance=assumed -- DC path for the integrator node (time constant 1e15 s, i.e. no decay on any simulated time scale). Numerical: keeps the node non-singular in DC.
+.param bd_num_rdleak = 1.0e15
+* @param bd_num_xmax unit=1 provenance=assumed -- clamp on the E-model exponent (rate <= e^50/tref) so an extreme overstress cannot overflow. Numerical.
+.param bd_num_xmax = 50
