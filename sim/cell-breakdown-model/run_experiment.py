@@ -970,7 +970,9 @@ def collect(bench: str, report: dict | None, err: str, bench_dir: Path, cand, pa
 def stored_record_id(cand) -> str | None:
     hits = []
     for p in sorted((CHAR_DIR / "records").glob("*.md")):
-        if re.search(rf"Candidate {cand.n}\b", p.read_text()):
+        # only records with committed raw per-corner logs can serve as the (a2) reproduction baseline; the
+        # klt-campaign records (issue #99 re-pin) carry reports, not .log files
+        if (CHAR_DIR / "corners" / p.stem).is_dir() and re.search(rf"Candidate {cand.n}\b", p.read_text()):
             hits.append(p.stem)
     return hits[-1] if hits else None
 
@@ -2021,6 +2023,25 @@ def results_from_reports(cand, rid: str, params: dict, benches=None) -> dict[str
     return results
 
 
+def set_supersedes(text: str, prior: str | None) -> str:
+    """Replace the record's `- **Supersedes**` line when --supersedes names the earlier-PDK record it re-qualifies."""
+    if not prior:
+        return text
+    new = (f"- **Supersedes**: `{prior}` (PDK re-pin, open_pdks `c6d73a3...` -> `{P.PINNED_OPEN_PDKS[:8]}...`; "
+           "that record is unchanged and stays as evidence)")
+    return "\n".join(new if ln.startswith("- **Supersedes**") else ln for ln in text.split("\n"))
+
+
+def parse_supersedes(spec: str | None) -> dict[int, str]:
+    """`1=RID,2=RID,3=RID` -> {1: RID, ...}."""
+    out: dict[int, str] = {}
+    for part in (spec or "").split(","):
+        if part.strip():
+            n, rid = part.split("=")
+            out[int(n)] = rid.strip()
+    return out
+
+
 def render_any(pdk, cand, rid: str, results: dict[str, BenchResult], params: dict, dirty, note) -> str:
     """A run that includes any #74 bench gets the convergence record; a bias_op-only run (#75) its own."""
     if set(results) == {BIAS_BENCH}:
@@ -2030,7 +2051,8 @@ def render_any(pdk, cand, rid: str, results: dict[str, BenchResult], params: dic
     return render_record(pdk, cand, rid, results, params, dirty, stored_record_id(cand), note)
 
 
-def render_only(pdk, cand, rid: str, params: dict, note: str | None = None, vbd_case: str | None = None) -> int:
+def render_only(pdk, cand, rid: str, params: dict, note: str | None = None, vbd_case: str | None = None,
+                prior: str | None = None) -> int:
     results = results_from_reports(cand, rid, params)
     if not results:
         print(f"ERROR: no saved reports under corners/{rid}/", file=sys.stderr)
@@ -2038,7 +2060,7 @@ def render_only(pdk, cand, rid: str, params: dict, note: str | None = None, vbd_
     prov_file = THIS_DIR / "corners" / rid / "run-provenance.json"
     dirty = json.loads(prov_file.read_text())["dirty"] if prov_file.is_file() else None
     R.write_once(THIS_DIR / "records" / f"{rid}.md",
-                 tag_record(render_any(pdk, cand, rid, results, params, dirty, note),
+                 tag_record(set_supersedes(render_any(pdk, cand, rid, results, params, dirty, note), prior),
                             sensitivity_block(vbd_case, cand.n, params)))
     print(f"record: records/{rid}.md (rendered from saved reports)")
     return 0
@@ -2066,6 +2088,9 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--render", default=None, metavar="RECORD_ID",
                     help="(re)write records/RECORD_ID.md from the saved corners/RECORD_ID/*/report.json "
                          "of ONE candidate (--candidates N); runs no simulation. Refuses to overwrite.")
+    ap.add_argument("--supersedes", default=None, metavar="N=RID[,N=RID...]",
+                    help="per candidate, the earlier-PDK record this run re-qualifies; written into the new "
+                         "record's Supersedes field (the old record is not touched)")
     ap.add_argument("--klt", default="klt",
                     help="klt command (space-separated), e.g. a version-pinned `uvx --from ... klt` to "
                          "pre-flight a request against the fleet runner's klt with --smoke")
@@ -2095,12 +2120,13 @@ def main(argv: list[str] | None = None) -> int:
     if args.render:
         n = int(args.candidates)
         return render_only(pdk, by_n[n], args.render, apply_vbd_case(base_params, args.vbd_case, n), args.note,
-                           args.vbd_case)
+                           args.vbd_case, parse_supersedes(args.supersedes).get(n))
     if args.smoke:
         n, bench, *pick = args.smoke.split(":")
         return smoke(pdk, by_n[int(n)], bench, apply_vbd_case(base_params, args.vbd_case, int(n)), pick or None)
 
     wanted = [int(x) for x in args.candidates.split(",") if x.strip()]
+    supersedes = parse_supersedes(args.supersedes)
     benches = [b for b in args.benches.split(",") if b.strip()]
     if args.campaign:
         benches = list(CAMPAIGNS[args.campaign])
@@ -2145,7 +2171,8 @@ def main(argv: list[str] | None = None) -> int:
                 rc = 1
         R.write_once(THIS_DIR / "netlist-snapshots" / f"{rid}.spice", snapshot(cand))
         R.write_once(THIS_DIR / "records" / f"{rid}.md",
-                     tag_record(render_any(pdk, cand, rid, results, params, dirty, args.note),
+                     tag_record(set_supersedes(render_any(pdk, cand, rid, results, params, dirty, args.note),
+                                               supersedes.get(n)),
                                 sensitivity_block(args.vbd_case, n, params)))
         print(f"   record: records/{rid}.md")
         rc |= ES.publish_for_runner("cell-breakdown-model", rid, THIS_DIR / "corners" / rid, REPO_ROOT)
