@@ -970,7 +970,9 @@ def collect(bench: str, report: dict | None, err: str, bench_dir: Path, cand, pa
 def stored_record_id(cand) -> str | None:
     hits = []
     for p in sorted((CHAR_DIR / "records").glob("*.md")):
-        if re.search(rf"Candidate {cand.n}\b", p.read_text()):
+        # only records with committed raw per-corner logs can serve as the (a2) reproduction baseline; the
+        # klt-campaign records (issue #99 re-pin) carry reports, not .log files
+        if (CHAR_DIR / "corners" / p.stem).is_dir() and re.search(rf"Candidate {cand.n}\b", p.read_text()):
             hits.append(p.stem)
     return hits[-1] if hits else None
 
@@ -2049,7 +2051,8 @@ def render_any(pdk, cand, rid: str, results: dict[str, BenchResult], params: dic
     return render_record(pdk, cand, rid, results, params, dirty, stored_record_id(cand), note)
 
 
-def render_only(pdk, cand, rid: str, params: dict, note: str | None = None, vbd_case: str | None = None) -> int:
+def render_only(pdk, cand, rid: str, params: dict, note: str | None = None, vbd_case: str | None = None,
+                prior: str | None = None) -> int:
     results = results_from_reports(cand, rid, params)
     if not results:
         print(f"ERROR: no saved reports under corners/{rid}/", file=sys.stderr)
@@ -2057,7 +2060,7 @@ def render_only(pdk, cand, rid: str, params: dict, note: str | None = None, vbd_
     prov_file = THIS_DIR / "corners" / rid / "run-provenance.json"
     dirty = json.loads(prov_file.read_text())["dirty"] if prov_file.is_file() else None
     R.write_once(THIS_DIR / "records" / f"{rid}.md",
-                 tag_record(render_any(pdk, cand, rid, results, params, dirty, note),
+                 tag_record(set_supersedes(render_any(pdk, cand, rid, results, params, dirty, note), prior),
                             sensitivity_block(vbd_case, cand.n, params)))
     print(f"record: records/{rid}.md (rendered from saved reports)")
     return 0
@@ -2117,7 +2120,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.render:
         n = int(args.candidates)
         return render_only(pdk, by_n[n], args.render, apply_vbd_case(base_params, args.vbd_case, n), args.note,
-                           args.vbd_case)
+                           args.vbd_case, parse_supersedes(args.supersedes).get(n))
     if args.smoke:
         n, bench, *pick = args.smoke.split(":")
         return smoke(pdk, by_n[int(n)], bench, apply_vbd_case(base_params, args.vbd_case, int(n)), pick or None)

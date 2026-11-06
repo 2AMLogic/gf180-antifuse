@@ -1,0 +1,56 @@
+* klt sim -- generated corner deck, do not edit
+.lib /opt/pdk/gf180mcuD/libs.tech/ngspice/sm141064.ngspice ff
+.lib /opt/pdk/gf180mcuD/libs.tech/ngspice/sm141064.ngspice moscap_typical
+.include /var/tmp/eda-job-klt-sim-380a33d35721/inputs/netlist.cir
+.temp 27.0
+.meas dc i_st_s1g1_lo FIND i(vm_st_s1g1_lo) AT=0.000000e+00
+.meas dc i_b0_s1g1_lo FIND i(vm_b0_s1g1_lo) AT=0.000000e+00
+.meas dc i_b1_s1g1_lo FIND i(vm_b1_s1g1_lo) AT=0.000000e+00
+.meas dc i_st_s1g1_mid FIND i(vm_st_s1g1_mid) AT=0.000000e+00
+.meas dc i_b0_s1g1_mid FIND i(vm_b0_s1g1_mid) AT=0.000000e+00
+.meas dc i_b1_s1g1_mid FIND i(vm_b1_s1g1_mid) AT=0.000000e+00
+.meas dc i_st_s1g1_hi FIND i(vm_st_s1g1_hi) AT=0.000000e+00
+.meas dc i_b0_s1g1_hi FIND i(vm_b0_s1g1_hi) AT=0.000000e+00
+.meas dc i_b1_s1g1_hi FIND i(vm_b1_s1g1_hi) AT=0.000000e+00
+.meas dc i_pm_s1g1 FIND i(vm_pm_s1g1) AT=0.000000e+00
+.meas dc i_pw_s1g1 FIND i(vm_pw_s1g1) AT=0.000000e+00
+.meas dc i_st_s1g2_lo FIND i(vm_st_s1g2_lo) AT=0.000000e+00
+.meas dc i_b0_s1g2_lo FIND i(vm_b0_s1g2_lo) AT=0.000000e+00
+.meas dc i_b1_s1g2_lo FIND i(vm_b1_s1g2_lo) AT=0.000000e+00
+.meas dc i_st_s1g2_mid FIND i(vm_st_s1g2_mid) AT=0.000000e+00
+.meas dc i_b0_s1g2_mid FIND i(vm_b0_s1g2_mid) AT=0.000000e+00
+.meas dc i_b1_s1g2_mid FIND i(vm_b1_s1g2_mid) AT=0.000000e+00
+.meas dc i_st_s1g2_hi FIND i(vm_st_s1g2_hi) AT=0.000000e+00
+.meas dc i_b0_s1g2_hi FIND i(vm_b0_s1g2_hi) AT=0.000000e+00
+.meas dc i_b1_s1g2_hi FIND i(vm_b1_s1g2_hi) AT=0.000000e+00
+.meas dc i_pm_s1g2 FIND i(vm_pm_s1g2) AT=0.000000e+00
+.meas dc i_pw_s1g2 FIND i(vm_pw_s1g2) AT=0.000000e+00
+.meas dc i_st_s2g1_lo FIND i(vm_st_s2g1_lo) AT=0.000000e+00
+.meas dc i_b0_s2g1_lo FIND i(vm_b0_s2g1_lo) AT=0.000000e+00
+.meas dc i_b1_s2g1_lo FIND i(vm_b1_s2g1_lo) AT=0.000000e+00
+.meas dc i_st_s2g1_mid FIND i(vm_st_s2g1_mid) AT=0.000000e+00
+.meas dc i_b0_s2g1_mid FIND i(vm_b0_s2g1_mid) AT=0.000000e+00
+.meas dc i_b1_s2g1_mid FIND i(vm_b1_s2g1_mid) AT=0.000000e+00
+.meas dc i_st_s2g1_hi FIND i(vm_st_s2g1_hi) AT=0.000000e+00
+.meas dc i_b0_s2g1_hi FIND i(vm_b0_s2g1_hi) AT=0.000000e+00
+.meas dc i_b1_s2g1_hi FIND i(vm_b1_s2g1_hi) AT=0.000000e+00
+.meas dc i_pm_s2g1 FIND i(vm_pm_s2g1) AT=0.000000e+00
+.meas dc i_pw_s2g1 FIND i(vm_pw_s2g1) AT=0.000000e+00
+.meas dc i_st_s2g2_lo FIND i(vm_st_s2g2_lo) AT=0.000000e+00
+.meas dc i_b0_s2g2_lo FIND i(vm_b0_s2g2_lo) AT=0.000000e+00
+.meas dc i_b1_s2g2_lo FIND i(vm_b1_s2g2_lo) AT=0.000000e+00
+.meas dc i_st_s2g2_mid FIND i(vm_st_s2g2_mid) AT=0.000000e+00
+.meas dc i_b0_s2g2_mid FIND i(vm_b0_s2g2_mid) AT=0.000000e+00
+.meas dc i_b1_s2g2_mid FIND i(vm_b1_s2g2_mid) AT=0.000000e+00
+.meas dc i_st_s2g2_hi FIND i(vm_st_s2g2_hi) AT=0.000000e+00
+.meas dc i_b0_s2g2_hi FIND i(vm_b0_s2g2_hi) AT=0.000000e+00
+.meas dc i_b1_s2g2_hi FIND i(vm_b1_s2g2_hi) AT=0.000000e+00
+.meas dc i_pm_s2g2 FIND i(vm_pm_s2g2) AT=0.000000e+00
+.meas dc i_pw_s2g2 FIND i(vm_pw_s2g2) AT=0.000000e+00
+.control
+save all
+alter vbl=1.0
+dc VDMY -1 1 1
+quit
+.endc
+.end
