@@ -257,7 +257,11 @@ class OtherCandidatesUnchanged(unittest.TestCase):
         for rid, bench, n, body in self._committed():
             cand = BY_N[n]
             defaults = X.CHAR.parse_defaults(ROOT / "design" / "netlists" / cand.netlist)
-            got, _ = X.build_body(bench, pdk, cand, defaults, body.parent, X.FLEET_PDK_VARIANT_DIR)
+            # the lib root is whatever the committed run baked in: /opt/pdk/... for the 2026-10 records, the
+            # submit host's own variant dir for klt >= 0.8 runs (sim/harness/pdk.py, issue #99 re-pin)
+            m = re.search(r"^\.lib (\S+)/libs\.tech/", body.read_text(), re.M)
+            lib_root = m.group(1) if m else X.FLEET_PDK_VARIANT_DIR
+            got, _ = X.build_body(bench, pdk, cand, defaults, body.parent, lib_root)
             self.assertEqual(got.split(marker, 1)[1], body.read_text().split(marker, 1)[1],
                              f"{rid} {bench} candidate {n}")
 
