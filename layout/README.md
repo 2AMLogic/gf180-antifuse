@@ -240,12 +240,68 @@ values.
   n-well tie spec): `erc_status: clean`, 0 findings, `erc.missing_tie` for the
   n-well tie checked. Antenna checks were skipped (no antenna PDK data).
 
-## cell_candidate2/ -- NOT drawn (tool gap)
+## cell_candidate2/ -- drawn, DRC and LVS NOT clean (klt 0.9.1 gaps)
 
-Candidate 2 (`cap_nmos_06v0` + `nfet_10v0_asym`) is not drawn. `klt gen` has no
-generator for the 10 V drain-extended device, `--list-pdk-pcells` finds no PDK
-PCell library, and the curated DRC deck has no rules for the 10 V module
-layers, so a hand-drawn device would be unchecked. The gap is filed generically
-as 2AMLogic/klayout-tools#4568. No device was substituted. The schematic's
-source/drain assignment (d -> BL, s -> CN) is the one the layout must follow
-when drawn; the assignment statement in the layout is still owed.
+`layout/cell_candidate2/` holds one bitcell of candidate 2 (`spec/cell-candidates.md`):
+a 6.0 V thick-oxide NMOS capacitor (`cap_nmos_06v0`) in series with the 10 V
+drain-extended `nfet_10v0_asym`, per `design/cells/cell_candidate2.sch`. One
+cell, not the array; no breakdown claim. Files: `generate.py` (with `--check`),
+`cell_candidate2.gds`, `drc_report.json`, `erc_report.json`, `lvs_request.json`,
+`lvs_reference.spice`, `lvs_report.json`.
+
+**Result: the criteria "DRC clean" and "LVS match" are NOT met.** Recorded as
+measured, with no waiver, no hand-edited PCell geometry and no substituted
+device. Toolchain: released `klt 0.9.1` (`uvx --from klayout-tools==0.9.1`,
+klayout 0.30.13 resolved at run time, PDK `gf180mcuA`); regenerate/verify with
+`uvx --from klayout-tools==0.9.1 python3 layout/cell_candidate2/generate.py --check`
+(the generator calls `klt` on PATH, so put a `klt` wrapper for the pinned
+version on PATH).
+
+### Source/drain assignment (deliberate)
+
+d -> BL, s -> CN, as in the schematic. In the PCell the **centre COMP stripe
+(between the two gate fingers) is the drain** and carries BL; the two outer
+COMP stripes are the sources, strapped together and to the capacitor's S and D
+as CN with a Metal2 bar over Via1 (so it crosses the PCell's closed tap ring
+without touching it). WL joins the two gate pads in Metal1; VB straps the
+PCell ring to the capacitor ring. Labels are drawn by `klt draw` on 34/10 (the
+PCell has no `klt` ports).
+
+### Geometry
+
+| Device | Drawn | Note |
+|---|---|---|
+| Access (`nfet_10v0_asym` PDK PCell) | W = 4 um, L = 0.6 um | The PCell clamps any `w` below 4 um to 4 um (a request for 0.42 um draws the identical cell). The schematic default `wacc` is not reachable. |
+| Capacitor (`mos_array`, Dualgate marker, S and D strapped on CN) | W = 0.42 um, L = 0.56 um | 6 V minimum L; MOS-capacitor marker (166/5) added by hand as in candidate 1. |
+
+### DRC
+
+`klt drc --deck gf180mcu --top cell_candidate2`: `status: violations`, 17.
+**All 17 have `source_cell` `nfet_10v0_asym`, i.e. lie inside the PDK PCell**:
+16 x `comp.enclosing.contact.1` and 1 x `comp.width.mv.1` (the 0.22 um drain
+stripe). Nothing is reported in the capacitor, the straps or the labels. The
+native deck could not be cross-checked here (host KLayout is older than it
+needs). These are the same 17 findings seen on 0.9.0; the 0.9.1 fix did not
+remove them.
+
+### LVS
+
+`klt lvs`: `status: mismatch`. The layout nets are right (BL = drain, WL = both
+gates, CN = sources + capacitor S/D, VB = bodies; the 0.9.0 floating-drain
+defect is gone), but the access device extracts as **two parallel plain `nfet`**
+devices (`klt extract` census: `nfet: 2`, `cap_nmos_06v0: 1`) because the
+`gf180mcu` extraction deck declares no `nfet_10v0_asym` class, so it cannot pair
+with the reference's single `nfet_10v0_asym`. The capacitor pairs
+(its geometry is not compared, as for candidates 1 and 3).
+
+### ERC
+
+`klt erc ... layout/erc/supplies.json` (the existing p-tap spec): `erc_status:
+clean`, 0 findings.
+
+### Upstream
+
+The gap is filed generically as 2AMLogic/klayout-tools#5277 (follow-up to the
+closed #4949). Candidate 2 closes out once a klt release carries the fix: re-run
+`generate.py --check`, `klt drc`, `klt extract`, `klt lvs` and replace this
+section with the clean results.

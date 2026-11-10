@@ -1,0 +1,10 @@
+* LVS reference for layout/cell_candidate2/cell_candidate2.gds.
+* Derived from design/netlists/cell_candidate2.spice (do not edit that file):
+* same subcircuit, same device models and connectivity, with the subcircuit's
+* parameters (wcap, lcap, wacc, lacc) resolved to the drawn geometry, because
+* klt lvs --reference-form subckt-call cannot carry parameter expressions. The
+* access W is the PCell's minimum (4 um), not the schematic default.
+.subckt cell_candidate2 BL WL PL VB
+XM1 BL WL CN VB nfet_10v0_asym L=0.60u W=4u nf=1 m=1
+XC1 CN PL cap_nmos_06v0 c_width=0.42u c_length=0.56u m=1
+.ends
