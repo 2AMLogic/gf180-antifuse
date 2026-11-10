@@ -198,6 +198,9 @@ re-measurement, a correction or an exclusion revision is a new record whose
 
 ## Open items (explicit; no numbers invented)
 
+- **OPEN-T: constant-voltage time-to-breakdown and sub-programming soak.**
+  Proposed, not ratified, in `spec/tddb-weibull-plan-proposed.md`; no count or
+  definition in this record changes.
 - **OPEN-R1: stress temperatures.** Which temperature(s), and whether any is
   above the die's rated range. Unset.
 - **OPEN-R2: stress bias and power state.** Read-level bias held across the
