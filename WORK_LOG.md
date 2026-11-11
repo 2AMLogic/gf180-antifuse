@@ -3,6 +3,10 @@
 Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 
+### 2026-11-10
+
+- **PR #258**: feat(layout): draw candidate-2 bitcell on klt 0.9.1, record DRC/LVS gaps
+
 ### 2026-11-06
 
 - **PR #253**: sim: re-qualify breakdown-model #130 V_bd sensitivity points under open_pdks f6eeac7d
