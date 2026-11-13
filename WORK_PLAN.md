@@ -32,12 +32,13 @@ Human-approved issues ready for implementation (`loom:issue`).
 Issues currently being built (`loom:building`).
 
 - **#255**: Measurement plan: constant-voltage time-to-breakdown statistics (Weibull slope, voltage acceleration) and a sub-programming soak
+- **#260**: Run 3 test chip: bench test board and fixture for breakdown and programming measurements
 
 ## PRs Awaiting Review
 
 PRs waiting on Judge (`loom:review-requested`).
 
-_None._
+- **#261**: docs: add Run 3 bench fixture requirements note
 
 ## Approved (Awaiting Merge)
 
@@ -56,6 +57,7 @@ Issues carrying `loom:curated`.
 - **#176**: T1 item 4 (LVS clean, digital partition): klt lvs against the gate-level netlist with power_connectivity *(curated)*
 - **#207**: Run 3 test chip: Candidate 2 and Candidate 3 bitcell layouts *(curated)*
 - **#255**: Measurement plan: constant-voltage time-to-breakdown statistics (Weibull slope, voltage acceleration) and a sub-programming soak *(curated)*
+- **#260**: Run 3 test chip: bench test board and fixture for breakdown and programming measurements *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -74,10 +76,10 @@ _None._
 | Very important | 0 |
 | Important | 3 |
 | Ready (`loom:issue`) | 1 |
-| In Progress (`loom:building`) | 1 |
-| PRs awaiting review | 0 |
+| In Progress (`loom:building`) | 2 |
+| PRs awaiting review | 1 |
 | Approved PRs awaiting merge | 1 |
-| Curated | 7 |
+| Curated | 8 |
 | Architect / Hermit proposals | 0 |
 | Active epics | 2 |
 <!-- guide:plan-body:end -->
