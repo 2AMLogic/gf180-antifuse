@@ -3,6 +3,11 @@
 Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 
+### 2026-11-13
+
+- **PR #261**: docs: add Run 3 bench fixture requirements note
+- **Issue #260** (closed): Run 3 test chip: bench test board and fixture for breakdown and programming measurements
+
 ### 2026-11-10
 
 - **PR #258**: feat(layout): draw candidate-2 bitcell on klt 0.9.1, record DRC/LVS gaps
