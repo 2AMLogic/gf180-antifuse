@@ -320,6 +320,7 @@ append-only (matrix record §6); a re-measurement is a new record whose
 - `spec/program-bias-scheme-proposed-decision.md`,
   `spec/candidate3-read-bias-decision.md`: PROPOSED, unratified.
 - `spec/vbd-sensitivity-comparison-proposed.md` (conditional on assumed V_bd).
+- `spec/run3-bench-fixture-requirements.md` (pad-ring needs of the bench fixture, delivery form and measurement route; cross-reference only).
 
 ## Decision
 

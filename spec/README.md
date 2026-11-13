@@ -13,3 +13,4 @@ Ratified targets, the split-axis plan, and decision records. Spec changes land h
 - [`candidate3-read-bias-decision.md`](candidate3-read-bias-decision.md) — Candidate 3 (Region III) read bias: n-well tied to the read rail
 - [`run3-test-chip-floorplan.md`](run3-test-chip-floorplan.md) — Run 3 quarter-slot test chip: instance counts, pad budget, core-area budget (proposed)
 - [`run3-bench-plan.md`](run3-bench-plan.md) — Run 3 test chip bench plan: V_bd, resistance and read-margin extraction for direct-pad cells (proposed)
+- [`run3-bench-fixture-requirements.md`](run3-bench-fixture-requirements.md) — Run 3 bench fixture needs on the pad ring, delivery form (open) and measurement route (proposed)
