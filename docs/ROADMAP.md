@@ -20,7 +20,7 @@ mixed-signal block and moves when array-level evidence exists.
 | Floorplan, counts, pad budget (#206) | merged, status Proposed | `spec/run3-test-chip-floorplan.md`: 36 instances, 48 slots, private PL, shared BL/WL |
 | HV pad and protection (#210) | merged, status PROPOSED | `spec/hv-pad-protection-decision.md`, `sim/hv-pad-protection/`, `design/hv-pad/` |
 | Bench plan (#212), fixture needs (#260) | merged, status Proposed | `spec/run3-bench-plan.md`, `spec/run3-bench-fixture-requirements.md` |
-| Breakdown models (#204, #205, #208, #209) | merged; every parameter `assumed` | `docs/breakdown-*.md`, `design/breakdown/breakdown_params.spice` |
+| Breakdown models (#204, #205, #208, #209) | merged; 12 of 15 parameters `assumed`, the three oxide thicknesses `literature` (PDK `toxe`) | `docs/breakdown-*.md`, `design/breakdown/breakdown_params.spice` |
 | Candidate 1 bitcell | DRC clean, LVS match | `layout/cell_candidate1/` (Minimum x Minimum point only) |
 | Candidate 3 bitcell | DRC clean, LVS match | `layout/cell_candidate3/` (Minimum x Minimum point only) |
 | Candidate 2 bitcell (#207) | drawn; DRC 17 violations, LVS mismatch | `layout/cell_candidate2/`, PR #258; gap filed as klayout-tools#5277 |
