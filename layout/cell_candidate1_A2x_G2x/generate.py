@@ -70,8 +70,8 @@ CN_Y0, CN_Y1 = 0.18, 0.48
 
 STRAPS = {"shapes": [
     # CN: access source pad -> cap drain pad -> cap source pad (metal1). The
-    # S/D pads are as tall as the device width, so this band lies inside both
-    # the Minimum and the doubled pad.
+    # S/D pads are as tall as the device width, and both devices are doubled
+    # here, so this band lies inside every pad (y 0..0.84).
     {"layer": bg.METAL1, "rect_um": [0.06, CN_Y0, DX + 0.36, CN_Y1]},
     # VB: tie both tap rings together along the north side.
     {"layer": bg.METAL1, "rect_um": [0.64, VB_Y0, DX + 0.85, VB_Y1]},

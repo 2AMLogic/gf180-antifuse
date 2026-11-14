@@ -348,8 +348,10 @@ the blocks, so each had to be re-derived per cell:
   **does** fail `metal1.space.1` (0.23 um) -- observed as a real DRC violation on
   the first generated cell, not predicted. The three new cells raise CN to
   y 0.18..0.48, which clears both rings' gaps by >= 0.24 um in every cell. The
-  S/D pads are as tall as the device width, so the raised band still lies inside
-  both the Minimum and the doubled pad.
+  S/D pads are as tall as the device width, so the raised band lies inside a
+  doubled pad (y 0..0.84); over a pad still at the Minimum width it overhangs
+  the pad's top edge (y 0.42) by 0.06 um, which is metal over field and DRC
+  clean, and it still overlaps every pad by >= 0.24 um in y.
 - **`MOS_CAP_MK` capacitor marker.** The cap COMP island is as tall as the device
   width -- measured (0,0)-(1.28,0.42) at W = 0.42 and (0,0)-(1.28,0.84) at
   W = 0.84, x unchanged -- so the marker grows with it, keeping

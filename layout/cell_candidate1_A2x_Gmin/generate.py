@@ -64,8 +64,10 @@ CN_Y0, CN_Y1 = 0.18, 0.48
 
 STRAPS = {"shapes": [
     # CN: access source pad -> cap drain pad -> cap source pad (metal1). The
-    # S/D pads are as tall as the device width, so this band lies inside both
-    # the Minimum and the doubled pad.
+    # S/D pads are as tall as the device width, so this band lies inside the
+    # doubled access pad (y 0..0.84) and overhangs the Minimum cap pads' top
+    # edge (y 0.42) by 0.06 um -- metal over field, DRC clean. It overlaps
+    # every pad by >= 0.24 um in y.
     {"layer": bg.METAL1, "rect_um": [0.06, CN_Y0, DX + 0.36, CN_Y1]},
     # VB: tie both tap rings together along the north side. The two TAP_N pads
     # sit at different heights here (the access block is the doubled one), so
