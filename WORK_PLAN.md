@@ -11,7 +11,7 @@ Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a h
 
 `loom:very-important` (one counts per workspace); every stage takes these first.
 
-_None._
+- **#207**: Run 3 test chip: Candidate 2 and Candidate 3 bitcell layouts
 
 ## Important
 
@@ -19,7 +19,7 @@ _None._
 
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4)
 - **#203**: wafer.space Run 3 quarter slot: cut-down antifuse breakdown test chip (GDS due 2026-12-16)
-- **#207**: Run 3 test chip: Candidate 2 and Candidate 3 bitcell layouts
+- **#211**: Run 3 test chip: full-chip assembly with DRC/LVS through klt
 
 ## Ready
 
@@ -71,7 +71,7 @@ Issues carrying `loom:curated`.
 | Bucket | Count |
 |------|-------|
 | Operator merge-risk holds | 1 |
-| Very important | 0 |
+| Very important | 1 |
 | Important | 3 |
 | Ready (`loom:issue`) | 1 |
 | In Progress (`loom:building`) | 1 |
