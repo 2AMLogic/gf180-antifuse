@@ -104,6 +104,69 @@ class EvidenceStoreTest(unittest.TestCase):
         rows = E.publish_run("bench", "rid", run, self.root, klt_cmd=self.klt, env=self.env)
         self.assertEqual({r["name"] for r in rows}, {"ss_-40c/regionA/x.log", "ff_125c/y.log"})
 
+    def work_run(self):
+        """A run dir shaped like a real klt run: named outputs + a .work/ scratch tree."""
+        run = self.tmp / "workrun"
+        corner = "moscap_ff_-40c_vpp13p68v"
+        (run / "prog_b0").mkdir(parents=True)
+        (run / "prog_b0" / f"{corner}.cir").write_text("* deck\n.end\n")
+        (run / "prog_b0" / f"{corner}.log").write_text("ngspice says hello\n")
+        work = run / "prog_b0" / ".work" / "klt" / "moscap_ff_13p680V_n40C"
+        work.mkdir(parents=True)
+        # Skipped: regenerated per-corner ngspice init file.
+        (work / ".spiceinit").write_text("set ngbehavior=ps\n")
+        # Skipped: klt's internally-named copy of the deck published above.
+        (work / "corner.cir").write_text("* deck\n.end\n")
+        # Kept: fleet job provenance, the only copy of it.
+        (run / "prog_b0" / ".work" / "klt" / "batch-receipt.json").write_text('{"job": "j-1"}')
+        # Kept: a simulator log this bench never copies out under a corner-id name.
+        (work / "ngspice.log").write_text("twinless log\n")
+        return run
+
+    def test_publish_run_skips_only_disposable_work_scratch(self):
+        run = self.work_run()
+        corner = "moscap_ff_-40c_vpp13p68v"
+        rows = E.publish_run("bench", "rid", run, self.root, klt_cmd=self.klt, env=self.env)
+        self.assertEqual({r["name"] for r in rows}, {
+            f"prog_b0/{corner}.cir",
+            f"prog_b0/{corner}.log",
+            "prog_b0/.work/klt/batch-receipt.json",
+            "prog_b0/.work/klt/moscap_ff_13p680V_n40C/ngspice.log",
+        })
+        m = json.loads(E.manifest_path(self.root, "bench", "rid").read_text())
+        self.assertEqual({e["name"] for e in m["entries"]}, {r["name"] for r in rows})
+
+    def test_collect_keeps_work_receipt_even_when_bytes_duplicate(self):
+        """Provenance is kept unconditionally, not just when its bytes are unique."""
+        run = self.tmp / "dupreceipt"
+        (run / ".work" / "klt").mkdir(parents=True)
+        (run / "receipt-copy.json").write_text('{"job": "j-1"}')
+        (run / ".work" / "klt" / "batch-receipt.json").write_text('{"job": "j-1"}')
+        self.assertIn(".work/klt/batch-receipt.json", E.collect_run_files(run))
+
+    def test_collect_never_skips_outside_work(self):
+        """A .spiceinit or a duplicate outside .work/ is a named output, not scratch."""
+        run = self.tmp / "nowork"
+        (run / "corners").mkdir(parents=True)
+        (run / ".spiceinit").write_text("set ngbehavior=ps\n")
+        (run / "corners" / "a.log").write_text("same bytes\n")
+        (run / "corners" / "b.log").write_text("same bytes\n")
+        self.assertEqual(set(E.collect_run_files(run)), {".spiceinit", "corners/a.log", "corners/b.log"})
+
+    def test_collect_keeps_work_file_differing_only_in_bytes(self):
+        """Same name as a published twin but different bytes: not a double-store."""
+        run = self.tmp / "sizes"
+        (run / ".work" / "klt" / "c0").mkdir(parents=True)
+        (run / "ss_-40c.cir").write_text("* deck A\n")
+        (run / ".work" / "klt" / "c0" / "corner.cir").write_text("* deck B\n")  # equal size, different bytes
+        self.assertIn(".work/klt/c0/corner.cir", E.collect_run_files(run))
+
+    def test_collect_prefix_applies_to_kept_entries(self):
+        run = self.work_run()
+        names = set(E.collect_run_files(run, prefix="rid/"))
+        self.assertTrue(all(n.startswith("rid/") for n in names))
+        self.assertEqual(len(names), 4)
+
     def test_publish_empty_run_fails_closed(self):
         run = self.tmp / "empty"
         run.mkdir()

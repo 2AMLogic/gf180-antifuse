@@ -12,10 +12,18 @@ There is no fallback that commits bytes. The broker URL is read from
 ``$KLT_ARTIFACT_BROKER`` by ``klt`` itself and is never recorded here.
 
 Pre-adoption evidence keeps its committed bytes (manifest-forward only).
+
+Not everything under a run directory is evidence: klt's git-ignored ``.work/``
+scratch tree holds a second, internally-named copy of decks and logs the runner
+already writes out under its ``<corner-id>`` name, plus a regenerated
+``.spiceinit`` per corner. Those are skipped so the committed manifests index
+the record and not the scratch (``collect_run_files`` / ``_skip_in_work``).
+Skipping is forward-only: no existing manifest, record or stored object changes.
 """
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import shutil
@@ -27,6 +35,20 @@ from pathlib import Path
 BROKER_ENV = "KLT_ARTIFACT_BROKER"
 SCRATCH_REL = Path("sim/.artifact-scratch")
 MANIFEST_REL = Path("manifests/artifacts")
+
+#: klt's per-corner working directory, git-ignored as disposable scratch
+#: (``.gitignore``: ``**/.work/``). Only files *inside* such a directory are
+#: ever eligible for the skips below.
+WORK_DIR_NAME = ".work"
+#: Basenames under ``.work/`` that are regenerated boilerplate, never evidence:
+#: ngspice reads ``.spiceinit`` at startup and klt writes an identical copy into
+#: every corner directory.
+WORK_SKIP_BASENAMES = frozenset({".spiceinit"})
+#: Basenames under ``.work/`` that are the only copy of something real and are
+#: therefore kept unconditionally, duplicate bytes or not.
+WORK_KEEP_BASENAMES = frozenset({"batch-receipt.json"})
+#: Decided by basename alone, so never a de-duplication candidate.
+_WORK_BY_BASENAME = WORK_SKIP_BASENAMES | WORK_KEEP_BASENAMES
 
 
 class EvidenceStoreError(RuntimeError):
@@ -99,15 +121,72 @@ def store_run(bench: str, run_id: str, files: dict[str, Path], repo_root: Path, 
     return [{"name": e["name"], "size": e["size"], "sha256": e["sha256"]} for e in entries]
 
 
+def _sha256(path: Path) -> str:
+    h = hashlib.sha256()
+    with path.open("rb") as fh:
+        for chunk in iter(lambda: fh.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def _skip_in_work(path: Path, basename: str, twin_shas_by_size: dict[int, set[str]]) -> bool:
+    """Is this file under ``.work/`` disposable scratch rather than evidence?
+
+    Two narrow cases, both of which leave the evidence record complete:
+
+    * a regenerated ``.spiceinit`` (``WORK_SKIP_BASENAMES``);
+    * a file whose bytes are already published under a non-``.work`` name in the
+      same run, i.e. klt's internally-named copy of a deck or log the runner also
+      wrote out under its ``<corner-id>`` name. The corner-id-named copy is the
+      one records cite, so the ``.work`` twin is a pure double-store.
+
+    Everything else under ``.work/`` is kept: ``WORK_KEEP_BASENAMES`` provenance,
+    and any file with no non-``.work`` twin — which is what preserves the
+    simulator logs of a bench that never copies them out under a corner-id name.
+    """
+    if basename in WORK_SKIP_BASENAMES:
+        return True
+    if basename in WORK_KEEP_BASENAMES:
+        return False
+    twins = twin_shas_by_size.get(path.stat().st_size)
+    return bool(twins) and _sha256(path) in twins
+
+
 def collect_run_files(run_dir: Path, prefix: str = "") -> dict[str, Path]:
-    """Map every regular file under ``run_dir`` to an entry name relative to it.
+    """Map the regular files under ``run_dir`` to entry names relative to it.
 
     Keeps the ``<corner-id>`` / region path components in the name so stored
     objects stay separable per corner and per region.
+
+    Files outside klt's git-ignored ``.work/`` scratch tree are always published.
+    Inside it, the disposable ones are skipped so the committed manifests stop
+    indexing regenerable scratch — see ``_skip_in_work`` for exactly which, and
+    note that no file outside a ``.work/`` directory is ever skipped.
     """
     run_dir = Path(run_dir)
-    return {f"{prefix}{p.relative_to(run_dir).as_posix()}": p
-            for p in sorted(run_dir.rglob("*")) if p.is_file()}
+    files = [p for p in sorted(run_dir.rglob("*")) if p.is_file()]
+    rels = {p: p.relative_to(run_dir) for p in files}
+    in_work = {p: WORK_DIR_NAME in rels[p].parts for p in files}
+
+    # Byte-identical implies equal size, so only a size held by BOTH a .work/
+    # de-duplication candidate and a published file can ever match; hash just
+    # those. A run with no .work/ tree reads no file content at all.
+    twin_paths_by_size: dict[int, list[Path]] = {}
+    candidate_sizes: set[int] = set()
+    for p in files:
+        if not in_work[p]:
+            twin_paths_by_size.setdefault(p.stat().st_size, []).append(p)
+        elif rels[p].name not in _WORK_BY_BASENAME:
+            candidate_sizes.add(p.stat().st_size)
+    twin_shas_by_size = {size: {_sha256(q) for q in twin_paths_by_size[size]}
+                         for size in candidate_sizes & twin_paths_by_size.keys()}
+
+    out: dict[str, Path] = {}
+    for p in files:
+        if in_work[p] and _skip_in_work(p, rels[p].name, twin_shas_by_size):
+            continue
+        out[f"{prefix}{rels[p].as_posix()}"] = p
+    return out
 
 
 def publish_run(bench: str, run_id: str, run_dir: Path, repo_root: Path, *,
