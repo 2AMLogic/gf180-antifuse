@@ -18,7 +18,7 @@
   },
   "parameter_tolerance": null,
   "options": {
-    "combine_devices": false,
+    "combine_devices": true,
     "combine_devices_per_circuit": null,
     "combine_devices_max_attempts": 5,
     "flatten_layout": false,
@@ -30,6 +30,7 @@
     "anchor_top_level_pins": null,
     "strict_top_level_pin_count": false,
     "compare_mos_flavour": false,
+    "ignore_mos_bulk": false,
     "supply_nets": [
       "GND",
       "VCC",
@@ -42,7 +43,7 @@
   },
   "hints_applied": null,
   "constant_nets_applied": null,
-  "status": "mismatch",
+  "status": "match",
   "power_connectivity": {
     "status": "unchecked",
     "reason": "reference.form is 'subckt-call', whose reference netlist carries its own power/ground pins and nets -- they take part in the ordinary compare, so this check (which exists to cover the signal-only 'gate-level-verilog' form) does not apply",
@@ -86,36 +87,29 @@
       ]
     }
   ],
-  "mismatch_count": 12,
-  "error_count": 8,
+  "mismatch_count": 4,
+  "error_count": 0,
   "category_counts": {
     "device.geometry_not_compared": 1,
     "device.placeholder_value": 1,
-    "device.unmatched": 2,
-    "net.merged": 3,
-    "net.split": 3,
     "topology": 2
   },
-  "category_error_counts": {
-    "device.unmatched": 2,
-    "net.merged": 3,
-    "net.split": 3
-  },
+  "category_error_counts": {},
   "counts": {
     "nets": {
       "layout": 5,
       "reference": 5,
-      "matched": 1
+      "matched": 5
     },
     "devices": {
-      "layout": 3,
+      "layout": 2,
       "reference": 2,
-      "matched": 1
+      "matched": 2
     },
     "pins": {
       "layout": 4,
       "reference": 4,
-      "matched": 7
+      "matched": 4
     }
   },
   "device_classes": [
@@ -144,18 +138,18 @@
     "engine_version": "0.30.13",
     "netgen_binary": null,
     "layout_sha256": "c8bc23f9d6057ccb3df2d7ee2ab3ff603a302c3ed7817646c8ab39aaaea9118d",
-    "reference_sha256": "f3b4480db64761de4c98206435a0526270c22ea0e8b0cb968dc9cc78fc965402",
+    "reference_sha256": "f309431db75162973e06ef4a336022a823b6d563b3a67366068fb158917b6710",
     "extracted_netlist": null
   },
   "provenance": {
-    "klt_version": "0.9.1",
-    "klt_git_commit": "4d0d29be4fd991f499d59e783a908082d5e24c56",
-    "klt_reinstall_spec": "klayout-tools==0.9.1",
+    "klt_version": "0.9.2",
+    "klt_git_commit": "046ba74652fc096bd97071fc3237f7159dd40183",
+    "klt_reinstall_spec": "klayout-tools==0.9.2",
     "klayout_version": "0.30.13",
     "pdk": null,
     "deck": {
       "name": "gf180mcu",
-      "content_hash": "sha256:cf44de63f0a5b01c1d09c4d58e0535e990aa4b070bcaae17fd3a94a67a1d97e1",
+      "content_hash": "sha256:c3f2cce49000857a3a71cb65203aabf0eb27cd0ee6b1c60e29792355c455c4b1",
       "released": true,
       "options": {
         "metal_top": "9K",
@@ -228,136 +222,6 @@
       "subcircuit": null
     },
     {
-      "category": "device.unmatched",
-      "severity": "error",
-      "description": "device has no counterpart on the other side",
-      "side": "layout",
-      "net": null,
-      "device": {
-        "layout": "\\$3",
-        "reference": null,
-        "class": "nfet"
-      },
-      "property": null,
-      "details": null,
-      "circuit": null,
-      "instance": null,
-      "subcircuit": null
-    },
-    {
-      "category": "device.unmatched",
-      "severity": "error",
-      "description": "device has no counterpart on the other side",
-      "side": "reference",
-      "net": null,
-      "device": {
-        "layout": "\\$2",
-        "reference": "1",
-        "class": "nfet"
-      },
-      "property": null,
-      "details": null,
-      "circuit": null,
-      "instance": null,
-      "subcircuit": null
-    },
-    {
-      "category": "net.merged",
-      "severity": "error",
-      "description": "multiple reference nets were collapsed into one layout net",
-      "side": "reference",
-      "net": {
-        "layout": null,
-        "reference": "BL"
-      },
-      "device": null,
-      "property": null,
-      "details": null,
-      "circuit": null,
-      "instance": null,
-      "subcircuit": null
-    },
-    {
-      "category": "net.merged",
-      "severity": "error",
-      "description": "multiple reference nets were collapsed into one layout net",
-      "side": "reference",
-      "net": {
-        "layout": null,
-        "reference": "VB"
-      },
-      "device": null,
-      "property": null,
-      "details": null,
-      "circuit": null,
-      "instance": null,
-      "subcircuit": null
-    },
-    {
-      "category": "net.merged",
-      "severity": "error",
-      "description": "multiple reference nets were collapsed into one layout net",
-      "side": "reference",
-      "net": {
-        "layout": null,
-        "reference": "WL"
-      },
-      "device": null,
-      "property": null,
-      "details": null,
-      "circuit": null,
-      "instance": null,
-      "subcircuit": null
-    },
-    {
-      "category": "net.split",
-      "severity": "error",
-      "description": "a reference net's role is divided across multiple layout nets",
-      "side": "layout",
-      "net": {
-        "layout": "BL",
-        "reference": null
-      },
-      "device": null,
-      "property": null,
-      "details": null,
-      "circuit": null,
-      "instance": null,
-      "subcircuit": null
-    },
-    {
-      "category": "net.split",
-      "severity": "error",
-      "description": "a reference net's role is divided across multiple layout nets",
-      "side": "layout",
-      "net": {
-        "layout": "VB",
-        "reference": null
-      },
-      "device": null,
-      "property": null,
-      "details": null,
-      "circuit": null,
-      "instance": null,
-      "subcircuit": null
-    },
-    {
-      "category": "net.split",
-      "severity": "error",
-      "description": "a reference net's role is divided across multiple layout nets",
-      "side": "layout",
-      "net": {
-        "layout": "WL",
-        "reference": null
-      },
-      "device": null,
-      "property": null,
-      "details": null,
-      "circuit": null,
-      "instance": null,
-      "subcircuit": null
-    },
-    {
       "category": "topology",
       "severity": "warning",
       "description": "device class has no counterpart on the other side, but no devices of this class were extracted either -- not a real topology mismatch: 'pfet'",
@@ -394,8 +258,28 @@
   ],
   "net_correspondence": [
     {
+      "layout": "BL",
+      "reference": "BL",
+      "pin": true
+    },
+    {
+      "layout": "\\$3",
+      "reference": "CN",
+      "pin": false
+    },
+    {
       "layout": "PL",
       "reference": "PL",
+      "pin": true
+    },
+    {
+      "layout": "VB",
+      "reference": "VB",
+      "pin": true
+    },
+    {
+      "layout": "WL",
+      "reference": "WL",
       "pin": true
     }
   ]

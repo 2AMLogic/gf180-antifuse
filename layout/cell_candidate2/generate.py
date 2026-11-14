@@ -16,10 +16,19 @@ Source/drain assignment (deliberate; design/cells/cell_candidate2.sch):
            PCell's tap ring without touching it)
 
 Geometry: the PCell clamps W up to 4 um (a request for 0.42 um draws the same
-cell), so the access device is W = 4 um, L = 0.6 um (schematic lacc). The
-capacitor is the generator-minimum W = 0.42 um at the 6 V minimum L = 0.56 um,
-source and drain shorted on CN, with the MOS-capacitor marker added by hand
-(no `klt gen` MOS-capacitor marker for a gate-contacted unit).
+cell) and always draws two gate fingers sharing the centre drain, so the access
+device is 2 x W = 4 um (8 um total), L = 0.6 um (schematic lacc). The capacitor
+is the generator-minimum W = 0.42 um at L = 0.56 um, source and drain shorted
+on CN, with the MOS-capacitor marker added by hand (no `klt gen`
+MOS-capacitor marker for a gate-contacted unit).
+
+Both capacitor dimensions are BELOW the foundry minimum and the cell is not
+DRC clean because of it (measured against the PDK's own runset on klt 0.9.2,
+see layout/README.md): DF.1c wants COMP under the MOS-capacitor marker >= 1 um
+wide (drawn 0.42 um, the `mos_array` generator floor), and PL.2_MV wants a 6 V
+n-gate channel length >= 0.7 um (drawn 0.56 um). The 0.42 um floor is shared
+with candidates 1 and 3, so the capacitor geometry is not changed here; it is
+tracked as its own issue.
 
 Ports (Metal1 labels): BL (access drain), WL (access gates), PL (capacitor
 gate), VB (both tap rings strapped). The PCell tap ring is closed, so it has no
@@ -45,7 +54,7 @@ GDS = "cell_candidate2.gds"
 CELL = "cell_candidate2"
 W_ACC = 4.0        # um, PCell minimum W (smaller requests are clamped to this)
 L_ACC = 0.6        # um, schematic lacc
-L_CAP = 0.56       # um, 6 V minimum drawn length
+L_CAP = 0.56       # um; BELOW the 0.7 um 6 V minimum (PL.2_MV) -- see docstring
 LABEL_M1 = [34, 10]   # gf180mcu extraction deck reads Metal1 pin labels from 34/10
 VIA1 = [35, 0]
 METAL2 = [36, 0]
