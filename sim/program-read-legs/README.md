@@ -119,5 +119,14 @@ sim/program-read-legs/
   records/, corners/, netlist-snapshots/   written by each successful run (append-only)
 ```
 
+The committed `<bench>[.<point>].report.json` has its `coverage.checked` /
+`coverage.inapplicable` id lists replaced by their counts
+(`harness.report.elide_coverage`): these are characterization benches, so every
+entry restates `characterization_without_limits` and the counters beside the
+lists already say how many. Every measurement value, corner status, diagnostic,
+`environment`, `provenance` and coverage counter is kept, and the sha256 of the
+full klt report is committed alongside it as
+`<bench>[.<point>].report.json.sha256`.
+
 `python3 sim/run_corners.py program-read-legs --probe` runs ONE typical corner
 on the `local` backend as a debug aid; it records nothing.

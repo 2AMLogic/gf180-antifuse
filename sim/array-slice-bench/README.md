@@ -74,7 +74,7 @@ make_bench.py                  generates testbench/ (checked: --check)
 run_bench.py                   submits via klt sim, grades, writes records
 testbench/tb_<slice>_<process>.spice      klt circuit body
 testbench/<slice>_<process>.request.json  the klt sim request (temperature x selection x supply)
-reports/<record-id>/<slice>_<process>.report.json   raw klt report (coverage id lists elided, sha recorded)
+reports/<record-id>/<slice>_<process>.report.json   raw klt report (coverage id lists elided by `harness.report.elide_coverage`, sha recorded in the record)
 records/<record-id>.md         evidence record
 ../../measurements/array-slice-bench/<record-id>.md   per-region view
 ```

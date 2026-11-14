@@ -66,6 +66,15 @@ The default mode submits to the batch fleet (`KLT_SIM_BACKEND=batch` /
 `backend: batch` in each request). A failed submit writes a
 `submit-error.txt` and no fallback local grid is run.
 
+Each run writes `corners/<id>/<bench>/`. The committed `report.json` there has
+its `coverage.checked` / `coverage.inapplicable` id lists replaced by their
+counts (`harness.report.elide_coverage`): these are characterization benches, so
+every entry restates `characterization_without_limits` and the counters beside
+the lists already say how many. Every measurement value, corner status,
+diagnostic, `environment`, `provenance` and coverage counter is kept -- including
+everything `--resume` reads back out of a saved report -- and the sha256 of the
+full klt report is committed alongside it as `report.json.sha256`.
+
 ## Limits of these benches
 
 - The ballast is an ideal resistor (PLACEHOLDER 500 uA target at V_bd); the

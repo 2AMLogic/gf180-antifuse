@@ -130,9 +130,17 @@ write-once and append-only (`sim/README.md`):
 
 | Path | Contents |
 |---|---|
-| `corners/<id>/<bench>/` | `request.json`, the generated `body.spice`, klt's `report.json`, and the per-corner deck (`<corner-id>.cir`) and ngspice log (`<corner-id>.log`) |
+| `corners/<id>/<bench>/` | `request.json`, the generated `body.spice`, klt's `report.json` (coverage id lists elided) and its `report.json.sha256`, and the per-corner deck (`<corner-id>.cir`) and ngspice log (`<corner-id>.log`) |
 | `netlist-snapshots/<id>.spice` | Frozen cell netlist plus wrapper, element and parameters |
 | `records/<id>.md` | The record |
+
+The committed `report.json` has its `coverage.checked` / `coverage.inapplicable`
+id lists replaced by their counts (`harness.report.elide_coverage`): these are
+characterization benches, so every entry restates
+`characterization_without_limits` and the counters beside the lists already say
+how many. Every measurement value, corner status, diagnostic, `environment`,
+`provenance` and coverage counter is kept, and the sha256 of the full klt
+report is committed alongside it as `report.json.sha256`.
 
 **The corner grids run on the `batch` backend (the Spot fleet), never as a
 local ngspice grid.** Every request names `"backend": "batch"`. If a batch
