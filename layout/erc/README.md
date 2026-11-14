@@ -6,10 +6,23 @@
 ERC envelope is cited from this directory; the run on the first bitcell is
 `layout/cell_candidate1/erc_report.json` (issues #120, #196), cited with item
 4's LVS report as `11.analog` (see `signoff/README.md`).
+`supplies_c1_Amin_G2x.json`, `supplies_c1_A2x_Gmin.json` and
+`supplies_c1_A2x_G2x.json` are the same Region I spec for the other three
+Candidate 1 split points (`layout/cell_candidate1_*/`), differing from
+`supplies.json` in **only** the tie's two asserted `well_boxes` `y1` values.
+They exist as separate files rather than one parameterized spec because this
+tie's `well_boxes` are hardcoded absolute geometry (see "The one declared net")
+that a device-width doubling invalidates, and because `klt erc --check`
+validates `provenance.spec.content_hash` -- so editing `supplies.json` in place
+would drift `cell_candidate1`'s ratified ERC evidence. Per-cell values and the
+coverage numbers they produce are tabulated in `layout/README.md`.
+
 `supplies_region_iii.json` is the previous spec (the Region III n-well tie
 only, no `nets[]`), kept for a future Region III layout; it is not run against
 `cell_candidate1`, which draws no Nwell (the tie would be skipped as
-`empty_well_region`, and a skipped tie cannot grade item 11).
+`empty_well_region`, and a skipped tie cannot grade item 11). Unlike the
+Region I spec it declares a real `well_layer` (`21/0`) and carries no
+`well_boxes`, so it is geometry-independent and needs no per-cell copies.
 
 Nothing here resolves an open item (OI-n) of the decision record. A row that
 depends on an unresolved OI is a gap below, not a guessed net.
@@ -21,6 +34,7 @@ depends on an unresolved OI is a gap below, not a guessed net.
 | `stackup[]` (poly as `gate` with `active_layer`, Metal1 to Metal5 with label layers) and `vias[]` | gf180mcu GDS layer/datatype numbers: metals, vias and label datatypes from the PDK `gf180mcu.map` (`libs.tech/klayout/tech/gf180mcu.map`, ciel gf180mcu revision `f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7`, identical in variants A to D); Comp 22/0, Poly2 30/0, Nwell 21/0, Pplus 31/0, Nplus 32/0, Contact 33/0 from the klayout-tools `gf180mcu` deck (`LAYER_NAMES`, klayout-tools `ff97d692`). |
 | `nets[0]` `VB` (`kind: supply`, `islands: 1`) | Row 14, Region I only; see "The one declared net". |
 | `ties[0]` `vb_psub_region_i` | Row 14. p-substrate tie: `well_layer: null`, asserted `well_boxes`, tap = Comp 22/0 intersect Pplus 31/0, wired to Metal1, net `VB`. |
+| `supplies_c1_*.json` `ties[0]` `vb_psub_region_i` | Row 14, same tie, asserted `well_boxes` re-derived for each `layout/cell_candidate1_*/` split point. |
 | `supplies_region_iii.json` `ties[0]` `vb_nwell_region_iii` | Row 15 (not run on `cell_candidate1`). |
 
 No other `nets[]` entry is declared; see "The one declared net".
@@ -42,7 +56,7 @@ No other `nets[]` entry is declared; see "The one declared net".
 | 11 | Sense-amp supply, `I_ref` | gap | Not stated in any record (OI-8). |
 | 12 | `PL` | gap | Which array rail it ties to is OI-6. |
 | 13 | `VSS_ANALOG` | gap | Placeholder name; separate from row 2 or not is OI-6. |
-| 14 | `VB`, Region I (p-substrate tie) | declared | `nets[0]` and `ties[0]` of `supplies.json`, checked on `cell_candidate1` (issue #196). Region II is not drawn: still a gap. |
+| 14 | `VB`, Region I (p-substrate tie) | declared | `nets[0]` and `ties[0]` of `supplies.json`, checked on `cell_candidate1` (issue #196), and of the three `supplies_c1_*.json`, checked on the three `cell_candidate1_*` split points (issue #273). Region II is not drawn: still a gap. |
 | 15 | `VB`, Region III (n-well tie) | declared, not run | `supplies_region_iii.json` `ties[0]`: Nwell 21/0, tap = Comp 22/0 intersect Nplus 32/0, wired to Metal1, net `VB`. No Region III layout exists yet. |
 | 16 | Pass-gate and level-shifter bulk/well ties | gap | Assignment is OI-3. |
 | 17 | Capacitor body/well tie | gap | No separate tie net is defined; the second terminal is `PL` (row 12, OI-6). |
@@ -74,6 +88,11 @@ The program-voltage domain is covered only as the explicit gap of rows 3 to 5
 
 Regenerate (klayout-tools `0.8.0`, from `layout/cell_candidate1/`):
 `uvx --from klayout-tools==0.8.0 klt erc cell_candidate1.gds ../erc/supplies.json --top cell_candidate1 --findings-only --format json > erc_report.json`.
+Each split point is the same command from its own directory against its own
+spec, e.g. from `layout/cell_candidate1_A2x_G2x/`:
+`uvx --from klayout-tools==0.8.0 --with klayout==0.30.12 klt erc cell_candidate1_A2x_G2x.gds ../erc/supplies_c1_A2x_G2x.json --top cell_candidate1_A2x_G2x --findings-only --format json > erc_report.json`
+(the extra `--with klayout==0.30.12` pins the engine the `0.8.0` build was
+tested against, keeping `provenance.klayout_version_mismatch` `false`).
 The run is `--findings-only` (no gf180mcu antenna table), so `status` stays
 `not_checked`; `erc_status` is `clean`, `erc_finding_count: 0`.
 

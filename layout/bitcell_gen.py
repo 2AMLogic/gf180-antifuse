@@ -1,8 +1,8 @@
 """Shared plumbing for the per-candidate bitcell generators.
 
 Each `cell_candidateN/generate.py` declares its own geometry (flavor, device
-lengths, block offset, strap/marker rectangles, placement origins, pin map)
-and calls `main(...)` here. This module only runs the flow:
+widths and lengths, block offset, strap/marker rectangles, placement origins,
+pin map) and calls `main(...)` here. This module only runs the flow:
 
   klt gen mos_array (cap, acc)  ->  klt draw (straps)  ->  klt gen-compose
 
@@ -35,13 +35,20 @@ def run(args, **kw):
 
 
 def build(workdir, *, gds_name, cell, flavor, l_acc, cap_gap_side, acc_gap_side,
-          straps, origins_um, pins):
+          straps, origins_um, pins,
+          w_cap_um=W_MIN, l_cap_um=L_CAP, w_acc_um=W_MIN):
     """Run the klt flow in `workdir`; return the path of the composed GDS.
 
     `origins_um` maps block id (cap, acc, straps) -> {"x", "y"}.
+
+    `w_cap_um` / `l_cap_um` / `w_acc_um` are the per-cell device dimensions of
+    the split-axis grid (`spec/split-axis-plan.md` sections 2-3); they default
+    to the Minimum x Minimum point so a caller that omits them generates the
+    same bytes as before these keywords existed. Access length stays `l_acc`,
+    which was already per-cell.
     """
-    def gen(name, l_um, flavor_extra, gap_side):
-        params = {"w_um": W_MIN, "l_um": l_um, "rows": 1, "cols": 1, "dummy": 0,
+    def gen(name, w_um, l_um, flavor_extra, gap_side):
+        params = {"w_um": w_um, "l_um": l_um, "rows": 1, "cols": 1, "dummy": 0,
                   "flavor": flavor, "gate_contact": True, "add_guard_ring": True,
                   "ring_gap_side": gap_side, **GAP, **flavor_extra}
         out = run(["klt", "gen", "mos_array", "--pdk", PDK, "--params",
@@ -50,8 +57,8 @@ def build(workdir, *, gds_name, cell, flavor, l_acc, cap_gap_side, acc_gap_side,
         with open(os.path.join(workdir, name + ".json"), "w") as fh:
             fh.write(out)
 
-    gen("cap", L_CAP, {}, cap_gap_side)
-    gen("acc", l_acc, {"voltage_flavor": "medium_voltage"}, acc_gap_side)
+    gen("cap", w_cap_um, l_cap_um, {}, cap_gap_side)
+    gen("acc", w_acc_um, l_acc, {"voltage_flavor": "medium_voltage"}, acc_gap_side)
     with open(os.path.join(workdir, "straps_params.json"), "w") as fh:
         json.dump(straps, fh)
     out = run(["klt", "draw", "--params", os.path.join(workdir, "straps_params.json"),
