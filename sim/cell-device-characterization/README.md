@@ -297,7 +297,11 @@ python3 sim/cell-device-characterization/klt/run_klt_campaign.py --ingest-only k
   (`op` + `ac`) per point and five swept bias points; it remains in the legacy
   harness.
 - **Output**: a new run directory `klt/runs/<run-id>/<sub-config>/<ioff|ron>/report.json`
-  (the `-o` klt report) and one append-only per-region record
+  (the `-o` klt report, with its `coverage.checked` / `coverage.inapplicable` id
+  lists replaced by their counts -- `harness.report.elide_coverage`; every
+  measurement value, corner status, diagnostic, `environment`, `provenance` and
+  coverage counter is kept, and the sha256 of klt's full stdout is committed
+  beside it as `report.json.sha256`) and one append-only per-region record
   `records/<run-id>-c<N>.md`. Records list every sub-configuration separately
   with the full process x temperature x read-voltage grid; the region headline
   is a worst case across that region's own four sub-configurations, never an

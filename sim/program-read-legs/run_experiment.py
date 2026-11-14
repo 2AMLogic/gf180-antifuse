@@ -549,7 +549,9 @@ def run_mc(args, pdk, preamble: Path) -> int:
                 if isinstance(sec, dict) and sec["lib"].endswith("preamble.lib"):
                     sec["lib"] = "sim/program-read-legs/models/preamble.lib"
         R.write_once(snap_dir / f"{name}.{pt[0]}.mc.request.json", json.dumps(req_norm, indent=1) + "\n")
-        R.write_once(corner_dir / f"{name}.{pt[0]}.report.json", json.dumps(responses[key], indent=1) + "\n")
+        text, full_sha = R.klt_report_payload(responses[key], indent=1)
+        R.write_once(corner_dir / f"{name}.{pt[0]}.report.json", text)
+        R.write_once(corner_dir / f"{name}.{pt[0]}.report.json.sha256", full_sha + "\n")
         for stale in [*out.rglob("corner.cir"), *out.rglob("ngspice.log")]:
             stale.unlink()      # per-sample decks/logs: the report keeps values, seeds and diagnostics
 
@@ -761,7 +763,9 @@ def main(argv: list[str] | None = None) -> int:
                 if isinstance(s, dict) and s["lib"].endswith("preamble.lib"):
                     s["lib"] = "sim/program-read-legs/models/preamble.lib"
         R.write_once(snap_dir / f"{name}.request.json", json.dumps(req_norm, indent=1) + "\n")
-        R.write_once(corner_dir / f"{name}.report.json", json.dumps(resp, indent=1) + "\n")
+        text, full_sha = R.klt_report_payload(resp, indent=1)
+        R.write_once(corner_dir / f"{name}.report.json", text)
+        R.write_once(corner_dir / f"{name}.report.json.sha256", full_sha + "\n")
         for deck in out.rglob("corner.cir"):
             deck.unlink()
 

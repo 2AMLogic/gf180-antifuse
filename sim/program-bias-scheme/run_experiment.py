@@ -591,7 +591,9 @@ def main(argv: list[str] | None = None) -> int:
             t0 = time.time()
             report, err = CB.run_klt(bdir / "request.json", bdir / ".work" / "klt", None)
             if report is not None:
-                R.write_once(bdir / "report.json", json.dumps(report, indent=2) + "\n")
+                text, full_sha = R.klt_report_payload(report, indent=2)
+                R.write_once(bdir / "report.json", text)
+                R.write_once(bdir / "report.json.sha256", full_sha + "\n")
             res = collect(bench, report, err, bdir, cand, params)
             if res.error:
                 R.write_once(bdir / "submit-error.txt", res.error + "\n")

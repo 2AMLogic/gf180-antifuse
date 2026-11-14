@@ -206,16 +206,12 @@ def merge_reports(reps: list[dict]) -> dict:
     return out
 
 
-def slim(report: dict) -> dict:
-    """Drop the per-measurement coverage bookkeeping (tens of thousands of
-    ids that restate 'characterization without limits'); everything else, and
-    every measurement value, is kept. The sha256 of the full text is recorded."""
-    r = json.loads(json.dumps(report))
-    cov = r.get("coverage", {})
-    for k in ("checked", "inapplicable"):
-        if k in cov:
-            cov[k] = f"<{len(cov[k])} entries elided by run_bench.py slim()>"
-    return r
+def slim_text(report: dict) -> str:
+    """The committed text of a klt report: coverage id lists elided (see
+    `harness.report.elide_coverage`), everything else and every measurement
+    value kept. The sha256 of the full text is recorded in the record."""
+    text, _full_sha = R.klt_report_payload(report, indent=None, separators=(",", ":"))
+    return text
 
 
 # ---------------------------------------------------------------------------
@@ -360,7 +356,7 @@ def run_full_band(a) -> int:
                 req = B.TB_DIR / f"leak_{variant}_{name}_{proc}.request.json"
                 rep = run_klt(name, proc, a.backend, Path("/tmp") / f"klt-sim-{record_id}-{variant}-{name}-{proc}", req)
                 rep_dir.mkdir(parents=True, exist_ok=True)
-                rp.write_text(json.dumps(slim(rep), indent=None, separators=(",", ":")) + "\n")
+                rp.write_text(slim_text(rep))
                 reports[(name, variant)][proc] = rep
                 print(f"wrote {rp.relative_to(REPO)}", flush=True)
     return finish_full_band(F, record_id, clean, now, bands, reports, a)
@@ -524,7 +520,7 @@ def main():
             for proc, r in reps:
                 rp = HERE / "reports" / record_id / f"{sl}_{proc or 'all'}.report.json"
                 rp.parent.mkdir(parents=True, exist_ok=True)
-                rp.write_text(json.dumps(slim(r), indent=None, separators=(",", ":")) + "\n")
+                rp.write_text(slim_text(r))
                 rep_paths.append(str(rp.relative_to(REPO)))
 
     if a.no_write:
