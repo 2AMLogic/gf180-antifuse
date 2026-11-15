@@ -369,7 +369,9 @@ def main(argv: list[str] | None = None) -> int:
                 rc = 1
                 print(f"   {bench}: SUBMIT ERROR {str(msg)[:200]}", flush=True)
                 continue
-            R.write_once(bdir / "report.json", json.dumps(report, indent=2) + "\n")
+            text, full_sha = R.klt_report_payload(report, indent=2)
+            R.write_once(bdir / "report.json", text)
+            R.write_once(bdir / "report.json.sha256", full_sha + "\n")
             results[bench] = collect(report, defs[bench], cand, vbd)
             env = report.get("environment", {})
             print(f"   {bench}: {report.get('status')} ({len(report['corners'])} corners, {time.time() - t0:.0f}s, "
