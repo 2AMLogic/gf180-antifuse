@@ -3,6 +3,14 @@
 Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 
+### 2026-11-14
+
+- **PR #281**: feat(sim): elide klt coverage id lists from committed reports in four runners
+- **PR #279**: feat: draw the three remaining Candidate 1 split-grid bitcells
+- **PR #272**: docs: roadmap as of 2026-11-13
+- **Issue #273** (closed): Run 3 test chip: draw the Candidate 1 split-variant bitcells (G2x capacitor, A2x access)
+- **Issue #271** (closed): Elide klt coverage id lists before committing report.json: 101 MiB (33% of tracked bytes) of uniform 'characterization_without_limits' bookkeeping, already solved in array-slice-bench
+
 ### 2026-11-13
 
 - **PR #261**: docs: add Run 3 bench fixture requirements note
