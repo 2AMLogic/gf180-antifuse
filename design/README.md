@@ -93,11 +93,16 @@ them per instance; no cell schematic edit is involved.
 
 **The defaults above are placeholders, not design values.** They are the PDK
 symbol template defaults, carried through verbatim. `spec/split-axis-plan.md`
-names its two geometry levels "process-minimum" and "2x-area", but no ratified
-spec document fixes what the process-minimum legal geometry actually is — that
-is a PDK design-rule lookup, deliberately out of scope for this first drop of
-sources. Choosing those numbers is follow-on work; nothing in this directory
-should be read as asserting them.
+names its two geometry levels "process-minimum" and "2x-area". For the
+capacitor half those numbers are now fixed by
+[`spec/capacitor-geometry-decision.md`](../spec/capacitor-geometry-decision.md)
+(1.0 x 0.28 um / 2.0 x 0.28 um thin-oxide, 1.0 x 0.70 um / 2.0 x 0.70 um
+6 V) — regenerating `design/` against them is authorised but not yet
+performed, so the instances below still carry the placeholder values. The
+access half (`wacc`/`lacc`) remains a PDK design-rule lookup, deliberately
+out of scope for this first drop of sources; choosing those numbers is
+follow-on work, and nothing in this directory should be read as asserting
+either half's final values.
 
 ## Program leg and read leg
 

@@ -18,11 +18,15 @@ meaning of "2x-area". It does not touch the access-device sizing axis
 **Evidence**: every geometric fact below was measured with released
 `klayout-tools==0.9.2` against PDK `gf180mcuA` (`--engine klayout
 --deck-var decks=all,-mslot`), first at `origin/main` @ `ab8dd5cf` (#287),
-re-verified at `feb788e1` and again at the implementing commit `af86a376`
-(`layout/bitcell_gen.py` still carries `W_MIN = 0.42` / `L_CAP = 0.28`;
+re-verified at `feb788e1` and again at the base `af86a376` — the tree
+immediately before this record — where `layout/bitcell_gen.py` still
+carries `W_MIN = 0.42` / `L_CAP = 0.28` and
 `git grep -nE '0\.42|0\.84' -- spec/` returns no matches, so no ratified
-document quotes the old figures). Generatability of every level below is
-measured, not assumed — see "Generatability and rule clearance".
+document quoted the old figures before this record. At this record's own
+commit the same grep instead matches this record itself plus the one
+citation sentence `spec/split-axis-plan.md` adds — both deliberate.
+Generatability of every level below is measured, not assumed — see
+"Generatability and rule clearance".
 
 ## Problem
 
@@ -59,14 +63,21 @@ moves.
 - **Minimum** is the process-minimum *legal* W/L, exactly as the ratified
   wording requires: **W = 1.0 um** is the `DF.1c` COMP-width floor for a
   MOSCAP; **L** is each device's process-minimum drawn gate length — 0.28 um
-  for the thin-oxide devices (the minimum `layout/bitcell_gen.py` itself
-  names: `L_CAP = 0.28 # um, thin-oxide minimum drawn length`) and 0.70 um
-  for the 6 V thick-oxide device (the `PL.2_MV` 6 V n-gate minimum; candidate
-  2's drawn `L_CAP = 0.56` violates it independently of width). Both length
-  minimums are confirmed against #287's rule text, not merely the table
-  above. `DF.1c` constrains the W dimension only — the orthogonal COMP extent
-  is already 1.28 um in the drawn cells (#287 marker geometry), so raising W
-  alone clears the rule without touching L.
+  for the thin-oxide devices and 0.70 um for the 6 V thick-oxide device.
+  Each length minimum is read from the PDK's native sign-off runset, not
+  from a generator constant: `PL.2_LV` ("Gate Width (Channel Length).
+  : 0.28µm") sets the thin-oxide minimum, and the `ngate_6v` edge of
+  `PL.2_MV` (width 0.7 um) sets the thick-oxide one; both rules live in
+  `~/.ciel/gf180mcuA/libs.tech/klayout/tech/drc/rule_decks/poly2.rb`.
+  #287's rule text quotes the 0.70 um minimum and records candidate 2's
+  drawn `L_CAP = 0.56` as violating it independently of width; it quotes
+  no rule for 0.28 um, so that minimum is cited here from the runset
+  directly. (`layout/bitcell_gen.py`'s
+  `L_CAP = 0.28 # um, thin-oxide minimum drawn length` comment agrees,
+  but it is the same evidence class this issue family found wrong and is
+  not relied on.) `DF.1c` constrains the W dimension only — the orthogonal
+  COMP extent is already 1.28 um in the drawn cells (#287 marker
+  geometry), so raising W alone clears the rule without touching L.
 - **2x-area doubles W at fixed L**: 1.0 -> 2.0 um. This implements the
   ratified "via W and/or L scaling" as W-only.
 
@@ -177,13 +188,14 @@ as #287 records.
   area is ~40.8 um^2 at Minimum. **That figure is derived, not re-measured
   on a composed cell.** Re-measuring on the composed cell and re-budgeting
   the floorplan is #296's, once it implements this record in `layout/`.
-- **The interim document contradiction is expected.** Until #296 lands,
+- **The `layout/README.md` contradiction is expected.** Until #296 lands,
   `layout/README.md`'s 0.42 / 0.84 narrative (notably its "2x the drawn
   Minimum ... not 2x a process minimum" passage) contradicts this record;
-  **this record leads**, and #296 brings `layout/` in line. The same applies
-  to `design/README.md`'s "no ratified spec document fixes what the
-  process-minimum legal geometry actually is" sentence: its item 1(a) now
-  carries a pointer to this record for the capacitor half.
+  **this record leads**, and #296 brings `layout/` in line. The matching
+  sentence in `design/README.md` ("no ratified spec document fixes what the
+  process-minimum legal geometry actually is") is narrowed in the same PR
+  that lands this record: its capacitor half now points to this record, and
+  only the access half remains a design-rule lookup.
 - **The access-device sizing axis is untouched.** Section 3's levels, and
   the access half (`wacc`/`lacc`) of `design/README.md` item 1(a), remain
   provisional; `W_ACC` is not under a MOSCAP rule and is not implicated by
@@ -210,6 +222,9 @@ as #287 records.
   change to `layout/` before re-verification (PR #288) touched
   `cell_candidate2` comment text and `layout/README.md` only —
   `L_CAP = 0.56` and the 0.42 um width were byte-identical at `feb788e1`.
-- Re-verified at the implementing commit `af86a376` (see Evidence).
+- Re-verified at the base `af86a376` — the tree immediately before this
+  record (see Evidence).
 - Rule text (`DF.1c` >= 1 um; `PL.2_MV` 6 V n-gate >= 0.7 um) is quoted and
-  provenance-stamped in #287.
+  provenance-stamped in #287. The thin-oxide minimum (`PL.2_LV`, gate
+  length 0.28 um) is cited from the native runset deck directly
+  (`poly2.rb` of PDK `gf180mcuA`), since #287 quotes no rule for it.
