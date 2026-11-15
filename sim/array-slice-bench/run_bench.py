@@ -31,7 +31,6 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
-import hashlib
 import json
 import re
 import sys
@@ -206,12 +205,15 @@ def merge_reports(reps: list[dict]) -> dict:
     return out
 
 
-def slim_text(report: dict) -> str:
-    """The committed text of a klt report: coverage id lists elided (see
-    `harness.report.elide_coverage`), everything else and every measurement
-    value kept. The sha256 of the full text is recorded in the record."""
-    text, _full_sha = R.klt_report_payload(report, indent=None, separators=(",", ":"))
-    return text
+def slim_payload(report: dict) -> tuple[str, str]:
+    """-> (committed text of a klt report, sha256 of its full text).
+
+    The text is the coverage-elided form (`harness.report.elide_coverage`);
+    every measurement value and everything else is kept. The digest commits to
+    the full, un-elided text at the same serialisation options (see
+    `harness.report.klt_report_payload`): write it beside the report as a
+    `<name>.report.json.sha256` sidecar so the elision stays auditable."""
+    return R.klt_report_payload(report, indent=None, separators=(",", ":"))
 
 
 # ---------------------------------------------------------------------------
@@ -225,7 +227,7 @@ def fmt_e(x):
     return f"{x:.3g}"
 
 
-def slice_section(sl, report, per, full_sha):
+def slice_section(sl, report, per, report_shas):
     r0, r1, c0, c1 = G.SLICES[sl]
     reach, iso, errors = region_tables(sl, per)
     env = report.get("environment", {})
@@ -239,7 +241,9 @@ def slice_section(sl, report, per, full_sha):
         ", ".join(f"`{j.get('job_id')}` ({j.get('provider')}, {j.get('instance_type')}, {j.get('lifecycle')})" for j in jobs)
         if any(jobs) else "none reported (local run)"))
     out.append(f"- pdk: {report.get('provenance', {}).get('pdk')}")
-    out.append(f"- full klt report sha256: `{full_sha}`")
+    shas = ", ".join(f"{k}: `{v}`" for k, v in sorted(report_shas.items()))
+    out.append(f"- per-report sha256 of the full, un-elided text ({shas}); each is committed "
+               f"beside its report as `{sl}_<process>.report.json.sha256`")
     out.append("")
     out.append("**Selected cell reaches the BL/PL program path** (per region, per capacitor-geometry x "
                "access-sizing sub-combination; worst case over every corner and every selected cell of that "
@@ -356,7 +360,9 @@ def run_full_band(a) -> int:
                 req = B.TB_DIR / f"leak_{variant}_{name}_{proc}.request.json"
                 rep = run_klt(name, proc, a.backend, Path("/tmp") / f"klt-sim-{record_id}-{variant}-{name}-{proc}", req)
                 rep_dir.mkdir(parents=True, exist_ok=True)
-                rp.write_text(slim_text(rep))
+                text, full_sha = slim_payload(rep)
+                rp.write_text(text)
+                R.write_once(rp.with_name(rp.name + ".sha256"), full_sha + "\n")
                 reports[(name, variant)][proc] = rep
                 print(f"wrote {rp.relative_to(REPO)}", flush=True)
     return finish_full_band(F, record_id, clean, now, bands, reports, a)
@@ -508,19 +514,21 @@ def main():
             for proc in B.PROCESS:
                 reps.append((proc, run_klt(sl, proc, a.backend, Path("/tmp") / f"klt-sim-{record_id}-{sl}-{proc}")))
         report = merge_reports([r for _p, r in reps])
-        full_sha = hashlib.sha256(json.dumps([r for _p, r in reps], sort_keys=True).encode()).hexdigest()
+        payloads = {proc or "all": slim_payload(r) for proc, r in reps}
         per = analyze(sl, report)
-        sec, reach, iso, errors = slice_section(sl, report, per, full_sha)
+        sec, reach, iso, errors = slice_section(sl, report, per, {k: s for k, (_t, s) in payloads.items()})
         sections.append(sec)
         bad = sum(t["bad"] for t in reach.values()) + sum(u["bad"] for u in iso.values()) + errors
         worst_bad += bad
         summary[sl] = bad
         print(f"{sl}: {report['corner_count']} corners, {bad} criteria violations / ungradable")
         if not a.no_write:
-            for proc, r in reps:
+            for proc, _r in reps:
                 rp = HERE / "reports" / record_id / f"{sl}_{proc or 'all'}.report.json"
                 rp.parent.mkdir(parents=True, exist_ok=True)
-                rp.write_text(slim_text(r))
+                text, full_sha = payloads[proc or "all"]
+                rp.write_text(text)
+                R.write_once(rp.with_name(rp.name + ".sha256"), full_sha + "\n")
                 rep_paths.append(str(rp.relative_to(REPO)))
 
     if a.no_write:
