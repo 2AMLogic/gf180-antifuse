@@ -5,6 +5,12 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-15
 
+- **PR #319**: test: assert exactly one B-element card names each measured HV pad node
+- **Issue #302** (closed): HV pad deck test: the `"B" in text` half of the measured-node assertion is vacuous
+- **PR #311**: feat(sim): emit batch.capacity_wait_s from program-read-legs requests
+- **Issue #317** (closed): check_artifact_manifests.py fails on main: 2026-11-06 re-qualification manifests store bytes that are also committed
+- **PR #320**: docs: move WORK_LOG '## Archives' index to EOF so live entries stop nesting under it
+- **Issue #304** (closed): WORK_LOG rotation: the '## Archives' index nests the whole live log under it
 - **PR #318**: refactor: remove dead declarations left by numfmt and gen_blocks consolidations
 - **PR #309**: refactor(rtl): dedupe the committed-report host-path scrubber
 - **PR #308**: design: add drawn-vs-simulated geometry-basis gate with a recorded divergence set
