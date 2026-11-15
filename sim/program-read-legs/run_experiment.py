@@ -162,7 +162,7 @@ def run_klt(request_path: Path, outdir: Path, backend: str | None) -> tuple[dict
     env = dict(os.environ)
     env.setdefault("PDK_ROOT", str(Path.home() / ".ciel"))
     return K.run_klt(request_path, outdir, backend, klt_cmd=[os.environ.get("KLT", "klt")],
-                     timeout_s=KLT_TIMEOUT_S, env=env)
+                     timeout_s=KLT_TIMEOUT_S, env=env, retry=K.BACKOFF)
 
 
 def meas_table(response: dict) -> dict[str, dict[str, float | None]]:
@@ -495,13 +495,9 @@ def run_mc(args, pdk, preamble: Path) -> int:
     def submit(job):
         name, pt, req_path, out = job
         t0 = time.time()
+        # Fleet-refusal retry is the harness's (K.BACKOFF, passed by run_klt above);
+        # nothing else is retried, and a batch submit is never replayed locally.
         resp, err = run_klt(req_path, out, backend)
-        for attempt in (2, 3):      # a submit that returned no report is retried (same klt request, same backend)
-            if resp is not None and "corners" in resp:
-                break
-            print(f"== {name}/{pt[0]}: no report ({(err or '').strip()[-300:]!r}); retry {attempt}/3", flush=True)
-            time.sleep(15)
-            resp, err = run_klt(req_path, out, backend)
         print(f"== {name}/{pt[0]}: {time.time() - t0:.0f}s status="
               f"{(resp or {}).get('status')} units={(resp or {}).get('corner_count')} "
               f"pass={(resp or {}).get('passed')} err={(resp or {}).get('errored')}", flush=True)
