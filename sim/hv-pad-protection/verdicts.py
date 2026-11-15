@@ -85,14 +85,3 @@ def check_corner(kind: str, level: float, vbd: float, cand: int, vals: dict, bal
             out.append("rating:neighbour-programmed")
     return out
 
-
-def summarise(rows: list[tuple[float, str, list[str]]]) -> dict:
-    """rows: (level, corner-id, codes) -> {level: {code: n corners}} + totals."""
-    per: dict[float, dict[str, int]] = {}
-    n: dict[float, int] = {}
-    for lv, _cid, codes in rows:
-        n[lv] = n.get(lv, 0) + 1
-        d = per.setdefault(lv, {})
-        for c in codes:
-            d[c] = d.get(c, 0) + 1
-    return {"per_level": per, "corners": n}

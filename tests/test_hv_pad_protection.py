@@ -75,11 +75,6 @@ class RuleTests(unittest.TestCase):
     def test_missing_measurement_is_never_a_pass(self):
         self.assertEqual(V.check_corner("cx", 8.4, 8.0, 1, {"vox_max": None, "ifil_max": 1e-3}), ["no-measurement"])
 
-    def test_summarise_counts_per_level(self):
-        s = V.summarise([(8.4, "a", ["x"]), (8.4, "b", []), (4.0, "c", [])])
-        self.assertEqual(s["corners"], {8.4: 2, 4.0: 1})
-        self.assertEqual(s["per_level"][8.4], {"x": 1})
-
 
 class RunnerTests(unittest.TestCase):
     @classmethod
