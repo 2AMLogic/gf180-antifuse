@@ -14,3 +14,4 @@ Ratified targets, the split-axis plan, and decision records. Spec changes land h
 - [`run3-test-chip-floorplan.md`](run3-test-chip-floorplan.md) — Run 3 quarter-slot test chip: instance counts, pad budget, core-area budget (proposed)
 - [`run3-bench-plan.md`](run3-bench-plan.md) — Run 3 test chip bench plan: V_bd, resistance and read-margin extraction for direct-pad cells (proposed)
 - [`run3-bench-fixture-requirements.md`](run3-bench-fixture-requirements.md) — Run 3 bench fixture needs on the pad ring, delivery form (open) and measurement route (proposed)
+- [`capacitor-geometry-decision.md`](capacitor-geometry-decision.md) — capacitor-geometry split levels: Minimum and 2x-area W/L per moscap device (implements the ratified "process-minimum legal W/L")

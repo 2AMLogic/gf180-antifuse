@@ -203,6 +203,13 @@ decision record and the generator + netlists regenerate.
    re-scales, and the recorded bench numbers (path efficiency, isolation,
    leakage) scale with them — current results remain valid as structure
    evidence only; a re-run mints a new append-only record.
+   **Decided (capacitor half), 2026-11-15**: fixed by
+   [`spec/capacitor-geometry-decision.md`](../spec/capacitor-geometry-decision.md)
+   — Minimum `wcap` x `lcap` = 1.0 x 0.28 um (`cap_nmos_03v3` /
+   `cap_pmos_03v3`) and 1.0 x 0.70 um (`cap_nmos_06v0`); "2x" doubles
+   `wcap` only. The committed sources here still carry the placeholder
+   defaults until the authorised regeneration lands (#292's follow-through);
+   the access half (`wacc`/`lacc`) remains PROVISIONAL (the section-3 axis).
 
 2. **(b) Phase and pitch of the two interleaved sub-axes.**
    Resolution: the plan says "checkerboarded" and "orthogonal" without
