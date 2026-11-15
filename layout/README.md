@@ -478,6 +478,131 @@ values.
   n-well tie spec): `erc_status: clean`, 0 findings, `erc.missing_tie` for the
   n-well tie checked. Antenna checks were skipped (no antenna PDK data).
 
+## cell_candidate3_Amin_G2x/ -- the Candidate 3 capacitor-2x split point
+
+`layout/cell_candidate3/` draws the `C3_Amin_Gmin` point; this directory draws
+the `G2x` point the floorplan spends pads L32-L36 on
+(`PL_C3_Amin_G2x_1..5`, `spec/run3-test-chip-floorplan.md`). Same cell as
+`cell_candidate3/` in every other respect (thin-oxide PMOS capacitor
+`cap_pmos_03v3` in series with a 6.0 V PMOS access device `pfet_06v0`, per
+`design/cells/cell_candidate3.sch`), same artifact set, same bounds: one cell
+of one point, not the array; no claim about breakdown behaviour. `design/` is
+unedited -- the schematic is parameterized and only `lvs_reference.spice`
+carries the drawn literals. Access sizing is held at **Minimum** (the floorplan
+holds all of C3 at `Amin` so C1-Amin vs C3-Amin stays a like-for-like polarity
+comparison). `cell_candidate3/` is deliberately **not** renamed, for the same
+reason as `cell_candidate1/`: its reports are cited by `layout/README.md` and
+its GDS sha256 is what its own `--check` pins.
+
+### Geometry point and which axis carries the 2x
+
+**The 2x is taken on the capacitor's width, at held drawn length: W 0.42 ->
+0.84 um, L 0.28 um, exactly doubling the drawn area (0.84 x 0.28 = 0.2352 um2
+against 0.42 x 0.28 = 0.1176 um2).** `spec/split-axis-plan.md` section 2
+ratifies "double the minimum capacitor area (via W and/or L scaling)" and
+leaves the split open; width is taken here because that is the axis `sim/`
+already scales for the G axis (`run_experiment.py` applies
+`sizing_multiplier` to `wcap` only, `lcap` passed through unscaled, in
+`klt/mk_klt_requests.py`), so "G2x" means the same thing in `sim/` and in
+`layout/` -- the same convention the Candidate 1 variant cells document. As
+there, the 2x is 2x the **drawn** Minimum of 0.42 um (the generator's width
+floor), not 2x a process minimum, and `sim/`'s absolute widths differ
+pre-existingly. Doubling `L` instead would have disagreed with `sim/` and
+grown the block in x, reopening the pitch constraint below.
+
+Drawn values: cap W 0.84 um x L 0.28 um, access W 0.42 um x L 0.55 um
+(schematic `lacc`), capacitor area (extracted, `klt extract`) **0.2352 um2** =
+exactly 2.000 x the `Gmin` cell's 0.1176 um2, extracted as `cap_pmos_03v3` --
+which is the check that the resized MOS-capacitor marker still covers the
+enlarged COMP island. Access width extracted 0.42 um.
+
+| Cell | `klt stats` bbox | size |
+|---|---|---|
+| `cell_candidate3/` (`C3_Amin_Gmin`) | (-1.23,-1.23)-(7.31,3.07) | 8.54 x 4.30 um = 36.72 um2 |
+| `cell_candidate3_Amin_G2x/` | (-1.23,-1.23)-(7.31,3.49) | 8.54 x 4.72 um = 40.31 um2 |
+
+The new cell is 0.42 um taller and exactly as wide: doubling a device width
+grows its block in y only and leaves every x coordinate untouched (measured on
+`klt gen mos_array` 0.8.0 at exactly these parameters), so the pitch
+`DX = 4.8` carries over from `cell_candidate3/` -- and is **proved** by this
+cell's own DRC report (`nwell.space.1`/`nplus.space.1` clean, 0 violations),
+not inferred from the block extents. 40.31 um2 is well under the floorplan's
+110 um2 estimate row for the C3 instances; replacing that estimate row is a
+later change, not this one.
+
+### Hand-placed shapes had to be re-derived (and one of them changed)
+
+The blocks are composed by port *name*, so `pins=[...]` needs no coordinate
+work. The `klt draw` rectangles are absolute in the composed frame and do
+**not** follow the blocks. The same three derivations as the Candidate 1
+variant cells apply, with the same outcome:
+
+- **`VB` tap-ring strap -- reshaped.** With only the cap block doubled, the
+  two rings' `TAP_N` pads sit at different heights (y = 2.70 um access,
+  y = 3.12 um cap, each pad 0.42 um across). `cell_candidate3/`'s flat band
+  (y 2.49..2.91) would end edge-touching the cap pad with zero overlap, so
+  this cell uses one band spanning both pads (`min(y) - 0.21` to
+  `max(y) + 0.21` = y 2.49..3.33), x extents unchanged from `cell_candidate3/`.
+- **`CN` source/drain strap -- raised.** Same constraint as measured on the
+  Candidate 1 variant cells: CN leaves each tap ring through that ring's
+  metal1 exit gap, which rises with device width (y -0.28..0.72 um at
+  W = 0.42, y -0.07..0.93 um at W = 0.84), and the inherited 0.06..0.36 band
+  leaves only 0.13 um below the doubled ring's gap -- under the 0.23 um
+  `metal1.space.1` clearance, observed as a real DRC violation on the
+  Candidate 1 equivalents. CN is raised to y 0.18..0.48, clearing both gaps by
+  >= 0.24 um; it lies inside the doubled cap pads (y 0..0.84), overhangs the
+  Minimum access pad's top edge by 0.06 um (metal over field), and still
+  overlaps every pad by >= 0.24 um in y.
+- **`MOS_CAP_MK` capacitor marker -- grown with the island.** The cap COMP
+  island is as tall as the device width, (DX,0)-(DX+1.28,0.84) at W = 0.84,
+  so the marker grows to match, keeping `cell_candidate3/`'s 0.1 um margin.
+
+The underlying tool gap (absolute `klt draw` rectangles silently going illegal
+when a swept device parameter moves the blocks under them) is the one already
+filed generically upstream as **2AMLogic/klayout-tools#5656**; no new gap was
+hit drawing this cell.
+
+### Well connection (stated, unchanged from `cell_candidate3/`)
+
+Each device sits in its own N-well with an N+ tap ring; the two tap rings are
+strapped on the north side as `VB`, so the access well and the capacitor well
+are one net. Nothing connects `VB` to a supply here; it must be held at the
+most positive potential the cell sees (array-level decision, deferred).
+Well-junction breakdown, the known concern of this candidate, is **not**
+examined by this layout or by DRC/LVS.
+
+### Results
+
+Toolchain as for the Candidate 1 variant cells: released `klt 0.8.0` with the
+engine pinned to the build-tested version --
+`uvx --from klayout-tools==0.8.0 --with klayout==0.30.12` -- PDK `gf180mcuA`;
+no tool was installed or changed. The 0.8.0 pin is the one that reproduces the
+committed cells byte-for-byte (`0.9.1` drifts them), so it is the pin this
+cell must share.
+
+| | result |
+|---|---|
+| DRC | `klt drc --deck gf180mcu --top cell_candidate3_Amin_G2x`: `status: clean`, 0 violations, deck `released: true`, no waiver and no rule disabled |
+| LVS | `klt lvs lvs_request.json`: `status: match`, 0 errors; 5/5 nets, 2/2 devices, 4/4 pins paired; no `device_map`, no waiver, no substituted device |
+| ERC | `klt erc ... layout/erc/supplies_region_iii.json` (the existing spec, unedited): `erc_status: clean`, 0 findings; antenna `not_checked` (no PDK antenna data), so the command exits non-zero on a clean run -- read `erc_status` |
+
+The Candidate 1 caveats carry over unchanged (identical cell structure):
+Dualgate is not modelled for the 6 V rules so the access device is checked
+against the 3.3 V thresholds; the capacitor's geometry and capacitance are not
+compared by LVS (`subckt-call` placeholder `C`, `A`/`P` secondary), so the
+drawn capacitor size rests on `generate.py` and `klt extract`. The curated-deck
+`clean` is not signed off: the PDK's native-deck cross-check findings tracked
+as **#287** for `cell_candidate3/` can be expected here too (same blocks, same
+rules); running that cross-check on this cell is follow-up work, not part of
+this issue.
+
+`klt drc --check drc_report.json` and `klt lvs --check lvs_report.json` run
+from the cell directory exit 0. `klt erc --check erc_report.json` reports the
+spec hash as drifted when run from the cell directory -- pre-existing
+`klt 0.8.0` behaviour, byte-identical on the committed `cell_candidate3/`
+report (its spec path is repo-relative; only `cell_candidate1/`'s
+cell-relative spec verifies from its directory).
+
 ## cell_candidate2/ -- drawn, LVS match on klt 0.9.2, DRC NOT clean
 
 `layout/cell_candidate2/` holds one bitcell of candidate 2 (`spec/cell-candidates.md`):
