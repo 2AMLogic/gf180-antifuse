@@ -5,6 +5,14 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-15
 
+- **PR #318**: refactor: remove dead declarations left by numfmt and gen_blocks consolidations
+- **PR #309**: refactor(rtl): dedupe the committed-report host-path scrubber
+- **PR #308**: design: add drawn-vs-simulated geometry-basis gate with a recorded divergence set
+- **PR #305**: spec: decision record pinning capacitor-geometry split levels to the process-minimum legal W/L
+- **Issue #294** (closed): spec: decision record pinning the capacitor-geometry split levels to the process-minimum LEGAL W/L
+- **Issue #292** (closed): Drawn bitcell geometry and the geometry the committed SPICE evidence was run at differ, and nothing compares them
+- **Issue #285** (closed): Remove the duplicated host-path scrubber embedded in rtl/pnr/run_pnr.sh and rtl/sta/run_sta.sh
+- **Issue #282** (closed): Remove dead module-level declarations left behind by the numfmt and gen_blocks consolidations
 - **PR #291**: test: port test_hv_pad_protection.py from pytest to unittest
 - **PR #298**: layout: draw the Candidate 3 G2x-capacitor bitcell (cell_candidate3_Amin_G2x)
 - **Issue #310** (closed): check_artifact_manifests.py fails on main: 15,713 entries flagged 'bytes are committed AND stored'
