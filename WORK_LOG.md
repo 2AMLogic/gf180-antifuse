@@ -9,7 +9,11 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-15
 
+- **PR #291**: test: port test_hv_pad_protection.py from pytest to unittest
 - **PR #298**: layout: draw the Candidate 3 G2x-capacitor bitcell (cell_candidate3_Amin_G2x)
+- **Issue #310** (closed): check_artifact_manifests.py fails on main: 15,713 entries flagged 'bytes are committed AND stored'
+- **Issue #306** (closed): check_artifact_manifests.py is red on main: 15.7k 'bytes are committed AND stored' findings across the 202610/202611 sim manifest families
+- **Issue #276** (closed): tests/test_hv_pad_protection.py needs pytest, so check:ci cannot run it
 - **PR #289**: docs: state the breakdown params' 12/3 provenance split in the roadmap
 - **PR #286**: refactor(sim): delegate program-read-legs klt retry to the harness policy
 - **PR #284**: fix: skip disposable .work/ scratch when publishing run evidence
