@@ -211,14 +211,17 @@ def _cell_subckt(cand: str, acc: str, cap: str) -> str:
     dev, l, w, nf = ACCESS_DRAWN[cand][acc]
     cap_dev, levels = CAP_RATIFIED[cand]
     cw, cl = levels[cap]
-    lines = [
-        f".subckt {name} BL WL PL VB",
-        f"* access: drawn XM1 literal (layout/{name}/lvs_reference.spice)",
-    ]
+    lines = [f".subckt {name} BL WL PL VB"]
     if name in NO_DRAWN_CELL:
+        # No lvs_reference.spice of its own: cite the donor cell it borrows
+        # the access literals from, never its own non-existent path.
+        donor = cell_name(cand, acc, "Gmin")
+        lines.append(f"* access: drawn XM1 literal (layout/{donor}/lvs_reference.spice)")
         lines.append("* NO DRAWN CELL (#296; #299 rules on drawing the Candidate 2 G2x cell):")
-        lines.append("* access literals from cell_candidate2 (same Amin level), capacitor")
+        lines.append(f"* access literals from {donor} (same {acc} level), capacitor")
         lines.append("* from the ratified record. Its absence blocks #211's LVS, not this issue.")
+    else:
+        lines.append(f"* access: drawn XM1 literal (layout/{name}/lvs_reference.spice)")
     lines.append(f"XM1 {XM1_NODES[cand]} {dev} L={l}u W={w}u nf={nf} m=1")
     lines.append(f"* capacitor: ratified {cap} level"
                  f" (spec/capacitor-geometry-decision.md)")
