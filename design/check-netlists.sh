@@ -6,7 +6,7 @@
 #
 # --skip-regen skips step 1 (the reproducibility step, including the generator
 # --check runs inside regen-netlists.sh) so the script needs no xschem; steps
-# 2-6 are unchanged. design/run_analog_cold_start.sh uses it. Without the flag
+# 2-7 are unchanged. design/run_analog_cold_start.sh uses it. Without the flag
 # the behaviour is exactly as before.
 #
 # Four checks, all of which must pass:
@@ -43,6 +43,17 @@
 #      at the typical corner, and with one cell selected that cell conducts
 #      while every other cell does not. A build-time check, not evidence: the
 #      cornered, per-region record is sim/array-slice-bench/.
+#
+# One further check closes the design/ <-> layout/ geometry boundary (issue #292):
+#
+#   7. Geometry basis - design/check-geometry-basis.py: the drawn bitcell
+#      geometry (the XM1/XC1 literals in layout/cell_*/lvs_reference.spice)
+#      against the geometry the committed SPICE evidence was run at (the
+#      design/netlists/cell_candidateN.spice defaults and the 2x levels
+#      derived from them the same way check 4 derives them). Every divergence
+#      must be recorded in design/geometry-basis.json; a recorded entry whose
+#      numbers no longer match the tree fails too, so the record cannot go
+#      silently stale. Needs no ngspice, PDK or klt.
 #
 # The two geometry levels used here are a mechanism check, NOT the split-axis
 # levels from spec/split-axis-plan.md. That plan's "process-minimum" level is a
@@ -266,6 +277,10 @@ pg="$(val "v(xpg.pg)")"
 awk -v v="${pg}" 'BEGIN { exit !(v < 0.5) }' || {
   echo "FAIL: program leg enabled but switch gate xpg.pg = ${pg} (expected ~0 V)" >&2; exit 1; }
 echo "ok: program leg elaborates; switch gate at ${pg} V when enabled"
+
+echo
+echo "== 7. drawn vs simulated geometry basis (issue #292) =="
+python3 -I "${DESIGN_DIR}/check-geometry-basis.py"
 
 echo
 echo "All checks passed."

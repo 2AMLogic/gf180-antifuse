@@ -1,0 +1,7 @@
+* Fixture LVS reference: diverges from the simulated basis at (access min, capacitor min).
+* W=8u nf=2 mirrors the real candidate-2 two-finger access device: W is the drawn
+* total across the fingers, which is the number the check must compare.
+.subckt cell_candidate2 BL WL PL VB
+XM1 BL WL CN VB nfet_10v0_asym L=0.60u W=8u nf=2 m=1
+XC1 CN PL cap_nmos_06v0 c_width=0.42u c_length=0.28u m=1
+.ends
