@@ -1,10 +1,11 @@
 """Shared number parsing and formatting for the sim scripts.
 
-One SPICE-literal parser, one netlist-text float formatter, and one
-placeholder-tolerant record formatter, so a change to rounding or the suffix
-table is a single edit.  ``sci`` keeps the rendered placeholder per caller
-(parameterized, not normalized): committed ``records/`` text is write-once
-evidence and must re-render byte-identically.
+One SPICE-literal parser, one netlist-text float formatter, one
+placeholder-tolerant record formatter, one relative-tolerance comparator, and
+one SPICE logical-line joiner, so a change to rounding, the suffix table, or
+the continuation rules is a single edit.  ``sci`` keeps the rendered
+placeholder per caller (parameterized, not normalized): committed ``records/``
+text is write-once evidence and must re-render byte-identically.
 """
 
 from __future__ import annotations
@@ -32,6 +33,27 @@ def spice_num(token: str) -> float:
             raise ValueError(f"unknown SPICE unit suffix {suffix!r} in {token!r}")
         value *= SUFFIX[suffix]
     return value
+
+
+def close(a: float, b: float) -> bool:
+    """Equal within a 1e-9 relative tolerance (1e-30 floor so exact zero works)."""
+    return abs(a - b) <= 1e-9 * max(abs(a), abs(b), 1e-30)
+
+
+def logical_lines(text: str) -> list[str]:
+    """SPICE logical lines of ``text``: ``+`` continuations joined onto their
+    line, blank lines and ``*`` comments dropped, everything else (including
+    ``.`` directives) kept stripped."""
+    out: list[str] = []
+    for raw in text.splitlines():
+        s = raw.strip()
+        if not s or s.startswith("*"):
+            continue
+        if s.startswith("+") and out:
+            out[-1] += " " + s[1:].strip()
+        else:
+            out.append(s)
+    return out
 
 
 def fmt(x: float) -> str:

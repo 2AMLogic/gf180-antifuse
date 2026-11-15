@@ -117,10 +117,6 @@ def parse_cell_name(name: str) -> tuple[int, str, str] | None:
     return int(cand), acc or "min", cap or "min"
 
 
-def close(a: float, b: float) -> bool:
-    return abs(a - b) <= 1e-9 * max(abs(a), abs(b), 1e-30)
-
-
 def ratio_close(a: float, b: float) -> bool:
     return abs(a - b) <= 1e-6 * max(abs(a), abs(b), 1e-30)
 
@@ -137,19 +133,6 @@ def um(x: float) -> str:
     return f"{x * 1e6:.6g}um"
 
 
-def logical_lines(text: str) -> list[str]:
-    out: list[str] = []
-    for raw in text.splitlines():
-        s = raw.strip()
-        if not s or s.startswith("*"):
-            continue
-        if s.startswith("+") and out:
-            out[-1] += " " + s[1:].strip()
-        else:
-            out.append(s)
-    return out
-
-
 def instance_params(lines: list[str], inst: str) -> dict[str, str] | None:
     for ln in lines:
         if ln.split()[0].upper() == inst.upper():
@@ -163,7 +146,7 @@ def parse_drawn_cell(path: Path) -> dict:
     Raises LookupError when XM1 or XC1 is absent and ValueError when a
     needed literal is missing or unparseable.
     """
-    lines = logical_lines(path.read_text())
+    lines = numfmt.logical_lines(path.read_text())
     xm1 = instance_params(lines, "XM1")
     xc1 = instance_params(lines, "XC1")
     missing = [n for n, p in (("XM1", xm1), ("XC1", xc1)) if p is None]
@@ -247,7 +230,7 @@ def measure(root: Path):
             multi_finger[name] = drawn["acc_fingers"]
         sim = sim_geometry(sim_defaults[cand], acc_lvl, cap_lvl)
         for p in PARAMS:
-            if close(sim[p], drawn[p]):
+            if numfmt.close(sim[p], drawn[p]):
                 continue
             divergences[(name, p)] = {
                 "cell": name,
@@ -355,7 +338,7 @@ def compare(record: dict, divergences, coverage_gaps, findings: list[str]) -> No
             stale.append(f"levels now access={e['levels']['access']} capacitor={e['levels']['capacitor']}, "
                          f"recorded access={r['levels']['access']} capacitor={r['levels']['capacitor']}")
         for k in ("simulated", "drawn"):
-            if not close(float(r[k]), float(e[k])):
+            if not numfmt.close(float(r[k]), float(e[k])):
                 stale.append(f"{k} now {um(e[k])}, recorded {um(float(r[k]))}")
         if (e["ratio"] is None) != (r["ratio"] is None):
             stale.append(f"ratio now {e['ratio']}, recorded {r['ratio']}")
@@ -375,7 +358,7 @@ def compare(record: dict, divergences, coverage_gaps, findings: list[str]) -> No
                             f"has no drawn cell - not in {RECORD_NAME}")
             continue
         stale = [f"{p} now {um(e['simulated'][p])}, recorded {um(float(r['simulated'][p]))}"
-                 for p in PARAMS if not close(float(r["simulated"][p]), float(e["simulated"][p]))]
+                 for p in PARAMS if not numfmt.close(float(r["simulated"][p]), float(e["simulated"][p]))]
         if stale:
             findings.append(f"stale record gap: candidate {key[0]} access={key[1]} capacitor={key[2]}: "
                             + "; ".join(stale))
