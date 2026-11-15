@@ -212,13 +212,17 @@ decision record and the generator + netlists regenerate.
    [`spec/capacitor-geometry-decision.md`](../spec/capacitor-geometry-decision.md)
    — Minimum `wcap` x `lcap` = 1.0 x 0.28 um (`cap_nmos_03v3` /
    `cap_pmos_03v3`) and 1.0 x 0.70 um (`cap_nmos_06v0`); "2x" doubles
-   `wcap` only. The committed sources here still carry the placeholder
-   defaults until the authorised regeneration lands (#292's follow-through);
-   the access half (`wacc`/`lacc`) remains PROVISIONAL (the section-3 axis).
-   Measured state: every drawn-vs-simulated divergence this placeholder
-   numbering currently implies is recorded in
+   `wcap` only. Decided in spec but not yet conformed: the committed
+   sources here still carry the placeholder defaults until the authorised
+   regeneration lands (scoped by closed #292, tracked by this open item),
+   and the drawn cells await #296's redraw. Measured state: every
+   drawn-vs-simulated divergence this placeholder numbering currently
+   implies is recorded in
    [`geometry-basis.json`](geometry-basis.json) (validated by check 7,
-   `check-geometry-basis.py`).
+   `check-geometry-basis.py`) with a per-entry `owner`/`status` derived
+   from the ratified levels — drawn side stale → #296, simulated side
+   stale → this item, both → both; the access half (`wacc`/`lacc`)
+   remains PROVISIONAL (the section-3 axis) and stays `unresolved` there.
 
 2. **(b) Phase and pitch of the two interleaved sub-axes.**
    Resolution: the plan says "checkerboarded" and "orthogonal" without
