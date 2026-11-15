@@ -3,8 +3,24 @@
 Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 
+## Archives
+
+- [2026-09](work_log/WORK_LOG_2026-09.md)
+
+### 2026-11-15
+
+- **PR #298**: layout: draw the Candidate 3 G2x-capacitor bitcell (cell_candidate3_Amin_G2x)
+- **PR #289**: docs: state the breakdown params' 12/3 provenance split in the roadmap
+- **PR #286**: refactor(sim): delegate program-read-legs klt retry to the harness policy
+- **PR #284**: fix: skip disposable .work/ scratch when publishing run evidence
+- **Issue #278** (closed): docs/ROADMAP.md: breakdown-model row says "every parameter assumed"; 3 of 15 are provenance=literature
+- **Issue #277** (closed): Remove the hand-rolled klt retry loop in sim/program-read-legs: harness/klt.py owns fleet-refusal retry and this driver opts out of it
+- **Issue #274** (closed): Run 3 test chip: draw the Candidate 3 G2x-capacitor bitcell
+- **Issue #270** (closed): Stop publishing the git-ignored .work/ scratch tree as evidence: 42% of tracked manifest bytes index disposable files
+
 ### 2026-11-14
 
+- **PR #288**: layout: reach LVS match on candidate 2 at klt 0.9.2 and cross-check DRC against the PDK runset
 - **PR #281**: feat(sim): elide klt coverage id lists from committed reports in four runners
 - **PR #279**: feat: draw the three remaining Candidate 1 split-grid bitcells
 - **PR #272**: docs: roadmap as of 2026-11-13
@@ -227,41 +243,3 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 - **PR #44**: signoff: commit a klt signoff block manifest and its graded T1 verdict
 - **Issue #43** (closed): Commit a klt signoff block manifest so this block's T1 state is graded, not hand-read
 
-### 2026-09-14
-
-- **Issue #42** (closed): Remove tracked __pycache__/*.pyc bytecode files
-- **Issue #37** (closed): Remove phantom --check-env usage line from sim/run_corners.py docstring
-
-### 2026-09-13
-
-- **PR #41**: refactor: remove append_log wrapper, call write_once directly
-- **Issue #40** (closed): Remove append_log wrapper: identical pass-through of write_once
-
-### 2026-09-12
-
-- **PR #39**: Remove NgspiceRun wrapper: single-field dataclass adds no value
-- **PR #36**: refactor: remove dead pdk_root assignment in resolve_pdk() env-path branch
-- **PR #35**: Remove dead ok/returncode fields from harness NgspiceRun
-- **PR #31**: refactor: remove unused pdk_root field from PDKPaths
-- **PR #29**: refactor: consolidate scratch-dir/deck-write/run duplication in run_experiment.py
-- **PR #27**: refactor: remove unused claim_extra parameter from render_record()
-- **PR #25**: fix: consolidate gen_models/gen_models_moscap duplication in run_experiment.py
-- **PR #23**: Remove unused variant_override parameter in resolve_pdk()
-- **PR #20**: fix: enforce append-only guard on raw per-corner ngspice logs
-- **Issue #38** (closed): Remove NgspiceRun wrapper: single-field dataclass adds no value
-- **Issue #34** (closed): Remove dead pdk_root local variable in resolve_pdk()'s GF180_PDK_PATH branch
-- **Issue #33** (closed): Remove dead ok/returncode fields from harness NgspiceRun
-- **Issue #32** (closed): Remove unused PDKPaths.pdk_root field
-- **Issue #30** (closed): Remove unused pdk_root field from PDKPaths
-- **Issue #28** (closed): Consolidate scratch-dir/deck-write/run duplication in run_experiment.py
-- **Issue #26** (closed): Remove unused claim_extra parameter from render_record()
-- **Issue #24** (closed): Consolidate gen_models/gen_models_moscap duplication in run_experiment.py
-- **Issue #22** (closed): Remove unused variant_override parameter in sim/harness/pdk.py's resolve_pdk()
-- **Issue #21** (closed): Remove dead code in sim/harness: unused append_log function and variant_override parameter
-- **Issue #19** (closed): Remove unused append_log helper in sim/harness/report.py (or wire it into raw-log writes)
-- **Issue #18** (closed): Remove unused append_log() in sim/harness/report.py
-
-### 2026-09-09
-
-- **PR #17**: sim: stand up sim/ evidence convention + cell-device-characterization experiment
-- **Issue #16** (closed): sim: access-device OFF-leakage / ON-resistance and moscap C–V characterization over PVT for all three cells — bound `I_sneak_max` at N=32 (architecture §3/§4 "required design input")
