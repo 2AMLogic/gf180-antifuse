@@ -1,0 +1,344 @@
+{
+  "schema": "run3-pad-table/1",
+  "source_record": "spec/run3-test-chip-floorplan.md",
+  "record_status": "Proposed for operator ratification",
+  "hv_terminal": "PL",
+  "pads": [
+    {
+      "pad": "L01",
+      "signal": "PL_C1_Amin_Gmin_1",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L02",
+      "signal": "PL_C1_Amin_Gmin_2",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L03",
+      "signal": "PL_C1_Amin_Gmin_3",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L04",
+      "signal": "PL_C1_Amin_Gmin_4",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L05",
+      "signal": "PL_C1_Amin_G2x_1",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L06",
+      "signal": "PL_C1_Amin_G2x_2",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L07",
+      "signal": "PL_C1_Amin_G2x_3",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L08",
+      "signal": "PL_C1_Amin_G2x_4",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L09",
+      "signal": "PL_C1_A2x_Gmin_1",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L10",
+      "signal": "PL_C1_A2x_Gmin_2",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L11",
+      "signal": "PL_C1_A2x_Gmin_3",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L12",
+      "signal": "PL_C1_A2x_Gmin_4",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L13",
+      "signal": "PL_C1_A2x_G2x_1",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L14",
+      "signal": "PL_C1_A2x_G2x_2",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L15",
+      "signal": "PL_C1_A2x_G2x_3",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L16",
+      "signal": "PL_C1_A2x_G2x_4",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L17",
+      "signal": "PL_C2_Amin_Gmin_1",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L18",
+      "signal": "PL_C2_Amin_Gmin_2",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L19",
+      "signal": "PL_C2_Amin_Gmin_3",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L20",
+      "signal": "PL_C2_Amin_Gmin_4",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L21",
+      "signal": "PL_C2_Amin_Gmin_5",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L22",
+      "signal": "PL_C2_Amin_G2x_1",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L23",
+      "signal": "PL_C2_Amin_G2x_2",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L24",
+      "signal": "PL_C2_Amin_G2x_3",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L25",
+      "signal": "PL_C2_Amin_G2x_4",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L26",
+      "signal": "PL_C2_Amin_G2x_5",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L27",
+      "signal": "PL_C3_Amin_Gmin_1",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L28",
+      "signal": "PL_C3_Amin_Gmin_2",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L29",
+      "signal": "PL_C3_Amin_Gmin_3",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L30",
+      "signal": "PL_C3_Amin_Gmin_4",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L31",
+      "signal": "PL_C3_Amin_Gmin_5",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L32",
+      "signal": "PL_C3_Amin_G2x_1",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L33",
+      "signal": "PL_C3_Amin_G2x_2",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L34",
+      "signal": "PL_C3_Amin_G2x_3",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L35",
+      "signal": "PL_C3_Amin_G2x_4",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L36",
+      "signal": "PL_C3_Amin_G2x_5",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "HV"
+    },
+    {
+      "pad": "L37",
+      "signal": "BL_C1_Amin",
+      "direction": "analog",
+      "slot_type": "analog",
+      "voltage_class": "standard"
+    },
+    {
+      "pad": "L38",
+      "signal": "BL_C1_A2x",
+      "direction": "analog",
+      "slot_type": "analog",
+      "voltage_class": "standard"
+    },
+    {
+      "pad": "L39",
+      "signal": "BL_C2_Amin",
+      "direction": "analog",
+      "slot_type": "analog",
+      "voltage_class": "standard"
+    },
+    {
+      "pad": "L40",
+      "signal": "BL_C3_Amin",
+      "direction": "analog",
+      "slot_type": "analog",
+      "voltage_class": "standard"
+    },
+    {
+      "pad": "L41",
+      "signal": "WL_C1_Amin",
+      "direction": "input",
+      "slot_type": "input-only",
+      "voltage_class": "standard"
+    },
+    {
+      "pad": "L42",
+      "signal": "WL_C1_A2x",
+      "direction": "input",
+      "slot_type": "input-only",
+      "voltage_class": "standard"
+    },
+    {
+      "pad": "L43",
+      "signal": "WL_C2_Amin",
+      "direction": "input",
+      "slot_type": "input-only",
+      "voltage_class": "standard"
+    },
+    {
+      "pad": "L44",
+      "signal": "WL_C3_Amin",
+      "direction": "input",
+      "slot_type": "input-only",
+      "voltage_class": "standard"
+    },
+    {
+      "pad": "L45",
+      "signal": "VBW_C3",
+      "direction": "bidir",
+      "slot_type": "bidir",
+      "voltage_class": "standard"
+    },
+    {
+      "pad": "L46",
+      "signal": "UNUSED_1",
+      "direction": "none",
+      "slot_type": "input-only",
+      "voltage_class": "n/a"
+    },
+    {
+      "pad": "L47",
+      "signal": "UNUSED_2",
+      "direction": "none",
+      "slot_type": "input-only",
+      "voltage_class": "n/a"
+    },
+    {
+      "pad": "L48",
+      "signal": "UNUSED_3",
+      "direction": "none",
+      "slot_type": "bidir",
+      "voltage_class": "n/a"
+    }
+  ]
+}
