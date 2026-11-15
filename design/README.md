@@ -93,11 +93,16 @@ them per instance; no cell schematic edit is involved.
 
 **The defaults above are placeholders, not design values.** They are the PDK
 symbol template defaults, carried through verbatim. `spec/split-axis-plan.md`
-names its two geometry levels "process-minimum" and "2x-area", but no ratified
-spec document fixes what the process-minimum legal geometry actually is — that
-is a PDK design-rule lookup, deliberately out of scope for this first drop of
-sources. Choosing those numbers is follow-on work; nothing in this directory
-should be read as asserting them.
+names its two geometry levels "process-minimum" and "2x-area". For the
+capacitor half those numbers are now fixed by
+[`spec/capacitor-geometry-decision.md`](../spec/capacitor-geometry-decision.md)
+(1.0 x 0.28 um / 2.0 x 0.28 um thin-oxide, 1.0 x 0.70 um / 2.0 x 0.70 um
+6 V) — regenerating `design/` against them is authorised but not yet
+performed, so the instances below still carry the placeholder values. The
+access half (`wacc`/`lacc`) remains a PDK design-rule lookup, deliberately
+out of scope for this first drop of sources; choosing those numbers is
+follow-on work, and nothing in this directory should be read as asserting
+either half's final values.
 
 ## Program leg and read leg
 
@@ -203,6 +208,13 @@ decision record and the generator + netlists regenerate.
    re-scales, and the recorded bench numbers (path efficiency, isolation,
    leakage) scale with them — current results remain valid as structure
    evidence only; a re-run mints a new append-only record.
+   **Decided (capacitor half), 2026-11-15**: fixed by
+   [`spec/capacitor-geometry-decision.md`](../spec/capacitor-geometry-decision.md)
+   — Minimum `wcap` x `lcap` = 1.0 x 0.28 um (`cap_nmos_03v3` /
+   `cap_pmos_03v3`) and 1.0 x 0.70 um (`cap_nmos_06v0`); "2x" doubles
+   `wcap` only. The committed sources here still carry the placeholder
+   defaults until the authorised regeneration lands (#292's follow-through);
+   the access half (`wacc`/`lacc`) remains PROVISIONAL (the section-3 axis).
    Measured state: every drawn-vs-simulated divergence this placeholder
    numbering currently implies is recorded in
    [`geometry-basis.json`](geometry-basis.json) (validated by check 7,
