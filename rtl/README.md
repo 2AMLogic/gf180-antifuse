@@ -233,7 +233,7 @@ rtl/pnr/run_pnr.sh --rerun    # full re-run diffed against the committed report
 | File | What it is |
 |---|---|
 | [`pnr/antifuse_digital_top.pnr.json`](pnr/antifuse_digital_top.pnr.json) | The request: 35 % utilization, 10 um core margin, `power.preset: gf180mcu_7t_6M` (PDN on Metal1/4/5 plus tapcells, endcaps, fill), seed 1. |
-| `pnr/antifuse_digital_top.pnr.report.json` | The `klt place-and-route` response, with host paths rewritten repo-relative by the script. |
+| `pnr/antifuse_digital_top.pnr.report.json` | The `klt place-and-route` response, with host paths rewritten repo-relative by `scrub_report_paths.py` (shared with `rtl/sta`, issue #285). |
 | `pnr/antifuse_digital_top.{gds,def}`, `pnr/antifuse_digital_top_routed.v` | Routed GDS, DEF and the as-built netlist (CTS buffers and fill included): the reference a later LVS run should use. |
 | `pnr/antifuse_digital_top.attest.json` | The T1 item 2 attestation, written by `pnr/attest.py` and cited as `2.digital` in `signoff/manifest.json`. |
 
@@ -268,7 +268,7 @@ no other constraint). `rtl/sta/run_sta.sh --check` re-hashes the inputs against
 |---|---|
 | `sta/antifuse_digital_top.extract.json`, `sta/antifuse_digital_top.sta.json` | The two requests. |
 | `sta/antifuse_digital_top.spef` | The extracted parasitics (`def_net_names`, DEF connections and pins, so OpenSTA can attach every net). |
-| `sta/antifuse_digital_top.sta.report.json` | The `klt sta` response, `geometry_source: routed`, host paths rewritten. |
+| `sta/antifuse_digital_top.sta.report.json` | The `klt sta` response, `geometry_source: routed`, host paths rewritten by `scrub_report_paths.py`. |
 | `sta/inputs.sha256` | sha256 of GDS, DEF, routed netlist, SPEF and both requests. |
 
 Annotation: 544 of 544 design nets are named by the SPEF at every corner and
