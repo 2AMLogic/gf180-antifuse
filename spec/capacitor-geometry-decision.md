@@ -79,7 +79,14 @@ moves.
   COMP extent is already 1.28 um in the drawn cells (#287 marker
   geometry), so raising W alone clears the rule without touching L.
 - **2x-area doubles W at fixed L**: 1.0 -> 2.0 um. This implements the
-  ratified "via W and/or L scaling" as W-only.
+  ratified "via W and/or L scaling" as W-only. One realisation constraint
+  is measured and accepted with it: at W_CAP = 2.0 um with the access
+  device at its own Minimum width, no single-rectangle `CN` strap clears
+  `metal1.space.1` through both tap-ring gaps, so the 2x level's `CN`
+  strap is drawn as a doglegged (multi-segment) metal1 shape. That
+  constrains the strap drawing, not the level — the measured spans,
+  windows and disposition are under "Generatability and rule clearance"
+  below, and the drawing itself is #296's.
 
 ### Why W-only doubling
 
@@ -97,6 +104,15 @@ moves.
    minimum this record pins to.
 3. **It is measured to work**: all six points of the table generate at
    released klt 0.9.2 (see below).
+
+The one consideration that argues for L-scaling instead — strap
+buildability at the 2x level — was measured rather than assumed, and does
+not carry: the tap-ring exit gaps rise with device width, so at
+W = 2.0 um a single-rectangle `CN` strap has no legal position, but a
+doglegged strap through the two gaps does, and L-scaling would still
+break reasons 1 and 2. The measured spans and the disposition are in
+"Generatability and rule clearance"; the constraint is discharged inside
+this W-only choice, not by re-leveling the axis.
 
 Rejected alternatives, for the record:
 
@@ -159,6 +175,51 @@ DRC proof is #296's job, and the die-level density rules (`M1.4`/`M2.4`/
 `M3.4`/`MT30.7`/`PL.8`) and `DBU` remain out of scope for a standalone cell,
 as #287 records.
 
+### CN strap clearance through the tap-ring gaps (measured)
+
+`CN` leaves each block through that block's tap-ring metal1 exit gap
+(`ring_gap_um 1.0`, `ring_gap_offset_um -0.7`; cap side `E`, access side
+`W`), so it must sit in the intersection of both gaps with >= 0.23 um
+(`metal1.space.1`) clearance from each gap edge. Each gap is centred on
+its device and rises with the device's width. Measured spans at released
+`klayout-tools==0.9.2` (PDK `gf180mcuA`, `klt gen mos_array` port
+reports; probes ran with output outside the repo and left it clean):
+
+| block | W (um) | gap span (um, y) |
+|---|---|---|
+| access (`W_ACC`, not set by this axis) | 0.42 | -0.28..0.72 |
+| capacitor, Minimum | 1.0 | 0.01..1.01 |
+| capacitor, 2x | 2.0 | 0.51..1.51 |
+
+consistent with the committed `klt gen mos_array` measurements at
+W = 0.42 and 0.84 um recorded in
+`layout/cell_candidate1_Amin_G2x/generate.py` and
+`layout/cell_candidate3_Amin_G2x/generate.py` (-0.28..0.72 and
+-0.07..0.93): the gap centre is W/2 + 0.01 um at all four measured
+widths, and the span depends on width, not flavor — the committed pair
+is identical across thin-oxide nfet/pfet capacitors and medium-voltage
+nfet/pfet access devices.
+
+At **Minimum** (W_CAP = 1.0 um) the cap/access gap intersection is
+0.01..0.72 um: a single-rectangle `CN` fits, inside a 0.25 um-tall
+window (0.24..0.49 um) — tighter than the 0.30 um band the G2x variant
+cells draw, so that band does not carry over unshrunk even at Minimum.
+At **2x** (W_CAP = 2.0 um) the intersection is 0.51..0.72 um, 0.21 um —
+below the 0.46 um two-sided clearance — so **no single-rectangle `CN`
+clears `metal1.space.1` at the 2x level** while the access device stays
+at Minimum width. The 2x level's `CN` strap is therefore a doglegged
+(multi-segment) metal1 shape: each segment passes its gap inside that
+gap's window (both windows are 0.54 um tall — -0.05..0.49 um at the
+access gap, 0.74..1.28 um at the 2x capacitor gap) and the segments
+join over the inter-ring field between the rings. This is a measured
+constraint on the strap drawing, not on the level, and it discharges
+the question routed here from #296 (Curator flag on #294,
+2026-11-15): 2x-area stays W = 2.0 um; that flag's derived
+no-single-rectangle conclusion is confirmed by measurement, and the
+realisation it forces is the doglegged strap above. Drawing that strap
+and DRC-proving it on composed cells is #296's, like every other
+composed-cell consequence.
+
 ## What this record does not settle
 
 - **#292 (drawn vs. simulated geometry) stays open, and #292 owns it.** The
@@ -188,6 +249,17 @@ as #287 records.
   area is ~40.8 um^2 at Minimum. **That figure is derived, not re-measured
   on a composed cell.** Re-measuring on the composed cell and re-budgeting
   the floorplan is #296's, once it implements this record in `layout/`.
+- **The 2x level's doglegged `CN` strap is required here but not drawn
+  here.** The measurement above fixes the constraint (no single
+  rectangle at W_CAP = 2.0 um with `W_ACC` = 0.42 um) and the realisation
+  (multi-segment metal1 through the two ring gaps); the drawing, its pad
+  overlaps and its DRC proof on composed cells are #296's, on the same
+  standing as the `layout/README.md` reconciliation this record leads.
+  The constraint is width-arithmetic on the access side — the gap
+  intersection height is exactly W_ACC/2 um — so a single-rectangle
+  strap reopens only if section 3 ever raises `W_ACC` above ~0.92 um
+  (more, for a realistic strap height); that would be a re-measure at
+  the new width, not a re-level of this axis.
 - **The `layout/README.md` contradiction is expected.** Until #296 lands,
   `layout/README.md`'s 0.42 / 0.84 narrative (notably its "2x the drawn
   Minimum ... not 2x a process minimum" passage) contradicts this record;
@@ -205,8 +277,12 @@ as #287 records.
 
 - **#296** (layout geometry child, "Depends on #294") implements these
   levels in `layout/`: retires the `W_MIN = 0.42` generator floor, updates
-  `layout/README.md`'s 0.42 / 0.84 narrative, re-fits the MOSCAP marker, and
-  proves `DF.1c` clearance and the cell-growth law on composed cells.
+  `layout/README.md`'s 0.42 / 0.84 narrative, re-fits the MOSCAP marker,
+  proves `DF.1c` clearance and the cell-growth law on composed cells, and
+  draws the 2x level's `CN` strap as the doglegged multi-segment metal1
+  shape this record measures (no single rectangle fits at W = 2.0 um with
+  the access device at Minimum width), DRC-proving it on the composed
+  cell.
 - **#292** owns the drawn-vs-simulated reconciliation and the `design/`
   regeneration follow-through this record authorises.
 - **#287** is the evidence source this record cites rather than re-derives;
@@ -218,6 +294,11 @@ as #287 records.
 - Measurements: 2026-11-14, released `klayout-tools==0.9.2` (the host
   `klt` was a dev build, so the pinned release was used), PDK `gf180mcuA`;
   probes ran with output outside the repo and left it clean.
+- Ring-gap spans for the CN-strap clearance table: measured 2026-11-15,
+  released `klayout-tools==0.9.2`, PDK `gf180mcuA`, `klt gen mos_array`
+  port reports (three probes: capacitor widths 1.0 and 2.0 um at
+  `ring_gap_side E`, access width 0.42 um at `ring_gap_side W`); probes
+  ran with output outside the repo and left it clean.
 - First measured at `origin/main` @ `ab8dd5cf` (#287); the only intervening
   change to `layout/` before re-verification (PR #288) touched
   `cell_candidate2` comment text and `layout/README.md` only —
