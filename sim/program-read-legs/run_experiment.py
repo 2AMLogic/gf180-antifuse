@@ -58,6 +58,14 @@ PROCESS = (
     ("sf", "sf", "moscap_typical", "res_typical"),
 )
 KLT_TIMEOUT_S = 3 * 3600
+# klt-side capacity patience, complementary to K.BACKOFF: capacity_wait_s
+# makes klt wait *before* refusing a launch (batch_no_capacity / the fleet's
+# shared concurrency cap); K.BACKOFF resubmits the same request *after* a
+# refusal that still happens. 1800 s matches the sibling driver
+# (sim/cell-breakdown-model's BATCH_OPTS); the fleet rule's floor is 600 s.
+# runner_version_check is deliberately not copied: it works around a runner
+# image skew this driver does not have.
+BATCH_OPTS = {"capacity_wait_s": 1800}
 
 
 def process_bundles(candidate_has_smbb: bool, preamble: str, design_section: str = "design") -> list[dict]:
@@ -89,6 +97,7 @@ def make_request(netlist_name: str, measurements: list[dict], smbb: bool, preamb
         "analysis": {"kind": "op", "args": ""},
         "measurements": measurements,
         "options": {"keep_artifacts": True, "timeout_s": 300, "stage_model_inputs": True},
+        "batch": dict(BATCH_OPTS),
     }
 
 
