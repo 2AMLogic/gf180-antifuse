@@ -122,8 +122,6 @@ def band_of_col(c: int):
 # Cell parameter levels
 # ---------------------------------------------------------------------------
 
-_SUFFIX = {"f": 1e-15, "p": 1e-12, "n": 1e-9, "u": 1e-6, "m": 1e-3}
-
 
 def _split_token(tok: str):
     m = re.fullmatch(r"([0-9.]+(?:[eE][+-]?[0-9]+)?)([a-zA-Z]?)", tok)

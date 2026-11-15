@@ -22,7 +22,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import gen_blocks  # noqa: E402
-from gen_blocks import block_re, table  # noqa: E402,F401
+from gen_blocks import table  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 PARAMS_FILE = ROOT / "design" / "breakdown" / "breakdown_params.spice"
@@ -335,10 +335,6 @@ def render() -> dict[str, str]:
 
 def check(note: Path = NOTE) -> list[str]:
     return gen_blocks.check(render(), note)
-
-
-def update(note: Path = NOTE) -> None:
-    gen_blocks.update(render(), note)
 
 
 def main(argv: list[str]) -> int:
