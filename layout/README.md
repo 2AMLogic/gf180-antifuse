@@ -16,7 +16,9 @@ no claim about breakdown behaviour.
 |---|---|
 | `generate.py` | Deterministic generator: this candidate's parameters (flavor, `L_ACC`, `DX`, strap/marker rectangles, placement, pin map) plus a call into the shared `layout/bitcell_gen.py`, which runs the flow (`klt gen mos_array` x2, `klt draw` for two Metal1 straps, `klt gen-compose` explicit placement). `--check` regenerates and compares the committed GDS byte-for-byte. |
 | `cell_candidate1.gds` | Generated layout, top cell `cell_candidate1`, pins/labels `BL`, `WL`, `PL`, `VB`. |
-| `drc_report.json` | `klt drc --deck gf180mcu --top cell_candidate1` report (status `clean`, 0 violations). |
+| `drc_report.json` | `klt drc --deck gf180mcu --top cell_candidate1` report (status `clean`, 0 violations) -- the **curated deck's** verdict; see "DRC" for the native runset's. |
+| `drc_crosscheck_report.json` | Curated-vs-native cross-check, `klt drc --engine both --deck gf180mcu --top cell_candidate1 --pdk gf180mcuA --deck-var decks=all,-mslot` (klayout-tools `0.9.2`, KLayout `0.30.13`): curated `clean`, native runset `violations`, 6 findings. |
+| `drc_native_report.json` | Plain native-deck envelope, `klt drc --engine klayout --top cell_candidate1 --pdk gf180mcuA --deck-var decks=all,-mslot` (same pin): `status: violations`, 6 findings. This is the envelope `signoff/manifest.json` cites for the `3.analog` row. |
 | `lvs_request.json`, `lvs_reference.spice` | The LVS request and its reference netlist. |
 | `lvs_report.json` | `klt lvs lvs_request.json` report (status `match`, 0 errors); see "LVS". |
 
@@ -76,7 +78,9 @@ schematic defaults.
 deck `gf180mcu` content hash
 `sha256:9babf6fd5d623fea50d380168ebf8f7c0f0f6e70eb7d89b221476dc47c7f6a85`,
 input GDS `sha256:4fa502d0b9775f4dd8ba42fd2292c0a70edf83e3c528f52550a2ba4d1d9f44de`
-(the report's `provenance.input.content_hash`). A first placement at 3.9 um
+(the report's `provenance.input.content_hash`). This is the **curated deck's**
+verdict; the PDK's own runset disagrees, and that cross-check is committed --
+see the last bullet below. A first placement at 3.9 um
 pitch drew a Pplus spacing violation between the two tap rings; the committed
 cell uses a 4.2 um pitch. The rule was not waived.
 
@@ -162,18 +166,23 @@ marker (the deck has no rule on it, so DRC does not check its placement).
 - Layout-versus-programming-voltage suitability (thin-oxide device in a
   program path) is a design-intent matter this deck cannot judge.
 - **The `clean` verdict is the curated deck's, and the PDK's own runset
-  disagrees.** The native-deck cross-check could not be run when this section
-  was written (the host KLayout predated the deck's 0.30.9 floor); it can now.
-  Run on the committed GDS with klt 0.9.2
-  (`--engine klayout --pdk gf180mcuA --deck-var decks=all,-mslot`), the PDK
-  runset reports 6 findings: **`DF.1c` x1** ("Min. COMP Width for MOSCAP",
-  1 um, in `mos_array` -- the capacitor's COMP island under the 166/5 marker is
-  drawn 0.42 um), plus `DBU` x1 and the die-level density rules
+  disagrees; the cross-check is committed.** `drc_crosscheck_report.json`
+  (`klt drc --engine both --deck gf180mcu --top cell_candidate1 --pdk
+  gf180mcuA --deck-var decks=all,-mslot`, klayout-tools `0.9.2`, KLayout
+  `0.30.13`) runs the curated deck and the PDK's own sign-off runset
+  (`gf180mcu.drc`) on the same committed GDS: curated `status: clean`, native
+  `status: violations`, 6 findings -- **`DF.1c` x1** ("Min. COMP Width for
+  MOSCAP", 1 um, in `mos_array` -- the capacitor's COMP island under the 166/5
+  marker is drawn 0.42 um), plus `DBU` x1 and the die-level density rules
   `M2.4`/`M3.4`/`MT30.7`/`PL.8`. The `DF.1c` finding is a real cell-level
   violation that the curated deck neither checks nor discloses; the density
-  rules fire on any standalone cell. Tracked as #287 with the candidate 2 and
-  3 runs; this section's `clean` means "clean under the curated deck", not
-  signed off.
+  rules fire on any standalone cell and are recorded as disclosed, not fixed.
+  The same native verdict is committed a second way as
+  `drc_native_report.json` (a plain `--engine klayout` envelope, same pin and
+  deck-var), which is the envelope `signoff/manifest.json` cites for the
+  `3.analog` row -- that row grades `unmet`, not `met`
+  (`signoff/README.md`). Cell-level fixes are #287's; this section's `clean`
+  means "clean under the curated deck", not signed off.
 
 ### LVS
 
@@ -194,7 +203,7 @@ errors and unpaired `PL`/`VB`. The deck recognises a MOS capacitor only as a
 COMP island under `MOS_CAP_MK` (166/5); the committed cell had no such marker.
 The reference netlist and the request were right. The fix is the marker in
 `generate.py`, with the GDS regenerated. The cap's drawn size, the connectivity
-and DRC (`clean`) did not change.
+and the curated-deck DRC verdict (`clean`) did not change.
 
 **What the match does not establish.** The report carries three warnings that
 bound it:
@@ -309,15 +318,31 @@ uvx --from klayout-tools==0.8.0 --with klayout==0.30.12 \
   python3 layout/cell_candidate1_A2x_G2x/generate.py --check
 ```
 
-| Cell | DRC | LVS | ERC |
-|---|---|---|---|
-| `cell_candidate1_Amin_G2x/` | `status: clean`, 0 violations | `status: match`, 0 errors | `erc_status: clean`, 0 findings |
-| `cell_candidate1_A2x_Gmin/` | `status: clean`, 0 violations | `status: match`, 0 errors | `erc_status: clean`, 0 findings |
-| `cell_candidate1_A2x_G2x/` | `status: clean`, 0 violations | `status: match`, 0 errors | `erc_status: clean`, 0 findings |
+The committed `drc_crosscheck_report.json` files are the exception to that
+pin: they were produced with `uvx --from klayout-tools==0.9.2 klt drc --engine
+both` (KLayout `0.30.13`, so
+`provenance.klayout_version_mismatch` is `true` on them, matching candidate
+2's committed cross-check), and `klt drc --check` verifies each one fresh
+against its pinned input GDS. No geometry changed for any of them.
+
+| Cell | DRC (curated deck) | DRC (native runset) | LVS | ERC |
+|---|---|---|---|---|
+| `cell_candidate1_Amin_G2x/` | `status: clean`, 0 violations | `violations`, 6: `DF.1c` x1 in `mos_array`, `DBU` x1, density `M2.4`/`M3.4`/`MT30.7`/`PL.8` | `status: match`, 0 errors | `erc_status: clean`, 0 findings |
+| `cell_candidate1_A2x_Gmin/` | `status: clean`, 0 violations | `violations`, 6: `DF.1c` x1 in `mos_array`, `DBU` x1, density `M2.4`/`M3.4`/`MT30.7`/`PL.8` | `status: match`, 0 errors | `erc_status: clean`, 0 findings |
+| `cell_candidate1_A2x_G2x/` | `status: clean`, 0 violations | `violations`, 6: `DF.1c` x1 in `mos_array`, `DBU` x1, density `M2.4`/`M3.4`/`MT30.7`/`PL.8` | `status: match`, 0 errors | `erc_status: clean`, 0 findings |
 
 - **DRC.** `klt drc --deck gf180mcu`, deck `released: true`, no waiver and no
   rule disabled. Layers in stream without rules are 34/10 (labels) and 166/5
-  (capacitor marker), as for `cell_candidate1/`.
+  (capacitor marker), as for `cell_candidate1/`. The curated `clean` is not
+  the whole verdict: each cell's committed `drc_crosscheck_report.json`
+  (`klt drc --engine both --deck gf180mcu --pdk gf180mcuA --deck-var
+  decks=all,-mslot`, klayout-tools `0.9.2`, KLayout `0.30.13`) runs the PDK's
+  own runset on the same GDS and reports `status: violations`, 6 findings,
+  classified as for `cell_candidate1/`: the cell-level **`DF.1c`** (the 0.42 um
+  MOSCAP COMP width, in `mos_array` -- our own geometry, neither checked nor
+  disclosed by the curated deck) is distinct from `DBU` and the die-level
+  density rules `M2.4`/`M3.4`/`MT30.7`/`PL.8`, which fire on any standalone
+  cell and say nothing about it. Cell-level fixes are #287's.
 - **LVS.** `klt lvs lvs_request.json` against each cell's own
   `lvs_reference.spice`, which keeps `cap_nmos_03v3` for the capacitor: **no
   `device_map`, no waiver, no substituted device**. 5/5 nets, 2/2 devices and
@@ -457,20 +482,22 @@ values.
   0 violations. Layers in stream without rules: 34/10 (labels), 166/5 (cap
   marker). The candidate-1 caveat applies: Dualgate is not modelled for the
   6 V rules, so the access device is checked against the 3.3 V thresholds.
-- **The PDK's own runset disagrees with that `clean`.** The native-deck
-  cross-check, impossible on this host when this section was written and
-  possible now (standalone KLayout 0.30.12), reports 12 findings on the
-  committed GDS under klt 0.9.2
-  (`--engine klayout --pdk gf180mcuA --deck-var decks=all,-mslot`): **`DF.4d_MV`
-  x5** ("Min. Nwell overlap of NCOMP outside DNWELL", 0.16 um), **`DV.6` x1**
-  ("Min. Dualgate enclose COMP", 0.24 um) and **`DF.1c` x1** (MOSCAP COMP
-  width, as for candidate 1) -- all in the `mos_array` blocks, so all in our
-  own geometry -- plus `DBU` x1 and the die-level density rules
+  This `clean` is the **curated deck's**; the native runset's verdict is the
+  next bullet, committed in `drc_crosscheck_report.json`.
+- **The PDK's own runset disagrees with that `clean`; the cross-check is
+  committed.** `drc_crosscheck_report.json` (`klt drc --engine both --deck
+  gf180mcu --top cell_candidate3 --pdk gf180mcuA --deck-var decks=all,-mslot`,
+  klayout-tools `0.9.2`, KLayout `0.30.13`) reports 12 native findings on the
+  committed GDS: **`DF.4d_MV` x5** ("Min. Nwell overlap of NCOMP outside
+  DNWELL", 0.16 um, in `mos_array$1`), **`DV.6` x1** ("Min. Dualgate enclose
+  COMP", 0.24 um, in `mos_array$1`) and **`DF.1c` x1** (MOSCAP COMP width, in
+  `mos_array`, as for candidate 1) -- all in the `mos_array` blocks, so all in
+  our own geometry -- plus `DBU` x1 and the die-level density rules
   `M2.4`/`M3.4`/`MT30.7`/`PL.8`. The curated deck discloses `DF.4d_MV` and
   `DV.6` as unmodelled; it does not disclose `DF.1c`. Candidate 3's well
   connection is stated below, but the Nwell overlap it is drawn with does not
-  meet the rule. Tracked as #287 with the candidate 1 and 2 runs; this
-  section's `clean` means "clean under the curated deck", not signed off.
+  meet the rule. Cell-level fixes are tracked as #287; this section's `clean`
+  means "clean under the curated deck", not signed off.
 - **LVS.** `status: match`, 0 errors (`klt lvs --check lvs_report.json` run
   from the cell directory exits 0). Same bounds as candidate 1: the capacitor's
   geometry and capacitance are not compared.
@@ -582,7 +609,8 @@ cell must share.
 
 | | result |
 |---|---|
-| DRC | `klt drc --deck gf180mcu --top cell_candidate3_Amin_G2x`: `status: clean`, 0 violations, deck `released: true`, no waiver and no rule disabled |
+| DRC (curated deck) | `klt drc --deck gf180mcu --top cell_candidate3_Amin_G2x`: `status: clean`, 0 violations, deck `released: true`, no waiver and no rule disabled |
+| DRC (native runset) | `drc_crosscheck_report.json` (`klt drc --engine both --deck gf180mcu --top cell_candidate3_Amin_G2x --pdk gf180mcuA --deck-var decks=all,-mslot`, klayout-tools `0.9.2`, KLayout `0.30.13`): native `status: violations`, 12 findings -- `DF.1c` x1 ("Min. COMP Width for MOSCAP", in `mos_array`), `DF.4d_MV` x5 and `DV.6` x1 (in `mos_array$1`), `DBU` x1, density `M2.4`/`M3.4`/`MT30.7`/`PL.8` |
 | LVS | `klt lvs lvs_request.json`: `status: match`, 0 errors; 5/5 nets, 2/2 devices, 4/4 pins paired; no `device_map`, no waiver, no substituted device |
 | ERC | `klt erc ... layout/erc/supplies_region_iii.json` (the existing spec, unedited): `erc_status: clean`, 0 findings; antenna `not_checked` (no PDK antenna data), so the command exits non-zero on a clean run -- read `erc_status` |
 
@@ -591,10 +619,15 @@ Dualgate is not modelled for the 6 V rules so the access device is checked
 against the 3.3 V thresholds; the capacitor's geometry and capacitance are not
 compared by LVS (`subckt-call` placeholder `C`, `A`/`P` secondary), so the
 drawn capacitor size rests on `generate.py` and `klt extract`. The curated-deck
-`clean` is not signed off: the PDK's native-deck cross-check findings tracked
-as **#287** for `cell_candidate3/` can be expected here too (same blocks, same
-rules); running that cross-check on this cell is follow-up work, not part of
-this issue.
+`clean` is not signed off, and the native verdict here is measured, not
+predicted: this cell's **first** native run (`drc_crosscheck_report.json`)
+reports exactly the cell-level finding set its `Gmin` sibling shows -- `DF.1c`
+x1, `DF.4d_MV` x5, `DV.6` x1, all in the `mos_array` blocks (our own geometry)
+-- plus `DBU` and the die-level density rules. The run that produced this
+warned against assuming the sibling match just because both draw
+`W_CAP = 0.84 um`; it holds, and the committed report is the evidence.
+Cell-level fixes are **#287**'s; the geometry change this cell will get is
+#296's.
 
 `klt drc --check drc_report.json` and `klt lvs --check lvs_report.json` run
 from the cell directory exit 0. `klt erc --check erc_report.json` reports the
