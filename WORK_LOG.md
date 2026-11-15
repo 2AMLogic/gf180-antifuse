@@ -3,10 +3,6 @@
 Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 
-## Archives
-
-- [2026-09](work_log/WORK_LOG_2026-09.md)
-
 ### 2026-11-15
 
 - **PR #291**: test: port test_hv_pad_protection.py from pytest to unittest
@@ -247,3 +243,6 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 - **PR #44**: signoff: commit a klt signoff block manifest and its graded T1 verdict
 - **Issue #43** (closed): Commit a klt signoff block manifest so this block's T1 state is graded, not hand-read
 
+## Archives
+
+- [2026-09](work_log/WORK_LOG_2026-09.md)
