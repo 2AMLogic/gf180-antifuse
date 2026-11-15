@@ -109,8 +109,9 @@ class RunnerTests(unittest.TestCase):
                     for m in meas:
                         node = m["spice"].split("v(")[1].split(")")[0]
                         with self.subTest(cand=n, bench=name, node=node):
-                            self.assertIn("B", text)
-                            self.assertIn(f" {node.upper()} 0 V", text.upper())
+                            cards = [ln.strip() for ln in text.upper().splitlines()
+                                     if ln.strip().startswith("B") and f" {node.upper()} 0 V" in ln]
+                            self.assertEqual(len(cards), 1, (n, name, node))
                     self.assertEqual(("XPD PAD PL 0 hv_pad_ballast" in text), (bd["path"] == "ballast"))
         self.assertIsNotNone(pdk)
 
