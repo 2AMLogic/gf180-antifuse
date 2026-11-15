@@ -84,4 +84,3 @@ def check_corner(kind: str, level: float, vbd: float, cand: int, vals: dict, bal
         if (_v(vals, "ifilj_max") or 0.0) > TRIP_I:
             out.append("rating:neighbour-programmed")
     return out
-
