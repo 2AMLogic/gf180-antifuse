@@ -45,25 +45,9 @@ case "${1:-}" in
   *) echo "usage: $0 [--check]" >&2; exit 2 ;;
 esac
 
-$KLT extract "$EXTRACT_REQ" --format json > "$D/extract.tmp.json"
-rm -f "$D/extract.tmp.json"
+$KLT extract "$EXTRACT_REQ" --format json > /dev/null
 $KLT sta "$STA_REQ" --pdk gf180mcuD --format json > "$REPORT.tmp"
-python3 -I - "$REPORT.tmp" "$REPORT" <<'PY'
-import json, os, sys
-r = json.load(open(sys.argv[1]))
-root, home = os.getcwd() + "/", os.path.expanduser("~") + "/"
-def clean(v):
-    if isinstance(v, str):
-        return v.replace(root, "").replace(home, "~/")
-    if isinstance(v, list):
-        return [clean(x) for x in v]
-    if isinstance(v, dict):
-        return {k: clean(x) for k, x in v.items()}
-    return v
-with open(sys.argv[2], "w") as f:
-    json.dump(clean(r), f, indent=2)
-    f.write("\n")
-PY
+python3 -I rtl/scrub_report_paths.py "$REPORT.tmp" "$REPORT"
 rm -f "$REPORT.tmp"
 sha256sum "${INPUTS[@]}" > "$SUMS"
 check_report
