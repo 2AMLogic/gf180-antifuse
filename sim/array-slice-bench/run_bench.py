@@ -518,6 +518,8 @@ def main():
                          "grades only -- implies --no-write, nothing is written")
     ap.add_argument("--no-write", action="store_true", help="grade and print only")
     a = ap.parse_args()
+    if a.analyze_report and a.mode == "full-band":
+        ap.error("--analyze-report cannot be combined with --mode full-band: full-band never grades the report path")
     if a.analyze_report:
         a.no_write = True
         print("note: --analyze-report grades only; nothing is written (--no-write implied)", file=sys.stderr)
