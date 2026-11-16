@@ -29,6 +29,8 @@ Human-approved issues ready for implementation (`loom:issue`).
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4)
 - **#340**: sim/harness/tests/test_numfmt.py: no direct coverage for numfmt.close and numfmt.logical_lines
 - **#344**: layout/README.md still says per-candidate geometry stays in each generate.py
+- **#346**: check:ci fails on main: check_artifact_manifests.py reports committed-and-stored bytes for sim/ artifacts
+- **#356**: Runs since the 10-23 store-only rule commit raw sim bytes as well as storing them: find and fix the cause
 
 ## In Progress
 
@@ -86,7 +88,7 @@ Issues carrying `loom:curated`.
 | Operator merge-risk holds | 1 |
 | Very important | 1 |
 | Important | 4 |
-| Ready (`loom:issue`) | 3 |
+| Ready (`loom:issue`) | 5 |
 | In Progress (`loom:building`) | 1 |
 | PRs awaiting review | 1 |
 | Approved PRs awaiting merge | 1 |
