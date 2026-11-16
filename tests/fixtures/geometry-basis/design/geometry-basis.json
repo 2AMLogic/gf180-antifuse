@@ -2,7 +2,7 @@
   "schema": "geometry-basis/1",
   "issue": "#292",
   "status": "unresolved",
-  "owner": "#292 (resolution deferred to design/README.md PROVISIONAL open item 1(a); #294/#296 move the drawn capacitor levels)",
+  "owner": "design/README.md PROVISIONAL open item 1(a) (simulated capacitor basis regeneration); #296 moves the drawn capacitor geometry; capacitor Minimum/2x levels ratified per spec/capacitor-geometry-decision.md (#294)",
   "conventions": {
     "units": "SI metres (0.42 = 0.42 um)",
     "min_level": "the cell subcircuit's own .subckt parameter default",
@@ -10,7 +10,8 @@
     "access_2x": "2x wacc at fixed lacc",
     "ratio": "drawn / simulated",
     "divergence": "one entry per drawn cell and parameter whose drawn literal differs numerically from the simulated basis at that cell's split level",
-    "coverage_gap": "a simulated split level (candidate x access level x capacitor level) with no drawn cell at all"
+    "coverage_gap": "a simulated split level (candidate x access level x capacitor level) with no drawn cell at all",
+    "owner_status": "capacitor entries: owner/status derived per entry from the ratified levels (spec/capacitor-geometry-decision.md, #294) - 'decided in spec; ...' names which side (drawn / simulated / both) does not yet conform; access entries stay 'unresolved' (level undecided). A recorded owner/status that no longer matches the derivation is a stale-record failure."
   },
   "notes": [
     "A within-axis relative claim is unaffected: both worlds step exactly 2x per axis (the PDK moscap model's C ~ c_length*c_width form makes the 2x/Min C ratio exactly 2.000 at fixed bias), so relative comparisons recorded per region hold.",
@@ -18,6 +19,19 @@
     "The gate being green means the divergences below are acknowledged and owned - NOT that the drawn geometry and the simulated geometry agree."
   ],
   "divergences": [
+    {
+      "cell": "cell_candidate1_A2x",
+      "levels": {
+        "access": "2x",
+        "capacitor": "min"
+      },
+      "parameter": "cap_l",
+      "simulated": 1e-06,
+      "drawn": 2.8e-07,
+      "ratio": 0.28,
+      "status": "decided in spec; simulated basis not conformed",
+      "owner": "design/README.md open item 1(a) (netlist regeneration)"
+    },
     {
       "cell": "cell_candidate2",
       "levels": {
@@ -28,8 +42,8 @@
       "simulated": 2e-06,
       "drawn": 4.2e-07,
       "ratio": 0.21,
-      "status": "unresolved",
-      "owner": "#294/#296 (capacitor levels)"
+      "status": "decided in spec; drawn geometry and simulated basis not conformed",
+      "owner": "#296 (drawn capacitor redraw); design/README.md open item 1(a) (netlist regeneration)"
     },
     {
       "cell": "cell_candidate2",
@@ -41,8 +55,8 @@
       "simulated": 1e-06,
       "drawn": 2.8e-07,
       "ratio": 0.28,
-      "status": "unresolved",
-      "owner": "#294/#296 (capacitor levels)"
+      "status": "decided in spec; drawn geometry and simulated basis not conformed",
+      "owner": "#296 (drawn capacitor redraw); design/README.md open item 1(a) (netlist regeneration)"
     },
     {
       "cell": "cell_candidate2",
@@ -63,21 +77,6 @@
     {
       "candidate": 1,
       "levels": {
-        "access": "2x",
-        "capacitor": "min"
-      },
-      "simulated": {
-        "cap_w": 1e-06,
-        "cap_l": 1e-06,
-        "acc_w": 6e-07,
-        "acc_l": 7e-07
-      },
-      "status": "unresolved",
-      "owner": "#294/#296 (capacitor levels; layout drop scope)"
-    },
-    {
-      "candidate": 1,
-      "levels": {
         "access": "min",
         "capacitor": "2x"
       },
@@ -87,8 +86,8 @@
         "acc_w": 3e-07,
         "acc_l": 7e-07
       },
-      "status": "unresolved",
-      "owner": "#294/#296 (capacitor levels; layout drop scope)"
+      "status": "decided in spec (capacitor half); no drawn cell",
+      "owner": "Run 3 bitcell layout drop (WORK_PLAN.md Run 3: #207/#211); capacitor levels per spec/capacitor-geometry-decision.md (#294)"
     },
     {
       "candidate": 2,
@@ -102,8 +101,8 @@
         "acc_w": 1e-06,
         "acc_l": 6e-07
       },
-      "status": "unresolved",
-      "owner": "#294/#296 (capacitor levels; layout drop scope)"
+      "status": "decided in spec (capacitor half); no drawn cell",
+      "owner": "Run 3 bitcell layout drop (WORK_PLAN.md Run 3: #207/#211); capacitor levels per spec/capacitor-geometry-decision.md (#294)"
     },
     {
       "candidate": 2,
@@ -117,8 +116,8 @@
         "acc_w": 1e-06,
         "acc_l": 6e-07
       },
-      "status": "unresolved",
-      "owner": "#294/#296 (capacitor levels; layout drop scope)"
+      "status": "decided in spec (capacitor half); no drawn cell",
+      "owner": "Run 3 bitcell layout drop (WORK_PLAN.md Run 3: #207/#211); capacitor levels per spec/capacitor-geometry-decision.md (#294)"
     },
     {
       "candidate": 2,
@@ -132,8 +131,8 @@
         "acc_w": 5e-07,
         "acc_l": 6e-07
       },
-      "status": "unresolved",
-      "owner": "#294/#296 (capacitor levels; layout drop scope)"
+      "status": "decided in spec (capacitor half); no drawn cell",
+      "owner": "Run 3 bitcell layout drop (WORK_PLAN.md Run 3: #207/#211); capacitor levels per spec/capacitor-geometry-decision.md (#294)"
     }
   ]
 }
