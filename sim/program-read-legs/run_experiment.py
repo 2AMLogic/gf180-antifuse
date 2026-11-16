@@ -58,6 +58,17 @@ PROCESS = (
     ("sf", "sf", "moscap_typical", "res_typical"),
 )
 KLT_TIMEOUT_S = 3 * 3600
+# The batch fleet kills a whole job at JOB_CEILING_S and reports batch_job_timeout
+# for every unit in it, and klt checks a request's conservative fully-serial bound
+# (units_per_job * options.timeout_s + overhead) against that ceiling on every
+# submission. Sharding the unit count across remote.hosts keeps the bound under
+# the ceiling: floor((3600 - 120) / 300) = 11 units per job, which is klt's own
+# max_units_per_job for this driver (integrated-transition's 16 is tied to that
+# driver's cheaper per-unit cost, not this one).
+JOB_CEILING_S = 3600
+JOB_OVERHEAD_S = 120
+PER_UNIT_TIMEOUT_S = 300
+MAX_UNITS_PER_SHARD = (JOB_CEILING_S - JOB_OVERHEAD_S) // PER_UNIT_TIMEOUT_S
 # klt-side capacity patience, complementary to K.BACKOFF: capacity_wait_s
 # makes klt wait *before* refusing a launch (batch_no_capacity / the fleet's
 # shared concurrency cap); K.BACKOFF resubmits the same request *after* a
@@ -86,6 +97,7 @@ def make_request(netlist_name: str, measurements: list[dict], smbb: bool, preamb
     bundles = process_bundles(smbb, preamble)
     if processes is not None:
         bundles = [b for b in bundles if b["name"] in processes]
+    units = len(bundles) * len(temps) * len(vdd)
     return {
         "netlist": netlist_name,
         "models": {"pdk": "gf180mcuD", "lib": "libs.tech/ngspice/sm141064.ngspice"},
@@ -96,8 +108,10 @@ def make_request(netlist_name: str, measurements: list[dict], smbb: bool, preamb
         },
         "analysis": {"kind": "op", "args": ""},
         "measurements": measurements,
-        "options": {"keep_artifacts": True, "timeout_s": 300, "stage_model_inputs": True},
+        "options": {"keep_artifacts": True, "timeout_s": PER_UNIT_TIMEOUT_S, "stage_model_inputs": True},
         "batch": dict(BATCH_OPTS),
+        # shard across fleet hosts so the declared job bound stays under the ceiling
+        "remote": {"hosts": max(1, -(-units // MAX_UNITS_PER_SHARD))},
     }
 
 
@@ -122,6 +136,9 @@ def make_mc_request(netlist_name: str, measurements: list[dict], smbb: bool, pre
     for b in req["corners"]["process"]:
         b["sections"][0] = {"lib": preamble, "section": "design_mm"}
     req["monte_carlo"] = {"n": n, "seed": seed, "vary": "mismatch"}
+    # MC units are monte_carlo.n, not the one-corner cross-product the delegated
+    # request was built with: re-shard for the real unit count.
+    req["remote"] = {"hosts": max(1, -(-n // MAX_UNITS_PER_SHARD))}
     return req
 
 

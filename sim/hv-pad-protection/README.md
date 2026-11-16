@@ -56,6 +56,14 @@ python3 -m pytest tests/test_hv_pad_protection.py                    # rules + d
 A failed submit writes `submit-error.txt` and no fallback local grid is run.
 Raw outputs go to the artifact store; the record and a manifest are committed.
 
+Committed per-corner reports (`corners/<rid>/c<n>/<bench>/report.json`) have
+their `coverage.checked` / `coverage.inapplicable` id lists replaced by their
+counts (`harness.report.elide_coverage`); every measurement value, corner
+status, diagnostic, `environment`, `provenance` and coverage counter is kept,
+and the sha256 of the full klt report is committed alongside it as
+`report.json.sha256`. `--check` re-applies verdicts.py to these elided reports
+— grading reads only what the elision keeps.
+
 ## Limits of these benches
 
 - **Placeholders, not measurements**: bench source + cable 100 ohm / 100 pF,
