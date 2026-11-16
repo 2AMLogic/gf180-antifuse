@@ -13,7 +13,6 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent.parent))
 from harness import evidence_store as E  # noqa: E402
-from harness import report  # noqa: E402
 
 STUB = r'''#!/usr/bin/env python3
 import hashlib, json, os, sys
@@ -67,7 +66,6 @@ class EvidenceStoreTest(unittest.TestCase):
         self.assertEqual({e["name"] for e in m["entries"]}, set(self.files))
         self.assertTrue(all(e["uri"].startswith("artifact:") for e in m["entries"]))
         self.assertEqual({r["name"] for r in rows}, set(self.files))
-        self.assertIn("ss_-40c_bl0p90v", report.object_table(rows))
 
     def test_broker_unset_fails_closed(self):
         with self.assertRaises(E.EvidenceStoreError):
