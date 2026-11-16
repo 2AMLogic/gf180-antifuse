@@ -123,6 +123,20 @@ def elide_coverage(report: dict) -> dict:
     return r
 
 
+def coverage_is_elided(report: dict) -> bool:
+    """True when `report` is already in the committed, elided form.
+
+    Decided structurally -- a present coverage id value that is not a list has
+    been replaced by an elision marker -- never by matching the marker text:
+    reports committed before the marker moved here carry an older
+    `run_bench.py slim()` marker. A report with no `coverage` key, or with
+    both id keys still lists (including empty ones), was not elided and a
+    full-text digest of it is still attestable.
+    """
+    cov = report.get("coverage")
+    return isinstance(cov, dict) and any(k in cov and not isinstance(cov[k], list) for k in COVERAGE_ID_KEYS)
+
+
 def klt_report_payload(report: dict, *, indent: int | None = 2,
                        separators: tuple[str, str] | None = None) -> tuple[str, str]:
     """-> (text of the coverage-elided report to commit, sha256 of the full text).
