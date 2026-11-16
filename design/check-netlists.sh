@@ -9,12 +9,7 @@
 # 2-7 are unchanged. design/run_analog_cold_start.sh uses it. Without the flag
 # the behaviour is exactly as before.
 #
-# Four checks, all of which must pass:
-#
-#   4. Program leg / read leg - the three leg netlists elaborate (including the
-#      ppolyf_u_2k_6p0 ballast), and the interlock block's truth table
-#      (PON = PROG_EN & ~READ_EN, RON = READ_EN & ~PROG_EN) holds at the typical
-#      corner. Structure only; the PVT bench is sim/program-read-legs/.
+# Seven checks, all of which must pass:
 #
 #   1. Reproducibility - design/regen-netlists.sh --check: a fresh xschem
 #      export of every cell schematic is byte-identical to what is committed.
@@ -44,6 +39,13 @@
 #      while every other cell does not. A build-time check, not evidence: the
 #      cornered, per-region record is sim/array-slice-bench/.
 #
+# One further check covers the program and read legs:
+#
+#   6. Program leg / read leg - the three leg netlists elaborate (including the
+#      ppolyf_u_2k_6p0 ballast), and the interlock block's truth table
+#      (PON = PROG_EN & ~READ_EN, RON = READ_EN & ~PROG_EN) holds at the typical
+#      corner. Structure only; the PVT bench is sim/program-read-legs/.
+#
 # One further check closes the design/ <-> layout/ geometry boundary (issue #292):
 #
 #   7. Geometry basis - design/check-geometry-basis.py: the drawn bitcell
@@ -56,9 +58,15 @@
 #      silently stale. Needs no ngspice, PDK or klt.
 #
 # The two geometry levels used here are a mechanism check, NOT the split-axis
-# levels from spec/split-axis-plan.md. That plan's "process-minimum" level is a
-# PDK design-rule lookup that no ratified spec document fixes yet, so this
-# script deliberately uses an arbitrary base geometry and doubles its width.
+# levels from spec/split-axis-plan.md. The capacitor half of that plan's
+# "process-minimum" level is fixed by spec/capacitor-geometry-decision.md
+# (Minimum wcap x lcap = 1.0 x 0.28 um for cap_nmos_03v3 / cap_pmos_03v3 and
+# 1.0 x 0.70 um for cap_nmos_06v0; "2x" doubles wcap at fixed lcap), while the
+# access half (wacc/lacc) - the plan's section-3 axis - is still a PDK
+# design-rule lookup with no ratified record behind it. This script therefore
+# still uses an arbitrary base geometry and doubles its width: what it proves
+# is that the wcap/lcap parameters reach the device instance, not that the
+# ratified levels are drawn.
 # Nothing here is a device result: no corners are run, and results belong in
 # sim/ per CLAUDE.md.
 
