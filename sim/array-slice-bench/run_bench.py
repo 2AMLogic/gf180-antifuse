@@ -4,7 +4,7 @@
     python3 sim/array-slice-bench/run_bench.py                 # both slices
     python3 sim/array-slice-bench/run_bench.py --slice slice_i_ii
     python3 sim/array-slice-bench/run_bench.py --backend local # debug only
-    python3 sim/array-slice-bench/run_bench.py --analyze-report PATH --slice S   # one process request's report
+    python3 sim/array-slice-bench/run_bench.py --analyze-report PATH --slice S   # grade one process report only (--no-write implied)
     python3 sim/array-slice-bench/run_bench.py --mode full-band   # issue #70: full-band leakage (fullband.py)
 
 What it does (and does not do)
@@ -513,9 +513,14 @@ def main():
     ap.add_argument("--record-id", help="full-band mode: resume an interrupted run (reuses reports already on disk)")
     ap.add_argument("--slice", action="append", choices=list(G.SLICES))
     ap.add_argument("--backend", default=None, help="klt sim backend override (default: host default)")
-    ap.add_argument("--analyze-report", type=Path, help="grade an existing klt JSON report (one process request) instead of running")
+    ap.add_argument("--analyze-report", type=Path,
+                    help="grade an existing klt JSON report (one process request) instead of running; "
+                         "grades only -- implies --no-write, nothing is written")
     ap.add_argument("--no-write", action="store_true", help="grade and print only")
     a = ap.parse_args()
+    if a.analyze_report:
+        a.no_write = True
+        print("note: --analyze-report grades only; nothing is written (--no-write implied)", file=sys.stderr)
     slices = a.slice or list(G.SLICES)
 
     if any((not p.exists()) or p.read_text() != t for p, t in B.outputs().items()):
@@ -551,9 +556,9 @@ def main():
         print(f"{sl}: {report['corner_count']} corners, {bad} criteria violations / ungradable")
         if not a.no_write:
             for proc, _r in reps:
-                rp = HERE / "reports" / record_id / f"{sl}_{proc or 'all'}.report.json"
+                rp = HERE / "reports" / record_id / f"{sl}_{proc}.report.json"
                 rp.parent.mkdir(parents=True, exist_ok=True)
-                write_report_and_digest(rp, payloads[proc or "all"])
+                write_report_and_digest(rp, payloads[proc])
                 rep_paths.append(str(rp.relative_to(REPO)))
 
     if a.no_write:
