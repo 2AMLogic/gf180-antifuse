@@ -29,6 +29,11 @@ MEAS = [{"name": "i_read", "expr": "i(Vbl)"}]
 PREAMBLE = "models/preamble.lib"
 # Top-level keys make_request emitted before the batch key (issue #300 body).
 PLAIN_KEYS = {"netlist", "models", "corners", "analysis", "measurements", "options"}
+# Fleet job-ceiling sharding key added after the batch key (PR #326): a
+# "remote": {"hosts": N} block keeps a request's conservative fully-serial
+# bound under the fleet's whole-job ceiling. Its value is asserted in
+# sim/program-read-legs/tests/test_requests.py, not here.
+SHARD_KEYS = {"remote"}
 
 
 class RequestBatchOptsTest(unittest.TestCase):
@@ -49,7 +54,7 @@ class RequestBatchOptsTest(unittest.TestCase):
 
     def test_batch_key_is_purely_additive(self):
         req = self._plain()
-        self.assertEqual(set(req), PLAIN_KEYS | {"batch"})
+        self.assertEqual(set(req), PLAIN_KEYS | SHARD_KEYS | {"batch"})
 
     def test_runner_version_check_is_not_copied_across(self):
         # runner_version_check solves cell-breakdown-model's runner image skew,
@@ -62,7 +67,7 @@ class RequestBatchOptsTest(unittest.TestCase):
         # explicitly so a future refactor that stops delegating fails loudly.
         req = self.mod.make_mc_request(NETLIST, MEAS, False, PREAMBLE, self.mod.MC_POINTS[0])
         self.assertEqual(req.get("batch"), {"capacity_wait_s": 1800})
-        self.assertEqual(set(req), PLAIN_KEYS | {"monte_carlo", "batch"})
+        self.assertEqual(set(req), PLAIN_KEYS | SHARD_KEYS | {"monte_carlo", "batch"})
 
     def test_each_request_gets_its_own_batch_dict(self):
         # The "batch": dict(BATCH_OPTS) spelling must stay a per-request copy:
