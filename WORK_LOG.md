@@ -5,6 +5,8 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-16
 
+- **PR #352**: fix: reject --analyze-report with --mode full-band; run its tests in a tmp checkout
+- **Issue #351** (closed): array-slice-bench: test_analyze_report writes into the live evidence tree on regression; --analyze-report note is false under --mode full-band
 - **PR #350**: sim: --analyze-report grades only, implying --no-write
 - **Issue #349** (closed): sim: --analyze-report writes a record claiming the full 5-process PVT matrix while grading one process
 - **PR #348**: fix(bench): write the report sha256 sidecar only when the full text was held
