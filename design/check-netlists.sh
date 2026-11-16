@@ -39,6 +39,8 @@
 #      while every other cell does not. A build-time check, not evidence: the
 #      cornered, per-region record is sim/array-slice-bench/.
 #
+# One further check covers the program and read legs:
+#
 #   6. Program leg / read leg - the three leg netlists elaborate (including the
 #      ppolyf_u_2k_6p0 ballast), and the interlock block's truth table
 #      (PON = PROG_EN & ~READ_EN, RON = READ_EN & ~PROG_EN) holds at the typical
