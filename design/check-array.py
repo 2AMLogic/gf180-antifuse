@@ -65,24 +65,11 @@ PG_FAMILY = {1: "pg_n06", 2: "pg_n10", 3: "pg_n06"}
 LS_FAMILY = {1: "ls_hv06", 2: "ls_hv10", 3: "ls_hv06"}
 ACTIVE_LOW = {1: False, 2: False, 3: True}
 
-_SUF = {"f": 1e-15, "p": 1e-12, "n": 1e-9, "u": 1e-6, "m": 1e-3}
-
 errors: list[str] = []
 
 
 def err(msg: str) -> None:
     errors.append(msg)
-
-
-def num(tok: str) -> float:
-    m = re.fullmatch(r"([0-9.]+(?:[eE][+-]?[0-9]+)?)([a-zA-Z]?)", tok.strip())
-    if not m:
-        raise ValueError(f"unparseable SPICE literal {tok!r}")
-    return float(m.group(1)) * (_SUF[m.group(2).lower()] if m.group(2) else 1.0)
-
-
-def close(a: float, b: float) -> bool:
-    return abs(a - b) <= 1e-9 * max(abs(a), abs(b), 1e-30)
 
 
 # ---------------------------------------------------------------------------
@@ -114,18 +101,6 @@ def parse_region_map() -> list[tuple[str, int, int, int]]:
 # ---------------------------------------------------------------------------
 
 
-def logical_lines(path: Path) -> list[str]:
-    out: list[str] = []
-    for raw in path.read_text().splitlines():
-        if raw.startswith("+") and out:
-            out[-1] += " " + raw[1:].strip()
-        elif raw.strip() and not raw.startswith(("*", ".")):
-            out.append(raw.strip())
-        elif raw.startswith("."):
-            out.append(raw.strip())
-    return out
-
-
 def cell_defaults(cand: int) -> dict[str, float]:
     d = numfmt.cell_defaults(NL / f"cell_candidate{cand}.spice")
     if not set(CELL_PARAMS) <= d.keys():
@@ -136,7 +111,7 @@ def cell_defaults(cand: int) -> dict[str, float]:
 def parse_instances(path: Path):
     """name -> (nets list, subckt, params dict) for every X instance line."""
     inst = {}
-    for ln in logical_lines(path):
+    for ln in numfmt.logical_lines(path.read_text()):
         if not ln.startswith("X"):
             continue
         toks = ln.split()
@@ -173,9 +148,11 @@ def check_array(inst, bands, label: str, rows: range, cols: range):
             if nets != want_nets:
                 err(f"{label}: cell ({r},{c}) wired {nets}, expected {want_nets}")
             try:
-                cells[(r, c)] = (cand, {k: num(p[k]) for k in ("wcap", "lcap", "wacc", "lacc")})
+                cells[(r, c)] = (cand, {k: numfmt.spice_num(p[k]) for k in ("wcap", "lcap", "wacc", "lacc")})
             except KeyError as e:
                 err(f"{label}: cell ({r},{c}) lacks parameter {e}")
+            except ValueError as e:
+                err(f"{label}: cell ({r},{c}): {e}")
     extra = {n for n in inst if n.startswith("Xc_")} - {f"Xc_{r}_{c}" for r in rows for c in cols}
     if extra:
         err(f"{label}: unexpected cell instances {sorted(extra)[:5]}")
@@ -224,7 +201,7 @@ def check_levels(cells, bands):
 
         def find(levels, a, b):
             for (x, y), idx in levels.items():
-                if close(x, a) and close(y, b):
+                if numfmt.close(x, a) and numfmt.close(y, b):
                     return idx
             return None
 
@@ -319,7 +296,7 @@ def main() -> int:
         if len(labs) < 2:
             err(f"{sl}: spans only region {sorted(labs)}, a slice must straddle a region boundary")
         for key, (cand, p) in scells.items():
-            if key not in cells or cells[key][0] != cand or any(not close(cells[key][1][k], p[k]) for k in p):
+            if key not in cells or cells[key][0] != cand or any(not numfmt.close(cells[key][1][k], p[k]) for k in p):
                 err(f"{sl}: cell {key} differs from the same cell of array_32x32")
         print(f"ok: {sl} rows {rs[0]}-{rs[-1]} cols {cs[0]}-{cs[-1]} straddles {'|'.join(sorted(labs, key=BAND_LABELS.index))}")
 
