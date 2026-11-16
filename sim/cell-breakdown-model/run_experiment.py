@@ -171,7 +171,6 @@ BIAS_SCENARIOS: tuple[ReadBias, ...] = (
     ReadBias("s8_vb_track_m0v3", 1.0, 0.0, "track", -0.3,
              "sensitivity: n-well 0.3 V BELOW the read rail (source junction forward-biased 0.3 V), WL on = 0 V"),
 )
-BIAS_BY_NAME = {b.name: b for b in BIAS_SCENARIOS}
 # the scenario the decision record (spec/candidate3-read-bias-decision.md) adopts
 CHOSEN_C3_SCENARIO = "s3_vb_track"
 

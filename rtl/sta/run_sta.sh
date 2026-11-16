@@ -48,6 +48,14 @@ esac
 $KLT extract "$EXTRACT_REQ" --format json > /dev/null
 $KLT sta "$STA_REQ" --pdk gf180mcuD --format json > "$REPORT.tmp"
 python3 -I rtl/scrub_report_paths.py "$REPORT.tmp" "$REPORT"
+# PRESERVE_RAW=<path> copies the pre-scrub report aside before the rm, for an
+# evidence run that must show what klt actually emitted before scrubbing.
+[ -z "${PRESERVE_RAW:-}" ] || cp "$REPORT.tmp" "$PRESERVE_RAW"
+# Anything the scrubber could not collapse is an absolute host path; the lint
+# stops the run here instead of letting it into the append-only committed
+# report (issue #316). Exit 3 on findings, 0 clean. On a failure the .tmp
+# survives the rm below for forensics.
+$KLT env-provenance lint-envelope "$REPORT"
 rm -f "$REPORT.tmp"
 sha256sum "${INPUTS[@]}" > "$SUMS"
 check_report

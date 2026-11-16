@@ -49,6 +49,18 @@ yield at a given VPP for a given C, I_sneak_max at N=32 - does not: until the
 recorded divergences are resolved (design/README.md PROVISIONAL open item
 1(a)), no absolute number taken from one world describes the other.
 
+Each capacitor-side entry also records where its resolution lives, derived
+per entry by comparing both its simulated and drawn values against the
+ratified level for that cell's moscap device (spec/capacitor-geometry-
+decision.md, #294): drawn side stale -> #296's redraw; simulated side stale
+-> the netlist regeneration tracked by design/README.md open item 1(a); both
+-> both. Status says the same thing: the capacitor level is decided in spec
+and the entry names which side does not yet conform. The access half is
+genuinely undecided and stays status "unresolved" /
+design/README.md open item 1(a). A recorded owner/status that no longer
+matches this derivation is a stale-record failure, so neither the tree nor
+the ratified table can drift past the gate silently.
+
 Exit status: 0 = the measured divergence set equals the recorded set;
 1 = any divergence not recorded, any recorded entry (or coverage gap) whose
 facts no longer match the tree, or any unreportable drawn cell (missing
@@ -82,9 +94,62 @@ PARAM_LABEL = {
 LEVELS = ("min", "2x")
 CELL_PARAMS = ("wcap", "lcap", "wacc", "lacc")
 
-CAP_OWNER = "#294/#296 (capacitor levels)"
+# Ratified capacitor Minimum levels (W_um x L_um) per moscap device, from
+# spec/capacitor-geometry-decision.md ("Ratified levels" table; ratified in
+# #294, 2026-11-15): Region I/III cap_nmos_03v3 / cap_pmos_03v3 = 1.0 x 0.28,
+# Region II cap_nmos_06v0 = 1.0 x 0.70; "2x-area" doubles W at fixed L (the
+# same convention sim_geometry applies). This table is pinned to the spec by
+# the suite (tests/test_check_geometry_basis.py::RatifiedLevelsMatchSpecTests)
+# and the derived owner/status below is compared against the committed record,
+# so a level that disagrees with the spec is a gate failure (stale record, or
+# a red spec-drift test), never a silent relaxation of it.
+RATIFIED_CAP_MIN_UM = {
+    "cap_nmos_03v3": (1.0, 0.28),
+    "cap_pmos_03v3": (1.0, 0.28),
+    "cap_nmos_06v0": (1.0, 0.70),
+}
+
 ACC_OWNER = "design/README.md open item 1(a)"
-GAP_OWNER = "#294/#296 (capacitor levels; layout drop scope)"
+# Live loci only: the netlist regeneration is tracked by the standing
+# PROVISIONAL item, the redraw by open #296; closed #292/#294 appear in this
+# module only as phrased provenance.
+REGEN_OWNER = "design/README.md open item 1(a) (netlist regeneration)"
+REDRAW_OWNER = "#296 (drawn capacitor redraw)"
+BOTH_OWNERS = f"{REDRAW_OWNER}; {REGEN_OWNER}"
+GAP_OWNER = ("Run 3 bitcell layout drop (WORK_PLAN.md Run 3: #207/#211); "
+             "capacitor levels per spec/capacitor-geometry-decision.md (#294)")
+STATUS_UNRESOLVED = "unresolved"
+STATUS_DRAWN_STALE = "decided in spec; drawn geometry not conformed"
+STATUS_SIM_STALE = "decided in spec; simulated basis not conformed"
+STATUS_BOTH_STALE = "decided in spec; drawn geometry and simulated basis not conformed"
+STATUS_GAP = "decided in spec (capacitor half); no drawn cell"
+
+
+def cap_owner_status(sim_v: float, drawn_v: float, ratified_v: float) -> tuple[str, str]:
+    """(status, owner) for one capacitor divergence, derived per entry.
+
+    Compares both sides against the ratified level for that device, parameter
+    and split level: drawn != ratified -> the redraw owns it; simulated !=
+    ratified -> the netlist regeneration owns it; both -> both. A divergence
+    exists only when the sides differ, so at least one side is always stale.
+    """
+    sim_ok = numfmt.close(sim_v, ratified_v)
+    drawn_ok = numfmt.close(drawn_v, ratified_v)
+    if not drawn_ok and sim_ok:
+        return STATUS_DRAWN_STALE, REDRAW_OWNER
+    if drawn_ok and not sim_ok:
+        return STATUS_SIM_STALE, REGEN_OWNER
+    return STATUS_BOTH_STALE, BOTH_OWNERS
+
+
+def ratified_cap_value_um(rat_min_wl: tuple[float, float], cap_lvl: str, param: str) -> float:
+    """Ratified capacitor value (SI metres) for one parameter at a split level.
+
+    2x doubles W at fixed L (spec/capacitor-geometry-decision.md), matching
+    sim_geometry's derivation of the 2x level; length never doubles.
+    """
+    w = rat_min_wl[0] * (2 if cap_lvl == "2x" else 1)
+    return (w if param == "cap_w" else rat_min_wl[1]) * 1e-6
 
 NOTES = [
     "A within-axis relative claim is unaffected: both worlds step exactly 2x "
@@ -140,6 +205,15 @@ def instance_params(lines: list[str], inst: str) -> dict[str, str] | None:
     return None
 
 
+def cell_device(path: Path) -> str | None:
+    """The moscap device name off the XC1 instance line (4th token), or None."""
+    for ln in numfmt.logical_lines(path.read_text()):
+        toks = ln.split()
+        if toks[0].upper() == "XC1":
+            return toks[3] if len(toks) > 3 else None
+    return None
+
+
 def parse_drawn_cell(path: Path) -> dict:
     """{cap_w, cap_l, acc_w, acc_l, acc_fingers} off the XM1/XC1 instance lines.
 
@@ -190,9 +264,15 @@ def measure(root: Path):
     layout = root / "layout"
 
     sim_defaults: dict[int, dict[str, float]] = {}
+    devices: dict[int, str] = {}
     for p in sorted(netlists.glob("cell_candidate*.spice")):
         m = re.fullmatch(r"cell_candidate(\d+)\.spice", p.name)
         if not m:
+            continue
+        dev = cell_device(p)
+        if dev not in RATIFIED_CAP_MIN_UM:
+            fatal.append(f"{p}: XC1 device {dev!r} has no ratified capacitor level in "
+                         "spec/capacitor-geometry-decision.md - cannot derive capacitor owner/status")
             continue
         d = numfmt.cell_defaults(p)
         missing = [k for k in CELL_PARAMS if k not in d]
@@ -200,6 +280,7 @@ def measure(root: Path):
             fatal.append(f"{p}: .subckt line lacks {', '.join(missing)} - cannot establish the simulated basis")
             continue
         sim_defaults[int(m.group(1))] = d
+        devices[int(m.group(1))] = dev
 
     divergences: dict[tuple[str, str], dict] = {}
     multi_finger: dict[str, int] = {}
@@ -232,6 +313,11 @@ def measure(root: Path):
         for p in PARAMS:
             if numfmt.close(sim[p], drawn[p]):
                 continue
+            if p.startswith("cap"):
+                rat = ratified_cap_value_um(RATIFIED_CAP_MIN_UM[devices[cand]], cap_lvl, p)
+                status, owner = cap_owner_status(sim[p], drawn[p], rat)
+            else:
+                status, owner = STATUS_UNRESOLVED, ACC_OWNER
             divergences[(name, p)] = {
                 "cell": name,
                 "levels": {"access": acc_lvl, "capacitor": cap_lvl},
@@ -239,8 +325,8 @@ def measure(root: Path):
                 "simulated": sim[p],
                 "drawn": drawn[p],
                 "ratio": round6(drawn[p] / sim[p]) if sim[p] else None,
-                "status": "unresolved",
-                "owner": ACC_OWNER if p.startswith("acc") else CAP_OWNER,
+                "status": status,
+                "owner": owner,
             }
 
     coverage_gaps: dict[tuple[int, str, str], dict] = {}
@@ -254,7 +340,7 @@ def measure(root: Path):
                     "candidate": cand,
                     "levels": {"access": acc_lvl, "capacitor": cap_lvl},
                     "simulated": {p: sim[p] for p in PARAMS},
-                    "status": "unresolved",
+                    "status": STATUS_GAP,
                     "owner": GAP_OWNER,
                 }
     return divergences, coverage_gaps, multi_finger, findings, fatal
@@ -340,6 +426,9 @@ def compare(record: dict, divergences, coverage_gaps, findings: list[str]) -> No
         for k in ("simulated", "drawn"):
             if not numfmt.close(float(r[k]), float(e[k])):
                 stale.append(f"{k} now {um(e[k])}, recorded {um(float(r[k]))}")
+        for k in ("status", "owner"):
+            if r[k] != e[k]:
+                stale.append(f"{k} now {e[k]!r}, recorded {r[k]!r}")
         if (e["ratio"] is None) != (r["ratio"] is None):
             stale.append(f"ratio now {e['ratio']}, recorded {r['ratio']}")
         elif e["ratio"] is not None and not ratio_close(float(r["ratio"]), float(e["ratio"])):
@@ -359,6 +448,9 @@ def compare(record: dict, divergences, coverage_gaps, findings: list[str]) -> No
             continue
         stale = [f"{p} now {um(e['simulated'][p])}, recorded {um(float(r['simulated'][p]))}"
                  for p in PARAMS if not numfmt.close(float(r["simulated"][p]), float(e["simulated"][p]))]
+        for k in ("status", "owner"):
+            if r[k] != e[k]:
+                stale.append(f"{k} now {e[k]!r}, recorded {r[k]!r}")
         if stale:
             findings.append(f"stale record gap: candidate {key[0]} access={key[1]} capacitor={key[2]}: "
                             + "; ".join(stale))
@@ -388,8 +480,9 @@ def build_record(divergences, coverage_gaps, multi_finger) -> dict:
         "schema": "geometry-basis/1",
         "issue": "#292",
         "status": "unresolved",
-        "owner": "#292 (resolution deferred to design/README.md PROVISIONAL open item 1(a); "
-                 "#294/#296 move the drawn capacitor levels)",
+        "owner": ("design/README.md PROVISIONAL open item 1(a) (simulated capacitor basis "
+                  "regeneration); #296 moves the drawn capacitor geometry; capacitor "
+                  "Minimum/2x levels ratified per spec/capacitor-geometry-decision.md (#294)"),
         "conventions": {
             "units": "SI metres (0.42 = 0.42 um)",
             "min_level": "the cell subcircuit's own .subckt parameter default",
@@ -400,6 +493,11 @@ def build_record(divergences, coverage_gaps, multi_finger) -> dict:
                           "from the simulated basis at that cell's split level",
             "coverage_gap": "a simulated split level (candidate x access level x capacitor level) with no "
                             "drawn cell at all",
+            "owner_status": "capacitor entries: owner/status derived per entry from the ratified levels "
+                            "(spec/capacitor-geometry-decision.md, #294) - 'decided in spec; ...' names "
+                            "which side (drawn / simulated / both) does not yet conform; access entries "
+                            "stay 'unresolved' (level undecided). A recorded owner/status that no longer "
+                            "matches the derivation is a stale-record failure.",
         },
         "notes": NOTES,
         "divergences": divs,
