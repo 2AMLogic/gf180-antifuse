@@ -5,6 +5,24 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-16
 
+- **PR #350**: sim: --analyze-report grades only, implying --no-write
+- **Issue #349** (closed): sim: --analyze-report writes a record claiming the full 5-process PVT matrix while grading one process
+- **PR #348**: fix(bench): write the report sha256 sidecar only when the full text was held
+- **Issue #330** (closed): array-slice-bench --analyze-report writes a sidecar that attests only the elided text
+- **PR #345**: spec: record scoped DRC exception for unmodified PDK PCell geometry
+- **Issue #299** (closed): Operator ruling: candidate 2's unmodified PDK nfet_10v0_asym PCell trips 20 native sign-off rules that cannot be waived, hand-edited or substituted away
+- **PR #343**: Consolidate the three candidate-1 split-grid generators into one point table
+- **Issue #315** (closed): Consolidate three near-identical candidate-1 split-grid generators into a point table
+- **PR #339**: fix(tests): expect the post-#326 remote sharding key in request shape assertions
+- **Issue #333** (closed): check:ci red: RequestBatchOpts shape assertions reject the remote sharding key (PR #326)
+- **Issue #337** (closed): main red: program-read-legs request tests not updated for the remote sharding key
+- **PR #336**: docs: narrow the stale process-minimum caveats to the access axis and fix the check-header numbering
+- **Issue #307** (closed): design/check-netlists.sh comment asserts no ratified record fixes the process-minimum geometry — stale once the capacitor-geometry record lands
+- **PR #335**: refactor: consolidate the design checkers' duplicated SPICE helpers into numfmt
+- **Issue #331** (closed): Consolidate duplicated SPICE helpers in design checkers into numfmt
+- **PR #332**: fix(rtl): lint scrubbed flow reports for absolute host paths; collapse a $PDK_ROOT outside $HOME
+- **PR #325**: fix(design): derive geometry-basis owner/status per entry from ratified capacitor levels
+- **Issue #314** (closed): geometry-basis record cites closed #294 as a live owner for the capacitor divergences
 - **PR #322**: Remove three test-only symbols: object_table, summarise, BIAS_BY_NAME
 - **Issue #290** (closed): Remove three shipped symbols whose only consumer is a test: object_table, summarise, BIAS_BY_NAME
 
