@@ -3,8 +3,22 @@
 Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 
+### 2026-11-16
+
+- **PR #322**: Remove three test-only symbols: object_table, summarise, BIAS_BY_NAME
+- **Issue #290** (closed): Remove three shipped symbols whose only consumer is a test: object_table, summarise, BIAS_BY_NAME
+
 ### 2026-11-15
 
+- **PR #334**: docs: re-derive the ROADMAP snapshot from committed evidence
+- **Issue #324** (closed): docs/ROADMAP.md T1-ladder paragraph will be stale after #323: 7 rows met incl. 3.analog, now 6 with 3.analog unmet
+- **PR #329**: feat: generate run3_top chip-level reference netlist and pad table, checked against the spec sources
+- **Issue #275** (closed): Run 3 test chip: chip-level reference netlist and machine-readable pad table, checked against the floorplan record
+- **PR #327**: sim: commit klt reports with per-report sha256 sidecars at the last two raw write sites
+- **Issue #283** (closed): Finish the klt coverage-elision policy: two write sites #271 left re-deriving the raw write
+- **PR #326**: feat(sim): shard program-read-legs requests under the fleet's 3600s job ceiling
+- **PR #323**: layout/signoff: commit native-deck DRC reports for all seven cells; grade 3.analog on the native verdict
+- **Issue #295** (closed): layout/signoff: commit a native-deck DRC report for all seven cells and stop recording curated-only 'clean' as DRC clean
 - **PR #319**: test: assert exactly one B-element card names each measured HV pad node
 - **Issue #302** (closed): HV pad deck test: the `"B" in text` half of the measured-node assertion is vacuous
 - **PR #311**: feat(sim): emit batch.capacity_wait_s from program-read-legs requests
