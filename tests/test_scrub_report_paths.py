@@ -120,6 +120,58 @@ class ScrubReportPaths(unittest.TestCase):
         }
         self.assertEqual(dst.read_text(), json.dumps(expected, indent=2) + "\n")
 
+    def test_pdk_root_rule_matches_on_a_path_component_boundary(self):
+        # The $PDK_ROOT collapse must not fire on a text prefix (review of
+        # issue #316): a sibling sharing the prefix is a directory the
+        # scrubber has no rule for, so it survives the scrub as an absolute
+        # path and the flow scripts' lint-envelope guard stops the run --
+        # collapsing it would instead pass the lint and record a ~/location
+        # that exists on no host.
+        pdk = self.tmp / "opt" / "gf180"
+        report = {
+            "schema_version": 1,
+            "status": "ok",
+            "layer_map": {"path": f"{pdk}/gf180mcuD/libs.tech/klayout/tech/gf180mcu.map"},
+            "tool": {"cache": f"{pdk}-scratch/uvcache/x.so"},
+            "sibling_root": f"{pdk}0/other/thing",
+        }
+        src = self.tmp / "raw.json"
+        dst = self.tmp / "scrubbed.json"
+        src.write_text(json.dumps(report))
+        r = self.run_helper(src, dst, pdk_root=pdk)
+        self.assertEqual(r.returncode, 0, r.stderr)
+        expected = {
+            "schema_version": 1,
+            "status": "ok",
+            "layer_map": {"path": "~/gf180/gf180mcuD/libs.tech/klayout/tech/gf180mcu.map"},
+            "tool": {"cache": f"{pdk}-scratch/uvcache/x.so"},
+            "sibling_root": f"{pdk}0/other/thing",
+        }
+        self.assertEqual(dst.read_text(), json.dumps(expected, indent=2) + "\n")
+
+    def test_pdk_root_bare_root_collapses_before_non_path_characters(self):
+        # The bare-root replacement must keep firing when $PDK_ROOT is
+        # followed by a non-path character rather than end of string -- the
+        # shape provenance.pdk.source / ambiguous_sources[] prose can carry
+        # when several search roots are listed in one string.
+        pdk = self.tmp / "opt" / "gf180"
+        report = {
+            "schema_version": 1,
+            "status": "ok",
+            "provenance": {"pdk": {"roots": f"{pdk}, {self.home}/.volare"}},
+        }
+        src = self.tmp / "raw.json"
+        dst = self.tmp / "scrubbed.json"
+        src.write_text(json.dumps(report))
+        r = self.run_helper(src, dst, pdk_root=pdk)
+        self.assertEqual(r.returncode, 0, r.stderr)
+        expected = {
+            "schema_version": 1,
+            "status": "ok",
+            "provenance": {"pdk": {"roots": "~/gf180, ~/.volare"}},
+        }
+        self.assertEqual(dst.read_text(), json.dumps(expected, indent=2) + "\n")
+
     def test_pdk_root_outside_home_survives_scrub_without_pdk_root_env(self):
         # The negative control for the lint-envelope guard the flow scripts run
         # after this helper (issue #316): with no $PDK_ROOT to canonicalize

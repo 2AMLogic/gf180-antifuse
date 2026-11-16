@@ -20,6 +20,7 @@ that lint stops the run instead of letting the path into the committed report.
 """
 import json
 import os
+import re
 import sys
 
 root, home = os.getcwd() + "/", os.path.expanduser("~") + "/"
@@ -34,7 +35,12 @@ def clean(v):
     if isinstance(v, str):
         s = v.replace(root, "").replace(home, "~/")
         if pdk_form:
-            s = s.replace(pdk_root + "/", pdk_form + "/").replace(pdk_root, pdk_form)
+            # Path-component boundary, mirroring `klt env-provenance
+            # lint-envelope --allow-prefix` semantics: $PDK_ROOT fires when
+            # followed by "/", a non-path character, or end of string (the
+            # bare-root shape of provenance.pdk.source), never when a sibling
+            # continues the component ("-scratch", "0", ".tar").
+            s = re.sub(re.escape(pdk_root) + r"(?![A-Za-z0-9._~+-])", pdk_form, s)
         return s
     if isinstance(v, list):
         return [clean(x) for x in v]
