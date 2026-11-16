@@ -873,8 +873,8 @@ floor shared through `layout/bitcell_gen.py`, so raising it moves the
 capacitor-geometry split-axis level for every candidate at once -- a `spec/`
 decision, not a layout edit.
 
-Candidate 2 cannot reach "DRC clean" until #287 is settled, and even then the
-20 PCell-internal findings need an operator decision of their own: the PDK's
-own cell is what violates them, this repo does not hand-edit PCell geometry,
-and `CO.4` x16 is now confirmed against the foundry runset rather than being
-the false positive klayout-tools' docs call it.
+Candidate 2 cannot reach "DRC clean" until #287 is settled, and the 20
+PCell-internal findings are dispositioned by the scoped exception recorded in
+`spec/pdk-pcell-drc-exception-decision.md` (operator ruling 2026-11-15, #299):
+reported as measured, never waived, and outside the exception for every shape
+this repo draws.

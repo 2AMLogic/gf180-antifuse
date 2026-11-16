@@ -69,9 +69,11 @@ source instead.
 
 ## The one geometry point with no drawn cell
 
-`cell_candidate2_Amin_G2x` has **no drawn cell** (#296 is the redraw;
-#299 is the open operator ruling on whether Candidate 2's `nfet_10v0_asym`
-PCell can be drawn at all). It is still emitted: access literals from
+`cell_candidate2_Amin_G2x` has **no drawn cell** (#296 is the redraw; the
+2026-11-15 #299 operator ruling on the `nfet_10v0_asym` PCell's native-deck
+findings is decided and recorded in
+`spec/pdk-pcell-drc-exception-decision.md`).
+It is still emitted: access literals from
 `cell_candidate2` (same `Amin` level), capacitor from the ratified record —
 only its layout is missing, not its numbers. That absence blocks #211's LVS,
 not this issue.

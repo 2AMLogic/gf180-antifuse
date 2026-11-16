@@ -15,3 +15,4 @@ Ratified targets, the split-axis plan, and decision records. Spec changes land h
 - [`run3-bench-plan.md`](run3-bench-plan.md) — Run 3 test chip bench plan: V_bd, resistance and read-margin extraction for direct-pad cells (proposed)
 - [`run3-bench-fixture-requirements.md`](run3-bench-fixture-requirements.md) — Run 3 bench fixture needs on the pad ring, delivery form (open) and measurement route (proposed)
 - [`capacitor-geometry-decision.md`](capacitor-geometry-decision.md) — capacitor-geometry split levels: Minimum and 2x-area W/L per moscap device (implements the ratified "process-minimum legal W/L")
+- [`pdk-pcell-drc-exception-decision.md`](pdk-pcell-drc-exception-decision.md) — scoped DRC exception for findings inside unmodified PDK PCell geometry only (operator ruling 2026-11-15, #299)
