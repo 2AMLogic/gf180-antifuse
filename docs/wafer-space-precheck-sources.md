@@ -78,9 +78,10 @@ region. The precheck's `KLAYOUT_DRC_OPTIONS` dict reaches the runset as
 file.
 
 **S6.** LibreLane at the same revision, `librelane/steps/checker.py`:
-`Checker.KLayoutDRC` raises a deferred error when
-`klayout__drc_error__count` >= 0-and-above (threshold zero) unless
-`ERROR_ON_KLAYOUT_DRC` is set false; **the default is true**. So any KLayout
+`Checker.KLayoutDRC` is a `MetricChecker` whose threshold is `Decimal(0)`,
+and `MetricChecker.run` raises a deferred error when the metric exceeds it
+(`metric_value > threshold`), unless `ERROR_ON_KLAYOUT_DRC` is set false;
+**the default is true** (`default=True` on the variable). So any KLayout
 DRC violation fails the precheck flow, which exits non-zero (S2's
 `main()`). `Checker.MagicDRC` behaves the same on `magic__drc_error__count`
 with default true — overridden to false by the precheck (S2), so magic
@@ -129,10 +130,17 @@ one this block's cross-check ran (`layout/README.md`), with the precheck's
 
 Local cross-check (repo-internal, read 2026-11-16): the installed decks at
 `~/.ciel/gf180mcuA` and `~/.ciel/gf180mcuD` (this repo's pinned open-pdks
-build) are **byte-identical A vs D**; diffed against PV HEAD (S9), the only
-changes are `CO.5a`/`CO.5b` derivations and marker-exclusion refinements
-(`mvsd`/`mvpsd`/`otp_mk`/`ymtp_mk`/`sramcore`) around `DF.6_MV`/`PL.4_MV` —
-no change to the three rules' presence, tags or thresholds. The
+build) are **byte-identical A vs D** (`diff -r` over
+`libs.tech/klayout/tech/drc` reports no differences). The installed tree
+does differ from PV HEAD (S9) in more than the three rules' files —
+`comp.rb`, `contact.rb`, `density.rb`, `dummy_comp.rb`, `geom.rb`,
+`poly2.rb` and the `testing/` fixtures all differ — but **none of those
+differences touch the three rules**. Within the files that hold them the
+changes are `CO.5a`/`CO.5b` derivations, a `DF.11` derivation rewrite, a
+`PL.5a_LV` report-string correction, and marker-exclusion refinements
+(`mvsd`/`mvpsd`/`otp_mk`/`ymtp_mk`/`sramcore`) around
+`DF.6_MV`/`PL.4_LV`/`PL.4_MV`/`PL.5a_MV`/`PL.5b_MV`; `CO.4`, `DF.6_MV` and
+`PL.4_MV` keep their presence, deck tags and thresholds in both trees. The
 `nfet_10v0_asym` PCell carries none of those markers (its 20 findings were
 reported without them; `layout/README.md`).
 
