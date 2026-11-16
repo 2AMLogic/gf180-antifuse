@@ -88,6 +88,24 @@ class ElideCoverage(unittest.TestCase):
                          "<0 entries elided by sim/harness/report.py elide_coverage()>")
 
 
+class CoverageIsElided(unittest.TestCase):
+    """The predicate the run_bench write sites share (issue #330): structural,
+    list/str-based -- not a marker-text match, so it also recognises reports
+    committed with the older `run_bench.py slim()` marker."""
+
+    def test_raw_report_is_not_recognised(self):
+        self.assertFalse(R.coverage_is_elided(fixture_report()))
+
+    def test_elided_report_is_recognised_idempotently(self):
+        once = R.elide_coverage(fixture_report())
+        self.assertTrue(R.coverage_is_elided(once))
+        self.assertTrue(R.coverage_is_elided(R.elide_coverage(once)))
+
+    def test_absent_or_empty_coverage_was_never_elided(self):
+        for rep in ({"corners": []}, {"coverage": {}}, {"coverage": None}):
+            self.assertFalse(R.coverage_is_elided(rep))
+
+
 class KltReportPayload(unittest.TestCase):
     def test_sha256_is_of_the_full_text_the_runner_would_have_written(self):
         import hashlib
