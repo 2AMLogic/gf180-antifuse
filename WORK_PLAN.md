@@ -18,7 +18,7 @@ Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a h
 `loom:important`; taken before unlabelled work.
 
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4)
-- **#203**: wafer.space Run 3 quarter slot: cut-down antifuse breakdown test chip (GDS due 2026-12-16)
+- **#203**: wafer.space Run 3 quarter slot (space not yet secured; GDS 2026-12-16 only if obtained): cut-down antifuse breakdown test chip
 - **#211**: Run 3 test chip: full-chip assembly with DRC/LVS through klt *(held)*
 - **#296**: layout: draw the ratified legal capacitor geometry in all seven cells (clears DF.1c on all seven and PL.2_MV on candidate 2; re-fit the three base cells hardcoded MOSCAP marker and CN/VB straps)
 
@@ -73,7 +73,7 @@ Issues carrying `loom:curated`.
 ## Epics
 
 - **#10**: Track the gap to T1 sim-validated / bronze (klayout-tools design-evidence tiers) *(held)*
-- **#203**: wafer.space Run 3 quarter slot: cut-down antifuse breakdown test chip (GDS due 2026-12-16)
+- **#203**: wafer.space Run 3 quarter slot (space not yet secured; GDS 2026-12-16 only if obtained): cut-down antifuse breakdown test chip
 
 ## Backlog Balance
 

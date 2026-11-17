@@ -1,0 +1,15 @@
+* LVS reference for layout/cell_candidate2_fallback/cell_candidate2_fallback.gds.
+* Source: spec/run3-test-chip-floorplan.md "Variant C2-fallback" and
+* spec/run3-bench-plan.md section 9 (issue #372) -- there is no schematic
+* netlist for this variant (it exists only as specified prose and this
+* drawing). Two bare cap_nmos_06v0 capacitors, one per ratified
+* capacitor-geometry level (spec/capacitor-geometry-decision.md, Region II:
+* Gmin W=1.0u x L=0.70u, G2x W=2.0u x L=0.70u), no access device, gate
+* private per block (PL_GMIN / PL_G2X), S and D strapped together on the
+* shared BL, bodies tied on VB. Same literal dimensions as the two C2
+* subcircuits of layout/run3_top/run3_top.spice, minus the XM1 access
+* device.
+.subckt cell_candidate2_fallback BL PL_GMIN PL_G2X VB
+XC1 BL PL_GMIN cap_nmos_06v0 c_width=1.0u c_length=0.70u m=1
+XC2 BL PL_G2X cap_nmos_06v0 c_width=2.0u c_length=0.70u m=1
+.ends

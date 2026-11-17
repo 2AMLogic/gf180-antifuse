@@ -1,0 +1,5 @@
+{
+  "layout": {"file": "cell_candidate2_fallback.gds", "deck": "gf180mcu", "top": "cell_candidate2_fallback"},
+  "reference": {"netlist": "lvs_reference.spice", "form": "subckt-call", "deck": "gf180mcu", "top": "cell_candidate2_fallback"},
+  "options": {"combine_devices": false}
+}
