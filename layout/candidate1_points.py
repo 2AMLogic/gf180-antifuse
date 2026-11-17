@@ -65,6 +65,9 @@ CN_Y0, CN_Y1 = 0.18, 0.48
 # The candidate-1 split-axis points: key -> (cell directory, W_CAP um,
 # W_ACC um). This table is the only place a point's constants are written;
 # each cell_candidate1_*/generate.py names exactly one entry.
+# Maintenance: each generate.py docstring restates its point's two widths in
+# prose. The GDS `--check` gate compares bytes, so it cannot catch a stale
+# docstring; update the shim's docstring whenever a width here changes.
 POINTS = {
     "A2x_G2x":  ("cell_candidate1_A2x_G2x",  0.84, 0.84),
     "A2x_Gmin": ("cell_candidate1_A2x_Gmin", 0.42, 0.84),
