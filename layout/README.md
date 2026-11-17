@@ -11,7 +11,10 @@ widths keep their section-3 split values (0.42 / 0.84 um, clamped at the
 0.42 um `mos_array` generator floor) and are not touched by that record.
 Extracted capacitor areas are 0.28 um2 (Regions I/III Minimum), 0.70 um2
 (Region II Minimum) and exactly 2.000x those at the 2x points
-(`klt extract`, device parameters). All seven cells were regenerated and
+(`klt extract`, device parameters; the deck's extracted C at its fixed bias:
+1.232 fF per Region I/III Minimum capacitor, 2.464 fF per 2x one -- exactly
+2.000x, the model's own area proportionality -- and 1.61 fF for the Region II
+Minimum `cap_nmos_06v0`). All seven cells were regenerated and
 re-signed in the same pass (#296); the per-cell sections below carry the
 details and the measured verdicts.
 
