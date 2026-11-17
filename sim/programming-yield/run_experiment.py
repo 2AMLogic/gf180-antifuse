@@ -407,9 +407,9 @@ def merge_into(dst: Group, src: Group) -> None:
         dst.status = src.status or dst.status
 
 
-def load_run(cand, rid: str) -> tuple[dict[tuple[str, str], Group], dict | None, str | None]:
+def load_run(cand, rid: str, base_dir: Path | None = None) -> tuple[dict[tuple[str, str], Group], dict | None, str | None]:
     groups: dict[tuple[str, str], Group] = {}
-    base = THIS_DIR / "corners" / rid
+    base = Path(base_dir) if base_dir is not None else THIS_DIR / "corners" / rid
 
     def load_dir(gdir: Path) -> Group | None:
         rp = report_path(gdir)
@@ -727,7 +727,8 @@ def render_record(pdk, cand, rid: str, groups, readtab, rerr, params: dict, dirt
     P_("")
     P_("- **Links**:")
     P_(f"  - frozen netlist snapshot: `sim/programming-yield/netlist-snapshots/{rid}.spice`")
-    P_(f"  - requests, decks and klt reports: `sim/programming-yield/corners/{rid}/`")
+    P_(f"  - requests, decks and klt reports: artifact store manifest "
+        f"`manifests/artifacts/programming-yield-{rid}.manifest.json`")
     P_(f"- **Timestamp / author**: {time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())} / Claude (loom sweep, issue #66)")
     P_(f"- **Supersedes**: {SUPERSEDES[0] or '(none)'}")
     return "\n".join(a) + "\n"
@@ -762,11 +763,12 @@ def smoke(pdk, cand, params: dict) -> int:
 
 
 def render_only(pdk, cand, rid: str, params: dict, ibound: float, n: int, note: str | None) -> int:
-    groups, readtab, rerr = load_run(cand, rid)
+    base = ES.run_dir_for_reading("programming-yield", rid, REPO_ROOT, THIS_DIR / "corners" / rid)
+    groups, readtab, rerr = load_run(cand, rid, base_dir=base)
     if not groups:
-        print(f"ERROR: no saved reports under corners/{rid}/", file=sys.stderr)
+        print(f"ERROR: no saved reports for {rid} (disk or artifact store)", file=sys.stderr)
         return 2
-    pf = THIS_DIR / "corners" / rid / "run-provenance.json"
+    pf = base / "run-provenance.json"
     dirty = json.loads(pf.read_text())["dirty"] if pf.is_file() else None
     snap = THIS_DIR / "netlist-snapshots" / f"{rid}.spice"
     if not snap.exists():

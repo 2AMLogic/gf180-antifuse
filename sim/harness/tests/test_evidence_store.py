@@ -23,12 +23,30 @@ if os.environ.get("STUB_PUT_FAIL_ON") and a[-1].endswith(os.environ["STUB_PUT_FA
     print("broker_unreachable", file=sys.stderr); sys.exit(1)
 m, name, f = a[a.index("--manifest") + 1], a[a.index("--name") + 1], a[-1]
 data = open(f, "rb").read()
-doc = json.load(open(m)) if os.path.exists(m) else {"schema_version": 1, "entries": []}
 h = hashlib.sha256(data).hexdigest()
+objdir = os.environ.get("STUB_OBJECT_DIR")
+if objdir:
+    open(os.path.join(objdir, h), "wb").write(data)
+doc = json.load(open(m)) if os.path.exists(m) else {"schema_version": 1, "entries": []}
 doc["entries"].append({"sha256": h, "size": len(data), "kind": "evidence",
     "producer": {"tool": "klt", "version": "0", "loom.repo": "o/n", "commit": None},
     "uri": "artifact:evidence/o__n/" + h[:2] + "/" + h, "name": name})
 json.dump(doc, open(m, "w"))
+sys.exit(0)
+'''
+
+GET_STUB = r'''#!/usr/bin/env python3
+import hashlib, json, os, sys
+a = sys.argv[1:]
+if a[:2] != ["artifact", "get"]:
+    sys.exit(int(os.environ.get("STUB_HELP_RC", "0")) if a[:3] == ["artifact", "put", "--help"] else 2)
+out, ref = a[a.index("-o") + 1], a[-1]
+man, sel = ref.split("#", 1)
+e = next(x for x in json.load(open(man))["entries"] if x.get("name") == sel or x["sha256"] == sel)
+data = open(os.path.join(os.environ["STUB_OBJECT_DIR"], e["sha256"]), "rb").read()
+if hashlib.sha256(data).hexdigest() != e["sha256"]:
+    print("sha mismatch", file=sys.stderr); sys.exit(1)
+open(out, "wb").write(data)
 '''
 
 
@@ -43,13 +61,20 @@ class EvidenceStoreTest(unittest.TestCase):
         stub.write_text(STUB)
         stub.chmod(stub.stat().st_mode | stat.S_IXUSR)
         self.klt = [str(stub)]
+        get_stub = self.tmp / "klt-get"
+        get_stub.write_text(GET_STUB)
+        get_stub.chmod(get_stub.stat().st_mode | stat.S_IXUSR)
+        self.klt_get = [str(get_stub)]
+        self.objdir = self.tmp / "objects"
+        self.objdir.mkdir()
         self.src = self.tmp / "src"
         self.src.mkdir()
         (self.src / "a.log").write_text("aaa")
         (self.src / "b.log").write_text("bbbb")
         self.files = {"corners/ss_-40c_bl0p90v.log": self.src / "a.log",
                       "corners/ff_125c_bl1p10v.log": self.src / "b.log"}
-        self.env = {"KLT_ARTIFACT_BROKER": "http://broker.invalid", "PATH": "/usr/bin:/bin"}
+        self.env = {"KLT_ARTIFACT_BROKER": "http://broker.invalid", "PATH": "/usr/bin:/bin",
+                    "STUB_OBJECT_DIR": str(self.objdir)}
 
     def store(self, **kw):
         env = {**self.env, **kw.pop("extra", {})}
@@ -182,6 +207,110 @@ class EvidenceStoreTest(unittest.TestCase):
         (run2 / "c1.log").write_text("x")
         self.assertEqual(E.publish_for_runner("bench", "rid2", run2, self.root, klt_cmd=self.klt, env={}), 1)
         self.assertFalse(E.manifest_path(self.root, "bench", "rid2").exists())
+
+    def test_publish_run_removes_stored_files_from_run_dir(self):
+        run = self.work_run()
+        corner = "moscap_ff_-40c_vpp13p68v"
+        work = run / "prog_b0" / ".work" / "klt" / "moscap_ff_13p680V_n40C"
+        E.publish_run("bench", "rid", run, self.root, klt_cmd=self.klt, env=self.env)
+        for gone in (run / "prog_b0" / f"{corner}.cir",
+                     run / "prog_b0" / f"{corner}.log",
+                     run / "prog_b0" / ".work" / "klt" / "batch-receipt.json",
+                     work / "ngspice.log"):
+            self.assertFalse(gone.exists(), gone)
+        # skipped .work scratch was never stored: left as disposable leftovers
+        self.assertTrue((work / ".spiceinit").exists())
+        self.assertTrue((work / "corner.cir").exists())
+        m = json.loads(E.manifest_path(self.root, "bench", "rid").read_text())
+        self.assertEqual(len(m["entries"]), 4)
+
+    def test_publish_run_leaves_run_dir_untouched_on_store_error(self):
+        run = self.work_run()
+        before = {p: p.read_bytes() for p in sorted(run.rglob("*")) if p.is_file()}
+        with self.assertRaises(E.EvidenceStoreError):
+            E.publish_run("bench", "rid", run, self.root, klt_cmd=self.klt,
+                          env={**self.env, "STUB_PUT_FAIL_ON": "vpp13p68v.cir"})
+        after = {p: p.read_bytes() for p in sorted(run.rglob("*")) if p.is_file()}
+        self.assertEqual(before, after)
+        self.assertFalse(E.manifest_path(self.root, "bench", "rid").exists())
+
+    def test_publish_run_prunes_dirs_emptied_inside_repo(self):
+        run = self.root / "sim" / "bench" / "corners" / "rid"
+        run.mkdir(parents=True)
+        (run / "c1.log").write_text("x")
+        E.publish_run("bench", "rid", run, self.root, klt_cmd=self.klt, env=self.env)
+        self.assertFalse(run.exists())
+        self.assertFalse((self.root / "sim" / "bench").exists())
+        self.assertTrue(E.manifest_path(self.root, "bench", "rid").exists())
+
+    def test_store_run_removes_sources_outside_repo_without_pruning(self):
+        E.store_run("bench", "rid", self.files, self.root, klt_cmd=self.klt, env=self.env)
+        self.assertFalse((self.src / "a.log").exists())
+        self.assertFalse((self.src / "b.log").exists())
+        self.assertTrue(self.src.is_dir())
+
+    def test_remove_stored_sources_wraps_unlink_failure(self):
+        # A non-FileNotFoundError unlink failure (here: the path became a
+        # directory) must surface as EvidenceStoreError naming the leftover,
+        # not escape store_run as a bare OSError after the manifest landed.
+        (self.src / "b.log").unlink()
+        (self.src / "b.log").mkdir()
+        with self.assertRaises(E.EvidenceStoreError) as cm:
+            E._remove_stored_sources(self.files, self.root)
+        self.assertIn(str(self.src / "b.log"), str(cm.exception))
+        self.assertTrue((self.src / "b.log").is_dir())
+
+    def test_fetch_run_restores_run_dir_layout_and_bytes(self):
+        run = self.work_run()
+        E.publish_run("bench", "rid", run, self.root, klt_cmd=self.klt, env=self.env)
+        dest = self.tmp / "fetched"
+        out = E.fetch_run("bench", "rid", self.root, dest=dest, klt_cmd=self.klt_get, env=self.env)
+        self.assertEqual(out, dest)
+        corner = "moscap_ff_-40c_vpp13p68v"
+        self.assertEqual((dest / "prog_b0" / f"{corner}.cir").read_text(), "* deck\n.end\n")
+        self.assertEqual((dest / "prog_b0" / ".work" / "klt" / "batch-receipt.json").read_text(), '{"job": "j-1"}')
+        self.assertEqual((dest / "prog_b0" / ".work" / "klt" / "moscap_ff_13p680V_n40C" / "ngspice.log").read_text(),
+                         "twinless log\n")
+
+    def test_fetch_run_subset_of_names(self):
+        run = self.tmp / "subset"
+        (run / "a").mkdir(parents=True)
+        (run / "a" / "x.log").write_text("x")
+        (run / "b").mkdir()
+        (run / "b" / "y.log").write_text("yy")
+        E.publish_run("bench", "rid", run, self.root, klt_cmd=self.klt, env=self.env)
+        dest = self.tmp / "fetched-subset"
+        E.fetch_run("bench", "rid", self.root, dest=dest, klt_cmd=self.klt_get, env=self.env,
+                    names={"a/x.log"})
+        self.assertTrue((dest / "a" / "x.log").exists())
+        self.assertFalse((dest / "b").exists())
+
+    def test_fetch_run_without_manifest_fails_closed(self):
+        with self.assertRaises(E.EvidenceStoreError):
+            E.fetch_run("bench", "norid", self.root, dest=self.tmp / "f", klt_cmd=self.klt_get, env=self.env)
+
+    def test_run_dir_for_reading_fetches_consumed_run(self):
+        run = self.work_run()
+        E.publish_run("bench", "rid", run, self.root, klt_cmd=self.klt, env=self.env)
+        base = E.run_dir_for_reading("bench", "rid", self.root, run, klt_cmd=self.klt_get, env=self.env)
+        self.assertNotEqual(base, run)
+        corner = "moscap_ff_-40c_vpp13p68v"
+        self.assertTrue((base / "prog_b0" / f"{corner}.log").exists())
+
+    def test_run_dir_for_reading_prefers_committed_bytes(self):
+        # pre-adoption run: report bytes still in the tree, manifest also present
+        run = self.root / "sim" / "bench" / "corners" / "old"
+        (run / "b1").mkdir(parents=True)
+        (run / "b1" / "report.json").write_text("{}")
+        E.manifest_path(self.root, "bench", "old").parent.mkdir(parents=True, exist_ok=True)
+        E.manifest_path(self.root, "bench", "old").write_text('{"schema_version": 1, "entries": []}')
+        self.assertEqual(E.run_dir_for_reading("bench", "old", self.root, run,
+                                               klt_cmd=self.klt_get, env=self.env), run)
+
+    def test_run_dir_for_reading_without_manifest_returns_run_dir(self):
+        run = self.root / "sim" / "bench" / "corners" / "never-published"
+        self.assertEqual(E.run_dir_for_reading("bench", "never-published", self.root, run,
+                                               klt_cmd=self.klt_get, env=self.env), run)
 
 
 if __name__ == "__main__":

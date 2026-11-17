@@ -1229,7 +1229,8 @@ def render_record(pdk, cand, rid: str, results: dict[str, BenchResult], params: 
       "ASSUMED parameters of `design/breakdown/breakdown_params.spice`; (c) the trigger/latch mechanism.")
     if dirty is None:
         state = (f"; working-tree state at run time not captured -- the run executed commit "
-                 f"`{rid.rsplit('-', 1)[-1]}` (record id), and the exact decks are frozen under corners/{rid}/)")
+                 f"`{rid.rsplit('-', 1)[-1]}` (record id), and the exact decks are frozen in the artifact "
+                 f"store, manifest `manifests/artifacts/cell-breakdown-model-{rid}.manifest.json`)")
     else:
         state = ", dirty tree at run time)" if dirty else ")"
     prov = f"schematic (design/netlists/{cand.netlist} wrapped by design/breakdown/cell_candidates_bd.spice" + state
@@ -1446,7 +1447,8 @@ def render_bias_record(pdk, cand, rid: str, results: dict[str, BenchResult], par
     a("- **Links**:")
     a("  - Decision record: `spec/candidate3-read-bias-decision.md`")
     a(f"  - Netlist snapshot: `sim/cell-breakdown-model/netlist-snapshots/{rid}.spice`")
-    a(f"  - Request, body, klt report, per-corner decks and logs: `sim/cell-breakdown-model/corners/{rid}/{BIAS_BENCH}/`")
+    a(f"  - Request, body, klt report, per-corner decks and logs: artifact store manifest "
+      f"`manifests/artifacts/cell-breakdown-model-{rid}.manifest.json`, entries `{BIAS_BENCH}/…`")
     a("  - Failure being fixed (placeholder bias): `sim/cell-breakdown-model/records/20261009-020416-66efd11.md`")
     a(f"  - PDK: `{pdk.variant}`, open_pdks `{pdk.revision}` (submit host)")
     a(f"- **Timestamp / author**: {time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())}, agent-builder")
@@ -1596,7 +1598,7 @@ def render_conv_record(pdk, cand, rid: str, results: dict[str, BenchResult], par
       f"{rating:g} V rating of `{CHAR.CANDIDATES[cand.n - 1].access_model}`) are logged, CONDITIONAL ON THE "
       "ASSUMED breakdown parameters.")
     if dirty is None:
-        state = f"; working-tree state at run time not captured, exact decks frozen under corners/{rid}/)"
+        state = f"; working-tree state at run time not captured, exact decks frozen in the artifact store, manifest `manifests/artifacts/cell-breakdown-model-{rid}.manifest.json`)"
     else:
         state = ", dirty tree at run time)" if dirty else ")"
     a(f"- **Netlist provenance**: schematic (design/netlists/{cand.netlist} wrapped by "
@@ -1645,7 +1647,8 @@ def render_conv_record(pdk, cand, rid: str, results: dict[str, BenchResult], par
     a("- **Links**:")
     a("  - Model: `design/breakdown/` (unchanged by this run)")
     a(f"  - Netlist snapshot: `sim/cell-breakdown-model/netlist-snapshots/{rid}.spice`")
-    a(f"  - Requests, bodies, klt reports, per-corner decks and logs: `sim/cell-breakdown-model/corners/{rid}/<bench>/`")
+    a(f"  - Requests, bodies, klt reports, per-corner decks and logs: artifact store manifest "
+      f"`manifests/artifacts/cell-breakdown-model-{rid}.manifest.json`, entries `<bench>/…`")
     if orig_rid:
         a(f"  - Original trigger record: `sim/cell-breakdown-model/records/{orig_rid}.md`")
     a(f"  - PDK: `{pdk.variant}`, open_pdks `{pdk.revision}` (submit host); fleet-side hashes in each `report.json`")
@@ -1753,7 +1756,7 @@ def render_attribution(a, rid, results) -> None:
                     o = rs[v].outcome[cid]
                     det = o["kind"] + (f" at t = {o['time']:.4e} s in `{o['node']}` ({o['where']})"
                                        if o["kind"] == "timestep" else "")
-                    fails.append(f"{v}: {det}; reproducer `corners/{rid}/{stim}_{v}/{cid}.cir`")
+                    fails.append(f"{v}: {det}; reproducer manifest entry `{stim}_{v}/{cid}.cir`")
             a(f"    - `{stim}` `{cid}`: **{attribute_corner(ok)}** -- " + "; ".join(fails))
     if not any_bad:
         a("    - none: every corner of every single-instance bench converged.")
@@ -1769,7 +1772,8 @@ def render_opstart(a, rid, results) -> None:
       "`tran` WITHOUT `uic`, job "
       f"`{job}`): {t['pass']}/{t['attempted']} converged (timeout {t['timeout']}, timestep {t['timestep']}, "
       f"missing {t['missing-measurement']}, other {t['error']}). No breakdown element is in this deck, so any "
-      "failure here is **stock-cell**; reproducers `corners/" + rid + f"/{OPSTART_BENCH}/<corner>.cir`:")
+      "failure here is **stock-cell**; reproducer manifest entries "
+      f"`{OPSTART_BENCH}/<corner>.cir` (run manifest `manifests/artifacts/cell-breakdown-model-{rid}.manifest.json`):")
     for cid in sorted(r.outcome, key=lambda c: (c.split("_")[1], corner_temp(c))):
         o = r.outcome[cid]
         a(f"    - `{cid}`: {o['kind']}" + (f" at t = {o['time']:.4e} s in `{o['node']}`" if o["kind"] == "timestep" else ""))
@@ -1935,7 +1939,8 @@ def render_links(a, rid: str, stored_rid: str | None, pdk) -> None:
     a("- **Links**:")
     a("  - Model: `design/breakdown/` (element, wrappers, parameters, `check_params.py`)")
     a(f"  - Netlist snapshot: `sim/cell-breakdown-model/netlist-snapshots/{rid}.spice`")
-    a(f"  - Requests, generated bodies, klt reports, per-corner decks and logs: `sim/cell-breakdown-model/corners/{rid}/<bench>/`")
+    a(f"  - Requests, generated bodies, klt reports, per-corner decks and logs: artifact store manifest "
+      f"`manifests/artifacts/cell-breakdown-model-{rid}.manifest.json`, entries `<bench>/…`")
     a(f"  - Regression reference: `sim/cell-device-characterization/records/{stored_rid}.md`")
     a(f"  - PDK: `{pdk.variant}`, open_pdks `{pdk.revision}` (submit host); fleet-side engine/model hashes in each `report.json` `environment`")
     a(f"- **Timestamp / author**: {time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())}, agent-builder")
@@ -1999,10 +2004,12 @@ def smoke(pdk, cand, bench: str, params: dict, pick: list[str] | None = None) ->
     return 0 if c["status"] == "pass" else 1
 
 
-def results_from_reports(cand, rid: str, params: dict, benches=None) -> dict[str, BenchResult]:
+def results_from_reports(cand, rid: str, params: dict, benches=None,
+                         base_dir: Path | None = None) -> dict[str, BenchResult]:
     results: dict[str, BenchResult] = {}
+    base = Path(base_dir) if base_dir is not None else THIS_DIR / "corners" / rid
     for bench in benches or ALL_BENCHES:
-        bdir = THIS_DIR / "corners" / rid / bench
+        bdir = base / bench
         rp = bdir / "report.json"
         if rp.is_file():
             report = json.loads(rp.read_text())
@@ -2052,11 +2059,12 @@ def render_any(pdk, cand, rid: str, results: dict[str, BenchResult], params: dic
 
 def render_only(pdk, cand, rid: str, params: dict, note: str | None = None, vbd_case: str | None = None,
                 prior: str | None = None) -> int:
-    results = results_from_reports(cand, rid, params)
+    base = ES.run_dir_for_reading("cell-breakdown-model", rid, REPO_ROOT, THIS_DIR / "corners" / rid)
+    results = results_from_reports(cand, rid, params, base_dir=base)
     if not results:
-        print(f"ERROR: no saved reports under corners/{rid}/", file=sys.stderr)
+        print(f"ERROR: no saved reports for {rid} (disk or artifact store)", file=sys.stderr)
         return 2
-    prov_file = THIS_DIR / "corners" / rid / "run-provenance.json"
+    prov_file = base / "run-provenance.json"
     dirty = json.loads(prov_file.read_text())["dirty"] if prov_file.is_file() else None
     R.write_once(THIS_DIR / "records" / f"{rid}.md",
                  tag_record(set_supersedes(render_any(pdk, cand, rid, results, params, dirty, note), prior),
@@ -2085,8 +2093,9 @@ def main(argv: list[str] | None = None) -> int:
                     help="V_bd sensitivity point (#130): per-candidate override of bd_ebd to the sourced BVox "
                          "typ/floor value; the shared parameter file is not changed")
     ap.add_argument("--render", default=None, metavar="RECORD_ID",
-                    help="(re)write records/RECORD_ID.md from the saved corners/RECORD_ID/*/report.json "
-                         "of ONE candidate (--candidates N); runs no simulation. Refuses to overwrite.")
+                    help="(re)write records/RECORD_ID.md from the saved reports of ONE candidate "
+                         "(--candidates N; committed bytes where they exist, else fetched from the "
+                         "artifact store); runs no simulation. Refuses to overwrite.")
     ap.add_argument("--supersedes", default=None, metavar="N=RID[,N=RID...]",
                     help="per candidate, the earlier-PDK record this run re-qualifies; written into the new "
                          "record's Supersedes field (the old record is not touched)")
