@@ -465,6 +465,10 @@ def main():
     now = dt.datetime.now(dt.timezone.utc)
     record_id = a.analyze or a.record_id or f"{now:%Y%m%d-%H%M%S}-{git('rev-parse', '--short', 'HEAD')}"
     repdir = HERE / "reports" / record_id
+    if a.analyze:
+        # --analyze reads a finished run: once stored, the in-tree reports are
+        # gone, so resolve via the store (no manifest -> run dir, unchanged).
+        repdir = ES.run_dir_for_reading("integrated-transition", a.analyze, REPO, repdir)
     clean = not R.git_is_dirty(REPO)
 
     todo = [(sl, p, t) for sl in slices for p in procs for t in B.TIER_POINTS]

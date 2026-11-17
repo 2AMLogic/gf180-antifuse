@@ -249,6 +249,17 @@ class EvidenceStoreTest(unittest.TestCase):
         self.assertFalse((self.src / "b.log").exists())
         self.assertTrue(self.src.is_dir())
 
+    def test_remove_stored_sources_wraps_unlink_failure(self):
+        # A non-FileNotFoundError unlink failure (here: the path became a
+        # directory) must surface as EvidenceStoreError naming the leftover,
+        # not escape store_run as a bare OSError after the manifest landed.
+        (self.src / "b.log").unlink()
+        (self.src / "b.log").mkdir()
+        with self.assertRaises(E.EvidenceStoreError) as cm:
+            E._remove_stored_sources(self.files, self.root)
+        self.assertIn(str(self.src / "b.log"), str(cm.exception))
+        self.assertTrue((self.src / "b.log").is_dir())
+
     def test_fetch_run_restores_run_dir_layout_and_bytes(self):
         run = self.work_run()
         E.publish_run("bench", "rid", run, self.root, klt_cmd=self.klt, env=self.env)

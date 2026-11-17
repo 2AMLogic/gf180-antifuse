@@ -141,13 +141,20 @@ def _remove_stored_sources(files: dict[str, Path], repo_root: Path) -> None:
     unlinked but their directories stay.
     """
     parents: set[Path] = set()
+    failed: list[str] = []
     for src in files.values():
         path = Path(src)
         try:
             path.unlink()
         except FileNotFoundError:
             pass
+        except OSError as exc:
+            failed.append(f"{path}: {exc}")
         parents.add(path.parent)
+    if failed:
+        raise EvidenceStoreError(
+            "stored sources could not be removed after the manifest landed (the store holds "
+            "the bytes; remove them by hand):\n  " + "\n  ".join(failed))
     _prune_empty_dirs(parents, repo_root)
 
 

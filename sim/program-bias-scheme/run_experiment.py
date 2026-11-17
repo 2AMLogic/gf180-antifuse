@@ -182,10 +182,11 @@ def fill(res, report: dict, bdir: Path, cand, params: dict, write: bool) -> None
                                                res.values[cid])
 
 
-def load_saved(cand, rid: str, params: dict) -> dict:
+def load_saved(cand, rid: str, params: dict, base_dir: Path | None = None) -> dict:
     out = {}
+    base = Path(base_dir) if base_dir is not None else THIS_DIR / "corners" / rid
     for bench in BENCHES:
-        bdir = THIS_DIR / "corners" / rid / bench
+        bdir = base / bench
         if (bdir / "report.json").is_file():
             report = json.loads((bdir / "report.json").read_text())
             env = report.get("environment", {})
@@ -492,6 +493,30 @@ def smoke(pdk, cand, bench: str, params: dict, idx: int = 3) -> int:
     return 0 if c["status"] == "pass" else 1
 
 
+def render_only(pdk, cand, rid: str, base_params: dict, note: str | None = None,
+                vbd_case: str | None = None) -> int:
+    """Re-render one record from saved reports; refuse to mint an empty one.
+
+    Reads the run dir, or the artifact store once the run has been consumed
+    (run_dir_for_reading fetches the stored copy back). An empty result means
+    the reports could not be found anywhere: writing would commit a record
+    with an empty convergence table and no per-bench sections, and write_once
+    makes that permanent, so error out instead.
+    """
+    params = CB.apply_vbd_case(base_params, vbd_case, cand.n)
+    res = load_saved(cand, rid, params,
+                     base_dir=ES.run_dir_for_reading("program-bias-scheme", rid, REPO_ROOT,
+                                                     THIS_DIR / "corners" / rid))
+    if not res:
+        print(f"ERROR: no saved reports for {rid} (disk or artifact store)", file=sys.stderr)
+        return 2
+    R.write_once(THIS_DIR / "records" / f"{rid}.md",
+                 CB.tag_record(render_pl(pdk, cand, rid, params, res, note),
+                               CB.sensitivity_block(vbd_case, cand.n, params)))
+    print(f"record: records/{rid}.md (rendered from saved reports)")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--pdk-root", default=None)
@@ -537,13 +562,7 @@ def main(argv: list[str] | None = None) -> int:
         return smoke(pdk, by_n[int(n)], bench, CB.apply_vbd_case(base_params, args.vbd_case, int(n)),
                      int(ix[0]) if ix else 3)
     if args.render:
-        cand = by_n[wanted[0]]
-        params = CB.apply_vbd_case(base_params, args.vbd_case, cand.n)
-        res = load_saved(cand, args.render, params)
-        R.write_once(THIS_DIR / "records" / f"{args.render}.md",
-                     CB.tag_record(render_pl(pdk, cand, args.render, params, res, args.note),
-                                   CB.sensitivity_block(args.vbd_case, cand.n, params)))
-        return 0
+        return render_only(pdk, by_n[wanted[0]], args.render, base_params, args.note, args.vbd_case)
     if args.retabulate:
         if args.retab_src and len(wanted) != 1:
             print("ERROR: --retab-src applies to exactly one candidate", file=sys.stderr)
@@ -582,6 +601,8 @@ def main(argv: list[str] | None = None) -> int:
         if not args.resume:
             R.write_once(THIS_DIR / "corners" / rid / "run-provenance.json",
                          json.dumps({"git_sha": R.git_short_sha(REPO_ROOT), "dirty": dirty}) + "\n")
+        # resume reads the run dir directly: resuming happens before a successful
+        # publish, and publish is what removes the stored sources.
         results = load_saved(cand, rid, params) if args.resume else {}
         for bench in benches:
             if bench in results:

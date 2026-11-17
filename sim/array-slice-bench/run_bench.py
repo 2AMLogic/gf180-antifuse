@@ -539,7 +539,6 @@ def main():
     record_id = f"{now:%Y%m%d-%H%M%S}-{git('rev-parse', '--short', 'HEAD')}"
     clean = not R.git_is_dirty(REPO)
     sections, summary = [], {}
-    summary = {}
     worst_bad = 0
     for sl in slices:
         if a.analyze_report:
