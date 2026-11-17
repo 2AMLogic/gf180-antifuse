@@ -1,15 +1,20 @@
-"""Tests for program-bias-scheme --render on a consumed (store-held) run (issue #356).
+"""Tests for program-bias-scheme --render on a consumed (store-held) run (issue #356),
+and for the --retabulate empty-source refusal (issue #362).
 
 After the evidence store removes a run's in-tree sources, --render must (a) read
 through run_dir_for_reading so the stored copy is fetched back, and (b) refuse to
 write a record when no reports can be found anywhere: write_once is append-only,
 so an empty-convergence record minted from a store/fetch miss could never be
-corrected in place.
+corrected in place. The same refusal applies to --retabulate --retab-src naming
+a source record with neither a manifest nor a run dir.
 """
+import contextlib
+import io
 import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "sim"))
@@ -52,6 +57,26 @@ class RenderOnlyGuard(unittest.TestCase):
                 RE.THIS_DIR = old_this
             self.assertEqual(rc, 2)
             self.assertFalse((Path(td) / "records" / f"{RID}.md").exists())
+
+
+class RetabGuard(unittest.TestCase):
+    def test_retabulate_refuses_empty_source_and_writes_no_record(self):
+        # --retab-src naming a record with neither a manifest nor a run dir:
+        # no progc_* reports anywhere, so the retabulation must return 2 and
+        # write no record (write_once is append-only; an empty one could
+        # never be corrected in place).
+        with tempfile.TemporaryDirectory() as td:
+            old_this, RE.THIS_DIR = RE.THIS_DIR, Path(td)
+            try:
+                with mock.patch.object(RE.P, "resolve_pdk", return_value=None), \
+                     mock.patch.object(RE.shutil, "which", return_value="/usr/bin/true"), \
+                     contextlib.redirect_stderr(io.StringIO()) as err:
+                    rc = RE.main(["--retabulate", "--candidates", "1", "--retab-src", RID])
+            finally:
+                RE.THIS_DIR = old_this
+            self.assertEqual(rc, 2)
+            self.assertEqual(list((Path(td) / "records").glob("*.md")), [])
+            self.assertIn(f"no saved progc_* reports for {RID}", err.getvalue())
 
 
 if __name__ == "__main__":
