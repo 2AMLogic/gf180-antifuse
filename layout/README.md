@@ -666,9 +666,12 @@ The Candidate 1 caveats carry over unchanged (identical cell structure):
 Dualgate is not modelled for the 6 V rules so the access device is checked
 against the 3.3 V thresholds; the capacitor's geometry and capacitance are not
 compared by LVS (`subckt-call` placeholder `C`, `A`/`P` secondary), so the
-drawn capacitor size rests on `generate.py` and `klt extract`. The
-cell's **first** native run is the committed cross-check above, produced at
-the ratified geometry: it confirms by measurement what `#294` could only
+drawn capacitor size rests on `generate.py` and `klt extract`. The committed
+cross-check above is the cell's second native run: the first, committed
+pre-`#296` (`cfcd4d6a`, at the 0.42 um capacitor), still showed the
+cell-level `DF.1c` among its 12 findings -- the carried-forward-verdict
+problem #296 was filed to end. The re-signed run at the ratified geometry
+confirms by measurement what `#294` could only
 infer (the 2.0 um width clears `DF.1c`), and its remaining cell-level
 findings are exactly `#297`'s set (`DF.4d_MV` x5, `DV.6` x1, all in the
 `mos_array` blocks) plus `DBU` and the die-level density rules. The doglegged

@@ -56,11 +56,13 @@ STRAPS = {"shapes": [
     # pads (each as tall as its device width).
     {"layer": bg.METAL1, "rect_um": [0.92, 0.25, DX + 1.22, 0.48]},
     # VB: tie both tap rings together along the north side. The TAP_N pad
-    # centre rises with the width (y = 2.70 at W = 0.42, y = 3.28 at 1.0 --
-    # centre = W + 2.28 um, measured), so the band spans both pads
-    # (min/max +/- 0.21). It clears the capacitor's metal1 gate pad
+    # centre rises with the width (centre = W + 2.28 um, measured), so the
+    # band spans both pads -- min/max +/- 0.21 -- and tracks the widths
+    # (access at bg.W_MIN, capacitor at W_CAP) instead of restating them as
+    # literals. It clears the capacitor's metal1 gate pad
     # (y 1.75..2.17 at W_CAP = 1.0) by 0.32 um.
-    {"layer": bg.METAL1, "rect_um": [0.49, 2.49, DX + 0.79, 3.49]},
+    {"layer": bg.METAL1,
+     "rect_um": [0.49, bg.W_MIN + 2.28 - 0.21, DX + 0.79, W_CAP + 2.28 + 0.21]},
     # MOS-capacitor marker over the cap block's COMP island, which is as tall
     # as the device width (0,0)-(1.28, W_CAP) in the block frame -- so the
     # marker grows with W_CAP, keeping the 0.1 um margin. This is what makes

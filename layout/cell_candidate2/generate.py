@@ -94,7 +94,7 @@ STRAPS = {
     "labels": [
         {"layer": LABEL_M1, "text": "BL", "at_um": [0.0, 0.0]},
         {"layer": LABEL_M1, "text": "WL", "at_um": [0.0, 2.9]},
-        {"layer": LABEL_M1, "text": "PL", "at_um": [CX + 0.78, CY + 1.96]},
+        {"layer": LABEL_M1, "text": "PL", "at_um": [CX + 0.78, CY + W_CAP + 0.96]},
         {"layer": LABEL_M1, "text": "VB", "at_um": [4.0, CY + 2.2]},
     ],
 }
