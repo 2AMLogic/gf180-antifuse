@@ -5,6 +5,10 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-17
 
+- **PR #363**: fix(sim): state the stored contract on post-manifest cleanup failure; refuse empty retab records
+- **PR #361**: fix: remove stored run-dir copies once the evidence manifest lands
+- **Issue #362** (closed): Evidence store: two diagnostics gaps left after the run-dir-consuming store (#356)
+- **Issue #356** (closed): Runs since the 10-23 store-only rule commit raw sim bytes as well as storing them: find and fix the cause
 - **PR #359**: fix(check): grandfather ruling-era manifests out of tracked-bytes rule
 - **Issue #346** (closed): check:ci fails on main: check_artifact_manifests.py reports committed-and-stored bytes for sim/ artifacts
 
