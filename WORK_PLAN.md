@@ -29,14 +29,13 @@ Human-approved issues ready for implementation (`loom:issue`).
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4)
 - **#340**: sim/harness/tests/test_numfmt.py: no direct coverage for numfmt.close and numfmt.logical_lines
 - **#344**: layout/README.md still says per-candidate geometry stays in each generate.py
-- **#346**: check:ci fails on main: check_artifact_manifests.py reports committed-and-stored bytes for sim/ artifacts
-- **#356**: Runs since the 10-23 store-only rule commit raw sim bytes as well as storing them: find and fix the cause
 
 ## In Progress
 
 Issues currently being built (`loom:building`).
 
 - **#255**: Measurement plan: constant-voltage time-to-breakdown statistics (Weibull slope, voltage acceleration) and a sub-programming soak
+- **#356**: Runs since the 10-23 store-only rule commit raw sim bytes as well as storing them: find and fix the cause
 
 ## PRs Awaiting Review
 
@@ -67,7 +66,6 @@ Issues carrying `loom:curated`.
 - **#338**: wafer.space: precheck treatment and foundry conversation on the unmodified nfet_10v0_asym PCell's CO.4/DF.6_MV/PL.4_MV findings (#299) *(curated)*
 - **#340**: sim/harness/tests/test_numfmt.py: no direct coverage for numfmt.close and numfmt.logical_lines *(curated)*
 - **#344**: layout/README.md still says per-candidate geometry stays in each generate.py *(curated)*
-- **#346**: check:ci fails on main: check_artifact_manifests.py reports committed-and-stored bytes for sim/ artifacts *(curated)*
 - **#356**: Runs since the 10-23 store-only rule commit raw sim bytes as well as storing them: find and fix the cause *(curated)*
 
 ## Proposed (Architect / Hermit)
@@ -88,11 +86,11 @@ Issues carrying `loom:curated`.
 | Operator merge-risk holds | 1 |
 | Very important | 1 |
 | Important | 4 |
-| Ready (`loom:issue`) | 5 |
-| In Progress (`loom:building`) | 1 |
+| Ready (`loom:issue`) | 3 |
+| In Progress (`loom:building`) | 2 |
 | PRs awaiting review | 1 |
 | Approved PRs awaiting merge | 1 |
-| Curated | 15 |
+| Curated | 14 |
 | Architect / Hermit proposals | 3 |
 | Active epics | 2 |
 <!-- guide:plan-body:end -->
