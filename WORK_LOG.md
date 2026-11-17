@@ -5,6 +5,8 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-17
 
+- **PR #371**: layout: draw the ratified capacitor geometry (1.0/2.0 um) in all seven cells; re-fit marker, CN and VB
+- **Issue #296** (closed): layout: draw the ratified legal capacitor geometry in all seven cells (clears DF.1c on all seven and PL.2_MV on candidate 2; re-fit the three base cells hardcoded MOSCAP marker and CN/VB straps)
 - **PR #367**: test: pin numfmt.close tolerance and numfmt.logical_lines continuation rules
 - **PR #366**: docs: note candidate-1 split-point exception in layout README
 - **Issue #344** (closed): layout/README.md still says per-candidate geometry stays in each generate.py
