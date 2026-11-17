@@ -3,6 +3,8 @@
     python3 -m unittest discover -s sim/harness/tests
 """
 
+import contextlib
+import io
 import json
 import stat
 import sys
@@ -207,6 +209,40 @@ class EvidenceStoreTest(unittest.TestCase):
         (run2 / "c1.log").write_text("x")
         self.assertEqual(E.publish_for_runner("bench", "rid2", run2, self.root, klt_cmd=self.klt, env={}), 1)
         self.assertFalse(E.manifest_path(self.root, "bench", "rid2").exists())
+
+    def test_publish_for_runner_post_manifest_cleanup_failure_says_stored(self):
+        # A source that cannot be unlinked (here: its directory is read-only,
+        # the same non-FileNotFoundError OSError class
+        # test_remove_stored_sources_wraps_unlink_failure provokes) fires
+        # AFTER the manifest landed, so the message must state the opposite
+        # contract: the evidence IS stored, remove the leftovers by hand,
+        # do not re-run.
+        run = self.tmp / "run"
+        ro = run / "ro"
+        ro.mkdir(parents=True)
+        (ro / "c1.log").write_text("x")
+        (run / "c2.log").write_text("y")
+        ro.chmod(0o555)
+        self.addCleanup(ro.chmod, 0o755)
+        with contextlib.redirect_stderr(io.StringIO()) as err:
+            rc = E.publish_for_runner("bench", "rid", run, self.root, klt_cmd=self.klt, env=self.env)
+        self.assertEqual(rc, 1)
+        msg = err.getvalue()
+        self.assertNotIn("evidence not stored", msg)
+        self.assertIn("evidence IS stored", msg)
+        self.assertIn("is in place", msg)
+        self.assertIn("do NOT re-run", msg)
+        self.assertIn(str(ro / "c1.log"), msg)
+        self.assertNotIn(str(run / "c2.log"), msg)
+        self.assertTrue(E.manifest_path(self.root, "bench", "rid").exists())
+        self.assertTrue((ro / "c1.log").exists())
+        self.assertFalse((run / "c2.log").exists())
+        run3 = self.tmp / "run3"
+        run3.mkdir()
+        (run3 / "c1.log").write_text("x")
+        with contextlib.redirect_stderr(io.StringIO()) as err2:
+            self.assertEqual(E.publish_for_runner("bench", "rid3", run3, self.root, klt_cmd=self.klt, env={}), 1)
+        self.assertIn("evidence not stored", err2.getvalue())
 
     def test_publish_run_removes_stored_files_from_run_dir(self):
         run = self.work_run()

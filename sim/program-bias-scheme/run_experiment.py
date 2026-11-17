@@ -302,7 +302,15 @@ def common_header(a, cand, rid: str, params: dict, claim: str, note: str | None,
       "corner; level summaries take the worst corner WITHIN one level only.")
 
 
-def render_retab(pdk, cand, rid: str, params: dict, note: str | None, src: str | None = None) -> str:
+def render_retab(pdk, cand, rid: str, params: dict, note: str | None, src: str | None = None) -> str | None:
+    """Re-tabulate the existing BL-driven evidence into one record body.
+
+    Refuses to mint an empty record: when no ``progc_*`` reports can be
+    found for ``src`` (disk or artifact store) it prints the reason and
+    returns None, and the caller must not write — write_once is append-only,
+    so a record with no result sections whose Links line cites the source
+    anyway could never be corrected in place.
+    """
     src = src or EXISTING_PROGC[cand.n]
     src_corn = CB.THIS_DIR / "corners" / src
     src_base = ES.run_dir_for_reading("cell-breakdown-model", src, REPO_ROOT, src_corn)
@@ -310,6 +318,9 @@ def render_retab(pdk, cand, rid: str, params: dict, note: str | None, src: str |
                    else f"manifest `manifests/artifacts/cell-breakdown-model-{src}.manifest.json`")
     res = CB.results_from_reports(cand, src, params, benches=("progc_st", "progc_b1m", "progc_b1l"),
                                   base_dir=src_base)
+    if not res:
+        print(f"ERROR: no saved progc_* reports for {src} (disk or artifact store)", file=sys.stderr)
+        return None
     rating = CB.ACCESS_RATING_V[cand.n]
     L: list[str] = []
     a = L.append
@@ -567,6 +578,7 @@ def main(argv: list[str] | None = None) -> int:
         if args.retab_src and len(wanted) != 1:
             print("ERROR: --retab-src applies to exactly one candidate", file=sys.stderr)
             return 2
+        rc = 0
         for n in wanted:
             cand = by_n[n]
             params = CB.apply_vbd_case(base_params, args.vbd_case, n)
@@ -575,12 +587,15 @@ def main(argv: list[str] | None = None) -> int:
                       file=sys.stderr)
                 return 2
             rid = R.allocate_record_id(THIS_DIR, REPO_ROOT)
+            body = render_retab(pdk, cand, rid, params, args.note, args.retab_src)
+            if body is None:
+                rc = 2   # no progc_* reports anywhere: no empty append-only record
+                continue
             R.write_once(THIS_DIR / "records" / f"{rid}.md",
-                         CB.tag_record(render_retab(pdk, cand, rid, params, args.note, args.retab_src),
-                                       CB.sensitivity_block(args.vbd_case, n, params)))
+                         CB.tag_record(body, CB.sensitivity_block(args.vbd_case, n, params)))
             print(f"Candidate {n}: records/{rid}.md (re-tabulation, no simulation)")
             time.sleep(1.1)
-        return 0
+        return rc
 
     benches = [b for b in args.benches.split(",") if b.strip()]
     unknown = [b for b in benches if b not in BENCHES]

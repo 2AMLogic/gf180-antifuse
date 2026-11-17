@@ -17,7 +17,9 @@ A successful store is also a cleanup point: the staged-from source files are
 removed once the manifest has landed (empty directories pruned, never anything
 at or above the repo root), so the store holds the only copy and nothing
 committable remains under a run directory. A failure at any earlier point
-writes no manifest and deletes nothing. Re-render paths recover a published
+writes no manifest and deletes nothing; a cleanup failure after the manifest
+landed raises ``EvidenceCleanupError`` (the evidence IS stored, only the
+source removal failed). Re-render paths recover a published
 run's bytes with ``fetch_run`` / ``run_dir_for_reading``.
 
 Not everything under a run directory is evidence: klt's git-ignored ``.work/``
@@ -60,6 +62,14 @@ _WORK_BY_BASENAME = WORK_SKIP_BASENAMES | WORK_KEEP_BASENAMES
 
 class EvidenceStoreError(RuntimeError):
     pass
+
+
+class EvidenceCleanupError(EvidenceStoreError):
+    """Post-manifest cleanup failure: the manifest is in place and the store
+    holds the bytes; only removing the staged-from source files failed. The
+    named leftovers must be removed by hand -- re-running the bench would
+    spend a job on evidence that is already stored.
+    """
 
 
 def scratch_dir(repo_root: Path, bench: str, run_id: str) -> Path:
@@ -136,9 +146,11 @@ def _remove_stored_sources(files: dict[str, Path], repo_root: Path) -> None:
     """Delete the just-stored sources; prune directories that become empty.
 
     Runs only after the manifest is in place, so a store that fails anywhere
-    earlier leaves every source file untouched. Pruning never removes the
-    repo root itself and never leaves it, so sources outside the repo are
-    unlinked but their directories stay.
+    earlier leaves every source file untouched. A source that cannot be
+    unlinked raises ``EvidenceCleanupError`` naming each leftover (the store
+    keeps the bytes). Pruning never removes the repo root itself and never
+    leaves it, so sources outside the repo are unlinked but their
+    directories stay.
     """
     parents: set[Path] = set()
     failed: list[str] = []
@@ -152,7 +164,7 @@ def _remove_stored_sources(files: dict[str, Path], repo_root: Path) -> None:
             failed.append(f"{path}: {exc}")
         parents.add(path.parent)
     if failed:
-        raise EvidenceStoreError(
+        raise EvidenceCleanupError(
             "stored sources could not be removed after the manifest landed (the store holds "
             "the bytes; remove them by hand):\n  " + "\n  ".join(failed))
     _prune_empty_dirs(parents, repo_root)
@@ -306,12 +318,22 @@ def publish_for_runner(bench: str, run_id: str, run_dir: Path, repo_root: Path, 
     """Runner entry point: publish ``run_dir`` and return a process exit code.
 
     Prints the manifest path on success (the run dir's stored copies are
-    removed — the store holds the only copy); on ``EvidenceStoreError``
-    prints the reason and returns 1 (nothing is written, no bytes are
-    committed, the run dir is left untouched).
+    removed — the store holds the only copy). A pre-manifest
+    ``EvidenceStoreError`` prints the reason and returns 1: nothing is
+    written, no bytes are committed, the run dir is left untouched. A
+    post-manifest ``EvidenceCleanupError`` also returns 1, but states the
+    opposite contract: the manifest IS in place and the store holds the
+    bytes, only the named source files could not be removed — remove them
+    by hand and do not re-run the bench.
     """
     try:
         rows = publish_run(bench, run_id, run_dir, repo_root, klt_cmd=klt_cmd, env=env)
+    except EvidenceCleanupError as exc:
+        print(f"ERROR: evidence IS stored — manifest "
+              f"{manifest_path(repo_root, bench, run_id).relative_to(repo_root)} is in place and the store "
+              f"holds the bytes; remove the leftover sources named below by hand and do NOT re-run the "
+              f"bench:\n{exc}", file=sys.stderr)
+        return 1
     except EvidenceStoreError as exc:
         print(f"ERROR: evidence not stored: {exc}", file=sys.stderr)
         return 1
