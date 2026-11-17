@@ -61,5 +61,67 @@ class TrackedBytesTests(unittest.TestCase):
             self.assertEqual(cam.check_no_tracked_bytes({root / "m": text}, root), [])
 
 
+class GrandfatheredTests(unittest.TestCase):
+    """Tracked-bytes exemption: a file is exempt only when every manifest
+    listing its (size, sha256) is on the allowlist (issue #346 ruling)."""
+
+    def _repo(self, td, data=b"raw evidence"):
+        root = Path(td)
+        subprocess.run(["git", "init", "-q", str(root)], check=True)
+        (root / "run.log").write_bytes(data)
+        subprocess.run(["git", "-C", str(root), "add", "run.log"], check=True)
+        return root
+
+    def _text(self, data):
+        doc = json.loads((FIX / "good.manifest.json").read_text())
+        doc["entries"][0].update(sha256=hashlib.sha256(data).hexdigest(), size=len(data))
+        return json.dumps(doc)
+
+    def test_load_allowlist_parses_comments_and_skips_blanks(self):
+        with tempfile.TemporaryDirectory() as td:
+            p = Path(td) / "grandfathered.txt"
+            p.write_text("# header citing the ruling\n\ngf.manifest.json\n  other.manifest.json  \n")
+            self.assertEqual(cam.load_allowlist(p), frozenset({"gf.manifest.json", "other.manifest.json"}))
+            self.assertEqual(cam.load_allowlist(p.parent / "missing.txt"), frozenset())
+
+    def test_new_manifest_not_allowlisted_still_fails(self):
+        with tempfile.TemporaryDirectory() as td:
+            data = b"raw evidence"
+            root = self._repo(td, data)
+            m = root / "new.manifest.json"
+            e = cam.check_no_tracked_bytes({m: self._text(data)}, root,
+                                           frozenset({"old.manifest.json"}))
+            self.assertTrue(e and "committed AND stored" in e[0], e)
+
+    def test_shared_sha_allowlisted_and_not_still_fails(self):
+        with tempfile.TemporaryDirectory() as td:
+            data = b"raw evidence"
+            root = self._repo(td, data)
+            text = self._text(data)
+            ms = {root / "gf.manifest.json": text, root / "new.manifest.json": text}
+            e = cam.check_no_tracked_bytes(ms, root, frozenset({"gf.manifest.json"}))
+            self.assertTrue(e and "committed AND stored" in e[0], e)
+            self.assertTrue("new.manifest.json" in e[0], e)
+
+    def test_allowlisted_manifest_passes(self):
+        with tempfile.TemporaryDirectory() as td:
+            data = b"raw evidence"
+            root = self._repo(td, data)
+            text = self._text(data)
+            ms = {root / "gf.manifest.json": text, root / "other.manifest.json": text}
+            allow = frozenset({"gf.manifest.json", "other.manifest.json"})
+            self.assertEqual(cam.check_no_tracked_bytes(ms, root, allow), [])
+            self.assertEqual(cam.check_no_tracked_bytes({root / "gf.manifest.json": text}, root,
+                                                        frozenset({"gf.manifest.json"})), [])
+
+    def test_empty_allowlist_reproduces_tracked_bytes_failure(self):
+        with tempfile.TemporaryDirectory() as td:
+            data = b"raw evidence"
+            root = self._repo(td, data)
+            e = cam.check_no_tracked_bytes({root / "gf.manifest.json": self._text(data)}, root,
+                                           frozenset())
+            self.assertTrue(e and "committed AND stored" in e[0], e)
+
+
 if __name__ == "__main__":
     unittest.main()
