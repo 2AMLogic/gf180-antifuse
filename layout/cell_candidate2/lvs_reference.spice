@@ -19,8 +19,8 @@
 *              KLayout's comparer compares w_um and l_um only; nf and m are
 *              not compared, and are written here to record the drawn finger
 *              count, not as a compared assertion.
-*   capacitor  c_width/c_length resolved to the drawn 0.42 um x 0.56 um.
+*   capacitor  c_width/c_length resolved to the drawn 1.0 um x 0.70 um.
 .subckt cell_candidate2 BL WL PL VB
 XM1 BL WL CN VB nfet_10v0_asym L=0.60u W=8u nf=2 m=1
-XC1 CN PL cap_nmos_06v0 c_width=0.42u c_length=0.56u m=1
+XC1 CN PL cap_nmos_06v0 c_width=1.0u c_length=0.70u m=1
 .ends

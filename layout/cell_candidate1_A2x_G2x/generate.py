@@ -2,12 +2,16 @@
 """Deterministic generator for the candidate-1 bitcell at access 2x x
 capacitor 2x (spec/cell-candidates.md, spec/split-axis-plan.md sections 2-3).
 
-Grid point A2x_G2x: W_CAP = W_ACC = 0.84 um, the 2x level on both axes -- both
-blocks doubled, so the CN band lies inside every S/D pad (y 0..0.84) and VB is
-cell_candidate1/'s flat rect shifted +0.42 um in y.
+Grid point A2x_G2x: capacitor W_CAP = 2.0 um -- the ratified 2x-area level
+(spec/capacitor-geometry-decision.md: 2x doubles W at held L) -- x access
+W_ACC = 0.84 um (the section-3 2x width). At W_CAP = 2.0 um the capacitor's
+metal1 gate pad sits between the two rings' north bands, so VB is two stacked
+bands joined by a riser, and the two ring gaps' legal CN windows are disjoint,
+so CN is a doglegged three-rect strap; both derivations live in
+candidate1_points.py.
 
   access : nfet_06v0 (Dualgate marker), W = 0.84 um, L = 0.70 um   (2x width)
-  cap    : thin-oxide NMOS gate over COMP, W = 0.84 um, L = 0.28 um (2x area),
+  cap    : thin-oxide NMOS gate over COMP, W = 2.0 um, L = 0.28 um (2x area),
            source and drain shorted (moscap) on net CN
 
 Point table, shared constants, strap derivation and flow call:

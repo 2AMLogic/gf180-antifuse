@@ -132,8 +132,8 @@
     "engine": "klayout",
     "engine_version": "0.30.12",
     "netgen_binary": null,
-    "layout_sha256": "d252da1212ee165f23cf43f890c6b1f0bcbfe0bba4ed7403d760debfa2d4e843",
-    "reference_sha256": "aab6fe4d201a57094adfc8ed26f9ca7a5a2c40b79888ad5059c17c784341ce15",
+    "layout_sha256": "c39f4556d4e996fb162009c42a7ffa40e7628143fd5aade4b741b30d8c194345",
+    "reference_sha256": "f373852e5721a8e3889c4f1aef373351d52dbd7cc167e5af1c1d6f103fdbb1ca",
     "extracted_netlist": null
   },
   "provenance": {
@@ -157,7 +157,7 @@
       "options_hash": "sha256:6a7dc7660a470994263c5ca8ace6d8ac8c605d77e6876a9c5490949de6e7cb05"
     },
     "input": {
-      "content_hash": "sha256:d252da1212ee165f23cf43f890c6b1f0bcbfe0bba4ed7403d760debfa2d4e843",
+      "content_hash": "sha256:c39f4556d4e996fb162009c42a7ffa40e7628143fd5aade4b741b30d8c194345",
       "role": "layout"
     },
     "klayout_version_mismatch": false
@@ -192,7 +192,7 @@
     {
       "category": "device.placeholder_value",
       "severity": "warning",
-      "description": "reference device class 'CAP_NMOS_03V3' was converted from a subcircuit call (request.reference.form: \"subckt-call\"), so its 'C' value is the literal 0 placeholder on all 1 reference instance(s) -- klt lvs has no PDK sheet-resistance/capacitance-per-area data to compute a real one. 'C' was therefore excluded from this compare on both sides (layout: 1 instance(s), C 5.1744e-16) and the two sides were paired on topology alone -- that dimension of the compare is not independently verified. Supply a reference in the plain-element form carrying real 'C' values to compare it (see docs/cli/lvs.md, 'device.placeholder_value')",
+      "description": "reference device class 'CAP_NMOS_03V3' was converted from a subcircuit call (request.reference.form: \"subckt-call\"), so its 'C' value is the literal 0 placeholder on all 1 reference instance(s) -- klt lvs has no PDK sheet-resistance/capacitance-per-area data to compute a real one. 'C' was therefore excluded from this compare on both sides (layout: 1 instance(s), C 1.2320000000000001e-15) and the two sides were paired on topology alone -- that dimension of the compare is not independently verified. Supply a reference in the plain-element form carrying real 'C' values to compare it (see docs/cli/lvs.md, 'device.placeholder_value')",
       "side": "reference",
       "net": null,
       "device": {
@@ -207,7 +207,7 @@
         "reference_devices": 1,
         "layout_devices": 1,
         "layout_values": [
-          5.1744e-16
+          1.2320000000000001e-15
         ]
       },
       "circuit": null,

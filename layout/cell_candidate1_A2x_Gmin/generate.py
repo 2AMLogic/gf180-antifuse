@@ -3,13 +3,15 @@
 capacitor Minimum (spec/cell-candidates.md, spec/split-axis-plan.md sections
 2-3).
 
-Grid point A2x_Gmin: W_CAP = 0.42 um (Minimum), W_ACC = 0.84 um (2x width) --
-the CN band lies inside the doubled access pad (y 0..0.84) and overhangs the
-Minimum cap pads' top edge (y 0.42) by 0.06 um (metal over field, DRC clean);
-the two TAP_N pads sit at different heights, so VB is one band spanning both.
+Grid point A2x_Gmin: capacitor W_CAP = 1.0 um (the ratified Minimum level,
+spec/capacitor-geometry-decision.md: the 1 um DF.1c MOSCAP COMP-width floor)
+x access W_ACC = 0.84 um (the section-3 2x width). One CN band serves both
+ring gaps (their legal windows overlap at the Minimum capacitor width), and
+VB is one band spanning both tap-ring pads; derivations in
+candidate1_points.py.
 
   access : nfet_06v0 (Dualgate marker), W = 0.84 um, L = 0.70 um   (2x width)
-  cap    : thin-oxide NMOS gate over COMP, W = 0.42 um, L = 0.28 um (Minimum),
+  cap    : thin-oxide NMOS gate over COMP, W = 1.0 um, L = 0.28 um (Minimum),
            source and drain shorted (moscap) on net CN
 
 Point table, shared constants, strap derivation and flow call:

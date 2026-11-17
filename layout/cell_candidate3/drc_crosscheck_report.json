@@ -4,7 +4,7 @@
   "file": "layout/cell_candidate3/cell_candidate3.gds",
   "status": "violations",
   "identity": {
-    "layout_content_hash": "sha256:b29e46ea766b9a00008775d3f9078f0e7f15ab5c41489182fc3c227393d0a0d3",
+    "layout_content_hash": "sha256:8fae5c1a5a43300cc996514ec671262af4306560bc3e997c19739e5ebe18d2a0",
     "pdk": {
       "name": "gf180mcuA",
       "source": "search root: ~/.ciel",
@@ -1603,7 +1603,7 @@
           "released": true
         },
         "input": {
-          "content_hash": "sha256:b29e46ea766b9a00008775d3f9078f0e7f15ab5c41489182fc3c227393d0a0d3",
+          "content_hash": "sha256:8fae5c1a5a43300cc996514ec671262af4306560bc3e997c19739e5ebe18d2a0",
           "role": "layout"
         },
         "klayout_version_mismatch": true
@@ -1619,10 +1619,9 @@
       "engine": "klayout",
       "dbu_um": 0.0005,
       "status": "violations",
-      "violation_count": 12,
+      "violation_count": 11,
       "rule_counts": {
         "DBU": 1,
-        "DF.1c": 1,
         "DF.4d_MV": 5,
         "DV.6": 1,
         "M2.4": 1,
@@ -2298,7 +2297,6 @@
         ],
         "rules_checked": [
           "DBU",
-          "DF.1c",
           "DF.4d_MV",
           "DV.6",
           "M2.4",
@@ -2317,7 +2315,6 @@
         "known": false,
         "checked": [
           "DBU",
-          "DF.1c",
           "DF.4d_MV",
           "DV.6",
           "M2.4",
@@ -2349,7 +2346,7 @@
             "left": -2460,
             "bottom": -2460,
             "right": 14620,
-            "top": 6140
+            "top": 7300
           },
           "polygon": [
             [
@@ -2358,33 +2355,17 @@
             ],
             [
               -2460,
-              6140
+              7300
             ],
             [
               14620,
-              6140
+              7300
             ],
             [
               14620,
               -2460
             ]
           ]
-        },
-        {
-          "rule": "DF.1c",
-          "description": "DF.1c : Min. COMP Width for MOSCAP. : 1\u00b5m",
-          "check": "external",
-          "layer": "DF.1c",
-          "cell": "mos_array",
-          "source_cell": null,
-          "source_path": null,
-          "bbox": {
-            "left": 0,
-            "bottom": 0,
-            "right": 2560,
-            "top": 840
-          },
-          "polygon": null
         },
         {
           "rule": "DF.4d_MV",
@@ -2543,7 +2524,7 @@
             "left": -2460,
             "bottom": -2460,
             "right": 14620,
-            "top": 6140
+            "top": 7300
           },
           "polygon": [
             [
@@ -2552,11 +2533,11 @@
             ],
             [
               -2460,
-              6140
+              7300
             ],
             [
               14620,
-              6140
+              7300
             ],
             [
               14620,
@@ -2576,7 +2557,7 @@
             "left": -2460,
             "bottom": -2460,
             "right": 14620,
-            "top": 6140
+            "top": 7300
           },
           "polygon": [
             [
@@ -2585,11 +2566,11 @@
             ],
             [
               -2460,
-              6140
+              7300
             ],
             [
               14620,
-              6140
+              7300
             ],
             [
               14620,
@@ -2609,7 +2590,7 @@
             "left": -2460,
             "bottom": -2460,
             "right": 14620,
-            "top": 6140
+            "top": 7300
           },
           "polygon": [
             [
@@ -2618,11 +2599,11 @@
             ],
             [
               -2460,
-              6140
+              7300
             ],
             [
               14620,
-              6140
+              7300
             ],
             [
               14620,
@@ -2642,7 +2623,7 @@
             "left": -2460,
             "bottom": -2460,
             "right": 14620,
-            "top": 6140
+            "top": 7300
           },
           "polygon": [
             [
@@ -2651,11 +2632,11 @@
             ],
             [
               -2460,
-              6140
+              7300
             ],
             [
               14620,
-              6140
+              7300
             ],
             [
               14620,
@@ -2692,7 +2673,7 @@
           }
         },
         "input": {
-          "content_hash": "sha256:b29e46ea766b9a00008775d3f9078f0e7f15ab5c41489182fc3c227393d0a0d3",
+          "content_hash": "sha256:8fae5c1a5a43300cc996514ec671262af4306560bc3e997c19739e5ebe18d2a0",
           "role": "layout"
         },
         "klayout_version_mismatch": true

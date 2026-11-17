@@ -2,6 +2,19 @@
 
 Layout and DRC/LVS signoff via klayout-tools.
 
+**Capacitor geometry levels (2026-11-17).** Every moscap in this directory is
+drawn at the levels ratified in `spec/capacitor-geometry-decision.md` (#294):
+Minimum W = 1.0 um -- the PDK runset's `DF.1c` "Min. COMP Width for MOSCAP"
+floor -- at each device's minimum drawn length (0.28 um thin-oxide, 0.70 um
+6 V), and 2x-area doubling **W** at held L (1.0 -> 2.0 um). The access-device
+widths keep their section-3 split values (0.42 / 0.84 um, clamped at the
+0.42 um `mos_array` generator floor) and are not touched by that record.
+Extracted capacitor areas are 0.28 um2 (Regions I/III Minimum), 0.70 um2
+(Region II Minimum) and exactly 2.000x those at the 2x points
+(`klt extract`, device parameters). All seven cells were regenerated and
+re-signed in the same pass (#296); the per-cell sections below carry the
+details and the measured verdicts.
+
 ## cell_candidate1/ -- first drawn bitcell (candidate 1), one cell only
 
 `layout/cell_candidate1/` holds a single bitcell of candidate 1
@@ -14,29 +27,32 @@ no claim about breakdown behaviour.
 
 | File | What it is |
 |---|---|
-| `generate.py` | Deterministic generator: this candidate's parameters (flavor, `L_ACC`, `DX`, strap/marker rectangles, placement, pin map) plus a call into the shared `layout/bitcell_gen.py`, which runs the flow (`klt gen mos_array` x2, `klt draw` for two Metal1 straps, `klt gen-compose` explicit placement). `--check` regenerates and compares the committed GDS byte-for-byte. |
+| `generate.py` | Deterministic generator: this candidate's parameters (flavor, `L_ACC`, `DX`, placement, pin map) plus calls into the shared `layout/bitcell_gen.py` (the flow: `klt gen mos_array` x2, `klt draw` for the straps and marker, `klt gen-compose` explicit placement) and `layout/candidate1_points.py` (`straps(1.0, 0.42)`: CN, VB and the MOS-capacitor marker, derived once for the whole candidate-1 family). `--check` regenerates and compares the committed GDS byte-for-byte. |
 | `cell_candidate1.gds` | Generated layout, top cell `cell_candidate1`, pins/labels `BL`, `WL`, `PL`, `VB`. |
 | `drc_report.json` | `klt drc --deck gf180mcu --top cell_candidate1` report (status `clean`, 0 violations) -- the **curated deck's** verdict; see "DRC" for the native runset's. |
-| `drc_crosscheck_report.json` | Curated-vs-native cross-check, `klt drc --engine both --deck gf180mcu --top cell_candidate1 --pdk gf180mcuA --deck-var decks=all,-mslot` (klayout-tools `0.9.2`, KLayout `0.30.13`): curated `clean`, native runset `violations`, 6 findings. |
-| `drc_native_report.json` | Plain native-deck envelope, `klt drc --engine klayout --top cell_candidate1 --pdk gf180mcuA --deck-var decks=all,-mslot` (same pin): `status: violations`, 6 findings. This is the envelope `signoff/manifest.json` cites for the `3.analog` row. |
+| `drc_crosscheck_report.json` | Curated-vs-native cross-check, `klt drc --engine both --deck gf180mcu --top cell_candidate1 --pdk gf180mcuA --deck-var decks=all,-mslot` (klayout-tools `0.9.2`, KLayout `0.30.13`): curated `clean`, native runset `violations`, **5 findings** -- `DBU` and the die-level density rules only; the cell-level `DF.1c` is **gone** (see "DRC"). |
+| `drc_native_report.json` | Plain native-deck envelope, `klt drc --engine klayout --top cell_candidate1 --pdk gf180mcuA --deck-var decks=all,-mslot` (same pin): `status: violations`, 5 findings, same set. This is the envelope `signoff/manifest.json` cites for the `3.analog` row. |
 | `lvs_request.json`, `lvs_reference.spice` | The LVS request and its reference netlist. |
 | `lvs_report.json` | `klt lvs lvs_request.json` report (status `match`, 0 errors); see "LVS". |
 
-Toolchain: `cell_candidate1.gds` and `drc_report.json` were produced with the
-released `klt 0.7.0` (`uvx --from klayout-tools==0.7.0`), klayout 0.30.12, PDK
-`gf180mcuA`. `lvs_report.json` and `erc_report.json` were produced by the released
-`klt 0.8.0` (`uvx --from klayout-tools==0.8.0`, issue #196); `0.7.0` has no
-MOS-capacitor device class and cannot run this LVS, and the report was first
-produced by a dev build. No tool was installed or changed. Regenerate with
-`python3 layout/cell_candidate1/generate.py` and verify with `--check`. The generators
-need `klt` on PATH; to pin it without touching the host tool, run
-`uvx --from klayout-tools==0.8.0 python3 layout/cell_candidate1/generate.py --check`
-(`0.8.0` reproduces both committed GDS files; `0.7.0` drifts). Per-candidate
-geometry stays in each `generate.py`, except the candidate-1 split points
-(`cell_candidate1_{A2x_G2x,A2x_Gmin,Amin_G2x}`): their shared constants and
-strap derivation live in `layout/candidate1_points.py`, and each of those
-`generate.py` files names one `POINTS` entry. Only the flow and `--check`
-live in `layout/bitcell_gen.py`.
+Toolchain: all committed artifacts were regenerated 2026-11-17 with released
+`klt 0.8.0` + KLayout `0.30.12` (`uvx --from klayout-tools==0.8.0 --with
+klayout==0.30.12`) for the GDS, curated DRC, LVS and ERC, and released
+`klt 0.9.2` (KLayout `0.30.13`) for the native deck and the cross-check; PDK
+`gf180mcuA`. No tool was installed or changed. (Earlier history: the first
+GDS was drawn at `klt 0.7.0` and the first LVS/ERC ran on `0.8.0`, issue
+#196; the 2026-11-17 pass re-pinned everything on `0.8.0` because that is the
+release that reproduces every committed GDS byte-for-byte.) Regenerate with
+`python3 layout/cell_candidate1/generate.py` and verify with `--check`. The
+generators need `klt` on PATH; to pin it without touching the host tool, run
+`uvx --from klayout-tools==0.8.0 --with klayout==0.30.12 python3
+layout/cell_candidate1/generate.py --check`. Per-candidate geometry stays in
+each `generate.py`, except the candidate-1 split points
+(`cell_candidate1_{A2x_G2x,A2x_Gmin,Amin_G2x}`) **and this cell**: their
+shared constants and strap derivation live in `layout/candidate1_points.py`
+(this cell calls `straps(1.0, 0.42)`), and each of those `generate.py` files
+names one `POINTS` entry. Only the flow and `--check` live in
+`layout/bitcell_gen.py`.
 
 ### Geometry point
 
@@ -47,16 +63,19 @@ choice of sub-combination, not a spec change.
 
 | Device | Drawn | Note |
 |---|---|---|
-| Capacitor (thin oxide NMOS, S and D strapped) | W = 0.42 um, L = 0.28 um | L is the 3.3 V minimum drawn length. |
+| Capacitor (thin oxide NMOS, S and D strapped) | W = 1.0 um, L = 0.28 um | W is the ratified Minimum level (`DF.1c` floor); L is the 3.3 V minimum drawn length. Extracted area 0.28 um2 (`cap_nmos_03v3`). |
 | Access (`nfet_06v0`, Dualgate marker) | W = 0.42 um, L = 0.70 um | L matches the schematic's `lacc`. |
 
-**Deviation to read before relying on it.** `klt gen mos_array` refuses
-`w_um < 0.42` (a generator-side contact-fit floor above the PDK's own minimum
-widths), so both widths are clamped to 0.42 um. The schematic's `wacc` default
-is 0.30 um, and its `wcap`/`lcap` defaults are 1 um x 1 um placeholders. The
-drawn point is therefore "minimum the generator can draw", not necessarily the
-process minimum. `lvs_reference.spice` carries the drawn values, not the
-schematic defaults.
+**Deviation to read before relying on it.** The access width is clamped to
+`klt gen mos_array`'s generator floor (`w_um >= 0.42`, a contact-fit floor
+above the PDK's own minimum widths); the schematic's `wacc` default is
+0.30 um. The capacitor no longer sits on that floor: its 1.0 um Minimum is
+the ratified legal level (`spec/capacitor-geometry-decision.md`), and
+`layout/bitcell_gen.py` no longer defaults the capacitor width to the
+generator floor -- every generator passes `w_cap_um` explicitly. The
+schematic's `wcap`/`lcap` defaults (1 um x 1 um placeholders) and the
+drawn-vs-simulated reconciliation remain #292's. `lvs_reference.spice`
+carries the drawn values, not the schematic defaults.
 
 ### Structure and bodies
 
@@ -78,12 +97,9 @@ schematic defaults.
 ### DRC
 
 `klt drc --deck gf180mcu --top cell_candidate1`: `status: clean`, 0 violations,
-deck `gf180mcu` content hash
-`sha256:9babf6fd5d623fea50d380168ebf8f7c0f0f6e70eb7d89b221476dc47c7f6a85`,
-input GDS `sha256:4fa502d0b9775f4dd8ba42fd2292c0a70edf83e3c528f52550a2ba4d1d9f44de`
-(the report's `provenance.input.content_hash`). This is the **curated deck's**
-verdict; the PDK's own runset disagrees, and that cross-check is committed --
-see the last bullet below. A first placement at 3.9 um
+deck `released: true`, no waiver and no rule disabled. This is the **curated
+deck's** verdict; the PDK's own runset is committed alongside it as a
+cross-check -- see the last bullet below. A first placement at 3.9 um
 pitch drew a Pplus spacing violation between the two tap rings; the committed
 cell uses a 4.2 um pitch. The rule was not waived.
 
@@ -165,27 +181,29 @@ marker (the deck has no rule on it, so DRC does not check its placement).
   that could fire on the thin-oxide capacitor, so there is nothing to record
   as firing by design and nothing was waived. The cell as drawn is the
   intended structure (thin-oxide capacitor, 6 V access device with the
-  Dualgate marker), except for the missing capacitor marker above.
+  Dualgate marker).
 - Layout-versus-programming-voltage suitability (thin-oxide device in a
   program path) is a design-intent matter this deck cannot judge.
-- **The `clean` verdict is the curated deck's, and the PDK's own runset
-  disagrees; the cross-check is committed.** `drc_crosscheck_report.json`
+- **The PDK's own runset no longer disagrees on any cell-level rule; the
+  cross-check is committed.** `drc_crosscheck_report.json`
   (`klt drc --engine both --deck gf180mcu --top cell_candidate1 --pdk
   gf180mcuA --deck-var decks=all,-mslot`, klayout-tools `0.9.2`, KLayout
   `0.30.13`) runs the curated deck and the PDK's own sign-off runset
   (`gf180mcu.drc`) on the same committed GDS: curated `status: clean`, native
-  `status: violations`, 6 findings -- **`DF.1c` x1** ("Min. COMP Width for
-  MOSCAP", 1 um, in `mos_array` -- the capacitor's COMP island under the 166/5
-  marker is drawn 0.42 um), plus `DBU` x1 and the die-level density rules
-  `M2.4`/`M3.4`/`MT30.7`/`PL.8`. The `DF.1c` finding is a real cell-level
-  violation that the curated deck neither checks nor discloses; the density
-  rules fire on any standalone cell and are recorded as disclosed, not fixed.
-  The same native verdict is committed a second way as
-  `drc_native_report.json` (a plain `--engine klayout` envelope, same pin and
-  deck-var), which is the envelope `signoff/manifest.json` cites for the
-  `3.analog` row -- that row grades `unmet`, not `met`
-  (`signoff/README.md`). Cell-level fixes are #287's; this section's `clean`
-  means "clean under the curated deck", not signed off.
+  `status: violations`, **5 findings** -- `DBU` x1 and the die-level density
+  rules `M2.4`/`M3.4`/`MT30.7`/`PL.8`. The cell-level **`DF.1c`** ("Min. COMP
+  Width for MOSCAP") that every earlier run reported on this cell is **gone**:
+  the capacitor COMP island under the 166/5 marker is drawn 1.0 um wide, the
+  ratified Minimum (`spec/capacitor-geometry-decision.md`), and the native
+  run reports no MOSCAP-rule finding on it. The density rules fire on any
+  standalone cell and remain recorded as disclosed, not fixed; `DBU` is the
+  stream-format matter already filed upstream. The same native verdict is
+  committed a second way as `drc_native_report.json` (a plain `--engine
+  klayout` envelope, same pin and deck-var), which is the envelope
+  `signoff/manifest.json` cites for the `3.analog` row -- that row still
+  grades `unmet` pending the die-level assembly that settles the density
+  rules (`signoff/README.md`); the cell-level half of its reason is
+  resolved as of this pass.
 
 ### LVS
 
@@ -220,7 +238,7 @@ bound it:
 - the `pfet`/`bjt` topology warnings are classes with no devices on either
   side.
 
-The capacitor's drawn size (W 0.42 um, L 0.28 um) therefore rests on
+The capacitor's drawn size (W 1.0 um, L 0.28 um) therefore rests on
 `generate.py` and the extraction (`klt extract`), not on this LVS.
 
 ## cell_candidate1_{Amin_G2x,A2x_Gmin,A2x_G2x}/ -- the other three Candidate 1 split points
@@ -262,18 +280,22 @@ what its own `--check` pins.
   disagreed with `sim/` and grown the block in x, putting the DRC-driven block
   pitch back in play.
 
-**The 2x is relative to the drawn Minimum of 0.42 um, which is the generator's
-width floor, not the process minimum.** `klt gen mos_array` refuses
-`w_um < 0.42` (a contact-fit floor above the PDK's own minimum widths), so the
-Minimum level is clamped, exactly as for `cell_candidate1/`. "2x" therefore means
-2x the drawn Minimum (0.42 -> 0.84 um), not 2x a process minimum.
+**The capacitor levels are the ratified ones** (`spec/capacitor-geometry-decision.md`,
+#294): Minimum W = 1.0 um -- the PDK runset's `DF.1c` "Min. COMP Width for
+MOSCAP" floor, which the earlier drawn 0.42 um violated -- and 2x-area
+W = 2.0 um at held L = 0.28 um. (Before that record landed, this section
+documented a 0.42 -> 0.84 um pair pinned to the `mos_array` generator floor;
+those levels were illegal under the runset and were replaced grid-wide by
+#296.) The access widths keep their section-3 values on the generator floor
+(0.42 / 0.84 um); that axis is not under a MOSCAP rule and is untouched here.
 
-**The absolute widths differ from `sim/`'s, and that is pre-existing and
-deliberate.** `sim/` scales the *schematic* defaults in
-`design/netlists/cell_candidate1.spice` (`wacc=0.30u`, `wcap=1e-6`), so its 2x
-points are 0.60 um and 2.0 um; `layout/` is clamped to 0.42 um, so its 2x point
-is 0.84 um. The **convention** (which dimension carries the factor, and that the
-factor is exactly 2) matches; the absolute geometry does not. Reconciling them
+**The absolute access widths still differ from `sim/`'s, and that is
+pre-existing and deliberate.** `sim/` scales the *schematic* defaults in
+`design/netlists/cell_candidate1.spice` (`wacc=0.30u`), so its 2x access point
+is 0.60 um where `layout/` is clamped to 0.84 um by the generator floor. The
+capacitor widths no longer diverge: both halves now draw Minimum 1.0 um and
+2x 2.0 um. The **convention** (which dimension carries the factor, and that
+the factor is exactly 2) matches on both axes; reconciling the access clamp
 would mean editing `design/`, which is out of scope here.
 
 ### Geometry, as drawn and as extracted
@@ -284,25 +306,27 @@ axis is measured rather than asserted. Bounding boxes are `klt stats`.
 
 | Cell | Access W x L (drawn) | Access W (extracted) | Capacitor W x L (drawn) | Capacitor area (extracted) | `klt stats` bbox |
 |---|---|---|---|---|---|
-| `cell_candidate1/` (`C1_Amin_Gmin`) | 0.42 x 0.70 um | 0.42 um | 0.42 x 0.28 um | 0.1176 um2 | (-1.23,-1.23)-(7.13,3.07), 8.36 x 4.30 um = 35.95 um2 |
-| `cell_candidate1_Amin_G2x/` | 0.42 x 0.70 um | 0.42 um | **0.84** x 0.28 um | **0.2352** um2 | (-1.23,-1.23)-(7.13,3.49), 8.36 x 4.72 um = 39.46 um2 |
-| `cell_candidate1_A2x_Gmin/` | **0.84** x 0.70 um | **0.84** um | 0.42 x 0.28 um | 0.1176 um2 | (-1.23,-1.23)-(7.13,3.49), 8.36 x 4.72 um = 39.46 um2 |
-| `cell_candidate1_A2x_G2x/` | **0.84** x 0.70 um | **0.84** um | **0.84** x 0.28 um | **0.2352** um2 | (-1.23,-1.23)-(7.13,3.49), 8.36 x 4.72 um = 39.46 um2 |
+| `cell_candidate1/` (`C1_Amin_Gmin`) | 0.42 x 0.70 um | 0.42 um | 1.0 x 0.28 um | 0.28 um2 | (-1.23,-1.23)-(7.13,3.65), 8.36 x 4.88 um = 40.80 um2 |
+| `cell_candidate1_Amin_G2x/` | 0.42 x 0.70 um | 0.42 um | **2.0** x 0.28 um | **0.56** um2 | (-1.23,-1.23)-(7.13,4.65), 8.36 x 5.88 um = 49.16 um2 |
+| `cell_candidate1_A2x_Gmin/` | **0.84** x 0.70 um | **0.84** um | 1.0 x 0.28 um | 0.28 um2 | (-1.23,-1.23)-(7.13,3.65), 8.36 x 4.88 um = 40.80 um2 |
+| `cell_candidate1_A2x_G2x/` | **0.84** x 0.70 um | **0.84** um | **2.0** x 0.28 um | **0.56** um2 | (-1.23,-1.23)-(7.13,4.65), 8.36 x 5.88 um = 49.16 um2 |
 
 The two split axes move independently and each by exactly 2, which is the point
-of the grid: extracted capacitor area is 0.2352 / 0.1176 = **2.000** across the
+of the grid: extracted capacitor area is 0.56 / 0.28 = **2.000** across the
 `G` axis at constant `A`, and extracted access width is 0.84 / 0.42 = **2.000**
 across the `A` axis at constant `G`. Capacitor drawn length is held at 0.28 um
 and access drawn length at 0.70 um in all four cells.
 
-All three new cells land at the **same** bounding box, which is expected rather
-than a mistake: doubling either device width grows that block in y only and
-leaves every x coordinate untouched (measured on `klt gen mos_array`: a block's
-`bbox` `y1` moves 3.07 -> 3.49 um, every x unchanged), and the cell top is set by
-the taller of the two blocks. So the x pitch `DX = 4.2` carries over unchanged
-from `cell_candidate1/` -- and is **proved** by each cell's own DRC report, not
-inferred from the block extents. 39.46 um2 is well under the floorplan's 72 um2
-estimate row for these instances; replacing that estimate is a later change.
+Cells sharing a capacitor level land at the **same** bounding box, which is
+expected rather than a mistake: growing a device width moves that block's
+`bbox` `y1` by exactly (W - 0.42) um and leaves every x coordinate untouched
+(measured on `klt gen mos_array`: y1 3.07 at W = 0.42, 3.49 at 0.84, 3.65 at
+1.0, 4.65 at 2.0), and the cell top is set by the taller of the two blocks. So
+the x pitch `DX = 4.2` carries over unchanged from `cell_candidate1/` at every
+point -- and is **proved** by each cell's own DRC report, not inferred from the
+block extents. 40.80 / 49.16 um2 sit under the floorplan's 72 um2 estimate row
+for these instances; re-budgeting that row from the measured numbers is the
+floorplan record's follow-up, not this pass.
 
 ### Results
 
@@ -310,8 +334,8 @@ Toolchain for all three: released `klt 0.8.0` with the engine pinned to the
 version that build was tested against --
 `uvx --from klayout-tools==0.8.0 --with klayout==0.30.12` -- PDK `gf180mcuA`.
 No tool was installed or changed. The pin matters twice: `0.8.0` is the release
-that reproduces `cell_candidate1.gds` and `cell_candidate3.gds` byte-for-byte
-(`0.9.1` drifts both), and pinning `klayout==0.30.12` keeps
+that reproduces every committed candidate-1-family GDS byte-for-byte
+(`0.9.1` drifts them), and pinning `klayout==0.30.12` keeps
 `provenance.klayout_version_mismatch` `false` on every report (an unpinned run
 resolves klayout `0.30.13` and sets it `true`, which the tool warns may shift
 report counts). Regenerate or verify any cell with:
@@ -326,32 +350,30 @@ pin: they were produced with `uvx --from klayout-tools==0.9.2 klt drc --engine
 both` (KLayout `0.30.13`, so
 `provenance.klayout_version_mismatch` is `true` on them, matching candidate
 2's committed cross-check), and `klt drc --check` verifies each one fresh
-against its pinned input GDS. No geometry changed for any of them.
+against its pinned input GDS.
 
 | Cell | DRC (curated deck) | DRC (native runset) | LVS | ERC |
 |---|---|---|---|---|
-| `cell_candidate1_Amin_G2x/` | `status: clean`, 0 violations | `violations`, 6: `DF.1c` x1 in `mos_array`, `DBU` x1, density `M2.4`/`M3.4`/`MT30.7`/`PL.8` | `status: match`, 0 errors | `erc_status: clean`, 0 findings |
-| `cell_candidate1_A2x_Gmin/` | `status: clean`, 0 violations | `violations`, 6: `DF.1c` x1 in `mos_array`, `DBU` x1, density `M2.4`/`M3.4`/`MT30.7`/`PL.8` | `status: match`, 0 errors | `erc_status: clean`, 0 findings |
-| `cell_candidate1_A2x_G2x/` | `status: clean`, 0 violations | `violations`, 6: `DF.1c` x1 in `mos_array`, `DBU` x1, density `M2.4`/`M3.4`/`MT30.7`/`PL.8` | `status: match`, 0 errors | `erc_status: clean`, 0 findings |
+| `cell_candidate1_Amin_G2x/` | `status: clean`, 0 violations | `violations`, 5: `DBU` x1, density `M2.4`/`M3.4`/`MT30.7`/`PL.8` -- **no `DF.1c`** | `status: match`, 0 errors | `erc_status: clean`, 0 findings |
+| `cell_candidate1_A2x_Gmin/` | `status: clean`, 0 violations | `violations`, 5: `DBU` x1, density `M2.4`/`M3.4`/`MT30.7`/`PL.8` -- **no `DF.1c`** | `status: match`, 0 errors | `erc_status: clean`, 0 findings |
+| `cell_candidate1_A2x_G2x/` | `status: clean`, 0 violations | `violations`, 5: `DBU` x1, density `M2.4`/`M3.4`/`MT30.7`/`PL.8` -- **no `DF.1c`** | `status: match`, 0 errors | `erc_status: clean`, 0 findings |
 
 - **DRC.** `klt drc --deck gf180mcu`, deck `released: true`, no waiver and no
   rule disabled. Layers in stream without rules are 34/10 (labels) and 166/5
-  (capacitor marker), as for `cell_candidate1/`. The curated `clean` is not
-  the whole verdict: each cell's committed `drc_crosscheck_report.json`
-  (`klt drc --engine both --deck gf180mcu --pdk gf180mcuA --deck-var
-  decks=all,-mslot`, klayout-tools `0.9.2`, KLayout `0.30.13`) runs the PDK's
-  own runset on the same GDS and reports `status: violations`, 6 findings,
-  classified as for `cell_candidate1/`: the cell-level **`DF.1c`** (the 0.42 um
-  MOSCAP COMP width, in `mos_array` -- our own geometry, neither checked nor
-  disclosed by the curated deck) is distinct from `DBU` and the die-level
-  density rules `M2.4`/`M3.4`/`MT30.7`/`PL.8`, which fire on any standalone
-  cell and say nothing about it. Cell-level fixes are #287's.
+  (capacitor marker), as for `cell_candidate1/`. The native runset's verdict
+  (each cell's committed `drc_crosscheck_report.json`, `klt drc --engine both
+  --deck gf180mcu --pdk gf180mcuA --deck-var decks=all,-mslot`, klayout-tools
+  `0.9.2`, KLayout `0.30.13`) is down to `DBU` and the die-level density rules
+  `M2.4`/`M3.4`/`MT30.7`/`PL.8`, which fire on any standalone cell and say
+  nothing about it: the cell-level **`DF.1c`** every earlier run reported (the
+  sub-1 um MOSCAP COMP width, our own geometry) is **gone** at the ratified
+  1.0 / 2.0 um widths, on the dogleg cells as well as the single-band ones.
 - **LVS.** `klt lvs lvs_request.json` against each cell's own
   `lvs_reference.spice`, which keeps `cap_nmos_03v3` for the capacitor: **no
   `device_map`, no waiver, no substituted device**. 5/5 nets, 2/2 devices and
   4/4 pins paired in each cell. `klt extract` reads the capacitor as
-  `cap_nmos_03v3` (not an `nfet`), which is the check that the resized
-  MOS-capacitor marker still covers the enlarged COMP island.
+  `cap_nmos_03v3` (not an `nfet`) at every point, which is the check that the
+  resized MOS-capacitor marker still covers the enlarged COMP island.
 - **ERC.** `klt erc ... --findings-only` against each cell's **own** new spec
   (next section). `erc_status: clean`, `erc_finding_count: 0`.
   As for `cell_candidate1/`, read **`erc_status`**, not `status`: `status` stays
@@ -367,39 +389,55 @@ reference form gives it a placeholder `C`. The drawn capacitor sizes above
 therefore rest on `generate.py` and `klt extract`, not on LVS. See the
 `cell_candidate1/` "DRC" and "LVS" sections for the full statements.
 
-### Two hand-placed shapes had to be re-derived (and one of them had to change)
+### Hand-placed shapes re-derived for the ratified levels (2026-11-17, #296)
 
 The blocks are composed by port *name*, so `pins=[...]` needs no coordinate work.
 The `klt draw` rectangles are absolute in the composed frame and do **not** follow
-the blocks, so each had to be re-derived per cell:
+the blocks, so each had to be re-derived per cell. All three now come from the
+one shared derivation in `layout/candidate1_points.py` (`straps()` +
+`cn_dogleg()`), which `cell_candidate1/` calls too:
 
-- **`VB` tap-ring strap.** The `TAP_N` pad centre rises with the device width
-  (y = 2.70 um at W = 0.42, y = 3.12 um at W = 0.84), so in the two mixed cells
-  the two rings' `TAP_N`s sit 0.42 um apart in y and `cell_candidate1/`'s single
-  flat 0.42 um band cannot overlap both. Each new cell uses one band spanning
-  both pads (`min(y) - 0.21` to `max(y) + 0.21`), which degenerates to a pure
-  +0.42 um shift of the committed rect in `A2x_G2x` where both pads move
-  together. The strap **overlaps** both pads rather than abutting them.
-- **`CN` source/drain strap -- this one is a real constraint, not bookkeeping.**
-  CN leaves each tap ring through that ring's metal1 exit gap, and the gap is
-  centred on the device, so it rises with the width too: measured `GAP_E`/`GAP_W`
-  span y -0.28..0.72 um at W = 0.42 and y -0.07..0.93 um at W = 0.84.
-  `cell_candidate1/`'s band (y 0.06..0.36) is 0.34 um clear of the gap edge at
-  the Minimum width but only **0.13 um** clear once a block is doubled, and it
-  **does** fail `metal1.space.1` (0.23 um) -- observed as a real DRC violation on
-  the first generated cell, not predicted. The three new cells raise CN to
-  y 0.18..0.48, which clears both rings' gaps by >= 0.24 um in every cell. The
-  S/D pads are as tall as the device width, so the raised band lies inside a
-  doubled pad (y 0..0.84); over a pad still at the Minimum width it overhangs
-  the pad's top edge (y 0.42) by 0.06 um, which is metal over field and DRC
-  clean, and it still overlaps every pad by >= 0.24 um in y.
-- **`MOS_CAP_MK` capacitor marker.** The cap COMP island is as tall as the device
-  width -- measured (0,0)-(1.28,0.42) at W = 0.42 and (0,0)-(1.28,0.84) at
-  W = 0.84, x unchanged -- so the marker grows with it, keeping
-  `cell_candidate1/`'s 0.1 um margin. It is unchanged in `A2x_Gmin`, whose
-  capacitor is at Minimum. Under-covering the island would make the deck read the
-  gate as an `nfet` and LVS would stop matching, so the clean LVS above is what
-  confirms each marker.
+- **`CN` source/drain strap -- a measured per-level window.** CN leaves each
+  tap ring through that ring's metal1 exit gap, and the gap is centred on the
+  device, so it rises with the width: measured `GAP_E`/`GAP_W` spans
+  y -0.28..0.72 um at W = 0.42, -0.07..0.93 at 0.84, 0.01..1.01 at 1.0 and
+  0.51..1.51 at 2.0 (centre W/2 + 0.01 um, tabulated in
+  `spec/capacitor-geometry-decision.md`). With the 0.23 um `metal1.space.1`
+  clearance required from every edge, the capacitor-1.0 points have the common
+  window 0.24..0.49 um (access at 0.42) or 0.24..0.70 (access at 0.84), and
+  one band (y 0.25..0.48) serves both. That band is exactly the 0.23 um metal1
+  **minimum width** (M1.1) tall -- the first cut (0.26..0.47) failed M1.1 on
+  its free-standing stretches between pads, observed on the first generated
+  cell and fixed by thickening into the window's remaining room. At the
+  capacitor-2.0 points the two windows are **disjoint** (0.74..1.28 vs
+  -0.05..0.49 or 0.16..0.70) -- the constraint `#294` measured, with no
+  single-rect CN. The strap there is a doglegged three-rect metal1 shape:
+  a capacitor-side band through the capacitor ring's gap (y 0.78..1.25), an
+  access-side band through the access ring's gap (y 0.0..0.45 at access
+  0.42, 0.20..0.65 at 0.84), and a riser joining them across the inter-ring
+  field -- which is wide enough because the binding edges are the ring
+  *metal1* edges (x 2.35 and DX - 1.07 = 3.13, field 0.78 um), not the wider
+  comp/pplus tap-ring extents the ERC well boxes quote. The riser clears both
+  metal edges by >= 0.25 um; every segment clears its gap edges by
+  >= 0.26 um; all DRC-clean on the committed cells.
+- **`VB` tap-ring strap -- flat at Minimum, stacked at 2x.** The `TAP_N` pad
+  centre rises as W + 2.28 um (measured at all four widths the grid draws).
+  At capacitor-1.0 points one band spanning both pads
+  (`min(y) - 0.21` .. `max(y) + 0.21`) still clears the capacitor's metal1
+  gate pad (y W + 0.75..W + 1.17) by >= 0.32 um. At capacitor-2.0 points that
+  gate pad (y 2.75..3.17) sits **between** the two rings' metal north bands
+  (access 2.45..2.91 or 2.87..3.33, capacitor 4.03..4.49), so the flat band
+  would sweep through it and short PL to VB; there VB is two stacked bands --
+  one per ring, each over its TAP_N pad -- joined by a riser at
+  x 1.10..1.50, right of the gate pad. (Measured metal1 shapes of the
+  generated blocks; the gate pad is a real 0.42 x 0.42 metal1 rect over the
+  gate contact, not just a port marker.)
+- **`MOS_CAP_MK` capacitor marker.** The cap COMP island is as tall as the
+  device width -- measured (0,0)-(1.28, W) at every width, x unchanged -- so
+  the marker grows with it (`[-0.1, -0.1, 1.38, W + 0.1]`), keeping
+  `cell_candidate1/`'s 0.1 um margin. Under-covering the island would make the
+  deck read the gate as an `nfet` and LVS would stop matching, so the clean
+  LVS and the `cap_nmos_03v3` census above confirm each marker.
 
 The underlying tool gap -- absolute `klt draw` rectangles silently going illegal
 when a swept device parameter moves the blocks under them, with DRC as the only
@@ -409,46 +447,45 @@ machine-readable keep-out for the ring's exit gap).
 
 ### Per-cell ERC specs (`layout/erc/supplies_c1_*.json`)
 
-Each new cell gets its **own** ERC spec, and `layout/erc/supplies.json` is left
-untouched. This is forced, not stylistic: the Region I tie declares
-`well_layer: null` (native p-substrate, no drawn well layer) and therefore
-asserts **hardcoded absolute** `well_boxes` -- the extents of the two tap rings.
-A width doubling moves a ring's `y1` from 3.07 to 3.49 um, so reusing
-`supplies.json` would assert a substrate region that no longer covers the grown
-ring. Editing it in place is not an option either, because `klt erc --check`
-validates `provenance.spec.content_hash` and `cell_candidate1/erc_report.json` is
-ratified signoff evidence (`signoff/manifest.json`, `signoff/README.md` rows
-`3.analog`/`4.analog`/`11.analog`). Each new file is a copy of `supplies.json`
-with only the tie's two `well_boxes` `y1` values changed:
+Each cell gets its **own** ERC spec. This is forced, not stylistic: the
+Region I tie declares `well_layer: null` (native p-substrate, no drawn well
+layer) and therefore asserts **hardcoded absolute** `well_boxes` -- the
+extents of the two tap rings. A width change moves a ring's comp/pplus `y1`
+(W + 2.65 um: 3.07 at 0.42, 3.49 at 0.84, 3.65 at 1.0, 4.65 at 2.0 -- all
+measured), so a spec reused across cells would assert a substrate region that
+no longer covers the grown ring. `cell_candidate1/`'s own spec is
+`layout/erc/supplies.json`, updated in place for its new capacitor-ring `y1`
+as part of this pass (its ERC report is regenerated with it, so
+`provenance.spec.content_hash` verifies); the split cells keep their per-point
+files. Each is a copy of `supplies.json` with only the tie's two `well_boxes`
+`y1` values changed:
 
 | Spec | Capacitor-ring box `y1` | Access-ring box `y1` |
 |---|---|---|
-| `supplies.json` (`cell_candidate1/`, unchanged) | 3.07 | 3.07 |
-| `supplies_c1_Amin_G2x.json` | **3.49** | 3.07 |
-| `supplies_c1_A2x_Gmin.json` | 3.07 | **3.49** |
-| `supplies_c1_A2x_G2x.json` | **3.49** | **3.49** |
+| `supplies.json` (`cell_candidate1/`, updated 2026-11-17) | **3.65** | 3.07 |
+| `supplies_c1_Amin_G2x.json` | **4.65** | 3.07 |
+| `supplies_c1_A2x_Gmin.json` | **3.65** | **3.49** |
+| `supplies_c1_A2x_G2x.json` | **4.65** | **3.49** |
 
-**Reading the coverage numbers.** In all three new cells the assertion covers
+**Reading the coverage numbers.** In all four cells the assertion covers
 **100 % of the drawn tap area** (`uncovered_tap_area_um2: 0.0`,
 `uncovered_tap_fraction: 0.0`), which is the figure that says the asserted
-substrate region still covers the grown rings. The *extent* figure moves, and
-only for the mixed cells:
+substrate region still covers the grown rings. The *extent* figure moves
+whenever the two rings end at different heights:
 
 | Cell | `drawn_tap_area_um2` | `uncovered_tap_fraction` | `extent_uncovered_fraction` |
 |---|---|---|---|
-| `cell_candidate1/` | 11.7852 | 0.0 | 0.055024 |
-| `cell_candidate1_Amin_G2x/` | 12.6756 | 0.0 | 0.099303 |
-| `cell_candidate1_A2x_Gmin/` | 12.8520 | 0.0 | 0.094832 |
-| `cell_candidate1_A2x_G2x/` | 13.7424 | 0.0 | 0.055024 |
+| `cell_candidate1/` | 13.0148 | 0.0 | 0.114166 |
+| `cell_candidate1_Amin_G2x/` | 15.1348 | 0.0 | 0.188735 |
+| `cell_candidate1_A2x_Gmin/` | 14.0816 | 0.0 | 0.071339 |
+| `cell_candidate1_A2x_G2x/` | 16.2016 | 0.0 | 0.153191 |
 
 `extent_uncovered_fraction` is the fraction of the **cell extent** no asserted
 box covers, so in a mixed cell it necessarily rises: the cell top is set by the
-doubled block (y1 = 3.49) while the Minimum block's box correctly stops at
-y1 = 3.07, leaving a ~4.16 x 0.42 um strip beside the taller block that is
-genuinely outside both tap rings. `A2x_G2x`, where both boxes rise together,
-returns to the committed cell's 0.055024 exactly. The rise is geometry, not an
-under-covering ring -- `uncovered_tap_fraction` staying 0.0 is what rules that
-out.
+taller block's ring while the shorter block's box correctly stops lower,
+leaving a strip beside the taller block that is genuinely outside both tap
+rings. The rise is geometry, not an under-covering ring --
+`uncovered_tap_fraction` staying 0.0 is what rules that out.
 
 ## cell_candidate3/ -- bitcell of candidate 3 (PMOS polarity variant), one cell only
 
@@ -460,11 +497,13 @@ series with a 6.0 V PMOS access device (`pfet_06v0`), per
 `lvs_reference.spice`, `lvs_report.json`, `erc_report.json`). One cell of one
 candidate, not the array; no claim about breakdown behaviour.
 
-Toolchain: released `klt 0.8.0` (`uvx --from klayout-tools==0.8.0`), PDK
-`gf180mcuA`; no tool was installed or changed. Geometry point as for candidate
-1 (Minimum x Minimum, generator width floor 0.42 um): cap W 0.42 um x L 0.28 um,
-access W 0.42 um x L 0.55 um (schematic `lacc`). The same clamp deviation
-applies (schematic `wacc` is 0.30 um); `lvs_reference.spice` carries drawn
+Toolchain: released `klt 0.8.0` with the engine pinned
+(`uvx --from klayout-tools==0.8.0 --with klayout==0.30.12`; regenerated
+2026-11-17, #296), PDK `gf180mcuA`; no tool was installed or changed. Geometry
+point as for candidate 1 (Minimum x Minimum): cap W 1.0 um x L 0.28 um (the
+ratified Minimum level, `spec/capacitor-geometry-decision.md`), access W
+0.42 um x L 0.55 um (schematic `lacc`, clamped at the generator floor -- the
+same access deviation as candidate 1). `lvs_reference.spice` carries drawn
 values.
 
 - **Terminals.** BL is the access **source**, CN the access **drain** (as in
@@ -487,20 +526,19 @@ values.
   6 V rules, so the access device is checked against the 3.3 V thresholds.
   This `clean` is the **curated deck's**; the native runset's verdict is the
   next bullet, committed in `drc_crosscheck_report.json`.
-- **The PDK's own runset disagrees with that `clean`; the cross-check is
-  committed.** `drc_crosscheck_report.json` (`klt drc --engine both --deck
+- **The native runset's remaining findings on this cell are #297's, not the
+  capacitor's.** `drc_crosscheck_report.json` (`klt drc --engine both --deck
   gf180mcu --top cell_candidate3 --pdk gf180mcuA --deck-var decks=all,-mslot`,
-  klayout-tools `0.9.2`, KLayout `0.30.13`) reports 12 native findings on the
+  klayout-tools `0.9.2`, KLayout `0.30.13`) reports 11 native findings on the
   committed GDS: **`DF.4d_MV` x5** ("Min. Nwell overlap of NCOMP outside
-  DNWELL", 0.16 um, in `mos_array$1`), **`DV.6` x1** ("Min. Dualgate enclose
-  COMP", 0.24 um, in `mos_array$1`) and **`DF.1c` x1** (MOSCAP COMP width, in
-  `mos_array`, as for candidate 1) -- all in the `mos_array` blocks, so all in
-  our own geometry -- plus `DBU` x1 and the die-level density rules
-  `M2.4`/`M3.4`/`MT30.7`/`PL.8`. The curated deck discloses `DF.4d_MV` and
-  `DV.6` as unmodelled; it does not disclose `DF.1c`. Candidate 3's well
+  DNWELL", 0.16 um, in `mos_array$1`) and **`DV.6` x1** ("Min. Dualgate enclose
+  COMP", 0.24 um, in `mos_array$1`) -- #297's generator-owned set -- plus
+  `DBU` x1 and the die-level density rules `M2.4`/`M3.4`/`MT30.7`/`PL.8`.
+  The **`DF.1c`** (MOSCAP COMP width) every earlier run reported is **gone**:
+  the capacitor is drawn at the ratified 1.0 um Minimum. The curated deck
+  discloses `DF.4d_MV` and `DV.6` as unmodelled. Candidate 3's well
   connection is stated below, but the Nwell overlap it is drawn with does not
-  meet the rule. Cell-level fixes are tracked as #287; this section's `clean`
-  means "clean under the curated deck", not signed off.
+  meet the rule; that fix is #297's.
 - **LVS.** `status: match`, 0 errors (`klt lvs --check lvs_report.json` run
   from the cell directory exits 0). Same bounds as candidate 1: the capacitor's
   geometry and capacitance are not compared.
@@ -526,65 +564,69 @@ its GDS sha256 is what its own `--check` pins.
 
 ### Geometry point and which axis carries the 2x
 
-**The 2x is taken on the capacitor's width, at held drawn length: W 0.42 ->
-0.84 um, L 0.28 um, exactly doubling the drawn area (0.84 x 0.28 = 0.2352 um2
-against 0.42 x 0.28 = 0.1176 um2).** `spec/split-axis-plan.md` section 2
-ratifies "double the minimum capacitor area (via W and/or L scaling)" and
-leaves the split open; width is taken here because that is the axis `sim/`
-already scales for the G axis (`run_experiment.py` applies
-`sizing_multiplier` to `wcap` only, `lcap` passed through unscaled, in
-`klt/mk_klt_requests.py`), so "G2x" means the same thing in `sim/` and in
-`layout/` -- the same convention the Candidate 1 variant cells document. As
-there, the 2x is 2x the **drawn** Minimum of 0.42 um (the generator's width
-floor), not 2x a process minimum, and `sim/`'s absolute widths differ
-pre-existingly. Doubling `L` instead would have disagreed with `sim/` and
-grown the block in x, reopening the pitch constraint below.
+**The 2x is taken on the capacitor's width, at held drawn length, at the
+ratified levels: W 1.0 -> 2.0 um, L 0.28 um, exactly doubling the capacitor
+area (2.0 x 0.28 = 0.56 um2 against 1.0 x 0.28 = 0.28 um2).**
+`spec/capacitor-geometry-decision.md` (#294) fixes both levels -- the 1.0 um
+Minimum is the PDK runset's `DF.1c` MOSCAP COMP-width floor (the earlier drawn
+0.42 um violated it; the 0.42 -> 0.84 pair this section used to document was
+the generator-floor stand-in, replaced grid-wide by #296) -- and takes the 2x
+on W because that is the axis `sim/` already scales for the G axis
+(`run_experiment.py` applies `sizing_multiplier` to `wcap` only, `lcap`
+passed through unscaled, in `klt/mk_klt_requests.py`), so "G2x" means the same
+thing in `sim/` and in `layout/`. Doubling `L` instead would have disagreed
+with `sim/` and grown the block in x, reopening the pitch constraint below.
 
-Drawn values: cap W 0.84 um x L 0.28 um, access W 0.42 um x L 0.55 um
-(schematic `lacc`), capacitor area (extracted, `klt extract`) **0.2352 um2** =
-exactly 2.000 x the `Gmin` cell's 0.1176 um2, extracted as `cap_pmos_03v3` --
+Drawn values: cap W 2.0 um x L 0.28 um, access W 0.42 um x L 0.55 um
+(schematic `lacc`), capacitor area (extracted, `klt extract`) **0.56 um2** =
+exactly 2.000 x the `Gmin` cell's 0.28 um2, extracted as `cap_pmos_03v3` --
 which is the check that the resized MOS-capacitor marker still covers the
 enlarged COMP island. Access width extracted 0.42 um.
 
 | Cell | `klt stats` bbox | size |
 |---|---|---|
-| `cell_candidate3/` (`C3_Amin_Gmin`) | (-1.23,-1.23)-(7.31,3.07) | 8.54 x 4.30 um = 36.72 um2 |
-| `cell_candidate3_Amin_G2x/` | (-1.23,-1.23)-(7.31,3.49) | 8.54 x 4.72 um = 40.31 um2 |
+| `cell_candidate3/` (`C3_Amin_Gmin`) | (-1.23,-1.23)-(7.31,3.65) | 8.54 x 4.88 um = 41.68 um2 |
+| `cell_candidate3_Amin_G2x/` | (-1.23,-1.23)-(7.31,4.65) | 8.54 x 5.88 um = 50.22 um2 |
 
-The new cell is 0.42 um taller and exactly as wide: doubling a device width
-grows its block in y only and leaves every x coordinate untouched (measured on
-`klt gen mos_array` 0.8.0 at exactly these parameters), so the pitch
-`DX = 4.8` carries over from `cell_candidate3/` -- and is **proved** by this
-cell's own DRC report (`nwell.space.1`/`nplus.space.1` clean, 0 violations),
-not inferred from the block extents. 40.31 um2 is well under the floorplan's
-110 um2 estimate row for the C3 instances; replacing that estimate row is a
-later change, not this one.
+The G2x cell is exactly 1.0 um taller and exactly as wide: moving a device
+width from W1 to W2 grows its block's `bbox` `y1` by exactly (W2 - W1) and
+leaves every x coordinate untouched (measured on `klt gen mos_array` 0.8.0 at
+exactly these parameters), so the pitch `DX = 4.8` carries over from
+`cell_candidate3/` -- and is **proved** by this cell's own DRC report
+(`nwell.space.1`/`nplus.space.1` clean, 0 violations), not inferred from the
+block extents. 50.22 um2 is well under the floorplan's 110 um2 estimate row
+for the C3 instances; re-budgeting that row from the measured numbers is the
+floorplan record's follow-up, not this pass.
 
-### Hand-placed shapes had to be re-derived (and one of them changed)
+### Hand-placed shapes re-derived for the ratified levels
 
 The blocks are composed by port *name*, so `pins=[...]` needs no coordinate
 work. The `klt draw` rectangles are absolute in the composed frame and do
-**not** follow the blocks. The same three derivations as the Candidate 1
-variant cells apply, with the same outcome:
+**not** follow the blocks. At the 2x capacitor this cell needs the same two
+structural changes as the candidate-1 G2x cells (both derivations measured on
+the generated blocks; the candidate-1 family shares them via
+`layout/candidate1_points.py`, this cell keeps its own literals because its x
+extents differ):
 
-- **`VB` tap-ring strap -- reshaped.** With only the cap block doubled, the
-  two rings' `TAP_N` pads sit at different heights (y = 2.70 um access,
-  y = 3.12 um cap, each pad 0.42 um across). `cell_candidate3/`'s flat band
-  (y 2.49..2.91) would end edge-touching the cap pad with zero overlap, so
-  this cell uses one band spanning both pads (`min(y) - 0.21` to
-  `max(y) + 0.21` = y 2.49..3.33), x extents unchanged from `cell_candidate3/`.
-- **`CN` source/drain strap -- raised.** Same constraint as measured on the
-  Candidate 1 variant cells: CN leaves each tap ring through that ring's
-  metal1 exit gap, which rises with device width (y -0.28..0.72 um at
-  W = 0.42, y -0.07..0.93 um at W = 0.84), and the inherited 0.06..0.36 band
-  leaves only 0.13 um below the doubled ring's gap -- under the 0.23 um
-  `metal1.space.1` clearance, observed as a real DRC violation on the
-  Candidate 1 equivalents. CN is raised to y 0.18..0.48, clearing both gaps by
-  >= 0.24 um; it lies inside the doubled cap pads (y 0..0.84), overhangs the
-  Minimum access pad's top edge by 0.06 um (metal over field), and still
-  overlaps every pad by >= 0.24 um in y.
+- **`CN` source/drain strap -- doglegged.** CN leaves each tap ring through
+  that ring's metal1 exit gap, which rises with device width (measured spans:
+  y -0.28..0.72 um at W = 0.42 access, y 0.51..1.51 um at W_CAP = 2.0). With
+  the 0.23 um `metal1.space.1` clearance from every gap edge the legal windows
+  (-0.05..0.49 and 0.74..1.28) are **disjoint** -- no single-rect CN exists
+  (`spec/capacitor-geometry-decision.md`). The strap is a three-rect metal1
+  dogleg: an access-side band through the access ring's gap (y 0.0..0.45), a
+  riser across the inter-ring field (access ring metal edge x 2.77, capacitor
+  ring metal edge DX - 1.07 = 3.73 -- field 0.96 um wide; riser x 3.02..3.48
+  clears both by >= 0.25 um), and a capacitor-side band through the
+  capacitor ring's gap (y 0.78..1.25, >= 0.26 um clear).
+- **`VB` tap-ring strap -- stacked.** The capacitor's metal1 gate pad
+  (x DX+0.43..DX+0.85, y 2.75..3.17) sits **between** the two rings' metal
+  north bands (access 2.45..2.91, capacitor 4.03..4.49), so one flat band
+  spanning both TAP_N pads would sweep through it and short PL to VB. Two
+  stacked bands -- one per ring, each over its TAP_N pad -- joined by a riser
+  at x 3.05..3.45 connect them instead.
 - **`MOS_CAP_MK` capacitor marker -- grown with the island.** The cap COMP
-  island is as tall as the device width, (DX,0)-(DX+1.28,0.84) at W = 0.84,
+  island is as tall as the device width, (DX,0)-(DX+1.28,2.0) at W = 2.0,
   so the marker grows to match, keeping `cell_candidate3/`'s 0.1 um margin.
 
 The underlying tool gap (absolute `klt draw` rectangles silently going illegal
@@ -613,24 +655,22 @@ cell must share.
 | | result |
 |---|---|
 | DRC (curated deck) | `klt drc --deck gf180mcu --top cell_candidate3_Amin_G2x`: `status: clean`, 0 violations, deck `released: true`, no waiver and no rule disabled |
-| DRC (native runset) | `drc_crosscheck_report.json` (`klt drc --engine both --deck gf180mcu --top cell_candidate3_Amin_G2x --pdk gf180mcuA --deck-var decks=all,-mslot`, klayout-tools `0.9.2`, KLayout `0.30.13`): native `status: violations`, 12 findings -- `DF.1c` x1 ("Min. COMP Width for MOSCAP", in `mos_array`), `DF.4d_MV` x5 and `DV.6` x1 (in `mos_array$1`), `DBU` x1, density `M2.4`/`M3.4`/`MT30.7`/`PL.8` |
+| DRC (native runset) | `drc_crosscheck_report.json` (`klt drc --engine both --deck gf180mcu --top cell_candidate3_Amin_G2x --pdk gf180mcuA --deck-var decks=all,-mslot`, klayout-tools `0.9.2`, KLayout `0.30.13`): native `status: violations`, 11 findings -- **no `DF.1c`** (the ratified 2.0 um width clears it); `DF.4d_MV` x5 and `DV.6` x1 (#297's generator-owned set, in `mos_array$1`), `DBU` x1, density `M2.4`/`M3.4`/`MT30.7`/`PL.8` |
 | LVS | `klt lvs lvs_request.json`: `status: match`, 0 errors; 5/5 nets, 2/2 devices, 4/4 pins paired; no `device_map`, no waiver, no substituted device |
-| ERC | `klt erc ... layout/erc/supplies_region_iii.json` (the existing spec, unedited): `erc_status: clean`, 0 findings; antenna `not_checked` (no PDK antenna data), so the command exits non-zero on a clean run -- read `erc_status` |
+| ERC | `klt erc ... layout/erc/supplies_region_iii.json` (the existing spec, unedited -- it derives the well from the drawn 21/0 layer, so no per-cell box edit was needed): `erc_status: clean`, 0 findings; antenna `not_checked` (no PDK antenna data), so the command exits non-zero on a clean run -- read `erc_status` |
 
 The Candidate 1 caveats carry over unchanged (identical cell structure):
 Dualgate is not modelled for the 6 V rules so the access device is checked
 against the 3.3 V thresholds; the capacitor's geometry and capacitance are not
 compared by LVS (`subckt-call` placeholder `C`, `A`/`P` secondary), so the
-drawn capacitor size rests on `generate.py` and `klt extract`. The curated-deck
-`clean` is not signed off, and the native verdict here is measured, not
-predicted: this cell's **first** native run (`drc_crosscheck_report.json`)
-reports exactly the cell-level finding set its `Gmin` sibling shows -- `DF.1c`
-x1, `DF.4d_MV` x5, `DV.6` x1, all in the `mos_array` blocks (our own geometry)
--- plus `DBU` and the die-level density rules. The run that produced this
-warned against assuming the sibling match just because both draw
-`W_CAP = 0.84 um`; it holds, and the committed report is the evidence.
-Cell-level fixes are **#287**'s; the geometry change this cell will get is
-#296's.
+drawn capacitor size rests on `generate.py` and `klt extract`. The
+cell's **first** native run is the committed cross-check above, produced at
+the ratified geometry: it confirms by measurement what `#294` could only
+infer (the 2.0 um width clears `DF.1c`), and its remaining cell-level
+findings are exactly `#297`'s set (`DF.4d_MV` x5, `DV.6` x1, all in the
+`mos_array` blocks) plus `DBU` and the die-level density rules. The doglegged
+CN and stacked VB this cell needs at the 2x width are DRC-proven by the same
+run: no `metal1.space.1` or any other strap finding appears.
 
 `klt drc --check drc_report.json` and `klt lvs --check lvs_report.json` run
 from the cell directory exit 0. `klt erc --check erc_report.json` reports the
@@ -639,7 +679,7 @@ spec hash as drifted when run from the cell directory -- pre-existing
 report (its spec path is repo-relative; only `cell_candidate1/`'s
 cell-relative spec verifies from its directory).
 
-## cell_candidate2/ -- drawn, LVS match on klt 0.9.2, DRC NOT clean
+## cell_candidate2/ -- drawn at the ratified capacitor levels; LVS match; remaining native findings are the PCell's
 
 `layout/cell_candidate2/` holds one bitcell of candidate 2 (`spec/cell-candidates.md`):
 a 6.0 V thick-oxide NMOS capacitor (`cap_nmos_06v0`) in series with the 10 V
@@ -648,25 +688,26 @@ cell, not the array; no breakdown claim. Files: `generate.py` (with `--check`),
 `cell_candidate2.gds`, `drc_report.json`, `drc_crosscheck_report.json`,
 `erc_report.json`, `lvs_request.json`, `lvs_reference.spice`, `lvs_report.json`.
 
-**Result on klt 0.9.2: LVS `match`, DRC NOT clean.** `klt lvs` now reaches
-`match` (0 errors) using the upstream-documented LDMOS fold recipe; the DRC
-criterion is still not met, and this run establishes for the first time *which*
-of the findings are real, because the PDK's own native runset could finally be
-run as a cross-check on this host. No waiver, no hand-edited PCell geometry and
-no substituted device was used anywhere below.
+**Result on klt 0.9.2 (regenerated 2026-11-17, #296): LVS `match`; the two
+capacitor violations the native runset found (`DF.1c`, `PL.2_MV`) are gone at
+the ratified capacitor levels; what remains native are the PDK PCell's own
+findings (dispositioned by #299's scoped exception) and the die-level rules.**
+`klt lvs` matches (0 errors) using the upstream-documented LDMOS fold recipe.
+No waiver, no hand-edited PCell geometry and no substituted device was used
+anywhere below.
 
 Toolchain: released `klt 0.9.2` (`uvx --from klayout-tools==0.9.2`), KLayout
-0.30.13 (the engine bundled with that wheel) for the curated deck and the
-extraction, standalone KLayout 0.30.12 for the native deck, PDK `gf180mcuA`
+0.30.13 (the engine bundled with that wheel), PDK `gf180mcuA`
 (`open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7`, from `~/.ciel`). No host
 tool was installed or changed. Regenerate/verify with
 `uvx --from klayout-tools==0.9.2 python3 layout/cell_candidate2/generate.py --check`
 (the generator calls `klt` on PATH, so put a `klt` wrapper for the pinned
 version on PATH).
 
-`generate.py --check` passes on 0.9.2: GDS `sha256:c8bc23f9d6057ccb3df2d7ee2ab3ff603a302c3ed7817646c8ab39aaaea9118d`,
-byte-identical to the GDS committed from the 0.9.1 run. **No layout geometry
-changed in the 0.9.2 pass** -- only the LVS request/reference and the reports.
+`generate.py --check` passes on 0.9.2 against the GDS committed by the
+2026-11-17 regeneration (which moved the capacitor to the ratified
+W = 1.0 um, L = 0.70 um levels, grew its marker, re-placed the right Via1 onto
+the pad's new x position, and re-pointed the PL label -- see "Geometry").
 
 ### Source/drain assignment (deliberate)
 
@@ -683,7 +724,19 @@ PCell has no `klt` ports).
 | Device | Drawn | Note |
 |---|---|---|
 | Access (`nfet_10v0_asym` PDK PCell) | W = 4 um per finger x 2 fingers (8 um total), L = 0.6 um | The PCell clamps any `w` below 4 um to 4 um and always draws two fingers sharing the centre drain. The schematic default `wacc` (25 um) is not what is drawn. |
-| Capacitor (`mos_array`, Dualgate marker, S and D strapped on CN) | W = 0.42 um, L = 0.56 um | W is the `mos_array` generator floor. **L = 0.56 um is below the process minimum** -- see "What the native deck found in our own geometry". |
+| Capacitor (`mos_array`, Dualgate marker, S and D strapped on CN) | W = 1.0 um, L = 0.70 um | The ratified Minimum level for Region II (`spec/capacitor-geometry-decision.md`): W at the `DF.1c` MOSCAP COMP-width floor, L at the `PL.2_MV` 6 V n-gate minimum. Extracted area 0.70 um2 (`cap_nmos_06v0`). |
+
+The capacitor's growth moved two hand-placed shapes, both measured off the
+generated block (the MV `mos_array` block's metal1 shifts **in x with L**:
+its D pad is x CX+1.14..CX+1.56 at L = 0.56, CX+1.28..CX+1.70 at L = 0.70):
+
+- **Right Via1 re-placed** (x CX+1.22..1.48 -> CX+1.28..1.54): at the new L the
+  via's left sliver hung off the D pad, and the native deck flagged it
+  (`V1.3a` "metal1 overlap of via1", observed on the first generated cell).
+  The moved via sits fully on the pad and still fully under the Metal2 CN bar.
+- **`MOS_CAP_MK` marker top edge** now `CY + W_CAP + 0.1` (the COMP island is
+  as tall as the device width), and the **`PL` label** moved to the gate pad's
+  new centre (the gate pad's y tracks W: CY + W + 0.96).
 
 ### LVS -- `match`
 
@@ -740,34 +793,32 @@ classes as candidates 1 and 3 plus the flavour point:
 
 `klt drc --deck gf180mcu --top cell_candidate2`: `status: violations`, 17, deck
 content hash `sha256:c3f2cce49000857a3a71cb65203aabf0eb27cd0ee6b1c60e29792355c455c4b1`,
-input GDS `sha256:c8bc23f9d6057ccb3df2d7ee2ab3ff603a302c3ed7817646c8ab39aaaea9118d`.
+input GDS `sha256:5cb4a64fa103f2b698aeaffedddfc28405931e6afbfec8f21cf8b90678462e7a`
+(the GDS committed by the 2026-11-17 regeneration).
 All 17 have `source_cell` `nfet_10v0_asym`, i.e. lie inside the PDK PCell:
 16 x `comp.enclosing.contact.1` and 1 x `comp.width.mv.1`. Nothing is reported
 in the capacitor, the straps or the labels. Layers in stream without rules:
 34/10 (labels), 166/5 (MOS-capacitor marker). These are the same 17 findings
 seen on 0.9.0 and 0.9.1 -- neither the 0.9.1 nor the 0.9.2 fix changed them.
 
-### DRC -- native-deck cross-check: 27 findings (new on this host)
+### DRC -- native-deck cross-check: 25 findings (was 27; the capacitor's two are gone)
 
 `drc_crosscheck_report.json` is
 `klt drc --engine both --deck gf180mcu --top cell_candidate2 --pdk gf180mcuA --deck-var decks=all,-mslot`:
 the curated deck and the PDK's **own** sign-off runset
-(`~/.ciel/gf180mcuA/libs.tech/klayout/tech/drc/gf180mcu.drc`, tree hash
-`sha256:8af3b4875893f3ffbff639bd7e2966c5e3b9b27f70d03e86d6da46ca9510fbc4`) run
-on the same GDS. **Earlier passes recorded this cross-check as impossible
-because the host KLayout was older than the deck's 0.30.9 floor; the host now
-carries 0.30.12, so it runs.** `--deck-var decks=all,-mslot` is required: with
+(`~/.ciel/gf180mcuA/libs.tech/klayout/tech/drc/gf180mcu.drc`) run
+on the same GDS. `--deck-var decks=all,-mslot` is required: with
 the default deck selection the native script aborts in its metal-slotting
 section on this 3LM variant (`NameError: undefined local variable or method
 'metal4_drawn'`, upstream 2AMLogic/klayout-tools#5091). The slotting rules do
 not apply to a cell drawing only Metal1 and Metal2.
 
-Native deck: `status: violations`, 27. Classified by where the geometry lives:
+Native deck: `status: violations`, 25. Classified by where the geometry lives:
 
 | Where | Rules | Count |
 |---|---|---|
 | Inside the PDK `nfet_10v0_asym` PCell | `CO.4` x16, `DF.6_MV` x2, `PL.4_MV` x2 | 20 |
-| **Our own capacitor block** (`cap__core`) | `DF.1c` x1, `PL.2_MV` x1 | 2 |
+| **Our own capacitor block** (`cap__core`) | none | **0** |
 | Die-level metal/poly density | `M1.4`, `M2.4`, `M3.4`, `MT30.7` | 4 |
 | Database unit | `DBU` x1 | 1 |
 
@@ -796,30 +847,22 @@ by cell, not from klt's comparison block (filed upstream, see "Upstream").
   (`coverage.unmodeled_rules`), so this is disclosed non-coverage, not a
   silent miss.
 
-**What the native deck found in our own geometry** -- the finding that matters
-most here, because it is not the PCell's and not waivable:
+**Our own capacitor block is clean under the native runset.** The two findings
+every earlier run reported there are gone at the ratified levels:
 
-- `DF.1c` x1, "Min. COMP Width for MOSCAP: 1 um", in `cap__core`. The rule is
-  `comp AND mos_cap_mk` width >= 1 um. The capacitor's COMP island under the
-  166/5 marker is drawn **0.42 um** wide (the `mos_array` generator floor), so
-  it is under the foundry minimum by more than a factor of two. The curated
-  deck neither checks this rule nor lists it in `coverage.unmodeled_rules`; it
-  reports 166/5 under `layers_in_stream_without_rules`, which reads as "no rule
-  applies" rather than "a rule applies and is not modelled".
-- `PL.2_MV` x1, "Gate Width (Channel Length)", in `cap__core`. For a 6 V
-  n-gate the native deck's minimum channel length is **0.7 um**; the capacitor
-  is drawn at L = 0.56 um. The comment in `generate.py` calling 0.56 um "the
-  6 V minimum drawn length" is wrong. The curated deck discloses `PL.2_MV` as
-  unmodelled.
+- `DF.1c` ("Min. COMP Width for MOSCAP: 1 um") -- the capacitor's COMP island
+  under the 166/5 marker is now drawn **1.0 um** wide, the ratified Minimum
+  (`spec/capacitor-geometry-decision.md`); the rule no longer fires.
+- `PL.2_MV` ("Gate Width (Channel Length)", 0.7 um minimum for a 6 V n-gate) --
+  the capacitor is drawn at **L = 0.70 um**, the process minimum the old
+  0.56 um violated; the rule no longer fires.
 
-Both are real violations of the drawn capacitor, and **neither can be fixed
-inside this cell alone**: the 0.42 um COMP width is the `mos_array` floor that
-candidates 1 and 3 also sit on, so changing it moves the capacitor-geometry
-split-axis level shared by all three candidates. Tracked as its own issue (see
-"Follow-up") rather than changed here.
+The earlier framing ("neither can be fixed inside this cell alone") held until
+the levels were ratified: `spec/capacitor-geometry-decision.md` fixed the
+shared axis, and #296 moved every cell onto it in one pass.
 
 **Die-level rules.** `M1.4`/`M2.4`/`M3.4`/`MT30.7` are whole-die metal-density
-("coverage over the entire die shall be > 30%") rules. A standalone 11.5 um x 8.7 um bitcell
+("coverage over the entire die shall be > 30%") rules. A standalone 11.60 um x 8.80 um bitcell
 trips them by construction; they are not cell-level findings and
 say nothing about this cell. They become meaningful only at chip assembly
 (#211), with dummy fill.
@@ -842,10 +885,10 @@ which is expected for a cell drawn in Metal1 and Metal2.
 
 | Criterion | Verdict |
 |---|---|
-| Full artifact set, `generate.py --check` passes under the pinned klt | met (klt 0.9.2) |
+| Full artifact set, `generate.py --check` passes under the pinned klt | met (klt 0.9.2, 2026-11-17 regeneration) |
 | Source/drain assignment stated | met (d -> BL, s -> CN; stated above and in `generate.py`) |
 | LVS `match` | **met** on klt 0.9.2 |
-| DRC clean | **not met**: 2 real violations in our own capacitor (`DF.1c`, `PL.2_MV`) and 20 in the PDK PCell, confirmed against the PDK's own runset |
+| DRC clean | not met overall, and no longer for our own geometry: the capacitor block is **clean under the native runset** at the ratified levels (`DF.1c`/`PL.2_MV` gone, 2026-11-17); what remains is 20 findings inside the PDK's own PCell, dispositioned by #299's scoped exception, plus the die-level density rules and `DBU` |
 
 ### Upstream
 
@@ -868,16 +911,13 @@ protocol requires (follow-ups to the closed `klayout-tools` #4949, #4568,
 
 ### Follow-up
 
-The capacitor-geometry violations (`DF.1c` on all three candidates, `PL.2_MV`
-on this one, plus `DF.4d_MV` x5 and `DV.6` on candidate 3) are tracked as
-**#287**, with the candidate 1 and candidate 3 native runs that found them.
-`DF.1c` cannot be fixed per cell: the 0.42 um COMP width is the `mos_array`
-floor shared through `layout/bitcell_gen.py`, so raising it moves the
-capacitor-geometry split-axis level for every candidate at once -- a `spec/`
-decision, not a layout edit.
-
-Candidate 2 cannot reach "DRC clean" until #287 is settled, and the 20
-PCell-internal findings are dispositioned by the scoped exception recorded in
+The capacitor-geometry violations this section used to track (`DF.1c` on all
+three candidates, `PL.2_MV` on this one) are **resolved as of the 2026-11-17
+pass**: the levels were ratified in `spec/capacitor-geometry-decision.md`
+(#294) and #296 moved every cell onto them in one change, native-deck-proven
+by the committed cross-checks. What remains native on this cell is inside the
+PDK's own PCell; the 20 PCell-internal findings are dispositioned by the
+scoped exception recorded in
 `spec/pdk-pcell-drc-exception-decision.md` (operator ruling 2026-11-15, #299):
 reported as measured, never waived, and outside the exception for every shape
-this repo draws.
+this repo draws. Candidate 3's `DF.4d_MV`/`DV.6` remain #297's.
