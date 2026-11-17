@@ -5,6 +5,11 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-17
 
+- **PR #377**: layout: draw the Run 3 bare-cap C2 fallback (2F), measure its native runset, propose the decision record
+- **PR #375**: fix: give cell_candidate2 its own fitted ERC supply spec (supplies_c2.json)
+- **Issue #373** (closed): layout/erc: cell_candidate2 shares candidate 1's supplies.json, so its Region-I missing_tie 'clean' covers only ~45% of its drawn tap area
+- **Issue #372** (closed): Run 3 fallback: a variant that passes the native runset without candidate 2's nfet_10v0_asym findings (decide by 2026-12-01)
+- **Issue #207** (closed): Run 3 test chip: Candidate 2 and Candidate 3 bitcell layouts
 - **PR #371**: layout: draw the ratified capacitor geometry (1.0/2.0 um) in all seven cells; re-fit marker, CN and VB
 - **Issue #296** (closed): layout: draw the ratified legal capacitor geometry in all seven cells (clears DF.1c on all seven and PL.2_MV on candidate 2; re-fit the three base cells hardcoded MOSCAP marker and CN/VB straps)
 - **PR #367**: test: pin numfmt.close tolerance and numfmt.logical_lines continuation rules
