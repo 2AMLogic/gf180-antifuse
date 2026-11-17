@@ -32,8 +32,11 @@ produced by a dev build. No tool was installed or changed. Regenerate with
 need `klt` on PATH; to pin it without touching the host tool, run
 `uvx --from klayout-tools==0.8.0 python3 layout/cell_candidate1/generate.py --check`
 (`0.8.0` reproduces both committed GDS files; `0.7.0` drifts). Per-candidate
-geometry stays in each `generate.py`; only the flow and `--check` live in
-`layout/bitcell_gen.py`.
+geometry stays in each `generate.py`, except the candidate-1 split points
+(`cell_candidate1_{A2x_G2x,A2x_Gmin,Amin_G2x}`): their shared constants and
+strap derivation live in `layout/candidate1_points.py`, and each of those
+`generate.py` files names one `POINTS` entry. Only the flow and `--check`
+live in `layout/bitcell_gen.py`.
 
 ### Geometry point
 
