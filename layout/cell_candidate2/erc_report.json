@@ -4,7 +4,7 @@
     "path": "layout/cell_candidate2/cell_candidate2.gds",
     "scope": "repo"
   },
-  "spec": "layout/erc/supplies.json",
+  "spec": "layout/erc/supplies_c2.json",
   "pdk": null,
   "findings_only": false,
   "gate_role": "poly",
@@ -260,9 +260,9 @@
         "id": "erc.missing_tie:[\"vb_psub_region_i\"]",
         "tap_layer": "22/0",
         "drawn_tap_area_um2": 28.9152,
-        "uncovered_tap_area_um2": 16.017,
-        "uncovered_tap_fraction": 0.55393,
-        "extent_uncovered_fraction": 0.645972
+        "uncovered_tap_area_um2": 0.0,
+        "uncovered_tap_fraction": 0.0,
+        "extent_uncovered_fraction": 0.355337
       }
     ]
   },
@@ -279,7 +279,7 @@
       "role": "layout"
     },
     "spec": {
-      "content_hash": "sha256:a60f77e8765ca61e37540448e3c7a48de3df4ea647361be7e25cf171e9d4d416"
+      "content_hash": "sha256:8440cbd3bf51dadbf6eb1a1008cad97f920b42f32f45029850e9ba27b57de14f"
     },
     "devices": [],
     "net_exclusions": [],

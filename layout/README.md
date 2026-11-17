@@ -490,6 +490,18 @@ leaving a strip beside the taller block that is genuinely outside both tap
 rings. The rise is geometry, not an under-covering ring --
 `uncovered_tap_fraction` staying 0.0 is what rules that out.
 
+Candidate 2 carries the same requirement, and until #373 did not meet it: it
+ran `supplies.json` unchanged, and candidate 1's boxes cover only ~45 % of its
+far larger drawn Comp (`uncovered_tap_fraction: 0.55393` on
+`drawn_tap_area_um2: 28.9152`), so its `erc_status: clean` was a verdict over
+the shared boxes' region only. #373 gave it `supplies_c2.json`, a copy of
+`supplies.json` differing only in the tie's two `well_boxes` -- now the
+extents of candidate 2's own two `Pplus` tap-ring outlines,
+`[-2.83, -4.02, 2.83, 4.02]` (capacitor block) and `[4.27, -0.44, 8.43, 4.44]`
+(`nfet_10v0_asym` PCell block) -- restoring `uncovered_tap_fraction: 0.0`
+(`drawn_tap_area_um2: 28.9152`, `extent_uncovered_fraction: 0.355337`). See
+`cell_candidate2/`'s ERC section for what the verdict does and does not cover.
+
 ## cell_candidate3/ -- bitcell of candidate 3 (PMOS polarity variant), one cell only
 
 `layout/cell_candidate3/` holds one bitcell of candidate 3
@@ -881,11 +893,43 @@ a 5 nm grid either way, so this is a stream-format matter, not a geometry one.
 
 ### ERC
 
-`klt erc ... layout/erc/supplies.json` (the existing p-tap spec): `erc_status:
-clean`, 0 findings, `erc.missing_tie` checked for the p-substrate tie. Antenna
-checks `not_checked` (no antenna PDK data). Three warnings record that the
-spec's `metal3`/`metal4`/`metal5` label layers carry no text in this cell,
-which is expected for a cell drawn in Metal1 and Metal2.
+`klt erc layout/cell_candidate2/cell_candidate2.gds layout/erc/supplies_c2.json
+--top cell_candidate2 --format json` (from the repo root; klt 0.9.2, KLayout
+0.30.13): `erc_status: clean`, 0 findings, `erc.missing_tie` checked for the
+p-substrate tie. Antenna checks `not_checked` (no antenna PDK data; the run is
+not `--findings-only`, so the antenna half reports per-level gate areas with
+verdict `unchecked` -- read `erc_status`, not `status`, per the exit-code
+contract). Four warnings record that the spec's `metal2`/`metal3`/`metal4`/
+`metal5` label layers carry no text in this cell -- every net is labeled on
+Metal1 (34/10, 4 texts) -- expected for a cell routed in Metal1 and Metal2
+whose Metal2 shapes are all straps driven from Metal1.
+
+**The tie is asserted against this cell's own boxes (#373).** Until #373 this
+cell ran candidate 1's `supplies.json`, whose two `well_boxes` (fitted to
+candidate 1's rings) miss both of this cell's tap rings almost entirely:
+measured per polygon (Comp 22/0, merged), the capacitor-block ring
+`(-2.67, -3.86)-(2.67, 3.86)` and the PCell's closed ring
+`(4.43, -0.28)-(8.27, 4.28)` fall outside the shared boxes together with the
+capacitor's own COMP islands, leaving `uncovered_tap_area_um2: 16.017` of
+`drawn_tap_area_um2: 28.9152` (`uncovered_tap_fraction: 0.55393`) unchecked --
+the `clean` above was a verdict over ~45 % of the cell's drawn tap area, the
+carried-forward-verdict problem #296 was filed to end. `supplies_c2.json`
+is a copy of `supplies.json` differing only in the tie's `well_boxes`, now the
+extents of this cell's two `Pplus` 31/0 tap-ring outlines:
+`[-2.83, -4.02, 2.83, 4.02]` (capacitor-block ring) and
+`[4.27, -0.44, 8.43, 4.44]` (`nfet_10v0_asym` PCell ring).
+
+What the `missing_tie` verdict now covers: all 28.9152 um2 of drawn Comp
+22/0 -- `uncovered_tap_area_um2: 0.0`, `uncovered_tap_fraction: 0.0`. The
+metric's "tap area" is the merged `tap_layer` (Comp) area *before* the
+`tap_requires` Pplus narrowing, so the device diffusion enclosed by each ring
+counts as covered; the tie check itself grades the Comp-and-Pplus straps
+wired to Metal1 on `VB`. `extent_uncovered_fraction: 0.355337` is the cell
+extent (11.60 x 8.80 um) outside both boxes -- the margin between the Pplus
+outlines and the cell edge, where no tap is drawn. The regenerated report
+verifies: `klt erc --check layout/cell_candidate2/erc_report.json` (from the
+repo root) returns `status: match`; `supplies.json` itself is byte-unchanged,
+so the four candidate-1 reports still verify against it.
 
 ### Status against the acceptance criteria
 
