@@ -18,17 +18,15 @@ Source/drain assignment (deliberate; design/cells/cell_candidate2.sch):
 Geometry: the PCell clamps W up to 4 um (a request for 0.42 um draws the same
 cell) and always draws two gate fingers sharing the centre drain, so the access
 device is 2 x W = 4 um (8 um total), L = 0.6 um (schematic lacc). The capacitor
-is the generator-minimum W = 0.42 um at L = 0.56 um, source and drain shorted
-on CN, with the MOS-capacitor marker added by hand (no `klt gen`
-MOS-capacitor marker for a gate-contacted unit).
-
-Both capacitor dimensions are BELOW the foundry minimum and the cell is not
-DRC clean because of it (measured against the PDK's own runset on klt 0.9.2,
-see layout/README.md): DF.1c wants COMP under the MOS-capacitor marker >= 1 um
-wide (drawn 0.42 um, the `mos_array` generator floor), and PL.2_MV wants a 6 V
-n-gate channel length >= 0.7 um (drawn 0.56 um). The 0.42 um floor is shared
-with candidates 1 and 3, so the capacitor geometry is not changed here; it is
-tracked as its own issue.
+is drawn at the ratified Minimum level, W = 1.0 um at L = 0.70 um
+(`spec/capacitor-geometry-decision.md`: the PDK runset's 1 um `DF.1c` "Min.
+COMP Width for MOSCAP" floor, and the 0.7 um `PL.2_MV` 6 V n-gate minimum the
+old 0.56 um length violated), source and drain shorted on CN, with the
+MOS-capacitor marker added by hand (no `klt gen` MOS-capacitor marker for a
+gate-contacted unit). Both dimensions now clear their native-deck rules; the
+remaining native findings on this cell live inside the PDK's own
+`nfet_10v0_asym` PCell (`CO.4`/`DF.6_MV`/`PL.4_MV`) and are the operator
+ruling's business (#299), not this cell's drawn geometry.
 
 Ports (Metal1 labels): BL (access drain), WL (access gates), PL (capacitor
 gate), VB (both tap rings strapped). The PCell tap ring is closed, so it has no
@@ -54,12 +52,19 @@ GDS = "cell_candidate2.gds"
 CELL = "cell_candidate2"
 W_ACC = 4.0        # um, PCell minimum W (smaller requests are clamped to this)
 L_ACC = 0.6        # um, schematic lacc
-L_CAP = 0.56       # um; BELOW the 0.7 um 6 V minimum (PL.2_MV) -- see docstring
+W_CAP = 1.0        # um, capacitor width -- the ratified Minimum level (the
+                   # DF.1c MOSCAP COMP-width floor;
+                   # spec/capacitor-geometry-decision.md). Previously the
+                   # generator floor (bg.W_MIN); passed explicitly now.
+L_CAP = 0.70       # um, 6 V n-gate minimum drawn length (PL.2_MV); the drawn
+                   # 0.56 um violated it
 LABEL_M1 = [34, 10]   # gf180mcu extraction deck reads Metal1 pin labels from 34/10
 VIA1 = [35, 0]
 METAL2 = [36, 0]
-# Access PCell at the origin; capacitor block at (CX, CY). CY aligns the
-# capacitor S/D pad centres (CY+0.21) with the vias on the PCell source stripes.
+# Access PCell at the origin; capacitor block at (CX, CY). CY puts the lower
+# part of the capacitor S/D pads -- and the Via1s on them -- under the Metal2
+# CN bar; the pads are as tall as the device width (y CY..CY+W_CAP) and grow
+# upward around the vias, which stay put.
 CX, CY = 5.5, 0.79
 # Source stripes (Metal1) x = +/-[1.53, 1.91]; via centres y = 1.0.
 STRAPS = {
@@ -69,18 +74,27 @@ STRAPS = {
         {"layer": VIA1, "rect_um": [-1.85, 0.87, -1.59, 1.13]},
         {"layer": VIA1, "rect_um": [1.59, 0.87, 1.85, 1.13]},
         {"layer": VIA1, "rect_um": [CX + 0.08, CY + 0.08, CX + 0.34, CY + 0.34]},
-        {"layer": VIA1, "rect_um": [CX + 1.22, CY + 0.08, CX + 1.48, CY + 0.34]},
+        # Right via sits fully on the capacitor D pad: the MV block's pads
+        # shift +x with L (D pad x CX+1.14..CX+1.56 at L = 0.56, CX+1.28..1.70
+        # at L = 0.70 -- measured), and the old x left the via's left sliver
+        # off the pad (native V1.3a, "metal1 overlap of via1", observed on the
+        # first generated cell at the new L).
+        {"layer": VIA1, "rect_um": [CX + 1.28, CY + 0.08, CX + 1.54, CY + 0.34]},
         # WL: join the two access gate pads (Metal1)
         {"layer": bg.METAL1, "rect_um": [-0.4, 2.72, 0.4, 3.1]},
-        # VB: tie the PCell ring to the capacitor ring (Metal1, clear of the gap)
+        # VB: tie the PCell ring to the capacitor ring (Metal1, clear of the gap).
+        # Still lands on the capacitor ring's metal1 W-side band after the
+        # growth: the ring's exit gap (0.01..1.01 um at W_CAP = 1.0, plus CY)
+        # tops out at CY + 1.01 = 1.80 um and the band sits at CY + 2.0..2.42.
         {"layer": bg.METAL1, "rect_um": [2.4, CY + 2.0, CX - 0.9, CY + 2.42]},
-        # MOS-capacitor marker over the capacitor COMP island
-        {"layer": bg.MOS_CAP_MK, "rect_um": [CX - 0.1, CY - 0.1, CX + 1.66, CY + 0.52]},
+        # MOS-capacitor marker over the capacitor COMP island (as tall as
+        # W_CAP, so the top edge tracks it; 0.1 um margin)
+        {"layer": bg.MOS_CAP_MK, "rect_um": [CX - 0.1, CY - 0.1, CX + 1.66, CY + W_CAP + 0.1]},
     ],
     "labels": [
         {"layer": LABEL_M1, "text": "BL", "at_um": [0.0, 0.0]},
         {"layer": LABEL_M1, "text": "WL", "at_um": [0.0, 2.9]},
-        {"layer": LABEL_M1, "text": "PL", "at_um": [CX + 0.78, CY + 1.38]},
+        {"layer": LABEL_M1, "text": "PL", "at_um": [CX + 0.78, CY + W_CAP + 0.96]},
         {"layer": LABEL_M1, "text": "VB", "at_um": [4.0, CY + 2.2]},
     ],
 }
@@ -98,7 +112,7 @@ def build(workdir):
                   json.dumps({"w": W_ACC, "l": L_ACC}), "--cell-name", "acc",
                   "-o", os.path.join(workdir, "acc.gds"), "--format", "json"])
     w("acc.json", acc)
-    cap_params = {"w_um": bg.W_MIN, "l_um": L_CAP, "rows": 1, "cols": 1, "dummy": 0,
+    cap_params = {"w_um": W_CAP, "l_um": L_CAP, "rows": 1, "cols": 1, "dummy": 0,
                   "flavor": "nfet", "voltage_flavor": "medium_voltage",
                   "gate_contact": True, "add_guard_ring": True,
                   "ring_gap_side": "W", **bg.GAP}

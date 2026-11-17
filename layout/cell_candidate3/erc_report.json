@@ -14,14 +14,14 @@
     {
       "gate_id": "gate0",
       "net": "PL",
-      "gate_area_um2": 0.1176,
+      "gate_area_um2": 0.28,
       "antenna_verdict": "unchecked",
       "levels": [
         {
           "layer": "poly",
-          "step_area_um2": 0.63,
-          "cumulative_area_um2": 0.63,
-          "antenna_ratio": 5.357143,
+          "step_area_um2": 0.7924,
+          "cumulative_area_um2": 0.7924,
+          "antenna_ratio": 2.83,
           "antenna_ratio_max": null,
           "antenna_ratio_source": null,
           "verdict": "unchecked",
@@ -30,8 +30,8 @@
         {
           "layer": "metal1",
           "step_area_um2": 0.1764,
-          "cumulative_area_um2": 0.8064,
-          "antenna_ratio": 6.857143,
+          "cumulative_area_um2": 0.9688,
+          "antenna_ratio": 3.46,
           "antenna_ratio_max": null,
           "antenna_ratio_source": null,
           "verdict": "unchecked",
@@ -40,8 +40,8 @@
         {
           "layer": "metal2",
           "step_area_um2": 0.0,
-          "cumulative_area_um2": 0.8064,
-          "antenna_ratio": 6.857143,
+          "cumulative_area_um2": 0.9688,
+          "antenna_ratio": 3.46,
           "antenna_ratio_max": null,
           "antenna_ratio_source": null,
           "verdict": "unchecked",
@@ -50,8 +50,8 @@
         {
           "layer": "metal3",
           "step_area_um2": 0.0,
-          "cumulative_area_um2": 0.8064,
-          "antenna_ratio": 6.857143,
+          "cumulative_area_um2": 0.9688,
+          "antenna_ratio": 3.46,
           "antenna_ratio_max": null,
           "antenna_ratio_source": null,
           "verdict": "unchecked",
@@ -60,8 +60,8 @@
         {
           "layer": "metal4",
           "step_area_um2": 0.0,
-          "cumulative_area_um2": 0.8064,
-          "antenna_ratio": 6.857143,
+          "cumulative_area_um2": 0.9688,
+          "antenna_ratio": 3.46,
           "antenna_ratio_max": null,
           "antenna_ratio_source": null,
           "verdict": "unchecked",
@@ -70,8 +70,8 @@
         {
           "layer": "metal5",
           "step_area_um2": 0.0,
-          "cumulative_area_um2": 0.8064,
-          "antenna_ratio": 6.857143,
+          "cumulative_area_um2": 0.9688,
+          "antenna_ratio": 3.46,
           "antenna_ratio_max": null,
           "antenna_ratio_source": null,
           "verdict": "unchecked",
@@ -252,7 +252,7 @@
     "pdk": null,
     "deck": null,
     "input": {
-      "content_hash": "sha256:b29e46ea766b9a00008775d3f9078f0e7f15ab5c41489182fc3c227393d0a0d3",
+      "content_hash": "sha256:8fae5c1a5a43300cc996514ec671262af4306560bc3e997c19739e5ebe18d2a0",
       "role": "layout"
     },
     "spec": {

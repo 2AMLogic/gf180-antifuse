@@ -14,7 +14,7 @@
     {
       "gate_id": "gate0",
       "net": "PL",
-      "gate_area_um2": 0.2352,
+      "gate_area_um2": 0.56,
       "antenna_verdict": "unchecked",
       "levels": [
         {
@@ -256,10 +256,10 @@
       {
         "id": "erc.missing_tie:[\"vb_psub_region_i\"]",
         "tap_layer": "22/0",
-        "drawn_tap_area_um2": 12.6756,
+        "drawn_tap_area_um2": 15.1348,
         "uncovered_tap_area_um2": 0.0,
         "uncovered_tap_fraction": 0.0,
-        "extent_uncovered_fraction": 0.099303
+        "extent_uncovered_fraction": 0.188735
       }
     ]
   },
@@ -270,11 +270,11 @@
     "pdk": null,
     "deck": null,
     "input": {
-      "content_hash": "sha256:a812841417aac0c39e2ce678050ade670147dfffad1221352f13755c832ac3f0",
+      "content_hash": "sha256:cb7db0539a0071871af8387b9772f5ea946fe7e70c2e794c78d49848640c1a55",
       "role": "layout"
     },
     "spec": {
-      "content_hash": "sha256:95196d51dd96d8a0bb9bb2dd643a887a47302f3fc00bc9dc48bb3d96e4c07d7c"
+      "content_hash": "sha256:e9a62ddcd1746871f3337338f662973956a56c2a2c3bb4f385b9944b395e8bf0"
     },
     "devices": [],
     "net_exclusions": [],

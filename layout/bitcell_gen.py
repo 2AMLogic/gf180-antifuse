@@ -20,7 +20,14 @@ import sys
 import tempfile
 
 PDK = "gf180mcuA"
-W_MIN = 0.42       # um, generator floor (== Minimum level for both devices)
+W_MIN = 0.42       # um, generator floor for mos_array w_um (a contact-fit
+                   # floor above the PDK minimum widths). NOT a spec level:
+                   # the capacitor-geometry Minimum is W = 1.0 um
+                   # (spec/capacitor-geometry-decision.md) and every caller
+                   # passes w_cap_um explicitly. Kept only as w_acc_um's
+                   # default -- the access axis (spec/split-axis-plan.md
+                   # section 3) is not under a MOSCAP rule and its Minimum is
+                   # unchanged.
 L_CAP = 0.28       # um, thin-oxide minimum drawn length
 GAP = {"ring_gap_um": 1.0, "ring_gap_offset_um": -0.7}
 METAL1 = [34, 0]
@@ -36,16 +43,20 @@ def run(args, **kw):
 
 def build(workdir, *, gds_name, cell, flavor, l_acc, cap_gap_side, acc_gap_side,
           straps, origins_um, pins,
-          w_cap_um=W_MIN, l_cap_um=L_CAP, w_acc_um=W_MIN):
+          w_cap_um, l_cap_um=L_CAP, w_acc_um=W_MIN):
     """Run the klt flow in `workdir`; return the path of the composed GDS.
 
     `origins_um` maps block id (cap, acc, straps) -> {"x", "y"}.
 
     `w_cap_um` / `l_cap_um` / `w_acc_um` are the per-cell device dimensions of
-    the split-axis grid (`spec/split-axis-plan.md` sections 2-3); they default
-    to the Minimum x Minimum point so a caller that omits them generates the
-    same bytes as before these keywords existed. Access length stays `l_acc`,
-    which was already per-cell.
+    the split-axis grid (`spec/split-axis-plan.md` sections 2-3). `w_cap_um`
+    is required and has no default: the capacitor level is ratified
+    (`spec/capacitor-geometry-decision.md`, Minimum W = 1.0 um), not the
+    generator floor this module once defaulted it to. `l_cap_um` defaults to
+    the thin-oxide minimum drawn length and `w_acc_um` to the generator floor
+    (the access axis is unchanged), so a caller that omits those two generates
+    the same bytes as before these keywords existed. Access length stays
+    `l_acc`, which was already per-cell.
     """
     def gen(name, w_um, l_um, flavor_extra, gap_side):
         params = {"w_um": w_um, "l_um": l_um, "rows": 1, "cols": 1, "dummy": 0,
