@@ -5,6 +5,10 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-17
 
+- **PR #367**: test: pin numfmt.close tolerance and numfmt.logical_lines continuation rules
+- **PR #366**: docs: note candidate-1 split-point exception in layout README
+- **Issue #344** (closed): layout/README.md still says per-candidate geometry stays in each generate.py
+- **Issue #340** (closed): sim/harness/tests/test_numfmt.py: no direct coverage for numfmt.close and numfmt.logical_lines
 - **PR #363**: fix(sim): state the stored contract on post-manifest cleanup failure; refuse empty retab records
 - **PR #361**: fix: remove stored run-dir copies once the evidence manifest lands
 - **Issue #362** (closed): Evidence store: two diagnostics gaps left after the run-dir-consuming store (#356)
