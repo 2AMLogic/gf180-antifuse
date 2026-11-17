@@ -4,7 +4,7 @@
   "file": "layout/cell_candidate2/cell_candidate2.gds",
   "status": "violations",
   "identity": {
-    "layout_content_hash": "sha256:c8bc23f9d6057ccb3df2d7ee2ab3ff603a302c3ed7817646c8ab39aaaea9118d",
+    "layout_content_hash": "sha256:5cb4a64fa103f2b698aeaffedddfc28405931e6afbfec8f21cf8b90678462e7a",
     "pdk": {
       "name": "gf180mcuA",
       "source": "search root: ~/.ciel",
@@ -2226,7 +2226,7 @@
           "released": true
         },
         "input": {
-          "content_hash": "sha256:c8bc23f9d6057ccb3df2d7ee2ab3ff603a302c3ed7817646c8ab39aaaea9118d",
+          "content_hash": "sha256:5cb4a64fa103f2b698aeaffedddfc28405931e6afbfec8f21cf8b90678462e7a",
           "role": "layout"
         },
         "klayout_version_mismatch": true
@@ -2242,17 +2242,15 @@
       "engine": "klayout",
       "dbu_um": 0.0005,
       "status": "violations",
-      "violation_count": 27,
+      "violation_count": 25,
       "rule_counts": {
         "CO.4": 16,
         "DBU": 1,
-        "DF.1c": 1,
         "DF.6_MV": 2,
         "M1.4": 1,
         "M2.4": 1,
         "M3.4": 1,
         "MT30.7": 1,
-        "PL.2_MV": 1,
         "PL.4_MV": 2
       },
       "coverage": {
@@ -2924,13 +2922,11 @@
         "rules_checked": [
           "CO.4",
           "DBU",
-          "DF.1c",
           "DF.6_MV",
           "M1.4",
           "M2.4",
           "M3.4",
           "MT30.7",
-          "PL.2_MV",
           "PL.4_MV"
         ],
         "layers_in_stream_without_rules": [],
@@ -2945,13 +2941,11 @@
         "checked": [
           "CO.4",
           "DBU",
-          "DF.1c",
           "DF.6_MV",
           "M1.4",
           "M2.4",
           "M3.4",
           "MT30.7",
-          "PL.2_MV",
           "PL.4_MV"
         ],
         "skipped": [],
@@ -3505,8 +3499,8 @@
           "bbox": {
             "left": -6340,
             "bottom": -8720,
-            "right": 16580,
-            "top": 8720
+            "right": 16860,
+            "top": 8880
           },
           "polygon": [
             [
@@ -3515,33 +3509,17 @@
             ],
             [
               -6340,
-              8720
+              8880
             ],
             [
-              16580,
-              8720
+              16860,
+              8880
             ],
             [
-              16580,
+              16860,
               -8720
             ]
           ]
-        },
-        {
-          "rule": "DF.1c",
-          "description": "DF.1c : Min. COMP Width for MOSCAP. : 1\u00b5m",
-          "check": "external",
-          "layer": "DF.1c",
-          "cell": "cap__core",
-          "source_cell": null,
-          "source_path": null,
-          "bbox": {
-            "left": 0,
-            "bottom": 0,
-            "right": 3120,
-            "top": 840
-          },
-          "polygon": null
         },
         {
           "rule": "DF.6_MV",
@@ -3586,8 +3564,8 @@
           "bbox": {
             "left": -6340,
             "bottom": -8720,
-            "right": 16580,
-            "top": 8720
+            "right": 16860,
+            "top": 8880
           },
           "polygon": [
             [
@@ -3596,14 +3574,14 @@
             ],
             [
               -6340,
-              8720
+              8880
             ],
             [
-              16580,
-              8720
+              16860,
+              8880
             ],
             [
-              16580,
+              16860,
               -8720
             ]
           ]
@@ -3619,8 +3597,8 @@
           "bbox": {
             "left": -6340,
             "bottom": -8720,
-            "right": 16580,
-            "top": 8720
+            "right": 16860,
+            "top": 8880
           },
           "polygon": [
             [
@@ -3629,14 +3607,14 @@
             ],
             [
               -6340,
-              8720
+              8880
             ],
             [
-              16580,
-              8720
+              16860,
+              8880
             ],
             [
-              16580,
+              16860,
               -8720
             ]
           ]
@@ -3652,8 +3630,8 @@
           "bbox": {
             "left": -6340,
             "bottom": -8720,
-            "right": 16580,
-            "top": 8720
+            "right": 16860,
+            "top": 8880
           },
           "polygon": [
             [
@@ -3662,14 +3640,14 @@
             ],
             [
               -6340,
-              8720
+              8880
             ],
             [
-              16580,
-              8720
+              16860,
+              8880
             ],
             [
-              16580,
+              16860,
               -8720
             ]
           ]
@@ -3685,8 +3663,8 @@
           "bbox": {
             "left": -6340,
             "bottom": -8720,
-            "right": 16580,
-            "top": 8720
+            "right": 16860,
+            "top": 8880
           },
           "polygon": [
             [
@@ -3695,48 +3673,15 @@
             ],
             [
               -6340,
-              8720
+              8880
             ],
             [
-              16580,
-              8720
+              16860,
+              8880
             ],
             [
-              16580,
+              16860,
               -8720
-            ]
-          ]
-        },
-        {
-          "rule": "PL.2_MV",
-          "description": "PL.2_MV : Gate Width (Channel Length).",
-          "check": "external",
-          "layer": "PL.2_MV",
-          "cell": "cap__core",
-          "source_cell": null,
-          "source_path": null,
-          "bbox": {
-            "left": 1000,
-            "bottom": 0,
-            "right": 2120,
-            "top": 840
-          },
-          "polygon": [
-            [
-              1000,
-              0
-            ],
-            [
-              1000,
-              840
-            ],
-            [
-              2120,
-              840
-            ],
-            [
-              2120,
-              0
             ]
           ]
         },
@@ -3801,7 +3746,7 @@
           }
         },
         "input": {
-          "content_hash": "sha256:c8bc23f9d6057ccb3df2d7ee2ab3ff603a302c3ed7817646c8ab39aaaea9118d",
+          "content_hash": "sha256:5cb4a64fa103f2b698aeaffedddfc28405931e6afbfec8f21cf8b90678462e7a",
           "role": "layout"
         },
         "klayout_version_mismatch": true

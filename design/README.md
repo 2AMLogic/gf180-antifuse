@@ -214,8 +214,9 @@ decision record and the generator + netlists regenerate.
    `cap_pmos_03v3`) and 1.0 x 0.70 um (`cap_nmos_06v0`); "2x" doubles
    `wcap` only. Decided in spec but not yet conformed: the committed
    sources here still carry the placeholder defaults until the authorised
-   regeneration lands (scoped by closed #292, tracked by this open item),
-   and the drawn cells await #296's redraw. Measured state: every
+   regeneration lands (scoped by closed #292, tracked by this open item);
+   the drawn cells no longer wait — #296 redrew all seven at these levels
+   (2026-11-17). Measured state: every
    drawn-vs-simulated divergence this placeholder numbering currently
    implies is recorded in
    [`geometry-basis.json`](geometry-basis.json) (validated by check 7,
