@@ -3,6 +3,11 @@
 Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 
+### 2026-11-17
+
+- **PR #359**: fix(check): grandfather ruling-era manifests out of tracked-bytes rule
+- **Issue #346** (closed): check:ci fails on main: check_artifact_manifests.py reports committed-and-stored bytes for sim/ artifacts
+
 ### 2026-11-16
 
 - **PR #352**: fix: reject --analyze-report with --mode full-band; run its tests in a tmp checkout
