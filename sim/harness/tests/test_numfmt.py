@@ -71,5 +71,39 @@ class CellDefaults(unittest.TestCase):
         self.assertIsNone(N.parse_scalar(log, "o.."))  # name is escaped, not a regex
 
 
+class Close(unittest.TestCase):
+    def test_zero_is_equal(self):
+        self.assertTrue(N.close(0.0, 0.0))
+
+    def test_relative_tolerance(self):
+        for a, b, want in ((1.0, 1.0 + 5e-10, True),    # just inside the 1e-9 relative tolerance
+                           (1.0, 1.0 + 5e-9, False),    # just outside it
+                           (1e12, 1e12 + 500.0, True),  # absolute gap 500 >> 1e-9, still close: relative
+                           (1e12, 1e12 + 5e3, False)):
+            self.assertEqual(N.close(a, b), want, msg=(a, b))
+            self.assertEqual(N.close(b, a), want, msg=(b, a))
+
+
+class LogicalLines(unittest.TestCase):
+    def test_indented_continuation_joins(self):
+        # Joining tests the stripped line, so an indented "+..." continues its
+        # predecessor; matching prefixes on the raw line (the variant #335
+        # deleted) would emit a second logical line here and fail this test.
+        self.assertEqual(N.logical_lines("m1 a b 0 0 nch w=1u\n  + l=0.35u\n"),
+                         ["m1 a b 0 0 nch w=1u l=0.35u"])
+
+    def test_comments_and_blank_lines_dropped(self):
+        self.assertEqual(N.logical_lines("  * indented comment\n\n   \nx 1 2\n"), ["x 1 2"])
+
+    def test_directive_kept_stripped(self):
+        self.assertEqual(N.logical_lines("  .param x=1\n"), [".param x=1"])
+
+    def test_leading_continuation_kept_verbatim(self):
+        self.assertEqual(N.logical_lines("  + orphan\n"), ["+ orphan"])
+
+    def test_only_blanks_and_comments(self):
+        self.assertEqual(N.logical_lines("\n * c\n   \n"), [])
+
+
 if __name__ == "__main__":
     unittest.main()
