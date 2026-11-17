@@ -57,6 +57,14 @@ DECISION_ROW_RE = re.compile(
 REGION_OF_CANDIDATE = {"1": "I", "2": "II", "3": "III"}
 CAP_LEVEL_OF_NAME = {"min": "Minimum", "2x": "2x-area"}
 CELL_RE = re.compile(r"^cell_candidate(\d)(_.*)?$")
+# Drawn cells with no chip counterpart and no XM1 access line, by design:
+# the Run 3 C2-fallback variant (#372, spec/run3-c2-fallback-proposed.md)
+# is bare capacitors -- it exists on the chip only if the operator adopts
+# the fallback for submission (#203), and its run3_top generator variant is
+# recorded work-left-to-GDS, not a drift of this check's invariant. Its
+# capacitor literals bind to spec/capacitor-geometry-decision.md through
+# the cell's own generator `--check` hash and LVS, not through run3_top.
+FALLBACK_CELLS = {"cell_candidate2_fallback"}
 
 
 def _num(token: str) -> float:
@@ -266,6 +274,8 @@ def check_geometry(netlist_text: str, decision_text: str,
 
     # --- access half: drawn XM1 literals of the committed cells ---
     for name in sorted(drawn_cells):
+        if name in FALLBACK_CELLS:
+            continue  # bare-capacitor fallback (#372): no XM1, no chip cell yet
         drawn = parse_netlist(drawn_cells[name],
                               require_top=False)["cells"].get(name)
         if drawn is None:

@@ -166,6 +166,14 @@ NOTES = [
 
 _CELL_RE = re.compile(r"^cell_candidate(\d+)(?:_A(2x|min))?(?:_G(2x|min))?$")
 
+# Drawn cells that are not split-axis grid points and are skipped here on
+# purpose: the Run 3 C2-fallback variant (#372, spec/run3-c2-fallback-
+# proposed.md) has no access device and no simulated basis -- there is no
+# design/netlists fallback subckt to diverge from. Its capacitor levels are
+# the ratified record's (spec/capacitor-geometry-decision.md Region II), and
+# its binding evidence is the cell's own generator `--check` hash and LVS.
+FALLBACK_CELLS = {"cell_candidate2_fallback"}
+
 
 def parse_cell_name(name: str) -> tuple[int, str, str] | None:
     """cell_candidateN[_A<lvl>][_G<lvl>] -> (candidate, access_lvl, cap_lvl).
@@ -289,6 +297,8 @@ def measure(root: Path):
         if not cdir.is_dir():
             continue
         name = cdir.name
+        if name in FALLBACK_CELLS:
+            continue  # not a grid point: bare-capacitor fallback, #372
         parsed = parse_cell_name(name)
         if parsed is None:
             findings.append(f"{name}: unparseable bitcell cell name (expected cell_candidateN[_A<min|2x>][_G<min|2x>])")

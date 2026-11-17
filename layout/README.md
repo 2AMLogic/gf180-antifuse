@@ -971,3 +971,50 @@ scoped exception recorded in
 `spec/pdk-pcell-drc-exception-decision.md` (operator ruling 2026-11-15, #299):
 reported as measured, never waived, and outside the exception for every shape
 this repo draws. Candidate 3's `DF.4d_MV`/`DV.6` remain #297's.
+
+## cell_candidate2_fallback/ -- the Run 3 C2-fallback variant, bare capacitor, native census clean at cell level
+
+`layout/cell_candidate2_fallback/` holds the fallback variant ruled on
+2026-11-17 (#372, `spec/run3-c2-fallback-proposed.md`): Candidate 2 with its
+`nfet_10v0_asym` access device removed, drawn as two bare `cap_nmos_06v0`
+capacitors -- one per ratified capacitor-geometry level
+(`spec/capacitor-geometry-decision.md` Region II: Gmin W 1.0 um x L 0.70 um,
+G2x W 2.0 um x L 0.70 um), gate private per block (`PL_GMIN`/`PL_G2X`), S/D
+strapped on the shared `BL`, tap rings tied on `VB`. This is the unit the
+chip replicates five times per level (M5/M6); there is no PCell and no
+access device anywhere in the cell. The generator passes only literal
+parameters to `klt gen mos_array`; the hand-drawn shapes are the BL dogleg
+strap (the two ring-gap heights differ, and the vertical join needs metal1
+minimum width 0.23 um, M1.1 -- the first native run flagged the original
+0.14 um join), the two-part VB strap (one straight band would short
+`PL_G2X` -- the first LVS run found exactly that), and the two MOS-capacitor
+markers. Files: `generate.py` (with `--check`), `cell_candidate2_fallback.gds`,
+`drc_crosscheck_report.json`, `lvs_request.json`, `lvs_reference.spice`,
+`lvs_report.json`. Full evidence, the cost comparison and the work left to
+GDS: `spec/run3-c2-fallback-proposed.md`.
+
+Toolchain: released `klt 0.9.2` (`uvx --from klayout-tools==0.9.2`), KLayout
+0.30.13 (bundled) for the curated deck and LVS, standalone 0.30.12 for the
+native deck, PDK `gf180mcuA`. Regenerate/verify with
+`uvx --from klayout-tools==0.9.2 klt` reachable as `klt` on PATH, then
+`python3 -I layout/cell_candidate2_fallback/generate.py --check`
+(GDS `sha256:92b431518b22a3c8067b31442b2c91792df72b9358bb5362b111121a994f7a16`).
+
+**Result: curated deck `clean`; native runset `violations`, 5 findings, all
+die-level** (`DBU` x1 -- the writer default, upstream
+2AMLogic/klayout-tools#5721; `M2.4`/`M3.4`/`MT30.7`/`PL.8` -- whole-die
+density rules, expected on any standalone cell and judged at #211). By cell:
+**zero findings** in `cap_gmin`, `cap_g2x` or the straps. The PCell-internal
+`CO.4`/`DF.6_MV`/`PL.4_MV` findings that make the primary Candidate 2 cell
+unsubmittable are **absent**, and so are the old-geometry capacitor findings
+`DF.1c`/`PL.2_MV` -- W >= 1.0 um and L = 0.70 um clear them, as the
+capacitor-geometry record derived. LVS: `match`, 0 errors, 4 nets paired
+(capacitor `A`/`P` are secondary parameters and are not compared -- the
+drawn dimensions rest on the generator parameters and the `--check` hash,
+as in every sibling cell). klt's cross-check `comparison.state` is
+`not_comparable` (upstream 2AMLogic/klayout-tools#5720); the census is read
+off the two per-engine reports by rule, not from klt's comparison block.
+The `--deck-var decks=all,-mslot` var is the standard one (the metal-slotting
+deck aborts on this 3LM variant regardless of content, upstream
+2AMLogic/klayout-tools#5091); no rule was turned off, nothing waived, no
+shape hand-edited.
