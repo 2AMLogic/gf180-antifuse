@@ -145,17 +145,24 @@ names keeping the `<corner-id>` and any region/sub-configuration path) are
 committed. The writer fails closed: no `$KLT_ARTIFACT_BROKER`, a `klt` without
 `artifact put`, or an unreachable broker exits nonzero and writes nothing.
 `scripts/check_artifact_manifests.py` validates manifests (`artifact:` URIs
-only, no storage locators, no stored object also committed). Pre-adoption
+only, no storage locators, no stored object also committed). Once the manifest
+is in place the staged-from run-directory copies are deleted and emptied
+directories pruned, so a successful store leaves nothing committable under the
+run directory — the store holds the only copy. Re-render paths (`--render`,
+`--check`, `--retabulate`) read committed bytes where they still exist and
+otherwise fetch sha256-verified copies back into git-ignored scratch
+(`evidence_store.fetch_run`, `klt artifact get MANIFEST#NAME`). Pre-adoption
 records keep their committed bytes; nothing already under `sim/` is modified,
 moved or deleted.
 
 ## Append-only rule
 
-`records/*.md`, `netlist-snapshots/*.spice` and `corners/**/*.log` are never
-edited or deleted after creation. A re-run or a correction always creates a
-new record with a new `<record-id>` and references the prior one via
-**Supersedes** rather than overwriting it in place. This applies even to
-typo fixes.
+`records/*.md`, `netlist-snapshots/*.spice` and the committed
+`corners/**/*.log` are never edited or deleted after creation. A re-run or a
+correction always creates a new record with a new `<record-id>` and references
+the prior one via **Supersedes** rather than overwriting it in place. This
+applies even to typo fixes. (Unstaged run-dir copies of a stored run are not
+part of that trail — the store holds the only copy; see "Evidence store".)
 
 There is no automated CI enforcement of this yet (unlike `gf180-bandgap`'s
 `sim/check_records.py`) — a follow-on is welcome, but standing this

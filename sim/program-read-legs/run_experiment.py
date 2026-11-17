@@ -668,7 +668,8 @@ def render_mc_record(record_id, pdk, dirty, n, sections, unevidenced, failures, 
     L += ["- **Links**:",
           "  - Benches: `sim/program-read-legs/benches.py` (`margin_bench`, `offset_bench`); runner `run_experiment.py --mc`",
           f"  - Frozen netlists / requests: `sim/program-read-legs/netlist-snapshots/{record_id}/`",
-          f"  - Full klt reports (per-sample measurements, seeds, diagnostics): `sim/program-read-legs/corners/{record_id}/` (per-sample ngspice logs are not kept)",
+          f"  - Full klt reports (per-sample measurements, seeds, diagnostics): artifact store manifest "
+          f"`manifests/artifacts/program-read-legs-{record_id}.manifest.json` (per-sample ngspice logs are not kept)",
           f"- **Timestamp / author**: {now}, agent-builder",
           "- **Supersedes**: (none -- adds mismatch statistics to the corner-only record "
           "`records/20261015-151616-d3df921.md`, which is unchanged)", ""]
@@ -882,7 +883,8 @@ def render_record(record_id, pdk, dirty, wanted, sections, unevidenced, failures
     L += ["- **Links**:",
           "  - Benches: `sim/program-read-legs/benches.py` (generator), runner `sim/program-read-legs/run_experiment.py`",
           f"  - Frozen netlists / requests: `sim/program-read-legs/netlist-snapshots/{record_id}/`",
-          f"  - Full klt reports (per-corner measurements) and raw logs: `sim/program-read-legs/corners/{record_id}/`",
+          f"  - Full klt reports (per-corner measurements) and raw logs: artifact store manifest "
+          f"`manifests/artifacts/program-read-legs-{record_id}.manifest.json`",
           f"  - PDK: `{pdk.variant}`, open_pdks `{pdk.revision}`",
           f"- **Timestamp / author**: {now}, agent-builder",
           "- **Supersedes**: (none -- first record for this claim)", ""]

@@ -314,10 +314,11 @@ def smoke(spec: str) -> int:
 
 def check(rid: str, cand_ns: list[int]) -> int:
     bad = 0
+    base = ES.run_dir_for_reading("hv-pad-protection", rid, REPO_ROOT, THIS_DIR / "corners" / rid)
     for n in cand_ns:
         cand, pdk, defaults, vbd = setup(n)
         for bench, bd in bench_defs(n).items():
-            rp = THIS_DIR / "corners" / rid / f"c{n}" / bench / "report.json"
+            rp = base / f"c{n}" / bench / "report.json"
             if not rp.is_file():
                 continue
             rows = collect(json.loads(rp.read_text()), bd, cand, vbd)
@@ -332,7 +333,9 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--candidates", default="1,2,3")
     ap.add_argument("--benches", default=None, help="comma list; default all")
     ap.add_argument("--smoke", metavar="N:BENCH", help="ONE local corner, debug only, records nothing")
-    ap.add_argument("--check", metavar="RECORD_ID", help="re-apply verdicts.py to saved corners/RECORD_ID reports")
+    ap.add_argument("--check", metavar="RECORD_ID",
+                    help="re-apply verdicts.py to a record's saved reports (committed bytes where they "
+                         "exist, else fetched from the artifact store)")
     args = ap.parse_args(argv)
     wanted = [int(x) for x in args.candidates.split(",")]
     if args.smoke:

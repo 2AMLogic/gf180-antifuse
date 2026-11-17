@@ -19,6 +19,8 @@ What it does (and does not do)
 * It then grades the returned per-corner measurements against the acceptance
   statements in README.md and writes an append-only record:
       sim/array-slice-bench/reports/<record-id>/<slice>_<process>.report.json   raw reports
+        (staged only; once the run is stored the in-tree copies are removed
+         and manifests/artifacts/array-slice-bench-<record-id>.manifest.json holds them)
       sim/array-slice-bench/records/<record-id>.md                    record
       measurements/array-slice-bench/<record-id>.md                   per-region
   Records are never edited; a re-run mints a new <record-id>.
@@ -315,7 +317,7 @@ def orientation_section():
     return out
 
 
-def write_records(record_id, sections, rep_paths, per_slice_summary, clean, now):
+def write_records(record_id, sections, per_slice_summary, clean, now):
     sha = git("rev-parse", "HEAD")
     rec = [f"# Record {record_id}", "",
            "- **Record ID**: " + record_id,
@@ -333,8 +335,8 @@ def write_records(record_id, sections, rep_paths, per_slice_summary, clean, now)
            "slice. This is the full CLAUDE.md PVT matrix; no subset.",
            "- **Result**: see per-slice sections below. Per region, per sub-combination; nothing is averaged "
            "across regions or sub-combinations.",
-           "- **Links**: testbench `sim/array-slice-bench/testbench/`; raw klt reports "
-           + ", ".join(f"`{p}`" for p in rep_paths) + ".",
+           "- **Links**: testbench `sim/array-slice-bench/testbench/`; raw klt reports in the artifact "
+           f"store, manifest `manifests/artifacts/array-slice-bench-{record_id}.manifest.json`.",
            f"- **Timestamp / author**: {now:%Y-%m-%dT%H:%M:%SZ} / Claude Sonnet 5.5 (Loom builder, issue #64)",
            "- **Supersedes**: (none)", "",
            "## Acceptance thresholds used (this record's own; not spec numbers)", "",
@@ -437,7 +439,8 @@ def finish_full_band(F, record_id, clean, now, bands, reports, a) -> int:
             "points, approximated as a scaling of the level; `sel` runs level scale 1.0 only). Full CLAUDE.md PVT "
             "matrix; no subset.",
             "- **Result**: see the per-region tables below; nothing is averaged across regions or read levels.",
-            f"- **Links**: raw klt reports `sim/array-slice-bench/reports/{record_id}/`; per-corner CSV "
+            f"- **Links**: raw klt reports in the artifact store, manifest "
+            f"`manifests/artifacts/array-slice-bench-{record_id}.manifest.json`; per-corner CSV "
             f"`measurements/array-slice-bench/{record_id}.csv`; per-region view "
             f"`measurements/array-slice-bench/{record_id}.md`.",
             f"- **Timestamp / author**: {now:%Y-%m-%dT%H:%M:%SZ} / Claude Sonnet 5.5 (Loom builder, issue #70)",
@@ -535,7 +538,7 @@ def main():
     now = dt.datetime.now(dt.timezone.utc)
     record_id = f"{now:%Y%m%d-%H%M%S}-{git('rev-parse', '--short', 'HEAD')}"
     clean = not R.git_is_dirty(REPO)
-    sections, rep_paths = [], []
+    sections, summary = [], {}
     summary = {}
     worst_bad = 0
     for sl in slices:
@@ -561,13 +564,12 @@ def main():
                 rp = HERE / "reports" / record_id / f"{sl}_{proc}.report.json"
                 rp.parent.mkdir(parents=True, exist_ok=True)
                 write_report_and_digest(rp, payloads[proc])
-                rep_paths.append(str(rp.relative_to(REPO)))
 
     if a.no_write:
         for s in sections:
             print("\n".join(s))
         return 0 if worst_bad == 0 else 3
-    text = write_records(record_id, sections, rep_paths, summary, clean, now)
+    text = write_records(record_id, sections, summary, clean, now)
     rec = HERE / "records" / f"{record_id}.md"
     rec.parent.mkdir(parents=True, exist_ok=True)
     rec.write_text(text)

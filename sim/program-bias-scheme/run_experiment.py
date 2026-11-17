@@ -303,14 +303,19 @@ def common_header(a, cand, rid: str, params: dict, claim: str, note: str | None,
 
 def render_retab(pdk, cand, rid: str, params: dict, note: str | None, src: str | None = None) -> str:
     src = src or EXISTING_PROGC[cand.n]
-    res = CB.results_from_reports(cand, src, params, benches=("progc_st", "progc_b1m", "progc_b1l"))
+    src_corn = CB.THIS_DIR / "corners" / src
+    src_base = ES.run_dir_for_reading("cell-breakdown-model", src, REPO_ROOT, src_corn)
+    src_reports = (f"`sim/cell-breakdown-model/corners/{src}/`" if src_base == src_corn
+                   else f"manifest `manifests/artifacts/cell-breakdown-model-{src}.manifest.json`")
+    res = CB.results_from_reports(cand, src, params, benches=("progc_st", "progc_b1m", "progc_b1l"),
+                                  base_dir=src_base)
     rating = CB.ACCESS_RATING_V[cand.n]
     L: list[str] = []
     a = L.append
     common_header(a, cand, rid, params,
                   "BL-driven program leg (the scheme #62/#74 used), re-tabulated per PVT corner from the existing "
                   "fleet evidence. NO NEW SIMULATION: the numbers are the `mx_*`/`mn_*` measurements already in "
-                  f"`sim/cell-breakdown-model/corners/{src}/progc_*/report.json`.", note)
+                  f"the `{src}` run's `progc_*/report.json` ({src_reports}).", note)
     a("- **Scheme (BL-driven)**: VPP pulse -> ideal ballast "
       f"{CB.prog_rballast(cand, params)/1e3:.4g} kOhm (PLACEHOLDER, V_bd / 500 uA) -> BL; PL = 0 V; "
       f"WL = {cand.moscap_wl_on:g} V + VPP(t)"
@@ -329,8 +334,8 @@ def render_retab(pdk, cand, rid: str, params: dict, note: str | None, src: str |
         level_summary(a, cand, params, r, "progc", rating)
         per_corner_table(a, cand, params, r, "progc", rating, "ibl" if b != "progc_st" else "ibl")
     a("- **Links**:")
-    a(f"  - Source records and raw reports: `sim/cell-breakdown-model/records/{src}.md`, "
-      f"`sim/cell-breakdown-model/corners/{src}/`")
+    a(f"  - Source records and raw reports: `sim/cell-breakdown-model/records/{src}.md`, raw `progc_*` "
+      f"reports in {src_reports}")
     a("- **Method**: the table is produced by `sim/program-bias-scheme/run_experiment.py --retabulate`; "
       "no simulation was run for this record.")
     a(f"- **Timestamp / author**: {time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())}, agent-builder")
@@ -445,7 +450,8 @@ def render_pl(pdk, cand, rid: str, params: dict, results: dict, note: str | None
     if any(b in results for b in GWD_BENCHES):
         gwd_verdict(a, cand, params, results, rating, n)
     a("- **Links**:")
-    a(f"  - Requests, bodies, klt reports, per-corner decks and logs: `sim/program-bias-scheme/corners/{rid}/<bench>/`")
+    a(f"  - Requests, bodies, klt reports, per-corner decks and logs: artifact store manifest "
+      f"`manifests/artifacts/program-bias-scheme-{rid}.manifest.json`, entries `<bench>/…`")
     a(f"  - Netlist snapshot: `sim/program-bias-scheme/netlist-snapshots/{rid}.spice`")
     a("  - BL-driven counterpart (same levels, same cell): `sim/cell-breakdown-model/records/"
       f"{EXISTING_PROGC[cand.n]}.md`")

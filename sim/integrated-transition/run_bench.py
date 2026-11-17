@@ -13,6 +13,8 @@
   exact error is printed and the script exits non-zero: it does NOT fall back to a local run.
 * It grades the returned per-corner measurements (analyze.py) and writes an append-only record:
       sim/integrated-transition/reports/<record-id>/<slice>_<process>.report.json.gz   raw measurements
+        (staged only; once the run is stored the in-tree copies are removed
+         and manifests/artifacts/integrated-transition-<record-id>.manifest.json holds them)
       sim/integrated-transition/records/<record-id>.md                                 evidence record
       measurements/integrated-transition/<record-id>.md                                 per-region / per-sub-combination view
       measurements/integrated-transition/<record-id>.csv                                one row per graded point
@@ -371,8 +373,9 @@ def write_records(record_id, all_rows, stress, comps_by_slice, ungradable, clean
         f"the worst corners of each scenario are the cold/slow/low-supply and hot/fast/high-supply extremes and the two skewed "
         f"corners. **{n_units} units**, two slices, twenty `klt sim` requests (two tiers, below).",
         f"- **Result**: per-region tables below; `measurements/integrated-transition/{record_id}.md` and `.csv`.",
-        f"- **Links**: testbench `sim/integrated-transition/testbench/`; raw measurements "
-        f"`sim/integrated-transition/reports/{record_id}/`; runner `run_bench.py`, grading `analyze.py`, limits `limits.py`.",
+        f"- **Links**: testbench `sim/integrated-transition/testbench/`; raw measurements in the artifact "
+        f"store, manifest `manifests/artifacts/integrated-transition-{record_id}.manifest.json`; "
+        f"runner `run_bench.py`, grading `analyze.py`, limits `limits.py`.",
         f"- **Timestamp / author**: {now:%Y-%m-%dT%H:%M:%SZ} / Claude Sonnet 5.5 (Loom builder, issue #73)",
         "- **Supersedes**: (none)", "",
         "## Assumed / placeholder inputs and disclosed substitutions (all of them)", "", ASSUMPTIONS,
