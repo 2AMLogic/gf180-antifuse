@@ -18,22 +18,24 @@ Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a h
 `loom:important`; taken before unlabelled work.
 
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4)
-- **#203**: wafer.space Run 3 quarter slot: cut-down antifuse breakdown test chip (GDS due 2026-12-16)
+- **#203**: wafer.space Run 3 quarter slot (space not yet secured; GDS 2026-12-16 only if obtained): cut-down antifuse breakdown test chip
 - **#211**: Run 3 test chip: full-chip assembly with DRC/LVS through klt *(held)*
 - **#296**: layout: draw the ratified legal capacitor geometry in all seven cells (clears DF.1c on all seven and PL.2_MV on candidate 2; re-fit the three base cells hardcoded MOSCAP marker and CN/VB straps)
+- **#372**: Run 3 fallback: a variant that passes the native runset without candidate 2's nfet_10v0_asym findings (decide by 2026-12-01)
 
 ## Ready
 
-Human-approved issues ready for implementation (`loom:issue`).
+Human-approved issues (`loom:issue`) ready for implementation — excluding held (`loom:blocked`/`loom:operator`/`loom:frozen`), `loom:building`, and issues closed by an open `loom:pr` PR (listed under Approved).
 
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4)
-- **#296**: layout: draw the ratified legal capacitor geometry in all seven cells (clears DF.1c on all seven and PL.2_MV on candidate 2; re-fit the three base cells hardcoded MOSCAP marker and CN/VB straps)
 
 ## In Progress
 
 Issues currently being built (`loom:building`).
 
 - **#255**: Measurement plan: constant-voltage time-to-breakdown statistics (Weibull slope, voltage acceleration) and a sub-programming soak
+- **#296**: layout: draw the ratified legal capacitor geometry in all seven cells (clears DF.1c on all seven and PL.2_MV on candidate 2; re-fit the three base cells hardcoded MOSCAP marker and CN/VB straps)
+- **#372**: Run 3 fallback: a variant that passes the native runset without candidate 2's nfet_10v0_asym findings (decide by 2026-12-01)
 
 ## PRs Awaiting Review
 
@@ -45,7 +47,8 @@ PRs waiting on Judge (`loom:review-requested`).
 
 PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
-- **#256**: docs(spec): propose constant-voltage TDDB and sub-programming soak plan
+- **#256**: docs(spec): propose constant-voltage TDDB and sub-programming soak plan — closes #255
+- **#371**: layout: draw the ratified capacitor geometry (1.0/2.0 um) in all seven cells; re-fit marker, CN and VB — closes #296
 
 ## Proposed
 
@@ -63,6 +66,7 @@ Issues carrying `loom:curated`.
 - **#313**: sim/program-read-legs: capacity_wait_s spends the same per-submit subprocess budget as the run, and a subprocess timeout is not retried *(curated)* *(held)*
 - **#316**: Follow-on: establish the foreign-host re-run byte-identity evidence for the shared report scrubber (PR #309 / #285 step 5) *(curated)* *(held)*
 - **#338**: wafer.space: precheck treatment and foundry conversation on the unmodified nfet_10v0_asym PCell's CO.4/DF.6_MV/PL.4_MV findings (#299) *(curated)* *(held)*
+- **#372**: Run 3 fallback: a variant that passes the native runset without candidate 2's nfet_10v0_asym findings (decide by 2026-12-01) *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -73,7 +77,7 @@ Issues carrying `loom:curated`.
 ## Epics
 
 - **#10**: Track the gap to T1 sim-validated / bronze (klayout-tools design-evidence tiers) *(held)*
-- **#203**: wafer.space Run 3 quarter slot: cut-down antifuse breakdown test chip (GDS due 2026-12-16)
+- **#203**: wafer.space Run 3 quarter slot (space not yet secured; GDS 2026-12-16 only if obtained): cut-down antifuse breakdown test chip
 
 ## Backlog Balance
 
@@ -81,12 +85,12 @@ Issues carrying `loom:curated`.
 |------|-------|
 | Operator merge-risk holds | 1 |
 | Very important | 1 |
-| Important | 4 |
-| Ready (`loom:issue`) | 2 |
-| In Progress (`loom:building`) | 1 |
+| Important | 5 |
+| Ready (`loom:issue`, net of holds/building/merge-pending) | 1 |
+| In Progress (`loom:building`) | 3 |
 | PRs awaiting review | 1 |
-| Approved PRs awaiting merge | 1 |
-| Curated | 12 |
+| Approved PRs awaiting merge | 2 |
+| Curated | 13 |
 | Architect / Hermit proposals | 3 |
 | Active epics | 2 |
 <!-- guide:plan-body:end -->
