@@ -5,6 +5,8 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-18
 
+- **PR #413**: check: pin README-quoted VB-strap and gate-pad intervals to the committed GDS
+- **Issue #407** (closed): No check ties layout/README.md's quoted geometry intervals to the committed GDS (three hand-found drifts: #378, #391, #401)
 - **PR #411**: docs(sim): correct stale klt concurrency-cap retry comment in cell-breakdown-model
 - **Issue #300** (closed): Decide whether sim/program-read-legs requests should carry a klt-side batch.capacity_wait_s
 - **PR #410**: docs(spec): repoint CN ring-gap citations at the shared point modules
