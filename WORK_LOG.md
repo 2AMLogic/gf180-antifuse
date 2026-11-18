@@ -5,6 +5,12 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-18
 
+- **PR #411**: docs(sim): correct stale klt concurrency-cap retry comment in cell-breakdown-model
+- **Issue #300** (closed): Decide whether sim/program-read-legs requests should carry a klt-side batch.capacity_wait_s
+- **PR #410**: docs(spec): repoint CN ring-gap citations at the shared point modules
+- **Issue #409** (closed): spec/capacitor-geometry-decision.md cites the candidate-1/3 generate.py shims for CN gap-span measurements that now live in the points modules
+- **PR #403**: refactor(layout): share candidate-3 geometry via a candidate3_points table
+- **Issue #397** (closed): Consolidate the two candidate-3 generators onto a shared point table (as #315 did for candidate 1)
 - **PR #405**: docs: correct candidate-1 VB-strap metal band bottoms in layout README
 - **Issue #401** (closed): layout: candidate-1 family VB-strap bullet quotes access north-band bottoms 0.04 um low (README:426-437)
 - **PR #402**: layout: assemble the Run 3 test chip (run3_top.gds) with DRC/LVS/ERC evidence
