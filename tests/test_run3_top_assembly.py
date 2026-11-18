@@ -19,8 +19,10 @@ derived tables against the committed sources they must agree with.
      bounding boxes overlap (BL metal4 / WL metal3 / VB metal2 / PL metal5).
 """
 import json
+import re
 import sys
 import unittest
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -184,6 +186,55 @@ class Run3TopAssemblyTest(unittest.TestCase):
         density = json.loads(
             (ROOT / "layout/run3_top/drc_density_report.json").read_text())
         self.assertEqual(density["rule_counts"], {})
+
+    def test_antenna_ratio_evidence(self):
+        # Issue #422: the README's quoted antenna ratios must trace to a
+        # committed artifact. klt's JSON envelope keeps only each finding's
+        # category/description/polygon and drops the per-item values the deck
+        # attaches (the measured ratio lands in the RDB as a #RATIO tag), so
+        # the antenna stage's RDB is committed beside the report, captured
+        # like the density stage log by the direct klayout -b invocation its
+        # companion .log records.
+        ratios = {}
+        for item in ET.parse(
+                ROOT / "layout/run3_top/drc_antenna_stage.lyrdb").iter("item"):
+            cat = item.find("category").text.strip("'")
+            for value in item.find("values"):
+                text = "".join(value.itertext())
+                if text.startswith("[#RATIO]"):
+                    ratios.setdefault(cat, []).append(
+                        float(text.split("float:")[1]))
+        self.assertEqual({c: len(v) for c, v in ratios.items()},
+                         {"ANT.16_i_ANT.6": 26, "ANT.16_ii_ANT.4": 29,
+                          "ANT.16_ii_ANT.6": 5})
+        # the README's quoted ranges: the shared-WL group, and the
+        # private-plate group combined across its thin/thick-gate rules
+        wl = ratios["ANT.16_ii_ANT.4"]
+        self.assertAlmostEqual(min(wl), 428.361, places=3)
+        self.assertAlmostEqual(max(wl), 1034.186, places=3)
+        plates = ratios["ANT.16_i_ANT.6"] + ratios["ANT.16_ii_ANT.6"]
+        self.assertAlmostEqual(min(plates), 2030.99, places=3)
+        self.assertAlmostEqual(max(plates), 7822.295, places=3)
+        # the companion stdout log names the committed RDB and cross-checks
+        # the envelope's per-rule counts
+        log = (ROOT / "layout/run3_top/drc_antenna_stage.log").read_text()
+        self.assertIn("drc_antenna_stage.lyrdb", log)
+        for rule, count in (("ANT.16_i_ANT.6", 26), ("ANT.16_ii_ANT.4", 29),
+                            ("ANT.16_ii_ANT.6", 5)):
+            self.assertIsNotNone(
+                re.search(rf"'{rule}'\s*:\s+{count} violation", log), rule)
+        # the WL remedy's "after" round -- the drawn-clamp layout whose
+        # ANT.16_ii_ANT.4 count is 0 -- re-committed from 9f5dc932, where
+        # that layout lived; its input is the diode-drawn GDS (sha pinned),
+        # not the committed one.
+        after = json.loads(
+            (ROOT / "layout/run3_top/"
+             "drc_antenna_after_wl_diode_clamp_report.json").read_text())
+        self.assertEqual(after["rule_counts"],
+                         {"ANT.16_i_ANT.6": 26, "ANT.16_ii_ANT.6": 5})
+        self.assertEqual(after["provenance"]["input"]["content_hash"],
+                         "sha256:79bc84145a1baf87116b42d7aedee9bd9c69c29b7"
+                         "2ce4d46a5a7ab1fa0c679f8")
 
     def _blocks(self):
         """The request's block list, rebuilt cheaply (no klt calls)."""

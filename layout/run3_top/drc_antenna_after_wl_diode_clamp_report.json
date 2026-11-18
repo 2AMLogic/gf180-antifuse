@@ -1,0 +1,1845 @@
+{
+  "schema_version": 3,
+  "file": {
+    "path": "layout/run3_top/run3_top.gds",
+    "scope": "repo"
+  },
+  "deck": "/home/ubuntu/.ciel/gf180mcuD/libs.tech/klayout/tech/drc/gf180mcu.drc",
+  "engine": "klayout",
+  "dbu_um": 0.0005,
+  "status": "violations",
+  "violation_count": 31,
+  "rule_counts": {
+    "ANT.16_i_ANT.6": 26,
+    "ANT.16_ii_ANT.6": 5
+  },
+  "coverage": {
+    "deck_layers": [],
+    "layers_checked": [],
+    "rule_categories": [
+      "ANT.1",
+      "ANT.16_i_ANT.10",
+      "ANT.16_i_ANT.11",
+      "ANT.16_i_ANT.12",
+      "ANT.16_i_ANT.2",
+      "ANT.16_i_ANT.3",
+      "ANT.16_i_ANT.4",
+      "ANT.16_i_ANT.5",
+      "ANT.16_i_ANT.6",
+      "ANT.16_i_ANT.9",
+      "ANT.16_ii_ANT.10",
+      "ANT.16_ii_ANT.11",
+      "ANT.16_ii_ANT.12",
+      "ANT.16_ii_ANT.2",
+      "ANT.16_ii_ANT.3",
+      "ANT.16_ii_ANT.4",
+      "ANT.16_ii_ANT.5",
+      "ANT.16_ii_ANT.6",
+      "ANT.16_ii_ANT.9",
+      "ANT.16_iii_ANT.14_M4_MIMB",
+      "ANT.16_iii_ANT.14_M5_MIMB",
+      "ANT.16_iii_ANT.15_V3_MIMB",
+      "ANT.16_iii_ANT.15_V4_MIMB",
+      "ANT.8"
+    ],
+    "rules_checked": [
+      "ANT.16_i_ANT.6",
+      "ANT.16_ii_ANT.6"
+    ],
+    "layers_in_stream_without_rules": [],
+    "rules_skipped": [],
+    "voltage_domain_warnings": [],
+    "unchecked_rules": [],
+    "deck_scope": [],
+    "unmodeled_rules": [],
+    "isolation_only_rules": [],
+    "schema_version": 1,
+    "known": false,
+    "checked": [
+      "ANT.16_i_ANT.6",
+      "ANT.16_ii_ANT.6"
+    ],
+    "skipped": [],
+    "inapplicable": [],
+    "unknown": [
+      {
+        "id": "engine_execution:[\"klayout\"]",
+        "reason": "unmeasured_rule_execution"
+      }
+    ],
+    "nothing_checked": false,
+    "nothing_checked_reasons": []
+  },
+  "violations": [
+    {
+      "rule": "ANT.16_i_ANT.6",
+      "description": "ANT.16_i_ANT.6: Maximum ratio of Metal5 perimeter area to related thin gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_i_ANT.6",
+      "cell": "run3_top",
+      "source_cell": null,
+      "source_path": null,
+      "bbox": {
+        "left": 180000,
+        "bottom": 400000,
+        "right": 1203280,
+        "top": 560000
+      },
+      "polygon": [
+        [
+          180000,
+          400000
+        ],
+        [
+          180000,
+          560000
+        ],
+        [
+          340000,
+          560000
+        ],
+        [
+          340000,
+          485000
+        ],
+        [
+          1203280,
+          485000
+        ],
+        [
+          1203280,
+          475000
+        ],
+        [
+          340000,
+          475000
+        ],
+        [
+          340000,
+          400000
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_i_ANT.6",
+      "description": "ANT.16_i_ANT.6: Maximum ratio of Metal5 perimeter area to related thin gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_i_ANT.6",
+      "cell": "run3_top",
+      "source_cell": null,
+      "source_path": null,
+      "bbox": {
+        "left": 180000,
+        "bottom": 570000,
+        "right": 1203280,
+        "top": 730000
+      },
+      "polygon": [
+        [
+          180000,
+          570000
+        ],
+        [
+          180000,
+          730000
+        ],
+        [
+          340000,
+          730000
+        ],
+        [
+          340000,
+          655000
+        ],
+        [
+          1203280,
+          655000
+        ],
+        [
+          1203280,
+          645000
+        ],
+        [
+          340000,
+          645000
+        ],
+        [
+          340000,
+          570000
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_i_ANT.6",
+      "description": "ANT.16_i_ANT.6: Maximum ratio of Metal5 perimeter area to related thin gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_i_ANT.6",
+      "cell": "run3_top",
+      "source_cell": null,
+      "source_path": null,
+      "bbox": {
+        "left": 180000,
+        "bottom": 740000,
+        "right": 1203280,
+        "top": 900000
+      },
+      "polygon": [
+        [
+          180000,
+          740000
+        ],
+        [
+          180000,
+          900000
+        ],
+        [
+          340000,
+          900000
+        ],
+        [
+          340000,
+          825000
+        ],
+        [
+          1203280,
+          825000
+        ],
+        [
+          1203280,
+          815000
+        ],
+        [
+          340000,
+          815000
+        ],
+        [
+          340000,
+          740000
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_i_ANT.6",
+      "description": "ANT.16_i_ANT.6: Maximum ratio of Metal5 perimeter area to related thin gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_i_ANT.6",
+      "cell": "run3_top",
+      "source_cell": null,
+      "source_path": null,
+      "bbox": {
+        "left": 180000,
+        "bottom": 910000,
+        "right": 1203280,
+        "top": 1070000
+      },
+      "polygon": [
+        [
+          180000,
+          910000
+        ],
+        [
+          180000,
+          1070000
+        ],
+        [
+          340000,
+          1070000
+        ],
+        [
+          340000,
+          995000
+        ],
+        [
+          1203280,
+          995000
+        ],
+        [
+          1203280,
+          985000
+        ],
+        [
+          340000,
+          985000
+        ],
+        [
+          340000,
+          910000
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_i_ANT.6",
+      "description": "ANT.16_i_ANT.6: Maximum ratio of Metal5 perimeter area to related thin gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_i_ANT.6",
+      "cell": "run3_top",
+      "source_cell": null,
+      "source_path": null,
+      "bbox": {
+        "left": 180000,
+        "bottom": 1080000,
+        "right": 1203280,
+        "top": 1240000
+      },
+      "polygon": [
+        [
+          180000,
+          1080000
+        ],
+        [
+          180000,
+          1240000
+        ],
+        [
+          340000,
+          1240000
+        ],
+        [
+          340000,
+          1165000
+        ],
+        [
+          1203280,
+          1165000
+        ],
+        [
+          1203280,
+          1155000
+        ],
+        [
+          1201560,
+          1155000
+        ],
+        [
+          1201560,
+          1154080
+        ],
+        [
+          1201000,
+          1154080
+        ],
+        [
+          1201000,
+          1155000
+        ],
+        [
+          340000,
+          1155000
+        ],
+        [
+          340000,
+          1080000
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_i_ANT.6",
+      "description": "ANT.16_i_ANT.6: Maximum ratio of Metal5 perimeter area to related thin gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_i_ANT.6",
+      "cell": "run3_top",
+      "source_cell": null,
+      "source_path": null,
+      "bbox": {
+        "left": 180000,
+        "bottom": 1250000,
+        "right": 1203280,
+        "top": 1410000
+      },
+      "polygon": [
+        [
+          180000,
+          1250000
+        ],
+        [
+          180000,
+          1410000
+        ],
+        [
+          340000,
+          1410000
+        ],
+        [
+          340000,
+          1335000
+        ],
+        [
+          1203280,
+          1335000
+        ],
+        [
+          1203280,
+          1325000
+        ],
+        [
+          1201560,
+          1325000
+        ],
+        [
+          1201560,
+          1324080
+        ],
+        [
+          1201000,
+          1324080
+        ],
+        [
+          1201000,
+          1325000
+        ],
+        [
+          340000,
+          1325000
+        ],
+        [
+          340000,
+          1250000
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_i_ANT.6",
+      "description": "ANT.16_i_ANT.6: Maximum ratio of Metal5 perimeter area to related thin gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_i_ANT.6",
+      "cell": "run3_top",
+      "source_cell": null,
+      "source_path": null,
+      "bbox": {
+        "left": 180000,
+        "bottom": 1420000,
+        "right": 1203280,
+        "top": 1580000
+      },
+      "polygon": [
+        [
+          180000,
+          1420000
+        ],
+        [
+          180000,
+          1580000
+        ],
+        [
+          340000,
+          1580000
+        ],
+        [
+          340000,
+          1505000
+        ],
+        [
+          1203280,
+          1505000
+        ],
+        [
+          1203280,
+          1495000
+        ],
+        [
+          1201560,
+          1495000
+        ],
+        [
+          1201560,
+          1494080
+        ],
+        [
+          1201000,
+          1494080
+        ],
+        [
+          1201000,
+          1495000
+        ],
+        [
+          340000,
+          1495000
+        ],
+        [
+          340000,
+          1420000
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_i_ANT.6",
+      "description": "ANT.16_i_ANT.6: Maximum ratio of Metal5 perimeter area to related thin gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_i_ANT.6",
+      "cell": "run3_top",
+      "source_cell": null,
+      "source_path": null,
+      "bbox": {
+        "left": 180000,
+        "bottom": 1590000,
+        "right": 1203280,
+        "top": 1750000
+      },
+      "polygon": [
+        [
+          180000,
+          1590000
+        ],
+        [
+          180000,
+          1750000
+        ],
+        [
+          340000,
+          1750000
+        ],
+        [
+          340000,
+          1675000
+        ],
+        [
+          1203280,
+          1675000
+        ],
+        [
+          1203280,
+          1665000
+        ],
+        [
+          1201560,
+          1665000
+        ],
+        [
+          1201560,
+          1664080
+        ],
+        [
+          1201000,
+          1664080
+        ],
+        [
+          1201000,
+          1665000
+        ],
+        [
+          340000,
+          1665000
+        ],
+        [
+          340000,
+          1590000
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_i_ANT.6",
+      "description": "ANT.16_i_ANT.6: Maximum ratio of Metal5 perimeter area to related thin gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_i_ANT.6",
+      "cell": "run3_top",
+      "source_cell": null,
+      "source_path": null,
+      "bbox": {
+        "left": 180000,
+        "bottom": 1760000,
+        "right": 1203280,
+        "top": 1920000
+      },
+      "polygon": [
+        [
+          180000,
+          1760000
+        ],
+        [
+          180000,
+          1920000
+        ],
+        [
+          340000,
+          1920000
+        ],
+        [
+          340000,
+          1845000
+        ],
+        [
+          1203280,
+          1845000
+        ],
+        [
+          1203280,
+          1835000
+        ],
+        [
+          340000,
+          1835000
+        ],
+        [
+          340000,
+          1760000
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_i_ANT.6",
+      "description": "ANT.16_i_ANT.6: Maximum ratio of Metal5 perimeter area to related thin gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_i_ANT.6",
+      "cell": "run3_top",
+      "source_cell": null,
+      "source_path": null,
+      "bbox": {
+        "left": 180000,
+        "bottom": 1930000,
+        "right": 1203280,
+        "top": 2090000
+      },
+      "polygon": [
+        [
+          180000,
+          1930000
+        ],
+        [
+          180000,
+          2090000
+        ],
+        [
+          340000,
+          2090000
+        ],
+        [
+          340000,
+          2015000
+        ],
+        [
+          1203280,
+          2015000
+        ],
+        [
+          1203280,
+          2005000
+        ],
+        [
+          340000,
+          2005000
+        ],
+        [
+          340000,
+          1930000
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_i_ANT.6",
+      "description": "ANT.16_i_ANT.6: Maximum ratio of Metal5 perimeter area to related thin gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_i_ANT.6",
+      "cell": "run3_top",
+      "source_cell": null,
+      "source_path": null,
+      "bbox": {
+        "left": 180000,
+        "bottom": 2100000,
+        "right": 1203280,
+        "top": 2260000
+      },
+      "polygon": [
+        [
+          180000,
+          2100000
+        ],
+        [
+          180000,
+          2260000
+        ],
+        [
+          340000,
+          2260000
+        ],
+        [
+          340000,
+          2185000
+        ],
+        [
+          1203280,
+          2185000
+        ],
+        [
+          1203280,
+          2175000
+        ],
+        [
+          340000,
+          2175000
+        ],
+        [
+          340000,
+          2100000
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_i_ANT.6",
+      "description": "ANT.16_i_ANT.6: Maximum ratio of Metal5 perimeter area to related thin gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_i_ANT.6",
+      "cell": "run3_top",
+      "source_cell": null,
+      "source_path": null,
+      "bbox": {
+        "left": 180000,
+        "bottom": 2270000,
+        "right": 1203280,
+        "top": 2430000
+      },
+      "polygon": [
+        [
+          180000,
+          2270000
+        ],
+        [
+          180000,
+          2430000
+        ],
+        [
+          340000,
+          2430000
+        ],
+        [
+          340000,
+          2355000
+        ],
+        [
+          1203280,
+          2355000
+        ],
+        [
+          1203280,
+          2345000
+        ],
+        [
+          340000,
+          2345000
+        ],
+        [
+          340000,
+          2270000
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_i_ANT.6",
+      "description": "ANT.16_i_ANT.6: Maximum ratio of Metal5 perimeter area to related thin gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_i_ANT.6",
+      "cell": "run3_top",
+      "source_cell": null,
+      "source_path": null,
+      "bbox": {
+        "left": 180000,
+        "bottom": 2440000,
+        "right": 1203280,
+        "top": 2600000
+      },
+      "polygon": [
+        [
+          180000,
+          2440000
+        ],
+        [
+          180000,
+          2600000
+        ],
+        [
+          340000,
+          2600000
+        ],
+        [
+          340000,
+          2525000
+        ],
+        [
+          1203280,
+          2525000
+        ],
+        [
+          1203280,
+          2515000
+        ],
+        [
+          1201560,
+          2515000
+        ],
+        [
+          1201560,
+          2514080
+        ],
+        [
+          1201000,
+          2514080
+        ],
+        [
+          1201000,
+          2515000
+        ],
+        [
+          340000,
+          2515000
+        ],
+        [
+          340000,
+          2440000
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_i_ANT.6",
+      "description": "ANT.16_i_ANT.6: Maximum ratio of Metal5 perimeter area to related thin gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_i_ANT.6",
+      "cell": "run3_top",
+      "source_cell": null,
+      "source_path": null,
+      "bbox": {
+        "left": 180000,
+        "bottom": 2610000,
+        "right": 1203280,
+        "top": 2770000
+      },
+      "polygon": [
+        [
+          180000,
+          2610000
+        ],
+        [
+          180000,
+          2770000
+        ],
+        [
+          340000,
+          2770000
+        ],
+        [
+          340000,
+          2695000
+        ],
+        [
+          1203280,
+          2695000
+        ],
+        [
+          1203280,
+          2685000
+        ],
+        [
+          1201560,
+          2685000
+        ],
+        [
+          1201560,
+          2684080
+        ],
+        [
+          1201000,
+          2684080
+        ],
+        [
+          1201000,
+          2685000
+        ],
+        [
+          340000,
+          2685000
+        ],
+        [
+          340000,
+          2610000
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_i_ANT.6",
+      "description": "ANT.16_i_ANT.6: Maximum ratio of Metal5 perimeter area to related thin gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_i_ANT.6",
+      "cell": "run3_top",
+      "source_cell": null,
+      "source_path": null,
+      "bbox": {
+        "left": 180000,
+        "bottom": 2780000,
+        "right": 1203280,
+        "top": 2940000
+      },
+      "polygon": [
+        [
+          180000,
+          2780000
+        ],
+        [
+          180000,
+          2940000
+        ],
+        [
+          340000,
+          2940000
+        ],
+        [
+          340000,
+          2865000
+        ],
+        [
+          1203280,
+          2865000
+        ],
+        [
+          1203280,
+          2855000
+        ],
+        [
+          1201560,
+          2855000
+        ],
+        [
+          1201560,
+          2854080
+        ],
+        [
+          1201000,
+          2854080
+        ],
+        [
+          1201000,
+          2855000
+        ],
+        [
+          340000,
+          2855000
+        ],
+        [
+          340000,
+          2780000
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_i_ANT.6",
+      "description": "ANT.16_i_ANT.6: Maximum ratio of Metal5 perimeter area to related thin gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_i_ANT.6",
+      "cell": "run3_top",
+      "source_cell": null,
+      "source_path": null,
+      "bbox": {
+        "left": 180000,
+        "bottom": 2950000,
+        "right": 1203280,
+        "top": 3110000
+      },
+      "polygon": [
+        [
+          180000,
+          2950000
+        ],
+        [
+          180000,
+          3110000
+        ],
+        [
+          340000,
+          3110000
+        ],
+        [
+          340000,
+          3035000
+        ],
+        [
+          1203280,
+          3035000
+        ],
+        [
+          1203280,
+          3025000
+        ],
+        [
+          1201560,
+          3025000
+        ],
+        [
+          1201560,
+          3024080
+        ],
+        [
+          1201000,
+          3024080
+        ],
+        [
+          1201000,
+          3025000
+        ],
+        [
+          340000,
+          3025000
+        ],
+        [
+          340000,
+          2950000
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_i_ANT.6",
+      "description": "ANT.16_i_ANT.6: Maximum ratio of Metal5 perimeter area to related thin gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_i_ANT.6",
+      "cell": "run3_top",
+      "source_cell": null,
+      "source_path": null,
+      "bbox": {
+        "left": 2011460,
+        "bottom": 740000,
+        "right": 3692000,
+        "top": 900000
+      },
+      "polygon": [
+        [
+          3532000,
+          740000
+        ],
+        [
+          3532000,
+          815000
+        ],
+        [
+          2011460,
+          815000
+        ],
+        [
+          2011460,
+          825000
+        ],
+        [
+          3532000,
+          825000
+        ],
+        [
+          3532000,
+          900000
+        ],
+        [
+          3692000,
+          900000
+        ],
+        [
+          3692000,
+          740000
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_i_ANT.6",
+      "description": "ANT.16_i_ANT.6: Maximum ratio of Metal5 perimeter area to related thin gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_i_ANT.6",
+      "cell": "run3_top",
+      "source_cell": null,
+      "source_path": null,
+      "bbox": {
+        "left": 2011460,
+        "bottom": 910000,
+        "right": 3692000,
+        "top": 1070000
+      },
+      "polygon": [
+        [
+          3532000,
+          910000
+        ],
+        [
+          3532000,
+          985000
+        ],
+        [
+          2011460,
+          985000
+        ],
+        [
+          2011460,
+          995000
+        ],
+        [
+          3532000,
+          995000
+        ],
+        [
+          3532000,
+          1070000
+        ],
+        [
+          3692000,
+          1070000
+        ],
+        [
+          3692000,
+          910000
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_i_ANT.6",
+      "description": "ANT.16_i_ANT.6: Maximum ratio of Metal5 perimeter area to related thin gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_i_ANT.6",
+      "cell": "run3_top",
+      "source_cell": null,
+      "source_path": null,
+      "bbox": {
+        "left": 2011460,
+        "bottom": 1080000,
+        "right": 3692000,
+        "top": 1240000
+      },
+      "polygon": [
+        [
+          3532000,
+          1080000
+        ],
+        [
+          3532000,
+          1155000
+        ],
+        [
+          2011460,
+          1155000
+        ],
+        [
+          2011460,
+          1165000
+        ],
+        [
+          3532000,
+          1165000
+        ],
+        [
+          3532000,
+          1240000
+        ],
+        [
+          3692000,
+          1240000
+        ],
+        [
+          3692000,
+          1080000
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_i_ANT.6",
+      "description": "ANT.16_i_ANT.6: Maximum ratio of Metal5 perimeter area to related thin gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_i_ANT.6",
+      "cell": "run3_top",
+      "source_cell": null,
+      "source_path": null,
+      "bbox": {
+        "left": 2011460,
+        "bottom": 1250000,
+        "right": 3692000,
+        "top": 1410000
+      },
+      "polygon": [
+        [
+          3532000,
+          1250000
+        ],
+        [
+          3532000,
+          1325000
+        ],
+        [
+          2011460,
+          1325000
+        ],
+        [
+          2011460,
+          1335000
+        ],
+        [
+          3532000,
+          1335000
+        ],
+        [
+          3532000,
+          1410000
+        ],
+        [
+          3692000,
+          1410000
+        ],
+        [
+          3692000,
+          1250000
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_i_ANT.6",
+      "description": "ANT.16_i_ANT.6: Maximum ratio of Metal5 perimeter area to related thin gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_i_ANT.6",
+      "cell": "run3_top",
+      "source_cell": null,
+      "source_path": null,
+      "bbox": {
+        "left": 2011460,
+        "bottom": 1420000,
+        "right": 3692000,
+        "top": 1580000
+      },
+      "polygon": [
+        [
+          3532000,
+          1420000
+        ],
+        [
+          3532000,
+          1495000
+        ],
+        [
+          2011460,
+          1495000
+        ],
+        [
+          2011460,
+          1505000
+        ],
+        [
+          3532000,
+          1505000
+        ],
+        [
+          3532000,
+          1580000
+        ],
+        [
+          3692000,
+          1580000
+        ],
+        [
+          3692000,
+          1420000
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_i_ANT.6",
+      "description": "ANT.16_i_ANT.6: Maximum ratio of Metal5 perimeter area to related thin gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_i_ANT.6",
+      "cell": "run3_top",
+      "source_cell": null,
+      "source_path": null,
+      "bbox": {
+        "left": 2011460,
+        "bottom": 1590000,
+        "right": 3692000,
+        "top": 1750000
+      },
+      "polygon": [
+        [
+          3532000,
+          1590000
+        ],
+        [
+          3532000,
+          1665000
+        ],
+        [
+          2012740,
+          1665000
+        ],
+        [
+          2012740,
+          1664080
+        ],
+        [
+          2012180,
+          1664080
+        ],
+        [
+          2012180,
+          1665000
+        ],
+        [
+          2011460,
+          1665000
+        ],
+        [
+          2011460,
+          1675000
+        ],
+        [
+          3532000,
+          1675000
+        ],
+        [
+          3532000,
+          1750000
+        ],
+        [
+          3692000,
+          1750000
+        ],
+        [
+          3692000,
+          1590000
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_i_ANT.6",
+      "description": "ANT.16_i_ANT.6: Maximum ratio of Metal5 perimeter area to related thin gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_i_ANT.6",
+      "cell": "run3_top",
+      "source_cell": null,
+      "source_path": null,
+      "bbox": {
+        "left": 2011460,
+        "bottom": 1760000,
+        "right": 3692000,
+        "top": 1920000
+      },
+      "polygon": [
+        [
+          3532000,
+          1760000
+        ],
+        [
+          3532000,
+          1835000
+        ],
+        [
+          2012740,
+          1835000
+        ],
+        [
+          2012740,
+          1834080
+        ],
+        [
+          2012180,
+          1834080
+        ],
+        [
+          2012180,
+          1835000
+        ],
+        [
+          2011460,
+          1835000
+        ],
+        [
+          2011460,
+          1845000
+        ],
+        [
+          3532000,
+          1845000
+        ],
+        [
+          3532000,
+          1920000
+        ],
+        [
+          3692000,
+          1920000
+        ],
+        [
+          3692000,
+          1760000
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_i_ANT.6",
+      "description": "ANT.16_i_ANT.6: Maximum ratio of Metal5 perimeter area to related thin gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_i_ANT.6",
+      "cell": "run3_top",
+      "source_cell": null,
+      "source_path": null,
+      "bbox": {
+        "left": 2011460,
+        "bottom": 1930000,
+        "right": 3692000,
+        "top": 2090000
+      },
+      "polygon": [
+        [
+          3532000,
+          1930000
+        ],
+        [
+          3532000,
+          2005000
+        ],
+        [
+          2012740,
+          2005000
+        ],
+        [
+          2012740,
+          2004080
+        ],
+        [
+          2012180,
+          2004080
+        ],
+        [
+          2012180,
+          2005000
+        ],
+        [
+          2011460,
+          2005000
+        ],
+        [
+          2011460,
+          2015000
+        ],
+        [
+          3532000,
+          2015000
+        ],
+        [
+          3532000,
+          2090000
+        ],
+        [
+          3692000,
+          2090000
+        ],
+        [
+          3692000,
+          1930000
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_i_ANT.6",
+      "description": "ANT.16_i_ANT.6: Maximum ratio of Metal5 perimeter area to related thin gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_i_ANT.6",
+      "cell": "run3_top",
+      "source_cell": null,
+      "source_path": null,
+      "bbox": {
+        "left": 2011460,
+        "bottom": 2100000,
+        "right": 3692000,
+        "top": 2260000
+      },
+      "polygon": [
+        [
+          3532000,
+          2100000
+        ],
+        [
+          3532000,
+          2175000
+        ],
+        [
+          2012740,
+          2175000
+        ],
+        [
+          2012740,
+          2174080
+        ],
+        [
+          2012180,
+          2174080
+        ],
+        [
+          2012180,
+          2175000
+        ],
+        [
+          2011460,
+          2175000
+        ],
+        [
+          2011460,
+          2185000
+        ],
+        [
+          3532000,
+          2185000
+        ],
+        [
+          3532000,
+          2260000
+        ],
+        [
+          3692000,
+          2260000
+        ],
+        [
+          3692000,
+          2100000
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_i_ANT.6",
+      "description": "ANT.16_i_ANT.6: Maximum ratio of Metal5 perimeter area to related thin gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_i_ANT.6",
+      "cell": "run3_top",
+      "source_cell": null,
+      "source_path": null,
+      "bbox": {
+        "left": 2011460,
+        "bottom": 2270000,
+        "right": 3692000,
+        "top": 2430000
+      },
+      "polygon": [
+        [
+          3532000,
+          2270000
+        ],
+        [
+          3532000,
+          2345000
+        ],
+        [
+          2012740,
+          2345000
+        ],
+        [
+          2012740,
+          2344080
+        ],
+        [
+          2012180,
+          2344080
+        ],
+        [
+          2012180,
+          2345000
+        ],
+        [
+          2011460,
+          2345000
+        ],
+        [
+          2011460,
+          2355000
+        ],
+        [
+          3532000,
+          2355000
+        ],
+        [
+          3532000,
+          2430000
+        ],
+        [
+          3692000,
+          2430000
+        ],
+        [
+          3692000,
+          2270000
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_ii_ANT.6",
+      "description": "ANT.16_ii_ANT.6: Maximum ratio of Metal5 perimeter area to related thick gate oxide area 400",
+      "check": "external",
+      "layer": "ANT.16_ii_ANT.6",
+      "cell": "run3_top",
+      "source_cell": null,
+      "source_path": null,
+      "bbox": {
+        "left": 180000,
+        "bottom": 3120000,
+        "right": 1214700,
+        "top": 3280000
+      },
+      "polygon": [
+        [
+          180000,
+          3120000
+        ],
+        [
+          180000,
+          3280000
+        ],
+        [
+          340000,
+          3280000
+        ],
+        [
+          340000,
+          3205000
+        ],
+        [
+          1214700,
+          3205000
+        ],
+        [
+          1214700,
+          3195000
+        ],
+        [
+          340000,
+          3195000
+        ],
+        [
+          340000,
+          3120000
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_ii_ANT.6",
+      "description": "ANT.16_ii_ANT.6: Maximum ratio of Metal5 perimeter area to related thick gate oxide area 400",
+      "check": "external",
+      "layer": "ANT.16_ii_ANT.6",
+      "cell": "run3_top",
+      "source_cell": null,
+      "source_path": null,
+      "bbox": {
+        "left": 180000,
+        "bottom": 3290000,
+        "right": 1214700,
+        "top": 3450000
+      },
+      "polygon": [
+        [
+          180000,
+          3290000
+        ],
+        [
+          180000,
+          3450000
+        ],
+        [
+          340000,
+          3450000
+        ],
+        [
+          340000,
+          3375000
+        ],
+        [
+          1214700,
+          3375000
+        ],
+        [
+          1214700,
+          3365000
+        ],
+        [
+          340000,
+          3365000
+        ],
+        [
+          340000,
+          3290000
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_ii_ANT.6",
+      "description": "ANT.16_ii_ANT.6: Maximum ratio of Metal5 perimeter area to related thick gate oxide area 400",
+      "check": "external",
+      "layer": "ANT.16_ii_ANT.6",
+      "cell": "run3_top",
+      "source_cell": null,
+      "source_path": null,
+      "bbox": {
+        "left": 180000,
+        "bottom": 3460000,
+        "right": 1214700,
+        "top": 3620000
+      },
+      "polygon": [
+        [
+          180000,
+          3460000
+        ],
+        [
+          180000,
+          3620000
+        ],
+        [
+          340000,
+          3620000
+        ],
+        [
+          340000,
+          3545000
+        ],
+        [
+          1214700,
+          3545000
+        ],
+        [
+          1214700,
+          3535000
+        ],
+        [
+          340000,
+          3535000
+        ],
+        [
+          340000,
+          3460000
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_ii_ANT.6",
+      "description": "ANT.16_ii_ANT.6: Maximum ratio of Metal5 perimeter area to related thick gate oxide area 400",
+      "check": "external",
+      "layer": "ANT.16_ii_ANT.6",
+      "cell": "run3_top",
+      "source_cell": null,
+      "source_path": null,
+      "bbox": {
+        "left": 180000,
+        "bottom": 3630000,
+        "right": 1214700,
+        "top": 3790000
+      },
+      "polygon": [
+        [
+          180000,
+          3630000
+        ],
+        [
+          180000,
+          3790000
+        ],
+        [
+          340000,
+          3790000
+        ],
+        [
+          340000,
+          3715000
+        ],
+        [
+          1214700,
+          3715000
+        ],
+        [
+          1214700,
+          3705000
+        ],
+        [
+          340000,
+          3705000
+        ],
+        [
+          340000,
+          3630000
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_ii_ANT.6",
+      "description": "ANT.16_ii_ANT.6: Maximum ratio of Metal5 perimeter area to related thick gate oxide area 400",
+      "check": "external",
+      "layer": "ANT.16_ii_ANT.6",
+      "cell": "run3_top",
+      "source_cell": null,
+      "source_path": null,
+      "bbox": {
+        "left": 180000,
+        "bottom": 3800000,
+        "right": 1214700,
+        "top": 3960000
+      },
+      "polygon": [
+        [
+          180000,
+          3800000
+        ],
+        [
+          180000,
+          3960000
+        ],
+        [
+          340000,
+          3960000
+        ],
+        [
+          340000,
+          3885000
+        ],
+        [
+          1214700,
+          3885000
+        ],
+        [
+          1214700,
+          3875000
+        ],
+        [
+          340000,
+          3875000
+        ],
+        [
+          340000,
+          3800000
+        ]
+      ]
+    }
+  ],
+  "provenance": {
+    "klt_version": "0.9.3.dev1136+g81926eccba7b",
+    "klt_git_commit": "81926eccba7bb286548dc754eeebf00b06f74fc2",
+    "klt_reinstall_spec": "klayout-tools @ git+https://github.com/2AMLogic/klayout-tools@81926eccba7bb286548dc754eeebf00b06f74fc2",
+    "klayout_version": "0.30.12",
+    "pdk": {
+      "name": "gf180mcuD",
+      "source": "search root: ~/.ciel",
+      "version": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7",
+      "ambiguous_sources": [
+        "search root: ~/.volare"
+      ]
+    },
+    "deck": {
+      "name": "gf180mcu.drc",
+      "content_hash": "sha256:e7c7d2597890cfcb4cf0e5312f5652051a119fb3e1cc1772a6e5c04594bc65d8",
+      "released": false,
+      "options": {
+        "variant": "gf180mcuD",
+        "decks": "antenna"
+      },
+      "tree": {
+        "file_count": 6,
+        "content_hash": "sha256:8af3b4875893f3ffbff639bd7e2966c5e3b9b27f70d03e86d6da46ca9510fbc4",
+        "release": null
+      }
+    },
+    "input": {
+      "content_hash": "sha256:79bc84145a1baf87116b42d7aedee9bd9c69c29b72ce4d46a5a7ab1fa0c679f8",
+      "role": "layout"
+    },
+    "klayout_version_mismatch": false
+  },
+  "native_deck": {
+    "kind": "pdk_main_script",
+    "variant": "gf180mcuD",
+    "deck_file": "/home/ubuntu/.ciel/gf180mcuD/libs.tech/klayout/tech/drc/gf180mcu.drc",
+    "deck_vars_defaulted": {
+      "variant": "gf180mcuD"
+    },
+    "min_klayout_version": "0.30.9",
+    "min_klayout_version_defaulted": true
+  }
+}
