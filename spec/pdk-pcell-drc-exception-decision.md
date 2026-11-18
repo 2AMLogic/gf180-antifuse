@@ -203,8 +203,10 @@ exception reaches today, and within it, only the 20 `nfet_10v0_asym` rows.
 - **Precheck condition (open, conditions this record).** The ruling adds:
   read wafer.space's public precheck to see whether Run 3 tapeout would
   reject these violations; if it would, the disposition goes back to the
-  operator well before the **2026-12-16** GDS date (#203). That reading is
-  **#338 step 1** (agent-doable, no contact); this record carries it as a
+  operator well before the **2026-12-16** GDS date (#203; that date applies
+  only if shuttle space is obtained — operator correction, 2026-11-17).
+  That reading is **#338 step 1** (agent-doable, no contact); this record
+  carries it as a
   condition and does **not** claim precheck acceptance. The foundry
   conversation itself is **#338 step 2** and has **not happened** — the
   operator sends; agents do not contact wafer.space. Nothing here should be
@@ -238,7 +240,8 @@ exception reaches today, and within it, only the 20 `nfet_10v0_asym` rows.
   **#211** the die-level density; `2AMLogic/klayout-tools#5721` the `DBU`
   writer default.
 - **#203** holds the external dates the precheck condition protects
-  (slot purchase 2026-12-09, GDS 2026-12-16).
+  (slot purchase 2026-12-09, GDS 2026-12-16; both apply only if shuttle
+  space is obtained).
 
 ## Provenance
 

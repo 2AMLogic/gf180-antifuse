@@ -1,9 +1,10 @@
 # Decision Record: Run 3 Test Chip Floorplan, Instance Counts and Pad Budget
 
 **Status**: Proposed for operator ratification. Adds a new chip-level floorplan
-for the Run 3 quarter-slot test chip; relaxes and amends nothing in
-`spec/cell-candidates.md`, `spec/split-axis-plan.md`, `spec/architecture.md` or
-any other ratified record. Where this chip deliberately covers less than the
+for the Run 3 test chip (quarter-slot target; space not yet secured);
+relaxes and amends nothing in `spec/cell-candidates.md`,
+`spec/split-axis-plan.md`, `spec/architecture.md` or any other ratified
+record. Where this chip deliberately covers less than the
 ratified 32x32 plan, that is stated as a chip-level scope cut (the array is out
 of scope for this chip per #203), not as a change to the plan.
 **Date**: 2026-10-29
