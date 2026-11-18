@@ -29,7 +29,11 @@ decks=all,-mslot`, released `klayout-tools==0.9.2`, KLayout 0.30.13, PDK
 deck tree hash `sha256:8af3b4875893f3ffbff639bd7e2966c5e3b9b27f70d03e86d6da46ca9510fbc4`),
 first measured 2026-11-14 (#299), re-verified 2026-11-16 at `6dbddcc3`
 (Curator) and again at this record's base `2ca60fce` (Builder) — census
-unchanged. Coverage of candidates 1 and 3 measured the same day from their
+unchanged at those bases. Re-verified 2026-11-18 at `33043bf6` (Builder;
+report stamps klt 0.9.2, KLayout 0.30.13): 25 native findings — #296's
+clearing commit `2a8614fc` (2026-11-17) drew the ratified capacitor levels,
+removing the two `cap__core` rows from the report; the 20 covered rows are
+unchanged. Coverage of candidates 1 and 3 measured 2026-11-16 from their
 committed reports.
 
 ## Problem
@@ -95,7 +99,7 @@ python3 -I -c "import json,collections,sys; d=json.load(open(sys.argv[1])); \
 
 Rows whose cell is a PDK PCell's own cell name are covered; all other rows
 are not. The key is `cell`, deliberately, and **not** `source_cell`: the
-native report leaves `source_cell` `null` on all 27 findings and carries no
+native report leaves `source_cell` `null` on all 25 findings and carries no
 `source_cell_rollup` — only the *curated* report populates those fields, so
 a classifier keyed on `source_cell` would silently match nothing. In the
 native report, `cell` *is* the attribution of where the geometry lives.
@@ -111,10 +115,13 @@ The line is **who can change the geometry without hand-editing shapes**.
 - A `--pdk-pcell` instance's internal construction is **the PDK's**: the
   PDK's own generator script draws the stripes, contacts and gates inside
   the instance, and this repo can pass only the parameters the PCell
-  exposes. Measured contrast, both on candidate 2: the capacitor's 0.42 um
-  COMP width (`cap__core`, the `DF.1c` finding) is a generator parameter
-  this repo controls; the 0.22 um drain-stripe contact geometry that `CO.4`
-  fires on is internal PCell construction — `layout/cell_candidate2/generate.py`
+  exposes. Measured contrast, both on candidate 2: the capacitor's COMP
+  width is a generator parameter this repo controls — the 0.42 um the repo
+  drew before #296 is the width the `cap__core` `DF.1c` finding fired on
+  (historical: #296's commit `2a8614fc` drew the ratified 1.0 um level and
+  that finding no longer fires); the 0.22 um drain-stripe contact geometry
+  that `CO.4` fires on is internal PCell construction —
+  `layout/cell_candidate2/generate.py`
   (lines 96-99) passes only `{"w": W_ACC, "l": L_ACC}` to
   `klt gen --pdk-pcell gf180mcu_klayoutapi/nfet_10v0_asym`, and no exposed
   parameter moves the contacts.
@@ -131,10 +138,16 @@ the Evidence preamble:
 | `PL.4_MV` | `PL.4_MV : Extension beyond COMP to form Poly2 end cap. : 0.22µm` | `nfet_10v0_asym` | 2 |
 
 Total: 20 covered findings, all inside `nfet_10v0_asym`, measured
-2026-11-14, re-verified 2026-11-16 at `6dbddcc3` and again at `2ca60fce`.
-The same report carries, **not covered**, `cap__core` {`DF.1c`, `PL.2_MV`}
-(2), and `cell_candidate2` {`DBU`, `M1.4`, `M2.4`, `M3.4`, `MT30.7`} (5) —
-27 findings reported in total, all still reported.
+2026-11-14, re-verified 2026-11-16 at `6dbddcc3`, at `2ca60fce`, and again
+2026-11-18 at `33043bf6` (klt 0.9.2 / KLayout 0.30.13 report stamps) —
+unchanged. The same report carries, **not covered**, `cell_candidate2`
+{`DBU`, `M1.4`, `M2.4`, `M3.4`, `MT30.7`} (5) — 25 findings reported in
+total at `33043bf6`, all still reported. The census this record originally
+pinned at `2ca60fce` (2026-11-16) was 27: it additionally carried
+`cap__core` {`DF.1c`, `PL.2_MV`} x1 each, which #296's clearing commit
+`2a8614fc` (2026-11-17) removed from the report by drawing the ratified
+capacitor levels — a composition change to the *uncovered* findings, with
+the 20 covered rows unaffected.
 
 **A changed census must be re-recorded against the new report, never
 assumed covered.** The exception attaches to the *class* (findings inside
@@ -149,10 +162,12 @@ boundary.
 
 Each limit has an owner; none is waved through by this record:
 
-- **Every repo-drawn shape.** The `cap__core` `DF.1c` and `PL.2_MV`
-  findings are the standing example: repo-drawn capacitor geometry under
-  rules this repo can satisfy, owned by #296 (levels ratified in #294),
-  and still blocking candidate 2's DRC-clean criterion.
+- **Every repo-drawn shape.** The limit stays in force whether or not such
+  a finding exists today. Its standing example — the `cap__core` `DF.1c`
+  and `PL.2_MV` findings on repo-drawn capacitor geometry under rules this
+  repo can satisfy, owned by #296 (levels ratified in #294) — was resolved
+  by #296's clearing commit `2a8614fc` (2026-11-17): both rows are gone
+  from the committed candidate-2 report (the 25-findings census above).
 - **Die-level density** `M1.4` / `M2.4` / `M3.4` / `MT30.7`: a standalone
   cell trips them by construction; they become meaningful at chip assembly
   with dummy fill — **#211**.
@@ -166,7 +181,7 @@ Each limit has an owner; none is waved through by this record:
 
 And the invariants this record fixes, in all cases: **no waiver is applied,
 no rule is disabled, no PCell shape is hand-edited and no device is
-substituted.** The committed reports keep reporting all 27 findings; the
+substituted.** The committed reports keep reporting all 25 findings; the
 exception changes how they are *dispositioned*, never what is measured.
 
 ### Bounded by construction, shown to be
@@ -177,7 +192,7 @@ reports (2026-11-16, at `2ca60fce`):
 | Report | Native findings | Covered findings |
 |---|---|---|
 | `layout/cell_candidate1/drc_crosscheck_report.json` | 6 (`mos_array` `DF.1c` x1; `cell_candidate1` `DBU`/`M2.4`/`M3.4`/`MT30.7`/`PL.8`) | **0** |
-| `layout/cell_candidate2/drc_crosscheck_report.json` | 27 | 20 (all `nfet_10v0_asym`) |
+| `layout/cell_candidate2/drc_crosscheck_report.json` | 25 (2026-11-18, at `33043bf6`; 27 at the `2ca60fce` writing base — #296's `2a8614fc` removed the two `cap__core` rows) | 20 (all `nfet_10v0_asym`) |
 | `layout/cell_candidate3/drc_crosscheck_report.json` | 12 (`mos_array` `DF.1c` x1; `mos_array$1` `DF.4d_MV` x5 + `DV.6` x1; `cell_candidate3` `DBU`/`M2.4`/`M3.4`/`MT30.7`/`PL.8`) | **0** |
 
 Candidates 1 and 3 instantiate no PDK PCell at all — their findings sit in
