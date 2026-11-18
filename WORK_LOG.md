@@ -5,6 +5,22 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-18
 
+- **PR #413**: check: pin README-quoted VB-strap and gate-pad intervals to the committed GDS
+- **Issue #407** (closed): No check ties layout/README.md's quoted geometry intervals to the committed GDS (three hand-found drifts: #378, #391, #401)
+- **PR #411**: docs(sim): correct stale klt concurrency-cap retry comment in cell-breakdown-model
+- **Issue #300** (closed): Decide whether sim/program-read-legs requests should carry a klt-side batch.capacity_wait_s
+- **PR #410**: docs(spec): repoint CN ring-gap citations at the shared point modules
+- **Issue #409** (closed): spec/capacitor-geometry-decision.md cites the candidate-1/3 generate.py shims for CN gap-span measurements that now live in the points modules
+- **PR #403**: refactor(layout): share candidate-3 geometry via a candidate3_points table
+- **Issue #397** (closed): Consolidate the two candidate-3 generators onto a shared point table (as #315 did for candidate 1)
+- **PR #405**: docs: correct candidate-1 VB-strap metal band bottoms in layout README
+- **Issue #401** (closed): layout: candidate-1 family VB-strap bullet quotes access north-band bottoms 0.04 um low (README:426-437)
+- **PR #402**: layout: assemble the Run 3 test chip (run3_top.gds) with DRC/LVS/ERC evidence
+- **Issue #211** (closed): Run 3 test chip: full-chip assembly with DRC/LVS through klt
+- **PR #400**: docs(layout): correct Amin_G2x VB-strap rationale to the measured spacing constraint
+- **Issue #391** (closed): layout: cell_candidate3_Amin_G2x's VB-strap rationale says the cap gate pad sits BETWEEN the two ring north bands; measured, it now sits below both
+- **PR #398**: docs: sync signoff README 3.analog row with the committed 5-finding DRC report
+- **Issue #396** (closed): signoff/README.md's 3.analog rationale is stale: it cites candidate 1's DF.1c and "6 findings", but the committed drc_native_report.json has 5 and no DF.1c (#287 is closed)
 - **PR #386**: docs: refresh candidate-1/3 native DRC finding counts in ROADMAP and PCell-exception record
 - **Issue #383** (closed): docs/spec: the native-finding count tables in docs/ROADMAP.md and spec/pdk-pcell-drc-exception-decision.md are stale for candidates 1 and 3 (DF.1c cleared by #296, DF.4d_MV/DV.6 by #297)
 - **Issue #287** (closed): Native PDK runset finds real DRC violations in all three bitcells that the curated deck misses: MOSCAP COMP width (all 3), 6 V gate length (cand 2), Nwell overlap and Dualgate enclose (cand 3)

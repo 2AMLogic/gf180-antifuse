@@ -52,7 +52,7 @@ DX = 4.2           # um, access-block x offset (keeps Pplus spacing >= 0.4).
 # capacitor levels moved to the ratified 1.0/2.0 um). The tap ring's metal1
 # north band tracks the device width as centre = W + 2.28 um at all four
 # widths the grid draws. The same relation recurs in
-# cell_candidate3_Amin_G2x/generate.py at a different flavor, DX and L_ACC, so
+# layout/candidate3_points.py at a different flavor, DX and L_ACC, so
 # this is a tap-ring property, not a per-cell accident. A plain dict on
 # purpose: spec/split-axis-plan.md sections 2-3 ratify exactly two levels per
 # axis, so these entries cover the whole ratified grid, and an unmeasured

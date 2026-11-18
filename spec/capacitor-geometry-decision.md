@@ -191,14 +191,15 @@ reports; probes ran with output outside the repo and left it clean):
 | capacitor, Minimum | 1.0 | 0.01..1.01 |
 | capacitor, 2x | 2.0 | 0.51..1.51 |
 
-consistent with the committed `klt gen mos_array` measurements at
-W = 0.42 and 0.84 um recorded in
-`layout/cell_candidate1_Amin_G2x/generate.py` and
-`layout/cell_candidate3_Amin_G2x/generate.py` (-0.28..0.72 and
--0.07..0.93): the gap centre is W/2 + 0.01 um at all four measured
-widths, and the span depends on width, not flavor — the committed pair
-is identical across thin-oxide nfet/pfet capacitors and medium-voltage
-nfet/pfet access devices.
+consistent with the committed `klt gen mos_array` measurements the
+families' shared point modules record: `layout/candidate1_points.py`
+tabulates all four widths (-0.28..0.72 at W = 0.42, -0.07..0.93 at
+0.84 — the only record of that span — 0.01..1.01 at 1.0 and
+0.51..1.51 at 2.0), and `layout/candidate3_points.py` independently
+records -0.28..0.72 at the W = 0.42 um access device: the gap centre
+is W/2 + 0.01 um at all four measured widths, and the span depends on
+width, not flavor — the committed pair is identical across thin-oxide
+nfet/pfet capacitors and medium-voltage nfet/pfet access devices.
 
 At **Minimum** (W_CAP = 1.0 um) the cap/access gap intersection is
 0.01..0.72 um: a single-rectangle `CN` fits, inside a 0.25 um-tall
@@ -309,3 +310,10 @@ composed-cell consequence.
   provenance-stamped in #287. The thin-oxide minimum (`PL.2_LV`, gate
   length 0.28 um) is cited from the native runset deck directly
   (`poly2.rb` of PDK `gf180mcuA`), since #287 quotes no rule for it.
+- Ring-gap citations in the CN-strap clearance paragraph repointed
+  2026-11-18 (#409): the paragraph first named the per-point
+  `cell_candidate1_Amin_G2x` / `cell_candidate3_Amin_G2x`
+  `generate.py` files, which the #315/#403 consolidations left as
+  point-table shims — the spans live in the shared point modules named
+  above, and -0.07..0.93 (W = 0.84) was only ever recorded on the
+  candidate-1 side. Attribution fix only; no measured value changed.

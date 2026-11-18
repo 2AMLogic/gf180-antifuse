@@ -11,7 +11,7 @@ Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a h
 
 `loom:very-important` (one counts per workspace); every stage takes these first.
 
-- **#207**: Run 3 test chip: Candidate 2 and Candidate 3 bitcell layouts *(held)*
+_None._
 
 ## Important
 
@@ -19,8 +19,6 @@ Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a h
 
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4)
 - **#203**: wafer.space Run 3 quarter slot (space not yet secured; GDS 2026-12-16 only if obtained): cut-down antifuse breakdown test chip
-- **#211**: Run 3 test chip: full-chip assembly with DRC/LVS through klt *(held)*
-- **#372**: Run 3 fallback: a variant that passes the native runset without candidate 2's nfet_10v0_asym findings (decide by 2026-12-01)
 
 ## Ready
 
@@ -33,15 +31,16 @@ Human-approved issues (`loom:issue`) ready for implementation — excluding held
 Issues currently being built (`loom:building`).
 
 - **#255**: Measurement plan: constant-voltage time-to-breakdown statistics (Weibull slope, voltage acceleration) and a sub-programming soak
-- **#372**: Run 3 fallback: a variant that passes the native runset without candidate 2's nfet_10v0_asym findings (decide by 2026-12-01)
-- **#373**: layout/erc: cell_candidate2 shares candidate 1's supplies.json, so its Region-I missing_tie 'clean' covers only ~45% of its drawn tap area
+- **#404**: Chip-level native DRC findings in repo-drawn geometry (antenna, die-level density, CUP.2) have no tracking work
+- **#414**: Geometry-claims checker does not tie readme_quote's numbers to bbox_um — a coordinated prose+sidecar edit still passes
 
 ## PRs Awaiting Review
 
 PRs waiting on Judge (`loom:review-requested`).
 
 - **#347**: docs: sourced wafer.space Run 3 precheck reading (would-reject verdict)
-- **#375**: fix: give cell_candidate2 its own fitted ERC supply spec (supplies_c2.json)
+- **#416**: layout: fix the run3 chip-level findings the precheck's own stages enforce
+- **#417**: checker: pin readme_quote numerals to bbox_um via per-claim quote_values
 
 ## Approved (Awaiting Merge)
 
@@ -53,29 +52,26 @@ PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
 Issues carrying `loom:curated`.
 
-- **#12**: Champion: Merge-Risk Hold Digest *(curated)* *(held)*
+- **#12**: Champion: Merge-Risk Hold Digest *(curated)*
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4) *(curated)*
-- **#99**: Re-qualify reference sim records under open_pdks f6eeac7 as new records *(curated)* *(held)*
-- **#117**: T1 items 1 and 9 (analog partition): attest the cell sources and testbenches with klt signoff --attest *(curated)* *(held)*
-- **#176**: T1 item 4 (LVS clean, digital partition): klt lvs against the gate-level netlist with power_connectivity *(curated)* *(held)*
-- **#207**: Run 3 test chip: Candidate 2 and Candidate 3 bitcell layouts *(curated)* *(held)*
+- **#99**: Re-qualify reference sim records under open_pdks f6eeac7 as new records *(curated)*
+- **#117**: T1 items 1 and 9 (analog partition): attest the cell sources and testbenches with klt signoff --attest *(curated)*
+- **#176**: T1 item 4 (LVS clean, digital partition): klt lvs against the gate-level netlist with power_connectivity *(curated)*
 - **#255**: Measurement plan: constant-voltage time-to-breakdown statistics (Weibull slope, voltage acceleration) and a sub-programming soak *(curated)*
-- **#300**: Decide whether sim/program-read-legs requests should carry a klt-side batch.capacity_wait_s *(curated)* *(held)*
-- **#313**: sim/program-read-legs: capacity_wait_s spends the same per-submit subprocess budget as the run, and a subprocess timeout is not retried *(curated)* *(held)*
-- **#316**: Follow-on: establish the foreign-host re-run byte-identity evidence for the shared report scrubber (PR #309 / #285 step 5) *(curated)* *(held)*
-- **#338**: wafer.space: precheck treatment and foundry conversation on the unmodified nfet_10v0_asym PCell's CO.4/DF.6_MV/PL.4_MV findings (#299) *(curated)* *(held)*
-- **#372**: Run 3 fallback: a variant that passes the native runset without candidate 2's nfet_10v0_asym findings (decide by 2026-12-01) *(curated)*
-- **#373**: layout/erc: cell_candidate2 shares candidate 1's supplies.json, so its Region-I missing_tie 'clean' covers only ~45% of its drawn tap area *(curated)*
+- **#313**: sim/program-read-legs: capacity_wait_s spends the same per-submit subprocess budget as the run, and a subprocess timeout is not retried *(curated)*
+- **#316**: Follow-on: establish the foreign-host re-run byte-identity evidence for the shared report scrubber (PR #309 / #285 step 5) *(curated)*
+- **#338**: wafer.space: precheck treatment and foundry conversation on the unmodified nfet_10v0_asym PCell's CO.4/DF.6_MV/PL.4_MV findings (#299) *(curated)*
+- **#404**: Chip-level native DRC findings in repo-drawn geometry (antenna, die-level density, CUP.2) have no tracking work *(curated)*
+- **#414**: Geometry-claims checker does not tie readme_quote's numbers to bbox_um — a coordinated prose+sidecar edit still passes *(curated)*
 
 ## Proposed (Architect / Hermit)
 
-- **#267**: Remove sim/run_corners.py: dispatcher registers 4 of 8 experiments and only forwards to drivers that run directly *(hermit)* *(held)*
-- **#280**: Remove the second copy of the GDS drift-check driver in layout/cell_candidate2/generate.py (reuse bitcell_gen) *(hermit)* *(held)*
-- **#301**: Route run_klt_campaign through harness.klt; drop manual --resume resubmit *(hermit)* *(held)*
+- **#267**: Remove sim/run_corners.py: dispatcher registers 4 of 8 experiments and only forwards to drivers that run directly *(hermit)*
+- **#301**: Route run_klt_campaign through harness.klt; drop manual --resume resubmit *(hermit)*
 
 ## Epics
 
-- **#10**: Track the gap to T1 sim-validated / bronze (klayout-tools design-evidence tiers) *(held)*
+- **#10**: Track the gap to T1 sim-validated / bronze (klayout-tools design-evidence tiers)
 - **#203**: wafer.space Run 3 quarter slot (space not yet secured; GDS 2026-12-16 only if obtained): cut-down antifuse breakdown test chip
 
 ## Backlog Balance
@@ -83,14 +79,14 @@ Issues carrying `loom:curated`.
 | Bucket | Count |
 |------|-------|
 | Operator merge-risk holds | 1 |
-| Very important | 1 |
-| Important | 4 |
-| Ready (`loom:issue`, net of holds/building/merge-pending) | 1 |
+| Very important | 0 |
+| Important | 2 |
+| Ready (`loom:issue`) | 1 |
 | In Progress (`loom:building`) | 3 |
-| PRs awaiting review | 2 |
+| PRs awaiting review | 3 |
 | Approved PRs awaiting merge | 1 |
-| Curated | 13 |
-| Architect / Hermit proposals | 3 |
+| Curated | 11 |
+| Architect / Hermit proposals | 2 |
 | Active epics | 2 |
 <!-- guide:plan-body:end -->
 
