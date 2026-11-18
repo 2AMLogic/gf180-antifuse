@@ -114,14 +114,23 @@ Y_TAP_ACC = 2.70 + DPAD  # access block TAP_N pad centre: 2.70 at W_ACC and
 # stays 0.96 um wide (DX tracks DPAD) and the riser (x 3.02 + DPAD ..
 # 3.48 + DPAD) clears both by >= 0.25 um at every padding. The access row
 # (y 0.0..0.45) clears its gap by >= 0.27 um and overlaps the access D pad
-# (x 0.86..1.28, y 0..0.42); the cap row (y 0.78..1.25) clears its gap by
-# >= 0.26 um and overlaps both capacitor S/D pads (each as tall as W_CAP).
+# (x 1.13..1.55, y 0..0.42, measured off the committed GDS; the BL/U0_S pad
+# is x 0..0.42 -- the old 0.86..1.28 range was the capacitor block's second
+# S/D pad column, not the access device's); the cap row (y 0.78..1.25) clears
+# its gap by >= 0.26 um and overlaps both capacitor S/D pads (each as tall as
+# W_CAP).
 
 # VB cannot be one flat band here either: the capacitor's metal1 gate pad
-# (x DX + 0.43..DX + 0.85, y W_CAP + 0.75..W_CAP + 1.17 = 2.75..3.17) sits
-# BETWEEN the two rings' metal north bands (access metal y 2.45 + DPAD ..
-# 2.91 + DPAD over the raised ring, capacitor metal y 4.03..4.49), and a band
-# spanning both would sweep through it and short PL to VB. Two stacked bands
+# (x DX + 0.43..DX + 0.85, y W_CAP + 0.75..W_CAP + 1.17 = 2.75..3.17) is NOT
+# between the rings' metal north bands -- the raised access band (y 3.28..3.70
+# = 2.49 + DPAD .. 2.91 + DPAD, measured off the committed GDS) sits entirely
+# above it, 0.11 um clear. A band spanning both TAP_N pads (y 3.28..4.49) is
+# stopped by SPACING, not a short: it overlaps the pad in x (band right edge
+# DX + 0.79 = 6.38 > pad left 6.02) while its bottom edge clears the pad top
+# by only 0.11 um, under metal1.space.1 (0.23 um) -- measured on the scratch
+# single-flat-band variant: exactly one metal1.space.1 finding, bbox
+# (5.818,3.170)-(6.440,3.280) um (klt drc --deck gf180mcu; the committed GDS
+# is clean on the same rule). Two stacked bands
 # -- one per ring, each over its TAP_N pad -- joined by a riser at
 # x 3.05 + DPAD .. 3.45 + DPAD (left of the capacitor ring's metal edge,
 # clear of the gate pad and both CN rows) connect them instead.
