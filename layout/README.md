@@ -428,8 +428,8 @@ one shared derivation in `layout/candidate1_points.py` (`straps()` +
   At capacitor-1.0 points one band spanning both pads
   (`min(y) - 0.21` .. `max(y) + 0.21`) still clears the capacitor's metal1
   gate pad (y W + 0.75..W + 1.17) by >= 0.32 um. At capacitor-2.0 points that
-  gate pad (y 2.75..3.17) sits **between** the two rings' metal north bands
-  (access 2.45..2.91 or 2.87..3.33, capacitor 4.03..4.49), so the flat band
+  gate pad (y 2.75..3.17) overlaps the lower of the two rings' metal north
+  bands (access 2.49..2.91 or 2.91..3.33, capacitor 4.07..4.49), so the flat band
   would sweep through it and short PL to VB; there VB is two stacked bands --
   one per ring, each over its TAP_N pad -- joined by a riser at
   x 1.10..1.50, right of the gate pad. (Measured metal1 shapes of the
@@ -684,11 +684,20 @@ families' x extents differ):
   capacitor-side band through the capacitor ring's gap (y 0.78..1.25, >= 0.26
   um clear). Measured DRC-proven at the committed geometry: no `metal1.space.1`
   or any other strap finding in the cross-check.
-- **`VB` tap-ring strap -- stacked.** The capacitor's metal1 gate pad
-  (x DX+0.43..DX+0.85, y 2.75..3.17) sits **between** the two rings' metal
-  north bands (access 2.45 + DPAD .. 2.91 + DPAD = 3.24..3.70 over the raised
-  ring, capacitor 4.03..4.49), so one flat band spanning both TAP_N pads would
-  sweep through it and short PL to VB. Two stacked bands -- one per ring, each
+- **`VB` tap-ring strap -- stacked.** One flat band spanning both TAP_N pads
+  (y 3.28..4.49 at the committed padding) would fail `metal1.space.1`
+  (0.23 um) against the capacitor's metal1 gate pad (x DX+0.43..DX+0.85,
+  y 2.75..3.17): the band overlaps the pad in x (band right edge DX+0.79 =
+  6.38 > pad left 6.02) but its bottom edge (3.28, the raised access band's
+  level) clears the pad top (3.17) by only **0.11 um** -- measured on a
+  scratch single-flat-band variant through `klt drc --deck gf180mcu`:
+  exactly one `metal1.space.1` finding, bbox (5.818,3.170)-(6.440,3.280) um
+  (the committed GDS is clean on the same rule). The pad is **not between**
+  the two rings' metal north bands (access 3.28..3.70 = 2.49 + DPAD ..
+  2.91 + DPAD at the raised ring, capacitor 4.07..4.49, both measured off
+  the committed GDS): the access band sits entirely above the pad top 3.17,
+  so the constraint is spacing, not the sweep-through short the
+  default-padding geometry had. Two stacked bands -- one per ring, each
   over its TAP_N pad (the access one riding the raised ring via
   `Y_TAP_ACC = 2.70 + DPAD` = 3.49, measured off `klt gen mos_array`) -- joined
   by a riser at x 3.05 + DPAD .. 3.45 + DPAD = 3.84..4.24 connect them
@@ -1117,3 +1126,29 @@ The `--deck-var decks=all,-mslot` var is the standard one (the metal-slotting
 deck aborts on this 3LM variant regardless of content, upstream
 2AMLogic/klayout-tools#5091); no rule was turned off, nothing waived, no
 shape hand-edited.
+
+## run3_top/ -- the Run 3 chip assembly (issue #211, part of #203)
+
+`layout/run3_top/` holds the chip-level artifacts: the #275 reference netlist
+and pad table (`run3_top.spice`, `pad_table.json`, `generate_run3_top.py` --
+see that directory's README for their provenance), and, since #211, the
+**assembled chip**: `assemble_run3_top.py` builds `run3_top.gds` (quarter-slot
+outline, 48-slot pad ring + the template's 8 power pads, the 31 placed cell
+instances, HV plate routes and the shared/tie routing) plus
+`lvs_reference_drawn.spice`, deterministically, with `--check` byte-compare.
+Its README records the physical pad mapping, the template-page provenance
+(read 2026-11-18; page stamped "Generated: 24 Oct 2026 01:02 UTC"), the
+routing planes, and the evidence table: `compose_report.json` (every routing
+leg routed and landed), `lvs_request.json`/`lvs_report.json` (inline
+extraction, flattened compare against the derived 31-instance reference:
+**`match`**), `drc_report.json` (curated deck: 80 findings, all
+`comp.enclosing.contact.1` inside the unmodified `nfet_10v0_asym` PCell
+instances -- the geometry class `spec/pdk-pcell-drc-exception-decision.md`
+scopes), `drc_native_report.json` (native runset per #287: die-level density
+on a ~89 %-whitespace die, the same PCell class, 29 antenna-ratio findings on
+the shared word lines -- reported, none waived),
+`supplies.json`/`erc_report.json` (chip ERC extending the `layout/erc/`
+convention: `erc_status: clean`), and `economy_report.json` (density).
+The five instances of the undrawn `cell_candidate2_Amin_G2x` are excluded
+from the assembly and from the LVS reference, named in the reference header;
+a full 36-instance match is blocked until that cell is drawn.
