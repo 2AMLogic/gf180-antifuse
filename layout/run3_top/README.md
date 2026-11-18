@@ -191,7 +191,7 @@ than by that test.
 | `lvs_request.json`, `lvs_report.json` | `klt lvs`, inline extraction, reference `subckt-call` against `lvs_reference_drawn.spice`, flattened both sides, `combine_devices` on (the LDMOS extracts as two per-finger devices, #5277): **status `match`** — the substrate tap extracts as no device (tied to `VSS_ANALOG`, never to a signal net) | `klt lvs lvs_request.json --format json > lvs_report.json` |
 | `drc_report.json` | curated deck `klt drc --deck gf180mcu`: `violations`, 80 findings — **all** `comp.enclosing.contact.1` inside the unmodified `nfet_10v0_asym` PCell instances (16 per C2 cell), the geometry class the ratified `spec/pdk-pcell-drc-exception-decision.md` scopes; nothing drawn by this assembly appears | `klt drc run3_top.gds --deck gf180mcu --top run3_top -o drc_report.json --format json` |
 | `drc_stage_report.json` | the precheck's gating DRC stage reproduced: native runset at `gf180mcuD`, decks `all,-antenna,-density,-cup` (the precheck's own selection, `precheck.py` at `9b4e7dab`) — `CO.4`/`DF.6_MV`/`PL.4_MV` inside the PCell instances (ratified exception class), `DBU` (klt dbu convention, `2AMLogic/klayout-tools#5721`), and **nothing drawn by this assembly** — the 40 `MT.1` findings the landing patches answer are gone | `klt drc run3_top.gds --engine klayout --top run3_top --pdk gf180mcuD --deck-var decks=all,-antenna,-density,-cup -o drc_stage_report.json --format json` |
-| `drc_antenna_report.json` | the precheck's gating antenna stage reproduced (decks `antenna`, same runset): both groups **recorded, not fixed** — the shared-WL `ANT.16_ii_ANT.4` findings (29, ratios 428–1034 against the 400 limit) and the private-plate Metal5 group `ANT.16_i_ANT.6` (26) + `ANT.16_ii_ANT.6` (5), ratios 2028–7820: see "Precheck applicability" | `klt drc run3_top.gds --engine klayout --top run3_top --pdk gf180mcuD --deck-var decks=antenna -o drc_antenna_report.json --format json` |
+| `drc_antenna_report.json`, `drc_antenna_stage.lyrdb`, `drc_antenna_stage.log` | the precheck's gating antenna stage reproduced (decks `antenna`, same runset): both groups **recorded, not fixed** — the shared-WL `ANT.16_ii_ANT.4` findings (29, ratios 428–1034 against the 400 limit) and the private-plate Metal5 group `ANT.16_i_ANT.6` (26) + `ANT.16_ii_ANT.6` (5), ratios 2031–7822: see "Precheck applicability". The measured ratios are **not in the JSON**: klt's envelope keeps each finding's category/description/polygon and drops both the deck's stdout and the RDB's per-item values (`2AMLogic/klayout-tools#6613`), so the ratio of record is the companion `.lyrdb` — every finding carries `#RATIO`/`#ANT_PERIMETER`/`#GATE_AREA` (measured 428.36–1034.19; private plates 2030.99–7822.30 across the thin+thick pair) — captured with the deck's own stdout `.log`, exactly the density stage's arrangement | `klt drc run3_top.gds --engine klayout --top run3_top --pdk gf180mcuD --deck-var decks=antenna -o drc_antenna_report.json --format json` + the `klayout -b` invocation recorded in the log |
 | `drc_density_report.json`, `drc_density_stage.log` | the precheck's gating density stage (decks `density`): klt's JSON carries `rule_counts` `{}` (0 findings) with `status: coverage_unknown` — a native deck run that finds nothing declares no categories, so klt cannot prove execution from the RDB alone (`--expect-rule-categories` refuses 0); the companion `.log` is the deck's own stdout: every coverage ratio logged well above its floor (COMP 51.3 %, Poly2 15.7 %, Metal1–4 48.9–50.9 %, Metal5/MetalTop 53.0 %) and `DRC RESULT: SUCCESS (0 violations)` | `klt drc run3_top.gds --engine klayout --top run3_top --pdk gf180mcuD --deck-var decks=density -o drc_density_report.json --format json` + the `klayout -b` invocation recorded in the log |
 | `supplies.json`, `erc_report.json` | chip-level ERC spec extending the `layout/erc/` convention: p-substrate tie over the left column (net `VSS_ANALOG`, now reaching the C3 substrate tap), n-well tie over the right column (net `VBW_C3`); `erc_status: clean`, all 35 gates float-checked; antenna-ratio verdicts stay `unchecked` here (the build ships no gf180mcu limit table for `klt erc`) — the antenna verdict of record is `drc_antenna_report.json` above | `klt erc run3_top.gds supplies.json --top run3_top --pdk gf180mcu --deck gf180mcu --format json > erc_report.json` (exit 4 = not-checked verdict, not a tool failure) |
 | `economy_report.json` | `klt economy` density/utilisation: 4.90 mm2 die, ~78 % drawn after fill | `klt economy run3_top.gds --format json > economy_report.json` |
@@ -226,12 +226,20 @@ Measured dispositions, per group:
 
 1. **Antenna (WL trunks) — applies, evaluated, deferred (needs operator).**
    `ANT.16_ii_ANT.4` (Metal3 perimeter area vs thick gate oxide, 400) fired
-   on all four shared WL trunks (ratios 428–1034). The numeric remedy is
+   on all four shared WL trunks (ratios 428–1034, per-finding `#RATIO` in
+   `drc_antenna_stage.lyrdb`). The numeric remedy is
    one n-diode clamp per WL net (COMP-in-NPLUS outside NWELL, the deck's
    own `n_diode` definition); the deck's diode filtering divides the ratio
    by `gate + 15·(n_diode + p_diode + nwell)`, so a 0.6 µm COMP body clears
    the worst net (needs ≥ 0.245 µm²) with margin — evaluated in
-   `assemble_run3_top.py`'s constant block, deliberately **not drawn**.
+   `assemble_run3_top.py`'s constant block and **measured** in the #416
+   round that drew the clamps (`9f5dc932`, superseded when the clamp was
+   un-drawn for deferral): that round's report is re-committed as
+   `drc_antenna_after_wl_diode_clamp_report.json` — its input is the
+   diode-drawn GDS (sha256 `79bc8414…`, recoverable as
+   `9f5dc932:layout/run3_top/run3_top.gds`), and its `rule_counts` carry
+   no `ANT.16_ii_ANT.4` (after: 0) with the private-plate group unchanged.
+   The clamp is deliberately **not drawn** in the committed layout.
    Splitting the M3 trunks was rejected arithmetically: the ratio is per
    net, and a net keeps its whole Metal3 perimeter however the trunks are
    cut. Not drawn for the same reason as group 2: the WL pads (L41–L44,
@@ -250,7 +258,8 @@ Measured dispositions, per group:
    group either way).
 2. **Antenna (private plates) — applies, evaluated, deferred (needs
    operator).** The same stage flags the 31 private-plate Metal5 routes
-   (`ANT.16_i_ANT.6` ×26, `ANT.16_ii_ANT.6` ×5; ratios 2028–7820 — the caps'
+   (`ANT.16_i_ANT.6` ×26, `ANT.16_ii_ANT.6` ×5; ratios 2031–7822, per-finding
+   `#RATIO` in `drc_antenna_stage.lyrdb` — the caps'
    plates are gates, and a ~470 µm Metal5 run over a ~0.3–0.7 µm² plate
    cannot meet 400 on any layer). The numeric remedy is the same diode
    credit (~0.35 µm² per net), but the #210 record puts **no on-die
