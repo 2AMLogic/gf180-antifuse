@@ -56,15 +56,12 @@ Usage:  generate.py            write cell_candidate2_fallback.gds next to
 Requires `klt` on PATH. Run with `uvx --from klayout-tools==0.9.2 klt` to
 pin (put a wrapper for the pinned version on PATH; see layout/README.md).
 """
-import argparse
 import json
 import os
-import shutil
 import sys
-import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import bitcell_gen as bg  # noqa: E402  shared helpers (run, sha, PDK, layers)
+import bitcell_gen as bg  # noqa: E402  shared klt flow + --check (layout/bitcell_gen.py)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 GDS = "cell_candidate2_fallback.gds"
@@ -140,12 +137,6 @@ def cap_params(w_um, gap_side):
 
 
 def build(workdir):
-    def w(name, obj):
-        p = os.path.join(workdir, name)
-        with open(p, "w") as fh:
-            fh.write(obj if isinstance(obj, str) else json.dumps(obj))
-        return p
-
     blocks = (("cap_gmin", W_GMIN, "E"), ("cap_g2x", W_G2X, "W"))
     for name, width, side in blocks:
         out = bg.run(["klt", "gen", "mos_array", "--pdk", bg.PDK,
@@ -153,41 +144,13 @@ def build(workdir):
                       "--cell-name", name,
                       "-o", os.path.join(workdir, name + ".gds"),
                       "--format", "json"])
-        w(name + ".json", out)
-    sp = w("straps_params.json", STRAPS)
-    straps = bg.run(["klt", "draw", "--params", sp, "--cell-name", "straps",
-                     "-o", os.path.join(workdir, "straps.gds"), "--format", "json"])
-    w("straps.json", straps)
-    req = {
-        "schema": "klt.gen_compose.request/1", "pdk": {"variant": bg.PDK},
-        "blocks": [{"id": b, "generator_report": b + ".json"}
-                   for b, _, _ in blocks] + [{"id": "straps", "generator_report": "straps.json"}],
-        "placement": {"strategy": "explicit",
-                      "order": ["cap_gmin", "cap_g2x", "straps"],
-                      "origins_um": {"cap_gmin": {"x": 0, "y": 0},
-                                     "cap_g2x": {"x": DX, "y": 0},
-                                     "straps": {"x": 0, "y": 0}}},
-        "pins": [],
-        "options": {"cell_name": CELL, "output": os.path.join(workdir, GDS)},
-    }
-    bg.run(["klt", "gen-compose", w("compose.json", req), "--format", "json"])
-    return os.path.join(workdir, GDS)
+        with open(os.path.join(workdir, name + ".json"), "w") as fh:
+            fh.write(out)
+    bg.draw_straps(workdir, STRAPS)
+    return bg.compose(workdir, GDS, CELL, [b for b, _, _ in blocks] + ["straps"],
+                      {"cap_gmin": {"x": 0, "y": 0}, "cap_g2x": {"x": DX, "y": 0},
+                       "straps": {"x": 0, "y": 0}}, [])
 
 
 if __name__ == "__main__":
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--check", action="store_true")
-    args = ap.parse_args()
-    committed = os.path.join(HERE, GDS)
-    with tempfile.TemporaryDirectory() as tmp:
-        new = build(tmp)
-        if args.check:
-            if not os.path.isfile(committed):
-                sys.exit(f"missing {committed}")
-            a, b = bg.sha(new), bg.sha(committed)
-            if a != b:
-                sys.exit(f"DRIFT: regenerated sha256 {a} != committed {b}")
-            print(f"OK: {GDS} sha256 {b}")
-        else:
-            shutil.copyfile(new, committed)
-            print(f"wrote {committed} sha256 {bg.sha(committed)}")
+    bg.drive(HERE, GDS, build)
