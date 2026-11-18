@@ -121,8 +121,8 @@ The line is **who can change the geometry without hand-editing shapes**.
   (historical: #296's commit `2a8614fc` drew the ratified 1.0 um level and
   that finding no longer fires); the 0.22 um drain-stripe contact geometry
   that `CO.4` fires on is internal PCell construction —
-  `layout/cell_candidate2/generate.py`
-  (lines 96-99) passes only `{"w": W_ACC, "l": L_ACC}` to
+  `layout/cell_candidate2/generate.py`, in the `acc = bg.run([...])` call
+  in `build()`, passes only `{"w": W_ACC, "l": L_ACC}` to
   `klt gen --pdk-pcell gf180mcu_klayoutapi/nfet_10v0_asym`, and no exposed
   parameter moves the contacts.
 
@@ -273,4 +273,4 @@ exception reaches today, and within it, only the 20 `nfet_10v0_asym` rows.
   candidates 1 and 3 re-run by the Curator at `6dbddcc3` and by the Builder
   at `2ca60fce`; command output recorded in the PR that lands this record.
 - `generate.py` parameter citation: `layout/cell_candidate2/generate.py`
-  lines 96-99 at this record's base.
+  lines 96-99 at this record's base `2ca60fce`.
