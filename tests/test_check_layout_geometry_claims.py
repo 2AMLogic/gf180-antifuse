@@ -396,12 +396,89 @@ class MeasurementTests(unittest.TestCase):
         ):
             self.assertNotIn(f"FAIL {cid}", r.stdout)
 
-    def test_claims_without_quote_values_behave_as_before(self):
+    def test_deleting_quote_values_from_pilot_claims_fails_coverage_guard(self):
+        """Issue #419: every pilot quote spells at least one '<num>..<num>'
+        pair, so deleting quote_values -- the 'fix' that #417's failure text
+        invites -- must fail the coverage guard, not pass as it did before
+        #414."""
         with tempfile.TemporaryDirectory() as d:
             root = make_tree(Path(d))
             rec = read_claims(root)
             for c in rec["claims"]:
                 c.pop("quote_values", None)
+            write_claims(root, rec)
+            r = run_check(root)
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+        self.assertIn("coverage guard", r.stdout)
+        pilot = json.loads((ROOT / "layout" / "geometry-claims.json").read_text())
+        for c in pilot["claims"]:
+            self.assertIn(f"FAIL {c['id']}", r.stdout)
+
+    def test_three_file_coordinated_edit_with_deleted_quote_values_fails(self):
+        """Issue #419's measured residual: README prose, the sidecar
+        readme_quote and the quote_values field all moved/deleted together
+        passed at exit 0 with the prose number wrong; the coverage guard
+        must fail it while the two #407 ends still pass."""
+        with tempfile.TemporaryDirectory() as d:
+            root = make_tree(Path(d))
+            self._coordinated_edit(root, WRONG_QUOTE)
+            rec = read_claims(root)
+            for c in rec["claims"]:
+                if c["readme_quote"] == WRONG_QUOTE:
+                    c.pop("quote_values", None)
+            write_claims(root, rec)
+            r = run_check(root)
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+        # The two #407 ends pass -- the bypass this guard closes.
+        self.assertNotIn("readme_quote not found", r.stdout)
+        self.assertNotIn("bbox differs from GDS", r.stdout)
+        self.assertIn("coverage guard", r.stdout)
+        for cid in (
+            "cand1-amin-g2x-vb-access-north-band",
+            "cand1-a2x-g2x-vb-access-north-band",
+            "cand1-amin-g2x-vb-capacitor-north-band",
+            "cand1-a2x-g2x-vb-capacitor-north-band",
+        ):
+            self.assertIn(f"FAIL {cid}", r.stdout)
+
+    def test_interval_claim_without_quote_values_fails_naming_pairs(self):
+        """AC: the guard fails a claim with an interval-spelling readme_quote
+        and no quote_values, naming every unpinned pair; sibling claims that
+        keep the field stay green."""
+        with tempfile.TemporaryDirectory() as d:
+            root = make_tree(Path(d))
+            rec = read_claims(root)
+            rec["claims"][0].pop("quote_values")
+            write_claims(root, rec)
+            r = run_check(root)
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+        self.assertIn("FAIL cand1-amin-g2x-vb-access-north-band", r.stdout)
+        self.assertIn("coverage guard", r.stdout)
+        self.assertIn("[(2.49, 2.91), (2.91, 3.33), (4.07, 4.49)]", r.stdout)
+        for cid in (
+            "cand1-a2x-g2x-vb-access-north-band",
+            "cand1-amin-g2x-vb-capacitor-north-band",
+            "cand1-a2x-g2x-vb-capacitor-north-band",
+        ):
+            self.assertNotIn(f"FAIL {cid}", r.stdout)
+
+    def test_pairless_quote_without_quote_values_behaves_as_before(self):
+        """The surviving #414 AC, scoped by #419: a claim whose quote pins no
+        '<num>..<num>' interval may omit quote_values and behave exactly as
+        before."""
+        pairless = "gate pad overlaps the lower of the two rings' metal north"
+        old = "gate pad (y 2.75..3.17) overlaps the lower of the two rings' metal north"
+        with tempfile.TemporaryDirectory() as d:
+            root = make_tree(Path(d))
+            readme = root / "layout" / "README.md"
+            text = readme.read_text()
+            self.assertIn(old, text)
+            readme.write_text(text.replace(old, pairless))
+            rec = read_claims(root)
+            for c in rec["claims"]:
+                if c["readme_quote"] == old:
+                    c["readme_quote"] = pairless
+                    c.pop("quote_values", None)
             write_claims(root, rec)
             r = run_check(root)
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)

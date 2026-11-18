@@ -30,7 +30,14 @@ numerals equal to the indexed components within `tolerance_um`. Editing
 README and the sidecar quote to the same wrong text therefore no longer
 passes while `bbox_um` stays at the measured values, and keeping only the
 sibling interval's numerals in a shared quote fails the dropped band's
-claim. Claims without the field behave exactly as before.
+claim. Since issue #419 the field is also mandatory wherever the quote
+demonstrably spells an interval: a claim that omits `quote_values` while
+its quote contains any adjacent `<num>..<num>` pair fails a coverage
+guard -- deleting the field was otherwise the one-line "fix" to the
+quote_values failure text that re-opened the #414 bypass a level up
+(three-file coordinated edit: README prose, sidecar quote, deleted
+field). Only a quote that pins no interval may omit the field, and such
+claims behave exactly as before #414.
 
 Measurement runs `klayout -b` (the repo has no klayout Python module) over
 merged metal1-style regions exactly as the issue's hand re-derivation did.
@@ -42,7 +49,8 @@ sentence moved, readme_quote) in the same commit.
 Exit status: 0 = every claim verified at both ends; 1 = any claim failure
 (each named on stdout); 2 = could not run (missing or malformed record,
 missing README, klayout binary absent or failing -- the check fails closed,
-it never skips). Stdlib only; run with `python3 -I`. Issues #407, #414.
+it never skips). Stdlib only; run with `python3 -I`. Issues #407, #414,
+#419.
 """
 from __future__ import annotations
 
@@ -302,6 +310,7 @@ def check_claims(klayout: str, root: Path, claims: list[dict], readme_norm: str,
                     f"{c['id']}: readme_quote not found in {README} "
                     f"(whitespace-normalised): {quote!r}"
                 )
+            pairs = quote_range_pairs(quote)
             qvals = c.get("quote_values")
             if qvals:
                 named = sorted(qvals.items(), key=lambda kv: kv[1])
@@ -311,8 +320,22 @@ def check_claims(klayout: str, root: Path, claims: list[dict], readme_norm: str,
                             f"{c['id']}: quote_values: {README} quote does not spell "
                             f"bbox_um {n1} ({c['bbox_um'][i1]}) .. {n2} ({c['bbox_um'][i2]}) "
                             f"as an adjacent '<num>..<num>' pair within {tol} um; "
-                            f"pairs found in quote: {quote_range_pairs(quote)}"
+                            f"pairs found in quote: {pairs}"
                         )
+            elif pairs:
+                # Coverage guard (#419): a quote that demonstrably spells an
+                # interval must pin it. Deleting quote_values while the quote
+                # still spells a pair would otherwise re-open the #414
+                # coordinated-edit bypass one level up.
+                failures.append(
+                    f"{c['id']}: coverage guard: readme_quote spells the '<num>..<num>' "
+                    f"pair(s) {pairs} but the claim omits quote_values, so the quote's "
+                    f"numerals are not pinned to bbox_um (#419); deleting the field "
+                    f"re-opens the #414 coordinated-edit bypass. Add quote_values naming "
+                    f"the bbox_um components the quote spells (e.g. "
+                    f'{{"bottom": 1, "top": 3}}), or reword the quote to prose that '
+                    f"pins no interval"
+                )
             key = f"{c['subcell']}|{c['layer']}"
             probe = measured.get(key, {"found": False, "raw": [], "merged": []})
             if not probe["found"]:
