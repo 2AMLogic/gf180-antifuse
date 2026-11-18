@@ -190,25 +190,41 @@ class Run3TopAssemblyTest(unittest.TestCase):
         self.assertEqual(density["rule_counts"], {})
 
     def test_stage_reports_pin_committed_layout(self):
-        # Issue #424: every committed stage report whose input is meant to
-        # be the committed layout must still record that layout's hash --
-        # otherwise regenerating run3_top.gds silently strands the evidence
-        # while the suite stays green (same class as #422, one step out).
-        # Exempt: drc_antenna_after_wl_diode_clamp_report.json, which is
-        # deliberately pinned to the historical diode-drawn GDS
-        # (79bc8414..., asserted in test_antenna_ratio_evidence).
-        reports = sorted((ROOT / "layout/run3_top").glob("drc_*_report.json"))
-        self.assertTrue(reports, "glob matched no drc_*_report.json")
-        self.assertIn("drc_antenna_after_wl_diode_clamp_report.json",
-                      {r.name for r in reports})
+        # Issue #427: every committed *_report.json is pinned by NAME, not
+        # by a glob -- the #424 drc_* glob never reached the erc/lvs/
+        # economy sign-off reports, and its non-empty guard let a single
+        # renamed report silently shrink the pin set while the suite stayed
+        # green. Table: report -> the input its provenance must record.
+        #   the committed GDS hash: every sign-off report that describes
+        #     the committed layout (5 DRC stage reports, ERC, LVS, economy)
+        #   the historical diode-drawn GDS: the after-round antenna sweep
+        #     ran on the drawn-clamp layout, deliberately not re-run on the
+        #     committed one (sha also asserted in test_antenna_ratio_evidence)
+        #   None: compose_report.json aggregates the other reports'
+        #     verdicts and carries no provenance.input at all
         gds_hash = "sha256:" + hashlib.sha256(
             (ROOT / "layout/run3_top/run3_top.gds").read_bytes()).hexdigest()
+        historical_hash = ("sha256:79bc84145a1baf87116b42d7aedee9bd9c69c29b7"
+                           "2ce4d46a5a7ab1fa0c679f8")
+        expected_inputs = {
+            "drc_report.json": gds_hash,
+            "drc_stage_report.json": gds_hash,
+            "drc_density_report.json": gds_hash,
+            "drc_antenna_report.json": gds_hash,
+            "erc_report.json": gds_hash,
+            "lvs_report.json": gds_hash,
+            "economy_report.json": gds_hash,
+            "drc_antenna_after_wl_diode_clamp_report.json": historical_hash,
+            "compose_report.json": None,
+        }
+        reports = sorted((ROOT / "layout/run3_top").glob("*_report.json"))
+        self.assertEqual({r.name for r in reports}, set(expected_inputs))
         for report in reports:
-            if report.name == "drc_antenna_after_wl_diode_clamp_report.json":
-                continue
-            recorded = json.loads(
-                report.read_text())["provenance"]["input"]["content_hash"]
-            self.assertEqual(recorded, gds_hash, report.name)
+            recorded = json.loads(report.read_text())["provenance"].get("input")
+            recorded_hash = None if recorded is None \
+                else recorded["content_hash"]
+            self.assertEqual(
+                recorded_hash, expected_inputs[report.name], report.name)
         # drc_antenna_stage.lyrdb carries no input hash of its own (its
         # companion .log names only the path it ran on), so its tie to the
         # layout is indirect: its per-rule finding counts must equal the
