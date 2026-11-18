@@ -19,6 +19,19 @@ Each claim pins BOTH ends of the quotation:
     still contain, on `layer` inside `subcell`, a shape (raw shape or
     merged polygon) whose bbox equals `bbox_um` within `tolerance_um`.
 
+Since issue #414 a claim may also pin the CORRESPONDENCE between those
+ends: an optional per-claim `quote_values` maps bbox_um component names
+(`left`, `bottom`, `right`, `top`) to indices into the `bbox_um` array
+(e.g. {"bottom": 1, "top": 3}); the quote must then spell each consecutive
+named pair as an adjacent `<num>..<num>` range -- whitespace-padded, a
+`+ SYMBOL` offset decoration tolerated so the cand3 quotes' `2.49 + DPAD
+.. 2.91 + DPAD` form is read as the pair (2.49, 2.91) -- with both
+numerals equal to the indexed components within `tolerance_um`. Editing
+README and the sidecar quote to the same wrong text therefore no longer
+passes while `bbox_um` stays at the measured values, and keeping only the
+sibling interval's numerals in a shared quote fails the dropped band's
+claim. Claims without the field behave exactly as before.
+
 Measurement runs `klayout -b` (the repo has no klayout Python module) over
 merged metal1-style regions exactly as the issue's hand re-derivation did.
 A claim whose GDS, subcell, layer or bbox no longer resolves is a failure
@@ -29,7 +42,7 @@ sentence moved, readme_quote) in the same commit.
 Exit status: 0 = every claim verified at both ends; 1 = any claim failure
 (each named on stdout); 2 = could not run (missing or malformed record,
 missing README, klayout binary absent or failing -- the check fails closed,
-it never skips). Stdlib only; run with `python3 -I`. Issue #407.
+it never skips). Stdlib only; run with `python3 -I`. Issues #407, #414.
 """
 from __future__ import annotations
 
@@ -54,6 +67,19 @@ KAYOUT_TIMEOUT_S = 120
 LAYER_RE = re.compile(r"^(\d+)/(\d+)$")
 WS_RE = re.compile(r"\s+")
 REQUIRED_FIELDS = ("id", "cell", "subcell", "layer", "role", "bbox_um", "readme_quote")
+COMPONENTS = ("left", "bottom", "right", "top")
+
+# Numerals inside a readme_quote, for the quote_values correspondence end
+# (issue #414). The '..' range separator is NOT part of a number: a token
+# regex must not eat it as a decimal point.
+NUM_TOKEN_RE = re.compile(r"\d+(?:\.\d+)?")
+# Between-text of an adjacent '<num>..<num>' pair: the '..' separator,
+# optionally whitespace-padded, optionally carrying an offset decoration.
+# Both decoration orders occur in the pilot quotes: '+ SYMBOL' before '..'
+# (the cand3 raised-ring bands spell '2.49 + DPAD .. 2.91 + DPAD', the pair
+# (2.49, 2.91)) and 'SYMBOL +' after '..' (the cand3 gate pad spells
+# 'DX+0.43..DX+0.85', the pair (0.43, 0.85)).
+RANGE_SEP_RE = re.compile(r"\s*(?:\+\s*[A-Za-z_]\w*\s*)?\.\.(?:\s*[A-Za-z_]\w*\s*\+)?\s*")
 
 # Runs inside `klayout -b` (pya). REQUEST (base64 JSON) carries the GDS path
 # and the (subcell, layer) probes; stdout carries the measurement back.
@@ -125,6 +151,27 @@ def parse_layer(spec: str) -> tuple[int, int]:
     return int(m.group(1)), int(m.group(2))
 
 
+def quote_range_pairs(quote: str) -> list[tuple[float, float]]:
+    """Adjacent '<num>..<num>' pairs in `quote`, as (float, float) in order.
+
+    Tokens are every decimal number; a pair is two consecutive tokens whose
+    between-text is just the '..' range separator (whitespace-padded, a
+    '+ SYMBOL' offset decoration tolerated). Prose neighbours like
+    '2.91 or 2.91' or '3.70 = 2.49' are not pairs.
+    """
+    toks = [(m.start(), m.end(), float(m.group())) for m in NUM_TOKEN_RE.finditer(quote)]
+    pairs: list[tuple[float, float]] = []
+    for a, b in zip(toks, toks[1:]):
+        if RANGE_SEP_RE.fullmatch(quote[a[1]:b[0]]):
+            pairs.append((a[2], b[2]))
+    return pairs
+
+
+def quote_spells_range(quote: str, v1: float, v2: float, tol: float) -> bool:
+    """True when some adjacent pair in `quote` equals (v1, v2) within `tol`."""
+    return any(abs(a - v1) <= tol and abs(b - v2) <= tol for a, b in quote_range_pairs(quote))
+
+
 def load_record(root: Path) -> tuple[dict, list[dict], float]:
     path = root / RECORD
     if not path.is_file():
@@ -165,6 +212,29 @@ def load_record(root: Path) -> tuple[dict, list[dict], float]:
             or not all(isinstance(v, (int, float)) and v == v for v in bbox)
         ):
             raise CannotRun(f"{RECORD} claim {c['id']!r}: bbox_um must be 4 numbers [left, bottom, right, top]")
+        qvals = c.get("quote_values")
+        if qvals is not None:
+            if not isinstance(qvals, dict) or not qvals:
+                raise CannotRun(
+                    f"{RECORD} claim {c['id']!r}: quote_values must be a non-empty object "
+                    f"mapping bbox_um component names to indices"
+                )
+            if len(qvals) < 2:
+                raise CannotRun(
+                    f"{RECORD} claim {c['id']!r}: quote_values must name at least two "
+                    f"components (a '<a>..<b>' range); got {sorted(qvals)}"
+                )
+            for name, idx in qvals.items():
+                if name not in COMPONENTS:
+                    raise CannotRun(
+                        f"{RECORD} claim {c['id']!r}: quote_values key {name!r} is not a "
+                        f"bbox_um component (one of {', '.join(COMPONENTS)})"
+                    )
+                if not isinstance(idx, int) or isinstance(idx, bool) or not 0 <= idx <= 3:
+                    raise CannotRun(
+                        f"{RECORD} claim {c['id']!r}: quote_values[{name!r}]={idx!r} names a "
+                        f"component absent from bbox_um (must be an index into the 4-element array)"
+                    )
     return rec, claims, float(tol)
 
 
@@ -232,6 +302,17 @@ def check_claims(klayout: str, root: Path, claims: list[dict], readme_norm: str,
                     f"{c['id']}: readme_quote not found in {README} "
                     f"(whitespace-normalised): {quote!r}"
                 )
+            qvals = c.get("quote_values")
+            if qvals:
+                named = sorted(qvals.items(), key=lambda kv: kv[1])
+                for (n1, i1), (n2, i2) in zip(named, named[1:]):
+                    if not quote_spells_range(quote, c["bbox_um"][i1], c["bbox_um"][i2], tol):
+                        failures.append(
+                            f"{c['id']}: quote_values: {README} quote does not spell "
+                            f"bbox_um {n1} ({c['bbox_um'][i1]}) .. {n2} ({c['bbox_um'][i2]}) "
+                            f"as an adjacent '<num>..<num>' pair within {tol} um; "
+                            f"pairs found in quote: {quote_range_pairs(quote)}"
+                        )
             key = f"{c['subcell']}|{c['layer']}"
             probe = measured.get(key, {"found": False, "raw": [], "merged": []})
             if not probe["found"]:
