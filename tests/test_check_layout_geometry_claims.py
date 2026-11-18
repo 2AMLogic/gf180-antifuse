@@ -86,6 +86,86 @@ class BboxMatchTests(unittest.TestCase):
         self.assertFalse(clc.bbox_matches([1.1, 2.49, 5.05], [1.1, 2.49, 5.05, 2.91], 0.001))
 
 
+class QuoteRangePairTests(unittest.TestCase):
+    """Pure-function tests for the quote_values numeral matcher (issue #414).
+
+    The three pilot quote formats the matcher must handle: the plain
+    '2.49..2.91' band form (with the sibling-interval 'or' in the same
+    span), the '(y 2.75..3.17)' pad form, and the cand3 offset form
+    '3.28..3.70 = 2.49 + DPAD .. 2.91 + DPAD'.
+    """
+
+    def test_three_pilot_quote_formats(self):
+        self.assertEqual(
+            clc.quote_range_pairs("access 2.49..2.91 or 2.91..3.33, capacitor 4.07..4.49"),
+            [(2.49, 2.91), (2.91, 3.33), (4.07, 4.49)],
+        )
+        self.assertEqual(
+            clc.quote_range_pairs("gate pad (y 2.75..3.17) overlaps"),
+            [(2.75, 3.17)],
+        )
+        self.assertEqual(
+            clc.quote_range_pairs(
+                "access 3.28..3.70 = 2.49 + DPAD .. 2.91 + DPAD at the raised ring"
+            ),
+            [(3.28, 3.7), (2.49, 2.91)],
+        )
+        self.assertEqual(
+            clc.quote_range_pairs("gate pad (x DX+0.43..DX+0.85, y 2.75..3.17)"),
+            [(0.43, 0.85), (2.75, 3.17)],
+        )
+
+    def test_range_dots_are_not_eaten_as_a_decimal_point(self):
+        self.assertEqual(clc.quote_range_pairs("2.49..2.91"), [(2.49, 2.91)])
+        self.assertEqual(clc.quote_range_pairs("2.49 .. 2.91"), [(2.49, 2.91)])
+        self.assertEqual(clc.quote_range_pairs("2.49 + DPAD..2.91 + DPAD"), [(2.49, 2.91)])
+        self.assertEqual(clc.quote_range_pairs("DX+0.43..DX+0.85"), [(0.43, 0.85)])
+
+    def test_unrelated_numerals_do_not_create_or_break_pairs(self):
+        self.assertEqual(
+            clc.quote_range_pairs("a 0.42 x 0.42 rect; access 2.49..2.91 done 5"),
+            [(2.49, 2.91)],
+        )
+
+    def test_non_range_neighbours_are_not_pairs(self):
+        self.assertEqual(clc.quote_range_pairs("2.91 or 2.91"), [])
+        self.assertEqual(clc.quote_range_pairs("3.70 = 2.49"), [])
+        self.assertEqual(clc.quote_range_pairs("no numerals at all"), [])
+
+
+class QuoteSpellsRangeTests(unittest.TestCase):
+    """Tolerance behaviour of the quote_values check (1 nm, matching bbox_matches)."""
+
+    RIGHT = "access 2.49..2.91 or 2.91..3.33, capacitor 4.07..4.49"
+    TOL = 0.001
+
+    def test_exact_match(self):
+        self.assertTrue(clc.quote_spells_range(self.RIGHT, 2.49, 2.91, self.TOL))
+        self.assertTrue(clc.quote_spells_range(self.RIGHT, 2.91, 3.33, self.TOL))
+        self.assertTrue(clc.quote_spells_range(self.RIGHT, 4.07, 4.49, self.TOL))
+
+    def test_within_tolerance_matches(self):
+        self.assertTrue(clc.quote_spells_range(self.RIGHT, 2.4901, 2.91, self.TOL))
+        self.assertTrue(clc.quote_spells_range(self.RIGHT, 2.49, 2.9109, self.TOL))
+
+    def test_beyond_tolerance_fails(self):
+        # 0.0011 um off is outside the 1 nm tolerance; 0.04 um is the
+        # #391/#401 drift class and must never match.
+        self.assertFalse(clc.quote_spells_range(self.RIGHT, 2.4901 + 0.001, 2.91, self.TOL))
+        self.assertFalse(clc.quote_spells_range(self.RIGHT, 2.45, 2.91, self.TOL))
+        self.assertFalse(clc.quote_spells_range(self.RIGHT, 4.03, 4.49, self.TOL))
+
+    def test_reversed_pair_order_is_not_a_match(self):
+        self.assertFalse(clc.quote_spells_range("3.33..2.91", 2.91, 3.33, self.TOL))
+
+    def test_sibling_interval_numerals_do_not_satisfy_a_pair(self):
+        """Curator's bypass shape: the shared quote still carries the sibling
+        interval's numerals, but no adjacent pair spells the dropped band."""
+        sibling_only = "access 2.91..3.33, capacitor 4.07..4.49"
+        self.assertFalse(clc.quote_spells_range(sibling_only, 2.49, 2.91, self.TOL))
+        self.assertTrue(clc.quote_spells_range(sibling_only, 2.91, 3.33, self.TOL))
+
+
 class RecordValidationTests(unittest.TestCase):
     """Malformed records are exit-2 'cannot run'; these need no klayout."""
 
@@ -126,6 +206,49 @@ class RecordValidationTests(unittest.TestCase):
             r = run_check(root)
         self.assertEqual(r.returncode, 2, r.stdout + r.stderr)
         self.assertIn("4 numbers", r.stderr)
+
+    def test_quote_values_index_out_of_range_is_exit_2(self):
+        """A quote_values entry naming a component absent from bbox_um is a
+        malformed claim, rejected fails-closed (issue #414 AC)."""
+        with tempfile.TemporaryDirectory() as d:
+            root = make_tree(Path(d))
+            rec = read_claims(root)
+            rec["claims"][0]["quote_values"] = {"bottom": 9, "top": 3}
+            write_claims(root, rec)
+            r = run_check(root)
+        self.assertEqual(r.returncode, 2, r.stdout + r.stderr)
+        self.assertIn("quote_values", r.stderr)
+        self.assertIn("cand1-amin-g2x-vb-access-north-band", r.stderr)
+
+    def test_quote_values_unknown_component_is_exit_2(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = make_tree(Path(d))
+            rec = read_claims(root)
+            rec["claims"][0]["quote_values"] = {"middle": 1, "top": 3}
+            write_claims(root, rec)
+            r = run_check(root)
+        self.assertEqual(r.returncode, 2, r.stdout + r.stderr)
+        self.assertIn("middle", r.stderr)
+
+    def test_quote_values_single_component_is_exit_2(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = make_tree(Path(d))
+            rec = read_claims(root)
+            rec["claims"][0]["quote_values"] = {"bottom": 1}
+            write_claims(root, rec)
+            r = run_check(root)
+        self.assertEqual(r.returncode, 2, r.stdout + r.stderr)
+        self.assertIn("at least two", r.stderr)
+
+    def test_quote_values_non_object_is_exit_2(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = make_tree(Path(d))
+            rec = read_claims(root)
+            rec["claims"][0]["quote_values"] = "access 2.49..2.91"
+            write_claims(root, rec)
+            r = run_check(root)
+        self.assertEqual(r.returncode, 2, r.stdout + r.stderr)
+        self.assertIn("quote_values", r.stderr)
 
 
 class KlayoutAbsentFailsClosedTests(unittest.TestCase):
@@ -214,6 +337,93 @@ class MeasurementTests(unittest.TestCase):
             r = run_check(root)
         self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
         self.assertIn("no shapes", r.stdout)
+
+    def _coordinated_edit(self, root: Path, new_quote: str) -> None:
+        """The #414 bypass shape: edit README prose AND every claim's
+        readme_quote to the same wrong text, leaving bbox_um untouched."""
+        readme = root / "layout" / "README.md"
+        text = readme.read_text()
+        self.assertIn(RIGHT_QUOTE, text)
+        readme.write_text(text.replace(RIGHT_QUOTE, new_quote))
+        rec = read_claims(root)
+        for c in rec["claims"]:
+            if c["readme_quote"] == RIGHT_QUOTE:
+                c["readme_quote"] = new_quote
+        write_claims(root, rec)
+
+    def test_coordinated_readme_and_quote_edit_fails_via_quote_values(self):
+        """Issue #414 filer's scenario: README line and the four cand1
+        claims' readme_quote all moved to the pre-#405 wrong text while
+        bbox_um stays at the measured values. Both #407 ends pass; the
+        quote_values end must fail with exit 1 naming the entries."""
+        with tempfile.TemporaryDirectory() as d:
+            root = make_tree(Path(d))
+            self._coordinated_edit(root, WRONG_QUOTE)
+            r = run_check(root)
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+        # The two #407 ends pass -- that is the bypass this issue closes.
+        self.assertNotIn("readme_quote not found", r.stdout)
+        self.assertNotIn("bbox differs from GDS", r.stdout)
+        # The correspondence end fails, naming each entry and the numeral.
+        self.assertIn("quote_values", r.stdout)
+        for cid in (
+            "cand1-amin-g2x-vb-access-north-band",
+            "cand1-a2x-g2x-vb-access-north-band",
+            "cand1-amin-g2x-vb-capacitor-north-band",
+            "cand1-a2x-g2x-vb-capacitor-north-band",
+        ):
+            self.assertIn(f"FAIL {cid}", r.stdout)
+        self.assertIn("2.49", r.stdout)
+        self.assertIn("4.07", r.stdout)
+
+    def test_sibling_interval_only_edit_fails_the_dropped_claim(self):
+        """Curator's variant: a 'fix' that keeps only the sibling interval's
+        numbers. The surviving band's claim passes; the dropped band's claim
+        must fail at the quote_values end despite its numerals (2.91) still
+        being present in the quote as the sibling's endpoint."""
+        sibling_only = "access 2.91..3.33, capacitor 4.07..4.49"
+        with tempfile.TemporaryDirectory() as d:
+            root = make_tree(Path(d))
+            self._coordinated_edit(root, sibling_only)
+            r = run_check(root)
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+        self.assertIn("FAIL cand1-amin-g2x-vb-access-north-band", r.stdout)
+        self.assertIn("quote_values", r.stdout)
+        for cid in (
+            "cand1-a2x-g2x-vb-access-north-band",
+            "cand1-amin-g2x-vb-capacitor-north-band",
+            "cand1-a2x-g2x-vb-capacitor-north-band",
+        ):
+            self.assertNotIn(f"FAIL {cid}", r.stdout)
+
+    def test_claims_without_quote_values_behave_as_before(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = make_tree(Path(d))
+            rec = read_claims(root)
+            for c in rec["claims"]:
+                c.pop("quote_values", None)
+            write_claims(root, rec)
+            r = run_check(root)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("9 geometry claims checked, 0 failed", r.stdout)
+
+    def test_quote_values_tolerance_boundary_end_to_end(self):
+        """A coordinated 0.0001 um nudge (inside the 1 nm tolerance) passes;
+        a 0.0011 um nudge (outside) fails at the quote_values end."""
+        within = "access 2.4901..2.9109 or 2.91..3.33, capacitor 4.07..4.49"
+        beyond = "access 2.4911..2.9109 or 2.91..3.33, capacitor 4.07..4.49"
+        with tempfile.TemporaryDirectory() as d:
+            root = make_tree(Path(d))
+            self._coordinated_edit(root, within)
+            r = run_check(root)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        with tempfile.TemporaryDirectory() as d:
+            root = make_tree(Path(d))
+            self._coordinated_edit(root, beyond)
+            r = run_check(root)
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+        self.assertIn("FAIL cand1-amin-g2x-vb-access-north-band", r.stdout)
+        self.assertIn("quote_values", r.stdout)
 
 
 if __name__ == "__main__":
