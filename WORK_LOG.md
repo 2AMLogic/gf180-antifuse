@@ -5,6 +5,10 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-18
 
+- **PR #428**: test: pin erc/lvs/economy sign-off reports to the committed layout by name
+- **Issue #427** (closed): Pin the ERC/LVS/economy sign-off reports to the committed layout, and name the expected report set
+- **PR #426**: test: pin run3_top stage report hashes to the committed GDS
+- **Issue #424** (closed): run3_top stage evidence: no test pins a report's recorded input hash to the committed GDS
 - **PR #423**: layout: record the run3 antenna stage's measured ratios and after-round report
 - **Issue #422** (closed): run3_top README: the antenna groups' measured ratios and the deferred remedy's "after: 0" round have no committed source
 - **PR #421**: docs: drop hand-applied *(held)* markers from WORK_PLAN.md rows

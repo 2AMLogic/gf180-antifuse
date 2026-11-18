@@ -25,22 +25,19 @@ _None._
 Human-approved issues (`loom:issue`) ready for implementation — excluding held (`loom:blocked`/`loom:operator`/`loom:frozen`), `loom:building`, and issues closed by an open `loom:pr` PR (listed under Approved).
 
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4)
+- **#419**: geometry-claims checker: deleting quote_values re-opens the #414 coordinated-edit bypass
 
 ## In Progress
 
 Issues currently being built (`loom:building`).
 
 - **#255**: Measurement plan: constant-voltage time-to-breakdown statistics (Weibull slope, voltage acceleration) and a sub-programming soak
-- **#404**: Chip-level native DRC findings in repo-drawn geometry (antenna, die-level density, CUP.2) have no tracking work
-- **#414**: Geometry-claims checker does not tie readme_quote's numbers to bbox_um — a coordinated prose+sidecar edit still passes
 
 ## PRs Awaiting Review
 
 PRs waiting on Judge (`loom:review-requested`).
 
 - **#347**: docs: sourced wafer.space Run 3 precheck reading (would-reject verdict)
-- **#416**: layout: fix the run3 chip-level findings the precheck's own stages enforce
-- **#417**: checker: pin readme_quote numerals to bbox_um via per-claim quote_values
 
 ## Approved (Awaiting Merge)
 
@@ -61,8 +58,7 @@ Issues carrying `loom:curated`.
 - **#313**: sim/program-read-legs: capacity_wait_s spends the same per-submit subprocess budget as the run, and a subprocess timeout is not retried *(curated)*
 - **#316**: Follow-on: establish the foreign-host re-run byte-identity evidence for the shared report scrubber (PR #309 / #285 step 5) *(curated)*
 - **#338**: wafer.space: precheck treatment and foundry conversation on the unmodified nfet_10v0_asym PCell's CO.4/DF.6_MV/PL.4_MV findings (#299) *(curated)*
-- **#404**: Chip-level native DRC findings in repo-drawn geometry (antenna, die-level density, CUP.2) have no tracking work *(curated)*
-- **#414**: Geometry-claims checker does not tie readme_quote's numbers to bbox_um — a coordinated prose+sidecar edit still passes *(curated)*
+- **#419**: geometry-claims checker: deleting quote_values re-opens the #414 coordinated-edit bypass *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -81,11 +77,11 @@ Issues carrying `loom:curated`.
 | Operator merge-risk holds | 1 |
 | Very important | 0 |
 | Important | 2 |
-| Ready (`loom:issue`) | 1 |
-| In Progress (`loom:building`) | 3 |
-| PRs awaiting review | 3 |
+| Ready (`loom:issue`, net of holds/building/merge-pending) | 2 |
+| In Progress (`loom:building`) | 1 |
+| PRs awaiting review | 1 |
 | Approved PRs awaiting merge | 1 |
-| Curated | 11 |
+| Curated | 10 |
 | Architect / Hermit proposals | 2 |
 | Active epics | 2 |
 <!-- guide:plan-body:end -->
