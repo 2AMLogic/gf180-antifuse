@@ -508,18 +508,21 @@ extents of candidate 2's own two `Pplus` tap-ring outlines,
 (`spec/cell-candidates.md`): a thin-oxide PMOS capacitor (`cap_pmos_03v3`) in
 series with a 6.0 V PMOS access device (`pfet_06v0`), per
 `design/cells/cell_candidate3.sch`. Same artifact set as `cell_candidate1/`
-(`generate.py` with `--check`, GDS, `drc_report.json`, `lvs_request.json`,
-`lvs_reference.spice`, `lvs_report.json`, `erc_report.json`). One cell of one
-candidate, not the array; no claim about breakdown behaviour.
+(`generate.py` with `--check`, GDS, `drc_report.json`,
+`drc_crosscheck_report.json`, `lvs_request.json`, `lvs_reference.spice`,
+`lvs_report.json`, `erc_report.json`). One cell of one candidate, not the
+array; no claim about breakdown behaviour.
 
 Toolchain: released `klt 0.8.0` with the engine pinned
 (`uvx --from klayout-tools==0.8.0 --with klayout==0.30.12`; regenerated
-2026-11-17, #296), PDK `gf180mcuA`; no tool was installed or changed. Geometry
-point as for candidate 1 (Minimum x Minimum): cap W 1.0 um x L 0.28 um (the
-ratified Minimum level, `spec/capacitor-geometry-decision.md`), access W
-0.42 um x L 0.55 um (schematic `lacc`, clamped at the generator floor -- the
-same access deviation as candidate 1). `lvs_reference.spice` carries drawn
-values.
+2026-11-17, #296; acc-block ring padding and DX re-fitted 2026-11-17, #297),
+PDK `gf180mcuA`; no tool was installed or changed. Geometry point as for
+candidate 1 (Minimum x Minimum): cap W 1.0 um x L 0.28 um (the ratified
+Minimum level, `spec/capacitor-geometry-decision.md`), access W 0.42 um x L
+0.55 um (schematic `lacc`, clamped at the generator floor -- the same access
+deviation as candidate 1), and the access block's tap ring drawn at the
+generator's raised `ring_padding_um` 1.29 (see the ring-padding bullet below).
+`lvs_reference.spice` carries drawn values.
 
 - **Terminals.** BL is the access **source**, CN the access **drain** (as in
   the schematic, mirror of the NMOS candidates). Access gate is WL; cap gate is
@@ -533,27 +536,64 @@ values.
   potential the cell sees (array-level decision, deferred). Well-junction
   breakdown, the known concern of this candidate, is **not** examined by this
   layout or by DRC/LVS.
+- **Ring padding (#297).** The generator's default `ring_padding_um` 0.5
+  draws the access block (the only pfet + medium-voltage marker block) with
+  its N-well 0.15 um inside the N+ tap ring -- the native deck's
+  `DF.4d_MV` "Min. Nwell overlap of NCOMP outside DNWELL: 0.16 um" misses by
+  10 nm -- and with the Dualgate marker missing COMP enclosure (`DV.6`,
+  0.24 um). Both are generator-owned geometry, so the fix is the generator
+  parameter, not drawn edits: the shared flow (`layout/bitcell_gen.py`) grew a
+  `ring_padding_acc_um` keyword (default 0.5, byte-stable for the other five
+  cells) and this cell sets it to **1.29 um, acc block only** -- the smallest
+  value that clears both rules on the composed cell with no new cell-level
+  finding. Measured on the composed cell (`klt drc --engine both`, native
+  rule counts): 0.5 -> `DF.4d_MV` x5 + `DV.6` x1; 1.0 -> x9 + x1 (worse);
+  1.05-1.28 -> both clear but **`DV.3` x5 appears** ("Min. Dualgate to COMP
+  space [unrelated]: 0.24 um" -- the raised ring's N+ escapes the
+  core-anchored Dualgate marker; `DF.4d_MV` runs 5 -> 9 -> 0 across
+  0.5/1.0/1.05, then `DV.3` runs 5 -> 0 across 1.28/1.29); **1.29 -> clean of
+  all three**; 1.28, one step below, still reports `DV.3` x5 (minimality
+  evidence). The capacitor block keeps the default: it draws no Dualgate
+  marker and its well overlap is legal. The generator response is filed
+  upstream (public tracker, generic description):
+  2AMLogic/klayout-tools#6503.
 - **Pitch.** The first placement at 4.2 um (candidate 1's pitch) violated
-  `nwell.space.1` and `nplus.space.1`; the committed cell uses 4.8 um. Not waived.
+  `nwell.space.1` and `nplus.space.1`; the committed cell used 4.8 um. With
+  the raised acc-ring padding the access ring moves out on all four sides by
+  0.79 um, so the placement grows to **5.59 um** (= 4.8 + the padding delta),
+  keeping the proven 0.79 um ring-to-ring gap (4.2's 0.19 um gap is what
+  violated `nwell.space.1`). Not waived. The VB strap's access-side edge
+  tracks the raised ring and keeps the band at the 0.23 um metal1 minimum
+  width (`M1.1` fired at 1.3 um padding without that floor -- measured); the
+  CN strap and the capacitor marker track DX. The E-side routing opening the
+  CN strap passes through is padding-independent (its span follows the pads,
+  not the ring) and stays usable.
 - **DRC.** `klt drc --deck gf180mcu --top cell_candidate3`: `status: clean`,
   0 violations. Layers in stream without rules: 34/10 (labels), 166/5 (cap
   marker). The candidate-1 caveat applies: Dualgate is not modelled for the
   6 V rules, so the access device is checked against the 3.3 V thresholds.
   This `clean` is the **curated deck's**; the native runset's verdict is the
   next bullet, committed in `drc_crosscheck_report.json`.
-- **The native runset's remaining findings on this cell are #297's, not the
-  capacitor's.** `drc_crosscheck_report.json` (`klt drc --engine both --deck
-  gf180mcu --top cell_candidate3 --pdk gf180mcuA --deck-var decks=all,-mslot`,
-  klayout-tools `0.9.2`, KLayout `0.30.13`) reports 11 native findings on the
-  committed GDS: **`DF.4d_MV` x5** ("Min. Nwell overlap of NCOMP outside
-  DNWELL", 0.16 um, in `mos_array$1`) and **`DV.6` x1** ("Min. Dualgate enclose
-  COMP", 0.24 um, in `mos_array$1`) -- #297's generator-owned set -- plus
-  `DBU` x1 and the die-level density rules `M2.4`/`M3.4`/`MT30.7`/`PL.8`.
-  The **`DF.1c`** (MOSCAP COMP width) every earlier run reported is **gone**:
-  the capacitor is drawn at the ratified 1.0 um Minimum. The curated deck
-  discloses `DF.4d_MV` and `DV.6` as unmodelled. Candidate 3's well
-  connection is stated below, but the Nwell overlap it is drawn with does not
-  meet the rule; that fix is #297's.
+- **The native runset's cell-level findings are cleared (#297).**
+  `drc_crosscheck_report.json` (`klt drc --engine both --deck gf180mcu --top
+  cell_candidate3 --pdk gf180mcuA --deck-var decks=all,-mslot`, klayout-tools
+  `0.9.2`, KLayout `0.30.13`, re-signed 2026-11-17 at the padded geometry) had
+  reported 11 native findings on the committed GDS -- **`DF.4d_MV` x5** and
+  **`DV.6` x1**, both generator-owned and in `mos_array$1`, plus `DBU` x1 and
+  the die-level density rules `M2.4`/`M3.4`/`MT30.7`/`PL.8`. At the 1.29 um
+  acc-ring padding the generator-owned set is **gone** (see the ring-padding
+  bullet), and what remains native is `DBU` x1 and the die-level density
+  rules, now including **`M1.4`** ("Metal1 coverage over the entire die
+  >30%"): the grown cell's standalone bbox dilutes metal1 coverage below the
+  30 % window, the same die-level density class as `M2.4`/`M3.4`/`MT30.7`/
+  `PL.8`, which fire on any standalone cell and are disclosed, not fixed --
+  die-level assembly settles them (`spec/run3-test-chip-floorplan.md`).
+  The **`DF.1c`** (MOSCAP COMP width) every earlier run reported is **gone**
+  since #296: the capacitor is drawn at the ratified 1.0 um Minimum. The
+  curated deck discloses `DF.4d_MV` and `DV.6` as unmodelled and reports
+  `clean` (0 violations) on the padded geometry too. Candidate 3's well
+  connection is stated above; the N-well overlap it is drawn with now meets
+  the rule.
 - **LVS.** `status: match`, 0 errors (`klt lvs --check lvs_report.json` run
   from the cell directory exits 0). Same bounds as candidate 1: the capacitor's
   geometry and capacitance are not compared.

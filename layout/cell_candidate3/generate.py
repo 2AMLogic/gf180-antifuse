@@ -17,6 +17,9 @@ see README).
   access : pfet_06v0 (Dualgate marker), W = 0.42 um, L = 0.55 um (schematic lacc)
   cap    : thin-oxide PMOS gate over COMP, W = 1.0 um, L = 0.28 um,
            source and drain shorted (moscap) on net CN
+  The access block's tap ring is drawn at the raised generator padding
+  RING_PAD_ACC (1.29 um, acc block only) -- the generator default misses two
+  native-deck well/Dualgate rules; RING_PAD_ACC's comment has the story.
 
 Terminal assignment (matches design/cells/cell_candidate3.sch): BL is the
 access SOURCE, CN is the access DRAIN. Well connection: each device sits in its
@@ -37,7 +40,27 @@ import bitcell_gen as bg  # noqa: E402  shared klt flow + --check (layout/bitcel
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 L_ACC = 0.55       # um, schematic lacc
-DX = 4.8  # um, cap-block x offset (N-well/Nplus spacing; 4.2 violated nwell.space.1)
+RING_PAD_ACC = 1.29  # um, acc-block generator ring_padding_um. The generator's
+                   # default 0.5 draws the pfet/MV acc block with its N-well
+                   # 0.15 um inside the N+ tap ring (native DF.4d_MV wants
+                   # 0.16 overlap) and its Dualgate marker missing COMP
+                   # enclosure (DV.6, 0.24 um) -- both generator-owned. 1.29 is
+                   # the smallest padding that clears both on the COMPOSED cell
+                   # without a new cell-level finding: 1.05-1.28 trades them
+                   # for DV.3 x5 (the ring's N+ escapes the core-anchored
+                   # Dualgate marker, "Dualgate to COMP space [unrelated]"
+                   # 0.24 um; the counts are non-monotonic in padding:
+                   # DF.4d_MV 5 -> 9 -> 0 across 0.5/1.0/1.05, then DV.3
+                   # 5 -> 0 across 1.28/1.29), and
+                   # 1.28 one step below still reports DV.3. The cap block
+                   # keeps the default: it draws no Dualgate marker and its
+                   # well overlap is legal. Filed upstream as the klayout-tools
+                   # ring-padding well-overlap defect (see layout/README.md).
+DX = 5.59  # um, cap-block x offset. Grows with the acc ring: the acc block's
+           # guard ring moves out on all four sides by RING_PAD_ACC - 0.5, so
+           # DX = 4.8 + (RING_PAD_ACC - 0.5) keeps the proven 0.79 um
+           # ring-to-ring gap (4.8 at the default padding; 4.2, a 0.19 um gap,
+           # violated nwell.space.1).
 W_CAP = 1.0        # um, capacitor width -- the ratified Minimum level
                    # (spec/capacitor-geometry-decision.md, the DF.1c floor)
 # Access block at (0,0), cap block at (DX,0). Access S (BL) is at x=0.21 and D
@@ -59,10 +82,18 @@ STRAPS = {"shapes": [
     # centre rises with the width (centre = W + 2.28 um, measured), so the
     # band spans both pads -- min/max +/- 0.21 -- and tracks the widths
     # (access at bg.W_MIN, capacitor at W_CAP) instead of restating them as
-    # literals. It clears the capacitor's metal1 gate pad
-    # (y 1.75..2.17 at W_CAP = 1.0) by 0.32 um.
+    # literals. RING_PAD_ACC raises the access ring (and its pad) by
+    # RING_PAD_ACC - 0.5, so the min edge tracks it too; the band would
+    # otherwise narrow below the 0.23 um metal1 minimum width (M1.1) as the
+    # min edge climbs toward the fixed capacitor side, so the max edge keeps
+    # the band at least 0.23 um tall (measured M1.1 at 1.3 um padding without
+    # this floor). It clears the capacitor's metal1 gate pad
+    # (y 1.75..2.17 at W_CAP = 1.0) by >= 1.1 um.
     {"layer": bg.METAL1,
-     "rect_um": [0.49, bg.W_MIN + 2.28 - 0.21, DX + 0.79, W_CAP + 2.28 + 0.21]},
+     "rect_um": [0.49, bg.W_MIN + 2.28 + (RING_PAD_ACC - 0.5) - 0.21,
+                 DX + 0.79,
+                 max(W_CAP + 2.28 + 0.21,
+                     bg.W_MIN + 2.28 + (RING_PAD_ACC - 0.5) - 0.21 + 0.23)]},
     # MOS-capacitor marker over the cap block's COMP island, which is as tall
     # as the device width (0,0)-(1.28, W_CAP) in the block frame -- so the
     # marker grows with W_CAP, keeping the 0.1 um margin. This is what makes
@@ -76,6 +107,7 @@ if __name__ == "__main__":
         HERE, gds_name="cell_candidate3.gds", cell="cell_candidate3",
         flavor="pfet", w_cap_um=W_CAP, l_cap_um=bg.L_CAP, w_acc_um=bg.W_MIN,
         l_acc=L_ACC, cap_gap_side="W", acc_gap_side="E",
+        ring_padding_acc_um=RING_PAD_ACC,
         straps=STRAPS,
         origins_um={"acc": {"x": 0, "y": 0}, "cap": {"x": DX, "y": 0},
                     "straps": {"x": 0, "y": 0}},

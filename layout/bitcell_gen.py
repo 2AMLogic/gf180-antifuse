@@ -43,7 +43,7 @@ def run(args, **kw):
 
 def build(workdir, *, gds_name, cell, flavor, l_acc, cap_gap_side, acc_gap_side,
           straps, origins_um, pins,
-          w_cap_um, l_cap_um=L_CAP, w_acc_um=W_MIN):
+          w_cap_um, l_cap_um=L_CAP, w_acc_um=W_MIN, ring_padding_acc_um=0.5):
     """Run the klt flow in `workdir`; return the path of the composed GDS.
 
     `origins_um` maps block id (cap, acc, straps) -> {"x", "y"}.
@@ -57,11 +57,22 @@ def build(workdir, *, gds_name, cell, flavor, l_acc, cap_gap_side, acc_gap_side,
     (the access axis is unchanged), so a caller that omits those two generates
     the same bytes as before these keywords existed. Access length stays
     `l_acc`, which was already per-cell.
+
+    `ring_padding_acc_um` is the acc block's generator `ring_padding_um`
+    (padding between the finger array and the tap ring's inner edge), applied
+    to the acc block only and defaulting to the generator's own 0.5: a caller
+    that omits it generates the same bytes as before this keyword existed.
+    Candidate 3 raises it because the generator's default draws a pfet/MV
+    block whose N-well misses the native deck's Nwell-overlap rule (DF.4d_MV)
+    and whose Dualgate marker misses the enclosure rule (DV.6); the cap block
+    draws neither marker and stays at the default.
     """
-    def gen(name, w_um, l_um, flavor_extra, gap_side):
+    def gen(name, w_um, l_um, flavor_extra, gap_side, ring_padding_um=None):
         params = {"w_um": w_um, "l_um": l_um, "rows": 1, "cols": 1, "dummy": 0,
                   "flavor": flavor, "gate_contact": True, "add_guard_ring": True,
                   "ring_gap_side": gap_side, **GAP, **flavor_extra}
+        if ring_padding_um is not None:
+            params["ring_padding_um"] = ring_padding_um
         out = run(["klt", "gen", "mos_array", "--pdk", PDK, "--params",
                    json.dumps(params), "--cell-name", name,
                    "-o", os.path.join(workdir, name + ".gds"), "--format", "json"])
@@ -69,7 +80,8 @@ def build(workdir, *, gds_name, cell, flavor, l_acc, cap_gap_side, acc_gap_side,
             fh.write(out)
 
     gen("cap", w_cap_um, l_cap_um, {}, cap_gap_side)
-    gen("acc", w_acc_um, l_acc, {"voltage_flavor": "medium_voltage"}, acc_gap_side)
+    gen("acc", w_acc_um, l_acc, {"voltage_flavor": "medium_voltage"}, acc_gap_side,
+        ring_padding_um=ring_padding_acc_um)
     with open(os.path.join(workdir, "straps_params.json"), "w") as fh:
         json.dump(straps, fh)
     out = run(["klt", "draw", "--params", os.path.join(workdir, "straps_params.json"),
