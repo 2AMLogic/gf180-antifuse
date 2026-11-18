@@ -32,7 +32,7 @@ C2 x {Gmin, G2x}, C3 x {Gmin, G2x}). Seven are drawn: all four C1 points, the
 C2 minimum point and both C3 points; C2's `G2x` is the one missing. On the
 curated deck the C1 and C3 cells grade clean and C2 does not; on the native
 runset every drawn cell carries violations (5 per C1 cell; 6 on C3 `Gmin`
-and 5 on C3 `Amin_G2x` since #388 cleared its #297-family generator
+and 5 on C3 `Amin_G2x` since #382 cleared its #297-family generator
 findings; 25 on C2), so no drawn cell is native-clean. Cell-level fixes
 are #287's. The floorplan's area table still carries estimates for
 Candidates 2 and 3.

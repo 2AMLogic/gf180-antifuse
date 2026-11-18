@@ -168,7 +168,7 @@ Each limit has an owner; none is waved through by this record:
   repo can satisfy, owned by #296 (levels ratified in #294) — was resolved
   by #296's clearing commit `2a8614fc` (2026-11-17): both rows are gone
   from the committed candidate-2 report (the 25-findings census above).
-- **Die-level density** `M1.4` / `M2.4` / `M3.4` / `MT30.7`: a standalone
+- **Die-level density** `M1.4` / `M2.4` / `M3.4` / `MT30.7` / `PL.8`: a standalone
   cell trips them by construction; they become meaningful at chip assembly
   with dummy fill — **#211**.
 - **`DBU`** (composed GDS written at `dbu = 0.0005` against the runset's
@@ -176,7 +176,7 @@ Each limit has an owner; none is waved through by this record:
   upstream as `2AMLogic/klayout-tools#5721`.
 - **Candidate 3's generator-owned findings** `DF.4d_MV` x5 + `DV.6` x1 on
   `mos_array$1` — repo-drawn drift-extended geometry, **cleared by #297**
-  (acc-block ring padding) in the base cell and by #388 (same mechanism)
+  (acc-block ring padding) in the base cell and by #382 (same mechanism)
   in the `Amin_G2x` measurement cell; absent from both committed
   candidate-3 reports (#287/#297 family).
 - **Any finding whose `cell` is not a PDK PCell's own cell name**, whatever
