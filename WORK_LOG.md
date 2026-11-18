@@ -5,6 +5,10 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-18
 
+- **PR #405**: docs: correct candidate-1 VB-strap metal band bottoms in layout README
+- **Issue #401** (closed): layout: candidate-1 family VB-strap bullet quotes access north-band bottoms 0.04 um low (README:426-437)
+- **PR #402**: layout: assemble the Run 3 test chip (run3_top.gds) with DRC/LVS/ERC evidence
+- **Issue #211** (closed): Run 3 test chip: full-chip assembly with DRC/LVS through klt
 - **PR #400**: docs(layout): correct Amin_G2x VB-strap rationale to the measured spacing constraint
 - **Issue #391** (closed): layout: cell_candidate3_Amin_G2x's VB-strap rationale says the cap gate pad sits BETWEEN the two ring north bands; measured, it now sits below both
 - **PR #398**: docs: sync signoff README 3.analog row with the committed 5-finding DRC report
