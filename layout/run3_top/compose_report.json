@@ -2,7 +2,7 @@
  "schema_version": 1,
  "generator": "gen-compose",
  "cell_name": "run3_top",
- "gds_path": "/tmp/loom-nt/c4eede0b-8134-4366-98f3-e9ea8f5f8f39/tmpuzx1l09m/run3_top.gds",
+ "gds_path": "/tmp/loom-nt/5efd7f2fcaa3418a/tmplv_yho9u/run3_top.gds",
  "pdk": {
   "name": "gf180mcuA",
   "variant": "gf180mcuA",
@@ -22,7 +22,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "pads_left",
-   "source_path": "/tmp/loom-nt/c4eede0b-8134-4366-98f3-e9ea8f5f8f39/tmpuzx1l09m/pads_left.gds",
+   "source_path": "/tmp/loom-nt/5efd7f2fcaa3418a/tmplv_yho9u/pads_left.gds",
    "source_digest": "sha256:0827350d001f8aa39a0d94cfa14b93f9ce6d4f3ea1952dd4edd37ed7820590cc",
    "offset_um": {
     "x": 0.0,
@@ -43,7 +43,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "pads_right",
-   "source_path": "/tmp/loom-nt/c4eede0b-8134-4366-98f3-e9ea8f5f8f39/tmpuzx1l09m/pads_right.gds",
+   "source_path": "/tmp/loom-nt/5efd7f2fcaa3418a/tmplv_yho9u/pads_right.gds",
    "source_digest": "sha256:06463689376f89a5c94fe8ac8ee17b6ec3a949c13c663895da294d35e4430a3d",
    "offset_um": {
     "x": 0.0,
@@ -64,7 +64,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "pads_bottom",
-   "source_path": "/tmp/loom-nt/c4eede0b-8134-4366-98f3-e9ea8f5f8f39/tmpuzx1l09m/pads_bottom.gds",
+   "source_path": "/tmp/loom-nt/5efd7f2fcaa3418a/tmplv_yho9u/pads_bottom.gds",
    "source_digest": "sha256:56114b195f3d59bcb979c9b3d8b32535c33ab79099971f4c10644c684f33ddc1",
    "offset_um": {
     "x": 0.0,
@@ -85,7 +85,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "pads_top",
-   "source_path": "/tmp/loom-nt/c4eede0b-8134-4366-98f3-e9ea8f5f8f39/tmpuzx1l09m/pads_top.gds",
+   "source_path": "/tmp/loom-nt/5efd7f2fcaa3418a/tmplv_yho9u/pads_top.gds",
    "source_digest": "sha256:39512660caef3c7b46feff84cb64f5e6d89d41b6966b490b2ed1032de51b07c6",
    "offset_um": {
     "x": 0.0,
@@ -106,7 +106,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "cell_candidate1",
-   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-211/layout/cell_candidate1/cell_candidate1.gds",
+   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-404/layout/cell_candidate1/cell_candidate1.gds",
    "source_digest": "sha256:1978dcf53ca1542b8dd00a45df6c0bda34eeb11d011ab536d7023690e5de49a2",
    "offset_um": {
     "x": 600.0,
@@ -127,7 +127,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "cell_candidate1",
-   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-211/layout/cell_candidate1/cell_candidate1.gds",
+   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-404/layout/cell_candidate1/cell_candidate1.gds",
    "source_digest": "sha256:1978dcf53ca1542b8dd00a45df6c0bda34eeb11d011ab536d7023690e5de49a2",
    "offset_um": {
     "x": 600.0,
@@ -148,7 +148,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "cell_candidate1",
-   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-211/layout/cell_candidate1/cell_candidate1.gds",
+   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-404/layout/cell_candidate1/cell_candidate1.gds",
    "source_digest": "sha256:1978dcf53ca1542b8dd00a45df6c0bda34eeb11d011ab536d7023690e5de49a2",
    "offset_um": {
     "x": 600.0,
@@ -169,7 +169,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "cell_candidate1",
-   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-211/layout/cell_candidate1/cell_candidate1.gds",
+   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-404/layout/cell_candidate1/cell_candidate1.gds",
    "source_digest": "sha256:1978dcf53ca1542b8dd00a45df6c0bda34eeb11d011ab536d7023690e5de49a2",
    "offset_um": {
     "x": 600.0,
@@ -190,7 +190,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "cell_candidate1_Amin_G2x",
-   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-211/layout/cell_candidate1_Amin_G2x/cell_candidate1_Amin_G2x.gds",
+   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-404/layout/cell_candidate1_Amin_G2x/cell_candidate1_Amin_G2x.gds",
    "source_digest": "sha256:d46b2a74ed99ecfff9f075fcfc9842f9ab4fed27f4717470696f66610b961209",
    "offset_um": {
     "x": 600.0,
@@ -211,7 +211,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "cell_candidate1_Amin_G2x",
-   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-211/layout/cell_candidate1_Amin_G2x/cell_candidate1_Amin_G2x.gds",
+   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-404/layout/cell_candidate1_Amin_G2x/cell_candidate1_Amin_G2x.gds",
    "source_digest": "sha256:d46b2a74ed99ecfff9f075fcfc9842f9ab4fed27f4717470696f66610b961209",
    "offset_um": {
     "x": 600.0,
@@ -232,7 +232,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "cell_candidate1_Amin_G2x",
-   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-211/layout/cell_candidate1_Amin_G2x/cell_candidate1_Amin_G2x.gds",
+   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-404/layout/cell_candidate1_Amin_G2x/cell_candidate1_Amin_G2x.gds",
    "source_digest": "sha256:d46b2a74ed99ecfff9f075fcfc9842f9ab4fed27f4717470696f66610b961209",
    "offset_um": {
     "x": 600.0,
@@ -253,7 +253,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "cell_candidate1_Amin_G2x",
-   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-211/layout/cell_candidate1_Amin_G2x/cell_candidate1_Amin_G2x.gds",
+   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-404/layout/cell_candidate1_Amin_G2x/cell_candidate1_Amin_G2x.gds",
    "source_digest": "sha256:d46b2a74ed99ecfff9f075fcfc9842f9ab4fed27f4717470696f66610b961209",
    "offset_um": {
     "x": 600.0,
@@ -274,7 +274,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "cell_candidate1_A2x_Gmin",
-   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-211/layout/cell_candidate1_A2x_Gmin/cell_candidate1_A2x_Gmin.gds",
+   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-404/layout/cell_candidate1_A2x_Gmin/cell_candidate1_A2x_Gmin.gds",
    "source_digest": "sha256:d2908387201bb4952a5a101da2ce3508754fafcbac5dc4fad9d756959cb4a5a8",
    "offset_um": {
     "x": 600.0,
@@ -295,7 +295,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "cell_candidate1_A2x_Gmin",
-   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-211/layout/cell_candidate1_A2x_Gmin/cell_candidate1_A2x_Gmin.gds",
+   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-404/layout/cell_candidate1_A2x_Gmin/cell_candidate1_A2x_Gmin.gds",
    "source_digest": "sha256:d2908387201bb4952a5a101da2ce3508754fafcbac5dc4fad9d756959cb4a5a8",
    "offset_um": {
     "x": 600.0,
@@ -316,7 +316,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "cell_candidate1_A2x_Gmin",
-   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-211/layout/cell_candidate1_A2x_Gmin/cell_candidate1_A2x_Gmin.gds",
+   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-404/layout/cell_candidate1_A2x_Gmin/cell_candidate1_A2x_Gmin.gds",
    "source_digest": "sha256:d2908387201bb4952a5a101da2ce3508754fafcbac5dc4fad9d756959cb4a5a8",
    "offset_um": {
     "x": 600.0,
@@ -337,7 +337,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "cell_candidate1_A2x_Gmin",
-   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-211/layout/cell_candidate1_A2x_Gmin/cell_candidate1_A2x_Gmin.gds",
+   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-404/layout/cell_candidate1_A2x_Gmin/cell_candidate1_A2x_Gmin.gds",
    "source_digest": "sha256:d2908387201bb4952a5a101da2ce3508754fafcbac5dc4fad9d756959cb4a5a8",
    "offset_um": {
     "x": 600.0,
@@ -358,7 +358,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "cell_candidate1_A2x_G2x",
-   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-211/layout/cell_candidate1_A2x_G2x/cell_candidate1_A2x_G2x.gds",
+   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-404/layout/cell_candidate1_A2x_G2x/cell_candidate1_A2x_G2x.gds",
    "source_digest": "sha256:f3872db3320ec0997e9179d879bdc1627303293f07725791ff2daeb132bf49f6",
    "offset_um": {
     "x": 600.0,
@@ -379,7 +379,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "cell_candidate1_A2x_G2x",
-   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-211/layout/cell_candidate1_A2x_G2x/cell_candidate1_A2x_G2x.gds",
+   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-404/layout/cell_candidate1_A2x_G2x/cell_candidate1_A2x_G2x.gds",
    "source_digest": "sha256:f3872db3320ec0997e9179d879bdc1627303293f07725791ff2daeb132bf49f6",
    "offset_um": {
     "x": 600.0,
@@ -400,7 +400,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "cell_candidate1_A2x_G2x",
-   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-211/layout/cell_candidate1_A2x_G2x/cell_candidate1_A2x_G2x.gds",
+   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-404/layout/cell_candidate1_A2x_G2x/cell_candidate1_A2x_G2x.gds",
    "source_digest": "sha256:f3872db3320ec0997e9179d879bdc1627303293f07725791ff2daeb132bf49f6",
    "offset_um": {
     "x": 600.0,
@@ -421,7 +421,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "cell_candidate1_A2x_G2x",
-   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-211/layout/cell_candidate1_A2x_G2x/cell_candidate1_A2x_G2x.gds",
+   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-404/layout/cell_candidate1_A2x_G2x/cell_candidate1_A2x_G2x.gds",
    "source_digest": "sha256:f3872db3320ec0997e9179d879bdc1627303293f07725791ff2daeb132bf49f6",
    "offset_um": {
     "x": 600.0,
@@ -442,7 +442,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "cell_candidate2",
-   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-211/layout/cell_candidate2/cell_candidate2.gds",
+   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-404/layout/cell_candidate2/cell_candidate2.gds",
    "source_digest": "sha256:8ed4c81d8ab0f407320ef78f827e1efa5b81966ff696ab8539edbb8d1081c965",
    "offset_um": {
     "x": 600.0,
@@ -463,7 +463,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "cell_candidate2",
-   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-211/layout/cell_candidate2/cell_candidate2.gds",
+   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-404/layout/cell_candidate2/cell_candidate2.gds",
    "source_digest": "sha256:8ed4c81d8ab0f407320ef78f827e1efa5b81966ff696ab8539edbb8d1081c965",
    "offset_um": {
     "x": 600.0,
@@ -484,7 +484,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "cell_candidate2",
-   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-211/layout/cell_candidate2/cell_candidate2.gds",
+   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-404/layout/cell_candidate2/cell_candidate2.gds",
    "source_digest": "sha256:8ed4c81d8ab0f407320ef78f827e1efa5b81966ff696ab8539edbb8d1081c965",
    "offset_um": {
     "x": 600.0,
@@ -505,7 +505,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "cell_candidate2",
-   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-211/layout/cell_candidate2/cell_candidate2.gds",
+   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-404/layout/cell_candidate2/cell_candidate2.gds",
    "source_digest": "sha256:8ed4c81d8ab0f407320ef78f827e1efa5b81966ff696ab8539edbb8d1081c965",
    "offset_um": {
     "x": 600.0,
@@ -526,7 +526,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "cell_candidate2",
-   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-211/layout/cell_candidate2/cell_candidate2.gds",
+   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-404/layout/cell_candidate2/cell_candidate2.gds",
    "source_digest": "sha256:8ed4c81d8ab0f407320ef78f827e1efa5b81966ff696ab8539edbb8d1081c965",
    "offset_um": {
     "x": 600.0,
@@ -547,7 +547,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "cell_candidate3",
-   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-211/layout/cell_candidate3/cell_candidate3.gds",
+   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-404/layout/cell_candidate3/cell_candidate3.gds",
    "source_digest": "sha256:4eb39207d7c2109808c795960da58ca4cb4ba8e8c5ce7c155e2ba5ed3e686f6d",
    "offset_um": {
     "x": 1000.0,
@@ -568,7 +568,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "cell_candidate3",
-   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-211/layout/cell_candidate3/cell_candidate3.gds",
+   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-404/layout/cell_candidate3/cell_candidate3.gds",
    "source_digest": "sha256:4eb39207d7c2109808c795960da58ca4cb4ba8e8c5ce7c155e2ba5ed3e686f6d",
    "offset_um": {
     "x": 1000.0,
@@ -589,7 +589,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "cell_candidate3",
-   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-211/layout/cell_candidate3/cell_candidate3.gds",
+   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-404/layout/cell_candidate3/cell_candidate3.gds",
    "source_digest": "sha256:4eb39207d7c2109808c795960da58ca4cb4ba8e8c5ce7c155e2ba5ed3e686f6d",
    "offset_um": {
     "x": 1000.0,
@@ -610,7 +610,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "cell_candidate3",
-   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-211/layout/cell_candidate3/cell_candidate3.gds",
+   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-404/layout/cell_candidate3/cell_candidate3.gds",
    "source_digest": "sha256:4eb39207d7c2109808c795960da58ca4cb4ba8e8c5ce7c155e2ba5ed3e686f6d",
    "offset_um": {
     "x": 1000.0,
@@ -631,7 +631,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "cell_candidate3",
-   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-211/layout/cell_candidate3/cell_candidate3.gds",
+   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-404/layout/cell_candidate3/cell_candidate3.gds",
    "source_digest": "sha256:4eb39207d7c2109808c795960da58ca4cb4ba8e8c5ce7c155e2ba5ed3e686f6d",
    "offset_um": {
     "x": 1000.0,
@@ -652,7 +652,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "cell_candidate3_Amin_G2x",
-   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-211/layout/cell_candidate3_Amin_G2x/cell_candidate3_Amin_G2x.gds",
+   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-404/layout/cell_candidate3_Amin_G2x/cell_candidate3_Amin_G2x.gds",
    "source_digest": "sha256:c64464f2172e530782ce0e0a8638ba55b238194d5c43adaf5d3b9ab047c4ce0d",
    "offset_um": {
     "x": 1000.0,
@@ -673,7 +673,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "cell_candidate3_Amin_G2x",
-   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-211/layout/cell_candidate3_Amin_G2x/cell_candidate3_Amin_G2x.gds",
+   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-404/layout/cell_candidate3_Amin_G2x/cell_candidate3_Amin_G2x.gds",
    "source_digest": "sha256:c64464f2172e530782ce0e0a8638ba55b238194d5c43adaf5d3b9ab047c4ce0d",
    "offset_um": {
     "x": 1000.0,
@@ -694,7 +694,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "cell_candidate3_Amin_G2x",
-   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-211/layout/cell_candidate3_Amin_G2x/cell_candidate3_Amin_G2x.gds",
+   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-404/layout/cell_candidate3_Amin_G2x/cell_candidate3_Amin_G2x.gds",
    "source_digest": "sha256:c64464f2172e530782ce0e0a8638ba55b238194d5c43adaf5d3b9ab047c4ce0d",
    "offset_um": {
     "x": 1000.0,
@@ -715,7 +715,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "cell_candidate3_Amin_G2x",
-   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-211/layout/cell_candidate3_Amin_G2x/cell_candidate3_Amin_G2x.gds",
+   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-404/layout/cell_candidate3_Amin_G2x/cell_candidate3_Amin_G2x.gds",
    "source_digest": "sha256:c64464f2172e530782ce0e0a8638ba55b238194d5c43adaf5d3b9ab047c4ce0d",
    "offset_um": {
     "x": 1000.0,
@@ -736,7 +736,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "cell_candidate3_Amin_G2x",
-   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-211/layout/cell_candidate3_Amin_G2x/cell_candidate3_Amin_G2x.gds",
+   "source_path": "/home/ubuntu/GitHub/gf180-antifuse/.loom/worktrees/issue-404/layout/cell_candidate3_Amin_G2x/cell_candidate3_Amin_G2x.gds",
    "source_digest": "sha256:c64464f2172e530782ce0e0a8638ba55b238194d5c43adaf5d3b9ab047c4ce0d",
    "offset_um": {
     "x": 1000.0,
@@ -750,6 +750,27 @@
    },
    "orientation": "none",
    "placed_cell_name": "Xinst_C3_Amin_G2x_5__cell_candidate3_Amin_G2x",
+   "abuts": []
+  },
+  {
+   "id": "substrate_tap_c3",
+   "source": "cell",
+   "generator": null,
+   "cell_name": "substrate_tap",
+   "source_path": "/tmp/loom-nt/5efd7f2fcaa3418a/tmplv_yho9u/substrate_tap.gds",
+   "source_digest": "sha256:d87b870880a2cd4c3dc0e71ee813ce406a6730e7206d5e0f780129b660af030f",
+   "offset_um": {
+    "x": 887.5,
+    "y": 1180.92
+   },
+   "bbox_um": {
+    "x0": 887.54,
+    "y0": 1180.96,
+    "x1": 888.46,
+    "y1": 1181.88
+   },
+   "orientation": "none",
+   "placed_cell_name": "substrate_tap_c3__substrate_tap",
    "abuts": []
   }
  ],
@@ -3603,10 +3624,14 @@
     {
      "block": "Xinst_C2_Amin_Gmin_5",
      "port": "VB"
+    },
+    {
+     "block": "substrate_tap_c3",
+     "port": "B"
     }
    ],
    "routed": true,
-   "route_length_um": 3316.4150000000004,
+   "route_length_um": 3639.4200000000005,
    "status": "routed",
    "landed_on_block": true,
    "legs": [
@@ -3949,6 +3974,23 @@
      "reason": null,
      "channel_track": 0,
      "landed_on_block": true
+    },
+    {
+     "pins": [
+      {
+       "block": "substrate_tap_c3",
+       "port": "B"
+      },
+      {
+       "block": "Xinst_C1_A2x_Gmin_4",
+       "port": "VB"
+      }
+     ],
+     "routed": true,
+     "route_length_um": 323.0050000000001,
+     "reason": null,
+     "channel_track": 0,
+     "landed_on_block": true
     }
    ]
   }
@@ -3961,15 +4003,16 @@
   "notes": []
  },
  "warnings": [
-  "block 'pads_left' gds '/tmp/loom-nt/c4eede0b-8134-4366-98f3-e9ea8f5f8f39/tmpuzx1l09m/pads_left.gds' was rescaled from its own dbu=0.001 onto the composed cell's dbu=0.0005 (exact integer ratio 2)",
-  "block 'pads_right' gds '/tmp/loom-nt/c4eede0b-8134-4366-98f3-e9ea8f5f8f39/tmpuzx1l09m/pads_right.gds' was rescaled from its own dbu=0.001 onto the composed cell's dbu=0.0005 (exact integer ratio 2)",
-  "block 'pads_bottom' gds '/tmp/loom-nt/c4eede0b-8134-4366-98f3-e9ea8f5f8f39/tmpuzx1l09m/pads_bottom.gds' was rescaled from its own dbu=0.001 onto the composed cell's dbu=0.0005 (exact integer ratio 2)",
-  "block 'pads_top' gds '/tmp/loom-nt/c4eede0b-8134-4366-98f3-e9ea8f5f8f39/tmpuzx1l09m/pads_top.gds' was rescaled from its own dbu=0.001 onto the composed cell's dbu=0.0005 (exact integer ratio 2)"
+  "block 'pads_left' gds '/tmp/loom-nt/5efd7f2fcaa3418a/tmplv_yho9u/pads_left.gds' was rescaled from its own dbu=0.001 onto the composed cell's dbu=0.0005 (exact integer ratio 2)",
+  "block 'pads_right' gds '/tmp/loom-nt/5efd7f2fcaa3418a/tmplv_yho9u/pads_right.gds' was rescaled from its own dbu=0.001 onto the composed cell's dbu=0.0005 (exact integer ratio 2)",
+  "block 'pads_bottom' gds '/tmp/loom-nt/5efd7f2fcaa3418a/tmplv_yho9u/pads_bottom.gds' was rescaled from its own dbu=0.001 onto the composed cell's dbu=0.0005 (exact integer ratio 2)",
+  "block 'pads_top' gds '/tmp/loom-nt/5efd7f2fcaa3418a/tmplv_yho9u/pads_top.gds' was rescaled from its own dbu=0.001 onto the composed cell's dbu=0.0005 (exact integer ratio 2)",
+  "block 'substrate_tap_c3' gds '/tmp/loom-nt/5efd7f2fcaa3418a/tmplv_yho9u/substrate_tap.gds' was rescaled from its own dbu=0.001 onto the composed cell's dbu=0.0005 (exact integer ratio 2)"
  ],
  "provenance": {
-  "klt_version": "0.9.3.dev1136+g81926eccba7b",
-  "klt_git_commit": "81926eccba7bb286548dc754eeebf00b06f74fc2",
-  "klt_reinstall_spec": "klayout-tools @ git+https://github.com/2AMLogic/klayout-tools@81926eccba7bb286548dc754eeebf00b06f74fc2",
+  "klt_version": "0.9.3.dev1370+g30969f578991",
+  "klt_git_commit": "30969f578991f52b680b7cb1ba33276b2e62ace9",
+  "klt_reinstall_spec": "klayout-tools @ git+https://github.com/2AMLogic/klayout-tools@30969f578991f52b680b7cb1ba33276b2e62ace9",
   "klayout_version": "0.30.12",
   "pdk": {
    "name": "gf180mcuA",

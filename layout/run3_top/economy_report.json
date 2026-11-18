@@ -14,8 +14,8 @@
   "bbox_area_um2": 4900016.0,
   "bbox_area_mm2": 4.900016,
   "aspect_ratio": 0.7649150533386013,
-  "drawn_area_um2": 540743.2817,
-  "utilization": 0.11035541143130963,
+  "drawn_area_um2": 3820958.7921,
+  "utilization": 0.779784962355225,
   "tight_bbox_um": {
     "left": 0.0,
     "bottom": 0.0,
@@ -28,12 +28,12 @@
   "bbox_tightness": 1.0,
   "dead_margins_um": {
     "left": 0.0,
-    "right": 1694.0,
-    "bottom": 2531.0,
-    "top": 2531.0
+    "right": 0.0,
+    "bottom": 0.0,
+    "top": 0.0
   },
-  "whitespace_area_um2": 4359272.7183,
-  "whitespace_fraction": 0.8896445885686903,
+  "whitespace_area_um2": 1079057.2078999998,
+  "whitespace_fraction": 0.220215037644775,
   "whitespace_grid": {
     "cols": 4,
     "rows": 4,
@@ -49,8 +49,8 @@
           "width": 484.0,
           "height": 632.75
         },
-        "covered_fraction": 0.2737463391139947,
-        "whitespace_fraction": 0.7262536608860053
+        "covered_fraction": 0.8507704415659051,
+        "whitespace_fraction": 0.1492295584340949
       },
       {
         "row": 0,
@@ -63,8 +63,8 @@
           "width": 484.0,
           "height": 632.75
         },
-        "covered_fraction": 0.11772512677509625,
-        "whitespace_fraction": 0.8822748732249037
+        "covered_fraction": 0.7551070458545441,
+        "whitespace_fraction": 0.24489295414545587
       },
       {
         "row": 0,
@@ -77,8 +77,8 @@
           "width": 484.0,
           "height": 632.75
         },
-        "covered_fraction": 0.10112878945701402,
-        "whitespace_fraction": 0.898871210542986
+        "covered_fraction": 0.6710201204240965,
+        "whitespace_fraction": 0.32897987957590347
       },
       {
         "row": 0,
@@ -91,8 +91,8 @@
           "width": 484.0,
           "height": 632.75
         },
-        "covered_fraction": 0.15803213703791988,
-        "whitespace_fraction": 0.8419678629620801
+        "covered_fraction": 0.821739292279862,
+        "whitespace_fraction": 0.17826070772013802
       },
       {
         "row": 1,
@@ -105,8 +105,8 @@
           "width": 484.0,
           "height": 632.75
         },
-        "covered_fraction": 0.2202888157099895,
-        "whitespace_fraction": 0.7797111842900105
+        "covered_fraction": 0.8620072463436854,
+        "whitespace_fraction": 0.13799275365631458
       },
       {
         "row": 1,
@@ -119,8 +119,8 @@
           "width": 484.0,
           "height": 632.75
         },
-        "covered_fraction": 0.027430771491358395,
-        "whitespace_fraction": 0.9725692285086416
+        "covered_fraction": 0.7721636964450729,
+        "whitespace_fraction": 0.22783630355492712
       },
       {
         "row": 1,
@@ -133,8 +133,8 @@
           "width": 484.0,
           "height": 632.75
         },
-        "covered_fraction": 0.05292939810808781,
-        "whitespace_fraction": 0.9470706018919122
+        "covered_fraction": 0.6954700265468521,
+        "whitespace_fraction": 0.3045299734531479
       },
       {
         "row": 1,
@@ -147,8 +147,8 @@
           "width": 484.0,
           "height": 632.75
         },
-        "covered_fraction": 0.20080750756732224,
-        "whitespace_fraction": 0.7991924924326778
+        "covered_fraction": 0.8081973936411636,
+        "whitespace_fraction": 0.1918026063588364
       },
       {
         "row": 2,
@@ -161,8 +161,8 @@
           "width": 484.0,
           "height": 632.75
         },
-        "covered_fraction": 0.21311583864215955,
-        "whitespace_fraction": 0.7868841613578405
+        "covered_fraction": 0.8562633516298722,
+        "whitespace_fraction": 0.14373664837012778
       },
       {
         "row": 2,
@@ -175,8 +175,8 @@
           "width": 484.0,
           "height": 632.75
         },
-        "covered_fraction": 0.017667700023836656,
-        "whitespace_fraction": 0.9823322999761633
+        "covered_fraction": 0.7649599002125708,
+        "whitespace_fraction": 0.23504009978742924
       },
       {
         "row": 2,
@@ -189,8 +189,8 @@
           "width": 484.0,
           "height": 632.75
         },
-        "covered_fraction": 0.0,
-        "whitespace_fraction": 1.0
+        "covered_fraction": 0.6743417980675982,
+        "whitespace_fraction": 0.3256582019324018
       },
       {
         "row": 2,
@@ -203,8 +203,8 @@
           "width": 484.0,
           "height": 632.75
         },
-        "covered_fraction": 0.02066115702479339,
-        "whitespace_fraction": 0.9793388429752066
+        "covered_fraction": 0.852187584693601,
+        "whitespace_fraction": 0.147812415306399
       },
       {
         "row": 3,
@@ -217,8 +217,8 @@
           "width": 484.0,
           "height": 632.75
         },
-        "covered_fraction": 0.163779057047977,
-        "whitespace_fraction": 0.836220942952023
+        "covered_fraction": 0.8379563168773326,
+        "whitespace_fraction": 0.16204368312266737
       },
       {
         "row": 3,
@@ -231,8 +231,8 @@
           "width": 484.0,
           "height": 632.75
         },
-        "covered_fraction": 0.062839693584674,
-        "whitespace_fraction": 0.937160306415326
+        "covered_fraction": 0.7423490346153971,
+        "whitespace_fraction": 0.25765096538460286
       },
       {
         "row": 3,
@@ -245,8 +245,8 @@
           "width": 484.0,
           "height": 632.75
         },
-        "covered_fraction": 0.06073449556083082,
-        "whitespace_fraction": 0.9392655044391692
+        "covered_fraction": 0.6780336390738316,
+        "whitespace_fraction": 0.32196636092616837
       },
       {
         "row": 3,
@@ -259,8 +259,8 @@
           "width": 484.0,
           "height": 632.75
         },
-        "covered_fraction": 0.07479975575589957,
-        "whitespace_fraction": 0.9252002442441004
+        "covered_fraction": 0.8339925094122141,
+        "whitespace_fraction": 0.16600749058778586
       }
     ]
   },
@@ -274,119 +274,119 @@
         "width": 1916.0,
         "height": 2511.0
       },
-      "area_um2": 3598417.62545,
-      "fill_fraction": 0.7479444568013476
+      "area_um2": 858898.26015,
+      "fill_fraction": 0.1785251906538163
     },
     {
       "bbox_um": {
-        "left": 360.21,
-        "bottom": 1262.5,
-        "right": 569.79,
-        "top": 1342.5,
-        "width": 209.58,
-        "height": 80.0
+        "left": 945.0,
+        "bottom": 581.5500000000001,
+        "right": 1084.6,
+        "top": 663.29,
+        "width": 139.6,
+        "height": 81.74
       },
-      "area_um2": 16766.4,
-      "fill_fraction": 1.0
+      "area_um2": 9820.6106,
+      "fill_fraction": 0.860633881417283
     },
     {
       "bbox_um": {
-        "left": 360.21,
-        "bottom": 1347.5,
-        "right": 569.79,
-        "top": 1427.5,
-        "width": 209.58,
-        "height": 80.0
+        "left": 945.0,
+        "bottom": 836.53,
+        "right": 1084.6,
+        "top": 917.82,
+        "width": 139.6,
+        "height": 81.29
       },
-      "area_um2": 16766.4,
-      "fill_fraction": 1.0
+      "area_um2": 9777.96835,
+      "fill_fraction": 0.8616404628305536
     },
     {
       "bbox_um": {
-        "left": 360.21,
-        "bottom": 1432.5,
-        "right": 569.79,
-        "top": 1512.5,
-        "width": 209.58,
-        "height": 80.0
+        "left": 570.21,
+        "bottom": 748.63,
+        "right": 614.79,
+        "top": 832.82,
+        "width": 44.58,
+        "height": 84.19
       },
-      "area_um2": 16766.4,
-      "fill_fraction": 1.0
+      "area_um2": 3284.4142,
+      "fill_fraction": 0.875099322171309
     },
     {
       "bbox_um": {
-        "left": 360.21,
-        "bottom": 922.5,
-        "right": 569.79,
-        "top": 1002.5,
-        "width": 209.58,
-        "height": 80.0
+        "left": 570.21,
+        "bottom": 1429.05,
+        "right": 614.79,
+        "top": 1512.82,
+        "width": 44.58,
+        "height": 83.77
       },
-      "area_um2": 16766.4,
-      "fill_fraction": 1.0
+      "area_um2": 3241.7999,
+      "fill_fraction": 0.8680757514339531
     },
     {
       "bbox_um": {
-        "left": 360.21,
-        "bottom": 1007.5,
-        "right": 569.79,
-        "top": 1087.5,
-        "width": 209.58,
-        "height": 80.0
+        "left": 570.21,
+        "bottom": 239.21,
+        "right": 614.79,
+        "top": 323.29,
+        "width": 44.58,
+        "height": 84.08
       },
-      "area_um2": 16766.4,
-      "fill_fraction": 1.0
+      "area_um2": 3227.7993,
+      "fill_fraction": 0.861139986528244
     },
     {
       "bbox_um": {
-        "left": 360.21,
-        "bottom": 1092.5,
-        "right": 569.79,
-        "top": 1172.5,
-        "width": 209.58,
-        "height": 80.0
+        "left": 570.21,
+        "bottom": 1005.0500000000001,
+        "right": 614.79,
+        "top": 1088.29,
+        "width": 44.58,
+        "height": 83.24
       },
-      "area_um2": 16766.4,
-      "fill_fraction": 1.0
+      "area_um2": 3222.0936,
+      "fill_fraction": 0.8682924336899319
     },
     {
       "bbox_um": {
-        "left": 360.21,
-        "bottom": 1177.5,
-        "right": 569.79,
-        "top": 1257.5,
-        "width": 209.58,
-        "height": 80.0
+        "left": 570.21,
+        "bottom": 919.63,
+        "right": 614.79,
+        "top": 1003.2900000000001,
+        "width": 44.58,
+        "height": 83.66
       },
-      "area_um2": 16766.4,
-      "fill_fraction": 1.0
+      "area_um2": 3221.3398,
+      "fill_fraction": 0.8637312126772607
     },
     {
       "bbox_um": {
-        "left": 360.21,
-        "bottom": 1517.5,
-        "right": 569.79,
-        "top": 1593.74,
-        "width": 209.58,
-        "height": 76.24
+        "left": 570.21,
+        "bottom": 324.63,
+        "right": 614.79,
+        "top": 408.29,
+        "width": 44.58,
+        "height": 83.66
       },
-      "area_um2": 15978.379200000001,
-      "fill_fraction": 1.0
+      "area_um2": 3220.6111,
+      "fill_fraction": 0.8635358278455587
     },
     {
       "bbox_um": {
-        "left": 90.21000000000001,
-        "bottom": 1517.5,
-        "right": 569.79,
-        "top": 1596.65,
-        "width": 479.58,
-        "height": 79.15
+        "left": 570.21,
+        "bottom": 409.63,
+        "right": 614.79,
+        "top": 493.29,
+        "width": 44.58,
+        "height": 83.66
       },
-      "area_um2": 15943.728500000001,
-      "fill_fraction": 0.4200276763541019
+      "area_um2": 3220.6111,
+      "fill_fraction": 0.8635358278455587
     }
   ],
-  "empty_region_count": 219,
+  "empty_region_count": 3568,
   "cells": [
     {
       "name": "cap__core",
@@ -1315,16 +1315,16 @@
     {
       "name": "run3_top",
       "bbox_um": {
-        "left": 89.79,
-        "bottom": 169.79,
-        "right": 1766.0,
-        "top": 1948.45,
-        "width": 1676.21,
-        "height": 1778.66
+        "left": 0.0,
+        "bottom": 0.0,
+        "right": 1920.0,
+        "top": 2520.0,
+        "width": 1920.0,
+        "height": 2520.0
       },
-      "bbox_area_um2": 2981407.6785999998,
-      "drawn_area_um2": 92648.774,
-      "utilization": 0.03107551331037885
+      "bbox_area_um2": 4838400.0,
+      "drawn_area_um2": 3414781.9388,
+      "utilization": 0.7057667697585979
     },
     {
       "name": "straps__straps",
@@ -1759,6 +1759,20 @@
       "bbox_area_um2": 18.488500000000002,
       "drawn_area_um2": 5.0652,
       "utilization": 0.27396489709819616
+    },
+    {
+      "name": "substrate_tap_c3__substrate_tap",
+      "bbox_um": {
+        "left": 0.04,
+        "bottom": 0.04,
+        "right": 0.96,
+        "top": 0.96,
+        "width": 0.92,
+        "height": 0.92
+      },
+      "bbox_area_um2": 0.8464,
+      "drawn_area_um2": 0.8464,
+      "utilization": 1.0
     }
   ],
   "row_utilization": {
@@ -1909,14 +1923,14 @@
   },
   "annotation_layers_excluded": [],
   "provenance": {
-    "klt_version": "0.9.3.dev1136+g81926eccba7b",
-    "klt_git_commit": "81926eccba7bb286548dc754eeebf00b06f74fc2",
-    "klt_reinstall_spec": "klayout-tools @ git+https://github.com/2AMLogic/klayout-tools@81926eccba7bb286548dc754eeebf00b06f74fc2",
+    "klt_version": "0.9.3.dev1370+g30969f578991",
+    "klt_git_commit": "30969f578991f52b680b7cb1ba33276b2e62ace9",
+    "klt_reinstall_spec": "klayout-tools @ git+https://github.com/2AMLogic/klayout-tools@30969f578991f52b680b7cb1ba33276b2e62ace9",
     "klayout_version": "0.30.12",
     "pdk": null,
     "deck": null,
     "input": {
-      "content_hash": "sha256:c96edecbc577c8920e588593ac2035cce43b4e5750c974fa815b46d0b7b6a022",
+      "content_hash": "sha256:e231fe008290a62c343210bc29354ac3918a6eef3b67875f5cdb91198f1a63b7",
       "role": "layout"
     }
   }

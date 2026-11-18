@@ -236,14 +236,14 @@
     "engine": "klayout",
     "engine_version": "0.30.12",
     "netgen_binary": null,
-    "layout_sha256": "c96edecbc577c8920e588593ac2035cce43b4e5750c974fa815b46d0b7b6a022",
+    "layout_sha256": "e231fe008290a62c343210bc29354ac3918a6eef3b67875f5cdb91198f1a63b7",
     "reference_sha256": "a3f24a5b2529e227cf5e154f822773d2bc226522354f03f09bee648a1d6f6664",
     "extracted_netlist": null
   },
   "provenance": {
-    "klt_version": "0.9.3.dev1136+g81926eccba7b",
-    "klt_git_commit": "81926eccba7bb286548dc754eeebf00b06f74fc2",
-    "klt_reinstall_spec": "klayout-tools @ git+https://github.com/2AMLogic/klayout-tools@81926eccba7bb286548dc754eeebf00b06f74fc2",
+    "klt_version": "0.9.3.dev1370+g30969f578991",
+    "klt_git_commit": "30969f578991f52b680b7cb1ba33276b2e62ace9",
+    "klt_reinstall_spec": "klayout-tools @ git+https://github.com/2AMLogic/klayout-tools@30969f578991f52b680b7cb1ba33276b2e62ace9",
     "klayout_version": "0.30.12",
     "pdk": null,
     "deck": {
@@ -263,7 +263,7 @@
       "options_hash": "sha256:6a7dc7660a470994263c5ca8ace6d8ac8c605d77e6876a9c5490949de6e7cb05"
     },
     "input": {
-      "content_hash": "sha256:c96edecbc577c8920e588593ac2035cce43b4e5750c974fa815b46d0b7b6a022",
+      "content_hash": "sha256:e231fe008290a62c343210bc29354ac3918a6eef3b67875f5cdb91198f1a63b7",
       "role": "layout"
     },
     "klayout_version_mismatch": false
@@ -430,25 +430,7 @@
       "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
       "side": "both",
       "net": {
-        "layout": "\\$11",
-        "layout_id": 6,
-        "reference": "INST_C1_AMIN_G2X_1_CN",
-        "reference_id": 45
-      },
-      "device": null,
-      "property": null,
-      "details": null,
-      "circuit": null,
-      "instance": null,
-      "subcircuit": null
-    },
-    {
-      "category": "topology",
-      "severity": "warning",
-      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
-      "side": "both",
-      "net": {
-        "layout": "\\$15",
+        "layout": "\\$1191",
         "layout_id": 9,
         "reference": "INST_C1_AMIN_G2X_2_CN",
         "reference_id": 46
@@ -466,8 +448,8 @@
       "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
       "side": "both",
       "net": {
-        "layout": "\\$19",
-        "layout_id": 12,
+        "layout": "\\$1636",
+        "layout_id": 13,
         "reference": "INST_C1_AMIN_G2X_3_CN",
         "reference_id": 47
       },
@@ -484,8 +466,8 @@
       "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
       "side": "both",
       "net": {
-        "layout": "\\$20",
-        "layout_id": 13,
+        "layout": "\\$1637",
+        "layout_id": 14,
         "reference": "INST_C3_AMIN_G2X_1_CN",
         "reference_id": 67
       },
@@ -502,8 +484,8 @@
       "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
       "side": "both",
       "net": {
-        "layout": "\\$22",
-        "layout_id": 15,
+        "layout": "\\$2039",
+        "layout_id": 16,
         "reference": "INST_C1_AMIN_G2X_4_CN",
         "reference_id": 48
       },
@@ -520,8 +502,8 @@
       "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
       "side": "both",
       "net": {
-        "layout": "\\$23",
-        "layout_id": 16,
+        "layout": "\\$2040",
+        "layout_id": 17,
         "reference": "INST_C3_AMIN_G2X_2_CN",
         "reference_id": 68
       },
@@ -538,8 +520,8 @@
       "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
       "side": "both",
       "net": {
-        "layout": "\\$27",
-        "layout_id": 20,
+        "layout": "\\$2444",
+        "layout_id": 21,
         "reference": "INST_C1_AMIN_GMIN_1_CN",
         "reference_id": 41
       },
@@ -556,8 +538,8 @@
       "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
       "side": "both",
       "net": {
-        "layout": "\\$28",
-        "layout_id": 21,
+        "layout": "\\$2445",
+        "layout_id": 22,
         "reference": "INST_C3_AMIN_G2X_3_CN",
         "reference_id": 69
       },
@@ -574,8 +556,8 @@
       "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
       "side": "both",
       "net": {
-        "layout": "\\$31",
-        "layout_id": 24,
+        "layout": "\\$2800",
+        "layout_id": 25,
         "reference": "INST_C1_AMIN_GMIN_2_CN",
         "reference_id": 42
       },
@@ -592,8 +574,8 @@
       "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
       "side": "both",
       "net": {
-        "layout": "\\$32",
-        "layout_id": 25,
+        "layout": "\\$2801",
+        "layout_id": 26,
         "reference": "INST_C3_AMIN_G2X_4_CN",
         "reference_id": 70
       },
@@ -610,8 +592,8 @@
       "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
       "side": "both",
       "net": {
-        "layout": "\\$34",
-        "layout_id": 27,
+        "layout": "\\$3155",
+        "layout_id": 28,
         "reference": "INST_C1_AMIN_GMIN_3_CN",
         "reference_id": 43
       },
@@ -628,8 +610,8 @@
       "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
       "side": "both",
       "net": {
-        "layout": "\\$35",
-        "layout_id": 28,
+        "layout": "\\$3244",
+        "layout_id": 29,
         "reference": "INST_C3_AMIN_G2X_5_CN",
         "reference_id": 71
       },
@@ -646,8 +628,8 @@
       "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
       "side": "both",
       "net": {
-        "layout": "\\$38",
-        "layout_id": 31,
+        "layout": "\\$3447",
+        "layout_id": 32,
         "reference": "INST_C3_AMIN_GMIN_1_CN",
         "reference_id": 62
       },
@@ -664,7 +646,7 @@
       "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
       "side": "both",
       "net": {
-        "layout": "\\$40",
+        "layout": "\\$3448",
         "layout_id": 33,
         "reference": "INST_C1_AMIN_GMIN_4_CN",
         "reference_id": 44
@@ -682,8 +664,8 @@
       "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
       "side": "both",
       "net": {
-        "layout": "\\$42",
-        "layout_id": 35,
+        "layout": "\\$3852",
+        "layout_id": 37,
         "reference": "INST_C3_AMIN_GMIN_2_CN",
         "reference_id": 63
       },
@@ -700,8 +682,8 @@
       "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
       "side": "both",
       "net": {
-        "layout": "\\$44",
-        "layout_id": 37,
+        "layout": "\\$3894",
+        "layout_id": 39,
         "reference": "INST_C1_A2X_G2X_1_CN",
         "reference_id": 53
       },
@@ -718,7 +700,7 @@
       "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
       "side": "both",
       "net": {
-        "layout": "\\$47",
+        "layout": "\\$4255",
         "layout_id": 40,
         "reference": "INST_C3_AMIN_GMIN_3_CN",
         "reference_id": 64
@@ -736,8 +718,8 @@
       "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
       "side": "both",
       "net": {
-        "layout": "\\$48",
-        "layout_id": 41,
+        "layout": "\\$4257",
+        "layout_id": 42,
         "reference": "INST_C1_A2X_G2X_2_CN",
         "reference_id": 54
       },
@@ -754,7 +736,7 @@
       "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
       "side": "both",
       "net": {
-        "layout": "\\$51",
+        "layout": "\\$4699",
         "layout_id": 44,
         "reference": "INST_C3_AMIN_GMIN_4_CN",
         "reference_id": 65
@@ -772,7 +754,7 @@
       "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
       "side": "both",
       "net": {
-        "layout": "\\$53",
+        "layout": "\\$4701",
         "layout_id": 46,
         "reference": "INST_C1_A2X_G2X_3_CN",
         "reference_id": 55
@@ -790,25 +772,7 @@
       "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
       "side": "both",
       "net": {
-        "layout": "\\$55",
-        "layout_id": 48,
-        "reference": "INST_C3_AMIN_GMIN_5_CN",
-        "reference_id": 66
-      },
-      "device": null,
-      "property": null,
-      "details": null,
-      "circuit": null,
-      "instance": null,
-      "subcircuit": null
-    },
-    {
-      "category": "topology",
-      "severity": "warning",
-      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
-      "side": "both",
-      "net": {
-        "layout": "\\$56",
+        "layout": "\\$5054",
         "layout_id": 49,
         "reference": "INST_C1_A2X_G2X_4_CN",
         "reference_id": 56
@@ -826,7 +790,25 @@
       "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
       "side": "both",
       "net": {
-        "layout": "\\$59",
+        "layout": "\\$5055",
+        "layout_id": 50,
+        "reference": "INST_C3_AMIN_GMIN_5_CN",
+        "reference_id": 66
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$5411",
         "layout_id": 52,
         "reference": "INST_C1_A2X_GMIN_1_CN",
         "reference_id": 49
@@ -844,7 +826,7 @@
       "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
       "side": "both",
       "net": {
-        "layout": "\\$61",
+        "layout": "\\$5901",
         "layout_id": 54,
         "reference": "INST_C1_A2X_GMIN_2_CN",
         "reference_id": 50
@@ -862,7 +844,7 @@
       "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
       "side": "both",
       "net": {
-        "layout": "\\$63",
+        "layout": "\\$6275",
         "layout_id": 56,
         "reference": "INST_C1_A2X_GMIN_3_CN",
         "reference_id": 51
@@ -880,8 +862,8 @@
       "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
       "side": "both",
       "net": {
-        "layout": "\\$65",
-        "layout_id": 58,
+        "layout": "\\$6650",
+        "layout_id": 59,
         "reference": "INST_C1_A2X_GMIN_4_CN",
         "reference_id": 52
       },
@@ -898,7 +880,7 @@
       "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
       "side": "both",
       "net": {
-        "layout": "\\$68",
+        "layout": "\\$7068",
         "layout_id": 61,
         "reference": "INST_C2_AMIN_GMIN_1_CN",
         "reference_id": 57
@@ -916,7 +898,7 @@
       "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
       "side": "both",
       "net": {
-        "layout": "\\$70",
+        "layout": "\\$7446",
         "layout_id": 63,
         "reference": "INST_C2_AMIN_GMIN_2_CN",
         "reference_id": 58
@@ -934,7 +916,25 @@
       "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
       "side": "both",
       "net": {
-        "layout": "\\$72",
+        "layout": "\\$748",
+        "layout_id": 7,
+        "reference": "INST_C1_AMIN_G2X_1_CN",
+        "reference_id": 45
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$7824",
         "layout_id": 65,
         "reference": "INST_C2_AMIN_GMIN_3_CN",
         "reference_id": 59
@@ -952,7 +952,7 @@
       "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
       "side": "both",
       "net": {
-        "layout": "\\$74",
+        "layout": "\\$8298",
         "layout_id": 67,
         "reference": "INST_C2_AMIN_GMIN_4_CN",
         "reference_id": 60
@@ -970,8 +970,8 @@
       "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
       "side": "both",
       "net": {
-        "layout": "\\$76",
-        "layout_id": 69,
+        "layout": "\\$8673",
+        "layout_id": 70,
         "reference": "INST_C2_AMIN_GMIN_5_CN",
         "reference_id": 61
       },
@@ -1016,14 +1016,14 @@
   "net_correspondence": [
     {
       "layout": "BL|BL_C1_A2x",
-      "layout_id": 36,
+      "layout_id": 3,
       "reference": "BL_C1_A2X",
       "reference_id": 32,
       "pin": true
     },
     {
       "layout": "BL|BL_C1_Amin",
-      "layout_id": 3,
+      "layout_id": 4,
       "reference": "BL_C1_AMIN",
       "reference_id": 31,
       "pin": true
@@ -1037,238 +1037,238 @@
     },
     {
       "layout": "BL|BL_C3_Amin",
-      "layout_id": 4,
+      "layout_id": 5,
       "reference": "BL_C3_AMIN",
       "reference_id": 34,
       "pin": true
     },
     {
-      "layout": "\\$44",
-      "layout_id": 37,
+      "layout": "\\$3894",
+      "layout_id": 39,
       "reference": "INST_C1_A2X_G2X_1_CN",
       "reference_id": 53,
       "pin": false
     },
     {
-      "layout": "\\$48",
-      "layout_id": 41,
+      "layout": "\\$4257",
+      "layout_id": 42,
       "reference": "INST_C1_A2X_G2X_2_CN",
       "reference_id": 54,
       "pin": false
     },
     {
-      "layout": "\\$53",
+      "layout": "\\$4701",
       "layout_id": 46,
       "reference": "INST_C1_A2X_G2X_3_CN",
       "reference_id": 55,
       "pin": false
     },
     {
-      "layout": "\\$56",
+      "layout": "\\$5054",
       "layout_id": 49,
       "reference": "INST_C1_A2X_G2X_4_CN",
       "reference_id": 56,
       "pin": false
     },
     {
-      "layout": "\\$59",
+      "layout": "\\$5411",
       "layout_id": 52,
       "reference": "INST_C1_A2X_GMIN_1_CN",
       "reference_id": 49,
       "pin": false
     },
     {
-      "layout": "\\$61",
+      "layout": "\\$5901",
       "layout_id": 54,
       "reference": "INST_C1_A2X_GMIN_2_CN",
       "reference_id": 50,
       "pin": false
     },
     {
-      "layout": "\\$63",
+      "layout": "\\$6275",
       "layout_id": 56,
       "reference": "INST_C1_A2X_GMIN_3_CN",
       "reference_id": 51,
       "pin": false
     },
     {
-      "layout": "\\$65",
-      "layout_id": 58,
+      "layout": "\\$6650",
+      "layout_id": 59,
       "reference": "INST_C1_A2X_GMIN_4_CN",
       "reference_id": 52,
       "pin": false
     },
     {
-      "layout": "\\$11",
-      "layout_id": 6,
+      "layout": "\\$748",
+      "layout_id": 7,
       "reference": "INST_C1_AMIN_G2X_1_CN",
       "reference_id": 45,
       "pin": false
     },
     {
-      "layout": "\\$15",
+      "layout": "\\$1191",
       "layout_id": 9,
       "reference": "INST_C1_AMIN_G2X_2_CN",
       "reference_id": 46,
       "pin": false
     },
     {
-      "layout": "\\$19",
-      "layout_id": 12,
+      "layout": "\\$1636",
+      "layout_id": 13,
       "reference": "INST_C1_AMIN_G2X_3_CN",
       "reference_id": 47,
       "pin": false
     },
     {
-      "layout": "\\$22",
-      "layout_id": 15,
+      "layout": "\\$2039",
+      "layout_id": 16,
       "reference": "INST_C1_AMIN_G2X_4_CN",
       "reference_id": 48,
       "pin": false
     },
     {
-      "layout": "\\$27",
-      "layout_id": 20,
+      "layout": "\\$2444",
+      "layout_id": 21,
       "reference": "INST_C1_AMIN_GMIN_1_CN",
       "reference_id": 41,
       "pin": false
     },
     {
-      "layout": "\\$31",
-      "layout_id": 24,
+      "layout": "\\$2800",
+      "layout_id": 25,
       "reference": "INST_C1_AMIN_GMIN_2_CN",
       "reference_id": 42,
       "pin": false
     },
     {
-      "layout": "\\$34",
-      "layout_id": 27,
+      "layout": "\\$3155",
+      "layout_id": 28,
       "reference": "INST_C1_AMIN_GMIN_3_CN",
       "reference_id": 43,
       "pin": false
     },
     {
-      "layout": "\\$40",
+      "layout": "\\$3448",
       "layout_id": 33,
       "reference": "INST_C1_AMIN_GMIN_4_CN",
       "reference_id": 44,
       "pin": false
     },
     {
-      "layout": "\\$68",
+      "layout": "\\$7068",
       "layout_id": 61,
       "reference": "INST_C2_AMIN_GMIN_1_CN",
       "reference_id": 57,
       "pin": false
     },
     {
-      "layout": "\\$70",
+      "layout": "\\$7446",
       "layout_id": 63,
       "reference": "INST_C2_AMIN_GMIN_2_CN",
       "reference_id": 58,
       "pin": false
     },
     {
-      "layout": "\\$72",
+      "layout": "\\$7824",
       "layout_id": 65,
       "reference": "INST_C2_AMIN_GMIN_3_CN",
       "reference_id": 59,
       "pin": false
     },
     {
-      "layout": "\\$74",
+      "layout": "\\$8298",
       "layout_id": 67,
       "reference": "INST_C2_AMIN_GMIN_4_CN",
       "reference_id": 60,
       "pin": false
     },
     {
-      "layout": "\\$76",
-      "layout_id": 69,
+      "layout": "\\$8673",
+      "layout_id": 70,
       "reference": "INST_C2_AMIN_GMIN_5_CN",
       "reference_id": 61,
       "pin": false
     },
     {
-      "layout": "\\$20",
-      "layout_id": 13,
+      "layout": "\\$1637",
+      "layout_id": 14,
       "reference": "INST_C3_AMIN_G2X_1_CN",
       "reference_id": 67,
       "pin": false
     },
     {
-      "layout": "\\$23",
-      "layout_id": 16,
+      "layout": "\\$2040",
+      "layout_id": 17,
       "reference": "INST_C3_AMIN_G2X_2_CN",
       "reference_id": 68,
       "pin": false
     },
     {
-      "layout": "\\$28",
-      "layout_id": 21,
+      "layout": "\\$2445",
+      "layout_id": 22,
       "reference": "INST_C3_AMIN_G2X_3_CN",
       "reference_id": 69,
       "pin": false
     },
     {
-      "layout": "\\$32",
-      "layout_id": 25,
+      "layout": "\\$2801",
+      "layout_id": 26,
       "reference": "INST_C3_AMIN_G2X_4_CN",
       "reference_id": 70,
       "pin": false
     },
     {
-      "layout": "\\$35",
-      "layout_id": 28,
+      "layout": "\\$3244",
+      "layout_id": 29,
       "reference": "INST_C3_AMIN_G2X_5_CN",
       "reference_id": 71,
       "pin": false
     },
     {
-      "layout": "\\$38",
-      "layout_id": 31,
+      "layout": "\\$3447",
+      "layout_id": 32,
       "reference": "INST_C3_AMIN_GMIN_1_CN",
       "reference_id": 62,
       "pin": false
     },
     {
-      "layout": "\\$42",
-      "layout_id": 35,
+      "layout": "\\$3852",
+      "layout_id": 37,
       "reference": "INST_C3_AMIN_GMIN_2_CN",
       "reference_id": 63,
       "pin": false
     },
     {
-      "layout": "\\$47",
+      "layout": "\\$4255",
       "layout_id": 40,
       "reference": "INST_C3_AMIN_GMIN_3_CN",
       "reference_id": 64,
       "pin": false
     },
     {
-      "layout": "\\$51",
+      "layout": "\\$4699",
       "layout_id": 44,
       "reference": "INST_C3_AMIN_GMIN_4_CN",
       "reference_id": 65,
       "pin": false
     },
     {
-      "layout": "\\$55",
-      "layout_id": 48,
+      "layout": "\\$5055",
+      "layout_id": 50,
       "reference": "INST_C3_AMIN_GMIN_5_CN",
       "reference_id": 66,
       "pin": false
     },
     {
       "layout": "PL|PL_C1_A2x_Gmin_1",
-      "layout_id": 38,
+      "layout_id": 36,
       "reference": "PL_C1_A2X_G2X_1",
       "reference_id": 12,
       "pin": true
     },
     {
       "layout": "PL|PL_C1_A2x_Gmin_2",
-      "layout_id": 42,
+      "layout_id": 41,
       "reference": "PL_C1_A2X_G2X_2",
       "reference_id": 13,
       "pin": true
@@ -1282,7 +1282,7 @@
     },
     {
       "layout": "PL|PL_C1_A2x_Gmin_4",
-      "layout_id": 50,
+      "layout_id": 48,
       "reference": "PL_C1_A2X_G2X_4",
       "reference_id": 15,
       "pin": true
@@ -1310,49 +1310,49 @@
     },
     {
       "layout": "PL|PL_C1_A2x_G2x_4",
-      "layout_id": 59,
+      "layout_id": 58,
       "reference": "PL_C1_A2X_GMIN_4",
       "reference_id": 11,
       "pin": true
     },
     {
       "layout": "PL|PL_C1_Amin_Gmin_1",
-      "layout_id": 7,
+      "layout_id": 8,
       "reference": "PL_C1_AMIN_G2X_1",
       "reference_id": 4,
       "pin": true
     },
     {
       "layout": "PL|PL_C1_Amin_Gmin_2",
-      "layout_id": 8,
+      "layout_id": 10,
       "reference": "PL_C1_AMIN_G2X_2",
       "reference_id": 5,
       "pin": true
     },
     {
       "layout": "PL|PL_C1_Amin_Gmin_3",
-      "layout_id": 11,
+      "layout_id": 15,
       "reference": "PL_C1_AMIN_G2X_3",
       "reference_id": 6,
       "pin": true
     },
     {
       "layout": "PL|PL_C1_Amin_Gmin_4",
-      "layout_id": 17,
+      "layout_id": 18,
       "reference": "PL_C1_AMIN_G2X_4",
       "reference_id": 7,
       "pin": true
     },
     {
       "layout": "PL|PL_C1_Amin_G2x_1",
-      "layout_id": 19,
+      "layout_id": 20,
       "reference": "PL_C1_AMIN_GMIN_1",
       "reference_id": 0,
       "pin": true
     },
     {
       "layout": "PL|PL_C1_Amin_G2x_2",
-      "layout_id": 23,
+      "layout_id": 24,
       "reference": "PL_C1_AMIN_GMIN_2",
       "reference_id": 1,
       "pin": true
@@ -1366,7 +1366,7 @@
     },
     {
       "layout": "PL|PL_C1_Amin_G2x_4",
-      "layout_id": 32,
+      "layout_id": 35,
       "reference": "PL_C1_AMIN_GMIN_4",
       "reference_id": 3,
       "pin": true
@@ -1401,42 +1401,42 @@
     },
     {
       "layout": "PL|PL_C2_Amin_Gmin_5",
-      "layout_id": 70,
+      "layout_id": 69,
       "reference": "PL_C2_AMIN_GMIN_5",
       "reference_id": 20,
       "pin": true
     },
     {
       "layout": "PL|PL_C3_Amin_Gmin_1",
-      "layout_id": 14,
+      "layout_id": 12,
       "reference": "PL_C3_AMIN_G2X_1",
       "reference_id": 26,
       "pin": true
     },
     {
       "layout": "PL|PL_C3_Amin_Gmin_2",
-      "layout_id": 18,
+      "layout_id": 19,
       "reference": "PL_C3_AMIN_G2X_2",
       "reference_id": 27,
       "pin": true
     },
     {
       "layout": "PL|PL_C3_Amin_Gmin_3",
-      "layout_id": 22,
+      "layout_id": 23,
       "reference": "PL_C3_AMIN_G2X_3",
       "reference_id": 28,
       "pin": true
     },
     {
       "layout": "PL|PL_C3_Amin_Gmin_4",
-      "layout_id": 26,
+      "layout_id": 27,
       "reference": "PL_C3_AMIN_G2X_4",
       "reference_id": 29,
       "pin": true
     },
     {
       "layout": "PL|PL_C3_Amin_Gmin_5",
-      "layout_id": 29,
+      "layout_id": 31,
       "reference": "PL_C3_AMIN_G2X_5",
       "reference_id": 30,
       "pin": true
@@ -1450,7 +1450,7 @@
     },
     {
       "layout": "PL|PL_C3_Amin_G2x_2",
-      "layout_id": 39,
+      "layout_id": 38,
       "reference": "PL_C3_AMIN_GMIN_2",
       "reference_id": 22,
       "pin": true
@@ -1478,7 +1478,7 @@
     },
     {
       "layout": "VB|VBW_C3",
-      "layout_id": 10,
+      "layout_id": 11,
       "reference": "VBW_C3",
       "reference_id": 39,
       "pin": true
@@ -1513,7 +1513,7 @@
     },
     {
       "layout": "WL|WL_C3_Amin",
-      "layout_id": 5,
+      "layout_id": 6,
       "reference": "WL_C3_AMIN",
       "reference_id": 38,
       "pin": true
