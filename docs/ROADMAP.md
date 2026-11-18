@@ -22,18 +22,20 @@ when array-level evidence exists.
 | HV pad and protection (#210) | merged, status PROPOSED | `spec/hv-pad-protection-decision.md`, `sim/hv-pad-protection/`, `design/hv-pad/` |
 | Bench plan (#212), fixture needs (#260) | merged, status Proposed | `spec/run3-bench-plan.md`, `spec/run3-bench-fixture-requirements.md` |
 | Breakdown models (#204, #205, #208, #209) | merged; 12 of 15 parameters `assumed`, the three oxide thicknesses `literature` (PDK `toxe`) | `docs/breakdown-*.md`, `design/breakdown/breakdown_params.spice` |
-| Candidate 1 bitcell | DRC: curated clean, native 6 findings; LVS match | `layout/cell_candidate1/` (Minimum x Minimum point only) |
-| Candidate 3 bitcell | DRC: curated clean, native 12 findings; LVS match | `layout/cell_candidate3/` (Minimum x Minimum point only) |
-| Candidate 2 bitcell (#207) | drawn; DRC: curated 17 findings, native 27; LVS match | `layout/cell_candidate2/`, PRs #258 and #288 |
+| Candidate 1 bitcell | DRC: curated clean, native 5 findings; LVS match | `layout/cell_candidate1/` (Minimum x Minimum point only) |
+| Candidate 3 bitcell | DRC: curated clean, native 6 findings (`DBU` x1 + die-level density; no cell-level finding since #297); LVS match | `layout/cell_candidate3/` (Minimum x Minimum point only) |
+| Candidate 2 bitcell (#207) | drawn; DRC: curated 17 findings, native 25; LVS match | `layout/cell_candidate2/`, PRs #258 and #288 |
 | Full-chip assembly (#211) | not started | reference netlist and pad table generated (`layout/run3_top/`, #275); no chip-level GDS or pad ring |
 
 The floorplan needs eight measurement cells (C1 x {Gmin, G2x} x {Amin, A2x},
 C2 x {Gmin, G2x}, C3 x {Gmin, G2x}). Seven are drawn: all four C1 points, the
 C2 minimum point and both C3 points; C2's `G2x` is the one missing. On the
 curated deck the C1 and C3 cells grade clean and C2 does not; on the native
-runset every drawn cell carries violations (6 per C1 cell, 12 per C3 cell, 27
-on C2), so no drawn cell is native-clean. Cell-level fixes are #287's. The
-floorplan's area table still carries estimates for Candidates 2 and 3.
+runset every drawn cell carries violations (5 per C1 cell; 6 on C3 `Gmin`
+and 5 on C3 `Amin_G2x` since #382 cleared its #297-family generator
+findings; 25 on C2), so no drawn cell is native-clean. Cell-level fixes
+are #287's. The floorplan's area table still carries estimates for
+Candidates 2 and 3.
 
 **T1 ladder (#10).** `signoff/report.json` (klt 0.8.0): `tier: null`, 6 of 22
 rows met: `1.digital`, `2.digital`, `3.digital`, `4.analog`, `9.digital`,
@@ -73,7 +75,7 @@ parked on the runner question, not on a decision.
 - **Candidate 2 clean-out (#207).** The 0.9.1 tool gap is closed: klayout-tools
   0.9.2 is released and in use (PR #288 bumped the pin, reached `klt lvs`
   match, and committed the PDK-runset cross-check). Done: `klt drc` clean on
-  the curated deck (still 17 findings; 27 on the native runset); then its
+  the curated deck (still 17 findings; 25 on the native runset); then its
   `G2x`.
 - **Group macros.** One generated cell per group (shared BL/WL, private PL).
   Done: DRC clean, LVS match against the `layout/run3_top/` netlist.

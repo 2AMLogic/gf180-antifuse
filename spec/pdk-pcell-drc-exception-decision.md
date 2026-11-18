@@ -168,14 +168,17 @@ Each limit has an owner; none is waved through by this record:
   repo can satisfy, owned by #296 (levels ratified in #294) — was resolved
   by #296's clearing commit `2a8614fc` (2026-11-17): both rows are gone
   from the committed candidate-2 report (the 25-findings census above).
-- **Die-level density** `M1.4` / `M2.4` / `M3.4` / `MT30.7`: a standalone
+- **Die-level density** `M1.4` / `M2.4` / `M3.4` / `MT30.7` / `PL.8`: a standalone
   cell trips them by construction; they become meaningful at chip assembly
   with dummy fill — **#211**.
 - **`DBU`** (composed GDS written at `dbu = 0.0005` against the runset's
   0.001): a klt writer default, not geometry, not the PCell — filed
   upstream as `2AMLogic/klayout-tools#5721`.
 - **Candidate 3's generator-owned findings** `DF.4d_MV` x5 + `DV.6` x1 on
-  `mos_array$1` — repo-drawn drift-extended geometry, **#297**.
+  `mos_array$1` — repo-drawn drift-extended geometry, **cleared by #297**
+  (acc-block ring padding) in the base cell and by #382 (same mechanism)
+  in the `Amin_G2x` measurement cell; absent from both committed
+  candidate-3 reports (#287/#297 family).
 - **Any finding whose `cell` is not a PDK PCell's own cell name**, whatever
   its cause.
 
@@ -187,18 +190,20 @@ exception changes how they are *dispositioned*, never what is measured.
 ### Bounded by construction, shown to be
 
 Applying the enumeration command to all three committed cross-check
-reports (2026-11-16, at `2ca60fce`):
+reports (candidates 1 and 3 re-verified 2026-11-18 at `82465b36`; the
+candidate 2 row re-recorded 2026-11-18 at `33043bf6`):
 
 | Report | Native findings | Covered findings |
 |---|---|---|
-| `layout/cell_candidate1/drc_crosscheck_report.json` | 6 (`mos_array` `DF.1c` x1; `cell_candidate1` `DBU`/`M2.4`/`M3.4`/`MT30.7`/`PL.8`) | **0** |
+| `layout/cell_candidate1/drc_crosscheck_report.json` | 5 (`cell_candidate1` `DBU`/`M2.4`/`M3.4`/`MT30.7`/`PL.8`) | **0** |
 | `layout/cell_candidate2/drc_crosscheck_report.json` | 25 (2026-11-18, at `33043bf6`; 27 at the `2ca60fce` writing base — #296's `2a8614fc` removed the two `cap__core` rows) | 20 (all `nfet_10v0_asym`) |
-| `layout/cell_candidate3/drc_crosscheck_report.json` | 12 (`mos_array` `DF.1c` x1; `mos_array$1` `DF.4d_MV` x5 + `DV.6` x1; `cell_candidate3` `DBU`/`M2.4`/`M3.4`/`MT30.7`/`PL.8`) | **0** |
+| `layout/cell_candidate3/drc_crosscheck_report.json` | 6 (`cell_candidate3` `DBU`/`M1.4`/`M2.4`/`M3.4`/`MT30.7`/`PL.8`) | **0** |
 
 Candidates 1 and 3 instantiate no PDK PCell at all — their findings sit in
-`mos_array` / `mos_array$1` and the top cells — so **zero** findings on
-either fall inside this exception. Candidate 2 is the only cell the
-exception reaches today, and within it, only the 20 `nfet_10v0_asym` rows.
+the top cells (the `mos_array` / `mos_array$1` generator-cell findings were
+cleared by #296 and #297) — so **zero** findings on either fall inside this
+exception. Candidate 2 is the only cell the exception reaches today, and
+within it, only the 20 `nfet_10v0_asym` rows.
 
 ## Rejected alternatives
 
