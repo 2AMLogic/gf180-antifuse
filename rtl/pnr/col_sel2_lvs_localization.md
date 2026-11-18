@@ -1,6 +1,6 @@
 # `col_sel[2]` gate-level LVS split: localization (issue #436)
 
-> Geometry quoted here is not CI-pinned; valid for the klt build and GDS content disclosed below (see `scripts/check_layout_geometry_claims.py` scope).
+> Geometry quoted here is not CI-pinned; valid for the klt build disclosed below and GDS content `sha256:03876d4efa5f4deb8a6f551f8fd63b0e35ca522e31790d5eba7c0c53bf9422a9` (as recorded in `rtl/pnr/antifuse_digital_top.attest.json`); see `scripts/check_layout_geometry_claims.py` scope.
 
 Evidence note, append-only. Outcome: **extraction artifact; no layout defect.**
 The routed GDS is connected as the DEF and `antifuse_digital_top_routed.v` say.
