@@ -640,18 +640,23 @@ enlarged COMP island. Access width extracted 0.42 um.
 
 | Cell | `klt stats` bbox | size |
 |---|---|---|
-| `cell_candidate3/` (`C3_Amin_Gmin`) | (-1.23,-1.23)-(7.31,3.65) | 8.54 x 4.88 um = 41.68 um2 |
-| `cell_candidate3_Amin_G2x/` | (-1.23,-1.23)-(7.31,4.65) | 8.54 x 5.88 um = 50.22 um2 |
+| `cell_candidate3/` (`C3_Amin_Gmin`) | (-2.02,-2.02)-(8.10,3.86) | 10.12 x 5.88 um = 59.50 um2 (grown from 41.68 um2 by #297's raised acc-ring padding) |
+| `cell_candidate3_Amin_G2x/` | (-2.02,-2.02)-(8.10,4.65) | 10.12 x 6.67 um = 67.50 um2 (50.22 um2 before this cell took the same padding; the growth is the access ring, see the ring-padding bullet below) |
 
-The G2x cell is exactly 1.0 um taller and exactly as wide: moving a device
-width from W1 to W2 grows its block's `bbox` `y1` by exactly (W2 - W1) and
-leaves every x coordinate untouched (measured on `klt gen mos_array` 0.8.0 at
-exactly these parameters), so the pitch `DX = 4.8` carries over from
-`cell_candidate3/` -- and is **proved** by this cell's own DRC report
-(`nwell.space.1`/`nplus.space.1` clean, 0 violations), not inferred from the
-block extents. 50.22 um2 is well under the floorplan's 110 um2 estimate row
-for the C3 instances; re-budgeting that row from the measured numbers is the
-floorplan record's follow-up, not this pass.
+At the generator default this cell was exactly as wide as the unpadded
+`Gmin` cell: moving a device width from W1 to W2 grows its block's `bbox`
+`y1` by exactly (W2 - W1) and leaves every x coordinate untouched (measured
+on `klt gen mos_array` 0.8.0 at exactly these parameters), which is why
+`DX = 4.8` carried over from `cell_candidate3/`. With the raised acc-ring
+padding both cells' access rings move out on all four sides, so both bboxes
+are 10.12 um wide and this cell's pitch is `DX = 4.8 + (RING_PAD_ACC - 0.5)`
+= 5.59 um -- the expression `cell_candidate3/` already documents -- keeping
+the proven 0.79 um ring-to-ring n-well gap. That the re-fit holds is
+**proved** by this cell's own DRC, not inferred from the block extents: no
+`nwell.space.1`/`nplus.space.1` at any padding of the 1.05-1.40 sweep, and 0
+curated violations at the committed 1.29. 67.50 um2 replaces the floorplan's
+C3 estimate row with measured numbers (`spec/run3-test-chip-floorplan.md`,
+re-measured this pass).
 
 ### Hand-placed shapes re-derived for the ratified levels
 
@@ -665,21 +670,28 @@ extents differ):
 
 - **`CN` source/drain strap -- doglegged.** CN leaves each tap ring through
   that ring's metal1 exit gap, which rises with device width (measured spans:
-  y -0.28..0.72 um at W = 0.42 access, y 0.51..1.51 um at W_CAP = 2.0). With
+  y -0.28..0.72 um at W = 0.42 access, y 0.51..1.51 um at W_CAP = 2.0) and is
+  padding-independent in y (the gap follows the pads, not the ring). With
   the 0.23 um `metal1.space.1` clearance from every gap edge the legal windows
   (-0.05..0.49 and 0.74..1.28) are **disjoint** -- no single-rect CN exists
   (`spec/capacitor-geometry-decision.md`). The strap is a three-rect metal1
   dogleg: an access-side band through the access ring's gap (y 0.0..0.45), a
-  riser across the inter-ring field (access ring metal edge x 2.77, capacitor
-  ring metal edge DX - 1.07 = 3.73 -- field 0.96 um wide; riser x 3.02..3.48
-  clears both by >= 0.25 um), and a capacitor-side band through the
-  capacitor ring's gap (y 0.78..1.25, >= 0.26 um clear).
+  riser across the inter-ring field (access ring metal edge x 2.77 + DPAD =
+  3.56 at the committed padding, capacitor ring metal edge DX - 1.07 = 4.52 --
+  field 0.96 um wide, DX tracking DPAD; riser x 3.02 + DPAD .. 3.48 + DPAD =
+  3.81..4.27 clears both by >= 0.25 um at every padding), and a
+  capacitor-side band through the capacitor ring's gap (y 0.78..1.25, >= 0.26
+  um clear). Measured DRC-proven at the committed geometry: no `metal1.space.1`
+  or any other strap finding in the cross-check.
 - **`VB` tap-ring strap -- stacked.** The capacitor's metal1 gate pad
   (x DX+0.43..DX+0.85, y 2.75..3.17) sits **between** the two rings' metal
-  north bands (access 2.45..2.91, capacitor 4.03..4.49), so one flat band
-  spanning both TAP_N pads would sweep through it and short PL to VB. Two
-  stacked bands -- one per ring, each over its TAP_N pad -- joined by a riser
-  at x 3.05..3.45 connect them instead.
+  north bands (access 2.45 + DPAD .. 2.91 + DPAD = 3.24..3.70 over the raised
+  ring, capacitor 4.03..4.49), so one flat band spanning both TAP_N pads would
+  sweep through it and short PL to VB. Two stacked bands -- one per ring, each
+  over its TAP_N pad (the access one riding the raised ring via
+  `Y_TAP_ACC = 2.70 + DPAD` = 3.49, measured off `klt gen mos_array`) -- joined
+  by a riser at x 3.05 + DPAD .. 3.45 + DPAD = 3.84..4.24 connect them
+  instead.
 - **`MOS_CAP_MK` capacitor marker -- grown with the island.** The cap COMP
   island is as tall as the device width, (DX,0)-(DX+1.28,2.0) at W = 2.0,
   so the marker grows to match, keeping `cell_candidate3/`'s 0.1 um margin.
@@ -688,6 +700,44 @@ The underlying tool gap (absolute `klt draw` rectangles silently going illegal
 when a swept device parameter moves the blocks under them) is the one already
 filed generically upstream as **2AMLogic/klayout-tools#5656**; no new gap was
 hit drawing this cell.
+
+### Ring padding: #297's parameter, re-bisected on this cell
+
+The generator's default `ring_padding_um` 0.5 draws the access block (the
+only pfet + medium-voltage marker block) with its N-well 0.15 um inside the
+N+ tap ring -- the native deck's `DF.4d_MV` "Min. Nwell overlap of NCOMP
+outside DNWELL: 0.16 um" misses by 10 nm -- and with the Dualgate marker
+missing COMP enclosure (`DV.6`, 0.24 um). This variant pairs pfet with
+medium_voltage exactly like `cell_candidate3/`, so it carried the identical
+generator defect (2AMLogic/klayout-tools#6503) after #297 cleared the base
+cell: the shared flow's `ring_padding_acc_um` keyword (default 0.5,
+byte-stable for every cell that omits it) applies here too, acc block only.
+The value is **not** copied from #297's 1.29 -- the response is
+non-monotonic and rule-swapping, so it was re-bisected on this composed cell
+in 0.01 um steps at `DX = 4.8 + (RING_PAD_ACC - 0.5)` (native rule counts,
+`klt drc --engine klayout`, klayout-tools `0.9.2`, KLayout `0.30.13`):
+
+| padding (um) | `DF.4d_MV` | `DV.6` | `DV.3` | `nwell.space.1` class |
+|---|---|---|---|---|
+| 0.5 (default) | 5 | 1 | 0 | clean |
+| 1.0 | 9 | 1 | 0 | clean |
+| 1.05-1.28 | 0 | 0 | 5 | clean |
+| **1.29 (committed)** | 0 | 0 | 0 | clean |
+| 1.30-1.40 | 0 | 0 | 0 | clean |
+
+1.0 is *worse* than the default (`DF.4d_MV` 5 -> 9, plus a `DV.7` x1 this
+base cell did not show); 1.05-1.28 trades both findings for **`DV.3` x5**
+("Min. Dualgate to COMP space [unrelated]: 0.24 um" -- the raised ring's N+
+escapes the core-anchored Dualgate marker), the same window #297 measured on
+`cell_candidate3/`; **1.29 clears all three**, 1.28 -- one 0.01 um step below
+-- still reports `DV.3` x5 (minimality evidence), and 1.30-1.40 stay clean,
+so 1.29 is the floor of the clean region, not a window edge. The whole sweep
+is `nwell.space.1`/`nplus.space.1`-clean at the tracked pitch, so the `DX`
+re-fit holds across the range, and the grown cell trips **no new die-level
+density rule** (the density set below is unchanged -- no `M1.4`, which
+`cell_candidate3/` itself picked up when #297 grew its bbox). The capacitor
+block keeps the default: it draws no Dualgate marker and its well overlap is
+legal.
 
 ### Well connection (stated, unchanged from `cell_candidate3/`)
 
@@ -705,12 +755,13 @@ engine pinned to the build-tested version --
 `uvx --from klayout-tools==0.8.0 --with klayout==0.30.12` -- PDK `gf180mcuA`;
 no tool was installed or changed. The 0.8.0 pin is the one that reproduces the
 committed cells byte-for-byte (`0.9.1` drifts them), so it is the pin this
-cell must share.
+cell must share. (Acc-block ring padding, `DX`/`Y_TAP_ACC` and the strap
+x-extents re-fitted 2026-11-18, #382.)
 
 | | result |
 |---|---|
 | DRC (curated deck) | `klt drc --deck gf180mcu --top cell_candidate3_Amin_G2x`: `status: clean`, 0 violations, deck `released: true`, no waiver and no rule disabled |
-| DRC (native runset) | `drc_crosscheck_report.json` (`klt drc --engine both --deck gf180mcu --top cell_candidate3_Amin_G2x --pdk gf180mcuA --deck-var decks=all,-mslot`, klayout-tools `0.9.2`, KLayout `0.30.13`): native `status: violations`, 11 findings -- **no `DF.1c`** (the ratified 2.0 um width clears it); `DF.4d_MV` x5 and `DV.6` x1 (#297's generator-owned set, in `mos_array$1`), `DBU` x1, density `M2.4`/`M3.4`/`MT30.7`/`PL.8` |
+| DRC (native runset) | `drc_crosscheck_report.json` (`klt drc --engine both --deck gf180mcu --top cell_candidate3_Amin_G2x --pdk gf180mcuA --deck-var decks=all,-mslot`, klayout-tools `0.9.2`, KLayout `0.30.13`, re-signed 2026-11-18 at the padded geometry): native `status: violations`, **5 findings** -- `DBU` x1 and the die-level density rules `M2.4`/`M3.4`/`MT30.7`/`PL.8`, the same set as before the padding; **`DF.4d_MV` and `DV.6` are gone** (#297's generator-owned set, cleared by the re-bisected 1.29 um acc-ring padding, see the ring-padding bullet), no `DF.1c` (the ratified 2.0 um width clears it), and **no new density rule** -- no `M1.4` despite the growth |
 | LVS | `klt lvs lvs_request.json`: `status: match`, 0 errors; 5/5 nets, 2/2 devices, 4/4 pins paired; no `device_map`, no waiver, no substituted device |
 | ERC | `klt erc ... layout/erc/supplies_region_iii.json` (the existing spec, unedited -- it derives the well from the drawn 21/0 layer, so no per-cell box edit was needed): `erc_status: clean`, 0 findings; antenna `not_checked` (no PDK antenna data), so the command exits non-zero on a clean run -- read `erc_status` |
 
@@ -719,16 +770,22 @@ Dualgate is not modelled for the 6 V rules so the access device is checked
 against the 3.3 V thresholds; the capacitor's geometry and capacitance are not
 compared by LVS (`subckt-call` placeholder `C`, `A`/`P` secondary), so the
 drawn capacitor size rests on `generate.py` and `klt extract`. The committed
-cross-check above is the cell's second native run: the first, committed
+cross-check above is the cell's third native run: the first, committed
 pre-`#296` (`cfcd4d6a`, at the 0.42 um capacitor), still showed the
 cell-level `DF.1c` among its 12 findings -- the carried-forward-verdict
-problem #296 was filed to end. The re-signed run at the ratified geometry
-confirms by measurement what `#294` could only
-infer (the 2.0 um width clears `DF.1c`), and its remaining cell-level
-findings are exactly `#297`'s set (`DF.4d_MV` x5, `DV.6` x1, all in the
-`mos_array` blocks) plus `DBU` and the die-level density rules. The doglegged
-CN and stacked VB this cell needs at the 2x width are DRC-proven by the same
-run: no `metal1.space.1` or any other strap finding appears.
+problem #296 was filed to end; the second, at the ratified geometry, carried
+exactly `#297`'s generator-owned set (`DF.4d_MV` x5, `DV.6` x1, all in the
+`mos_array` blocks) plus `DBU` and the die-level density rules. The
+re-signed run at the padded geometry confirms by measurement that what #297
+cleared on the base cell clears here too: the cell-level findings are
+**gone** (see the ring-padding bullet), leaving `DBU` and the die-level
+density rules -- the same disclosed, die-level-assembly class as on every
+other cell -- and no new density rule appeared despite the bbox growing
+50.22 -> 67.50 um2. The doglegged CN and stacked VB this cell needs at the
+2x width (with their strap x-extents re-tracked to the raised access ring)
+are DRC-proven by the same run: no `metal1.space.1` or any other strap
+finding appears, and LVS still pairs all 5 nets -- the re-tracked CN riser
+did not short into the ring metal it now crosses the field beside.
 
 `klt drc --check drc_report.json` and `klt lvs --check lvs_report.json` run
 from the cell directory exit 0. `klt erc --check erc_report.json` reports the
@@ -1010,7 +1067,8 @@ PDK's own PCell; the 20 PCell-internal findings are dispositioned by the
 scoped exception recorded in
 `spec/pdk-pcell-drc-exception-decision.md` (operator ruling 2026-11-15, #299):
 reported as measured, never waived, and outside the exception for every shape
-this repo draws. Candidate 3's `DF.4d_MV`/`DV.6` remain #297's.
+this repo draws. Candidate 3's `DF.4d_MV`/`DV.6` were cleared by #297 (base
+cell) and #382 (the `Amin_G2x` variant).
 
 ## cell_candidate2_fallback/ -- the Run 3 C2-fallback variant, bare capacitor, native census clean at cell level
 
