@@ -49,25 +49,25 @@ PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
 Issues carrying `loom:curated`.
 
-- **#12**: Champion: Merge-Risk Hold Digest *(curated)* *(held)*
+- **#12**: Champion: Merge-Risk Hold Digest *(curated)*
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4) *(curated)*
-- **#99**: Re-qualify reference sim records under open_pdks f6eeac7 as new records *(curated)* *(held)*
-- **#117**: T1 items 1 and 9 (analog partition): attest the cell sources and testbenches with klt signoff --attest *(curated)* *(held)*
-- **#176**: T1 item 4 (LVS clean, digital partition): klt lvs against the gate-level netlist with power_connectivity *(curated)* *(held)*
+- **#99**: Re-qualify reference sim records under open_pdks f6eeac7 as new records *(curated)*
+- **#117**: T1 items 1 and 9 (analog partition): attest the cell sources and testbenches with klt signoff --attest *(curated)*
+- **#176**: T1 item 4 (LVS clean, digital partition): klt lvs against the gate-level netlist with power_connectivity *(curated)*
 - **#255**: Measurement plan: constant-voltage time-to-breakdown statistics (Weibull slope, voltage acceleration) and a sub-programming soak *(curated)*
-- **#313**: sim/program-read-legs: capacity_wait_s spends the same per-submit subprocess budget as the run, and a subprocess timeout is not retried *(curated)* *(held)*
-- **#316**: Follow-on: establish the foreign-host re-run byte-identity evidence for the shared report scrubber (PR #309 / #285 step 5) *(curated)* *(held)*
-- **#338**: wafer.space: precheck treatment and foundry conversation on the unmodified nfet_10v0_asym PCell's CO.4/DF.6_MV/PL.4_MV findings (#299) *(curated)* *(held)*
+- **#313**: sim/program-read-legs: capacity_wait_s spends the same per-submit subprocess budget as the run, and a subprocess timeout is not retried *(curated)*
+- **#316**: Follow-on: establish the foreign-host re-run byte-identity evidence for the shared report scrubber (PR #309 / #285 step 5) *(curated)*
+- **#338**: wafer.space: precheck treatment and foundry conversation on the unmodified nfet_10v0_asym PCell's CO.4/DF.6_MV/PL.4_MV findings (#299) *(curated)*
 - **#419**: geometry-claims checker: deleting quote_values re-opens the #414 coordinated-edit bypass *(curated)*
 
 ## Proposed (Architect / Hermit)
 
-- **#267**: Remove sim/run_corners.py: dispatcher registers 4 of 8 experiments and only forwards to drivers that run directly *(hermit)* *(held)*
-- **#301**: Route run_klt_campaign through harness.klt; drop manual --resume resubmit *(hermit)* *(held)*
+- **#267**: Remove sim/run_corners.py: dispatcher registers 4 of 8 experiments and only forwards to drivers that run directly *(hermit)*
+- **#301**: Route run_klt_campaign through harness.klt; drop manual --resume resubmit *(hermit)*
 
 ## Epics
 
-- **#10**: Track the gap to T1 sim-validated / bronze (klayout-tools design-evidence tiers) *(held)*
+- **#10**: Track the gap to T1 sim-validated / bronze (klayout-tools design-evidence tiers)
 - **#203**: wafer.space Run 3 quarter slot (space not yet secured; GDS 2026-12-16 only if obtained): cut-down antifuse breakdown test chip
 
 ## Backlog Balance
