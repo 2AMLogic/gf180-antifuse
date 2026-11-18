@@ -104,28 +104,30 @@ class Run3TopAssemblyTest(unittest.TestCase):
                 self.assertIn(pin["block"], block_ports, net["net"])
                 self.assertIn(pin["port"], block_ports[pin["block"]], net["net"])
 
-    def test_wl_antenna_clamps(self):
-        # one n-diode clamp per WL net (issue #404): each WL net carries a
-        # diode pin and a clamp leg tied to its own group's top pin; the C3
-        # companion substrate tap hangs off the substrate net, never off a
-        # WL net (a substrate tap on a signal net extracts as an ohmic tie).
-        by_net = {n["net"]: n for n in self.nets}
-        for d in asm.wl_diode_placements(self.rows):
-            net = by_net[d["net"]]
-            diode_pins = [p for p in net["pins"]
-                          if p["block"] == f"diode_{d['net']}"]
-            self.assertEqual(len(diode_pins), 1, d["net"])
+    def test_wl_clamps_deferred_substrate_tap_drawn(self):
+        # The WL antenna remedy is evaluated but NOT drawn (deferred to the
+        # operator with the private-plate group, issue #404): no net carries
+        # a diode pin. The C3 substrate tap -- the C3 column's only
+        # p-substrate tie -- hangs off the substrate net, never off a
+        # signal net (a substrate tap on a signal net extracts as an ohmic
+        # tie), east of the C3 WL trunk and above the group's top pin.
+        for net in self.nets:
             for pin in net["pins"]:
-                self.assertNotEqual(pin["block"], "substrate_tap_c3", net["net"])
+                self.assertFalse(pin["block"].startswith("diode_"),
+                                 (net["net"], pin))
+                if net["net"] != asm.SUBSTRATE_NET:
+                    self.assertNotEqual(pin["block"], "substrate_tap_c3",
+                                        net["net"])
+        by_net = {n["net"]: n for n in self.nets}
         substrate = by_net[asm.SUBSTRATE_NET]
         taps = [p for p in substrate["pins"] if p["block"] == "substrate_tap_c3"]
         self.assertEqual(len(taps), 1)
         branch = asm.c3_tap_branch(self.rows)
-        diode = {d["net"]: d for d in asm.wl_diode_placements(
-            self.rows)}["WL_C3_Amin"]
-        # the tap sits within DF.14's 20 um diamond of the C3 clamp body
-        self.assertLess(abs(branch["tap_x"] - diode["x"])
-                        + abs(branch["tap_y"] - diode["y"]), 20.0)
+        _role, trunk_x, _pad_x, _ca = asm.BUNDLE_NETS["WL_C3_Amin"]
+        c3_top = max(p[1] for r, p in asm.instance_ports(self.rows, "WL")
+                     if r["origin"][0] == asm.COL_X_RIGHT)
+        self.assertGreater(branch["tap_x"], trunk_x)
+        self.assertGreater(branch["tap_y"], c3_top)
 
     def test_keep_clear_assertion_passes(self):
         # Re-runs the assembler's own pairwise keep-clear check; it hard-exits
@@ -167,9 +169,9 @@ class Run3TopAssemblyTest(unittest.TestCase):
     def test_post_fix_stage_reports(self):
         # The committed stage evidence (issue #404): the precheck's DRC stage
         # at gf180mcuD carries only the out-of-scope PCell-exception class
-        # and DBU; the antenna stage's WL findings are fixed and only the
-        # operator-deferred private-plate Metal5 group remains; the density
-        # stage is clean.
+        # and DBU; the antenna stage carries both operator-deferred groups
+        # (the WL remedy is evaluated and NOT drawn, the private-plate Metal5
+        # group unchanged); the density stage is clean.
         stage = json.loads(
             (ROOT / "layout/run3_top/drc_stage_report.json").read_text())
         self.assertEqual(stage["rule_counts"],
@@ -177,7 +179,8 @@ class Run3TopAssemblyTest(unittest.TestCase):
         antenna = json.loads(
             (ROOT / "layout/run3_top/drc_antenna_report.json").read_text())
         self.assertEqual(antenna["rule_counts"],
-                         {"ANT.16_i_ANT.6": 26, "ANT.16_ii_ANT.6": 5})
+                         {"ANT.16_i_ANT.6": 26, "ANT.16_ii_ANT.4": 29,
+                          "ANT.16_ii_ANT.6": 5})
         density = json.loads(
             (ROOT / "layout/run3_top/drc_density_report.json").read_text())
         self.assertEqual(density["rule_counts"], {})
@@ -192,9 +195,6 @@ class Run3TopAssemblyTest(unittest.TestCase):
                 blocks.append({"id": row["name"],
                                "ports": [{"name": p} for p in
                                          ("BL", "WL", "PL", "VB")]})
-        for d in asm.wl_diode_placements(self.rows):
-            blocks.append({"id": f"diode_{d['net']}",
-                           "ports": [{"name": "A"}]})
         blocks.append({"id": "substrate_tap_c3", "ports": [{"name": "B"}]})
         return blocks
 

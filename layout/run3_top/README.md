@@ -185,19 +185,19 @@ than by that test.
 
 | File | What it is | Regenerate |
 |---|---|---|
-| `run3_top.gds` | the assembled chip: placement + routing + the WL antenna clamps and C3 companion tap, the MetalTop landing patches, and the density fill (all measured, see "Precheck applicability" below) | `python3 -I assemble_run3_top.py` (`--check` byte-compares) |
+| `run3_top.gds` | the assembled chip: placement + routing + the C3 substrate tap, the MetalTop landing patches, and the density fill (all measured, see "Precheck applicability" below) | `python3 -I assemble_run3_top.py` (`--check` byte-compares) |
 | `lvs_reference_drawn.spice` | LVS reference for THIS assembly: the seven drawn cells' subcircuits verbatim from the #275 generator + a top instantiating exactly the 31 placed instances over the 40 connected ports; the five excluded instances/ports are named in the header, never silently dropped | same run |
 | `compose_report.json` | `klt gen-compose` response: every net routed, every leg `landed_on_block` (asserted by the assembler before it writes) | same run |
-| `lvs_request.json`, `lvs_report.json` | `klt lvs`, inline extraction, reference `subckt-call` against `lvs_reference_drawn.spice`, flattened both sides, `combine_devices` on (the LDMOS extracts as two per-finger devices, #5277): **status `match`** — the clamps and the tap extract as no device (the tap is tied to `VSS_ANALOG`, never to a signal net) | `klt lvs lvs_request.json --format json > lvs_report.json` |
+| `lvs_request.json`, `lvs_report.json` | `klt lvs`, inline extraction, reference `subckt-call` against `lvs_reference_drawn.spice`, flattened both sides, `combine_devices` on (the LDMOS extracts as two per-finger devices, #5277): **status `match`** — the substrate tap extracts as no device (tied to `VSS_ANALOG`, never to a signal net) | `klt lvs lvs_request.json --format json > lvs_report.json` |
 | `drc_report.json` | curated deck `klt drc --deck gf180mcu`: `violations`, 80 findings — **all** `comp.enclosing.contact.1` inside the unmodified `nfet_10v0_asym` PCell instances (16 per C2 cell), the geometry class the ratified `spec/pdk-pcell-drc-exception-decision.md` scopes; nothing drawn by this assembly appears | `klt drc run3_top.gds --deck gf180mcu --top run3_top -o drc_report.json --format json` |
 | `drc_stage_report.json` | the precheck's gating DRC stage reproduced: native runset at `gf180mcuD`, decks `all,-antenna,-density,-cup` (the precheck's own selection, `precheck.py` at `9b4e7dab`) — `CO.4`/`DF.6_MV`/`PL.4_MV` inside the PCell instances (ratified exception class), `DBU` (klt dbu convention, `2AMLogic/klayout-tools#5721`), and **nothing drawn by this assembly** — the 40 `MT.1` findings the landing patches answer are gone | `klt drc run3_top.gds --engine klayout --top run3_top --pdk gf180mcuD --deck-var decks=all,-antenna,-density,-cup -o drc_stage_report.json --format json` |
-| `drc_antenna_report.json` | the precheck's gating antenna stage reproduced (decks `antenna`, same runset): the 29 `ANT.16_ii_ANT.4` WL findings are fixed (one n-diode clamp per WL net; before-ratios 428–1034 against the 400 limit); what remains is the private-plate Metal5 group `ANT.16_i_ANT.6` (26) + `ANT.16_ii_ANT.6` (5), ratios 2028–7820 — recorded, **not fixed**: see "Precheck applicability" | `klt drc run3_top.gds --engine klayout --top run3_top --pdk gf180mcuD --deck-var decks=antenna -o drc_antenna_report.json --format json` |
+| `drc_antenna_report.json` | the precheck's gating antenna stage reproduced (decks `antenna`, same runset): both groups **recorded, not fixed** — the shared-WL `ANT.16_ii_ANT.4` findings (29, ratios 428–1034 against the 400 limit) and the private-plate Metal5 group `ANT.16_i_ANT.6` (26) + `ANT.16_ii_ANT.6` (5), ratios 2028–7820: see "Precheck applicability" | `klt drc run3_top.gds --engine klayout --top run3_top --pdk gf180mcuD --deck-var decks=antenna -o drc_antenna_report.json --format json` |
 | `drc_density_report.json`, `drc_density_stage.log` | the precheck's gating density stage (decks `density`): klt's JSON carries `rule_counts` `{}` (0 findings) with `status: coverage_unknown` — a native deck run that finds nothing declares no categories, so klt cannot prove execution from the RDB alone (`--expect-rule-categories` refuses 0); the companion `.log` is the deck's own stdout: every coverage ratio logged well above its floor (COMP 51.3 %, Poly2 15.7 %, Metal1–4 48.9–50.9 %, Metal5/MetalTop 53.0 %) and `DRC RESULT: SUCCESS (0 violations)` | `klt drc run3_top.gds --engine klayout --top run3_top --pdk gf180mcuD --deck-var decks=density -o drc_density_report.json --format json` + the `klayout -b` invocation recorded in the log |
-| `supplies.json`, `erc_report.json` | chip-level ERC spec extending the `layout/erc/` convention: p-substrate tie over the left column (net `VSS_ANALOG`, now reaching the C3 companion tap), n-well tie over the right column (net `VBW_C3`); `erc_status: clean`, all 35 gates float-checked; antenna-ratio verdicts stay `unchecked` here (the build ships no gf180mcu limit table for `klt erc`) — the antenna verdict of record is `drc_antenna_report.json` above | `klt erc run3_top.gds supplies.json --top run3_top --pdk gf180mcu --deck gf180mcu --format json > erc_report.json` (exit 4 = not-checked verdict, not a tool failure) |
+| `supplies.json`, `erc_report.json` | chip-level ERC spec extending the `layout/erc/` convention: p-substrate tie over the left column (net `VSS_ANALOG`, now reaching the C3 substrate tap), n-well tie over the right column (net `VBW_C3`); `erc_status: clean`, all 35 gates float-checked; antenna-ratio verdicts stay `unchecked` here (the build ships no gf180mcu limit table for `klt erc`) — the antenna verdict of record is `drc_antenna_report.json` above | `klt erc run3_top.gds supplies.json --top run3_top --pdk gf180mcu --deck gf180mcu --format json > erc_report.json` (exit 4 = not-checked verdict, not a tool failure) |
 | `economy_report.json` | `klt economy` density/utilisation: 4.90 mm2 die, ~78 % drawn after fill | `klt economy run3_top.gds --format json > economy_report.json` |
 
 Toolchain: assembled and checked with the host dev build
-(`klt 0.9.3.dev1136+g81926eccba7b`, KLayout 0.30.x); the committed artifacts
+(`klt 0.9.3.dev1370+g30969f578991`, KLayout 0.30.12); the committed artifacts
 reproduce from the pinned commands above. The template page's
 antenna/density/ERC list is empty (see provenance above); the operator's
 chip-level checklist is not yet provided and remains tracked on the issue.
@@ -224,16 +224,30 @@ below re-verified 2026-11-18 against the same pinned revisions):
 
 Measured dispositions, per group:
 
-1. **Antenna (WL trunks) — applies, fixed.** `ANT.16_ii_ANT.4` (Metal3
-   perimeter area vs thick gate oxide, 400) fired on all four shared WL
-   trunks (ratios 428–1034). Remedy: one n-diode clamp per WL net
-   (COMP-in-NPLUS outside NWELL, the deck's own `n_diode` definition); the
-   deck's diode filtering divides the ratio by
-   `gate + 15·(n_diode + p_diode + nwell)`, so a 0.6 µm COMP body clears
-   the worst net (needs ≥ 0.245 µm²) with margin. After: 0 findings
-   (`drc_antenna_report.json`). Splitting the M3 trunks was rejected
-   arithmetically: the ratio is per net, and a net keeps its whole Metal3
-   perimeter however the trunks are cut.
+1. **Antenna (WL trunks) — applies, evaluated, deferred (needs operator).**
+   `ANT.16_ii_ANT.4` (Metal3 perimeter area vs thick gate oxide, 400) fired
+   on all four shared WL trunks (ratios 428–1034). The numeric remedy is
+   one n-diode clamp per WL net (COMP-in-NPLUS outside NWELL, the deck's
+   own `n_diode` definition); the deck's diode filtering divides the ratio
+   by `gate + 15·(n_diode + p_diode + nwell)`, so a 0.6 µm COMP body clears
+   the worst net (needs ≥ 0.245 µm²) with margin — evaluated in
+   `assemble_run3_top.py`'s constant block, deliberately **not drawn**.
+   Splitting the M3 trunks was rejected arithmetically: the ratio is per
+   net, and a net keeps its whole Metal3 perimeter however the trunks are
+   cut. Not drawn for the same reason as group 2: the WL pads (L41–L44,
+   bench-driven inputs) are program-path pads whose bias record is
+   unratified (`spec/run3-bench-plan.md` OPEN-B3; the proposed gate/well-
+   drive benches hold WL at −3.3 V and −6.0 V), and the clamp is an
+   n+/p-substrate junction over `VSS_ANALOG` — `diode_nd2ps_06v0`, **bv
+   11 V** (`spec/hv-pad-protection-decision.md`), forward-conducting for
+   any WL below the substrate. On silicon it would hold WL to roughly
+   −0.6 … +11 V and sink bench current into the substrate beside the C3
+   column, removing the negative-WL gate/well-drive axis by a layout edit.
+   Per the #210 standard applied to the plate pads below, whether a
+   junction may hang on a program pad is an operator decision, not a
+   layout edit; the findings are recorded, not waived (and the clamp would
+   buy no gating benefit — the stage reports the deferred private-plate
+   group either way).
 2. **Antenna (private plates) — applies, evaluated, deferred (needs
    operator).** The same stage flags the 31 private-plate Metal5 routes
    (`ANT.16_i_ANT.6` ×26, `ANT.16_ii_ANT.6` ×5; ratios 2028–7820 — the caps'
@@ -250,13 +264,24 @@ Measured dispositions, per group:
    3LM variant the retired A-variant report ran — new at `gf180mcuD`, all
    satisfied by the fill (measured ratios above; deck log `SUCCESS`).
    The fill keeps off the cell columns (±25 µm bands), the pads, and the
-   C3 n-well strip; dummy COMP at the deck's own pattern numbers
-   (8 µm squares, 1.9 µm gap ≥ `DCF.2b`, 3.5 µm to drawn COMP ≥ `DCF.4`);
-   the dummy-Poly2 grid rides **inside** the dummy COMP squares on the
+   C3 n-well strip; dummy COMP at 30 µm squares (`COMP_FILL_SIZE_UM`; 1.9 µm
+   gap ≥ `DCF.2b`, 3.5 µm to drawn COMP ≥ `DCF.4`); the dummy-Poly2 grid
+   rides **inside** the dummy COMP squares on the
    drawing layer, because the deck's `DPF.1` — measured on a
    fully-enclosed-squares fixture (2026-11-18) — flags *every* `Poly2
    dummy` shape it sees, enclosed ones included, so no dummy-layer pattern
-   can pass it while `PL.8` demands the coverage.
+   can pass it while `PL.8` demands the coverage. The closest rule to its
+   floor is `PL.8` (Poly2 15.69 % against 14 %, deck log; every other rule
+   clears by ≥ 19 pp) — a later fill change should re-check that ratio
+   first. The keep-outs above do not cover the 36 private-plate Metal5
+   routes or the BL/WL/VB trunks outside the column bands: the floating
+   dummy metal (no contact anywhere in the fill) parks 3 µm
+   (`FILL_SPACING_UM`) off them on all five fill layers. Floating fill
+   cannot inject DC into a sense node; the residual risk is capacitive
+   (fringe coupling onto the fA-scale BL sense path), which the committed
+   evidence does not quantify — flagged for the operator here rather than
+   waived; a route keep-out is the fallback if the operator wants the
+   coupling bounded in geometry.
 4. **`CUP.2` — does not apply.** The precheck disables the `cup` deck in
    its KLayout DRC selection ("disable CUP for now", S2) and no separate
    stage runs it: `CUP.2` cannot gate the submission. (The rule's own text

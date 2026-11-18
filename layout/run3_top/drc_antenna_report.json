@@ -8,9 +8,10 @@
   "engine": "klayout",
   "dbu_um": 0.0005,
   "status": "violations",
-  "violation_count": 31,
+  "violation_count": 60,
   "rule_counts": {
     "ANT.16_i_ANT.6": 26,
+    "ANT.16_ii_ANT.4": 29,
     "ANT.16_ii_ANT.6": 5
   },
   "coverage": {
@@ -44,6 +45,7 @@
     ],
     "rules_checked": [
       "ANT.16_i_ANT.6",
+      "ANT.16_ii_ANT.4",
       "ANT.16_ii_ANT.6"
     ],
     "layers_in_stream_without_rules": [],
@@ -57,6 +59,7 @@
     "known": false,
     "checked": [
       "ANT.16_i_ANT.6",
+      "ANT.16_ii_ANT.4",
       "ANT.16_ii_ANT.6"
     ],
     "skipped": [],
@@ -77,8 +80,10 @@
       "check": "external",
       "layer": "ANT.16_i_ANT.6",
       "cell": "run3_top",
-      "source_cell": null,
-      "source_path": null,
+      "source_cell": "pads_left__pads_left",
+      "source_path": [
+        "pads_left__pads_left"
+      ],
       "bbox": {
         "left": 180000,
         "bottom": 400000,
@@ -126,8 +131,10 @@
       "check": "external",
       "layer": "ANT.16_i_ANT.6",
       "cell": "run3_top",
-      "source_cell": null,
-      "source_path": null,
+      "source_cell": "pads_left__pads_left",
+      "source_path": [
+        "pads_left__pads_left"
+      ],
       "bbox": {
         "left": 180000,
         "bottom": 570000,
@@ -175,8 +182,10 @@
       "check": "external",
       "layer": "ANT.16_i_ANT.6",
       "cell": "run3_top",
-      "source_cell": null,
-      "source_path": null,
+      "source_cell": "pads_left__pads_left",
+      "source_path": [
+        "pads_left__pads_left"
+      ],
       "bbox": {
         "left": 180000,
         "bottom": 740000,
@@ -224,8 +233,10 @@
       "check": "external",
       "layer": "ANT.16_i_ANT.6",
       "cell": "run3_top",
-      "source_cell": null,
-      "source_path": null,
+      "source_cell": "pads_left__pads_left",
+      "source_path": [
+        "pads_left__pads_left"
+      ],
       "bbox": {
         "left": 180000,
         "bottom": 910000,
@@ -273,8 +284,10 @@
       "check": "external",
       "layer": "ANT.16_i_ANT.6",
       "cell": "run3_top",
-      "source_cell": null,
-      "source_path": null,
+      "source_cell": "pads_left__pads_left",
+      "source_path": [
+        "pads_left__pads_left"
+      ],
       "bbox": {
         "left": 180000,
         "bottom": 1080000,
@@ -338,8 +351,10 @@
       "check": "external",
       "layer": "ANT.16_i_ANT.6",
       "cell": "run3_top",
-      "source_cell": null,
-      "source_path": null,
+      "source_cell": "pads_left__pads_left",
+      "source_path": [
+        "pads_left__pads_left"
+      ],
       "bbox": {
         "left": 180000,
         "bottom": 1250000,
@@ -403,8 +418,10 @@
       "check": "external",
       "layer": "ANT.16_i_ANT.6",
       "cell": "run3_top",
-      "source_cell": null,
-      "source_path": null,
+      "source_cell": "pads_left__pads_left",
+      "source_path": [
+        "pads_left__pads_left"
+      ],
       "bbox": {
         "left": 180000,
         "bottom": 1420000,
@@ -468,8 +485,10 @@
       "check": "external",
       "layer": "ANT.16_i_ANT.6",
       "cell": "run3_top",
-      "source_cell": null,
-      "source_path": null,
+      "source_cell": "pads_left__pads_left",
+      "source_path": [
+        "pads_left__pads_left"
+      ],
       "bbox": {
         "left": 180000,
         "bottom": 1590000,
@@ -533,8 +552,10 @@
       "check": "external",
       "layer": "ANT.16_i_ANT.6",
       "cell": "run3_top",
-      "source_cell": null,
-      "source_path": null,
+      "source_cell": "pads_left__pads_left",
+      "source_path": [
+        "pads_left__pads_left"
+      ],
       "bbox": {
         "left": 180000,
         "bottom": 1760000,
@@ -582,8 +603,10 @@
       "check": "external",
       "layer": "ANT.16_i_ANT.6",
       "cell": "run3_top",
-      "source_cell": null,
-      "source_path": null,
+      "source_cell": "pads_left__pads_left",
+      "source_path": [
+        "pads_left__pads_left"
+      ],
       "bbox": {
         "left": 180000,
         "bottom": 1930000,
@@ -631,8 +654,10 @@
       "check": "external",
       "layer": "ANT.16_i_ANT.6",
       "cell": "run3_top",
-      "source_cell": null,
-      "source_path": null,
+      "source_cell": "pads_left__pads_left",
+      "source_path": [
+        "pads_left__pads_left"
+      ],
       "bbox": {
         "left": 180000,
         "bottom": 2100000,
@@ -680,8 +705,10 @@
       "check": "external",
       "layer": "ANT.16_i_ANT.6",
       "cell": "run3_top",
-      "source_cell": null,
-      "source_path": null,
+      "source_cell": "pads_left__pads_left",
+      "source_path": [
+        "pads_left__pads_left"
+      ],
       "bbox": {
         "left": 180000,
         "bottom": 2270000,
@@ -729,8 +756,10 @@
       "check": "external",
       "layer": "ANT.16_i_ANT.6",
       "cell": "run3_top",
-      "source_cell": null,
-      "source_path": null,
+      "source_cell": "pads_left__pads_left",
+      "source_path": [
+        "pads_left__pads_left"
+      ],
       "bbox": {
         "left": 180000,
         "bottom": 2440000,
@@ -794,8 +823,10 @@
       "check": "external",
       "layer": "ANT.16_i_ANT.6",
       "cell": "run3_top",
-      "source_cell": null,
-      "source_path": null,
+      "source_cell": "pads_left__pads_left",
+      "source_path": [
+        "pads_left__pads_left"
+      ],
       "bbox": {
         "left": 180000,
         "bottom": 2610000,
@@ -859,8 +890,10 @@
       "check": "external",
       "layer": "ANT.16_i_ANT.6",
       "cell": "run3_top",
-      "source_cell": null,
-      "source_path": null,
+      "source_cell": "pads_left__pads_left",
+      "source_path": [
+        "pads_left__pads_left"
+      ],
       "bbox": {
         "left": 180000,
         "bottom": 2780000,
@@ -924,8 +957,10 @@
       "check": "external",
       "layer": "ANT.16_i_ANT.6",
       "cell": "run3_top",
-      "source_cell": null,
-      "source_path": null,
+      "source_cell": "pads_left__pads_left",
+      "source_path": [
+        "pads_left__pads_left"
+      ],
       "bbox": {
         "left": 180000,
         "bottom": 2950000,
@@ -1554,13 +1589,1536 @@
       ]
     },
     {
+      "rule": "ANT.16_ii_ANT.4",
+      "description": "ANT.16_ii_ANT.4: Maximum ratio of Metal3 perimeter area to related thick gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_ii_ANT.4",
+      "cell": "run3_top",
+      "source_cell": "pads_left__pads_left",
+      "source_path": [
+        "pads_left__pads_left"
+      ],
+      "bbox": {
+        "left": 359580,
+        "bottom": 339580,
+        "right": 1234420,
+        "top": 3028100
+      },
+      "polygon": [
+        [
+          359580,
+          339580
+        ],
+        [
+          359580,
+          1833500
+        ],
+        [
+          1208180,
+          1833500
+        ],
+        [
+          1208180,
+          1839260
+        ],
+        [
+          1209680,
+          1839260
+        ],
+        [
+          1209680,
+          1840100
+        ],
+        [
+          1210520,
+          1840100
+        ],
+        [
+          1210520,
+          1839260
+        ],
+        [
+          1233580,
+          1839260
+        ],
+        [
+          1233580,
+          2009260
+        ],
+        [
+          1209680,
+          2009260
+        ],
+        [
+          1209680,
+          2010100
+        ],
+        [
+          1233580,
+          2010100
+        ],
+        [
+          1233580,
+          2179260
+        ],
+        [
+          1209680,
+          2179260
+        ],
+        [
+          1209680,
+          2180100
+        ],
+        [
+          1233580,
+          2180100
+        ],
+        [
+          1233580,
+          2349260
+        ],
+        [
+          1209680,
+          2349260
+        ],
+        [
+          1209680,
+          2350100
+        ],
+        [
+          1233580,
+          2350100
+        ],
+        [
+          1233580,
+          2517260
+        ],
+        [
+          1209680,
+          2517260
+        ],
+        [
+          1209680,
+          2518100
+        ],
+        [
+          1233580,
+          2518100
+        ],
+        [
+          1233580,
+          2687260
+        ],
+        [
+          1209680,
+          2687260
+        ],
+        [
+          1209680,
+          2688100
+        ],
+        [
+          1233580,
+          2688100
+        ],
+        [
+          1233580,
+          2857260
+        ],
+        [
+          1209680,
+          2857260
+        ],
+        [
+          1209680,
+          2858100
+        ],
+        [
+          1233580,
+          2858100
+        ],
+        [
+          1233580,
+          3027260
+        ],
+        [
+          1209680,
+          3027260
+        ],
+        [
+          1209680,
+          3028100
+        ],
+        [
+          1234420,
+          3028100
+        ],
+        [
+          1234420,
+          1838420
+        ],
+        [
+          1209020,
+          1838420
+        ],
+        [
+          1209020,
+          1832660
+        ],
+        [
+          360420,
+          1832660
+        ],
+        [
+          360420,
+          339580
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_ii_ANT.4",
+      "description": "ANT.16_ii_ANT.4: Maximum ratio of Metal3 perimeter area to related thick gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_ii_ANT.4",
+      "cell": "run3_top",
+      "source_cell": "pads_left__pads_left",
+      "source_path": [
+        "pads_left__pads_left"
+      ],
+      "bbox": {
+        "left": 539580,
+        "bottom": 339580,
+        "right": 1234420,
+        "top": 1667260
+      },
+      "polygon": [
+        [
+          539580,
+          339580
+        ],
+        [
+          539580,
+          472660
+        ],
+        [
+          1208180,
+          472660
+        ],
+        [
+          1208180,
+          478420
+        ],
+        [
+          1209680,
+          478420
+        ],
+        [
+          1209680,
+          479260
+        ],
+        [
+          1210520,
+          479260
+        ],
+        [
+          1210520,
+          478420
+        ],
+        [
+          1233580,
+          478420
+        ],
+        [
+          1233580,
+          648420
+        ],
+        [
+          1209680,
+          648420
+        ],
+        [
+          1209680,
+          649260
+        ],
+        [
+          1233580,
+          649260
+        ],
+        [
+          1233580,
+          818420
+        ],
+        [
+          1209680,
+          818420
+        ],
+        [
+          1209680,
+          819260
+        ],
+        [
+          1233580,
+          819260
+        ],
+        [
+          1233580,
+          988420
+        ],
+        [
+          1209680,
+          988420
+        ],
+        [
+          1209680,
+          989260
+        ],
+        [
+          1233580,
+          989260
+        ],
+        [
+          1233580,
+          1156420
+        ],
+        [
+          1209680,
+          1156420
+        ],
+        [
+          1209680,
+          1157260
+        ],
+        [
+          1233580,
+          1157260
+        ],
+        [
+          1233580,
+          1326420
+        ],
+        [
+          1209680,
+          1326420
+        ],
+        [
+          1209680,
+          1327260
+        ],
+        [
+          1233580,
+          1327260
+        ],
+        [
+          1233580,
+          1496420
+        ],
+        [
+          1209680,
+          1496420
+        ],
+        [
+          1209680,
+          1497260
+        ],
+        [
+          1233580,
+          1497260
+        ],
+        [
+          1233580,
+          1666420
+        ],
+        [
+          1209680,
+          1666420
+        ],
+        [
+          1209680,
+          1667260
+        ],
+        [
+          1234420,
+          1667260
+        ],
+        [
+          1234420,
+          477580
+        ],
+        [
+          1209020,
+          477580
+        ],
+        [
+          1209020,
+          471820
+        ],
+        [
+          540420,
+          471820
+        ],
+        [
+          540420,
+          339580
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_ii_ANT.4",
+      "description": "ANT.16_ii_ANT.4: Maximum ratio of Metal3 perimeter area to related thick gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_ii_ANT.4",
+      "cell": "run3_top",
+      "source_cell": "mos_array$1",
+      "source_path": [
+        "Xinst_C1_Amin_Gmin_1__cell_candidate1",
+        "acc__acc",
+        "mos_array$1"
+      ],
+      "bbox": {
+        "left": 1209400,
+        "bottom": 476080,
+        "right": 1210800,
+        "top": 476920
+      },
+      "polygon": [
+        [
+          1209400,
+          476080
+        ],
+        [
+          1209400,
+          476920
+        ],
+        [
+          1210800,
+          476920
+        ],
+        [
+          1210800,
+          476080
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_ii_ANT.4",
+      "description": "ANT.16_ii_ANT.4: Maximum ratio of Metal3 perimeter area to related thick gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_ii_ANT.4",
+      "cell": "run3_top",
+      "source_cell": "mos_array$1$1",
+      "source_path": [
+        "Xinst_C1_Amin_Gmin_2__cell_candidate1",
+        "acc__acc$1",
+        "mos_array$1$1"
+      ],
+      "bbox": {
+        "left": 1209400,
+        "bottom": 646080,
+        "right": 1210800,
+        "top": 646920
+      },
+      "polygon": [
+        [
+          1209400,
+          646080
+        ],
+        [
+          1209400,
+          646920
+        ],
+        [
+          1210800,
+          646920
+        ],
+        [
+          1210800,
+          646080
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_ii_ANT.4",
+      "description": "ANT.16_ii_ANT.4: Maximum ratio of Metal3 perimeter area to related thick gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_ii_ANT.4",
+      "cell": "run3_top",
+      "source_cell": "mos_array$1$2",
+      "source_path": [
+        "Xinst_C1_Amin_Gmin_3__cell_candidate1",
+        "acc__acc$2",
+        "mos_array$1$2"
+      ],
+      "bbox": {
+        "left": 1209400,
+        "bottom": 816080,
+        "right": 1210800,
+        "top": 816920
+      },
+      "polygon": [
+        [
+          1209400,
+          816080
+        ],
+        [
+          1209400,
+          816920
+        ],
+        [
+          1210800,
+          816920
+        ],
+        [
+          1210800,
+          816080
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_ii_ANT.4",
+      "description": "ANT.16_ii_ANT.4: Maximum ratio of Metal3 perimeter area to related thick gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_ii_ANT.4",
+      "cell": "run3_top",
+      "source_cell": "mos_array$1$3",
+      "source_path": [
+        "Xinst_C1_Amin_Gmin_4__cell_candidate1",
+        "acc__acc$3",
+        "mos_array$1$3"
+      ],
+      "bbox": {
+        "left": 1209400,
+        "bottom": 986080,
+        "right": 1210800,
+        "top": 986920
+      },
+      "polygon": [
+        [
+          1209400,
+          986080
+        ],
+        [
+          1209400,
+          986920
+        ],
+        [
+          1210800,
+          986920
+        ],
+        [
+          1210800,
+          986080
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_ii_ANT.4",
+      "description": "ANT.16_ii_ANT.4: Maximum ratio of Metal3 perimeter area to related thick gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_ii_ANT.4",
+      "cell": "run3_top",
+      "source_cell": "mos_array$1$4",
+      "source_path": [
+        "Xinst_C1_Amin_G2x_1__cell_candidate1_Amin_G2x",
+        "acc__acc$4",
+        "mos_array$1$4"
+      ],
+      "bbox": {
+        "left": 1209400,
+        "bottom": 1154080,
+        "right": 1210800,
+        "top": 1154920
+      },
+      "polygon": [
+        [
+          1209400,
+          1154080
+        ],
+        [
+          1209400,
+          1154920
+        ],
+        [
+          1210800,
+          1154920
+        ],
+        [
+          1210800,
+          1154080
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_ii_ANT.4",
+      "description": "ANT.16_ii_ANT.4: Maximum ratio of Metal3 perimeter area to related thick gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_ii_ANT.4",
+      "cell": "run3_top",
+      "source_cell": "mos_array$1$5",
+      "source_path": [
+        "Xinst_C1_Amin_G2x_2__cell_candidate1_Amin_G2x",
+        "acc__acc$5",
+        "mos_array$1$5"
+      ],
+      "bbox": {
+        "left": 1209400,
+        "bottom": 1324080,
+        "right": 1210800,
+        "top": 1324920
+      },
+      "polygon": [
+        [
+          1209400,
+          1324080
+        ],
+        [
+          1209400,
+          1324920
+        ],
+        [
+          1210800,
+          1324920
+        ],
+        [
+          1210800,
+          1324080
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_ii_ANT.4",
+      "description": "ANT.16_ii_ANT.4: Maximum ratio of Metal3 perimeter area to related thick gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_ii_ANT.4",
+      "cell": "run3_top",
+      "source_cell": "mos_array$1$6",
+      "source_path": [
+        "Xinst_C1_Amin_G2x_3__cell_candidate1_Amin_G2x",
+        "acc__acc$6",
+        "mos_array$1$6"
+      ],
+      "bbox": {
+        "left": 1209400,
+        "bottom": 1494080,
+        "right": 1210800,
+        "top": 1494920
+      },
+      "polygon": [
+        [
+          1209400,
+          1494080
+        ],
+        [
+          1209400,
+          1494920
+        ],
+        [
+          1210800,
+          1494920
+        ],
+        [
+          1210800,
+          1494080
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_ii_ANT.4",
+      "description": "ANT.16_ii_ANT.4: Maximum ratio of Metal3 perimeter area to related thick gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_ii_ANT.4",
+      "cell": "run3_top",
+      "source_cell": "mos_array$1$7",
+      "source_path": [
+        "Xinst_C1_Amin_G2x_4__cell_candidate1_Amin_G2x",
+        "acc__acc$7",
+        "mos_array$1$7"
+      ],
+      "bbox": {
+        "left": 1209400,
+        "bottom": 1664080,
+        "right": 1210800,
+        "top": 1664920
+      },
+      "polygon": [
+        [
+          1209400,
+          1664080
+        ],
+        [
+          1209400,
+          1664920
+        ],
+        [
+          1210800,
+          1664920
+        ],
+        [
+          1210800,
+          1664080
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_ii_ANT.4",
+      "description": "ANT.16_ii_ANT.4: Maximum ratio of Metal3 perimeter area to related thick gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_ii_ANT.4",
+      "cell": "run3_top",
+      "source_cell": "mos_array$1$8",
+      "source_path": [
+        "Xinst_C1_A2x_Gmin_1__cell_candidate1_A2x_Gmin",
+        "acc__acc$8",
+        "mos_array$1$8"
+      ],
+      "bbox": {
+        "left": 1209400,
+        "bottom": 1836080,
+        "right": 1210800,
+        "top": 1837760
+      },
+      "polygon": [
+        [
+          1209400,
+          1836080
+        ],
+        [
+          1209400,
+          1837760
+        ],
+        [
+          1210800,
+          1837760
+        ],
+        [
+          1210800,
+          1836080
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_ii_ANT.4",
+      "description": "ANT.16_ii_ANT.4: Maximum ratio of Metal3 perimeter area to related thick gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_ii_ANT.4",
+      "cell": "run3_top",
+      "source_cell": "mos_array$1$9",
+      "source_path": [
+        "Xinst_C1_A2x_Gmin_2__cell_candidate1_A2x_Gmin",
+        "acc__acc$9",
+        "mos_array$1$9"
+      ],
+      "bbox": {
+        "left": 1209400,
+        "bottom": 2006080,
+        "right": 1210800,
+        "top": 2007760
+      },
+      "polygon": [
+        [
+          1209400,
+          2006080
+        ],
+        [
+          1209400,
+          2007760
+        ],
+        [
+          1210800,
+          2007760
+        ],
+        [
+          1210800,
+          2006080
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_ii_ANT.4",
+      "description": "ANT.16_ii_ANT.4: Maximum ratio of Metal3 perimeter area to related thick gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_ii_ANT.4",
+      "cell": "run3_top",
+      "source_cell": "mos_array$1$10",
+      "source_path": [
+        "Xinst_C1_A2x_Gmin_3__cell_candidate1_A2x_Gmin",
+        "acc__acc$10",
+        "mos_array$1$10"
+      ],
+      "bbox": {
+        "left": 1209400,
+        "bottom": 2176080,
+        "right": 1210800,
+        "top": 2177760
+      },
+      "polygon": [
+        [
+          1209400,
+          2176080
+        ],
+        [
+          1209400,
+          2177760
+        ],
+        [
+          1210800,
+          2177760
+        ],
+        [
+          1210800,
+          2176080
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_ii_ANT.4",
+      "description": "ANT.16_ii_ANT.4: Maximum ratio of Metal3 perimeter area to related thick gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_ii_ANT.4",
+      "cell": "run3_top",
+      "source_cell": "mos_array$1$11",
+      "source_path": [
+        "Xinst_C1_A2x_Gmin_4__cell_candidate1_A2x_Gmin",
+        "acc__acc$11",
+        "mos_array$1$11"
+      ],
+      "bbox": {
+        "left": 1209400,
+        "bottom": 2346080,
+        "right": 1210800,
+        "top": 2347760
+      },
+      "polygon": [
+        [
+          1209400,
+          2346080
+        ],
+        [
+          1209400,
+          2347760
+        ],
+        [
+          1210800,
+          2347760
+        ],
+        [
+          1210800,
+          2346080
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_ii_ANT.4",
+      "description": "ANT.16_ii_ANT.4: Maximum ratio of Metal3 perimeter area to related thick gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_ii_ANT.4",
+      "cell": "run3_top",
+      "source_cell": "mos_array$1$12",
+      "source_path": [
+        "Xinst_C1_A2x_G2x_1__cell_candidate1_A2x_G2x",
+        "acc__acc$12",
+        "mos_array$1$12"
+      ],
+      "bbox": {
+        "left": 1209400,
+        "bottom": 2514080,
+        "right": 1210800,
+        "top": 2515760
+      },
+      "polygon": [
+        [
+          1209400,
+          2514080
+        ],
+        [
+          1209400,
+          2515760
+        ],
+        [
+          1210800,
+          2515760
+        ],
+        [
+          1210800,
+          2514080
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_ii_ANT.4",
+      "description": "ANT.16_ii_ANT.4: Maximum ratio of Metal3 perimeter area to related thick gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_ii_ANT.4",
+      "cell": "run3_top",
+      "source_cell": "mos_array$1$13",
+      "source_path": [
+        "Xinst_C1_A2x_G2x_2__cell_candidate1_A2x_G2x",
+        "acc__acc$13",
+        "mos_array$1$13"
+      ],
+      "bbox": {
+        "left": 1209400,
+        "bottom": 2684080,
+        "right": 1210800,
+        "top": 2685760
+      },
+      "polygon": [
+        [
+          1209400,
+          2684080
+        ],
+        [
+          1209400,
+          2685760
+        ],
+        [
+          1210800,
+          2685760
+        ],
+        [
+          1210800,
+          2684080
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_ii_ANT.4",
+      "description": "ANT.16_ii_ANT.4: Maximum ratio of Metal3 perimeter area to related thick gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_ii_ANT.4",
+      "cell": "run3_top",
+      "source_cell": "mos_array$1$14",
+      "source_path": [
+        "Xinst_C1_A2x_G2x_3__cell_candidate1_A2x_G2x",
+        "acc__acc$14",
+        "mos_array$1$14"
+      ],
+      "bbox": {
+        "left": 1209400,
+        "bottom": 2854080,
+        "right": 1210800,
+        "top": 2855760
+      },
+      "polygon": [
+        [
+          1209400,
+          2854080
+        ],
+        [
+          1209400,
+          2855760
+        ],
+        [
+          1210800,
+          2855760
+        ],
+        [
+          1210800,
+          2854080
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_ii_ANT.4",
+      "description": "ANT.16_ii_ANT.4: Maximum ratio of Metal3 perimeter area to related thick gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_ii_ANT.4",
+      "cell": "run3_top",
+      "source_cell": "mos_array$1$15",
+      "source_path": [
+        "Xinst_C1_A2x_G2x_4__cell_candidate1_A2x_G2x",
+        "acc__acc$15",
+        "mos_array$1$15"
+      ],
+      "bbox": {
+        "left": 1209400,
+        "bottom": 3024080,
+        "right": 1210800,
+        "top": 3025760
+      },
+      "polygon": [
+        [
+          1209400,
+          3024080
+        ],
+        [
+          1209400,
+          3025760
+        ],
+        [
+          1210800,
+          3025760
+        ],
+        [
+          1210800,
+          3024080
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_ii_ANT.4",
+      "description": "ANT.16_ii_ANT.4: Maximum ratio of Metal3 perimeter area to related thick gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_ii_ANT.4",
+      "cell": "run3_top",
+      "source_cell": null,
+      "source_path": null,
+      "bbox": {
+        "left": 1759580,
+        "bottom": 339580,
+        "right": 2001970,
+        "top": 2347260
+      },
+      "polygon": [
+        [
+          1759580,
+          339580
+        ],
+        [
+          1759580,
+          2347260
+        ],
+        [
+          2001970,
+          2347260
+        ],
+        [
+          2001970,
+          2346420
+        ],
+        [
+          1760420,
+          2346420
+        ],
+        [
+          1760420,
+          2177260
+        ],
+        [
+          2001970,
+          2177260
+        ],
+        [
+          2001970,
+          2176420
+        ],
+        [
+          1760420,
+          2176420
+        ],
+        [
+          1760420,
+          2007260
+        ],
+        [
+          2001970,
+          2007260
+        ],
+        [
+          2001970,
+          2006420
+        ],
+        [
+          1760420,
+          2006420
+        ],
+        [
+          1760420,
+          1837260
+        ],
+        [
+          2001970,
+          1837260
+        ],
+        [
+          2001970,
+          1836420
+        ],
+        [
+          1760420,
+          1836420
+        ],
+        [
+          1760420,
+          1667260
+        ],
+        [
+          2001970,
+          1667260
+        ],
+        [
+          2001970,
+          1666420
+        ],
+        [
+          1760420,
+          1666420
+        ],
+        [
+          1760420,
+          1499260
+        ],
+        [
+          2001970,
+          1499260
+        ],
+        [
+          2001970,
+          1498420
+        ],
+        [
+          1760420,
+          1498420
+        ],
+        [
+          1760420,
+          1329260
+        ],
+        [
+          2001970,
+          1329260
+        ],
+        [
+          2001970,
+          1328420
+        ],
+        [
+          1760420,
+          1328420
+        ],
+        [
+          1760420,
+          1159260
+        ],
+        [
+          2001970,
+          1159260
+        ],
+        [
+          2001970,
+          1158420
+        ],
+        [
+          1760420,
+          1158420
+        ],
+        [
+          1760420,
+          989260
+        ],
+        [
+          2001970,
+          989260
+        ],
+        [
+          2001970,
+          988420
+        ],
+        [
+          1760420,
+          988420
+        ],
+        [
+          1760420,
+          819260
+        ],
+        [
+          2001970,
+          819260
+        ],
+        [
+          2001970,
+          818420
+        ],
+        [
+          1760420,
+          818420
+        ],
+        [
+          1760420,
+          339580
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_ii_ANT.4",
+      "description": "ANT.16_ii_ANT.4: Maximum ratio of Metal3 perimeter area to related thick gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_ii_ANT.4",
+      "cell": "run3_top",
+      "source_cell": "mos_array$1$16",
+      "source_path": [
+        "Xinst_C3_Amin_Gmin_1__cell_candidate3",
+        "acc__acc$21",
+        "mos_array$1$16"
+      ],
+      "bbox": {
+        "left": 2001000,
+        "bottom": 816080,
+        "right": 2002100,
+        "top": 816920
+      },
+      "polygon": [
+        [
+          2001000,
+          816080
+        ],
+        [
+          2001000,
+          816920
+        ],
+        [
+          2002100,
+          816920
+        ],
+        [
+          2002100,
+          816080
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_ii_ANT.4",
+      "description": "ANT.16_ii_ANT.4: Maximum ratio of Metal3 perimeter area to related thick gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_ii_ANT.4",
+      "cell": "run3_top",
+      "source_cell": "mos_array$1$17",
+      "source_path": [
+        "Xinst_C3_Amin_Gmin_2__cell_candidate3",
+        "acc__acc$22",
+        "mos_array$1$17"
+      ],
+      "bbox": {
+        "left": 2001000,
+        "bottom": 986080,
+        "right": 2002100,
+        "top": 986920
+      },
+      "polygon": [
+        [
+          2001000,
+          986080
+        ],
+        [
+          2001000,
+          986920
+        ],
+        [
+          2002100,
+          986920
+        ],
+        [
+          2002100,
+          986080
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_ii_ANT.4",
+      "description": "ANT.16_ii_ANT.4: Maximum ratio of Metal3 perimeter area to related thick gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_ii_ANT.4",
+      "cell": "run3_top",
+      "source_cell": "mos_array$1$18",
+      "source_path": [
+        "Xinst_C3_Amin_Gmin_3__cell_candidate3",
+        "acc__acc$23",
+        "mos_array$1$18"
+      ],
+      "bbox": {
+        "left": 2001000,
+        "bottom": 1156080,
+        "right": 2002100,
+        "top": 1156920
+      },
+      "polygon": [
+        [
+          2001000,
+          1156080
+        ],
+        [
+          2001000,
+          1156920
+        ],
+        [
+          2002100,
+          1156920
+        ],
+        [
+          2002100,
+          1156080
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_ii_ANT.4",
+      "description": "ANT.16_ii_ANT.4: Maximum ratio of Metal3 perimeter area to related thick gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_ii_ANT.4",
+      "cell": "run3_top",
+      "source_cell": "mos_array$1$19",
+      "source_path": [
+        "Xinst_C3_Amin_Gmin_4__cell_candidate3",
+        "acc__acc$24",
+        "mos_array$1$19"
+      ],
+      "bbox": {
+        "left": 2001000,
+        "bottom": 1326080,
+        "right": 2002100,
+        "top": 1326920
+      },
+      "polygon": [
+        [
+          2001000,
+          1326080
+        ],
+        [
+          2001000,
+          1326920
+        ],
+        [
+          2002100,
+          1326920
+        ],
+        [
+          2002100,
+          1326080
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_ii_ANT.4",
+      "description": "ANT.16_ii_ANT.4: Maximum ratio of Metal3 perimeter area to related thick gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_ii_ANT.4",
+      "cell": "run3_top",
+      "source_cell": "mos_array$1$20",
+      "source_path": [
+        "Xinst_C3_Amin_Gmin_5__cell_candidate3",
+        "acc__acc$25",
+        "mos_array$1$20"
+      ],
+      "bbox": {
+        "left": 2001000,
+        "bottom": 1496080,
+        "right": 2002100,
+        "top": 1496920
+      },
+      "polygon": [
+        [
+          2001000,
+          1496080
+        ],
+        [
+          2001000,
+          1496920
+        ],
+        [
+          2002100,
+          1496920
+        ],
+        [
+          2002100,
+          1496080
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_ii_ANT.4",
+      "description": "ANT.16_ii_ANT.4: Maximum ratio of Metal3 perimeter area to related thick gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_ii_ANT.4",
+      "cell": "run3_top",
+      "source_cell": "mos_array$1$21",
+      "source_path": [
+        "Xinst_C3_Amin_G2x_1__cell_candidate3_Amin_G2x",
+        "acc__acc$26",
+        "mos_array$1$21"
+      ],
+      "bbox": {
+        "left": 2001000,
+        "bottom": 1664080,
+        "right": 2002100,
+        "top": 1664920
+      },
+      "polygon": [
+        [
+          2001000,
+          1664080
+        ],
+        [
+          2001000,
+          1664920
+        ],
+        [
+          2002100,
+          1664920
+        ],
+        [
+          2002100,
+          1664080
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_ii_ANT.4",
+      "description": "ANT.16_ii_ANT.4: Maximum ratio of Metal3 perimeter area to related thick gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_ii_ANT.4",
+      "cell": "run3_top",
+      "source_cell": "mos_array$1$22",
+      "source_path": [
+        "Xinst_C3_Amin_G2x_2__cell_candidate3_Amin_G2x",
+        "acc__acc$27",
+        "mos_array$1$22"
+      ],
+      "bbox": {
+        "left": 2001000,
+        "bottom": 1834080,
+        "right": 2002100,
+        "top": 1834920
+      },
+      "polygon": [
+        [
+          2001000,
+          1834080
+        ],
+        [
+          2001000,
+          1834920
+        ],
+        [
+          2002100,
+          1834920
+        ],
+        [
+          2002100,
+          1834080
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_ii_ANT.4",
+      "description": "ANT.16_ii_ANT.4: Maximum ratio of Metal3 perimeter area to related thick gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_ii_ANT.4",
+      "cell": "run3_top",
+      "source_cell": "mos_array$1$23",
+      "source_path": [
+        "Xinst_C3_Amin_G2x_3__cell_candidate3_Amin_G2x",
+        "acc__acc$28",
+        "mos_array$1$23"
+      ],
+      "bbox": {
+        "left": 2001000,
+        "bottom": 2004080,
+        "right": 2002100,
+        "top": 2004920
+      },
+      "polygon": [
+        [
+          2001000,
+          2004080
+        ],
+        [
+          2001000,
+          2004920
+        ],
+        [
+          2002100,
+          2004920
+        ],
+        [
+          2002100,
+          2004080
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_ii_ANT.4",
+      "description": "ANT.16_ii_ANT.4: Maximum ratio of Metal3 perimeter area to related thick gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_ii_ANT.4",
+      "cell": "run3_top",
+      "source_cell": "mos_array$1$24",
+      "source_path": [
+        "Xinst_C3_Amin_G2x_4__cell_candidate3_Amin_G2x",
+        "acc__acc$29",
+        "mos_array$1$24"
+      ],
+      "bbox": {
+        "left": 2001000,
+        "bottom": 2174080,
+        "right": 2002100,
+        "top": 2174920
+      },
+      "polygon": [
+        [
+          2001000,
+          2174080
+        ],
+        [
+          2001000,
+          2174920
+        ],
+        [
+          2002100,
+          2174920
+        ],
+        [
+          2002100,
+          2174080
+        ]
+      ]
+    },
+    {
+      "rule": "ANT.16_ii_ANT.4",
+      "description": "ANT.16_ii_ANT.4: Maximum ratio of Metal3 perimeter area to related thick gate oxide area: 400",
+      "check": "external",
+      "layer": "ANT.16_ii_ANT.4",
+      "cell": "run3_top",
+      "source_cell": "mos_array$1$25",
+      "source_path": [
+        "Xinst_C3_Amin_G2x_5__cell_candidate3_Amin_G2x",
+        "acc__acc$30",
+        "mos_array$1$25"
+      ],
+      "bbox": {
+        "left": 2001000,
+        "bottom": 2344080,
+        "right": 2002100,
+        "top": 2344920
+      },
+      "polygon": [
+        [
+          2001000,
+          2344080
+        ],
+        [
+          2001000,
+          2344920
+        ],
+        [
+          2002100,
+          2344920
+        ],
+        [
+          2002100,
+          2344080
+        ]
+      ]
+    },
+    {
       "rule": "ANT.16_ii_ANT.6",
       "description": "ANT.16_ii_ANT.6: Maximum ratio of Metal5 perimeter area to related thick gate oxide area 400",
       "check": "external",
       "layer": "ANT.16_ii_ANT.6",
       "cell": "run3_top",
-      "source_cell": null,
-      "source_path": null,
+      "source_cell": "pads_left__pads_left",
+      "source_path": [
+        "pads_left__pads_left"
+      ],
       "bbox": {
         "left": 180000,
         "bottom": 3120000,
@@ -1608,8 +3166,10 @@
       "check": "external",
       "layer": "ANT.16_ii_ANT.6",
       "cell": "run3_top",
-      "source_cell": null,
-      "source_path": null,
+      "source_cell": "pads_left__pads_left",
+      "source_path": [
+        "pads_left__pads_left"
+      ],
       "bbox": {
         "left": 180000,
         "bottom": 3290000,
@@ -1657,8 +3217,10 @@
       "check": "external",
       "layer": "ANT.16_ii_ANT.6",
       "cell": "run3_top",
-      "source_cell": null,
-      "source_path": null,
+      "source_cell": "pads_left__pads_left",
+      "source_path": [
+        "pads_left__pads_left"
+      ],
       "bbox": {
         "left": 180000,
         "bottom": 3460000,
@@ -1706,8 +3268,10 @@
       "check": "external",
       "layer": "ANT.16_ii_ANT.6",
       "cell": "run3_top",
-      "source_cell": null,
-      "source_path": null,
+      "source_cell": "pads_left__pads_left",
+      "source_path": [
+        "pads_left__pads_left"
+      ],
       "bbox": {
         "left": 180000,
         "bottom": 3630000,
@@ -1755,8 +3319,10 @@
       "check": "external",
       "layer": "ANT.16_ii_ANT.6",
       "cell": "run3_top",
-      "source_cell": null,
-      "source_path": null,
+      "source_cell": "pads_left__pads_left",
+      "source_path": [
+        "pads_left__pads_left"
+      ],
       "bbox": {
         "left": 180000,
         "bottom": 3800000,
@@ -1800,9 +3366,9 @@
     }
   ],
   "provenance": {
-    "klt_version": "0.9.3.dev1136+g81926eccba7b",
-    "klt_git_commit": "81926eccba7bb286548dc754eeebf00b06f74fc2",
-    "klt_reinstall_spec": "klayout-tools @ git+https://github.com/2AMLogic/klayout-tools@81926eccba7bb286548dc754eeebf00b06f74fc2",
+    "klt_version": "0.9.3.dev1370+g30969f578991",
+    "klt_git_commit": "30969f578991f52b680b7cb1ba33276b2e62ace9",
+    "klt_reinstall_spec": "klayout-tools @ git+https://github.com/2AMLogic/klayout-tools@30969f578991f52b680b7cb1ba33276b2e62ace9",
     "klayout_version": "0.30.12",
     "pdk": {
       "name": "gf180mcuD",
@@ -1827,7 +3393,7 @@
       }
     },
     "input": {
-      "content_hash": "sha256:79bc84145a1baf87116b42d7aedee9bd9c69c29b72ce4d46a5a7ab1fa0c679f8",
+      "content_hash": "sha256:e231fe008290a62c343210bc29354ac3918a6eef3b67875f5cdb91198f1a63b7",
       "role": "layout"
     },
     "klayout_version_mismatch": false

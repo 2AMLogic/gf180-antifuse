@@ -1143,9 +1143,15 @@ extraction, flattened compare against the derived 31-instance reference:
 **`match`**), `drc_report.json` (curated deck: 80 findings, all
 `comp.enclosing.contact.1` inside the unmodified `nfet_10v0_asym` PCell
 instances -- the geometry class `spec/pdk-pcell-drc-exception-decision.md`
-scopes), `drc_native_report.json` (native runset per #287: die-level density
-on a ~89 %-whitespace die, the same PCell class, 29 antenna-ratio findings on
-the shared word lines -- reported, none waived),
+scopes), the three stage reports at the precheck's own binding
+configuration `gf180mcuD` (#404: `drc_stage_report.json` — nothing drawn by
+this assembly, only the PCell exception class and `DBU`;
+`drc_antenna_report.json` — the shared-WL and private-plate antenna groups
+recorded, remedy evaluated and deferred to the operator;
+`drc_density_report.json` + `drc_density_stage.log` — every density rule
+above its floor after the fill, `DRC RESULT: SUCCESS`; the variant-A
+`drc_native_report.json` per #287 is withdrawn — its `MT30.*`/`CUP.2` rows
+are answered at the binding configuration),
 `supplies.json`/`erc_report.json` (chip ERC extending the `layout/erc/`
 convention: `erc_status: clean`), and `economy_report.json` (density).
 The five instances of the undrawn `cell_candidate2_Amin_G2x` are excluded

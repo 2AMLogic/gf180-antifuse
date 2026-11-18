@@ -17,8 +17,8 @@ Writes two committed artifacts next to this script:
                              the template's 8 power pads), the 31 placed cell
                              instances, the HV pad routes (bare Metal5
                              pad-to-plate routes per the #210 record -- no pad
-                             cell, no on-die protection structure), one n-diode
-                             antenna clamp per WL net, the MetalTop landing
+                             cell, no on-die protection structure), the C3
+                             substrate tap, the MetalTop landing
                              patches, and the density fill (see the constant
                              blocks in this file and README.md for the
                              measured findings each answers).
@@ -204,40 +204,44 @@ NET_OF_PIN = {"BL": "shared_bl", "WL": "shared_wl", "VB": "shared_vb"}
 MT1_PATCH_OVERSHOOT_UM = 1.0
 MT1_PATCH_HALF_W_UM = 2.5     # 5 um patch width == the PL route width
 
-# --- WL antenna clamps -------------------------------------------------------
+# --- WL antenna remedy (evaluated, deferred) + the C3 substrate tap ---------
 #
 # The precheck's gating antenna stage reports the shared WL trunks over the
 # ANT.16_ii_ANT.4 limit (Metal3 perimeter area vs thick gate oxide area,
 # 400): measured ratios 428-1034 at gf180mcuD. The deck's diode filtering
 # divides the ratio by (gate + 15*(n_diode + p_diode + nwell))
-# (antenna.rb, antenna_check_gf180mcu), so one n-diode per WL net clears
-# every violation: the worst net needs >= 0.245 um^2 of diode area. One
-# n-diode is placed beside each trunk: COMP in NPLUS outside NWELL with one
-# contact and a Metal1 landing, enclosures taken from the drawn cells' own
-# tap ring (NPLUS over COMP 0.16 um; the PDK contact 0.22 um square with
-# 0.10 um COMP/Metal1 enclosure, above the CO.4 floor). The private-plate
-# Metal5 antenna findings (ANT.16_i/ii_ANT.6, ratios 2028-7820) are recorded
-# with the same remedy evaluated but deliberately not applied: the #210
-# record puts no on-die protection structure on the HV program legs, so
-# that disposition needs the operator (README.md, "Chip assembly").
-DIODE_COMP_UM = 0.6
-DIODE_ENC_UM = 0.16            # NPLUS enclosure of COMP (tap-ring value)
+# (antenna.rb, antenna_check_gf180mcu), so one n-diode per WL net would
+# clear every violation: the worst net needs >= 0.245 um^2 of diode area --
+# a 0.6 um COMP body in NPLUS outside NWELL with one contact and a Metal1
+# landing, enclosures taken from the drawn cells' own tap ring (NPLUS over
+# COMP 0.16 um; the PDK contact 0.22 um square with 0.10 um COMP/Metal1
+# enclosure, above the CO.4 floor). That remedy is evaluated here and
+# deliberately NOT drawn: the WL pads are bench-driven program-path pads
+# whose bias record is unratified (OPEN-B3; the proposed gate/well-drive
+# benches hold WL at -3.3 V and -6.0 V), and the clamp is an n+/p-substrate
+# junction rated bv = 11 V (spec/hv-pad-protection-decision.md) that
+# forward-conducts for any WL below the substrate -- on silicon it would
+# hold WL to roughly -0.6 .. +11 V and sink bench current into VSS_ANALOG
+# beside the C3 column. Per the #210 record's standard for the HV program
+# legs, whether a junction may hang on a program pad is an operator
+# decision, not a layout edit (README.md, "Precheck applicability"); the
+# findings are recorded in drc_antenna_report.json with the private-plate
+# Metal5 group (ANT.16_i/ii_ANT.6, ratios 2028-7820), not waived.
+DIODE_COMP_UM = 0.6            # sizes the substrate tap body (and the
+DIODE_ENC_UM = 0.16            # evaluated, unapplied WL diode remedy above)
 DIODE_CONTACT_UM = 0.22        # the PDK contact square
 DIODE_M1_UM = 0.42             # Metal1 landing over the contact
-WL_DIODE_TRUNK_OFFSET_UM = 4.0 # diode body centre x, off its trunk's x
-WL_DIODE_RISE_UM = 4.0         # diode body centre y above the group's top pin
 # The C3 cells carry no substrate tap at all (their tap ring is NPLUS in
-# NWELL), and DF.14_LV requires every NCOMP outside Nwell to sit within a
-# 20 um diamond of a substrate tap (PCOMP outside NWELL) -- the bare C3
-# n-diode fails it (measured 2026-11-18, one DF.14_LV finding). A tap is
-# therefore placed beside the C3 diode and tied to the substrate net
-# VSS_ANALOG with its own Metal2 branch: NOT to the WL net -- a substrate
-# tap on a signal net extracts as an ohmic substrate tie, and the LVS run
-# against it merged WL_C3_Amin into the substrate net (measured, same day;
-# the plain n-diode extracts as nothing at all, which is what the reference
-# expects). The branch runs at a y above every band, where the only Metal2
-# is net-own geometry or ended trunks.
-C3_TAP_OFFSET_UM = 4.0         # tap body centre, east of the C3 diode body
+# NWELL), so this file draws the C3 column's only p-substrate tie: one
+# PCOMP in PPLUS outside NWELL beside the C3 column's top, tied to the
+# substrate net VSS_ANALOG with its own Metal2 branch: NOT to a signal
+# net -- a substrate tap on a signal net extracts as an ohmic substrate
+# tie, and the LVS run against one merged WL_C3_Amin into the substrate
+# net (measured 2026-11-18; a bare diode body extracts as nothing at all,
+# which is what the reference expects). The branch runs at a y above
+# every band, where the only Metal2 is net-own geometry or ended trunks.
+TAP_TRUNK_OFFSET_UM = 8.0      # tap body centre x, east of the C3 WL trunk
+TAP_RISE_UM = 8.0              # tap body centre y, above the group's top pin
 C3_TAP_BRANCH_LIFT_UM = 16.0   # branch y, above the tap and every band
 
 # --- density fill ------------------------------------------------------------
@@ -255,7 +259,7 @@ C3_TAP_BRANCH_LIFT_UM = 16.0   # branch y, above the tap and every band
 #      (spacing 3.5 um >= DCF.4 to drawn COMP, gap 1.9 um >= DCF.2b), 30 um
 #      squares capped at 60 % per window (~51 % die coverage, under the
 #      70 % DCF.1d maximum);
-#   3. dummy Poly2: a headless KLayout pass that centres a 3x3 grid of
+#   3. dummy Poly2: a headless KLayout pass that centres a 2x2 grid of
 #      8.3 um squares (9.5 um pitch, >= DPF.2b's 1.1 um) inside every dummy
 #      COMP square, drawn on the Poly2 drawing layer (30/0) rather than the
 #      dummy layer (30/4): the density deck counts drawn+dummy Poly2 either
@@ -377,37 +381,21 @@ def instance_ports(rows: list[dict], port: str) -> list[tuple[dict, tuple[float,
     return out
 
 
-def wl_diode_placements(rows: list[dict]) -> list[dict]:
-    """One n-diode clamp per WL net (see the antenna-clamp constant block):
-    body centre beside the trunk, just above the group's highest pin (free
-    whitespace above each band; the clamp leg then rides the net's own trunk
-    down to that pin), plus that pin as the leg's far end."""
-    out = []
-    for net, (role, trunk_x, pad_x, connect_at) in BUNDLE_NETS.items():
-        if not net.startswith("WL_"):
-            continue
-        col_x = COL_X_RIGHT if net.split("_")[1] == "C3" else COL_X_LEFT
-        pins = [(r, p) for r, p in instance_ports(rows, "WL")
-                if r["group"] == GROUP_OF_NET[net] and r["origin"][0] == col_x]
-        assert pins, net
-        pins.sort(key=lambda rp: rp[1][1])
-        near, near_pt = pins[-1]
-        y = round(near_pt[1] + WL_DIODE_RISE_UM, 4)
-        out.append({"net": net, "x": round(trunk_x + WL_DIODE_TRUNK_OFFSET_UM, 4),
-                    "y": y, "near_block": near["name"]})
-    assert len(out) == 4, out
-    return out
-
-
 def c3_tap_branch(rows: list[dict]) -> dict:
-    """The C3 companion substrate tap's placement and its branch geometry
-    (see the constant block): tap body centre, the Metal2 branch y above the
-    C3 group's top stub, and the left-column VB pin the branch lands on --
-    the highest one below the branch whose descent corridor is free of other
-    cells."""
-    c3 = {d["net"]: d for d in wl_diode_placements(rows)}["WL_C3_Amin"]
-    tap_x = round(c3["x"] + C3_TAP_OFFSET_UM, 4)
-    tap_y = round(c3["y"] + C3_TAP_OFFSET_UM, 4)
+    """The C3 substrate tap's placement and its branch geometry (see the
+    constant block): tap body centre east of the C3 WL trunk and above the
+    group's highest pin, the Metal2 branch y above the C3 group's top stub,
+    and the left-column VB pin the branch lands on -- the highest one below
+    the branch whose descent corridor is free of other cells."""
+    _role, trunk_x, _pad_x, _connect_at = BUNDLE_NETS["WL_C3_Amin"]
+    pins = [(r, p) for r, p in instance_ports(rows, "WL")
+            if r["group"] == GROUP_OF_NET["WL_C3_Amin"]
+            and r["origin"][0] == COL_X_RIGHT]
+    assert pins, "WL_C3_Amin"
+    pins.sort(key=lambda rp: rp[1][1])
+    _top_row, top_pt = pins[-1]
+    tap_x = round(trunk_x + TAP_TRUNK_OFFSET_UM, 4)
+    tap_y = round(top_pt[1] + TAP_RISE_UM, 4)
     branch_y = round(tap_y + C3_TAP_BRANCH_LIFT_UM, 4)
     vb_pins = instance_ports(rows, "VB")
     left_vb = [(r, p) for r, p in vb_pins
@@ -666,22 +654,7 @@ def build_connectivity(rows: list[dict],
                  "width_um": BUNDLE_WIDTH_UM})
     paths[SUBSTRATE_NET] = {"metal2": segs}
 
-    # -- WL antenna clamps: one n-diode per WL net, tied to its nearest pin --
-    by_net = {n["net"]: n for n in nets}
-    for d in wl_diode_placements(rows):
-        entry = by_net[d["net"]]
-        entry["pins"].append({"block": f"diode_{d['net']}", "port": "A"})
-        entry["legs"].append({
-            "from_pin": {"block": f"diode_{d['net']}", "port": "A"},
-            "to_pin": {"block": d["near_block"], "port": "WL"},
-            "waypoints_um": [[round(d["x"] - WL_DIODE_TRUNK_OFFSET_UM, 4), d["y"]]],
-        })
-        # the clamp leg's own horizontal; the vertical rides the net's own
-        # trunk, which is not a cross-net path
-        paths.setdefault(d["net"], {}).setdefault("metal3", []).append(
-            _seg(d["x"], d["y"], d["x"] - WL_DIODE_TRUNK_OFFSET_UM, d["y"]))
-
-    # -- substrate tap beside the C3 antenna clamp (DF.14) --------------------
+    # -- C3 substrate tap (the column's only p-substrate tie) ----------------
     # One branch on the substrate net: from the tap's own port up to the
     # branch y, west over the die interior at that y, then down onto the
     # landing pin (c3_tap_branch picks it and asserts the corridor).
@@ -844,38 +817,12 @@ def compose_request(rows: list[dict], pads: list[dict],
         order.append(row["name"])
         origins[row["name"]] = {"x": row["origin"][0], "y": row["origin"][1]}
 
-    # WL antenna clamps: one drawn n-diode cell, four placements.
-    diode_gds = workdir / "wl_antenna_diode.gds"
+    # The C3 substrate tap (see the constant block), tied to the substrate
+    # net by the branch leg added in build_connectivity.
+    br = c3_tap_branch(rows)
+    tap_gds = workdir / "substrate_tap.gds"
     c, e = DIODE_COMP_UM / 2.0, DIODE_CONTACT_UM / 2.0
     half = DIODE_COMP_UM / 2.0 + DIODE_ENC_UM
-    draw_req = {"shapes": [
-        {"layer": [22, 0], "rect_um": [0.5 - c, 0.5 - c, 0.5 + c, 0.5 + c]},
-        {"layer": [32, 0], "rect_um": [0.5 - half, 0.5 - half, 0.5 + half, 0.5 + half]},
-        {"layer": [33, 0], "rect_um": [0.5 - e, 0.5 - e, 0.5 + e, 0.5 + e]},
-        {"layer": [34, 0], "rect_um": [0.5 - DIODE_M1_UM / 2.0, 0.5 - DIODE_M1_UM / 2.0,
-                                       0.5 + DIODE_M1_UM / 2.0, 0.5 + DIODE_M1_UM / 2.0]},
-    ]}
-    r = subprocess.run(
-        ["klt", "draw", "--params", json.dumps(draw_req),
-         "--cell-name", "wl_antenna_diode", "-o", str(diode_gds), "--format", "json"],
-        capture_output=True, text=True)
-    if r.returncode != 0:
-        sys.exit(f"klt draw failed ({r.returncode}):\n{r.stdout}{r.stderr}")
-    for d in wl_diode_placements(rows):
-        blk = f"diode_{d['net']}"
-        blocks.append({"id": blk,
-                       "cell": {"gds_path": str(diode_gds),
-                                "cell_name": "wl_antenna_diode",
-                                "ports": [{"name": "A", "x_um": 0.5, "y_um": 0.5,
-                                           "layer": {"layer": 34, "datatype": 0},
-                                           "direction_deg": 180, "width_um": 0.42}]}})
-        order.append(blk)
-        origins[blk] = {"x": round(d["x"] - 0.5, 4), "y": round(d["y"] - 0.5, 4)}
-
-    # The C3 companion substrate tap (DF.14, see the constant block), tied
-    # to the substrate net by the branch leg added in build_connectivity.
-    c3 = {d["net"]: d for d in wl_diode_placements(rows)}["WL_C3_Amin"]
-    tap_gds = workdir / "substrate_tap.gds"
     draw_req = {"shapes": [
         {"layer": [22, 0], "rect_um": [0.5 - c, 0.5 - c, 0.5 + c, 0.5 + c]},
         {"layer": [31, 0], "rect_um": [0.5 - half, 0.5 - half, 0.5 + half, 0.5 + half]},
@@ -896,8 +843,8 @@ def compose_request(rows: list[dict], pads: list[dict],
                                        "layer": {"layer": 34, "datatype": 0},
                                        "direction_deg": 90, "width_um": 0.42}]}})
     order.append("substrate_tap_c3")
-    origins["substrate_tap_c3"] = {"x": round(c3["x"] + C3_TAP_OFFSET_UM - 0.5, 4),
-                                   "y": round(c3["y"] + C3_TAP_OFFSET_UM - 0.5, 4)}
+    origins["substrate_tap_c3"] = {"x": round(br["tap_x"] - 0.5, 4),
+                                   "y": round(br["tap_y"] - 0.5, 4)}
 
     nets, _ = build_connectivity(rows, pads)
     out = workdir / "run3_top.gds"

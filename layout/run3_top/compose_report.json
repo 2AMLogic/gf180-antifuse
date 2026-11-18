@@ -2,7 +2,7 @@
  "schema_version": 1,
  "generator": "gen-compose",
  "cell_name": "run3_top",
- "gds_path": "/tmp/loom-nt/0dc9e3ff-c69d-4de6-b463-97eed5f36b2e/tmpivue98oz/run3_top.gds",
+ "gds_path": "/tmp/loom-nt/5efd7f2fcaa3418a/tmplv_yho9u/run3_top.gds",
  "pdk": {
   "name": "gf180mcuA",
   "variant": "gf180mcuA",
@@ -22,7 +22,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "pads_left",
-   "source_path": "/tmp/loom-nt/0dc9e3ff-c69d-4de6-b463-97eed5f36b2e/tmpivue98oz/pads_left.gds",
+   "source_path": "/tmp/loom-nt/5efd7f2fcaa3418a/tmplv_yho9u/pads_left.gds",
    "source_digest": "sha256:0827350d001f8aa39a0d94cfa14b93f9ce6d4f3ea1952dd4edd37ed7820590cc",
    "offset_um": {
     "x": 0.0,
@@ -43,7 +43,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "pads_right",
-   "source_path": "/tmp/loom-nt/0dc9e3ff-c69d-4de6-b463-97eed5f36b2e/tmpivue98oz/pads_right.gds",
+   "source_path": "/tmp/loom-nt/5efd7f2fcaa3418a/tmplv_yho9u/pads_right.gds",
    "source_digest": "sha256:06463689376f89a5c94fe8ac8ee17b6ec3a949c13c663895da294d35e4430a3d",
    "offset_um": {
     "x": 0.0,
@@ -64,7 +64,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "pads_bottom",
-   "source_path": "/tmp/loom-nt/0dc9e3ff-c69d-4de6-b463-97eed5f36b2e/tmpivue98oz/pads_bottom.gds",
+   "source_path": "/tmp/loom-nt/5efd7f2fcaa3418a/tmplv_yho9u/pads_bottom.gds",
    "source_digest": "sha256:56114b195f3d59bcb979c9b3d8b32535c33ab79099971f4c10644c684f33ddc1",
    "offset_um": {
     "x": 0.0,
@@ -85,7 +85,7 @@
    "source": "cell",
    "generator": null,
    "cell_name": "pads_top",
-   "source_path": "/tmp/loom-nt/0dc9e3ff-c69d-4de6-b463-97eed5f36b2e/tmpivue98oz/pads_top.gds",
+   "source_path": "/tmp/loom-nt/5efd7f2fcaa3418a/tmplv_yho9u/pads_top.gds",
    "source_digest": "sha256:39512660caef3c7b46feff84cb64f5e6d89d41b6966b490b2ed1032de51b07c6",
    "offset_um": {
     "x": 0.0,
@@ -753,95 +753,11 @@
    "abuts": []
   },
   {
-   "id": "diode_WL_C1_Amin",
-   "source": "cell",
-   "generator": null,
-   "cell_name": "wl_antenna_diode",
-   "source_path": "/tmp/loom-nt/0dc9e3ff-c69d-4de6-b463-97eed5f36b2e/tmpivue98oz/wl_antenna_diode.gds",
-   "source_digest": "sha256:5fe6528148d9332d01d4830d3e7b6db4340c0d166acb7535c6f8e9478b485d5e",
-   "offset_um": {
-    "x": 620.5,
-    "y": 836.92
-   },
-   "bbox_um": {
-    "x0": 620.54,
-    "y0": 836.9599999999999,
-    "x1": 621.46,
-    "y1": 837.88
-   },
-   "orientation": "none",
-   "placed_cell_name": "diode_WL_C1_Amin__wl_antenna_diode",
-   "abuts": []
-  },
-  {
-   "id": "diode_WL_C1_A2x",
-   "source": "cell",
-   "generator": null,
-   "cell_name": "wl_antenna_diode",
-   "source_path": "/tmp/loom-nt/0dc9e3ff-c69d-4de6-b463-97eed5f36b2e/tmpivue98oz/wl_antenna_diode.gds",
-   "source_digest": "sha256:5fe6528148d9332d01d4830d3e7b6db4340c0d166acb7535c6f8e9478b485d5e",
-   "offset_um": {
-    "x": 620.5,
-    "y": 1517.34
-   },
-   "bbox_um": {
-    "x0": 620.54,
-    "y0": 1517.3799999999999,
-    "x1": 621.46,
-    "y1": 1518.3
-   },
-   "orientation": "none",
-   "placed_cell_name": "diode_WL_C1_A2x__wl_antenna_diode",
-   "abuts": []
-  },
-  {
-   "id": "diode_WL_C2_Amin",
-   "source": "cell",
-   "generator": null,
-   "cell_name": "wl_antenna_diode",
-   "source_path": "/tmp/loom-nt/0dc9e3ff-c69d-4de6-b463-97eed5f36b2e/tmpivue98oz/wl_antenna_diode.gds",
-   "source_digest": "sha256:5fe6528148d9332d01d4830d3e7b6db4340c0d166acb7535c6f8e9478b485d5e",
-   "offset_um": {
-    "x": 589.5,
-    "y": 1943.66
-   },
-   "bbox_um": {
-    "x0": 589.54,
-    "y0": 1943.7,
-    "x1": 590.46,
-    "y1": 1944.6200000000001
-   },
-   "orientation": "none",
-   "placed_cell_name": "diode_WL_C2_Amin__wl_antenna_diode",
-   "abuts": []
-  },
-  {
-   "id": "diode_WL_C3_Amin",
-   "source": "cell",
-   "generator": null,
-   "cell_name": "wl_antenna_diode",
-   "source_path": "/tmp/loom-nt/0dc9e3ff-c69d-4de6-b463-97eed5f36b2e/tmpivue98oz/wl_antenna_diode.gds",
-   "source_digest": "sha256:5fe6528148d9332d01d4830d3e7b6db4340c0d166acb7535c6f8e9478b485d5e",
-   "offset_um": {
-    "x": 883.5,
-    "y": 1176.92
-   },
-   "bbox_um": {
-    "x0": 883.54,
-    "y0": 1176.96,
-    "x1": 884.46,
-    "y1": 1177.88
-   },
-   "orientation": "none",
-   "placed_cell_name": "diode_WL_C3_Amin__wl_antenna_diode",
-   "abuts": []
-  },
-  {
    "id": "substrate_tap_c3",
    "source": "cell",
    "generator": null,
    "cell_name": "substrate_tap",
-   "source_path": "/tmp/loom-nt/0dc9e3ff-c69d-4de6-b463-97eed5f36b2e/tmpivue98oz/substrate_tap.gds",
+   "source_path": "/tmp/loom-nt/5efd7f2fcaa3418a/tmplv_yho9u/substrate_tap.gds",
    "source_digest": "sha256:d87b870880a2cd4c3dc0e71ee813ce406a6730e7206d5e0f780129b660af030f",
    "offset_um": {
     "x": 887.5,
@@ -2724,14 +2640,10 @@
     {
      "block": "pads_bottom",
      "port": "WL_C1_Amin"
-    },
-    {
-     "block": "diode_WL_C1_Amin",
-     "port": "A"
     }
    ],
    "routed": true,
-   "route_length_um": 1186.5600000000006,
+   "route_length_um": 1166.6100000000006,
    "status": "routed",
    "landed_on_block": true,
    "legs": [
@@ -2870,23 +2782,6 @@
      "reason": null,
      "channel_track": 0,
      "landed_on_block": true
-    },
-    {
-     "pins": [
-      {
-       "block": "diode_WL_C1_Amin",
-       "port": "A"
-      },
-      {
-       "block": "Xinst_C1_Amin_G2x_4",
-       "port": "WL"
-      }
-     ],
-     "routed": true,
-     "route_length_um": 19.950000000000045,
-     "reason": null,
-     "channel_track": 0,
-     "landed_on_block": true
     }
    ]
   },
@@ -2928,14 +2823,10 @@
     {
      "block": "pads_bottom",
      "port": "WL_C1_A2x"
-    },
-    {
-     "block": "diode_WL_C1_A2x",
-     "port": "A"
     }
    ],
    "routed": true,
-   "route_length_um": 1956.9800000000007,
+   "route_length_um": 1937.0300000000007,
    "status": "routed",
    "landed_on_block": true,
    "legs": [
@@ -3074,23 +2965,6 @@
      "reason": null,
      "channel_track": 0,
      "landed_on_block": true
-    },
-    {
-     "pins": [
-      {
-       "block": "diode_WL_C1_A2x",
-       "port": "A"
-      },
-      {
-       "block": "Xinst_C1_A2x_G2x_4",
-       "port": "WL"
-      }
-     ],
-     "routed": true,
-     "route_length_um": 19.950000000000045,
-     "reason": null,
-     "channel_track": 0,
-     "landed_on_block": true
     }
    ]
   },
@@ -3120,14 +2994,10 @@
     {
      "block": "pads_bottom",
      "port": "WL_C2_Amin"
-    },
-    {
-     "block": "diode_WL_C2_Amin",
-     "port": "A"
     }
    ],
    "routed": true,
-   "route_length_um": 2407.0,
+   "route_length_um": 2393.0,
    "status": "routed",
    "landed_on_block": true,
    "legs": [
@@ -3215,23 +3085,6 @@
      "reason": null,
      "channel_track": 0,
      "landed_on_block": true
-    },
-    {
-     "pins": [
-      {
-       "block": "diode_WL_C2_Amin",
-       "port": "A"
-      },
-      {
-       "block": "Xinst_C2_Amin_Gmin_5",
-       "port": "WL"
-      }
-     ],
-     "routed": true,
-     "route_length_um": 14.0,
-     "reason": null,
-     "channel_track": 0,
-     "landed_on_block": true
     }
    ]
   },
@@ -3281,14 +3134,10 @@
     {
      "block": "pads_bottom",
      "port": "WL_C3_Amin"
-    },
-    {
-     "block": "diode_WL_C3_Amin",
-     "port": "A"
     }
    ],
    "routed": true,
-   "route_length_um": 4182.919999999999,
+   "route_length_um": 4062.144999999999,
    "status": "routed",
    "landed_on_block": true,
    "legs": [
@@ -3458,23 +3307,6 @@
      ],
      "routed": true,
      "route_length_um": 1124.1950000000002,
-     "reason": null,
-     "channel_track": 0,
-     "landed_on_block": true
-    },
-    {
-     "pins": [
-      {
-       "block": "diode_WL_C3_Amin",
-       "port": "A"
-      },
-      {
-       "block": "Xinst_C3_Amin_G2x_5",
-       "port": "WL"
-      }
-     ],
-     "routed": true,
-     "route_length_um": 120.77499999999998,
      "reason": null,
      "channel_track": 0,
      "landed_on_block": true
@@ -4171,20 +4003,16 @@
   "notes": []
  },
  "warnings": [
-  "block 'pads_left' gds '/tmp/loom-nt/0dc9e3ff-c69d-4de6-b463-97eed5f36b2e/tmpivue98oz/pads_left.gds' was rescaled from its own dbu=0.001 onto the composed cell's dbu=0.0005 (exact integer ratio 2)",
-  "block 'pads_right' gds '/tmp/loom-nt/0dc9e3ff-c69d-4de6-b463-97eed5f36b2e/tmpivue98oz/pads_right.gds' was rescaled from its own dbu=0.001 onto the composed cell's dbu=0.0005 (exact integer ratio 2)",
-  "block 'pads_bottom' gds '/tmp/loom-nt/0dc9e3ff-c69d-4de6-b463-97eed5f36b2e/tmpivue98oz/pads_bottom.gds' was rescaled from its own dbu=0.001 onto the composed cell's dbu=0.0005 (exact integer ratio 2)",
-  "block 'pads_top' gds '/tmp/loom-nt/0dc9e3ff-c69d-4de6-b463-97eed5f36b2e/tmpivue98oz/pads_top.gds' was rescaled from its own dbu=0.001 onto the composed cell's dbu=0.0005 (exact integer ratio 2)",
-  "block 'diode_WL_C1_Amin' gds '/tmp/loom-nt/0dc9e3ff-c69d-4de6-b463-97eed5f36b2e/tmpivue98oz/wl_antenna_diode.gds' was rescaled from its own dbu=0.001 onto the composed cell's dbu=0.0005 (exact integer ratio 2)",
-  "block 'diode_WL_C1_A2x' gds '/tmp/loom-nt/0dc9e3ff-c69d-4de6-b463-97eed5f36b2e/tmpivue98oz/wl_antenna_diode.gds' was rescaled from its own dbu=0.001 onto the composed cell's dbu=0.0005 (exact integer ratio 2)",
-  "block 'diode_WL_C2_Amin' gds '/tmp/loom-nt/0dc9e3ff-c69d-4de6-b463-97eed5f36b2e/tmpivue98oz/wl_antenna_diode.gds' was rescaled from its own dbu=0.001 onto the composed cell's dbu=0.0005 (exact integer ratio 2)",
-  "block 'diode_WL_C3_Amin' gds '/tmp/loom-nt/0dc9e3ff-c69d-4de6-b463-97eed5f36b2e/tmpivue98oz/wl_antenna_diode.gds' was rescaled from its own dbu=0.001 onto the composed cell's dbu=0.0005 (exact integer ratio 2)",
-  "block 'substrate_tap_c3' gds '/tmp/loom-nt/0dc9e3ff-c69d-4de6-b463-97eed5f36b2e/tmpivue98oz/substrate_tap.gds' was rescaled from its own dbu=0.001 onto the composed cell's dbu=0.0005 (exact integer ratio 2)"
+  "block 'pads_left' gds '/tmp/loom-nt/5efd7f2fcaa3418a/tmplv_yho9u/pads_left.gds' was rescaled from its own dbu=0.001 onto the composed cell's dbu=0.0005 (exact integer ratio 2)",
+  "block 'pads_right' gds '/tmp/loom-nt/5efd7f2fcaa3418a/tmplv_yho9u/pads_right.gds' was rescaled from its own dbu=0.001 onto the composed cell's dbu=0.0005 (exact integer ratio 2)",
+  "block 'pads_bottom' gds '/tmp/loom-nt/5efd7f2fcaa3418a/tmplv_yho9u/pads_bottom.gds' was rescaled from its own dbu=0.001 onto the composed cell's dbu=0.0005 (exact integer ratio 2)",
+  "block 'pads_top' gds '/tmp/loom-nt/5efd7f2fcaa3418a/tmplv_yho9u/pads_top.gds' was rescaled from its own dbu=0.001 onto the composed cell's dbu=0.0005 (exact integer ratio 2)",
+  "block 'substrate_tap_c3' gds '/tmp/loom-nt/5efd7f2fcaa3418a/tmplv_yho9u/substrate_tap.gds' was rescaled from its own dbu=0.001 onto the composed cell's dbu=0.0005 (exact integer ratio 2)"
  ],
  "provenance": {
-  "klt_version": "0.9.3.dev1136+g81926eccba7b",
-  "klt_git_commit": "81926eccba7bb286548dc754eeebf00b06f74fc2",
-  "klt_reinstall_spec": "klayout-tools @ git+https://github.com/2AMLogic/klayout-tools@81926eccba7bb286548dc754eeebf00b06f74fc2",
+  "klt_version": "0.9.3.dev1370+g30969f578991",
+  "klt_git_commit": "30969f578991f52b680b7cb1ba33276b2e62ace9",
+  "klt_reinstall_spec": "klayout-tools @ git+https://github.com/2AMLogic/klayout-tools@30969f578991f52b680b7cb1ba33276b2e62ace9",
   "klayout_version": "0.30.12",
   "pdk": {
    "name": "gf180mcuA",
