@@ -428,8 +428,8 @@ one shared derivation in `layout/candidate1_points.py` (`straps()` +
   At capacitor-1.0 points one band spanning both pads
   (`min(y) - 0.21` .. `max(y) + 0.21`) still clears the capacitor's metal1
   gate pad (y W + 0.75..W + 1.17) by >= 0.32 um. At capacitor-2.0 points that
-  gate pad (y 2.75..3.17) sits **between** the two rings' metal north bands
-  (access 2.45..2.91 or 2.87..3.33, capacitor 4.03..4.49), so the flat band
+  gate pad (y 2.75..3.17) overlaps the lower of the two rings' metal north
+  bands (access 2.49..2.91 or 2.91..3.33, capacitor 4.07..4.49), so the flat band
   would sweep through it and short PL to VB; there VB is two stacked bands --
   one per ring, each over its TAP_N pad -- joined by a riser at
   x 1.10..1.50, right of the gate pad. (Measured metal1 shapes of the
