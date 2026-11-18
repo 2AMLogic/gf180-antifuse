@@ -138,8 +138,11 @@ def cn_dogleg():
     shape: an access-side band from the access D pad through the access
     ring's gap into the inter-ring field, a riser across that field, and a
     capacitor-side band through the capacitor ring's gap over both S/D pads.
-    Both candidate-3 points keep W_ACC = bg.W_MIN, so the rows are
-    constants.
+    The access row (y 0.0..0.45) overlaps the access D pad at x 1.13..1.55,
+    y 0..0.42, measured off the committed GDS (the BL/U0_S pad is x 0..0.42;
+    the 0.86..1.28 range in pre-#400 comments was the capacitor block's
+    second S/D pad column, not the access device's). Both candidate-3
+    points keep W_ACC = bg.W_MIN, so the rows are constants.
     """
     return [
         [0.92, 0.00, 3.48 + DPAD, 0.45],         # access D pad -> acc ring gap
@@ -161,19 +164,23 @@ def straps(w_cap):
     (x DX + 0.43..DX + 0.85, y W_CAP + 0.75..W_CAP + 1.17 = 1.75..2.17) by
     >= 1.1 um. At the 2x capacitor the same gate pad (y 2.75..3.17, measured
     on the committed GDS) sits BELOW both rings' metal north bands (access
-    y 2.45 + DPAD .. 2.91 + DPAD = 3.24..3.70 over the raised ring,
-    capacitor y 4.07..4.49): its top edge is 0.11 um below the raised access
-    band's bottom edge. The flat shape fails there on spacing, not a short:
-    a flat band covering both TAP_N pads at the same +/- 0.21 overlap every
-    strap here uses would have its bottom edge at y 3.28 (the access pad
-    centre 3.49 - 0.21), yet it must still reach the capacitor TAP_N pad
-    across the gate pad's x column (both sit at x DX + 0.43..DX + 0.85),
-    which puts metal1 0.11 um from the gate pad -- under the 0.23 um
-    metal1.space.1 minimum. (Older revisions of this rationale -- here and
-    in layout/README.md -- said the pad sat BETWEEN the north bands and that
-    a flat band would short PL to VB; that reading predates #389's ring
-    raise, which moved the access band clear above the pad, and is stale.
-    #391 tracks the re-measurement and the README fix.) So there VB is two
+    y 2.49 + DPAD .. 2.91 + DPAD = 3.28..3.70 over the raised ring, measured
+    off the committed GDS, capacitor y 4.07..4.49): its top edge is 0.11 um
+    below the raised access band's bottom edge. The flat shape fails there
+    on spacing, not a short: a flat band covering both TAP_N pads at the
+    same +/- 0.21 overlap every strap here uses would have its bottom edge
+    at y 3.28 (the access pad centre 3.49 - 0.21), yet it must still reach
+    the capacitor TAP_N pad across the gate pad's x column (both sit at
+    x DX + 0.43..DX + 0.85), which puts metal1 0.11 um from the gate pad --
+    under the 0.23 um metal1.space.1 minimum. Measured on the scratch
+    single-flat-band variant (y 3.28..4.49): exactly one metal1.space.1
+    finding, bbox (5.818,3.170)-(6.440,3.280) um (klt drc --deck gf180mcu;
+    the committed GDS is clean on the same rule). (Older revisions of this
+    rationale -- here and in layout/README.md -- said the pad sat BETWEEN
+    the north bands and that a flat band would short PL to VB; that reading
+    predates #389's ring raise, which moved the access band clear above the
+    pad, and is stale -- the re-measurement landed as #400, which also
+    corrected the README bullet.) So there VB is two
     stacked bands -- one per ring, each over its TAP_N pad -- joined by a
     riser at x 3.05 + DPAD .. 3.45 + DPAD, left of the capacitor ring's
     metal edge and clear of the gate pad and both CN rows.

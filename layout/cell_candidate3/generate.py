@@ -35,7 +35,8 @@ layout/candidate3_points.py. This file names only this point.
 Usage:  generate.py            write cell_candidate3.gds next to this script
         generate.py --check    regenerate to a temp dir and compare with the
                                committed GDS (exit 1 on drift)
-Requires `klt` on PATH. Run with `uvx --from klayout-tools==0.8.0` to pin.
+Requires `klt` on PATH. Pin the version named in layout/candidate3_points.py
+(a pin bump edits that one place, not this shim).
 """
 import os
 import sys
