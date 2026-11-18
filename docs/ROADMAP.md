@@ -21,8 +21,8 @@ mixed-signal block and moves when array-level evidence exists.
 | HV pad and protection (#210) | merged, status PROPOSED | `spec/hv-pad-protection-decision.md`, `sim/hv-pad-protection/`, `design/hv-pad/` |
 | Bench plan (#212), fixture needs (#260) | merged, status Proposed | `spec/run3-bench-plan.md`, `spec/run3-bench-fixture-requirements.md` |
 | Breakdown models (#204, #205, #208, #209) | merged; 12 of 15 parameters `assumed`, the three oxide thicknesses `literature` (PDK `toxe`) | `docs/breakdown-*.md`, `design/breakdown/breakdown_params.spice` |
-| Candidate 1 bitcell | DRC: curated clean, native 6 findings; LVS match | `layout/cell_candidate1/` (Minimum x Minimum point only) |
-| Candidate 3 bitcell | DRC: curated clean, native 12 findings; LVS match | `layout/cell_candidate3/` (Minimum x Minimum point only) |
+| Candidate 1 bitcell | DRC: curated clean, native 5 findings; LVS match | `layout/cell_candidate1/` (Minimum x Minimum point only) |
+| Candidate 3 bitcell | DRC: curated clean, native 6 findings, all die-level (no cell-level finding since #297); LVS match | `layout/cell_candidate3/` (Minimum x Minimum point only) |
 | Candidate 2 bitcell (#207) | drawn; DRC: curated 17 findings, native 27; LVS match | `layout/cell_candidate2/`, PRs #258 and #288 |
 | Full-chip assembly (#211) | not started | reference netlist and pad table generated (`layout/run3_top/`, #275); no chip-level GDS or pad ring |
 
@@ -30,7 +30,7 @@ The floorplan needs eight measurement cells (C1 x {Gmin, G2x} x {Amin, A2x},
 C2 x {Gmin, G2x}, C3 x {Gmin, G2x}). Seven are drawn: all four C1 points, the
 C2 minimum point and both C3 points; C2's `G2x` is the one missing. On the
 curated deck the C1 and C3 cells grade clean and C2 does not; on the native
-runset every drawn cell carries violations (6 per C1 cell, 12 per C3 cell, 27
+runset every drawn cell carries violations (5 per C1 cell, 6 per C3 cell, 27
 on C2), so no drawn cell is native-clean. Cell-level fixes are #287's. The
 floorplan's area table still carries estimates for Candidates 2 and 3.
 
