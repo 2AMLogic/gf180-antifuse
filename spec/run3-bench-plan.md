@@ -1,7 +1,8 @@
 # Decision Record: Run 3 Test Chip Bench Plan (Direct-Pad Cells)
 
 **Status**: Proposed for operator ratification. Adds a bench and extraction
-plan for the Run 3 quarter-slot test chip; relaxes and amends nothing in
+plan for the Run 3 test chip (quarter-slot target; space not yet secured);
+relaxes and amends nothing in
 `spec/measurement-matrix.md` (ratified, tied to the SPI path of the 32x32
 array), `spec/run3-test-chip-floorplan.md`, `spec/cell-candidates.md` or any
 other record. Numeric values not derived from a model, a ratified record or a

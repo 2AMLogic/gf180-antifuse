@@ -1,15 +1,17 @@
 # Requirements Note (Proposed): Bench Fixture Needs on the Run 3 Pad Ring
 
 **Status**: Proposed. **Needs an operator read before the 2026-12-16 GDS
-submission**, because pad order, grouping and spacing are frozen at that point.
+submission** (a date that holds only if shuttle space is obtained), because
+pad order, grouping and spacing are frozen at that point.
 Relaxes and amends nothing in `spec/run3-test-chip-floorplan.md`,
 `spec/hv-pad-protection-decision.md`, `spec/run3-bench-plan.md` or any other
 record. Anything not fixed by one of those records is **OPEN**, with who
 supplies the answer; no value is invented here.
 **Date**: 2026-11-13
 **Scope**: Issue #260, part of #203. What the bench fixture needs from the pad
-ring of the Run 3 quarter-slot test chip (order, grouping, spacing, spare
-pads), the delivery form and package/pinout (OPEN), and the measurement route
+ring of the Run 3 test chip (quarter-slot target, space not yet secured;
+order, grouping, spacing, spare pads), the delivery form and package/pinout
+(OPEN), and the measurement route
 per delivery form with the instrument classes each needs. Does not change the
 layout, the measurement plan (#255) or the pad table, and does not cover
 ordering or fixture hardware design.
@@ -99,7 +101,7 @@ A packaged die at one temperature bounds only one side of the worst-case read
 margin and the record must say so ([BP] §7). Which route supplies which
 temperature points is OPEN until the delivery form is known.
 
-## 6. Open items needing the operator before 2026-12-16
+## 6. Open items needing the operator before 2026-12-16 (if space is obtained)
 
 1. Delivery form (bare die / packaged / both) and package/pinout (§4).
 2. R1: whether a bare PL pad is available on the slot template (the same open
