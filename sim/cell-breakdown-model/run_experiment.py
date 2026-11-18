@@ -91,9 +91,10 @@ KLT_BACKEND = "batch"
 # so the skew cannot silently drop an option; the version check is set to
 # `warn` so the job runs, and environment.remote records both versions.
 BATCH_OPTS = {"runner_version_check": "warn", "capacity_wait_s": 1800}
-# The fleet's shared concurrency cap refuses a launch outright (klt does not
-# retry it, unlike a Spot capacity refusal). Wait and resubmit the SAME
-# request, bounded -- never fall back to a local run.
+# capacity_wait_s makes klt wait and relaunch the SAME request on either
+# refusal class (batch_no_capacity / batch_concurrency_cap, the fleet's
+# shared concurrency cap), bounded by the value -- never fall back to a
+# local run.
 # The executing host's gf180mcuD variant directory, needed for the one model
 # library Candidate 2 loads from the body (README "Two model libraries").
 # Observed in fleet-generated corner decks: `.lib /opt/pdk/gf180mcuD/...`.
