@@ -1125,3 +1125,29 @@ The `--deck-var decks=all,-mslot` var is the standard one (the metal-slotting
 deck aborts on this 3LM variant regardless of content, upstream
 2AMLogic/klayout-tools#5091); no rule was turned off, nothing waived, no
 shape hand-edited.
+
+## run3_top/ -- the Run 3 chip assembly (issue #211, part of #203)
+
+`layout/run3_top/` holds the chip-level artifacts: the #275 reference netlist
+and pad table (`run3_top.spice`, `pad_table.json`, `generate_run3_top.py` --
+see that directory's README for their provenance), and, since #211, the
+**assembled chip**: `assemble_run3_top.py` builds `run3_top.gds` (quarter-slot
+outline, 48-slot pad ring + the template's 8 power pads, the 31 placed cell
+instances, HV plate routes and the shared/tie routing) plus
+`lvs_reference_drawn.spice`, deterministically, with `--check` byte-compare.
+Its README records the physical pad mapping, the template-page provenance
+(read 2026-11-18; page stamped "Generated: 24 Oct 2026 01:02 UTC"), the
+routing planes, and the evidence table: `compose_report.json` (every routing
+leg routed and landed), `lvs_request.json`/`lvs_report.json` (inline
+extraction, flattened compare against the derived 31-instance reference:
+**`match`**), `drc_report.json` (curated deck: 80 findings, all
+`comp.enclosing.contact.1` inside the unmodified `nfet_10v0_asym` PCell
+instances -- the geometry class `spec/pdk-pcell-drc-exception-decision.md`
+scopes), `drc_native_report.json` (native runset per #287: die-level density
+on a ~89 %-whitespace die, the same PCell class, 29 antenna-ratio findings on
+the shared word lines -- reported, none waived),
+`supplies.json`/`erc_report.json` (chip ERC extending the `layout/erc/`
+convention: `erc_status: clean`), and `economy_report.json` (density).
+The five instances of the undrawn `cell_candidate2_Amin_G2x` are excluded
+from the assembly and from the LVS reference, named in the reference header;
+a full 36-instance match is blocked until that cell is drawn.

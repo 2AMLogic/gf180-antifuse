@@ -1,0 +1,1522 @@
+{
+  "schema_version": 3,
+  "engine": "klayout",
+  "layout": {
+    "path": "layout/run3_top/run3_top.gds",
+    "scope": "repo"
+  },
+  "reference": {
+    "path": "layout/run3_top/lvs_reference_drawn.spice",
+    "scope": "repo"
+  },
+  "top": "run3_top",
+  "reference_top": "RUN3_TOP",
+  "reference_conversion": {
+    "form": "subckt-call",
+    "deck": "gf180mcu",
+    "device_map": null
+  },
+  "parameter_tolerance": null,
+  "options": {
+    "combine_devices": true,
+    "combine_devices_per_circuit": null,
+    "combine_devices_max_attempts": 5,
+    "flatten_layout": true,
+    "flatten_reference": true,
+    "netgen_setup": null,
+    "parameter_tolerance": null,
+    "compare_parameters": null,
+    "power_connectivity": null,
+    "anchor_top_level_pins": null,
+    "strict_top_level_pin_count": false,
+    "compare_mos_flavour": false,
+    "ignore_mos_bulk": false,
+    "supply_nets": [
+      "GND",
+      "VCC",
+      "VDD",
+      "VGND",
+      "VPWR",
+      "VSS"
+    ],
+    "finfet_bulk": null
+  },
+  "hints_applied": null,
+  "constant_nets_applied": null,
+  "status": "match",
+  "power_connectivity": {
+    "status": "unchecked",
+    "reason": "reference.form is 'subckt-call', whose reference netlist carries its own power/ground pins and nets -- they take part in the ordinary compare, so this check (which exists to cover the signal-only 'gate-level-verilog' form) does not apply",
+    "power_pins": [],
+    "power_pins_derivation": null,
+    "instance_count": 0,
+    "expected_nets": null,
+    "unchecked_expected_pins": [],
+    "excluded_pins": [],
+    "findings": [],
+    "finding_count": 0
+  },
+  "body_verification": {
+    "status": "verified",
+    "reason": null,
+    "device_classes": [],
+    "device_count": 0,
+    "findings": [],
+    "finding_count": 0
+  },
+  "device_parameter_coverage": [
+    {
+      "class": "cap_nmos_03v3",
+      "device_kind": "capacitor",
+      "layout_devices": 16,
+      "reference_devices": 16,
+      "compared": [],
+      "not_compared": [
+        {
+          "parameter": "C",
+          "reason": "placeholder_value"
+        },
+        {
+          "parameter": "A",
+          "reason": "secondary"
+        },
+        {
+          "parameter": "P",
+          "reason": "secondary"
+        }
+      ]
+    },
+    {
+      "class": "cap_nmos_06v0",
+      "device_kind": "capacitor",
+      "layout_devices": 5,
+      "reference_devices": 5,
+      "compared": [],
+      "not_compared": [
+        {
+          "parameter": "C",
+          "reason": "placeholder_value"
+        },
+        {
+          "parameter": "A",
+          "reason": "secondary"
+        },
+        {
+          "parameter": "P",
+          "reason": "secondary"
+        }
+      ]
+    },
+    {
+      "class": "cap_pmos_03v3",
+      "device_kind": "capacitor",
+      "layout_devices": 10,
+      "reference_devices": 10,
+      "compared": [],
+      "not_compared": [
+        {
+          "parameter": "C",
+          "reason": "placeholder_value"
+        },
+        {
+          "parameter": "A",
+          "reason": "secondary"
+        },
+        {
+          "parameter": "P",
+          "reason": "secondary"
+        }
+      ]
+    },
+    {
+      "class": "nfet",
+      "device_kind": "mos",
+      "layout_devices": 21,
+      "reference_devices": 21,
+      "compared": [
+        "L",
+        "W"
+      ],
+      "not_compared": [
+        {
+          "parameter": "AS",
+          "reason": "secondary"
+        },
+        {
+          "parameter": "AD",
+          "reason": "secondary"
+        },
+        {
+          "parameter": "PS",
+          "reason": "secondary"
+        },
+        {
+          "parameter": "PD",
+          "reason": "secondary"
+        }
+      ]
+    },
+    {
+      "class": "pfet",
+      "device_kind": "mos",
+      "layout_devices": 10,
+      "reference_devices": 10,
+      "compared": [
+        "L",
+        "W"
+      ],
+      "not_compared": [
+        {
+          "parameter": "AS",
+          "reason": "secondary"
+        },
+        {
+          "parameter": "AD",
+          "reason": "secondary"
+        },
+        {
+          "parameter": "PS",
+          "reason": "secondary"
+        },
+        {
+          "parameter": "PD",
+          "reason": "secondary"
+        }
+      ]
+    }
+  ],
+  "mismatch_count": 39,
+  "error_count": 0,
+  "category_counts": {
+    "device.geometry_not_compared": 3,
+    "device.placeholder_value": 3,
+    "topology": 32,
+    "topology.flattened": 1
+  },
+  "category_error_counts": {},
+  "counts": {
+    "nets": {
+      "layout": 72,
+      "reference": 72,
+      "matched": 72
+    },
+    "devices": {
+      "layout": 62,
+      "reference": 62,
+      "matched": 62
+    },
+    "pins": {
+      "layout": 41,
+      "reference": 40,
+      "matched": 41
+    }
+  },
+  "device_classes": [
+    "nfet",
+    "pfet",
+    "bjt",
+    "cap_mim_2f0_m4m5_noshield",
+    "cap_nmos_03v3",
+    "cap_nmos_03v3_dn",
+    "cap_pmos_03v3",
+    "cap_pmos_03v3_dn",
+    "cap_nmos_06v0",
+    "cap_nmos_06v0_dn",
+    "cap_pmos_06v0",
+    "cap_pmos_06v0_dn",
+    "cap_nmos_03v3_b",
+    "cap_pmos_03v3_b",
+    "cap_nmos_06v0_b",
+    "cap_pmos_06v0_b",
+    "resistor",
+    "diode_nd2ps_06v0",
+    "diode_pd2nw_06v0"
+  ],
+  "environment": {
+    "engine": "klayout",
+    "engine_version": "0.30.12",
+    "netgen_binary": null,
+    "layout_sha256": "c96edecbc577c8920e588593ac2035cce43b4e5750c974fa815b46d0b7b6a022",
+    "reference_sha256": "a3f24a5b2529e227cf5e154f822773d2bc226522354f03f09bee648a1d6f6664",
+    "extracted_netlist": null
+  },
+  "provenance": {
+    "klt_version": "0.9.3.dev1136+g81926eccba7b",
+    "klt_git_commit": "81926eccba7bb286548dc754eeebf00b06f74fc2",
+    "klt_reinstall_spec": "klayout-tools @ git+https://github.com/2AMLogic/klayout-tools@81926eccba7bb286548dc754eeebf00b06f74fc2",
+    "klayout_version": "0.30.12",
+    "pdk": null,
+    "deck": {
+      "name": "gf180mcu",
+      "content_hash": "sha256:7c7b135fef72293b003f012b066c332be1483ac42c1eacbd58afecd9b6e28f8b",
+      "released": false,
+      "options": {
+        "metal_top": "9K",
+        "mim_cap": "cap_mim_2f0_m4m5_noshield",
+        "poly_res": "1k"
+      },
+      "options_explicit": {
+        "metal_top": false,
+        "mim_cap": false,
+        "poly_res": false
+      },
+      "options_hash": "sha256:6a7dc7660a470994263c5ca8ace6d8ac8c605d77e6876a9c5490949de6e7cb05"
+    },
+    "input": {
+      "content_hash": "sha256:c96edecbc577c8920e588593ac2035cce43b4e5750c974fa815b46d0b7b6a022",
+      "role": "layout"
+    },
+    "klayout_version_mismatch": false
+  },
+  "mismatches": [
+    {
+      "category": "device.geometry_not_compared",
+      "severity": "warning",
+      "description": "device class 'cap_nmos_03v3' is a capacitor class, whose ['A', 'P'] parameter(s) KLayout declares *secondary*: kdb.NetlistComparer compares primary parameters only, so none of them took part in this compare and each is NOT verified -- this capacitor's geometry could differ between the two sides by any amount and this run would still report 'match'. No parameter of this class was compared at all: the remaining parameter(s) were separately excluded from this run (see the device.placeholder_value/device.parameter_excluded entries), so the two sides were paired on topology alone. Name them in options.compare_parameters to compare them (see docs/cli/lvs.md, 'device.geometry_not_compared')",
+      "side": "both",
+      "net": null,
+      "device": {
+        "layout": null,
+        "reference": null,
+        "class": "cap_nmos_03v3"
+      },
+      "property": null,
+      "details": {
+        "device_kind": "capacitor",
+        "compared_parameters": [],
+        "not_compared_parameters": [
+          "A",
+          "P"
+        ],
+        "layout_devices": 16,
+        "reference_devices": 16
+      },
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "device.geometry_not_compared",
+      "severity": "warning",
+      "description": "device class 'cap_nmos_06v0' is a capacitor class, whose ['A', 'P'] parameter(s) KLayout declares *secondary*: kdb.NetlistComparer compares primary parameters only, so none of them took part in this compare and each is NOT verified -- this capacitor's geometry could differ between the two sides by any amount and this run would still report 'match'. No parameter of this class was compared at all: the remaining parameter(s) were separately excluded from this run (see the device.placeholder_value/device.parameter_excluded entries), so the two sides were paired on topology alone. Name them in options.compare_parameters to compare them (see docs/cli/lvs.md, 'device.geometry_not_compared')",
+      "side": "both",
+      "net": null,
+      "device": {
+        "layout": null,
+        "reference": null,
+        "class": "cap_nmos_06v0"
+      },
+      "property": null,
+      "details": {
+        "device_kind": "capacitor",
+        "compared_parameters": [],
+        "not_compared_parameters": [
+          "A",
+          "P"
+        ],
+        "layout_devices": 5,
+        "reference_devices": 5
+      },
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "device.geometry_not_compared",
+      "severity": "warning",
+      "description": "device class 'cap_pmos_03v3' is a capacitor class, whose ['A', 'P'] parameter(s) KLayout declares *secondary*: kdb.NetlistComparer compares primary parameters only, so none of them took part in this compare and each is NOT verified -- this capacitor's geometry could differ between the two sides by any amount and this run would still report 'match'. No parameter of this class was compared at all: the remaining parameter(s) were separately excluded from this run (see the device.placeholder_value/device.parameter_excluded entries), so the two sides were paired on topology alone. Name them in options.compare_parameters to compare them (see docs/cli/lvs.md, 'device.geometry_not_compared')",
+      "side": "both",
+      "net": null,
+      "device": {
+        "layout": null,
+        "reference": null,
+        "class": "cap_pmos_03v3"
+      },
+      "property": null,
+      "details": {
+        "device_kind": "capacitor",
+        "compared_parameters": [],
+        "not_compared_parameters": [
+          "A",
+          "P"
+        ],
+        "layout_devices": 10,
+        "reference_devices": 10
+      },
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "device.placeholder_value",
+      "severity": "warning",
+      "description": "reference device class 'CAP_NMOS_03V3' was converted from a subcircuit call (request.reference.form: \"subckt-call\"), so its 'C' value is the literal 0 placeholder on all 16 reference instance(s) -- klt lvs has no PDK sheet-resistance/capacitance-per-area data to compute a real one. 'C' was therefore excluded from this compare on both sides (layout: 16 instance(s), C 1.2320000000000001e-15..2.4640000000000002e-15) and the two sides were paired on topology alone -- that dimension of the compare is not independently verified. Supply a reference in the plain-element form carrying real 'C' values to compare it (see docs/cli/lvs.md, 'device.placeholder_value')",
+      "side": "reference",
+      "net": null,
+      "device": {
+        "layout": null,
+        "reference": null,
+        "class": "CAP_NMOS_03V3"
+      },
+      "property": null,
+      "details": {
+        "parameter": "C",
+        "device_kind": "capacitor",
+        "reference_devices": 16,
+        "layout_devices": 16,
+        "layout_values": [
+          1.2320000000000001e-15,
+          2.4640000000000002e-15
+        ]
+      },
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "device.placeholder_value",
+      "severity": "warning",
+      "description": "reference device class 'CAP_NMOS_06V0' was converted from a subcircuit call (request.reference.form: \"subckt-call\"), so its 'C' value is the literal 0 placeholder on all 5 reference instance(s) -- klt lvs has no PDK sheet-resistance/capacitance-per-area data to compute a real one. 'C' was therefore excluded from this compare on both sides (layout: 5 instance(s), C 1.6100000000000001e-15) and the two sides were paired on topology alone -- that dimension of the compare is not independently verified. Supply a reference in the plain-element form carrying real 'C' values to compare it (see docs/cli/lvs.md, 'device.placeholder_value')",
+      "side": "reference",
+      "net": null,
+      "device": {
+        "layout": null,
+        "reference": null,
+        "class": "CAP_NMOS_06V0"
+      },
+      "property": null,
+      "details": {
+        "parameter": "C",
+        "device_kind": "capacitor",
+        "reference_devices": 5,
+        "layout_devices": 5,
+        "layout_values": [
+          1.6100000000000001e-15
+        ]
+      },
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "device.placeholder_value",
+      "severity": "warning",
+      "description": "reference device class 'CAP_PMOS_03V3' was converted from a subcircuit call (request.reference.form: \"subckt-call\"), so its 'C' value is the literal 0 placeholder on all 10 reference instance(s) -- klt lvs has no PDK sheet-resistance/capacitance-per-area data to compute a real one. 'C' was therefore excluded from this compare on both sides (layout: 10 instance(s), C 1.2320000000000001e-15..2.4640000000000002e-15) and the two sides were paired on topology alone -- that dimension of the compare is not independently verified. Supply a reference in the plain-element form carrying real 'C' values to compare it (see docs/cli/lvs.md, 'device.placeholder_value')",
+      "side": "reference",
+      "net": null,
+      "device": {
+        "layout": null,
+        "reference": null,
+        "class": "CAP_PMOS_03V3"
+      },
+      "property": null,
+      "details": {
+        "parameter": "C",
+        "device_kind": "capacitor",
+        "reference_devices": 10,
+        "layout_devices": 10,
+        "layout_values": [
+          1.2320000000000001e-15,
+          2.4640000000000002e-15
+        ]
+      },
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$11",
+        "layout_id": 6,
+        "reference": "INST_C1_AMIN_G2X_1_CN",
+        "reference_id": 45
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$15",
+        "layout_id": 9,
+        "reference": "INST_C1_AMIN_G2X_2_CN",
+        "reference_id": 46
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$19",
+        "layout_id": 12,
+        "reference": "INST_C1_AMIN_G2X_3_CN",
+        "reference_id": 47
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$20",
+        "layout_id": 13,
+        "reference": "INST_C3_AMIN_G2X_1_CN",
+        "reference_id": 67
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$22",
+        "layout_id": 15,
+        "reference": "INST_C1_AMIN_G2X_4_CN",
+        "reference_id": 48
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$23",
+        "layout_id": 16,
+        "reference": "INST_C3_AMIN_G2X_2_CN",
+        "reference_id": 68
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$27",
+        "layout_id": 20,
+        "reference": "INST_C1_AMIN_GMIN_1_CN",
+        "reference_id": 41
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$28",
+        "layout_id": 21,
+        "reference": "INST_C3_AMIN_G2X_3_CN",
+        "reference_id": 69
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$31",
+        "layout_id": 24,
+        "reference": "INST_C1_AMIN_GMIN_2_CN",
+        "reference_id": 42
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$32",
+        "layout_id": 25,
+        "reference": "INST_C3_AMIN_G2X_4_CN",
+        "reference_id": 70
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$34",
+        "layout_id": 27,
+        "reference": "INST_C1_AMIN_GMIN_3_CN",
+        "reference_id": 43
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$35",
+        "layout_id": 28,
+        "reference": "INST_C3_AMIN_G2X_5_CN",
+        "reference_id": 71
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$38",
+        "layout_id": 31,
+        "reference": "INST_C3_AMIN_GMIN_1_CN",
+        "reference_id": 62
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$40",
+        "layout_id": 33,
+        "reference": "INST_C1_AMIN_GMIN_4_CN",
+        "reference_id": 44
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$42",
+        "layout_id": 35,
+        "reference": "INST_C3_AMIN_GMIN_2_CN",
+        "reference_id": 63
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$44",
+        "layout_id": 37,
+        "reference": "INST_C1_A2X_G2X_1_CN",
+        "reference_id": 53
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$47",
+        "layout_id": 40,
+        "reference": "INST_C3_AMIN_GMIN_3_CN",
+        "reference_id": 64
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$48",
+        "layout_id": 41,
+        "reference": "INST_C1_A2X_G2X_2_CN",
+        "reference_id": 54
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$51",
+        "layout_id": 44,
+        "reference": "INST_C3_AMIN_GMIN_4_CN",
+        "reference_id": 65
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$53",
+        "layout_id": 46,
+        "reference": "INST_C1_A2X_G2X_3_CN",
+        "reference_id": 55
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$55",
+        "layout_id": 48,
+        "reference": "INST_C3_AMIN_GMIN_5_CN",
+        "reference_id": 66
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$56",
+        "layout_id": 49,
+        "reference": "INST_C1_A2X_G2X_4_CN",
+        "reference_id": 56
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$59",
+        "layout_id": 52,
+        "reference": "INST_C1_A2X_GMIN_1_CN",
+        "reference_id": 49
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$61",
+        "layout_id": 54,
+        "reference": "INST_C1_A2X_GMIN_2_CN",
+        "reference_id": 50
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$63",
+        "layout_id": 56,
+        "reference": "INST_C1_A2X_GMIN_3_CN",
+        "reference_id": 51
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$65",
+        "layout_id": 58,
+        "reference": "INST_C1_A2X_GMIN_4_CN",
+        "reference_id": 52
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$68",
+        "layout_id": 61,
+        "reference": "INST_C2_AMIN_GMIN_1_CN",
+        "reference_id": 57
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$70",
+        "layout_id": 63,
+        "reference": "INST_C2_AMIN_GMIN_2_CN",
+        "reference_id": 58
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$72",
+        "layout_id": 65,
+        "reference": "INST_C2_AMIN_GMIN_3_CN",
+        "reference_id": 59
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$74",
+        "layout_id": 67,
+        "reference": "INST_C2_AMIN_GMIN_4_CN",
+        "reference_id": 60
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "nets were paired ambiguously; the comparer resolved it structurally (consider a hints.same_nets entry to pin this down)",
+      "side": "both",
+      "net": {
+        "layout": "\\$76",
+        "layout_id": 69,
+        "reference": "INST_C2_AMIN_GMIN_5_CN",
+        "reference_id": 61
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "device class has no counterpart on the other side, but no devices of this class were extracted either -- not a real topology mismatch: 'bjt'",
+      "side": "layout",
+      "net": null,
+      "device": {
+        "layout": null,
+        "reference": null,
+        "class": "bjt"
+      },
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology.flattened",
+      "severity": "warning",
+      "description": "options.flatten_reference flattened the reference netlist before comparing: 8 circuit(s) were collapsed into 1 top-level circuit(s), substituting every subcircuit-call instance in place -- this compare verified topology only after removing the original hierarchy boundaries on this side (see docs/cli/lvs.md, \"topology.flattened\")",
+      "side": "reference",
+      "net": null,
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    }
+  ],
+  "net_correspondence": [
+    {
+      "layout": "BL|BL_C1_A2x",
+      "layout_id": 36,
+      "reference": "BL_C1_A2X",
+      "reference_id": 32,
+      "pin": true
+    },
+    {
+      "layout": "BL|BL_C1_Amin",
+      "layout_id": 3,
+      "reference": "BL_C1_AMIN",
+      "reference_id": 31,
+      "pin": true
+    },
+    {
+      "layout": "BL|BL_C2_Amin",
+      "layout_id": 60,
+      "reference": "BL_C2_AMIN",
+      "reference_id": 33,
+      "pin": true
+    },
+    {
+      "layout": "BL|BL_C3_Amin",
+      "layout_id": 4,
+      "reference": "BL_C3_AMIN",
+      "reference_id": 34,
+      "pin": true
+    },
+    {
+      "layout": "\\$44",
+      "layout_id": 37,
+      "reference": "INST_C1_A2X_G2X_1_CN",
+      "reference_id": 53,
+      "pin": false
+    },
+    {
+      "layout": "\\$48",
+      "layout_id": 41,
+      "reference": "INST_C1_A2X_G2X_2_CN",
+      "reference_id": 54,
+      "pin": false
+    },
+    {
+      "layout": "\\$53",
+      "layout_id": 46,
+      "reference": "INST_C1_A2X_G2X_3_CN",
+      "reference_id": 55,
+      "pin": false
+    },
+    {
+      "layout": "\\$56",
+      "layout_id": 49,
+      "reference": "INST_C1_A2X_G2X_4_CN",
+      "reference_id": 56,
+      "pin": false
+    },
+    {
+      "layout": "\\$59",
+      "layout_id": 52,
+      "reference": "INST_C1_A2X_GMIN_1_CN",
+      "reference_id": 49,
+      "pin": false
+    },
+    {
+      "layout": "\\$61",
+      "layout_id": 54,
+      "reference": "INST_C1_A2X_GMIN_2_CN",
+      "reference_id": 50,
+      "pin": false
+    },
+    {
+      "layout": "\\$63",
+      "layout_id": 56,
+      "reference": "INST_C1_A2X_GMIN_3_CN",
+      "reference_id": 51,
+      "pin": false
+    },
+    {
+      "layout": "\\$65",
+      "layout_id": 58,
+      "reference": "INST_C1_A2X_GMIN_4_CN",
+      "reference_id": 52,
+      "pin": false
+    },
+    {
+      "layout": "\\$11",
+      "layout_id": 6,
+      "reference": "INST_C1_AMIN_G2X_1_CN",
+      "reference_id": 45,
+      "pin": false
+    },
+    {
+      "layout": "\\$15",
+      "layout_id": 9,
+      "reference": "INST_C1_AMIN_G2X_2_CN",
+      "reference_id": 46,
+      "pin": false
+    },
+    {
+      "layout": "\\$19",
+      "layout_id": 12,
+      "reference": "INST_C1_AMIN_G2X_3_CN",
+      "reference_id": 47,
+      "pin": false
+    },
+    {
+      "layout": "\\$22",
+      "layout_id": 15,
+      "reference": "INST_C1_AMIN_G2X_4_CN",
+      "reference_id": 48,
+      "pin": false
+    },
+    {
+      "layout": "\\$27",
+      "layout_id": 20,
+      "reference": "INST_C1_AMIN_GMIN_1_CN",
+      "reference_id": 41,
+      "pin": false
+    },
+    {
+      "layout": "\\$31",
+      "layout_id": 24,
+      "reference": "INST_C1_AMIN_GMIN_2_CN",
+      "reference_id": 42,
+      "pin": false
+    },
+    {
+      "layout": "\\$34",
+      "layout_id": 27,
+      "reference": "INST_C1_AMIN_GMIN_3_CN",
+      "reference_id": 43,
+      "pin": false
+    },
+    {
+      "layout": "\\$40",
+      "layout_id": 33,
+      "reference": "INST_C1_AMIN_GMIN_4_CN",
+      "reference_id": 44,
+      "pin": false
+    },
+    {
+      "layout": "\\$68",
+      "layout_id": 61,
+      "reference": "INST_C2_AMIN_GMIN_1_CN",
+      "reference_id": 57,
+      "pin": false
+    },
+    {
+      "layout": "\\$70",
+      "layout_id": 63,
+      "reference": "INST_C2_AMIN_GMIN_2_CN",
+      "reference_id": 58,
+      "pin": false
+    },
+    {
+      "layout": "\\$72",
+      "layout_id": 65,
+      "reference": "INST_C2_AMIN_GMIN_3_CN",
+      "reference_id": 59,
+      "pin": false
+    },
+    {
+      "layout": "\\$74",
+      "layout_id": 67,
+      "reference": "INST_C2_AMIN_GMIN_4_CN",
+      "reference_id": 60,
+      "pin": false
+    },
+    {
+      "layout": "\\$76",
+      "layout_id": 69,
+      "reference": "INST_C2_AMIN_GMIN_5_CN",
+      "reference_id": 61,
+      "pin": false
+    },
+    {
+      "layout": "\\$20",
+      "layout_id": 13,
+      "reference": "INST_C3_AMIN_G2X_1_CN",
+      "reference_id": 67,
+      "pin": false
+    },
+    {
+      "layout": "\\$23",
+      "layout_id": 16,
+      "reference": "INST_C3_AMIN_G2X_2_CN",
+      "reference_id": 68,
+      "pin": false
+    },
+    {
+      "layout": "\\$28",
+      "layout_id": 21,
+      "reference": "INST_C3_AMIN_G2X_3_CN",
+      "reference_id": 69,
+      "pin": false
+    },
+    {
+      "layout": "\\$32",
+      "layout_id": 25,
+      "reference": "INST_C3_AMIN_G2X_4_CN",
+      "reference_id": 70,
+      "pin": false
+    },
+    {
+      "layout": "\\$35",
+      "layout_id": 28,
+      "reference": "INST_C3_AMIN_G2X_5_CN",
+      "reference_id": 71,
+      "pin": false
+    },
+    {
+      "layout": "\\$38",
+      "layout_id": 31,
+      "reference": "INST_C3_AMIN_GMIN_1_CN",
+      "reference_id": 62,
+      "pin": false
+    },
+    {
+      "layout": "\\$42",
+      "layout_id": 35,
+      "reference": "INST_C3_AMIN_GMIN_2_CN",
+      "reference_id": 63,
+      "pin": false
+    },
+    {
+      "layout": "\\$47",
+      "layout_id": 40,
+      "reference": "INST_C3_AMIN_GMIN_3_CN",
+      "reference_id": 64,
+      "pin": false
+    },
+    {
+      "layout": "\\$51",
+      "layout_id": 44,
+      "reference": "INST_C3_AMIN_GMIN_4_CN",
+      "reference_id": 65,
+      "pin": false
+    },
+    {
+      "layout": "\\$55",
+      "layout_id": 48,
+      "reference": "INST_C3_AMIN_GMIN_5_CN",
+      "reference_id": 66,
+      "pin": false
+    },
+    {
+      "layout": "PL|PL_C1_A2x_Gmin_1",
+      "layout_id": 38,
+      "reference": "PL_C1_A2X_G2X_1",
+      "reference_id": 12,
+      "pin": true
+    },
+    {
+      "layout": "PL|PL_C1_A2x_Gmin_2",
+      "layout_id": 42,
+      "reference": "PL_C1_A2X_G2X_2",
+      "reference_id": 13,
+      "pin": true
+    },
+    {
+      "layout": "PL|PL_C1_A2x_Gmin_3",
+      "layout_id": 45,
+      "reference": "PL_C1_A2X_G2X_3",
+      "reference_id": 14,
+      "pin": true
+    },
+    {
+      "layout": "PL|PL_C1_A2x_Gmin_4",
+      "layout_id": 50,
+      "reference": "PL_C1_A2X_G2X_4",
+      "reference_id": 15,
+      "pin": true
+    },
+    {
+      "layout": "PL|PL_C1_A2x_G2x_1",
+      "layout_id": 53,
+      "reference": "PL_C1_A2X_GMIN_1",
+      "reference_id": 8,
+      "pin": true
+    },
+    {
+      "layout": "PL|PL_C1_A2x_G2x_2",
+      "layout_id": 55,
+      "reference": "PL_C1_A2X_GMIN_2",
+      "reference_id": 9,
+      "pin": true
+    },
+    {
+      "layout": "PL|PL_C1_A2x_G2x_3",
+      "layout_id": 57,
+      "reference": "PL_C1_A2X_GMIN_3",
+      "reference_id": 10,
+      "pin": true
+    },
+    {
+      "layout": "PL|PL_C1_A2x_G2x_4",
+      "layout_id": 59,
+      "reference": "PL_C1_A2X_GMIN_4",
+      "reference_id": 11,
+      "pin": true
+    },
+    {
+      "layout": "PL|PL_C1_Amin_Gmin_1",
+      "layout_id": 7,
+      "reference": "PL_C1_AMIN_G2X_1",
+      "reference_id": 4,
+      "pin": true
+    },
+    {
+      "layout": "PL|PL_C1_Amin_Gmin_2",
+      "layout_id": 8,
+      "reference": "PL_C1_AMIN_G2X_2",
+      "reference_id": 5,
+      "pin": true
+    },
+    {
+      "layout": "PL|PL_C1_Amin_Gmin_3",
+      "layout_id": 11,
+      "reference": "PL_C1_AMIN_G2X_3",
+      "reference_id": 6,
+      "pin": true
+    },
+    {
+      "layout": "PL|PL_C1_Amin_Gmin_4",
+      "layout_id": 17,
+      "reference": "PL_C1_AMIN_G2X_4",
+      "reference_id": 7,
+      "pin": true
+    },
+    {
+      "layout": "PL|PL_C1_Amin_G2x_1",
+      "layout_id": 19,
+      "reference": "PL_C1_AMIN_GMIN_1",
+      "reference_id": 0,
+      "pin": true
+    },
+    {
+      "layout": "PL|PL_C1_Amin_G2x_2",
+      "layout_id": 23,
+      "reference": "PL_C1_AMIN_GMIN_2",
+      "reference_id": 1,
+      "pin": true
+    },
+    {
+      "layout": "PL|PL_C1_Amin_G2x_3",
+      "layout_id": 30,
+      "reference": "PL_C1_AMIN_GMIN_3",
+      "reference_id": 2,
+      "pin": true
+    },
+    {
+      "layout": "PL|PL_C1_Amin_G2x_4",
+      "layout_id": 32,
+      "reference": "PL_C1_AMIN_GMIN_4",
+      "reference_id": 3,
+      "pin": true
+    },
+    {
+      "layout": "PL|PL_C2_Amin_Gmin_1",
+      "layout_id": 62,
+      "reference": "PL_C2_AMIN_GMIN_1",
+      "reference_id": 16,
+      "pin": true
+    },
+    {
+      "layout": "PL|PL_C2_Amin_Gmin_2",
+      "layout_id": 64,
+      "reference": "PL_C2_AMIN_GMIN_2",
+      "reference_id": 17,
+      "pin": true
+    },
+    {
+      "layout": "PL|PL_C2_Amin_Gmin_3",
+      "layout_id": 66,
+      "reference": "PL_C2_AMIN_GMIN_3",
+      "reference_id": 18,
+      "pin": true
+    },
+    {
+      "layout": "PL|PL_C2_Amin_Gmin_4",
+      "layout_id": 68,
+      "reference": "PL_C2_AMIN_GMIN_4",
+      "reference_id": 19,
+      "pin": true
+    },
+    {
+      "layout": "PL|PL_C2_Amin_Gmin_5",
+      "layout_id": 70,
+      "reference": "PL_C2_AMIN_GMIN_5",
+      "reference_id": 20,
+      "pin": true
+    },
+    {
+      "layout": "PL|PL_C3_Amin_Gmin_1",
+      "layout_id": 14,
+      "reference": "PL_C3_AMIN_G2X_1",
+      "reference_id": 26,
+      "pin": true
+    },
+    {
+      "layout": "PL|PL_C3_Amin_Gmin_2",
+      "layout_id": 18,
+      "reference": "PL_C3_AMIN_G2X_2",
+      "reference_id": 27,
+      "pin": true
+    },
+    {
+      "layout": "PL|PL_C3_Amin_Gmin_3",
+      "layout_id": 22,
+      "reference": "PL_C3_AMIN_G2X_3",
+      "reference_id": 28,
+      "pin": true
+    },
+    {
+      "layout": "PL|PL_C3_Amin_Gmin_4",
+      "layout_id": 26,
+      "reference": "PL_C3_AMIN_G2X_4",
+      "reference_id": 29,
+      "pin": true
+    },
+    {
+      "layout": "PL|PL_C3_Amin_Gmin_5",
+      "layout_id": 29,
+      "reference": "PL_C3_AMIN_G2X_5",
+      "reference_id": 30,
+      "pin": true
+    },
+    {
+      "layout": "PL|PL_C3_Amin_G2x_1",
+      "layout_id": 34,
+      "reference": "PL_C3_AMIN_GMIN_1",
+      "reference_id": 21,
+      "pin": true
+    },
+    {
+      "layout": "PL|PL_C3_Amin_G2x_2",
+      "layout_id": 39,
+      "reference": "PL_C3_AMIN_GMIN_2",
+      "reference_id": 22,
+      "pin": true
+    },
+    {
+      "layout": "PL|PL_C3_Amin_G2x_3",
+      "layout_id": 43,
+      "reference": "PL_C3_AMIN_GMIN_3",
+      "reference_id": 23,
+      "pin": true
+    },
+    {
+      "layout": "PL|PL_C3_Amin_G2x_4",
+      "layout_id": 47,
+      "reference": "PL_C3_AMIN_GMIN_4",
+      "reference_id": 24,
+      "pin": true
+    },
+    {
+      "layout": "PL|PL_C3_Amin_G2x_5",
+      "layout_id": 51,
+      "reference": "PL_C3_AMIN_GMIN_5",
+      "reference_id": 25,
+      "pin": true
+    },
+    {
+      "layout": "VB|VBW_C3",
+      "layout_id": 10,
+      "reference": "VBW_C3",
+      "reference_id": 39,
+      "pin": true
+    },
+    {
+      "layout": "VB|VSS_ANALOG",
+      "layout_id": 71,
+      "reference": "VSS_ANALOG",
+      "reference_id": 40,
+      "pin": true
+    },
+    {
+      "layout": "WL|WL_C1_A2x",
+      "layout_id": 1,
+      "reference": "WL_C1_A2X",
+      "reference_id": 36,
+      "pin": true
+    },
+    {
+      "layout": "WL|WL_C1_Amin",
+      "layout_id": 2,
+      "reference": "WL_C1_AMIN",
+      "reference_id": 35,
+      "pin": true
+    },
+    {
+      "layout": "WL|WL_C2_Amin",
+      "layout_id": 0,
+      "reference": "WL_C2_AMIN",
+      "reference_id": 37,
+      "pin": true
+    },
+    {
+      "layout": "WL|WL_C3_Amin",
+      "layout_id": 5,
+      "reference": "WL_C3_AMIN",
+      "reference_id": 38,
+      "pin": true
+    }
+  ]
+}
