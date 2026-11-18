@@ -161,7 +161,9 @@ Each limit has an owner; none is waved through by this record:
   upstream as `2AMLogic/klayout-tools#5721`.
 - **Candidate 3's generator-owned findings** `DF.4d_MV` x5 + `DV.6` x1 on
   `mos_array$1` — repo-drawn drift-extended geometry, **cleared by #297**
-  (acc-block ring padding); absent from the committed report.
+  (acc-block ring padding) in the base cell; absent from
+  `layout/cell_candidate3/`'s committed report, while the `Amin_G2x`
+  measurement cell's report still carries the set (#287/#297 family).
 - **Any finding whose `cell` is not a PDK PCell's own cell name**, whatever
   its cause.
 
