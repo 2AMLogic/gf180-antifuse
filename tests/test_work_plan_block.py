@@ -11,7 +11,6 @@ the repo level: the generated region must contain no such annotation.
 Read-only: this test never modifies WORK_PLAN.md or any Guide-owned file.
 (unittest; also runs under pytest.)
 """
-import sys
 import unittest
 from pathlib import Path
 
