@@ -4,7 +4,7 @@
   "file": "layout/cell_candidate3_Amin_G2x/cell_candidate3_Amin_G2x.gds",
   "status": "violations",
   "identity": {
-    "layout_content_hash": "sha256:a78577a10c4f8abfbdf9c69d5d5f25fd7c52dc412b34e86156c233ed5ee1c335",
+    "layout_content_hash": "sha256:cd0e2feac49659c92dc48e27b4f6bf9bffb9414da6f9f79a91c9dc7920b4c06b",
     "pdk": {
       "name": "gf180mcuA",
       "source": "search root: ~/.ciel",
@@ -1603,7 +1603,7 @@
           "released": true
         },
         "input": {
-          "content_hash": "sha256:a78577a10c4f8abfbdf9c69d5d5f25fd7c52dc412b34e86156c233ed5ee1c335",
+          "content_hash": "sha256:cd0e2feac49659c92dc48e27b4f6bf9bffb9414da6f9f79a91c9dc7920b4c06b",
           "role": "layout"
         },
         "klayout_version_mismatch": true
@@ -1619,11 +1619,9 @@
       "engine": "klayout",
       "dbu_um": 0.0005,
       "status": "violations",
-      "violation_count": 11,
+      "violation_count": 5,
       "rule_counts": {
         "DBU": 1,
-        "DF.4d_MV": 5,
-        "DV.6": 1,
         "M2.4": 1,
         "M3.4": 1,
         "MT30.7": 1,
@@ -2297,8 +2295,6 @@
         ],
         "rules_checked": [
           "DBU",
-          "DF.4d_MV",
-          "DV.6",
           "M2.4",
           "M3.4",
           "MT30.7",
@@ -2315,8 +2311,6 @@
         "known": false,
         "checked": [
           "DBU",
-          "DF.4d_MV",
-          "DV.6",
           "M2.4",
           "M3.4",
           "MT30.7",
@@ -2343,172 +2337,27 @@
           "source_cell": null,
           "source_path": null,
           "bbox": {
-            "left": -2460,
-            "bottom": -2460,
-            "right": 14620,
+            "left": -4040,
+            "bottom": -4040,
+            "right": 16200,
             "top": 9300
           },
           "polygon": [
             [
-              -2460,
-              -2460
+              -4040,
+              -4040
             ],
             [
-              -2460,
+              -4040,
               9300
             ],
             [
-              14620,
+              16200,
               9300
             ],
             [
-              14620,
-              -2460
-            ]
-          ]
-        },
-        {
-          "rule": "DF.4d_MV",
-          "description": "DF.4d_MV : Min. (Nwell overlap of NCOMP) outside DNWELL. : 0.16\u00b5m",
-          "check": "external",
-          "layer": "DF.4d_MV",
-          "cell": "mos_array$1",
-          "source_cell": null,
-          "source_path": null,
-          "bbox": {
-            "left": -2440,
-            "bottom": -2251,
-            "right": -2140,
-            "top": 5931
-          },
-          "polygon": null
-        },
-        {
-          "rule": "DF.4d_MV",
-          "description": "DF.4d_MV : Min. (Nwell overlap of NCOMP) outside DNWELL. : 0.16\u00b5m",
-          "check": "external",
-          "layer": "DF.4d_MV",
-          "cell": "mos_array$1",
-          "source_cell": null,
-          "source_path": null,
-          "bbox": {
-            "left": -2251,
-            "bottom": -2440,
-            "right": 5351,
-            "top": -2140
-          },
-          "polygon": null
-        },
-        {
-          "rule": "DF.4d_MV",
-          "description": "DF.4d_MV : Min. (Nwell overlap of NCOMP) outside DNWELL. : 0.16\u00b5m",
-          "check": "external",
-          "layer": "DF.4d_MV",
-          "cell": "mos_array$1",
-          "source_cell": null,
-          "source_path": null,
-          "bbox": {
-            "left": -2251,
-            "bottom": 5820,
-            "right": 5351,
-            "top": 6120
-          },
-          "polygon": null
-        },
-        {
-          "rule": "DF.4d_MV",
-          "description": "DF.4d_MV : Min. (Nwell overlap of NCOMP) outside DNWELL. : 0.16\u00b5m",
-          "check": "external",
-          "layer": "DF.4d_MV",
-          "cell": "mos_array$1",
-          "source_cell": null,
-          "source_path": null,
-          "bbox": {
-            "left": 5240,
-            "bottom": -2251,
-            "right": 5540,
-            "top": -449
-          },
-          "polygon": null
-        },
-        {
-          "rule": "DF.4d_MV",
-          "description": "DF.4d_MV : Min. (Nwell overlap of NCOMP) outside DNWELL. : 0.16\u00b5m",
-          "check": "external",
-          "layer": "DF.4d_MV",
-          "cell": "mos_array$1",
-          "source_cell": null,
-          "source_path": null,
-          "bbox": {
-            "left": 5240,
-            "bottom": 1329,
-            "right": 5540,
-            "top": 5931
-          },
-          "polygon": null
-        },
-        {
-          "rule": "DV.6",
-          "description": "DV.6 : Min. Dualgate enclose COMP (except substrate tap). : 0.24\u00b5m",
-          "check": "external",
-          "layer": "DV.6",
-          "cell": "mos_array$1",
-          "source_cell": null,
-          "source_path": null,
-          "bbox": {
-            "left": -2402,
-            "bottom": -2402,
-            "right": 5502,
-            "top": 6082
-          },
-          "polygon": [
-            [
-              -2402,
-              -2402
-            ],
-            [
-              -2402,
-              6082
-            ],
-            [
-              5502,
-              6082
-            ],
-            [
-              5502,
-              1035
-            ],
-            [
-              5238,
-              1438
-            ],
-            [
-              5238,
-              5818
-            ],
-            [
-              -2138,
-              5818
-            ],
-            [
-              -2138,
-              -2138
-            ],
-            [
-              5238,
-              -2138
-            ],
-            [
-              5238,
-              -558
-            ],
-            [
-              5502,
-              -155
-            ],
-            [
-              5502,
-              -2402
+              16200,
+              -4040
             ]
           ]
         },
@@ -2521,27 +2370,27 @@
           "source_cell": null,
           "source_path": null,
           "bbox": {
-            "left": -2460,
-            "bottom": -2460,
-            "right": 14620,
+            "left": -4040,
+            "bottom": -4040,
+            "right": 16200,
             "top": 9300
           },
           "polygon": [
             [
-              -2460,
-              -2460
+              -4040,
+              -4040
             ],
             [
-              -2460,
+              -4040,
               9300
             ],
             [
-              14620,
+              16200,
               9300
             ],
             [
-              14620,
-              -2460
+              16200,
+              -4040
             ]
           ]
         },
@@ -2554,27 +2403,27 @@
           "source_cell": null,
           "source_path": null,
           "bbox": {
-            "left": -2460,
-            "bottom": -2460,
-            "right": 14620,
+            "left": -4040,
+            "bottom": -4040,
+            "right": 16200,
             "top": 9300
           },
           "polygon": [
             [
-              -2460,
-              -2460
+              -4040,
+              -4040
             ],
             [
-              -2460,
+              -4040,
               9300
             ],
             [
-              14620,
+              16200,
               9300
             ],
             [
-              14620,
-              -2460
+              16200,
+              -4040
             ]
           ]
         },
@@ -2587,27 +2436,27 @@
           "source_cell": null,
           "source_path": null,
           "bbox": {
-            "left": -2460,
-            "bottom": -2460,
-            "right": 14620,
+            "left": -4040,
+            "bottom": -4040,
+            "right": 16200,
             "top": 9300
           },
           "polygon": [
             [
-              -2460,
-              -2460
+              -4040,
+              -4040
             ],
             [
-              -2460,
+              -4040,
               9300
             ],
             [
-              14620,
+              16200,
               9300
             ],
             [
-              14620,
-              -2460
+              16200,
+              -4040
             ]
           ]
         },
@@ -2620,27 +2469,27 @@
           "source_cell": null,
           "source_path": null,
           "bbox": {
-            "left": -2460,
-            "bottom": -2460,
-            "right": 14620,
+            "left": -4040,
+            "bottom": -4040,
+            "right": 16200,
             "top": 9300
           },
           "polygon": [
             [
-              -2460,
-              -2460
+              -4040,
+              -4040
             ],
             [
-              -2460,
+              -4040,
               9300
             ],
             [
-              14620,
+              16200,
               9300
             ],
             [
-              14620,
-              -2460
+              16200,
+              -4040
             ]
           ]
         }
@@ -2673,7 +2522,7 @@
           }
         },
         "input": {
-          "content_hash": "sha256:a78577a10c4f8abfbdf9c69d5d5f25fd7c52dc412b34e86156c233ed5ee1c335",
+          "content_hash": "sha256:cd0e2feac49659c92dc48e27b4f6bf9bffb9414da6f9f79a91c9dc7920b4c06b",
           "role": "layout"
         },
         "klayout_version_mismatch": true
