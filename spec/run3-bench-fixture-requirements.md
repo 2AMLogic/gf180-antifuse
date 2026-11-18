@@ -11,8 +11,8 @@ supplies the answer; no value is invented here.
 **Scope**: Issue #260, part of #203. What the bench fixture needs from the pad
 ring of the Run 3 test chip (quarter-slot target, space not yet secured;
 order, grouping, spacing, spare pads), the delivery form and package/pinout
-(OPEN), and the measurement route
-per delivery form with the instrument classes each needs. Does not change the
+(OPEN), and the measurement route per delivery form with the instrument
+classes each needs. Does not change the
 layout, the measurement plan (#255) or the pad table, and does not cover
 ordering or fixture hardware design.
 

@@ -205,8 +205,8 @@ exception reaches today, and within it, only the 20 `nfet_10v0_asym` rows.
   reject these violations; if it would, the disposition goes back to the
   operator well before the **2026-12-16** GDS date (#203; that date applies
   only if shuttle space is obtained — operator correction, 2026-11-17).
-  That reading is
-  **#338 step 1** (agent-doable, no contact); this record carries it as a
+  That reading is **#338 step 1** (agent-doable, no contact); this record
+  carries it as a
   condition and does **not** claim precheck acceptance. The foundry
   conversation itself is **#338 step 2** and has **not happened** — the
   operator sends; agents do not contact wafer.space. Nothing here should be

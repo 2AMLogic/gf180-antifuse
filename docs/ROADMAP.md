@@ -11,8 +11,8 @@ day. `signoff/report.json` stays the T1 verdict of record.
 
 Two tracks: the Run 3 test chip (epic #203; quarter-slot target, space not
 yet secured, GDS 2026-12-16 only if obtained) sets the order of work; the T1
-ladder (tracker #10) is graded for the whole
-mixed-signal block and moves when array-level evidence exists.
+ladder (tracker #10) is graded for the whole mixed-signal block and moves
+when array-level evidence exists.
 
 **Run 3 test chip (#203), by sub-issue**
 
@@ -106,8 +106,8 @@ parked on the runner question, not on a decision.
 Operator decisions:
 
 - **Slot and offering (#203).** Slot purchase (deadline 2026-12-09, which
-  applies only if space is obtained) and the
-  `nfet_10v0_asym` offering are unconfirmed in the tracker.
+  applies only if space is obtained) and the `nfet_10v0_asym` offering are
+  unconfirmed in the tracker.
 - **Bare PL bond pad on the slot template** (`hv-pad-protection-decision.md`
   "Principal dependency", fixture note R1). If every pad must go through a
   ring pad cell, no program voltage above about 6.5 V reaches a cell.
