@@ -109,7 +109,10 @@ COL_X_RIGHT = 1000.0  # instances whose pad is on the right edge (L25..L48)
 # point is the midpoint of the ring's top-wall metal, chosen so a full
 # 0.42 um landing window fits inside the conductor with the deck's
 # metal1.space.1 (0.23 um) kept to every other net's metal -- derived from
-# the committed GDS, and asserted by tests/test_run3_top_assembly.py).
+# the committed GDS). tests/test_run3_top_assembly.py asserts this table's
+# key set and the PL pad-y alignment, not the offset values against the GDS;
+# the values themselves are verified end-to-end by gen-compose's per-leg
+# landed_on_block assertion below and by the LVS compare.
 # Regenerated cells must keep these or the plate-route alignment below
 # breaks (the compose asserts it).
 PIN_OFFSET_UM = {

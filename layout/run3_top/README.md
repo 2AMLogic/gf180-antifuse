@@ -175,7 +175,11 @@ Metal3: 2; Metal2: 1), sized exactly as the router draws them; the landing
 points are the committed cells' true pad centres (for the substrate taps: a
 point on each cell's tap-ring metal verified to keep `metal1.space.1`
 clearance), held in the assembler's `PIN_OFFSET_UM` table with provenance in
-its comment and asserted by `tests/test_run3_top_assembly.py`.
+its comment. `tests/test_run3_top_assembly.py` asserts that table's key set
+and the PL pad-y alignment; it does not read the cell GDS, so the offset
+values themselves are verified by the compose `landed_on_block` assertion and
+by the LVS compare (`lvs_report.json`: 72/72 nets paired, 0 errors) rather
+than by that test.
 
 ### Evidence (regenerate and re-check)
 
