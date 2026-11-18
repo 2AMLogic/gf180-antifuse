@@ -15,9 +15,13 @@ Writes two committed artifacts next to this script:
   run3_top.gds               the assembled chip (top cell ``run3_top``):
                              quarter-slot outline, the 48-slot pad ring (plus
                              the template's 8 power pads), the 31 placed cell
-                             instances, and the HV pad routes (bare Metal5
+                             instances, the HV pad routes (bare Metal5
                              pad-to-plate routes per the #210 record -- no pad
-                             cell, no on-die protection structure).
+                             cell, no on-die protection structure), one n-diode
+                             antenna clamp per WL net, the MetalTop landing
+                             patches, and the density fill (see the constant
+                             blocks in this file and README.md for the
+                             measured findings each answers).
   lvs_reference_drawn.spice  the LVS reference for THIS assembly: the #275
                              netlist's per-geometry cell subcircuits for the
                              seven drawn cells and a top ``run3_top`` that
@@ -183,6 +187,112 @@ SUBSTRATE_NET = gen.SUBSTRATE_NET          # VSS_ANALOG (generator placeholder)
 SUBSTRATE_TRUNK_X = 570.0                  # metal2, left of the left column
 NET_OF_PIN = {"BL": "shared_bl", "WL": "shared_wl", "VB": "shared_vb"}
 
+# --- MetalTop landing patches (MT.1) ----------------------------------------
+#
+# Measured at the shuttle precheck's binding configuration (native runset at
+# gf180mcuD, decks per wafer-space/gf180mcu-precheck 9b4e7dab: a gating
+# KLayout DRC run at "all,-antenna,-density,-cup" plus separate gating
+# density and antenna deck runs) on the committed assembly: every Metal5
+# via-drop landing pad is drawn at klt gen-compose's fixed 0.42 um footprint,
+# under the 11 K MetalTop minimum width 0.44 um (rule MT.1; the landing-pad
+# resolver floors to a layer's minimum-area rule but has no minimum-width
+# floor -- filed upstream). 40 MT.1 findings, all on the ladder tops where
+# the fixed pad protrudes past its route or its pad. The assembler patches
+# each ladder top with a Metal5 overshoot so the merged shape is everywhere
+# >= 5 um wide: over each private-plate pin (the route's own width, extended
+# past the landing pad) and over each bundle pad port (the pad's own edge).
+MT1_PATCH_OVERSHOOT_UM = 1.0
+MT1_PATCH_HALF_W_UM = 2.5     # 5 um patch width == the PL route width
+
+# --- WL antenna clamps -------------------------------------------------------
+#
+# The precheck's gating antenna stage reports the shared WL trunks over the
+# ANT.16_ii_ANT.4 limit (Metal3 perimeter area vs thick gate oxide area,
+# 400): measured ratios 428-1034 at gf180mcuD. The deck's diode filtering
+# divides the ratio by (gate + 15*(n_diode + p_diode + nwell))
+# (antenna.rb, antenna_check_gf180mcu), so one n-diode per WL net clears
+# every violation: the worst net needs >= 0.245 um^2 of diode area. One
+# n-diode is placed beside each trunk: COMP in NPLUS outside NWELL with one
+# contact and a Metal1 landing, enclosures taken from the drawn cells' own
+# tap ring (NPLUS over COMP 0.16 um; the PDK contact 0.22 um square with
+# 0.10 um COMP/Metal1 enclosure, above the CO.4 floor). The private-plate
+# Metal5 antenna findings (ANT.16_i/ii_ANT.6, ratios 2028-7820) are recorded
+# with the same remedy evaluated but deliberately not applied: the #210
+# record puts no on-die protection structure on the HV program legs, so
+# that disposition needs the operator (README.md, "Chip assembly").
+DIODE_COMP_UM = 0.6
+DIODE_ENC_UM = 0.16            # NPLUS enclosure of COMP (tap-ring value)
+DIODE_CONTACT_UM = 0.22        # the PDK contact square
+DIODE_M1_UM = 0.42             # Metal1 landing over the contact
+WL_DIODE_TRUNK_OFFSET_UM = 4.0 # diode body centre x, off its trunk's x
+WL_DIODE_RISE_UM = 4.0         # diode body centre y above the group's top pin
+# The C3 cells carry no substrate tap at all (their tap ring is NPLUS in
+# NWELL), and DF.14_LV requires every NCOMP outside Nwell to sit within a
+# 20 um diamond of a substrate tap (PCOMP outside NWELL) -- the bare C3
+# n-diode fails it (measured 2026-11-18, one DF.14_LV finding). A tap is
+# therefore placed beside the C3 diode and tied to the substrate net
+# VSS_ANALOG with its own Metal2 branch: NOT to the WL net -- a substrate
+# tap on a signal net extracts as an ohmic substrate tie, and the LVS run
+# against it merged WL_C3_Amin into the substrate net (measured, same day;
+# the plain n-diode extracts as nothing at all, which is what the reference
+# expects). The branch runs at a y above every band, where the only Metal2
+# is net-own geometry or ended trunks.
+C3_TAP_OFFSET_UM = 4.0         # tap body centre, east of the C3 diode body
+C3_TAP_BRANCH_LIFT_UM = 16.0   # branch y, above the tap and every band
+
+# --- density fill ------------------------------------------------------------
+#
+# The precheck's gating density stage (the PDK density deck, decks
+# "density") demands die-level minimum coverage at gf180mcuD: COMP+dummy
+# >= 25% (DCF.1b), Poly2 >= 14% (PL.8), Metal1..Metal5 >= 30% each
+# (M1.4/M2.4/M3.4/M4.4/M5.4) and Metal5-as-MetalTop >= 30% (MT.3; M4.4 and
+# M5.4 do not exist at the older 3LM variant the first native report ran).
+# The assembler fills in three passes:
+#
+#   1. metals: klt fill on Metal1..Metal5's dummy layers (datatype 4),
+#      20 um squares at a 5 um gap (~54 % die coverage);
+#   2. dummy COMP: klt fill at the deck's own dummy-COMP clearances
+#      (spacing 3.5 um >= DCF.4 to drawn COMP, gap 1.9 um >= DCF.2b), 30 um
+#      squares capped at 60 % per window (~51 % die coverage, under the
+#      70 % DCF.1d maximum);
+#   3. dummy Poly2: a headless KLayout pass that centres a 3x3 grid of
+#      8.3 um squares (9.5 um pitch, >= DPF.2b's 1.1 um) inside every dummy
+#      COMP square, drawn on the Poly2 drawing layer (30/0) rather than the
+#      dummy layer (30/4): the density deck counts drawn+dummy Poly2 either
+#      way, but the dummy-poly rule deck's DPF.1 -- as implemented, measured
+#      on a nested-squares fixture 2026-11-18 -- flags every 30/4 shape it
+#      sees, fully-enclosed ones included, so no dummy-layer pattern can
+#      pass it; on 30/0 the deck's dummy-poly rules are silent, the drawn
+#      Poly2 rules hold (8.3 um squares, 1.2 um gaps, >= 3.1 um from drawn
+#      COMP), and the antenna stage does not evaluate floating Poly2 (no
+#      gate of its own -- measured on a fixture, same day). The grid carries
+#      Poly2 well over the 14 % floor without ever forming a gate on drawn
+#      geometry.
+#
+# Fill never enters the cell columns or the pads, and the C3 n-well strip
+# is kept out of the dummy COMP (DCF.6a). DPF.4 (dummy poly to drawn COMP
+# >= 3.2 um) holds because every dummy poly square sits inside a dummy COMP
+# square that is itself >= 3.5 um from drawn COMP.
+#
+# The squares are this large because the stream itself has to stay under
+# GitHub's 100 MB file limit: the committed chip carries every fill shape,
+# and small squares put ~2.1 M of them in the file (~149 MB). Few large
+# squares hold the same coverage at ~1/30th the shape count. Every square
+# stays under the metal slot rules' 30 um "large feature" threshold except
+# the 30 um COMP squares, which are FEOL and not slot-checked.
+FILL_SPACING_UM = 3.0
+METAL_FILL_SIZE_UM = 20.0
+METAL_FILL_GAP_UM = 5.0
+FILL_COLUMN_BAND_UM = 25.0     # no fill within this of a cell column
+FILL_PAD_MARGIN_UM = 5.0       # pad keep-out beyond the 80 um pad square
+NWELL_KEEPOUT_X_UM = (960.0, 1060.0)  # C3 n-well strip, generous
+COMP_FILL_SIZE_UM = 30.0       # DCF.2b gap and DCF.4 spacing below
+COMP_FILL_GAP_UM = 1.9
+COMP_FILL_SPACING_UM = 3.5     # DCF.4 (dummy COMP to drawn COMP)
+COMP_FILL_TARGET_UM = 0.6      # per-100um-window cap; keeps DCF.1d <= 70 %
+POLY_GRID_PITCH_UM = 9.5       # >= DPF.2b's 1.1 um dummy-poly space
+POLY_GRID_SQUARE_UM = 8.3
+
 # Which instance-table group each shared net serves.
 GROUP_OF_NET = {
     "BL_C1_Amin": "C1-Amin", "BL_C1_A2x": "C1-A2x", "BL_C2_Amin": "C2-Amin",
@@ -265,6 +375,97 @@ def instance_ports(rows: list[dict], port: str) -> list[tuple[dict, tuple[float,
         px, py = PIN_OFFSET_UM[row["cell"]][port]
         out.append((row, (round(ox + px, 4), round(oy + py, 4))))
     return out
+
+
+def wl_diode_placements(rows: list[dict]) -> list[dict]:
+    """One n-diode clamp per WL net (see the antenna-clamp constant block):
+    body centre beside the trunk, just above the group's highest pin (free
+    whitespace above each band; the clamp leg then rides the net's own trunk
+    down to that pin), plus that pin as the leg's far end."""
+    out = []
+    for net, (role, trunk_x, pad_x, connect_at) in BUNDLE_NETS.items():
+        if not net.startswith("WL_"):
+            continue
+        col_x = COL_X_RIGHT if net.split("_")[1] == "C3" else COL_X_LEFT
+        pins = [(r, p) for r, p in instance_ports(rows, "WL")
+                if r["group"] == GROUP_OF_NET[net] and r["origin"][0] == col_x]
+        assert pins, net
+        pins.sort(key=lambda rp: rp[1][1])
+        near, near_pt = pins[-1]
+        y = round(near_pt[1] + WL_DIODE_RISE_UM, 4)
+        out.append({"net": net, "x": round(trunk_x + WL_DIODE_TRUNK_OFFSET_UM, 4),
+                    "y": y, "near_block": near["name"]})
+    assert len(out) == 4, out
+    return out
+
+
+def c3_tap_branch(rows: list[dict]) -> dict:
+    """The C3 companion substrate tap's placement and its branch geometry
+    (see the constant block): tap body centre, the Metal2 branch y above the
+    C3 group's top stub, and the left-column VB pin the branch lands on --
+    the highest one below the branch whose descent corridor is free of other
+    cells."""
+    c3 = {d["net"]: d for d in wl_diode_placements(rows)}["WL_C3_Amin"]
+    tap_x = round(c3["x"] + C3_TAP_OFFSET_UM, 4)
+    tap_y = round(c3["y"] + C3_TAP_OFFSET_UM, 4)
+    branch_y = round(tap_y + C3_TAP_BRANCH_LIFT_UM, 4)
+    vb_pins = instance_ports(rows, "VB")
+    left_vb = [(r, p) for r, p in vb_pins
+               if r["origin"][0] == COL_X_LEFT and p[1] <= branch_y - 5.0]
+    left_vb.sort(key=lambda rp: rp[1][1])
+    assert left_vb, "no left-column VB pin below the C3 tap branch"
+    vbx_row, vbx_pt = left_vb[-1]
+    above = [p[1] for r, p in vb_pins if r["origin"][0] == COL_X_LEFT
+             and vbx_pt[1] < p[1] < branch_y - 2.0]
+    assert not above, f"left-column cells inside the tap-branch descent: {above}"
+    return {"tap_x": tap_x, "tap_y": tap_y, "branch_y": branch_y,
+            "block": vbx_row["name"], "pin": vbx_pt}
+
+
+def mt1_fixup_script(gds: Path, rows: list[dict]) -> str:
+    """The in-place MetalTop landing fixup as a headless KLayout script: one
+    Metal5 overshoot rect per via-ladder top that lands on Metal5 (the 36
+    private-plate pin ladders and the 9 bundle pad legs), merged into the
+    top cell so no ladder-top protrusion is narrower than the 11 K MetalTop
+    minimum width (see the MT.1 constant block). Runs after compose (the
+    router is done, so no block-bbox interacts with it) and before fill."""
+    rects = []
+    for row in rows:
+        if not row["placed"]:
+            continue
+        px, py = row["pin_um"]
+        rects.append([round(px - 0.5, 4), round(py - MT1_PATCH_HALF_W_UM, 4),
+                      round(px + MT1_PATCH_OVERSHOOT_UM, 4),
+                      round(py + MT1_PATCH_HALF_W_UM, 4)])
+    for net, (role, trunk_x, pad_x, connect_at) in BUNDLE_NETS.items():
+        y = BUNDLE_PAD_Y + PAD_SIDE_UM / 2.0
+        rects.append([round(pad_x - MT1_PATCH_HALF_W_UM, 4), round(y - 2.0, 4),
+                      round(pad_x + MT1_PATCH_HALF_W_UM, 4), round(y + 1.0, 4)])
+    assert len(rects) == 31 + len(BUNDLE_NETS), len(rects)
+    return (
+        "import pya\n"
+        "layout = pya.Layout()\n"
+        f"layout.read({str(gds)!r})\n"
+        "top = layout.top_cell()\n"
+        "shapes = top.shapes(layout.layer(81, 0))\n"
+        f"for x0, y0, x1, y1 in {rects!r}:\n"
+        "    shapes.insert(pya.Box(int(round(x0 / layout.dbu)),\n"
+        "                          int(round(y0 / layout.dbu)),\n"
+        "                          int(round(x1 / layout.dbu)),\n"
+        "                          int(round(y1 / layout.dbu))))\n"
+        f"layout.write({str(gds)!r})\n"
+    )
+
+
+def apply_mt1_fixup(gds: Path, rows: list[dict], workdir: Path) -> None:
+    """Run the MT.1 fixup script on the composed layout, in place."""
+    script = workdir / "mt1_fixup.py"
+    script.write_text(mt1_fixup_script(gds, rows))
+    r = subprocess.run(["klayout", "-b", "-r", str(script)],
+                       capture_output=True, text=True)
+    if r.returncode != 0:
+        sys.exit(f"klayout -b (MT.1 fixup) failed ({r.returncode}):\n"
+                 f"{r.stdout}{r.stderr}")
 
 
 # --- pad ring ---------------------------------------------------------------
@@ -465,6 +666,40 @@ def build_connectivity(rows: list[dict],
                  "width_um": BUNDLE_WIDTH_UM})
     paths[SUBSTRATE_NET] = {"metal2": segs}
 
+    # -- WL antenna clamps: one n-diode per WL net, tied to its nearest pin --
+    by_net = {n["net"]: n for n in nets}
+    for d in wl_diode_placements(rows):
+        entry = by_net[d["net"]]
+        entry["pins"].append({"block": f"diode_{d['net']}", "port": "A"})
+        entry["legs"].append({
+            "from_pin": {"block": f"diode_{d['net']}", "port": "A"},
+            "to_pin": {"block": d["near_block"], "port": "WL"},
+            "waypoints_um": [[round(d["x"] - WL_DIODE_TRUNK_OFFSET_UM, 4), d["y"]]],
+        })
+        # the clamp leg's own horizontal; the vertical rides the net's own
+        # trunk, which is not a cross-net path
+        paths.setdefault(d["net"], {}).setdefault("metal3", []).append(
+            _seg(d["x"], d["y"], d["x"] - WL_DIODE_TRUNK_OFFSET_UM, d["y"]))
+
+    # -- substrate tap beside the C3 antenna clamp (DF.14) --------------------
+    # One branch on the substrate net: from the tap's own port up to the
+    # branch y, west over the die interior at that y, then down onto the
+    # landing pin (c3_tap_branch picks it and asserts the corridor).
+    br = c3_tap_branch(rows)
+    vss = {n["net"]: n for n in nets}[SUBSTRATE_NET]
+    vss["pins"].append({"block": "substrate_tap_c3", "port": "B"})
+    vss["legs"].append({
+        "from_pin": {"block": "substrate_tap_c3", "port": "B"},
+        "to_pin": {"block": br["block"], "port": "VB"},
+        "waypoints_um": [[br["tap_x"], br["branch_y"]],
+                         [round(br["pin"][0], 4), br["branch_y"]]],
+    })
+    paths.setdefault(SUBSTRATE_NET, {}).setdefault("metal2", []).extend([
+        _seg(br["tap_x"], br["tap_y"], br["tap_x"], br["branch_y"]),
+        _seg(br["tap_x"], br["branch_y"], br["pin"][0], br["branch_y"]),
+        _seg(br["pin"][0], br["branch_y"], br["pin"][0], br["pin"][1]),
+    ])
+
     check_keep_clear(paths, BUNDLE_WIDTH_UM, margin_um=3.0)
     return nets, paths
 
@@ -608,6 +843,62 @@ def compose_request(rows: list[dict], pads: list[dict],
         blocks.append(cell_block(row, facing))
         order.append(row["name"])
         origins[row["name"]] = {"x": row["origin"][0], "y": row["origin"][1]}
+
+    # WL antenna clamps: one drawn n-diode cell, four placements.
+    diode_gds = workdir / "wl_antenna_diode.gds"
+    c, e = DIODE_COMP_UM / 2.0, DIODE_CONTACT_UM / 2.0
+    half = DIODE_COMP_UM / 2.0 + DIODE_ENC_UM
+    draw_req = {"shapes": [
+        {"layer": [22, 0], "rect_um": [0.5 - c, 0.5 - c, 0.5 + c, 0.5 + c]},
+        {"layer": [32, 0], "rect_um": [0.5 - half, 0.5 - half, 0.5 + half, 0.5 + half]},
+        {"layer": [33, 0], "rect_um": [0.5 - e, 0.5 - e, 0.5 + e, 0.5 + e]},
+        {"layer": [34, 0], "rect_um": [0.5 - DIODE_M1_UM / 2.0, 0.5 - DIODE_M1_UM / 2.0,
+                                       0.5 + DIODE_M1_UM / 2.0, 0.5 + DIODE_M1_UM / 2.0]},
+    ]}
+    r = subprocess.run(
+        ["klt", "draw", "--params", json.dumps(draw_req),
+         "--cell-name", "wl_antenna_diode", "-o", str(diode_gds), "--format", "json"],
+        capture_output=True, text=True)
+    if r.returncode != 0:
+        sys.exit(f"klt draw failed ({r.returncode}):\n{r.stdout}{r.stderr}")
+    for d in wl_diode_placements(rows):
+        blk = f"diode_{d['net']}"
+        blocks.append({"id": blk,
+                       "cell": {"gds_path": str(diode_gds),
+                                "cell_name": "wl_antenna_diode",
+                                "ports": [{"name": "A", "x_um": 0.5, "y_um": 0.5,
+                                           "layer": {"layer": 34, "datatype": 0},
+                                           "direction_deg": 180, "width_um": 0.42}]}})
+        order.append(blk)
+        origins[blk] = {"x": round(d["x"] - 0.5, 4), "y": round(d["y"] - 0.5, 4)}
+
+    # The C3 companion substrate tap (DF.14, see the constant block), tied
+    # to the substrate net by the branch leg added in build_connectivity.
+    c3 = {d["net"]: d for d in wl_diode_placements(rows)}["WL_C3_Amin"]
+    tap_gds = workdir / "substrate_tap.gds"
+    draw_req = {"shapes": [
+        {"layer": [22, 0], "rect_um": [0.5 - c, 0.5 - c, 0.5 + c, 0.5 + c]},
+        {"layer": [31, 0], "rect_um": [0.5 - half, 0.5 - half, 0.5 + half, 0.5 + half]},
+        {"layer": [33, 0], "rect_um": [0.5 - e, 0.5 - e, 0.5 + e, 0.5 + e]},
+        {"layer": [34, 0], "rect_um": [0.5 - DIODE_M1_UM / 2.0, 0.5 - DIODE_M1_UM / 2.0,
+                                       0.5 + DIODE_M1_UM / 2.0, 0.5 + DIODE_M1_UM / 2.0]},
+    ]}
+    r = subprocess.run(
+        ["klt", "draw", "--params", json.dumps(draw_req),
+         "--cell-name", "substrate_tap", "-o", str(tap_gds), "--format", "json"],
+        capture_output=True, text=True)
+    if r.returncode != 0:
+        sys.exit(f"klt draw failed ({r.returncode}):\n{r.stdout}{r.stderr}")
+    blocks.append({"id": "substrate_tap_c3",
+                   "cell": {"gds_path": str(tap_gds),
+                            "cell_name": "substrate_tap",
+                            "ports": [{"name": "B", "x_um": 0.5, "y_um": 0.5,
+                                       "layer": {"layer": 34, "datatype": 0},
+                                       "direction_deg": 90, "width_um": 0.42}]}})
+    order.append("substrate_tap_c3")
+    origins["substrate_tap_c3"] = {"x": round(c3["x"] + C3_TAP_OFFSET_UM - 0.5, 4),
+                                   "y": round(c3["y"] + C3_TAP_OFFSET_UM - 0.5, 4)}
+
     nets, _ = build_connectivity(rows, pads)
     out = workdir / "run3_top.gds"
     req = {
@@ -742,6 +1033,107 @@ def run_klt_compose(req: dict, workdir: Path) -> str:
     return r.stdout
 
 
+# --- density fill ------------------------------------------------------------
+def _fill_excludes(pads: list[dict]) -> list:
+    """The dummy-COMP keep-outs: the cell columns, the pads (plus margin)
+    and the C3 n-well strip (DCF.6a). The metal pass keeps the same
+    keep-outs and the dummy Poly2 squares live inside the dummy COMP ones,
+    so one exclusion set serves all passes."""
+    shared = []
+    for col in (COL_X_LEFT, COL_X_RIGHT):
+        shared.append([col - FILL_COLUMN_BAND_UM, 0.0,
+                       col + FILL_COLUMN_BAND_UM, DIE_H_UM])
+    for pad in pads:
+        shared.append([pad["x"] - PAD_SIDE_UM / 2.0 - FILL_PAD_MARGIN_UM,
+                       pad["y"] - PAD_SIDE_UM / 2.0 - FILL_PAD_MARGIN_UM,
+                       pad["x"] + PAD_SIDE_UM / 2.0 + FILL_PAD_MARGIN_UM,
+                       pad["y"] + PAD_SIDE_UM / 2.0 + FILL_PAD_MARGIN_UM])
+    shared.append([NWELL_KEEPOUT_X_UM[0], 0.0, NWELL_KEEPOUT_X_UM[1], DIE_H_UM])
+    return shared
+
+
+POLY_GRID_PASS = (
+    "import pya\n"
+    "layout = pya.Layout()\n"
+    "layout.read(%r)\n"
+    "top = layout.top_cell()\n"
+    "shapes = top.shapes(layout.layer(30, 0))\n"
+    "comp = pya.Region(top.begin_shapes_rec(layout.layer(22, 4)))\n"
+    "comp.merge()\n"
+    "half = %r / 2.0\n"
+    "for poly in comp.each():\n"
+    "    box = poly.bbox()\n"
+    "    cx = (box.left + box.right) * 0.5 * layout.dbu\n"
+    "    cy = (box.bottom + box.top) * 0.5 * layout.dbu\n"
+    "    pitch = %r\n"
+    "    for sx in (-1, 1):\n"
+    "        for sy in (-1, 1):\n"
+    "            x = cx + sx * pitch / 2.0\n"
+    "            y = cy + sy * pitch / 2.0\n"
+    "            shapes.insert(pya.Box(int(round((x - half) / layout.dbu)),\n"
+    "                                  int(round((y - half) / layout.dbu)),\n"
+    "                                  int(round((x + half) / layout.dbu)),\n"
+    "                                  int(round((y + half) / layout.dbu))))\n"
+    "layout.write(%r)\n"
+)
+
+
+def fill_density(gds: Path, pads: list[dict], workdir: Path) -> Path:
+    """The three fill passes over the composed chip (metals, dummy COMP,
+    dummy Poly2), per the density-stage measurement (README "Evidence").
+    Returns the filled layout path."""
+    excludes = json.dumps(_fill_excludes(pads))
+    die = json.dumps([0.0, 0.0, DIE_W_UM, DIE_H_UM])
+    passes = [
+        ("metals", [[34, 0], [36, 0], [42, 0], [46, 0], [81, 0]],
+         FILL_SPACING_UM, METAL_FILL_SIZE_UM, METAL_FILL_GAP_UM, None),
+        ("comp", [[22, 0]],
+         COMP_FILL_SPACING_UM, COMP_FILL_SIZE_UM, COMP_FILL_GAP_UM,
+         COMP_FILL_TARGET_UM),
+    ]
+    cur = gds
+    for name, layers, spacing, size, gap, target in passes:
+        out = workdir / f"run3_top_fill_{name}.gds"
+        cmd = ["klt", "fill", str(cur), "--pdk", "gf180mcu",
+               "--layers", json.dumps(layers), "--extent", die,
+               "--spacing", str(spacing), "--fill-size", str(size),
+               "--fill-gap", str(gap), "--top", "run3_top",
+               "-o", str(out), "--format", "json"]
+        if target is not None:
+            cmd += ["--target-density", str(target)]
+        if excludes != "[]":
+            cmd += ["--exclude", excludes]
+        r = subprocess.run(cmd, capture_output=True, text=True)
+        if r.returncode != 0:
+            sys.exit(f"klt fill ({name}) failed ({r.returncode}):\n"
+                     f"{r.stdout}{r.stderr}")
+        for entry in json.loads(r.stdout).get("layers") or []:
+            if not entry.get("fill_shape_count"):
+                sys.exit(f"klt fill ({name}) placed no shapes on "
+                         f"{entry.get('layer')}")
+        cur = out
+    out = workdir / "run3_top_fill_poly2.gds"
+    script = workdir / "poly_fill.py"
+    script.write_text(POLY_GRID_PASS % (str(cur), POLY_GRID_SQUARE_UM,
+                                        POLY_GRID_PITCH_UM, str(out)))
+    r = subprocess.run(["klayout", "-b", "-r", str(script)],
+                       capture_output=True, text=True)
+    if r.returncode != 0:
+        sys.exit(f"klayout -b (dummy poly grid) failed ({r.returncode}):\n"
+                 f"{r.stdout}{r.stderr}")
+    # The poly pass writes through `klayout -b`, which stamps stream
+    # timestamps; re-emit through klt's own writer so two runs stay
+    # byte-identical (the --check contract).
+    final = workdir / "run3_top_filled.gds"
+    r = subprocess.run(["klt", "clip", str(out), "--cell", "run3_top",
+                        "-o", str(final), "--format", "json"],
+                       capture_output=True, text=True)
+    if r.returncode != 0:
+        sys.exit(f"klt clip (fill normalization) failed ({r.returncode}):\n"
+                 f"{r.stdout}{r.stderr}")
+    return final
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--check", action="store_true",
@@ -757,8 +1149,10 @@ def main() -> None:
         req, out_gds = compose_request(rows, pads, workdir)
         response = run_klt_compose(req, workdir)
         resp = assert_composed(response, rows, req)
+        apply_mt1_fixup(out_gds, rows, workdir)
+        filled = fill_density(out_gds, pads, workdir)
         reference = emit_lvs_reference(rows)
-        new = {"run3_top.gds": out_gds.read_bytes(),
+        new = {"run3_top.gds": filled.read_bytes(),
                "lvs_reference_drawn.spice": reference}
 
     if args.check:

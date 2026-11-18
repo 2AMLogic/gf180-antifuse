@@ -1,0 +1,83 @@
+{
+  "schema_version": 3,
+  "file": {
+    "path": "layout/run3_top/run3_top.gds",
+    "scope": "repo"
+  },
+  "deck": "/home/ubuntu/.ciel/gf180mcuD/libs.tech/klayout/tech/drc/gf180mcu.drc",
+  "engine": "klayout",
+  "dbu_um": 0.0005,
+  "status": "coverage_unknown",
+  "violation_count": 0,
+  "rule_counts": {},
+  "coverage": {
+    "deck_layers": [],
+    "layers_checked": [],
+    "rule_categories": [],
+    "rules_checked": [],
+    "layers_in_stream_without_rules": [],
+    "rules_skipped": [],
+    "voltage_domain_warnings": [],
+    "unchecked_rules": [],
+    "deck_scope": [],
+    "unmodeled_rules": [],
+    "isolation_only_rules": [],
+    "schema_version": 1,
+    "known": false,
+    "checked": [],
+    "skipped": [],
+    "inapplicable": [],
+    "unknown": [
+      {
+        "id": "engine_execution:[\"klayout\"]",
+        "reason": "unmeasured_rule_execution"
+      }
+    ],
+    "nothing_checked": false,
+    "nothing_checked_reasons": []
+  },
+  "violations": [],
+  "provenance": {
+    "klt_version": "0.9.3.dev1136+g81926eccba7b",
+    "klt_git_commit": "81926eccba7bb286548dc754eeebf00b06f74fc2",
+    "klt_reinstall_spec": "klayout-tools @ git+https://github.com/2AMLogic/klayout-tools@81926eccba7bb286548dc754eeebf00b06f74fc2",
+    "klayout_version": "0.30.12",
+    "pdk": {
+      "name": "gf180mcuD",
+      "source": "search root: ~/.ciel",
+      "version": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7",
+      "ambiguous_sources": [
+        "search root: ~/.volare"
+      ]
+    },
+    "deck": {
+      "name": "gf180mcu.drc",
+      "content_hash": "sha256:e7c7d2597890cfcb4cf0e5312f5652051a119fb3e1cc1772a6e5c04594bc65d8",
+      "released": false,
+      "options": {
+        "variant": "gf180mcuD",
+        "decks": "density"
+      },
+      "tree": {
+        "file_count": 6,
+        "content_hash": "sha256:8af3b4875893f3ffbff639bd7e2966c5e3b9b27f70d03e86d6da46ca9510fbc4",
+        "release": null
+      }
+    },
+    "input": {
+      "content_hash": "sha256:79bc84145a1baf87116b42d7aedee9bd9c69c29b72ce4d46a5a7ab1fa0c679f8",
+      "role": "layout"
+    },
+    "klayout_version_mismatch": false
+  },
+  "native_deck": {
+    "kind": "pdk_main_script",
+    "variant": "gf180mcuD",
+    "deck_file": "/home/ubuntu/.ciel/gf180mcuD/libs.tech/klayout/tech/drc/gf180mcu.drc",
+    "deck_vars_defaulted": {
+      "variant": "gf180mcuD"
+    },
+    "min_klayout_version": "0.30.9",
+    "min_klayout_version_defaulted": true
+  }
+}
