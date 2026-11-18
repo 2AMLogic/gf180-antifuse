@@ -5,6 +5,10 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-18
 
+- **PR #394**: refactor(layout): one drift-check driver — candidate-2 generators reuse bitcell_gen drive/helpers
+- **PR #392**: docs(spec): anchor the generate.py PCell citation to the acc bg.run call, not line numbers
+- **Issue #390** (closed): spec: pdk-pcell-drc-exception-decision.md cites generate.py "lines 96-99", now lines 110-112
+- **Issue #280** (closed): Remove the second copy of the GDS drift-check driver in layout/cell_candidate2/generate.py (reuse bitcell_gen)
 - **PR #389**: layout: clear candidate3_Amin_G2x's generator-owned DF.4d_MV/DV.6 via acc-block ring padding (1.29 um), re-fit DX, Y_TAP_ACC and the strap x-extents
 - **PR #388**: docs(spec): re-record candidate 2's DRC census (27 -> 25) after #296 cleared the cap__core findings
 - **PR #387**: docs: qualify Run 3 slot-booking and GDS-date claims in spec/ and ROADMAP
