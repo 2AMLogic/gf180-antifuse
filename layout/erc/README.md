@@ -92,11 +92,10 @@ record.
 `well_boxes` is a caller **assertion** (a native p-substrate has no drawn well
 layer): the two boxes are the extents of the cap-block and access-block tap
 rings (`Pplus` 31/0 outlines) -- of the cell the spec runs against. Each cell
-carries its own fitted boxes and numbers: `supplies.json`'s cover all but
-~5.5 % of the `cell_candidate1` extent (`extent_uncovered_fraction: 0.055` in
-`erc_coverage.well_assertion_coverage`) with a drawn tap area of 11.79 um2,
-none of it uncovered; the `supplies_c1_*` and `supplies_c2.json` numbers are
-tabulated in `layout/README.md`. The result is therefore
+carries its own fitted boxes and numbers: the `supplies.json`, `supplies_c1_*`
+and `supplies_c2.json` figures (drawn tap area, `uncovered_tap_fraction` and
+`extent_uncovered_fraction` from `erc_coverage.well_assertion_coverage`) are
+tabulated per cell in `layout/README.md`. The result is therefore
 a tie check against the asserted substrate region (`checked_by_well_assertion`),
 not against a drawn tub.
 
