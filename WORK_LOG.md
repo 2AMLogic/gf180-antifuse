@@ -5,6 +5,8 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-18
 
+- **PR #433**: checker: fail claims whose quote spells an interval but omit quote_values
+- **Issue #419** (closed): geometry-claims checker: deleting quote_values re-opens the #414 coordinated-edit bypass
 - **PR #431**: test: guard WORK_PLAN.md plan-body block against generator-foreign annotations
 - **Issue #430** (closed): Guide plan-body block carries hand-applied annotations the generator never emits (recurrence of #420)
 - **PR #428**: test: pin erc/lvs/economy sign-off reports to the committed layout by name
