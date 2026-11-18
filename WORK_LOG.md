@@ -5,6 +5,14 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-18
 
+- **PR #423**: layout: record the run3 antenna stage's measured ratios and after-round report
+- **Issue #422** (closed): run3_top README: the antenna groups' measured ratios and the deferred remedy's "after: 0" round have no committed source
+- **PR #421**: docs: drop hand-applied *(held)* markers from WORK_PLAN.md rows
+- **Issue #420** (closed): WORK_PLAN.md *(held)* annotation is hand-applied post-generation and drifts between Guide runs
+- **PR #417**: checker: pin readme_quote numerals to bbox_um via per-claim quote_values
+- **Issue #414** (closed): Geometry-claims checker does not tie readme_quote's numbers to bbox_um — a coordinated prose+sidecar edit still passes
+- **PR #416**: layout: fix the run3 chip-level findings the precheck's own stages enforce
+- **Issue #404** (closed): Chip-level native DRC findings in repo-drawn geometry (antenna, die-level density, CUP.2) have no tracking work
 - **PR #413**: check: pin README-quoted VB-strap and gate-pad intervals to the committed GDS
 - **Issue #407** (closed): No check ties layout/README.md's quoted geometry intervals to the committed GDS (three hand-found drifts: #378, #391, #401)
 - **PR #411**: docs(sim): correct stale klt concurrency-cap retry comment in cell-breakdown-model
