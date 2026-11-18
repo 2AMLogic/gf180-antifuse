@@ -683,11 +683,20 @@ extents differ):
   capacitor-side band through the capacitor ring's gap (y 0.78..1.25, >= 0.26
   um clear). Measured DRC-proven at the committed geometry: no `metal1.space.1`
   or any other strap finding in the cross-check.
-- **`VB` tap-ring strap -- stacked.** The capacitor's metal1 gate pad
-  (x DX+0.43..DX+0.85, y 2.75..3.17) sits **between** the two rings' metal
-  north bands (access 2.45 + DPAD .. 2.91 + DPAD = 3.24..3.70 over the raised
-  ring, capacitor 4.03..4.49), so one flat band spanning both TAP_N pads would
-  sweep through it and short PL to VB. Two stacked bands -- one per ring, each
+- **`VB` tap-ring strap -- stacked.** One flat band spanning both TAP_N pads
+  (y 3.28..4.49 at the committed padding) would fail `metal1.space.1`
+  (0.23 um) against the capacitor's metal1 gate pad (x DX+0.43..DX+0.85,
+  y 2.75..3.17): the band overlaps the pad in x (band right edge DX+0.79 =
+  6.38 > pad left 6.02) but its bottom edge (3.28, the raised access band's
+  level) clears the pad top (3.17) by only **0.11 um** -- measured on a
+  scratch single-flat-band variant through `klt drc --deck gf180mcu`:
+  exactly one `metal1.space.1` finding, bbox (5.818,3.170)-(6.440,3.280) um
+  (the committed GDS is clean on the same rule). The pad is **not between**
+  the two rings' metal north bands (access 3.28..3.70 = 2.49 + DPAD ..
+  2.91 + DPAD at the raised ring, capacitor 4.07..4.49, both measured off
+  the committed GDS): the access band sits entirely above the pad top 3.17,
+  so the constraint is spacing, not the sweep-through short the
+  default-padding geometry had. Two stacked bands -- one per ring, each
   over its TAP_N pad (the access one riding the raised ring via
   `Y_TAP_ACC = 2.70 + DPAD` = 3.49, measured off `klt gen mos_array`) -- joined
   by a riser at x 3.05 + DPAD .. 3.45 + DPAD = 3.84..4.24 connect them
