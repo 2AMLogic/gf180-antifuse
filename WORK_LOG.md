@@ -3,6 +3,19 @@
 Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 
+### 2026-11-18
+
+- **PR #389**: layout: clear candidate3_Amin_G2x's generator-owned DF.4d_MV/DV.6 via acc-block ring padding (1.29 um), re-fit DX, Y_TAP_ACC and the strap x-extents
+- **PR #388**: docs(spec): re-record candidate 2's DRC census (27 -> 25) after #296 cleared the cap__core findings
+- **PR #387**: docs: qualify Run 3 slot-booking and GDS-date claims in spec/ and ROADMAP
+- **PR #384**: docs: replace stale inline ERC coverage figures with per-cell table pointer
+- **PR #381**: layout: clear candidate 3's generator-owned DF.4d_MV/DV.6 via acc-block ring padding (1.29 um), re-fit DX and VB strap
+- **Issue #385** (closed): docs/spec: candidate 2's native DRC finding count is stale in pdk-pcell-drc-exception-decision.md (27 quoted, committed report says 25)
+- **Issue #382** (closed): layout: cell_candidate3_Amin_G2x still carries the generator-owned DF.4d_MV x5 + DV.6 x1 that #297 cleared on cell_candidate3; apply ring_padding_acc_um to the 2x-area pfet variant
+- **Issue #379** (closed): Correct the remaining unqualified "Run 3 quarter slot" / "GDS due 2026-12-16" wording in spec/ and docs/ROADMAP.md
+- **Issue #378** (closed): layout/erc/README.md: candidate-1 coverage figures (11.79 um2, extent_uncovered_fraction 0.055) are stale against the committed report (13.0148, 0.114166)
+- **Issue #297** (closed): layout: clear candidate 3's generator-owned DF.4d_MV x5 and DV.6 via ring_padding_um, and file the klayout-tools well-overlap defect upstream
+
 ### 2026-11-17
 
 - **PR #377**: layout: draw the Run 3 bare-cap C2 fallback (2F), measure its native runset, propose the decision record
