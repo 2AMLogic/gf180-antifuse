@@ -5,6 +5,10 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-18
 
+- **PR #440**: docs: state geometry-claims checker scope and mark rtl/pnr note as unpinned
+- **Issue #439** (closed): Geometry-claims checker does not cover design-record docs outside layout/README.md
+- **PR #437**: docs(rtl): localize col_sel[2] LVS split to an abstract-cell multi-pad pin artifact
+- **Issue #436** (closed): Routed digital GDS: col_sel[2] extracts as two nets, gate-level LVS mismatch
 - **PR #433**: checker: fail claims whose quote spells an interval but omit quote_values
 - **Issue #419** (closed): geometry-claims checker: deleting quote_values re-opens the #414 coordinated-edit bypass
 - **PR #431**: test: guard WORK_PLAN.md plan-body block against generator-foreign annotations
