@@ -39,6 +39,13 @@ quote_values failure text that re-opened the #414 bypass a level up
 field). Only a quote that pins no interval may omit the field, and such
 claims behave exactly as before #414.
 
+Scope: ONLY layout/README.md is pinned. Design-record notes elsewhere
+(e.g. rtl/pnr/col_sel2_lvs_localization.md, issue #439) quote placed-cell
+and DEF coordinates read off a different artifact shape, are append-only
+evidence tied to a disclosed klt build, and are intentionally unpinned:
+regenerating the artifact makes them historical, not wrong. Revisit only if
+a live (non-historical) design doc outside layout/ starts quoting geometry.
+
 Measurement runs `klayout -b` (the repo has no klayout Python module) over
 merged metal1-style regions exactly as the issue's hand re-derivation did.
 A claim whose GDS, subcell, layer or bbox no longer resolves is a failure
