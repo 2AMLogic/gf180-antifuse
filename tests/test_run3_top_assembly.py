@@ -18,11 +18,13 @@ derived tables against the committed sources they must agree with.
   5. the routing planes: no two bundle nets share a plane where their
      bounding boxes overlap (BL metal4 / WL metal3 / VB metal2 / PL metal5).
 """
+import hashlib
 import json
 import re
 import sys
 import unittest
 import xml.etree.ElementTree as ET
+from collections import Counter
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -186,6 +188,39 @@ class Run3TopAssemblyTest(unittest.TestCase):
         density = json.loads(
             (ROOT / "layout/run3_top/drc_density_report.json").read_text())
         self.assertEqual(density["rule_counts"], {})
+
+    def test_stage_reports_pin_committed_layout(self):
+        # Issue #424: every committed stage report whose input is meant to
+        # be the committed layout must still record that layout's hash --
+        # otherwise regenerating run3_top.gds silently strands the evidence
+        # while the suite stays green (same class as #422, one step out).
+        # Exempt: drc_antenna_after_wl_diode_clamp_report.json, which is
+        # deliberately pinned to the historical diode-drawn GDS
+        # (79bc8414..., asserted in test_antenna_ratio_evidence).
+        reports = sorted((ROOT / "layout/run3_top").glob("drc_*_report.json"))
+        self.assertTrue(reports, "glob matched no drc_*_report.json")
+        self.assertIn("drc_antenna_after_wl_diode_clamp_report.json",
+                      {r.name for r in reports})
+        gds_hash = "sha256:" + hashlib.sha256(
+            (ROOT / "layout/run3_top/run3_top.gds").read_bytes()).hexdigest()
+        for report in reports:
+            if report.name == "drc_antenna_after_wl_diode_clamp_report.json":
+                continue
+            recorded = json.loads(
+                report.read_text())["provenance"]["input"]["content_hash"]
+            self.assertEqual(recorded, gds_hash, report.name)
+        # drc_antenna_stage.lyrdb carries no input hash of its own (its
+        # companion .log names only the path it ran on), so its tie to the
+        # layout is indirect: its per-rule finding counts must equal the
+        # hash-pinned antenna report's rule_counts -- read from the report,
+        # not a second set of literals here.
+        rdb_counts = Counter(
+            item.find("category").text.strip("'")
+            for item in ET.parse(
+                ROOT / "layout/run3_top/drc_antenna_stage.lyrdb").iter("item"))
+        antenna = json.loads(
+            (ROOT / "layout/run3_top/drc_antenna_report.json").read_text())
+        self.assertEqual(dict(rdb_counts), antenna["rule_counts"])
 
     def test_antenna_ratio_evidence(self):
         # Issue #422: the README's quoted antenna ratios must trace to a
