@@ -5,6 +5,10 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-18
 
+- **PR #400**: docs(layout): correct Amin_G2x VB-strap rationale to the measured spacing constraint
+- **Issue #391** (closed): layout: cell_candidate3_Amin_G2x's VB-strap rationale says the cap gate pad sits BETWEEN the two ring north bands; measured, it now sits below both
+- **PR #398**: docs: sync signoff README 3.analog row with the committed 5-finding DRC report
+- **Issue #396** (closed): signoff/README.md's 3.analog rationale is stale: it cites candidate 1's DF.1c and "6 findings", but the committed drc_native_report.json has 5 and no DF.1c (#287 is closed)
 - **PR #386**: docs: refresh candidate-1/3 native DRC finding counts in ROADMAP and PCell-exception record
 - **Issue #383** (closed): docs/spec: the native-finding count tables in docs/ROADMAP.md and spec/pdk-pcell-drc-exception-decision.md are stale for candidates 1 and 3 (DF.1c cleared by #296, DF.4d_MV/DV.6 by #297)
 - **Issue #287** (closed): Native PDK runset finds real DRC violations in all three bitcells that the curated deck misses: MOSCAP COMP width (all 3), 6 V gate length (cand 2), Nwell overlap and Dualgate enclose (cand 3)
