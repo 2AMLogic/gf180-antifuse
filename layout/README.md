@@ -664,9 +664,10 @@ The blocks are composed by port *name*, so `pins=[...]` needs no coordinate
 work. The `klt draw` rectangles are absolute in the composed frame and do
 **not** follow the blocks. At the 2x capacitor this cell needs the same two
 structural changes as the candidate-1 G2x cells (both derivations measured on
-the generated blocks; the candidate-1 family shares them via
-`layout/candidate1_points.py`, this cell keeps its own literals because its x
-extents differ):
+the generated blocks; each family shares them once -- candidate 1 via
+`layout/candidate1_points.py`, candidate 3 via `layout/candidate3_points.py`
+since #397 consolidated the two candidate-3 generators -- because the two
+families' x extents differ):
 
 - **`CN` source/drain strap -- doglegged.** CN leaves each tap ring through
   that ring's metal1 exit gap, which rises with device width (measured spans:
