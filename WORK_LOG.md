@@ -5,6 +5,8 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-18
 
+- **PR #431**: test: guard WORK_PLAN.md plan-body block against generator-foreign annotations
+- **Issue #430** (closed): Guide plan-body block carries hand-applied annotations the generator never emits (recurrence of #420)
 - **PR #428**: test: pin erc/lvs/economy sign-off reports to the committed layout by name
 - **Issue #427** (closed): Pin the ERC/LVS/economy sign-off reports to the committed layout, and name the expected report set
 - **PR #426**: test: pin run3_top stage report hashes to the committed GDS
