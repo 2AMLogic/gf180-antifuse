@@ -1,0 +1,10 @@
+{
+  "layout": {"file": "run3_top.gds", "deck": "gf180mcu", "top": "run3_top"},
+  "reference": {"netlist": "lvs_reference_drawn.spice", "top": "run3_top",
+                "form": "subckt-call", "deck": "gf180mcu"},
+  "options": {
+    "flatten_layout": true,
+    "flatten_reference": true,
+    "combine_devices": true
+  }
+}
