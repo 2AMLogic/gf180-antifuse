@@ -5,6 +5,7 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-18
 
+- **Issue #438** (closed): #176 is parked on #436, whose resolution moves the real blocker to klayout-tools#6742
 - **PR #440**: docs: state geometry-claims checker scope and mark rtl/pnr note as unpinned
 - **Issue #439** (closed): Geometry-claims checker does not cover design-record docs outside layout/README.md
 - **PR #437**: docs(rtl): localize col_sel[2] LVS split to an abstract-cell multi-pad pin artifact
