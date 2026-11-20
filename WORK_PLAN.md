@@ -31,12 +31,17 @@ Human-approved issues ready for implementation (`loom:issue`).
 Issues currently being built (`loom:building`).
 
 - **#255**: Measurement plan: constant-voltage time-to-breakdown statistics (Weibull slope, voltage acceleration) and a sub-programming soak
+- **#443**: signoff: manifest still pins the pre-#296 GDS hash, so 4.analog and 11.analog grade stale_evidence and verify.sh fails on main
+- **#445**: Digital: klt functional-verification of the routed antifuse_digital_top netlist (item 5 digital's missing report; groundwork for item 7 digital)
+- **#449**: Use the breakdown parameter checker in the oxide model and HV pad bench
 
 ## PRs Awaiting Review
 
 PRs waiting on Judge (`loom:review-requested`).
 
 - **#347**: docs: sourced wafer.space Run 3 precheck reading (would-reject verdict)
+- **#450**: fix: validate oxide model and pad bench parameters with the design parser
+- **#451**: fix: re-pin analog signoff evidence to post-#296 GDS hash and guard pins in check:ci
 
 ## Approved (Awaiting Merge)
 
@@ -57,6 +62,11 @@ Issues carrying `loom:curated`.
 - **#313**: sim/program-read-legs: capacity_wait_s spends the same per-submit subprocess budget as the run, and a subprocess timeout is not retried *(curated)*
 - **#316**: Follow-on: establish the foreign-host re-run byte-identity evidence for the shared report scrubber (PR #309 / #285 step 5) *(curated)*
 - **#338**: wafer.space: precheck treatment and foundry conversation on the unmodified nfet_10v0_asym PCell's CO.4/DF.6_MV/PL.4_MV findings (#299) *(curated)*
+- **#443**: signoff: manifest still pins the pre-#296 GDS hash, so 4.analog and 11.analog grade stale_evidence and verify.sh fails on main *(curated)*
+- **#444**: design/regen-netlists.sh: export through klt netlist instead of raw xschem so the item-1 freshness check can run on a worker (unblocks #117) *(curated)*
+- **#445**: Digital: klt functional-verification of the routed antifuse_digital_top netlist (item 5 digital's missing report; groundwork for item 7 digital) *(curated)*
+- **#446**: Digital timing: close setup at ss_125C_1v62 and ss_n40C_1v62 on the routed antifuse_digital_top (bounded design iteration; 5.digital stays uncited) *(curated)*
+- **#447**: T1 item 7 (analog) probe: klt pex on the drawn bitcells and a post-layout re-run of the access-device bench *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -76,10 +86,10 @@ Issues carrying `loom:curated`.
 | Very important | 0 |
 | Important | 2 |
 | Ready (`loom:issue`) | 1 |
-| In Progress (`loom:building`) | 1 |
-| PRs awaiting review | 1 |
+| In Progress (`loom:building`) | 4 |
+| PRs awaiting review | 3 |
 | Approved PRs awaiting merge | 1 |
-| Curated | 9 |
+| Curated | 14 |
 | Architect / Hermit proposals | 2 |
 | Active epics | 2 |
 <!-- guide:plan-body:end -->
