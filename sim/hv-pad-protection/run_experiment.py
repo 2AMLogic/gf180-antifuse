@@ -32,7 +32,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import re
 import shutil
 import sys
 import time
@@ -56,6 +55,7 @@ import verdicts as V  # noqa: E402
 
 CB = load_module(CB_DIR / "run_experiment.py", "sim_cb_lib")
 CHAR = CB.CHAR
+read_params = CB.CHECK.read_param_values
 
 # --- placeholders (README "Limits") -------------------------------------------
 V_PAD_MAX = 17.6          # 16 V (top of the ~8-16 V range of #203) + 10 % bench overshoot
@@ -92,11 +92,6 @@ def bench_defs(cand_n: int) -> dict[str, dict]:
     for m in models:
         d[f"jn_{m}_f"] = dict(kind="jn", path="direct", ramp="f", rext=True, jn=m)
     return d
-
-
-def read_params() -> dict[str, float]:
-    txt = (REPO_ROOT / "design" / "breakdown" / "breakdown_params.spice").read_text()
-    return {k: float(v) for k, v in re.findall(r"^\.param\s+(\w+)\s*=\s*([0-9.eE+-]+)", txt, re.M)}
 
 
 def vbd_of(cand_n: int, params: dict) -> float:
