@@ -3,7 +3,8 @@
   "netlist": "../synth/antifuse_digital_top_synth.v",
   "hdl_toplevel": "antifuse_digital_top",
   "pdk": {
-    "cell_library": "gf180mcu_fd_sc_mcu7t5v0"
+    "cell_library": "gf180mcu_fd_sc_mcu7t5v0",
+    "corner": "ss_125C_1v62"
   },
   "floorplan": {
     "method": "utilization",
@@ -17,7 +18,8 @@
   },
   "constraints": {
     "clock_port": "clk",
-    "clock_period_ns": 50
+    "clock_period_ns": 50,
+    "output_delay_ns": 0
   },
   "power": {
     "power_net": "VDD",

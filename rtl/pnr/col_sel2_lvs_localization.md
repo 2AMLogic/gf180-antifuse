@@ -52,3 +52,37 @@ Via1..Via4, flood fill from each pin access point). Coordinates in um.
   until that gap is closed; it must not be read as a layout open. No LVS
   option or `power_connectivity` setting was relaxed.
 - No new LVS report path exists to cite on #176; this note is the evidence.
+
+## Reproducer retrieval (issue #446, 2026-11-21)
+
+Issue #446 re-routes `antifuse_digital_top` (slow-corner optimization
+liberty) and replaces the routed GDS this note was pinned to. The last
+commit on `main` that carries the reproducer GDS
+`sha256:03876d4efa5f4deb8a6f551f8fd63b0e35ca522e31790d5eba7c0c53bf9422a9`
+is `9f2193ac8d9451e3c3272ce7663516d243da3ccb` ("fix: clear routed-GDS DRC
+by tightening tapcell pitch and dropping PDN split cuts", 2026-10-27); the
+geometry above is retrievable from that commit. This section is history:
+the localization and disposition above describe that GDS, not its
+replacement. The new route's own multi-pad pin split status is recorded in
+the addendum below and reported on #176.
+
+## Addendum: the replacement route (issue #446, 2026-11-21)
+
+The #446 re-route (slow-corner optimization liberty) replaced the routed GDS
+with `sha256:dae02f43855fda9b7c8f880fa62be529f3479af070dc34a82cbab4b140373bf5`.
+The reproduction above was re-run on it unchanged (same throwaway
+`uvx --from git+...@94950eeee19e4219d938b81cf742065bd333d750`, same flags):
+
+- Result: 557 nets, 550 pins; **no multi-pad pin split appears**. The only
+  anonymous nets are 7 single-terminal nets, the `ZN` outputs of the floating
+  clock-load cells (`inv`/`clkinv` leaves driving only a load) — a different,
+  benign artifact, not a named net losing a branch.
+- `col_sel[2]` extracts as one connected net: its register-side driver and
+  address register, the decoder-side inverter and all decoder loads are on
+  the single named net; no anonymous net carries a second terminal.
+
+This route therefore does not reproduce the klayout-tools#6742 symptom; the
+upstream gap itself is unchanged (abstract-cell extraction still drops the
+intra-cell connection between multi-pad pin pads), the localization and old
+GDS above remain the reproducer, and #176 stays open on the tool gap. No
+claim is made that a future route cannot re-split a net the same way.

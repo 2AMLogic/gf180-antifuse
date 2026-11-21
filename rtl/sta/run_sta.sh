@@ -26,7 +26,7 @@ want = [c["name"] for c in pnr["corners"]]
 got = [c["corner"] for c in rep["corners"]]
 assert got == want, f"corner list drifted: {got} != {want}"
 assert req["pdk"]["corners"] == want, "sta request does not name every P&R corner"
-assert req["constraints"] == {"clock_port": "clk", "clock_period_ns": 50}
+assert req["constraints"] == {"clock_port": "clk", "clock_period_ns": 50, "output_delay_ns": 0}
 assert rep["geometry_source"] == "routed" and rep["status"] == "ok"
 assert rep["spef_path"]["path"] == "rtl/sta/antifuse_digital_top.spef"
 for c in rep["corners"]:

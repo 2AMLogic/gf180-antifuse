@@ -24,6 +24,7 @@
   },
   "constraints": {
     "clock_port": "clk",
-    "clock_period_ns": 50
+    "clock_period_ns": 50,
+    "output_delay_ns": 0
   }
 }

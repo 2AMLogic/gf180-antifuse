@@ -98,8 +98,10 @@ parked on the runner question, not on a decision.
 - **Analog items 5, 6, 8.** First: which read-margin, `I_ref` and yield rows
   get ratified limits? Item 6 needs measured breakdown data.
 - **Digital timing (`5.digital`, `7.digital`).** First: is the 50 ns target a
-  requirement (`rtl/README.md` calls it a P&R input)? Then close setup at the
-  two `ss` corners and add a routed `klt functional-verification` run.
+  requirement (`rtl/README.md` calls it a P&R input)? Setup at the two `ss`
+  corners is closed (issue #446: all 15 corners meet setup and hold on the
+  re-routed geometry). Remaining: a routed `klt functional-verification` run
+  (#445) and the target question.
 - **Silicon measurements** in `measurements/run3/records/` (none today),
   replacing `assumed` breakdown parameters. First: is a slot secured?
 
