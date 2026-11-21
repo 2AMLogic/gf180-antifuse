@@ -99,7 +99,9 @@ parked on the runner question, not on a decision.
   get ratified limits? Item 6 needs measured breakdown data.
 - **Digital timing (`5.digital`, `7.digital`).** First: is the 50 ns target a
   requirement (`rtl/README.md` calls it a P&R input)? Then close setup at the
-  two `ss` corners and add a routed `klt functional-verification` run.
+  two `ss` corners. The routed zero-delay `klt functional-verification` run
+  is done (issue #445); the SDF-annotated leg waits on
+  klayout-tools#6991.
 - **Silicon measurements** in `measurements/run3/records/` (none today),
   replacing `assumed` breakdown parameters. First: is a slot secured?
 

@@ -151,3 +151,19 @@ Mutants killed (recorded run, 21/21 tests pass, score 1.0): `FIRE` unarmed
 configuration cannot fit a rejected-write frame inside a read, so the
 write-rejected-while-reading case stays with the Verilog bench's N = 20
 configuration.
+
+### Gate-level run of the routed netlist (issue #445)
+
+`test_antifuse_digital_top.py` is the same port-only discipline pointed at
+the **routed netlist** `rtl/pnr/antifuse_digital_top_routed.v` (N = 32,
+`ARM_TIMEOUT` 4096, `READ_SETTLE` 8 baked in), with the
+`gf180mcu_fd_sc_mcu7t5v0` behavioural cell models resolved from the PDK by
+the request's `pdk` block — zero-delay `FUNCTIONAL` branch, no SDF. It
+reuses the port-applicable `test_spi_regs.py` coverage at the netlist's own
+constants and adds decoder coverage through the `row_onehot`/`col_onehot`
+ports: a per-cycle one-hot monitor active in every test, a sweep of all 32
+row and 32 column indices, and an idle-one-hot test. Recorded result:
+21/21 pass. The runner, report, input hashes, the SDF-annotated leg (which
+fails functionally today — klayout-tools#6991) and the pinned klt build are
+documented in `rtl/README.md`, "Gate-level functional verification"
+(`rtl/run_gate_sim.sh`).

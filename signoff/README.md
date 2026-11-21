@@ -165,25 +165,38 @@ was claimed:
 changed.
 
 
-## Item 5 (digital): post-route STA is supporting evidence, not a citation (issue #250)
+## Item 5 (digital): post-route STA and gate-level functional verification are supporting evidence, not citations (issues #250, #445)
 
-`rtl/sta/antifuse_digital_top.sta.report.json` is a `klt sta` report of the
-routed `antifuse_digital_top` across all 15 corners of the place-and-route
-report, annotated with a SPEF extracted from the routed GDS (all 544 design
-nets annotated at every corner). It is listed under `supporting_evidence`
-(kind `sta`) and **not** under `evidence`, so `5.digital` stays `unmet`,
-`no_evidence`. Two reasons, either sufficient:
+Two reports back this item, both under `supporting_evidence` and **not**
+under `evidence`, so `5.digital` stays `unmet`, `no_evidence`:
 
-- Item 5's `sta` citation passes only when every corner has non-negative setup
-  and hold slack. `ss_125C_1v62` (setup -5.533 ns) and `ss_n40C_1v62`
-  (-2.231 ns) fail setup at the 50 ns target.
-- The item also needs a `klt functional-verification` report for the routed
-  design; none exists. The cocotb report under `supporting_evidence` covers
-  the register block's RTL only.
+- `rtl/sta/antifuse_digital_top.sta.report.json` (kind `sta`, issue #250):
+  `klt sta` of the routed `antifuse_digital_top` across all 15 corners of
+  the place-and-route report, annotated with a SPEF extracted from the
+  routed GDS (all 544 design nets annotated at every corner).
+- `verification/cocotb/report_digital_top.json` (kind
+  `functional-verification`, issue #445): the port-only cocotb suite re-run
+  against the **routed netlist** with the PDK cell models, zero-delay,
+  21/21 tests pass (`rtl/run_gate_sim.sh`). This retires the second of the
+  two reasons issue #250 recorded — the routed design now has its
+  `klt functional-verification` report, where the cocotb report that
+  existed then covered the register block's RTL only.
 
-`report.json` is unchanged. Citing the report would turn a failing timing
-result into a green row, which rule 2 below forbids. Figures are in
-`rtl/README.md`, "Place-and-route".
+Conditions that keep the row `unmet`, either one sufficient:
+
+- Item 5's `sta` citation passes only when every corner has non-negative
+  setup and hold slack. `ss_125C_1v62` (setup -5.533 ns) and `ss_n40C_1v62`
+  (-2.231 ns) fail setup at the 50 ns target — and that target is a P&R
+  input, not a ratified spec value (item 5 grades "vs a ratified spec").
+
+`report.json` is unchanged. Citing the STA report would turn a failing
+timing result into a green row, which rule 2 below forbids. Figures are in
+`rtl/README.md`, "Place-and-route"; the gate-level flow and its blocked
+SDF-annotated leg (item 7's own requirement, `environment.sdf.annotated:
+true` — the annotated run fails functionally,
+[2AMLogic/klayout-tools#6991](https://github.com/2AMLogic/klayout-tools/issues/6991))
+are in `rtl/README.md`, "Gate-level functional verification". `7.digital`
+stays `unmet`, `no_evidence`.
 
 ## Item 1 (digital): synthesis evidence (issues #60, #172)
 
