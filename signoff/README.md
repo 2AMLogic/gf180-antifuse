@@ -88,8 +88,19 @@ The manifest cites the verdict the grader can read: a plain native-deck
 envelope, `layout/cell_candidate1/drc_native_report.json` (`klt drc --engine
 klayout`, `status: violations`, 5 findings as of 2026-11-18 -- `DBU` x1 and
 the density rules `M2.4`/`M3.4`/`MT30.7`/`PL.8` -- produced with klayout-tools
-`0.9.2` and `--deck-var decks=all,-mslot`), pinned to the same GDS sha256 as
-before -- no geometry moved, so the pinned `content_hash` is unchanged. A
+`0.9.2` and `--deck-var decks=all,-mslot`). When the native report replaced
+the curated one as this row's citation, no geometry had moved, so the pinned
+`content_hash` carried over unchanged. The ratified capacitor levels of
+issue #296 (`2a8614fc`, 2026-11-17) then moved the GDS to
+`sha256:d31a786e...`, and the manifest still pinned the pre-#296 hash
+`sha256:4fa502d0...`: this row kept grading `unmet` / `check_failed` (its
+real verdict), while `4.analog` and `11.analog` silently dropped to
+`stale_evidence` -- invisible without CI (#14) and invisible to
+`klt signoff --check`, which compares verdicts, not pins (issue #443). All
+four analog pins were re-pinned to the envelopes' own
+`provenance.input.content_hash` (`sha256:d31a786e...`), and
+`scripts/check_signoff_pins.py` now guards the pin offline (see "CI" below).
+A
 `mode: "crosscheck"` envelope cannot be cited here: `klt signoff` grades it
 `"unrecognized_envelope"` (measured 2026-11-15; filed upstream as
 2AMLogic/klayout-tools#5815), which would make the honest verdict
@@ -165,15 +176,19 @@ was claimed:
 changed.
 
 
-## Item 5 (digital): post-route STA and gate-level functional verification are supporting evidence, not citations (issues #250, #445)
+## Item 5 (digital): post-route STA and gate-level functional verification are supporting evidence, not citations (issues #250, #445, #446)
 
 Two reports back this item, both under `supporting_evidence` and **not**
 under `evidence`, so `5.digital` stays `unmet`, `no_evidence`:
 
-- `rtl/sta/antifuse_digital_top.sta.report.json` (kind `sta`, issue #250):
-  `klt sta` of the routed `antifuse_digital_top` across all 15 corners of
-  the place-and-route report, annotated with a SPEF extracted from the
-  routed GDS (all 544 design nets annotated at every corner).
+- `rtl/sta/antifuse_digital_top.sta.report.json` (kind `sta`, issues #250,
+  #446): `klt sta` of the routed `antifuse_digital_top` across all 15 corners
+  of the place-and-route report, annotated with a SPEF extracted from the
+  routed GDS (all 550 design nets annotated at every corner). Setup and hold
+  are met at every corner on the #446 re-route (worst setup +0.640 ns at
+  `ss_125C_1v62`, zero max-transition and max-capacitance violations; the
+  corner set and the 50 ns target are unchanged), so the timing half of the
+  item's evidence bar is now met.
 - `verification/cocotb/report_digital_top.json` (kind
   `functional-verification`, issue #445): the port-only cocotb suite re-run
   against the **routed netlist** with the PDK cell models, zero-delay,
@@ -182,18 +197,16 @@ under `evidence`, so `5.digital` stays `unmet`, `no_evidence`:
   `klt functional-verification` report, where the cocotb report that
   existed then covered the register block's RTL only.
 
-Conditions that keep the row `unmet`, either one sufficient:
+Condition that keeps the row `unmet`:
 
-- Item 5's `sta` citation passes only when every corner has non-negative
-  setup and hold slack. `ss_125C_1v62` (setup -5.533 ns) and `ss_n40C_1v62`
-  (-2.231 ns) fail setup at the 50 ns target — and that target is a P&R
-  input, not a ratified spec value (item 5 grades "vs a ratified spec").
+- The 50 ns `clk` target is a P&R input chosen in `rtl/README.md`, not a
+  ratified spec value (first open question under "Digital timing" in
+  `docs/ROADMAP.md`); item 5 grades against a ratified spec.
 
-`report.json` is unchanged. Citing the STA report would turn a failing
-timing result into a green row, which rule 2 below forbids. Figures are in
-`rtl/README.md`, "Place-and-route"; the gate-level flow and its blocked
-SDF-annotated leg (item 7's own requirement, `environment.sdf.annotated:
-true` — the annotated run fails functionally,
+`report.json` is unchanged. Figures are in `rtl/README.md`,
+"Place-and-route"; the gate-level flow and its blocked SDF-annotated leg
+(item 7's own requirement, `environment.sdf.annotated: true` — the
+annotated run fails functionally,
 [2AMLogic/klayout-tools#6991](https://github.com/2AMLogic/klayout-tools/issues/6991))
 are in `rtl/README.md`, "Gate-level functional verification". `7.digital`
 stays `unmet`, `no_evidence`.
@@ -419,3 +432,16 @@ is written to be dropped straight into that workflow (or into
 `package.json`'s `check:ci` hook, which #15 also touches) with no
 adaptation: it needs only `klt` and `python3`, reads nothing outside the
 repo, and prints the exact remediation command on failure.
+
+`npm run check:ci` also runs `scripts/check_signoff_pins.py` (issue #443): a
+stdlib-only guard that needs no `klt` and checks, for every `evidence`
+citation part in `manifest.json`, that three hashes agree -- the manifest's
+pinned `content_hash`, the cited envelope's recorded
+`provenance.input.content_hash`, and the sha256 of the input bytes the
+envelope names (`provenance.input.path` for attestations, top-level `file`
+for DRC/ERC, top-level `layout` for LVS). This is the drift `verify.sh`
+cannot see: a stale pin on a row that already grades `check_failed`
+(`3.analog`) renders no citation in `report.json`, so the grader's freshness
+check and the byte-compare both pass while the manifest pins a hash whose
+bytes are gone. `tests/test_check_signoff_pins.py` covers the stale-pin,
+compound-part and moved-bytes cases.
