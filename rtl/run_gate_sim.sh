@@ -59,9 +59,10 @@ for want in ("reset_values_and_idle_outputs", "program_full_sequence",
     assert want in names, want
 # port-only discipline: no hierarchical reference into the netlist beyond
 # <dut>.<port>.value / <dut>._log, whichever way the suite spells the receiver
-# (dut, self.dut, or the d = self.dut alias); matches are a failure
+# (dut, self.dut, b.dut or any attribute chain ending in dut, or the d = self.dut
+# alias); matches are a failure
 hier_re = re.compile(
-    r"(?<![A-Za-z_0-9.])(?:self\.dut|dut|d)\.(?!_log\b)[A-Za-z_0-9]+\.(?!value\b)")
+    r"(?<![A-Za-z_0-9.])(?:(?:[A-Za-z_0-9]+\.)*dut|d)\.(?!_log\b)[A-Za-z_0-9]+\.(?!value\b)")
 with open(suite) as fh:
     hier = [f"{n}:{line.rstrip()}" for n, line in enumerate(fh, 1) if hier_re.search(line)]
 assert not hier, "hierarchical reference(s) in the suite:\n" + "\n".join(hier)
