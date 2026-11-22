@@ -13,127 +13,127 @@
       "name": "reset_values_and_idle_outputs",
       "status": "passed",
       "sim_time_ns": 16430.0,
-      "real_time_s": 0.104
+      "real_time_s": 0.058
     },
     {
       "name": "miso_enable_follows_cs",
       "status": "passed",
       "sim_time_ns": 220.0,
-      "real_time_s": 0.002
+      "real_time_s": 0.001
     },
     {
       "name": "row_col_pw_read_write",
       "status": "passed",
       "sim_time_ns": 68120.0,
-      "real_time_s": 0.372
+      "real_time_s": 0.251
     },
     {
       "name": "onehot_idle_while_sel_changes",
       "status": "passed",
       "sim_time_ns": 22000.0,
-      "real_time_s": 0.069
+      "real_time_s": 0.087
     },
     {
       "name": "out_of_range_row_col_rejected",
       "status": "passed",
       "sim_time_ns": 51799.999999999985,
-      "real_time_s": 0.36
+      "real_time_s": 0.182
     },
     {
       "name": "ctrl_arm_disarm_and_reserved",
       "status": "passed",
       "sim_time_ns": 54520.0,
-      "real_time_s": 0.197
+      "real_time_s": 0.196
     },
     {
       "name": "read_only_and_unknown_addresses",
       "status": "passed",
       "sim_time_ns": 40920.0,
-      "real_time_s": 0.243
+      "real_time_s": 0.159
     },
     {
       "name": "status_read_clears_protocol_error",
       "status": "passed",
       "sim_time_ns": 8279.99999999997,
-      "real_time_s": 0.066
+      "real_time_s": 0.031
     },
     {
       "name": "program_full_sequence",
       "status": "passed",
       "sim_time_ns": 19230.0,
-      "real_time_s": 0.16
+      "real_time_s": 0.068
     },
     {
       "name": "decoder_onehot_all_indices",
       "status": "passed",
       "sim_time_ns": 701720.0,
-      "real_time_s": 3.184
+      "real_time_s": 2.688
     },
     {
       "name": "pulse_width_cycle_counts",
       "status": "passed",
       "sim_time_ns": 71050.0,
-      "real_time_s": 0.234
+      "real_time_s": 0.266
     },
     {
       "name": "read_settle_cycle_count_and_data",
       "status": "passed",
       "sim_time_ns": 16640.0,
-      "real_time_s": 0.051
+      "real_time_s": 0.068
     },
     {
       "name": "read_while_armed_rejected",
       "status": "passed",
       "sim_time_ns": 8280.0,
-      "real_time_s": 0.027
+      "real_time_s": 0.033
     },
     {
       "name": "fire_unarmed_rejected",
       "status": "passed",
       "sim_time_ns": 17240.0,
-      "real_time_s": 0.086
+      "real_time_s": 0.062
     },
     {
       "name": "fire_with_other_command_bytes_never_pulses",
       "status": "passed",
       "sim_time_ns": 42320.0,
-      "real_time_s": 0.335
+      "real_time_s": 0.176
     },
     {
       "name": "fire_while_busy_rejected",
       "status": "passed",
       "sim_time_ns": 24300.0,
-      "real_time_s": 0.192
+      "real_time_s": 0.1
     },
     {
       "name": "bad_frame_length_sets_protocol_error",
       "status": "passed",
       "sim_time_ns": 47800.0,
-      "real_time_s": 0.347
+      "real_time_s": 0.172
     },
     {
       "name": "truncated_and_overlong_writes_do_not_commit",
       "status": "passed",
       "sim_time_ns": 16440.0,
-      "real_time_s": 0.122
+      "real_time_s": 0.057
     },
     {
       "name": "overlong_fire_frame_never_pulses",
       "status": "passed",
       "sim_time_ns": 14120.0,
-      "real_time_s": 0.113
+      "real_time_s": 0.055
     },
     {
       "name": "arm_timeout_expires",
       "status": "passed",
       "sim_time_ns": 55480.0,
-      "real_time_s": 0.442
+      "real_time_s": 0.254
     },
     {
       "name": "arm_timeout_boundary",
       "status": "passed",
       "sim_time_ns": 797500.0,
-      "real_time_s": 3.573
+      "real_time_s": 3.374
     }
   ],
   "coverage": null,
@@ -146,12 +146,12 @@
     "results_xml": {
       "path": "verification/cocotb/.klt/functional-verification/results_icarus.xml",
       "scope": "repo",
-      "sha256": "sha256:80877a7a345c21a8d55caa6c66e7800986d691801797cb9ba73ac36a6a0d6f33"
+      "sha256": "sha256:124e5e5ad0d684a01d6aa729cde40a0db60b00cf9ae3b4c51b94f2dd3ce5b39b"
     },
     "test_log": {
       "path": "verification/cocotb/.klt/functional-verification/test_icarus.log",
       "scope": "repo",
-      "sha256": "sha256:e47d766aba24393907a0aeab9c74bec333bf5e13c0c68722e88deed02e994530"
+      "sha256": "sha256:ce4ee874ac38ecab5727233e71aaf25e655468d5fd778d9714a71af47552f387"
     },
     "build_log": {
       "path": "verification/cocotb/.klt/functional-verification/build_icarus.log",

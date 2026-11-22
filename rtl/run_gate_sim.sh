@@ -32,7 +32,7 @@ INPUTS=($NET $D/test_antifuse_digital_top.py $REQ $SDF_STA_REQ $SDF_REQ)
 
 check_report() {
 python3 -I - "$REPORT" "$NET" "$PIN" "$D/test_antifuse_digital_top.py" <<'PY'
-import json, re, subprocess, sys
+import json, re, sys
 rep, net, pin, suite = sys.argv[1:5]
 r = json.load(open(rep))
 assert r["schema_version"] == 2, r["schema_version"]
@@ -58,11 +58,13 @@ for want in ("reset_values_and_idle_outputs", "program_full_sequence",
              "arm_timeout_expires", "arm_timeout_boundary"):
     assert want in names, want
 # port-only discipline: no hierarchical reference into the netlist beyond
-# dut.<port>.value / dut._log (grep -P; matches are a failure)
-hier = subprocess.run(
-    ["grep", "-nP", r"dut\.(?!_log\b)[A-Za-z_0-9]+\.(?!value\b)", suite],
-    capture_output=True, text=True)
-assert hier.returncode == 1, f"hierarchical reference(s) in the suite:\n{hier.stdout}"
+# <dut>.<port>.value / <dut>._log, whichever way the suite spells the receiver
+# (dut, self.dut, or the d = self.dut alias); matches are a failure
+hier_re = re.compile(
+    r"(?<![A-Za-z_0-9.])(?:self\.dut|dut|d)\.(?!_log\b)[A-Za-z_0-9]+\.(?!value\b)")
+with open(suite) as fh:
+    hier = [f"{n}:{line.rstrip()}" for n, line in enumerate(fh, 1) if hier_re.search(line)]
+assert not hier, "hierarchical reference(s) in the suite:\n" + "\n".join(hier)
 print(f"report ok: {r['passed_count']}/{r['test_count']} tests, "
       f"zero-delay gate-level, {len(srcs)} sources incl. PDK models")
 PY
