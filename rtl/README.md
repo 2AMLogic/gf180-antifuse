@@ -334,16 +334,18 @@ corners of the P&R report (`klayout-tools==0.8.0`, PDK `gf180mcuD`, 50 ns `clk`,
 Annotation: 550 of 550 design nets are named by the SPEF at every corner and
 `annotation_complete` is true. The DEF carries the connectivity STA reads; the
 routed netlist is hashed as the as-built reference but is not read by `klt sta`.
-Caveats recorded by klt: 7 floating `clkload*` cell outputs have no
-parasitics; the extractor computed parasitics for 1663 nets but wrote
-`*D_NET` blocks only for the 550 the DEF names (unlabelled or duplicate-named
-nets get none); and `constraint_completeness` is `incomplete` for 4
-endpoints — the `D` pins of the first-level `cs_n`/`mosi`/`sclk` synchronizer
-registers, unconstrained because the request sets no input delay on those
-asynchronous SPI inputs (deliberate; they are double-flop synchronized). The
-83 output ports are constrained (`output_delay_ns: 0`, a P&R input chosen
-here like the clock target — not a spec value, issue #446), so
-`timing_status` is `constrained` at every corner.
+Seven floating `clkload*` cell outputs have no parasitics. The extractor
+computed parasitics for 1663 nets but wrote `*D_NET` blocks only for the 550
+the DEF names (unlabelled or duplicate-named nets get none).
+
+The baseline STA reported 83 unconstrained endpoints. Setting
+`output_delay_ns: 0` constrains all 79 output ports in the routed DEF. This
+zero delay is a P&R assumption chosen for issue #446. The request sets no
+input delay on the asynchronous SPI inputs `cs_n`, `sclk` and `mosi`, or on
+the asynchronous sense-amplifier input `sense_in`. Each feeds a two-flop
+synchronizer whose first-stage D pin remains unconstrained. At all 15 corners,
+STA reports `timing_status` as `constrained` and `constraint_completeness`
+as `incomplete` for those four endpoints.
 
 Setup and hold slack are the worst slack in ns; violations are path counts;
 max-tran and max-cap are the `electrical_checks` counts; the last column is the

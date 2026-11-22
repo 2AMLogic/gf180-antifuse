@@ -55,16 +55,14 @@ Via1..Via4, flood fill from each pin access point). Coordinates in um.
 
 ## Reproducer retrieval (issue #446, 2026-11-21)
 
-Issue #446 re-routes `antifuse_digital_top` (slow-corner optimization
-liberty) and replaces the routed GDS this note was pinned to. The last
-commit on `main` that carries the reproducer GDS
-`sha256:03876d4efa5f4deb8a6f551f8fd63b0e35ca522e31790d5eba7c0c53bf9422a9`
-is `9f2193ac8d9451e3c3272ce7663516d243da3ccb` ("fix: clear routed-GDS DRC
-by tightening tapcell pitch and dropping PDN split cuts", 2026-10-27); the
-geometry above is retrievable from that commit. This section is history:
-the localization and disposition above describe that GDS, not its
-replacement. The new route's own multi-pad pin split status is recorded in
-the addendum below and reported on #176.
+To reproduce the split, use pre-replacement `main` revision
+`eeba73a7d5e09fb038bd8c0b1fd1d95547b3f06b`. It contains both this
+localization note and `rtl/pnr/antifuse_digital_top.gds` with SHA-256
+`03876d4efa5f4deb8a6f551f8fd63b0e35ca522e31790d5eba7c0c53bf9422a9`.
+Commit `9f2193ac8d9451e3c3272ce7663516d243da3ccb` last changed that GDS
+before issue #446 replaced it. The localization and disposition above
+describe the old route. The addendum below and #176 record the result for
+the replacement.
 
 ## Addendum: the replacement route (issue #446, 2026-11-21)
 
