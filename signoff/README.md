@@ -12,7 +12,7 @@ verdict of record — not a prose checklist, not a comment thread.
 Regenerate and check:
 
 ```sh
-klt signoff --manifest signoff/manifest.json --format json > signoff/report.json
+uvx --from "klayout-tools==0.8.0" klt signoff --manifest signoff/manifest.json --format json > signoff/report.json
 ./signoff/verify.sh
 ```
 
@@ -34,6 +34,13 @@ scope rules do not allow). The `0.8.0` regrade was needed because
 ships in `0.8.0`. A build older than the one named here will not reproduce
 this report byte-for-byte. Run it without touching the host tool:
 `uvx --from "klayout-tools==0.8.0" klt signoff --manifest signoff/manifest.json --format json`.
+`verify.sh` grades through that same pin -- `KLT=${KLT_CMD:-uvx --from klayout-tools==0.8.0 klt}`,
+the pattern `rtl/pnr/run_drc.sh` uses -- so the `klt` on the host `PATH` is
+never the grader: a newer host build bundles a different checklist and used to
+fail the check on a clean tree (issue #469). Set `KLT_CMD` to grade with another
+build (`KLT_CMD=klt ./signoff/verify.sh` for the host install); an override
+grades against its own build's checklist too, so only the pinned run is the
+anti-rot gate.
 
 `klt signoff --manifest` exits **3** whenever any T1 item is `unmet`
 (`tier: null`) and **0** only when every item is met. Exit 3 is a *verdict*,
@@ -430,8 +437,10 @@ to be read out of the citation and stated in this file.
 #15 open against it — so this check is not yet wired to a PR-blocking job. It
 is written to be dropped straight into that workflow (or into
 `package.json`'s `check:ci` hook, which #15 also touches) with no
-adaptation: it needs only `klt` and `python3`, reads nothing outside the
-repo, and prints the exact remediation command on failure.
+adaptation: it needs only `uv` and `python3` (it runs the pinned
+`klayout-tools==0.8.0` through `uvx`; `KLT_CMD` overrides the launcher), reads
+no evidence outside the repo, and prints the exact remediation command on
+failure.
 
 `npm run check:ci` also runs `scripts/check_signoff_pins.py` (issue #443): a
 stdlib-only guard that needs no `klt` and checks, for every `evidence`
