@@ -176,24 +176,28 @@ was claimed:
 changed.
 
 
-## Item 5 (digital): post-route STA is supporting evidence, not a citation (issue #250)
+## Item 5 (digital): post-route STA is supporting evidence, not a citation (issues #250, #446)
 
 `rtl/sta/antifuse_digital_top.sta.report.json` is a `klt sta` report of the
 routed `antifuse_digital_top` across all 15 corners of the place-and-route
-report, annotated with a SPEF extracted from the routed GDS (all 544 design
+report, annotated with a SPEF extracted from the routed GDS (all 550 design
 nets annotated at every corner). It is listed under `supporting_evidence`
 (kind `sta`) and **not** under `evidence`, so `5.digital` stays `unmet`,
-`no_evidence`. Two reasons, either sufficient:
+`no_evidence`. Setup and hold are met at every corner on the #446 re-route
+(worst setup +0.640 ns at `ss_125C_1v62`, zero max-transition and
+max-capacitance violations; the corner set and the 50 ns target are
+unchanged), so the timing half of the item's evidence bar is now met. Two
+blockers remain, either sufficient to keep the row uncited:
 
-- Item 5's `sta` citation passes only when every corner has non-negative setup
-  and hold slack. `ss_125C_1v62` (setup -5.533 ns) and `ss_n40C_1v62`
-  (-2.231 ns) fail setup at the 50 ns target.
+- The 50 ns `clk` target is a P&R input chosen in `rtl/README.md`, not a
+  ratified spec value (first open question under "Digital timing" in
+  `docs/ROADMAP.md`); item 5 grades against a ratified spec.
 - The item also needs a `klt functional-verification` report for the routed
-  design; none exists. The cocotb report under `supporting_evidence` covers
-  the register block's RTL only.
+  design (#445); none exists. The cocotb report under `supporting_evidence`
+  covers the register block's RTL only.
 
-`report.json` is unchanged. Citing the report would turn a failing timing
-result into a green row, which rule 2 below forbids. Figures are in
+`report.json`'s `5.digital` row is unchanged by #446; the refreshed
+`supporting_evidence` pin records the re-routed STA report. Figures are in
 `rtl/README.md`, "Place-and-route".
 
 ## Item 1 (digital): synthesis evidence (issues #60, #172)
