@@ -30,7 +30,7 @@ no claim about breakdown behaviour.
 
 | File | What it is |
 |---|---|
-| `generate.py` | Deterministic generator: this candidate's parameters (flavor, `L_ACC`, `DX`, placement, pin map) plus calls into the shared `layout/bitcell_gen.py` (the flow: `klt gen mos_array` x2, `klt draw` for the straps and marker, `klt gen-compose` explicit placement) and `layout/candidate1_points.py` (`straps(1.0, 0.42)`: CN, VB and the MOS-capacitor marker, derived once for the whole candidate-1 family). `--check` regenerates and compares the committed GDS byte-for-byte. |
+| `generate.py` | Deterministic generator: names the `Amin_Gmin` entry of `layout/candidate1_points.py`, which holds this candidate's parameters (flavor, `L_ACC`, `DX`, placement, pin map) and the strap derivation shared by the whole candidate-1 family (CN, VB and the MOS-capacitor marker). The flow (`klt gen mos_array` x2, `klt draw` for the straps and marker, `klt gen-compose` explicit placement) and the `--check` byte-compare live in the shared `layout/bitcell_gen.py`; `--check` regenerates and compares the committed GDS byte-for-byte. |
 | `cell_candidate1.gds` | Generated layout, top cell `cell_candidate1`, pins/labels `BL`, `WL`, `PL`, `VB`. |
 | `drc_report.json` | `klt drc --deck gf180mcu --top cell_candidate1` report (status `clean`, 0 violations) -- the **curated deck's** verdict; see "DRC" for the native runset's. |
 | `drc_crosscheck_report.json` | Curated-vs-native cross-check, `klt drc --engine both --deck gf180mcu --top cell_candidate1 --pdk gf180mcuA --deck-var decks=all,-mslot` (klayout-tools `0.9.2`, KLayout `0.30.13`): curated `clean`, native runset `violations`, **5 findings** -- `DBU` and the die-level density rules only; the cell-level `DF.1c` is **gone** (see "DRC"). |
@@ -50,12 +50,11 @@ release that reproduces every committed GDS byte-for-byte.) Regenerate with
 generators need `klt` on PATH; to pin it without touching the host tool, run
 `uvx --from klayout-tools==0.8.0 --with klayout==0.30.12 python3
 layout/cell_candidate1/generate.py --check`. Per-candidate geometry stays in
-each `generate.py`, except the candidate-1 split points
-(`cell_candidate1_{A2x_G2x,A2x_Gmin,Amin_G2x}`) **and this cell**: their
-shared constants and strap derivation live in `layout/candidate1_points.py`
-(this cell calls `straps(1.0, 0.42)`), and each of those `generate.py` files
-names one `POINTS` entry. Only the flow and `--check` live in
-`layout/bitcell_gen.py`.
+each `generate.py`, except the candidate-1 points (`cell_candidate1` and
+`cell_candidate1_{A2x_G2x,A2x_Gmin,Amin_G2x}`): their shared constants and
+strap derivation live in `layout/candidate1_points.py`, and each of those
+`generate.py` files names one `POINTS` entry. Only the flow and `--check`
+live in `layout/bitcell_gen.py`.
 
 ### Geometry point
 

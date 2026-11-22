@@ -1,9 +1,9 @@
 """Point table and shared geometry for the candidate-1 split-axis generators.
 
-The three split cells (`cell_candidate1_A2x_G2x`, `cell_candidate1_A2x_Gmin`,
-`cell_candidate1_Amin_G2x`) draw the same cell as `layout/cell_candidate1/` --
+The four candidate-1 cells (`cell_candidate1`, `cell_candidate1_A2x_G2x`,
+`cell_candidate1_A2x_Gmin`, `cell_candidate1_Amin_G2x`) draw the same cell --
 thin-oxide NMOS capacitor (antifuse element, netlist `cap_nmos_03v3`) in series
-with a 6.0 V NMOS access device (`nfet_06v0`) -- at different points of the
+with a 6.0 V NMOS access device (`nfet_06v0`) -- at the four points of the
 split-axis grid (spec/cell-candidates.md, spec/split-axis-plan.md sections
 2-3). Each point's `(CELL, W_CAP, W_ACC)` triple is written exactly once, in
 `POINTS`; the per-point `generate.py` files name one entry and defer here for
@@ -86,14 +86,18 @@ CN_ROW = (0.25, 0.48)
 
 # The candidate-1 split-axis points: key -> (cell directory, W_CAP um,
 # W_ACC um). This table is the only place a point's constants are written;
-# each cell_candidate1_*/generate.py names exactly one entry.
+# each cell_candidate1*/generate.py names exactly one entry. (The Minimum
+# point's directory keeps its un-suffixed name cell_candidate1/ -- its
+# reports are cited by signoff/manifest.json and its GDS sha256 is what its
+# own `--check` pins; the grid point is C1_Amin_Gmin.)
 # Maintenance: each generate.py docstring restates its point's two widths in
 # prose. The GDS `--check` gate compares bytes, so it cannot catch a stale
 # docstring; update the shim's docstring whenever a width here changes.
 POINTS = {
-    "A2x_G2x":  ("cell_candidate1_A2x_G2x",  2.0, 0.84),
-    "A2x_Gmin": ("cell_candidate1_A2x_Gmin", 1.0, 0.84),
-    "Amin_G2x": ("cell_candidate1_Amin_G2x", 2.0, 0.42),
+    "Amin_Gmin": ("cell_candidate1",           1.0, 0.42),
+    "A2x_G2x":   ("cell_candidate1_A2x_G2x",   2.0, 0.84),
+    "A2x_Gmin":  ("cell_candidate1_A2x_Gmin",  1.0, 0.84),
+    "Amin_G2x":  ("cell_candidate1_Amin_G2x",  2.0, 0.42),
 }
 
 PINS = [
