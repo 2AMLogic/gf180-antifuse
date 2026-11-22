@@ -117,7 +117,9 @@ made here). Region III's read path is **unproven**, not passing.
 ```
 sim/program-read-legs/
   benches.py            netlist-body + measurement generators (all bench numbers live here)
-  run_experiment.py     klt request builder / runner / record writer (stdlib only)
+  model.py              library: constants, klt request/bench builders, analysis + statistics
+  render.py             library: record renderers
+  run_experiment.py     CLI runner / record writer; re-exports model.py + render.py (stdlib only)
   models/preamble.lib   design.ngspice wrapper section (see "Harness notes")
   .work/                git-ignored: generated decks and requests with host paths
   records/, corners/, netlist-snapshots/   written by each successful run (append-only)
