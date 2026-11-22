@@ -88,8 +88,19 @@ The manifest cites the verdict the grader can read: a plain native-deck
 envelope, `layout/cell_candidate1/drc_native_report.json` (`klt drc --engine
 klayout`, `status: violations`, 5 findings as of 2026-11-18 -- `DBU` x1 and
 the density rules `M2.4`/`M3.4`/`MT30.7`/`PL.8` -- produced with klayout-tools
-`0.9.2` and `--deck-var decks=all,-mslot`), pinned to the same GDS sha256 as
-before -- no geometry moved, so the pinned `content_hash` is unchanged. A
+`0.9.2` and `--deck-var decks=all,-mslot`). When the native report replaced
+the curated one as this row's citation, no geometry had moved, so the pinned
+`content_hash` carried over unchanged. The ratified capacitor levels of
+issue #296 (`2a8614fc`, 2026-11-17) then moved the GDS to
+`sha256:d31a786e...`, and the manifest still pinned the pre-#296 hash
+`sha256:4fa502d0...`: this row kept grading `unmet` / `check_failed` (its
+real verdict), while `4.analog` and `11.analog` silently dropped to
+`stale_evidence` -- invisible without CI (#14) and invisible to
+`klt signoff --check`, which compares verdicts, not pins (issue #443). All
+four analog pins were re-pinned to the envelopes' own
+`provenance.input.content_hash` (`sha256:d31a786e...`), and
+`scripts/check_signoff_pins.py` now guards the pin offline (see "CI" below).
+A
 `mode: "crosscheck"` envelope cannot be cited here: `klt signoff` grades it
 `"unrecognized_envelope"` (measured 2026-11-15; filed upstream as
 2AMLogic/klayout-tools#5815), which would make the honest verdict
@@ -410,3 +421,16 @@ is written to be dropped straight into that workflow (or into
 `package.json`'s `check:ci` hook, which #15 also touches) with no
 adaptation: it needs only `klt` and `python3`, reads nothing outside the
 repo, and prints the exact remediation command on failure.
+
+`npm run check:ci` also runs `scripts/check_signoff_pins.py` (issue #443): a
+stdlib-only guard that needs no `klt` and checks, for every `evidence`
+citation part in `manifest.json`, that three hashes agree -- the manifest's
+pinned `content_hash`, the cited envelope's recorded
+`provenance.input.content_hash`, and the sha256 of the input bytes the
+envelope names (`provenance.input.path` for attestations, top-level `file`
+for DRC/ERC, top-level `layout` for LVS). This is the drift `verify.sh`
+cannot see: a stale pin on a row that already grades `check_failed`
+(`3.analog`) renders no citation in `report.json`, so the grader's freshness
+check and the byte-compare both pass while the manifest pins a hash whose
+bytes are gone. `tests/test_check_signoff_pins.py` covers the stale-pin,
+compound-part and moved-bytes cases.
