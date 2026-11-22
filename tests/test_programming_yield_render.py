@@ -15,6 +15,8 @@ compared too, and the #62 reference record is pinned so a later evidence
 record cannot switch the comparison baseline. Nothing writes: records/ and
 corners/ stay untouched.
 """
+from __future__ import annotations
+
 import sys
 import time
 import types
@@ -42,7 +44,7 @@ PDK = types.SimpleNamespace(variant="gf180mcuD", revision="test-revision-0000")
 FROZEN = time.struct_time((2026, 11, 22, 12, 34, 56, 6, 326, 0))
 
 
-def _render(cand_n: int, rid: str) -> tuple[str, object]:
+def _render(cand_n: int, rid: str) -> tuple[str, dict | None, dict]:
     """Load and render one saved run through the runner facade, clock frozen."""
     with mock.patch.dict(RE.M.PARAMS, PARAMS), \
          mock.patch.object(RE.RENDER, "stored_bd_record", return_value=STORED_BD[cand_n]), \
