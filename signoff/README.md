@@ -176,29 +176,40 @@ was claimed:
 changed.
 
 
-## Item 5 (digital): post-route STA is supporting evidence, not a citation (issues #250, #446)
+## Item 5 (digital): post-route STA and gate-level functional verification are supporting evidence, not citations (issues #250, #445, #446)
 
-`rtl/sta/antifuse_digital_top.sta.report.json` is a `klt sta` report of the
-routed `antifuse_digital_top` across all 15 corners of the place-and-route
-report, annotated with a SPEF extracted from the routed GDS (all 550 design
-nets annotated at every corner). It is listed under `supporting_evidence`
-(kind `sta`) and **not** under `evidence`, so `5.digital` stays `unmet`,
-`no_evidence`. Setup and hold are met at every corner on the #446 re-route
-(worst setup +0.640 ns at `ss_125C_1v62`, zero max-transition and
-max-capacitance violations; the corner set and the 50 ns target are
-unchanged), so the timing half of the item's evidence bar is now met. Two
-blockers remain, either sufficient to keep the row uncited:
+Two reports back this item, both under `supporting_evidence` and **not**
+under `evidence`, so `5.digital` stays `unmet`, `no_evidence`:
+
+- `rtl/sta/antifuse_digital_top.sta.report.json` (kind `sta`, issues #250,
+  #446): `klt sta` of the routed `antifuse_digital_top` across all 15 corners
+  of the place-and-route report, annotated with a SPEF extracted from the
+  routed GDS (all 550 design nets annotated at every corner). Setup and hold
+  are met at every corner on the #446 re-route (worst setup +0.640 ns at
+  `ss_125C_1v62`, zero max-transition and max-capacitance violations; the
+  corner set and the 50 ns target are unchanged), so the timing half of the
+  item's evidence bar is now met.
+- `verification/cocotb/report_digital_top.json` (kind
+  `functional-verification`, issue #445): the port-only cocotb suite re-run
+  against the **routed netlist** with the PDK cell models, zero-delay,
+  21/21 tests pass (`rtl/run_gate_sim.sh`). This retires the second of the
+  two reasons issue #250 recorded — the routed design now has its
+  `klt functional-verification` report, where the cocotb report that
+  existed then covered the register block's RTL only.
+
+Condition that keeps the row `unmet`:
 
 - The 50 ns `clk` target is a P&R input chosen in `rtl/README.md`, not a
   ratified spec value (first open question under "Digital timing" in
   `docs/ROADMAP.md`); item 5 grades against a ratified spec.
-- The item also needs a `klt functional-verification` report for the routed
-  design (#445); none exists. The cocotb report under `supporting_evidence`
-  covers the register block's RTL only.
 
-`report.json`'s `5.digital` row is unchanged by #446; the refreshed
-`supporting_evidence` pin records the re-routed STA report. Figures are in
-`rtl/README.md`, "Place-and-route".
+`report.json` is unchanged. Figures are in `rtl/README.md`,
+"Place-and-route"; the gate-level flow and its blocked SDF-annotated leg
+(item 7's own requirement, `environment.sdf.annotated: true` — the
+annotated run fails functionally,
+[2AMLogic/klayout-tools#6991](https://github.com/2AMLogic/klayout-tools/issues/6991))
+are in `rtl/README.md`, "Gate-level functional verification". `7.digital`
+stays `unmet`, `no_evidence`.
 
 ## Item 1 (digital): synthesis evidence (issues #60, #172)
 

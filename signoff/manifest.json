@@ -198,7 +198,13 @@
       "file": "rtl/sta/antifuse_digital_top.sta.report.json",
       "kind": "sta",
       "content_hash": "sha256:9b53d36ec5c69bbb022ed3bfa1ebb9a6a57e0840b0a221d9d35e5feee625d6a2",
-      "backs": "post-route SPEF-annotated klt sta of the routed antifuse_digital_top at the 15 corners of the P&R report (50 ns clk, output delay 0): setup and hold met at every corner (worst setup +0.640 ns at ss_125C_1v62) with zero max-transition and max-capacitance violations (issue #446 re-route); still not citable for item 5, which also needs a routed klt functional-verification report and a ratified timing target; see rtl/README.md"
+      "backs": "post-route SPEF-annotated klt sta of the routed antifuse_digital_top at the 15 corners of the P&R report (50 ns clk, output delay 0): setup and hold met at every corner (worst setup +0.640 ns at ss_125C_1v62) with zero max-transition and max-capacitance violations (issue #446 re-route); still not citable for item 5 without a ratified timing target; see rtl/README.md"
+    },
+    {
+      "file": "verification/cocotb/report_digital_top.json",
+      "kind": "functional-verification",
+      "content_hash": "sha256:051709c62bf877385dfd26e61cf0d31208c5c53450e0e043f438dc33b61253e0",
+      "backs": "zero-delay gate-level klt functional-verification of the routed antifuse_digital_top netlist with PDK cell models, N=32: 21/21 tests pass (SPI registers plus row/column decoder one-hot coverage through ports only); the SDF-annotated leg fails functionally (klayout-tools#6991) so 7.digital is unmet; see rtl/README.md"
     }
   ]
 }

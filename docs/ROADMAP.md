@@ -100,8 +100,9 @@ parked on the runner question, not on a decision.
 - **Digital timing (`5.digital`, `7.digital`).** First: is the 50 ns target a
   requirement (`rtl/README.md` calls it a P&R input)? Setup at the two `ss`
   corners is closed (issue #446: all 15 corners meet setup and hold on the
-  re-routed geometry). Remaining: a routed `klt functional-verification` run
-  (#445) and the target question.
+  re-routed geometry), and the routed zero-delay `klt functional-verification`
+  run is done (issue #445). Remaining: the target question for `5.digital`,
+  and klayout-tools#6991 for `7.digital`'s SDF-annotated leg.
 - **Silicon measurements** in `measurements/run3/records/` (none today),
   replacing `assumed` breakdown parameters. First: is a slot secured?
 

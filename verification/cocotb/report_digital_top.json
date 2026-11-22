@@ -1,0 +1,198 @@
+{
+  "schema_version": 2,
+  "engine": "icarus",
+  "hdl_toplevel": "antifuse_digital_top",
+  "testbench": "test_antifuse_digital_top",
+  "status": "pass",
+  "test_count": 21,
+  "passed_count": 21,
+  "failed_count": 0,
+  "skipped_count": 0,
+  "tests": [
+    {
+      "name": "reset_values_and_idle_outputs",
+      "status": "passed",
+      "sim_time_ns": 16430.0,
+      "real_time_s": 0.104
+    },
+    {
+      "name": "miso_enable_follows_cs",
+      "status": "passed",
+      "sim_time_ns": 220.0,
+      "real_time_s": 0.002
+    },
+    {
+      "name": "row_col_pw_read_write",
+      "status": "passed",
+      "sim_time_ns": 68120.0,
+      "real_time_s": 0.372
+    },
+    {
+      "name": "onehot_idle_while_sel_changes",
+      "status": "passed",
+      "sim_time_ns": 22000.0,
+      "real_time_s": 0.069
+    },
+    {
+      "name": "out_of_range_row_col_rejected",
+      "status": "passed",
+      "sim_time_ns": 51799.999999999985,
+      "real_time_s": 0.36
+    },
+    {
+      "name": "ctrl_arm_disarm_and_reserved",
+      "status": "passed",
+      "sim_time_ns": 54520.0,
+      "real_time_s": 0.197
+    },
+    {
+      "name": "read_only_and_unknown_addresses",
+      "status": "passed",
+      "sim_time_ns": 40920.0,
+      "real_time_s": 0.243
+    },
+    {
+      "name": "status_read_clears_protocol_error",
+      "status": "passed",
+      "sim_time_ns": 8279.99999999997,
+      "real_time_s": 0.066
+    },
+    {
+      "name": "program_full_sequence",
+      "status": "passed",
+      "sim_time_ns": 19230.0,
+      "real_time_s": 0.16
+    },
+    {
+      "name": "decoder_onehot_all_indices",
+      "status": "passed",
+      "sim_time_ns": 701720.0,
+      "real_time_s": 3.184
+    },
+    {
+      "name": "pulse_width_cycle_counts",
+      "status": "passed",
+      "sim_time_ns": 71050.0,
+      "real_time_s": 0.234
+    },
+    {
+      "name": "read_settle_cycle_count_and_data",
+      "status": "passed",
+      "sim_time_ns": 16640.0,
+      "real_time_s": 0.051
+    },
+    {
+      "name": "read_while_armed_rejected",
+      "status": "passed",
+      "sim_time_ns": 8280.0,
+      "real_time_s": 0.027
+    },
+    {
+      "name": "fire_unarmed_rejected",
+      "status": "passed",
+      "sim_time_ns": 17240.0,
+      "real_time_s": 0.086
+    },
+    {
+      "name": "fire_with_other_command_bytes_never_pulses",
+      "status": "passed",
+      "sim_time_ns": 42320.0,
+      "real_time_s": 0.335
+    },
+    {
+      "name": "fire_while_busy_rejected",
+      "status": "passed",
+      "sim_time_ns": 24300.0,
+      "real_time_s": 0.192
+    },
+    {
+      "name": "bad_frame_length_sets_protocol_error",
+      "status": "passed",
+      "sim_time_ns": 47800.0,
+      "real_time_s": 0.347
+    },
+    {
+      "name": "truncated_and_overlong_writes_do_not_commit",
+      "status": "passed",
+      "sim_time_ns": 16440.0,
+      "real_time_s": 0.122
+    },
+    {
+      "name": "overlong_fire_frame_never_pulses",
+      "status": "passed",
+      "sim_time_ns": 14120.0,
+      "real_time_s": 0.113
+    },
+    {
+      "name": "arm_timeout_expires",
+      "status": "passed",
+      "sim_time_ns": 55480.0,
+      "real_time_s": 0.442
+    },
+    {
+      "name": "arm_timeout_boundary",
+      "status": "passed",
+      "sim_time_ns": 797500.0,
+      "real_time_s": 3.573
+    }
+  ],
+  "coverage": null,
+  "trace": null,
+  "environment": {
+    "engine": "icarus",
+    "engine_version": "13.0",
+    "tools": [],
+    "cocotb_version": "2.1.0",
+    "results_xml": {
+      "path": "verification/cocotb/.klt/functional-verification/results_icarus.xml",
+      "scope": "repo",
+      "sha256": "sha256:80877a7a345c21a8d55caa6c66e7800986d691801797cb9ba73ac36a6a0d6f33"
+    },
+    "test_log": {
+      "path": "verification/cocotb/.klt/functional-verification/test_icarus.log",
+      "scope": "repo",
+      "sha256": "sha256:e47d766aba24393907a0aeab9c74bec333bf5e13c0c68722e88deed02e994530"
+    },
+    "build_log": {
+      "path": "verification/cocotb/.klt/functional-verification/build_icarus.log",
+      "scope": "repo",
+      "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "random_seed": 1,
+    "source_defines": {},
+    "env": {},
+    "parameters": {},
+    "initial_state": null,
+    "sdf": null,
+    "sources": [
+      {
+        "path": null,
+        "scope": "external",
+        "sha256": "ccc0f447f71ce35c635e08d49eb0ed77aa2ec91cf31d8e3e45a246114d3cae92"
+      },
+      {
+        "path": null,
+        "scope": "external",
+        "sha256": "9a21c5f98200acfe77d8ba52067164e0802284dc1c1e117f0e64fb6ac42eb64b"
+      },
+      {
+        "path": "rtl/pnr/antifuse_digital_top_routed.v",
+        "scope": "repo",
+        "sha256": "71195344e88fdeebc7dcee9db0940950360f953056a85a29b958796fdb6aa651"
+      }
+    ]
+  },
+  "provenance": {
+    "klt_version": "0.9.3.dev2575+g6bd18bbc8637",
+    "klt_git_commit": "6bd18bbc8637f6d767b3c24e77bd5db7a39e4bbe",
+    "klt_reinstall_spec": "klayout-tools @ git+https://github.com/2AMLogic/klayout-tools@6bd18bbc8637f6d767b3c24e77bd5db7a39e4bbe",
+    "klayout_version": "0.30.13",
+    "pdk": null,
+    "deck": null,
+    "input": {
+      "role": "source",
+      "content_hash": "sha256:3103a1b715c4f14c416062ac5d161f69c1ab1bb7c2978c2515d37be2e81ed79d"
+    },
+    "request_sha256": "56a512ffc03b5f096eb55c763a1e9946a2625fbb66939b2d2d963472821dd7df"
+  }
+}
