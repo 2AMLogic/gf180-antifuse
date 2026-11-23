@@ -241,8 +241,7 @@ The PVT grid runs as a `klt sim` campaign (next section); on a dispatch worker
 it goes to the Spot batch fleet and is never looped locally:
 
 ```bash
-python3 sim/run_corners.py cell-device-characterization
-# equivalently
+python3 sim/cell-device-characterization/klt/run_klt_campaign.py
 python3 sim/cell-device-characterization/klt/run_klt_campaign.py --candidates 1,2,3
 ```
 

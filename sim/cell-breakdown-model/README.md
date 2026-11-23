@@ -115,8 +115,8 @@ caveat above applies throughout.
 ## Running it
 
 ```bash
-python3 sim/run_corners.py --check-env cell-breakdown-model
-python3 sim/run_corners.py cell-breakdown-model                 # all candidates
+python3 sim/cell-breakdown-model/run_experiment.py --check-env
+python3 sim/cell-breakdown-model/run_experiment.py               # all candidates
 python3 sim/cell-breakdown-model/run_experiment.py --candidates 2
 
 # issue #74 transient-convergence campaigns, one record per candidate each

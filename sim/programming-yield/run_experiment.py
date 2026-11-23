@@ -22,8 +22,8 @@ workarounds are identical by construction.
 The library itself lives in the siblings model.py (campaign constants, deck
 and request builders, statistical analysis, saved-report loaders) and
 render.py (the record renderer); this file is the CLI driver and re-exports
-their surface, so loading run_experiment.py as a library (as
-sim/run_corners.py does) keeps every attribute unchanged.
+their surface, so loading run_experiment.py as a library
+keeps every attribute unchanged.
 """
 from __future__ import annotations
 

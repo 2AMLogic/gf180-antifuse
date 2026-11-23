@@ -33,7 +33,7 @@ enabled, median / low Weibull quantile) -- decks identical but for the cell
 line, so a non-converged corner can be attributed (README "Transient
 convergence (#74)").
 
-    python3 sim/run_corners.py cell-breakdown-model
+    python3 sim/cell-breakdown-model/run_experiment.py
     python3 sim/cell-breakdown-model/run_experiment.py --candidates 1
     python3 sim/cell-breakdown-model/run_experiment.py --campaign conv74 --candidates 1
 

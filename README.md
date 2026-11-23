@@ -61,7 +61,8 @@ The per-candidate device names are also tabulated in
 ## Reproducing results
 
 Commands are run from the repo root. Outcomes below were observed on a
-shared worker host on 2026-10-09; "not run here" means deliberately not
+shared worker host on 2026-10-09, except the `sim/` driver checks (2026-11-23);
+"not run here" means deliberately not
 executed there, not that it fails.
 
 **Tools and PDK.** `xschem` 3.4.7, `ngspice` 46, `python3` (stdlib only for
@@ -76,8 +77,8 @@ root containing `gf180mcuD/` (scripts fall back to `~/.ciel`; install with `pip 
 | `design/` | `design/regen-netlists.sh --check` | ran OK: all three netlists reproduce exactly. (Without `--check` it rewrites `design/netlists/`.) |
 | `design/` | `design/check-netlists.sh` | ran OK: reproducibility, ngspice elaboration, capacitor-geometry sweep all pass. |
 | `design/` | `design/run_analog_cold_start.sh` | ran OK on a worker with no working `xschem` (failing stub first on `PATH`): prints `ANALOG COLD START PASSED`, ~1 s wall-clock. Runs `check-netlists.sh --skip-regen`: ngspice elaboration, capacitor-geometry sweep, region-map drift, slice smoke and leg interlock truth table at the typical corner. It skips the reproducibility step, including the generator checks. Elaboration and mechanism only: no corners, no device evidence. |
-| `sim/` | `python3 sim/run_corners.py --list` | ran OK |
-| `sim/` | `python3 sim/run_corners.py cell-device-characterization` | **not run here**: the slug dispatches to `klt/run_klt_campaign.py`, which submits the PVT grid to the klt batch fleet (job id in `environment.remote` of the report) instead of looping ngspice locally, and the shared worker does not run the grid itself. Existing results are in `sim/cell-device-characterization/records/` (append-only; a re-run mints a new record). |
+| `sim/` | `--help` on each of the eight Cold start commands in [`sim/README.md`](sim/README.md) | ran OK (2026-11-23): every driver printed its usage directly, including the worked-example flags (`--check-env`, `--probe`, `--mc`, `--resume`). |
+| `sim/` | the eight Cold start campaigns themselves | **not run here**: every experiment submits its PVT grid as `klt sim` requests to the klt batch fleet (job id in `environment.remote` of the report) instead of looping ngspice locally, and the shared worker does not run the grid itself. Existing results are in each experiment's `records/` (append-only; a re-run mints a new record). |
 | `signoff/` | `./signoff/verify.sh` | **fails with the host `klt` (0.6.0+g1eb3e4bfd0f5)**: the committed report was graded by `klt` 0.5.0+g32f69f811682, so a different build reports drift. This is a build mismatch, not evidence drift; the `klt` build pin and the regrade command are in [`signoff/README.md`](signoff/README.md). The report was not regenerated. |
 
 Methodology, record format and how to read results:
