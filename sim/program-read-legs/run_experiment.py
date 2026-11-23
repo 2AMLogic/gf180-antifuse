@@ -98,6 +98,15 @@ def __getattr__(name: str):
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
+def __dir__() -> list[str]:
+    """dir() parity with the pre-split module: dir() does not consult
+    __getattr__, so without this the facade would advertise only its own
+    names (55 of them, the eagerly re-exported subset) instead of the
+    library surface callers actually resolve -- losing tab completion and
+    help() for interactive use."""
+    return sorted(set(globals()) | {n for n in dir(M) + dir(RENDER) if not n.startswith("_")})
+
+
 # ---------------------------------------------------------------------------
 # klt invocation
 # ---------------------------------------------------------------------------
