@@ -5,6 +5,8 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-23
 
+- **PR #479**: docs(sim): remove run_corners.py dispatcher, document direct driver commands
+- **Issue #267** (closed): Remove sim/run_corners.py: dispatcher registers 4 of 8 experiments and only forwards to drivers that run directly
 - **PR #459**: signoff: hash supporting_evidence pins in the offline CI guard
 - **Issue #453** (closed): Offline pin guard covers evidence only; supporting_evidence hashes stay klt-gated
 - **PR #477**: refactor(sim): route cell-device klt campaign submissions through harness.klt
