@@ -33,21 +33,23 @@ Issues currently being built (`loom:building`).
 - **#255**: Measurement plan: constant-voltage time-to-breakdown statistics (Weibull slope, voltage acceleration) and a sub-programming soak
 - **#443**: signoff: manifest still pins the pre-#296 GDS hash, so 4.analog and 11.analog grade stale_evidence and verify.sh fails on main
 - **#445**: Digital: klt functional-verification of the routed antifuse_digital_top netlist (item 5 digital's missing report; groundwork for item 7 digital)
-- **#449**: Use the breakdown parameter checker in the oxide model and HV pad bench
+- **#446**: Digital timing: close setup at ss_125C_1v62 and ss_n40C_1v62 on the routed antifuse_digital_top (bounded design iteration; 5.digital stays uncited)
+- **#447**: T1 item 7 (analog) probe: klt pex on the drawn bitcells and a post-layout re-run of the access-device bench
 
 ## PRs Awaiting Review
 
 PRs waiting on Judge (`loom:review-requested`).
 
 - **#347**: docs: sourced wafer.space Run 3 precheck reading (would-reject verdict)
-- **#450**: fix: validate oxide model and pad bench parameters with the design parser
-- **#451**: fix: re-pin analog signoff evidence to post-#296 GDS hash and guard pins in check:ci
+- **#455**: verification(rtl): zero-delay gate-level functional-verification of the routed digital top (21/21)
+- **#456**: fix(rtl): close setup at both 1.62 V corners by re-routing with slow-corner optimization liberty
 
 ## Approved (Awaiting Merge)
 
 PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
 - **#256**: docs(spec): propose constant-voltage TDDB and sub-programming soak plan
+- **#451**: fix: re-pin analog signoff evidence to post-#296 GDS hash and guard pins in check:ci
 
 ## Proposed
 
@@ -72,6 +74,7 @@ Issues carrying `loom:curated`.
 
 - **#267**: Remove sim/run_corners.py: dispatcher registers 4 of 8 experiments and only forwards to drivers that run directly *(hermit)*
 - **#301**: Route run_klt_campaign through harness.klt; drop manual --resume resubmit *(hermit)*
+- **#454**: Remove the unused Run 3 pad helper that puts L37–L48 on the wrong edge *(hermit)*
 
 ## Epics
 
@@ -86,11 +89,11 @@ Issues carrying `loom:curated`.
 | Very important | 0 |
 | Important | 2 |
 | Ready (`loom:issue`) | 1 |
-| In Progress (`loom:building`) | 4 |
+| In Progress (`loom:building`) | 5 |
 | PRs awaiting review | 3 |
-| Approved PRs awaiting merge | 1 |
+| Approved PRs awaiting merge | 2 |
 | Curated | 14 |
-| Architect / Hermit proposals | 2 |
+| Architect / Hermit proposals | 3 |
 | Active epics | 2 |
 <!-- guide:plan-body:end -->
 

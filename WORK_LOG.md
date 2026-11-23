@@ -3,6 +3,11 @@
 Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 
+### 2026-11-21
+
+- **Issue #449** (closed): Use the breakdown parameter checker in the oxide model and HV pad bench
+- **PR #450**: fix: validate oxide model and pad bench parameters with the design parser
+
 ### 2026-11-18
 
 - **Issue #438** (closed): #176 is parked on #436, whose resolution moves the real blocker to klayout-tools#6742
