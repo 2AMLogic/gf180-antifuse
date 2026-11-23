@@ -1,0 +1,101 @@
+{
+  "corner": "ss",
+  "temp_c": -40,
+  "vbl": 0.9,
+  "vwl": 0.0,
+  "freq_hz": 10000000.0,
+  "variants": {
+    "sch_baseline": {
+      "re_ohm": 2903.506,
+      "im_ohm": -116439000.0
+    },
+    "ext_baseline": {
+      "re_ohm": 168.0111,
+      "im_ohm": -30909100.0
+    },
+    "sch_swapDS": {
+      "re_ohm": 2902.859,
+      "im_ohm": -116439000.0
+    },
+    "sch_body_to_D": {
+      "re_ohm": 11469870.0,
+      "im_ohm": -54433900.0
+    },
+    "sch_gate_BL": {
+      "re_ohm": -5074.9,
+      "im_ohm": -75158400.0
+    },
+    "ext_swapDS": {
+      "re_ohm": 166.314,
+      "im_ohm": -30909100.0
+    },
+    "ext_no_C_3_storage": {
+      "re_ohm": 210.552,
+      "im_ohm": -30917500.0
+    },
+    "ext_no_CBL": {
+      "re_ohm": 282.3716,
+      "im_ohm": -35804200.0
+    },
+    "ext_no_CPL": {
+      "re_ohm": 162.9985,
+      "im_ohm": -30916600.0
+    },
+    "ext_no_CVB": {
+      "re_ohm": 78.83209,
+      "im_ohm": -31060400.0
+    },
+    "ext_no_CWL": {
+      "re_ohm": 164.6876,
+      "im_ohm": -30915700.0
+    },
+    "ext_no_all_Csubs": {
+      "re_ohm": 282.3716,
+      "im_ohm": -35804200.0
+    },
+    "ext_no_R_storage": {
+      "re_ohm": 166.314,
+      "im_ohm": -30909100.0
+    },
+    "ext_no_RBL": {
+      "re_ohm": 167.8819,
+      "im_ohm": -30909100.0
+    },
+    "ext_no_RPL": {
+      "re_ohm": 166.314,
+      "im_ohm": -30909100.0
+    },
+    "ext_no_RVB": {
+      "re_ohm": 162.9199,
+      "im_ohm": -30909100.0
+    },
+    "ext_no_RWL": {
+      "re_ohm": 166.314,
+      "im_ohm": -30909100.0
+    },
+    "ext_noJunctionGeom": {
+      "re_ohm": 975.8685,
+      "im_ohm": -76858000.0
+    },
+    "ext_cap_only_noJunctionGeom": {
+      "re_ohm": 2938.224,
+      "im_ohm": -116439000.0
+    },
+    "sch_withJunctionGeom": {
+      "re_ohm": 274.5349,
+      "im_ohm": -35804200.0
+    },
+    "sch_linearcap": {
+      "re_ohm": 2912.905,
+      "im_ohm": -116439000.0
+    },
+    "sch_linearcap_withJunctionGeom": {
+      "re_ohm": 275.4232,
+      "im_ohm": -35804200.0
+    },
+    "ext_cap_only": {
+      "re_ohm": 282.3716,
+      "im_ohm": -35804200.0
+    }
+  }
+}

@@ -1,0 +1,121 @@
+#!/usr/bin/env python3
+"""Issue #481: C3 R_on schematic-vs-extracted diagnosis (single-corner, local).
+
+Each variant is a self-contained ngspice deck: same PDK sections, bias and
+10 MHz AC measurement as requests/c3_{schematic,extracted}/ron.json.
+R_on = Re(-V(BL)/I(VBL)).  One ngspice -b per variant, run serially.
+Usage: run_c3_diagnosis.py [--corner ss|ff|tt --temp C --vbl V] -o results.json
+"""
+import argparse, json, pathlib, re, subprocess, sys, tempfile
+
+HERE = pathlib.Path(__file__).resolve().parent
+ROOT = HERE.parents[4]
+PDK = pathlib.Path.home() / ".ciel/ciel/gf180mcu/versions/f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7/gf180mcuD/libs.tech/ngspice"
+EXTRACTED = (ROOT / "layout/cell_candidate3/pex/extracted.spice").read_text()
+CAP = "XC1 CN PL cap_pmos_03v3 c_width=1.0u c_length=0.28u m=1"
+
+def sch(order="CN WL BL VB", cap=CAP):
+    return f".subckt cell_candidate3 BL WL PL VB\nXM1 {order} pfet_06v0 L=0.55u W=0.42u nf=1 m=1\n{cap}\n.ends\n"
+
+def ext_variant(drop=(), transform=None):
+    """Extracted netlist with element lines whose name is in `drop` removed."""
+    out = []
+    for ln in EXTRACTED.splitlines():
+        tok = ln.split()
+        if tok and tok[0] in drop:
+            continue
+        out.append(ln)
+    t = "\n".join(out) + "\n"
+    return transform(t) if transform else t
+
+def sub(old, new):
+    return lambda t: t.replace(old, new)
+
+def variants():
+    v = {}
+    v["sch_baseline"] = ("sch", sch(), "BL WL PL VB")
+    v["ext_baseline"] = ("ext", ext_variant(), "BL PL VB WL")
+    # H1: terminal orientation on the schematic reference (D/S swap, body perms)
+    for name, order in [("sch_swapDS", "BL WL CN VB"), ("sch_body_to_D", "CN WL BL CN"),
+                        ("sch_gate_BL", "CN BL WL VB")]:
+        v[name] = ("sch", sch(order), "BL WL PL VB")
+    # H1 on the extracted card: swap D/S
+    v["ext_swapDS"] = ("ext", ext_variant(transform=sub(
+        "X$2 \\$3__t1 WL__t0 BL__t0 VB__t0", "X$2 BL__t0 WL__t0 \\$3__t1 VB__t0")), "BL PL VB WL")
+    # H2: drop parasitic groups one at a time
+    groups = {
+        "no_C_3_storage": ("C_3",), "no_CBL": ("CBL",), "no_CPL": ("CPL",),
+        "no_CVB": ("CVB",), "no_CWL": ("CWL",),
+        "no_all_Csubs": ("C_3", "CBL", "CPL", "CVB", "CWL"),
+        "no_R_storage": ("R_3_t0", "R_3_t1"), "no_RBL": ("RBL_t0",),
+        "no_RPL": ("RPL_t0",), "no_RVB": ("RVB_t0",), "no_RWL": ("RWL_t0",),
+    }
+    for k, d in groups.items():
+        t = ext_variant(drop=d)
+        # shorted resistors: reconnect nets so dropping an R keeps connectivity
+        if k.startswith("no_R"):
+            t = ext_variant(transform=None)
+            lines = []
+            for ln in t.splitlines():
+                tok = ln.split()
+                if tok and tok[0] in d:
+                    lines.append(f"V{tok[0]}s {tok[1]} {tok[2]} 0")  # 0 V short
+                else:
+                    lines.append(ln)
+            t = "\n".join(lines) + "\n"
+        v["ext_" + k] = ("ext", t, "BL PL VB WL")
+    allpar = ("C_3","CBL","CPL","CVB","CWL")
+    # H3: explicit AS/AD/PS/PD junction geometry on the extracted pfet card
+    v["ext_noJunctionGeom"] = ("ext", ext_variant(transform=lambda t: re.sub(r"\n\+ AS=\S+ AD=\S+\n\+ PS=\S+ PD=\S+", "", t.replace(" AS=0.21P AD=0.21P\n+ PS=1.84U PD=1.84U", ""))), "BL PL VB WL")
+    v["ext_cap_only_noJunctionGeom"] = ("ext", ext_variant(drop=allpar, transform=lambda t: t.replace(" AS=0.21P AD=0.21P\n+ PS=1.84U PD=1.84U", "")), "BL PL VB WL")
+    v["sch_withJunctionGeom"] = ("sch", sch().replace("m=1\nXC1", "m=1 AS=0.21P AD=0.21P PS=1.84U PD=1.84U\nXC1"), "BL WL PL VB")
+    v["sch_linearcap"] = ("sch", sch(cap="CC1 CN PL 1.232f"), "BL WL PL VB")
+    v["sch_linearcap_withJunctionGeom"] = ("sch", sch(cap="CC1 CN PL 1.232f").replace("m=1\nCC1", "m=1 AS=0.21P AD=0.21P PS=1.84U PD=1.84U\nCC1"), "BL WL PL VB")
+    v["ext_cap_only"] = ("ext", ext_variant(drop=allpar), "BL PL VB WL")
+    return v
+
+def deck(kind, body, pins, corner, temp, vbl, vwl, vvb=3.3):
+    return f"""* issue #481 diagnosis deck
+.include "{PDK}/design.ngspice"
+.lib "{PDK}/sm141064.ngspice" {corner}
+.lib "{PDK}/sm141064.ngspice" moscap_typical
+.temp {temp}
+.options gmin=1e-13
+{body}
+X1 {pins} cell_candidate3
+VVB VB 0 DC {vvb}
+VBL BL 0 DC {vbl} AC 1
+VWL WL 0 DC {vwl}
+VPL PL 0 DC 0
+.control
+set nobreak
+ac lin 1 1e7 1e7
+let z = -v(bl)/i(vbl)
+print real(z) imag(z)
+.endc
+.end
+"""
+
+def run(kind, body, pins, args):
+    d = deck(kind, body, pins, args.corner, args.temp, args.vbl, args.vwl)
+    with tempfile.TemporaryDirectory() as td:
+        p = pathlib.Path(td) / "d.cir"; p.write_text(d)
+        r = subprocess.run(["ngspice", "-b", str(p)], capture_output=True, text=True, timeout=300, cwd=td)
+    m = re.search(r"real\(z\)\s*=\s*([-+0-9.eE]+)", r.stdout)
+    i = re.search(r"imag\(z\)\s*=\s*([-+0-9.eE]+)", r.stdout)
+    if not m:
+        return {"error": (r.stdout + r.stderr)[-400:]}
+    return {"re_ohm": float(m.group(1)), "im_ohm": float(i.group(1))}
+
+if __name__ == "__main__":
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--corner", default="ss"); ap.add_argument("--temp", type=float, default=-40)
+    ap.add_argument("--vbl", type=float, default=0.9); ap.add_argument("--vwl", type=float, default=0.0)
+    ap.add_argument("-o", default="-")
+    a = ap.parse_args()
+    res = {"corner": a.corner, "temp_c": a.temp, "vbl": a.vbl, "vwl": a.vwl, "freq_hz": 1e7, "variants": {}}
+    for k, (kind, body, pins) in variants().items():
+        res["variants"][k] = run(kind, body, pins, a)
+        print(k, res["variants"][k], file=sys.stderr)
+    s = json.dumps(res, indent=2)
+    (sys.stdout if a.o == "-" else open(a.o, "w")).write(s)
