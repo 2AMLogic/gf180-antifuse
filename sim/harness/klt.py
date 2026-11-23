@@ -59,6 +59,7 @@ def run_klt(
     retry: RetryPolicy = NO_RETRY,
     timeout_s: float | None = None,
     env: dict[str, str] | None = None,
+    capacity_wait_s: int | str | None = None,
 ) -> tuple[dict | None, str]:
     """Run ``klt sim`` on ``request``; return ``(report, diagnostic)``.
 
@@ -66,10 +67,17 @@ def run_klt(
     key -- see ``error_of``); ``None`` means klt produced no JSON, and
     ``diagnostic`` is then the exit status plus the tail of its output. When
     a report was parsed ``diagnostic`` is klt's stderr.
+
+    ``capacity_wait_s``, when given, forwards ``--wait-for-capacity <val>``
+    onto the command (the fleet's standing rule for batch submits). It is a
+    pure pass-through: the wait happens inside klt and adds no retry
+    semantics here.
     """
     cmd = [*klt_cmd, "sim", str(Path(request).resolve()), "-o", str(Path(outdir).resolve()), "--format", "json"]
     if backend:
         cmd += ["--backend", backend]
+    if capacity_wait_s is not None:
+        cmd += ["--wait-for-capacity", str(capacity_wait_s)]
     t0, delay, attempt = time.time(), retry.base_s, 0
     while True:
         attempt += 1

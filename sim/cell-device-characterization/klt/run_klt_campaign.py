@@ -67,7 +67,8 @@ def sub_names(n):
     return [f"c{n}_access-{s}_cap-{g}" for s in SIZING for g in GEOM]
 
 
-def submit_one(rundir: Path, sub: str, which: str) -> tuple[str, str, bool, str]:
+def submit_request(req: Path, out: Path, *, backend: str | None = None,
+                   capacity_wait_s: int | str | None = None) -> tuple[bool, str]:
     """Submit one request through the shared harness; persist its evidence.
 
     `sim/harness/klt.py` owns the launcher policy (absolute `-o`, fleet-refusal
@@ -80,14 +81,17 @@ def submit_one(rundir: Path, sub: str, which: str) -> tuple[str, str, bool, str]
     exhausted, timeout, crashed launcher) saves the harness diagnostic, which
     carries formatted output tails rather than the old raw stdout. Failures
     produce no sidecar; the returned detail feeds `submit-errors.txt`.
+
+    `backend` and `capacity_wait_s` forward the matching `klt sim` CLI flags:
+    `--backend` is passed explicitly when the caller must not rely on the
+    env surviving the launcher, `--wait-for-capacity` only when given.
     """
-    req = REQ_DIR / sub / f"{which}.json"
-    out = rundir / sub / which
     out.mkdir(parents=True, exist_ok=True)
     report, diag = K.run_klt(
-        req, out, None,
+        req, out, backend,
         klt_cmd=shlex.split(os.environ.get("KLT_CMD", "klt")),
         retry=K.BACKOFF,
+        capacity_wait_s=capacity_wait_s,
     )
     if report is not None:
         if diag.strip():
@@ -96,12 +100,18 @@ def submit_one(rundir: Path, sub: str, which: str) -> tuple[str, str, bool, str]
             text, full_sha = R.klt_report_payload(report, indent=2)
             (out / "report.json").write_text(text)
             (out / "report.json.sha256").write_text(full_sha + "\n")
-            return sub, which, True, ""
+            return True, ""
         detail = json.dumps(report, indent=2) + "\n"
     else:
         detail = diag
     (out / "report.json").write_text(detail)
-    return sub, which, False, detail
+    return False, detail
+
+
+def submit_one(rundir: Path, sub: str, which: str) -> tuple[str, str, bool, str]:
+    """Submit one of this campaign's requests; persistence per `submit_request`."""
+    ok, detail = submit_request(REQ_DIR / sub / f"{which}.json", rundir / sub / which)
+    return sub, which, ok, detail
 
 
 def submit_all(rundir: Path, cands: list[int], parallel: int, only_missing: bool = False) -> None:

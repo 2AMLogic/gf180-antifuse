@@ -20,6 +20,7 @@ PL = REPO / "sim" / "cell-device-characterization" / "klt" / "post-layout"
 sys.path.insert(0, str(REPO / "sim"))
 sys.path.insert(0, str(PL))
 from extraction_check import check_extraction  # noqa: E402
+from harness import klt as K  # noqa: E402
 from harness.modload import load_module  # noqa: E402
 
 RUN = PL / "runs" / "20261121-073730-17c2f21"
@@ -154,16 +155,74 @@ class SubmitAndResume(unittest.TestCase):
                 self.assertTrue((fresh / f"c{n}_{leg}/ron/report.json").is_file())
         self.assertIn('"corners"', orig)
 
+    def _arg_recorder(self, t: Path) -> str:
+        """A `klt` that records its argv and answers with the recorded report."""
+        f = t / "argklt.py"
+        f.write_text(textwrap.dedent(f"""
+            import sys
+            with open("{t}/args", "a") as fh:
+                fh.write(" ".join(sys.argv[1:]) + "\\n")
+            out = sys.argv[sys.argv.index("-o") + 1].rstrip("/").split("/")
+            print(open("{RUN}/" + out[-2] + "/" + out[-1] + "/report.json").read())
+        """))
+        return f"{sys.executable} {f}"
+
+    def test_batch_submit_waits_for_capacity_local_does_not(self):
+        t = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, t)
+        klt = self._arg_recorder(t)
+        rd = t / "rd"
+        with mock.patch.dict(os.environ, {"KLT_CMD": klt, "KLT_SIM_BACKEND": "batch"}):
+            C.submit_one(rd, "c1_schematic", "ioff")
+        with mock.patch.dict(os.environ, {"KLT_CMD": klt, "KLT_SIM_BACKEND": "local"}):
+            C.submit_one(rd, "c1_extracted", "ioff")
+        batch, local = (t / "args").read_text().splitlines()
+        self.assertIn("--backend batch", batch)
+        self.assertIn("--wait-for-capacity 600", batch)
+        self.assertIn("--backend local", local)
+        self.assertNotIn("--wait-for-capacity", local)
+
+    def test_submit_one_uses_shared_backoff_and_capacity_wait(self):
+        t = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, t)
+        seen = []
+
+        def fake(request, outdir, backend=None, **kw):
+            seen.append({"request": Path(request), "outdir": Path(outdir),
+                         "backend": backend, **kw})
+            return {"error": {"code": "batch_no_capacity"}}, ""
+
+        original = K.run_klt
+        K.run_klt = fake
+        self.addCleanup(setattr, K, "run_klt", original)
+        with mock.patch.dict(os.environ, {"KLT_SIM_BACKEND": "batch"}):
+            sub, w, ok, _ = C.submit_one(t, "c1_schematic", "ioff")
+        self.assertEqual((sub, w), ("c1_schematic", "ioff"))
+        self.assertFalse(ok)
+        self.assertEqual(len(seen), 1)
+        self.assertIs(seen[0]["retry"], K.BACKOFF)
+        self.assertEqual(seen[0]["backend"], "batch")
+        self.assertEqual(seen[0]["capacity_wait_s"], "600")
+        self.assertEqual(seen[0]["request"], C.REQ_DIR / "c1_schematic" / "ioff.json")
+        self.assertEqual(seen[0]["outdir"], t / "c1_schematic" / "ioff")
+
     def test_failed_submit_keeps_diagnostics(self):
         t = Path(tempfile.mkdtemp())
         self.addCleanup(shutil.rmtree, t)
         f = t / "bad.py"
         f.write_text("import sys\nprint('no json')\nsys.stderr.write('boom')\nsys.exit(3)\n")
         with mock.patch.dict(os.environ, {"KLT_CMD": f"{sys.executable} {f}", "KLT_SIM_BACKEND": "local"}):
-            sub, w, rc, _ = C.submit_one(t, "c1_schematic", "ioff")
-        self.assertEqual(rc, 3)
-        self.assertIn("no json", (t / "c1_schematic/ioff/report.json").read_text())
-        self.assertEqual((t / "c1_schematic/ioff/stderr.txt").read_text(), "boom")
+            sub, w, ok, detail = C.submit_one(t, "c1_schematic", "ioff")
+        self.assertFalse(ok)
+        saved = (t / "c1_schematic/ioff/report.json").read_text()
+        # Under the shared harness a no-JSON failure folds both output tails
+        # into the diagnostic written to report.json (and submit-errors.txt);
+        # there is no separate stderr.txt for it.
+        self.assertIn("exit 3", saved)
+        self.assertIn("no json", saved)
+        self.assertIn("boom", saved)
+        self.assertEqual(saved, detail)
+        self.assertFalse((t / "c1_schematic/ioff/stderr.txt").exists())
 
 
 class ReadmeDisposition(unittest.TestCase):
