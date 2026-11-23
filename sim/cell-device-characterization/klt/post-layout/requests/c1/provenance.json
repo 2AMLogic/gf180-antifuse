@@ -1,0 +1,55 @@
+{
+  "cell": "cell_candidate1",
+  "gds": "layout/cell_candidate1/cell_candidate1.gds",
+  "gds_sha256": "sha256:d31a786ed748a9e3bf6e46dcec4d59ccdd3cd095ddace86714574e624d3305cd",
+  "bench_nets": [
+    "BL",
+    "WL",
+    "PL",
+    "VB"
+  ],
+  "schematic": {
+    "leg": "schematic",
+    "dut": "layout/cell_candidate1/lvs_reference.spice",
+    "dut_sha256": "sha256:5d91d01e20b0e42ec61d8f85644c5e60d82cf4a50345902eff568bba3aa96831",
+    "subckt_pin_order": [
+      "BL",
+      "WL",
+      "PL",
+      "VB"
+    ]
+  },
+  "extracted": {
+    "leg": "extracted",
+    "dut": "layout/cell_candidate1/pex/extracted.spice",
+    "dut_sha256": "sha256:34ad48ab64c2bb1486ccb545d3f425b1961dee5c46b91d63dd6f0eaf8c6810aa",
+    "subckt_pin_order": [
+      "BL",
+      "PL",
+      "VB",
+      "WL"
+    ]
+  },
+  "extracted_pin_map": [
+    {
+      "position": 1,
+      "extracted_pin": "BL",
+      "bench_net": "BL"
+    },
+    {
+      "position": 2,
+      "extracted_pin": "PL",
+      "bench_net": "PL"
+    },
+    {
+      "position": 3,
+      "extracted_pin": "VB",
+      "bench_net": "VB"
+    },
+    {
+      "position": 4,
+      "extracted_pin": "WL",
+      "bench_net": "WL"
+    }
+  ]
+}

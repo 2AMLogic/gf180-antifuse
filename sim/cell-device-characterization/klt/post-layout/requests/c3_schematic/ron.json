@@ -1,0 +1,65 @@
+{
+  "netlist": "body.spice",
+  "engine": "ngspice",
+  "netlist_source": "schematic",
+  "models": {
+    "pdk": "gf180mcuD",
+    "lib": "libs.tech/ngspice/sm141064.ngspice"
+  },
+  "options": {
+    "timeout_s": 300,
+    "keep_artifacts": false,
+    "stage_model_inputs": false,
+    "ngspice_init": [
+      "set measureprec=7"
+    ]
+  },
+  "corners": {
+    "process": [
+      {
+        "name": "ss",
+        "sections": [
+          "ss",
+          "moscap_typical"
+        ]
+      }
+    ],
+    "supply_v": {
+      "vbl": [
+        0.9
+      ],
+      "vwl": [
+        0.0
+      ]
+    },
+    "temperature_c": [
+      -40
+    ]
+  },
+  "analysis": {
+    "kind": "ac",
+    "args": "lin 1 1e7 1e7"
+  },
+  "measurements": [
+    {
+      "name": "ire",
+      "spice": ".meas ac ire MAX vr(vbl#branch)",
+      "unit": "A"
+    },
+    {
+      "name": "iim",
+      "spice": ".meas ac iim MAX vi(vbl#branch)",
+      "unit": "A"
+    },
+    {
+      "name": "vre",
+      "spice": ".meas ac vre MAX vr(bl)",
+      "unit": "V"
+    },
+    {
+      "name": "vim",
+      "spice": ".meas ac vim MAX vi(bl)",
+      "unit": "V"
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "run_id": "20261121-073730-17c2f21",
+  "cells": {
+    "1": {
+      "extraction_findings": [],
+      "ioff": {
+        "schematic": 1.7444033e-13,
+        "extracted": 4.1211479e-13,
+        "delta": 2.3767446e-13,
+        "schematic_error": null,
+        "extracted_error": null,
+        "jobs": [
+          "klt-sim-0c2fc1e79d16",
+          "klt-sim-767b5ca0b6d6"
+        ]
+      },
+      "ron": {
+        "schematic": 6840.772901953599,
+        "extracted": 6606.797641696208,
+        "delta": -233.9752602573908,
+        "schematic_error": null,
+        "extracted_error": null,
+        "z_imag_schematic_ohm": -7520565.738127857,
+        "z_imag_extracted_ohm": -4607145.344926594,
+        "model_mismatch_disclosed": true,
+        "jobs": [
+          "klt-sim-24745dc5126f",
+          "klt-sim-3a023353bafd"
+        ]
+      }
+    },
+    "3": {
+      "extraction_findings": [],
+      "ioff": {
+        "schematic": 3.3198748e-13,
+        "extracted": 4.9560356e-13,
+        "delta": 1.6361608000000006e-13,
+        "schematic_error": null,
+        "extracted_error": null,
+        "jobs": [
+          "klt-sim-128cd9532a79",
+          "klt-sim-7b3ab2b3e9c0"
+        ]
+      },
+      "ron": {
+        "schematic": 2903.5062498191965,
+        "extracted": 168.01112652489792,
+        "delta": -2735.4951232942985,
+        "schematic_error": null,
+        "extracted_error": null,
+        "z_imag_schematic_ohm": -116438726.14382418,
+        "z_imag_extracted_ohm": -30909096.80900523,
+        "model_mismatch_disclosed": true,
+        "jobs": [
+          "klt-sim-3ab898a6615c",
+          "klt-sim-4881f904cd1b"
+        ]
+      }
+    },
+    "2": {
+      "extraction_findings": [],
+      "ioff": {
+        "schematic": 4.1483742e-11,
+        "extracted": 3.1239455e-11,
+        "delta": -1.0244286999999995e-11,
+        "schematic_error": null,
+        "extracted_error": null,
+        "jobs": [
+          "klt-sim-1cb160ceddf0",
+          "klt-sim-f66ad8df4b82"
+        ]
+      },
+      "ron": {
+        "schematic": 159.57400512639842,
+        "extracted": 171.8970196415599,
+        "delta": 12.323014515161475,
+        "schematic_error": null,
+        "extracted_error": null,
+        "z_imag_schematic_ohm": -172709.21391564363,
+        "z_imag_extracted_ohm": -100694.94575603883,
+        "model_mismatch_disclosed": true,
+        "jobs": [
+          "klt-sim-c9feca14af02",
+          "klt-sim-11140c9e86c9"
+        ]
+      }
+    }
+  }
+}

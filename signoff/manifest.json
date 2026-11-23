@@ -205,6 +205,96 @@
       "kind": "functional-verification",
       "content_hash": "sha256:3b1918f54dbf236bedacac9c6f2f66c595bdae3efc341c3fa6652683b26d1e69",
       "backs": "zero-delay gate-level klt functional-verification of the routed antifuse_digital_top netlist with PDK cell models, N=32: 21/21 tests pass (SPI registers plus row/column decoder one-hot coverage through ports only); the SDF-annotated leg fails functionally (klayout-tools#6991) so 7.digital is unmet; see rtl/README.md"
+    },
+    {
+      "file": "layout/cell_candidate1/pex/pex_report.json",
+      "kind": "pex",
+      "content_hash": "sha256:a60093efe3a9aaa265446b766306fd3265961860be0aa7f42d8676eb0d9bfe5e",
+      "backs": "klt pex --extract-only probe of the drawn cell_candidate1 bitcell, pinned to the GDS sha256 (issue #447); see layout/cell_candidate1/pex/README.md"
+    },
+    {
+      "file": "layout/cell_candidate3/pex/pex_report.json",
+      "kind": "pex",
+      "content_hash": "sha256:af19812e47381fe70c3df219d900558d96f5e2204d0fc5dd41147e786aa97839",
+      "backs": "klt pex --extract-only probe of the drawn cell_candidate3 bitcell, pinned to the GDS sha256 (issue #447); see layout/cell_candidate3/pex/README.md"
+    },
+    {
+      "file": "layout/cell_candidate2/pex/pex_report.json",
+      "kind": "pex",
+      "content_hash": "sha256:4f185cb8483a0db09dff859eb09cd53653f1bf542afa31f07a5c1ce4f92a0136",
+      "backs": "klt pex --extract-only probe of the drawn cell_candidate2 bitcell, pinned to the GDS sha256 (issue #447); see layout/cell_candidate2/pex/README.md"
+    },
+    {
+      "file": "sim/cell-device-characterization/klt/post-layout/runs/20261121-073730-17c2f21/c1_schematic/ioff/report.json",
+      "kind": "sim",
+      "content_hash": "sha256:512402629e011e0a463330ed17f271e3b1e3480bab867f1b8192969fd0c24349",
+      "backs": "post-layout access-device probe, candidate 1 schematic leg, ioff bound corner (issue #447); see sim/cell-device-characterization/klt/post-layout/README.md"
+    },
+    {
+      "file": "sim/cell-device-characterization/klt/post-layout/runs/20261121-073730-17c2f21/c1_schematic/ron/report.json",
+      "kind": "sim",
+      "content_hash": "sha256:c24867c327fe3bb595af95dc8c27ccc0b07c4a291ed581a1034d4defe8773319",
+      "backs": "post-layout access-device probe, candidate 1 schematic leg, ron bound corner (issue #447); see sim/cell-device-characterization/klt/post-layout/README.md"
+    },
+    {
+      "file": "sim/cell-device-characterization/klt/post-layout/runs/20261121-073730-17c2f21/c1_extracted/ioff/report.json",
+      "kind": "sim",
+      "content_hash": "sha256:82a742f08dba6dce2ea32c72a8d1e04c8b06b73e888e107bb5f0da7b3c9d1ccb",
+      "backs": "post-layout access-device probe, candidate 1 extracted leg, ioff bound corner (issue #447); see sim/cell-device-characterization/klt/post-layout/README.md"
+    },
+    {
+      "file": "sim/cell-device-characterization/klt/post-layout/runs/20261121-073730-17c2f21/c1_extracted/ron/report.json",
+      "kind": "sim",
+      "content_hash": "sha256:f9944a52bf5e91d4d6b5e3c5c16441ad8e7540575b095a485260b56fe0a4b11c",
+      "backs": "post-layout access-device probe, candidate 1 extracted leg, ron bound corner (issue #447); see sim/cell-device-characterization/klt/post-layout/README.md"
+    },
+    {
+      "file": "sim/cell-device-characterization/klt/post-layout/runs/20261121-073730-17c2f21/c3_schematic/ioff/report.json",
+      "kind": "sim",
+      "content_hash": "sha256:13bb99682b4768297d750c4c1874235eccf2f6d8f590e8a447828ce5a31cce1e",
+      "backs": "post-layout access-device probe, candidate 3 schematic leg, ioff bound corner (issue #447); see sim/cell-device-characterization/klt/post-layout/README.md"
+    },
+    {
+      "file": "sim/cell-device-characterization/klt/post-layout/runs/20261121-073730-17c2f21/c3_schematic/ron/report.json",
+      "kind": "sim",
+      "content_hash": "sha256:713109b7e0e1146a007fa4e2db8168a9c9f0d2f7641bbfc877e9068ef1f3e212",
+      "backs": "post-layout access-device probe, candidate 3 schematic leg, ron bound corner (issue #447); see sim/cell-device-characterization/klt/post-layout/README.md"
+    },
+    {
+      "file": "sim/cell-device-characterization/klt/post-layout/runs/20261121-073730-17c2f21/c3_extracted/ioff/report.json",
+      "kind": "sim",
+      "content_hash": "sha256:7ba7a2241a23a9b2a316d488fe0c2968136648e2596e1d5a07890df31764526e",
+      "backs": "post-layout access-device probe, candidate 3 extracted leg, ioff bound corner (issue #447); see sim/cell-device-characterization/klt/post-layout/README.md"
+    },
+    {
+      "file": "sim/cell-device-characterization/klt/post-layout/runs/20261121-073730-17c2f21/c3_extracted/ron/report.json",
+      "kind": "sim",
+      "content_hash": "sha256:8f9ca578198c84ad1b967d659ab3125b57dcee40c6a430f057cf92702b74b89d",
+      "backs": "post-layout access-device probe, candidate 3 extracted leg, ron bound corner (issue #447); see sim/cell-device-characterization/klt/post-layout/README.md"
+    },
+    {
+      "file": "sim/cell-device-characterization/klt/post-layout/runs/20261121-073730-17c2f21/c2_schematic/ioff/report.json",
+      "kind": "sim",
+      "content_hash": "sha256:b4c317fb06c4344cc4402b00999a6482e81717ab4ec947055c475e0f5c548d60",
+      "backs": "post-layout access-device probe, candidate 2 schematic leg, ioff bound corner (issue #447); see sim/cell-device-characterization/klt/post-layout/README.md"
+    },
+    {
+      "file": "sim/cell-device-characterization/klt/post-layout/runs/20261121-073730-17c2f21/c2_schematic/ron/report.json",
+      "kind": "sim",
+      "content_hash": "sha256:8d791178dd70815d141d9b3681ac6ca1b1f145f79fef9703eecba17356c18694",
+      "backs": "post-layout access-device probe, candidate 2 schematic leg, ron bound corner (issue #447); see sim/cell-device-characterization/klt/post-layout/README.md"
+    },
+    {
+      "file": "sim/cell-device-characterization/klt/post-layout/runs/20261121-073730-17c2f21/c2_extracted/ioff/report.json",
+      "kind": "sim",
+      "content_hash": "sha256:71be13b1d8a69293233d5a6e3534724a7a90737a5ded99d7a57877dcc6a9d91a",
+      "backs": "post-layout access-device probe, candidate 2 extracted leg, ioff bound corner (issue #447); see sim/cell-device-characterization/klt/post-layout/README.md"
+    },
+    {
+      "file": "sim/cell-device-characterization/klt/post-layout/runs/20261121-073730-17c2f21/c2_extracted/ron/report.json",
+      "kind": "sim",
+      "content_hash": "sha256:370fff8a653056fdd0387b9edfb297e1dfa3a37037ba6c6ca296da9c884bea91",
+      "backs": "post-layout access-device probe, candidate 2 extracted leg, ron bound corner (issue #447); see sim/cell-device-characterization/klt/post-layout/README.md"
     }
   ]
 }

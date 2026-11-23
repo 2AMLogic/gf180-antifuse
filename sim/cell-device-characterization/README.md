@@ -389,3 +389,14 @@ not an average across regions or sub-configurations. No absolute floor was
 needed: every legacy value is far above zero (gmin-floor-limited I_off,
 >= 1e-13 A scale, compared relatively). The capacitor C-V bench remains
 unmigrated.
+
+## Post-layout probe (issue #447)
+
+`klt/post-layout/` re-runs the same bench (I_off, R_on, at the two named bound
+corners only) as **paired** `klt sim` requests: one leg on the cell's
+fixed-geometry `layout/<cell>/lvs_reference.spice`, one leg on the
+`klt pex`-extracted netlist of the drawn GDS (`layout/<cell>/pex/`). It is a
+separate probe with its own README, request generator and run records -- see
+`klt/post-layout/README.md` (this section is only the pointer). Nothing in it
+grades or cites a T1 row; it exists to find out whether the item-7 route works
+for these devices at all.
