@@ -6,10 +6,13 @@ No simulator and no fleet; operates on the committed reports and scratch copies.
 from __future__ import annotations
 
 import json
+import os
 import shutil
 import sys
 import tempfile
+import textwrap
 import unittest
+from unittest import mock
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
@@ -85,6 +88,99 @@ class BoundPoints(unittest.TestCase):
             self.assertIsNone(c["ioff"]["schematic_error"])
             self.assertIsNone(c["ron"]["extracted_error"])
             self.assertIsNotNone(c["ron"]["delta"])
+
+
+class DutIdentity(unittest.TestCase):
+    def _run(self):
+        t = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, t)
+        shutil.copytree(RUN, t / "run")
+        return t / "run"
+
+    def test_schematic_report_in_extracted_slot_suppresses_pair(self):
+        rd = self._run()
+        for w in ("ioff", "ron"):
+            shutil.copy(rd / f"c3_schematic/{w}/report.json", rd / f"c3_extracted/{w}/report.json")
+        s = C.collect(rd)["cells"]["3"]
+        self.assertIsNone(s["ron"]["delta"])
+        self.assertIsNone(s["ioff"]["delta"])
+        self.assertIn("extracted leg", s["ron"]["extracted_error"])
+        self.assertIsNone(s["ron"]["schematic_error"])
+
+    def test_sha_mismatch_flagged_with_leg(self):
+        rd = self._run()
+        p = rd / "c1_extracted/ron/report.json"
+        d = json.loads(p.read_text())
+        for e in d["environment"]["netlist_closure"]:
+            if e["path"].endswith("extracted.spice"):
+                e["sha256"] = "0" * 64
+        p.write_text(json.dumps(d))
+        _, _, _, err = C.leg_ron(rd, 1, "extracted")
+        self.assertIn("extracted leg", err)
+        self.assertIn("sha256 mismatch", err)
+
+
+class SubmitAndResume(unittest.TestCase):
+    def _stand_in(self, t: Path, rd_src: Path) -> str:
+        """A `klt` that answers with the recorded report for whichever -o dir it is given."""
+        f = t / "fakeklt.py"
+        f.write_text(textwrap.dedent(f"""
+            import sys
+            out = sys.argv[sys.argv.index("-o") + 1].rstrip("/").split("/")
+            print(open("{rd_src}/" + out[-2] + "/" + out[-1] + "/report.json").read())
+        """))
+        return f"{sys.executable} {f}"
+
+    def test_fresh_submit_and_one_missing_resume_through_runner(self):
+        t = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, t)
+        rd = t / "run"
+        shutil.copytree(RUN, rd)
+        victim = rd / "c2_extracted/ron"
+        orig = (victim / "report.json").read_text()
+        shutil.rmtree(victim)
+        env = {"KLT_CMD": self._stand_in(t, RUN), "KLT_SIM_BACKEND": "local"}
+        with mock.patch.dict(os.environ, env):
+            C.submit_all(rd, 1, only_missing=True)                  # resume: one missing
+            self.assertTrue((victim / "report.json").is_file())
+            self.assertTrue((victim / "report.json.sha256").is_file())
+            self.assertIsNotNone(C.RK.load_report(rd, "c2_extracted", "ron"))
+            fresh = t / "fresh"
+            C.submit_all(fresh, 2)                                  # fresh submission
+        self.assertFalse((rd / "submit-errors.txt").exists())
+        self.assertFalse((fresh / "submit-errors.txt").exists())
+        for n in (1, 2, 3):
+            for leg in ("schematic", "extracted"):
+                self.assertTrue((fresh / f"c{n}_{leg}/ron/report.json").is_file())
+        self.assertIn('"corners"', orig)
+
+    def test_failed_submit_keeps_diagnostics(self):
+        t = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, t)
+        f = t / "bad.py"
+        f.write_text("import sys\nprint('no json')\nsys.stderr.write('boom')\nsys.exit(3)\n")
+        with mock.patch.dict(os.environ, {"KLT_CMD": f"{sys.executable} {f}", "KLT_SIM_BACKEND": "local"}):
+            sub, w, rc, _ = C.submit_one(t, "c1_schematic", "ioff")
+        self.assertEqual(rc, 3)
+        self.assertIn("no json", (t / "c1_schematic/ioff/report.json").read_text())
+        self.assertEqual((t / "c1_schematic/ioff/stderr.txt").read_text(), "boom")
+
+
+class ReadmeDisposition(unittest.TestCase):
+    def test_body_bias_and_usable_set_follow_findings(self):
+        s = C.collect(RUN)
+        s["cells"]["1"]["extraction_findings"] = ["body_bias.status is 'unbiased', not 'biased'"]
+        with mock.patch.object(C, "body_bias_status", lambda n: "unbiased" if n == 1 else "biased"):
+            txt = C.render_readme(RUN, s)
+        self.assertNotIn("All three extractions are usable", txt)
+        self.assertNotIn("\"biased\"` for all three cells", txt)
+        self.assertIn("C1 `unbiased`", txt)
+        self.assertIn("Extractions usable: C3, C2", txt)
+        self.assertIn("unusable (pair suppressed above): C1", txt)
+
+    def test_all_usable_text_kept(self):
+        txt = C.render_readme(RUN, C.collect(RUN))
+        self.assertIn("All three extractions are usable", txt)
 
 
 class SummaryReplay(unittest.TestCase):

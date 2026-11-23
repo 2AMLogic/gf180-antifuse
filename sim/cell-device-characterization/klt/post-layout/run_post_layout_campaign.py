@@ -22,6 +22,7 @@ directories under `runs/` are the append-only evidence).
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import shlex
@@ -76,10 +77,29 @@ def submit_one(rundir: Path, sub: str, which: str):
     if backend == "batch":
         cmd += ["--wait-for-capacity", CAPACITY_WAIT_S]
     proc = subprocess.run(cmd, capture_output=True, text=True)
-    RK.write_report(out / "report.json", proc.stdout)
+    # Same persistence as the parent runner (run_klt_campaign.submit_one): a
+    # parsed corners report commits as the coverage-elided text plus a sha256
+    # sidecar of the full text; anything else (a klt error object, or no JSON)
+    # is saved verbatim as report.json so the failure stays diagnosable, and
+    # the stderr tail is kept.
+    try:
+        report = json.loads(proc.stdout)
+    except json.JSONDecodeError:
+        report = None
+    ok = False
+    if isinstance(report, dict) and "corners" in report and not report.get("error"):
+        text, full_sha = R.klt_report_payload(report, indent=2)
+        (out / "report.json").write_text(text)
+        (out / "report.json.sha256").write_text(full_sha + "\n")
+        ok = True
+    elif isinstance(report, dict):
+        (out / "report.json").write_text(json.dumps(report, indent=2) + "\n")
+    else:
+        (out / "report.json").write_text(
+            f"exit {proc.returncode}\nstdout:\n{proc.stdout[-4000:]}\nstderr:\n{proc.stderr[-4000:]}\n")
     if proc.stderr.strip():
         (out / "stderr.txt").write_text(proc.stderr)
-    return sub, which, proc.returncode, proc.stderr
+    return sub, which, (proc.returncode if ok else (proc.returncode or 1)), proc.stderr
 
 
 def submit_all(rundir: Path, parallel: int, only_missing: bool = False) -> None:
@@ -129,12 +149,38 @@ def points_error(rep, n: int, leg: str, which: str):
     return f"bound points mismatch (missing {miss}, unexpected {extra})"
 
 
+def dut_error(rep, n: int, leg: str):
+    """None if the report was produced from this leg's expected DUT.
+
+    The PVT points are identical on both legs by design, so they cannot say
+    which netlist ran.  `environment.netlist_closure` can: it must list the
+    leg's DUT path with the sha256 of the current file, and `netlist_source`
+    must name the leg."""
+    rel = "layout/cell_candidate{0}/{1}".format(
+        n, "lvs_reference.spice" if leg == "schematic" else "pex/extracted.spice")
+    path = REPO / rel
+    if not path.is_file():
+        return f"{leg} leg: expected DUT {rel} is missing"
+    want = hashlib.sha256(path.read_bytes()).hexdigest()
+    env = rep.get("environment") or {}
+    got = [e for e in (env.get("netlist_closure") or []) if e.get("path") == rel]
+    if not got:
+        return f"{leg} leg: report's netlist_closure does not include the expected DUT {rel}"
+    have = got[0].get("sha256") or ""
+    if have.split(":", 1)[-1] != want:
+        return (f"{leg} leg: DUT {rel} sha256 mismatch (report {have.split(':', 1)[-1][:12]}, "
+                f"expected {want[:12]})")
+    if env.get("netlist_source") not in (None, leg):
+        return f"{leg} leg: netlist_source is {env.get('netlist_source')!r}, expected {leg!r}"
+    return None
+
+
 def leg_ioff_worst(rundir: Path, n: int, leg: str):
     """Worst |I_off| over the three OFF-gate biases at the bound corner."""
     rep = RK.load_report(rundir, f"c{n}_{leg}", "ioff")
     if rep is None:
         return None, None, "no report (submit failed; see submit-errors.txt)"
-    perr = points_error(rep, n, leg, "ioff")
+    perr = dut_error(rep, n, leg) or points_error(rep, n, leg, "ioff")
     if perr:
         return None, rep, perr
     pts = RK.ioff_points(rep)
@@ -149,7 +195,7 @@ def leg_ron(rundir: Path, n: int, leg: str):
     rep = RK.load_report(rundir, f"c{n}_{leg}", "ron")
     if rep is None:
         return None, None, None, "no report (submit failed; see submit-errors.txt)"
-    perr = points_error(rep, n, leg, "ron")
+    perr = dut_error(rep, n, leg) or points_error(rep, n, leg, "ron")
     if perr:
         return None, None, rep, perr
     pts = RK.ron_points(rep)
@@ -216,6 +262,15 @@ def fmt_val(v, err, unit):
     return f"{sci(v)} {unit}"
 
 
+def body_bias_status(n: int) -> str:
+    """`body_bias.status` of cell n's retained PEX report (read, not assumed)."""
+    try:
+        r = json.loads((REPO / "layout" / f"cell_candidate{n}" / "pex" / "pex_report.json").read_text())
+        return str((r.get("body_bias") or {}).get("status"))
+    except (OSError, json.JSONDecodeError):
+        return "unreadable"
+
+
 def render_readme(rundir: Path, summary: dict) -> str:
     ts = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     L = []
@@ -243,7 +298,12 @@ def render_readme(rundir: Path, summary: dict) -> str:
     L.append("  solver settings and measurements are identical on both legs; `netlist_source` is")
     L.append("  `schematic` / `extracted`.")
     L.append("- **Extraction**: klayout-tools `0.9.2` (KLayout `0.30.13`), `--deck gf180mcu --pdk")
-    L.append("  gf180mcuD --extract-only`; `body_bias.status: \"biased\"` for all three cells")
+    statuses = {n: body_bias_status(n) for n in PROBE_ORDER}
+    if all(v == "biased" for v in statuses.values()):
+        L.append("  gf180mcuD --extract-only`; `body_bias.status: \"biased\"` for all three cells")
+    else:
+        L.append("  gf180mcuD --extract-only`; `body_bias.status` per cell: " + ", ".join(
+            f"C{n} `{statuses[n]}`" for n in PROBE_ORDER))
     L.append("  (full blocks quoted in each `layout/<cell>/pex/README.md`).")
     L.append("- **Fleet**: `klt sim --backend batch --wait-for-capacity 600`; runner klt `0.9.0`,")
     L.append("  client `0.9.2` (`runner_compatibility: match` on every job; job ids per row below).")
@@ -293,10 +353,21 @@ def render_readme(rundir: Path, summary: dict) -> str:
         L.append("")
     L.append("## Dispositions")
     L.append("")
-    L.append("- All three extractions are usable: access-device model, geometry and drain")
-    L.append("  orientation match the per-cell LVS reference (evidence quoted per cell in")
-    L.append("  `layout/<cell>/pex/README.md`); `body_bias.status` is `biased` everywhere;")
-    L.append("  parasitics present (per-net lumped R + substrate C, plus C2's coupling caps).")
+    usable = [n for n in PROBE_ORDER if not summary["cells"][str(n)].get("extraction_findings")]
+    if len(usable) == len(PROBE_ORDER):
+        L.append("- All three extractions are usable: access-device model, geometry and drain")
+        L.append("  orientation match the per-cell LVS reference (evidence quoted per cell in")
+        L.append("  `layout/<cell>/pex/README.md`); `body_bias.status` is `biased` everywhere;")
+        L.append("  parasitics present (per-net lumped R + substrate C, plus C2's coupling caps).")
+    else:
+        L.append("- Extractions usable: " + (", ".join(f"C{n}" for n in usable) or "none")
+                 + "; unusable (pair suppressed above): "
+                 + ", ".join(f"C{n}" for n in PROBE_ORDER if n not in usable) + ".")
+        for n in PROBE_ORDER:
+            f = summary["cells"][str(n)].get("extraction_findings")
+            if f:
+                L.append(f"  - C{n}: " + "; ".join(f))
+        L.append("  Usable cells' evidence is quoted in `layout/<cell>/pex/README.md`.")
     L.append("- No refusal occurred, so no upstream refusal link was needed; the MOS-cap")
     L.append("  linearisation finding is linked on 2AMLogic/klayout-tools#7004 (the runset-route")
     L.append("  issues #6559/#6606 cover families the curated deck cannot recognise at all --")
