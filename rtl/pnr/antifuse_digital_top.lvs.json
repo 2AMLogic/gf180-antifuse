@@ -1,0 +1,13 @@
+{
+  "layout": {"netlist": "antifuse_digital_top.gate.spice", "top": "antifuse_digital_top"},
+  "reference": {
+    "netlist": "antifuse_digital_top_routed.v",
+    "top": "antifuse_digital_top",
+    "form": "gate-level-verilog",
+    "library": "gf180mcu_fd_sc_mcu7t5v0",
+    "pdk": "gf180mcuD"
+  },
+  "options": {
+    "power_connectivity": {"expected_nets": {"VDD": "VDD", "VSS": "VSS", "VNW": "VDD", "VPW": "VSS"}}
+  }
+}
