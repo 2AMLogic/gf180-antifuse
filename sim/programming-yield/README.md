@@ -239,7 +239,15 @@ fleet. **If a submit fails, the run records the error
 back to a local grid.** `--smoke` runs one sample in one corner locally; it
 writes only under the git-ignored `.work/` and is a probe, not evidence.
 
-Layout, all write-once and append-only (`sim/README.md`):
+Code layout (as in `sim/cell-breakdown-model/`): the experiment's library
+lives in the siblings `model.py` (campaign constants, deck and `klt sim`
+request builders, statistical analysis, saved-report loaders) and `render.py`
+(the Markdown record renderer); `run_experiment.py` is the CLI driver and
+re-exports their surface, so `sim/run_corners.py` keeps loading it as the
+library. `render.py` imports one-way from `model.py`; neither imports the
+CLI.
+
+Evidence layout, all write-once and append-only (`sim/README.md`):
 
 | Path | Contents |
 |---|---|

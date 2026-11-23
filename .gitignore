@@ -110,3 +110,4 @@ rtl/synth/.klt/
 # <<< loom-managed <<<
 rtl/pnr/.klt/
 rtl/sta/.klt/
+verification/cocotb/.klt/

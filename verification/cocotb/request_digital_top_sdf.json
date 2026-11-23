@@ -1,0 +1,16 @@
+{
+  "schema": "klt.functional_verification.request/1",
+  "engine": "icarus",
+  "sources": ["../../rtl/pnr/antifuse_digital_top_routed.v"],
+  "hdl_toplevel": "antifuse_digital_top",
+  "testbench": { "module": "test_antifuse_digital_top" },
+  "pdk": { "variant": "gf180mcuD", "cell_library": "gf180mcu_fd_sc_mcu7t5v0" },
+  "options": {
+    "timescale": ["1ns", "1ps"],
+    "random_seed": 1,
+    "sdf": {
+      "file": "../../rtl/sta/.klt/sta/antifuse_digital_top.tt_025C_1v80.sdf",
+      "corner": "typ"
+    }
+  }
+}

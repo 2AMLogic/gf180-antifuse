@@ -160,12 +160,25 @@ python3 sim/cell-breakdown-model/run_experiment.py --smoke 2:access_op \
 Requirements: `klt` on `PATH` and a gf180mcuD install that
 `sim/harness/pdk.py` resolves. The script uses the stdlib only.
 
+## Layout
+
+```
+sim/cell-breakdown-model/
+  model.py              library: bench constants, deck/request builders, collection and grading
+  render.py             library: record renderers
+  run_experiment.py     CLI driver / record writer; library facade re-exporting model.py + render.py (stdlib only)
+  .work/                git-ignored: local --smoke probe debris with host paths
+  records/, corners/, netlist-snapshots/   written by each successful run (append-only)
+```
+
 ## Benches
 
-All benches use the existing experiment's own stimulus. Its
-`run_experiment.py` is imported as a library, so candidate definitions, the
-OFF-bias levels, the C–V bias points, the 1.0 V ±10 % read rail,
-`gmin = 1e-13` and the geometry levels are identical by construction.
+All benches use the existing experiment's own stimulus. `model.py` imports
+the characterization experiment's `run_experiment.py` as a library, so
+candidate definitions, the OFF-bias levels, the C–V bias points, the
+1.0 V ±10 % read rail, `gmin = 1e-13` and the geometry levels are identical
+by construction. This experiment's own `run_experiment.py` is the CLI
+facade over `model.py` / `render.py` (see "Layout").
 
 | Bench | Analysis | Corners | Instances per deck |
 |---|---|---|---|
@@ -199,7 +212,7 @@ geometry.
   - **Complex currents.** An ideal current-controlled voltage source
     (`H`, 1 Ω transresistance, draws nothing) turns each ammeter's complex
     current into a node voltage, so `vr()`/`vi()` can read it.
-  - **Derived quantities.** `run_experiment.py`'s `derive()` computes the
+  - **Derived quantities.** `model.py`'s `derive()` computes the
     characterization experiment's quantities from those raw values: |I|,
     Re(V/I) and |I|/(2π·1 kHz).
 - **Programmed read.** BL is at the read rail, WL is "fully on" (the
