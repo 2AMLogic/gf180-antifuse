@@ -5,6 +5,7 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-23
 
+- **Issue #447** (closed): T1 item 7 (analog) probe: klt pex on the drawn bitcells and a post-layout re-run of the access-device bench
 - **PR #479**: docs(sim): remove run_corners.py dispatcher, document direct driver commands
 - **Issue #267** (closed): Remove sim/run_corners.py: dispatcher registers 4 of 8 experiments and only forwards to drivers that run directly
 - **PR #459**: signoff: hash supporting_evidence pins in the offline CI guard
