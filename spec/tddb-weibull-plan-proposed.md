@@ -217,12 +217,17 @@ and on the body; the tail-sampling limit stands.
 ## 6. Area and edge (Wanted item 3)
 
 From `spec/split-axis-plan.md` §2, geometry has two levels per region: minimum
-and 2x-area, "via W and/or L scaling", same device and oxide. Within one region
-the two geometries share oxide and differ in area, but the ratified plan does
-not fix how the 2x is reached, so the perimeter ratio is unspecified and the
-2-level plan **cannot separate area from perimeter**. The ladder and the
-perimeter-heavy/area-heavy pair that can are in the probed structures of
-`docs/breakdown-vbd-sources.md` §5, not in the array.
+and 2x-area, same device and oxide. The levels are pinned by
+`spec/capacitor-geometry-decision.md` (cited from `spec/split-axis-plan.md`
+§2): 2x-area doubles W at fixed L (1.0 x 0.28 -> 2.0 x 0.28 um in Regions I and
+III, 1.0 x 0.70 -> 2.0 x 0.70 um in Region II). The area ratio is exactly 2.000
+and the perimeter ratio is 1.78 (Regions I/III, P 2.56 -> 4.56 um) and 1.59
+(Region II, P 3.40 -> 5.40 um). Within a region the two geometries share oxide
+and differ in **both** area and perimeter; no pair differs in only one. The
+pinned perimeter ratio is too close to the area ratio for this plan's
+precision, so the 2-level plan **cannot separate area from perimeter** (numbers
+below). The ladder and the perimeter-heavy/area-heavy pair that can are in the
+probed structures of `docs/breakdown-vbd-sources.md` §5, not in the array.
 
 What Option L can do: strata with the same access sizing and different geometry
 (Gmin/Amin vs G2x/Amin) are compared by their fitted location difference.
@@ -230,7 +235,11 @@ Simulated sampling sd of that difference, ln-time units: 0.12 (beta 1.5), 0.05
 (beta 3.2), 0.03 (beta 6.08). Weakest-link scaling for 2x area predicts a shift
 of `ln2/beta` = 0.46 / 0.22 / 0.11. The area effect at 2x is then about 4 sd at
 beta 1.5, 4 sd at 3.2 and 3-4 sd at 6.08 under the assumptions of §4; a
-perimeter-dominated effect gives a different ratio and is not separated.
+perimeter-dominated effect predicts a shift of `ln(P ratio)/beta` instead. The
+two differ by 0.077 / 0.036 / 0.019 (Regions I/III; 0.64 / 0.72 / 0.64 sd) and
+0.154 / 0.072 / 0.038 (Region II; 1.28 / 1.44 / 1.26 sd) at beta 1.5 / 3.2 /
+6.08, so area and perimeter stay unseparated at no more than 1.44 sd in every
+region and beta.
 Options S and M have no geometry contrast of this kind (S has one sub-combination;
 M's strata differ in sizing, not geometry).
 
