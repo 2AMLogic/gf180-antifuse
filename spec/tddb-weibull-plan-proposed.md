@@ -35,13 +35,29 @@ ignored), or right-censored at `N_max`.
 
 Assumptions this makes, each to be checked, none asserted:
 - Pulsed stress with intervening reads is equivalent to continuous stress at the
-  same voltage (no recovery or duty-cycle effect). Unverified; the Run 3 chip's
-  pad structures (§5 of the sources note) are the place to compare.
+  same voltage (no recovery or duty-cycle effect). Unverified. §7 rules out any
+  hold on the Run 3 pad structures, so they are not the venue. The check is made
+  **inside the array** (see "Equivalence check" below).
 - Detection is the comparator flipping (`I_cell > I_ref`), not first oxide
   damage. "Time to breakdown" here is time to a read-1 outcome. A soft
   breakdown that stays below `I_ref` is not seen. The threshold is recorded.
 - Every read adds read-bias exposure (no certified safe read-disturb limit
   exists; `spec/run3-bench-plan.md` §3). The read count per cell is recorded.
+
+**Equivalence check (within the array).** At one stress voltage per candidate,
+cells are assigned round-robin to two or more `PULSE_WIDTH` codes (for example
+the nominal width and a multiple of it), the same stratum, same voltage. If
+pulsed stress is equivalent to continuous stress, time-to-breakdown `t = N x
+width` agrees across width codes, so `N` scales inversely with width; trap
+recovery or duty-cycle effects show as a width-dependent `t` (a location shift
+between codes in the fit). This tests pulsed-vs-pulsed consistency, so it can
+reject the equivalence but cannot by itself prove it equals true DC stress; that
+residual limit is stated, not closed. Cost: the width codes split the cells of
+that one voltage level (about 33 per code at Option L's 66), and the
+width-by-voltage cells must stay on the ratified `PULSE_WIDTH` codes. Because
+reads between pulses interval-censor `N` by one pulse, `N` is recorded as
+interval-censored `(N-1, N]`; the effect is negligible at the planned window
+(`N_max / N_min` about 1e4).
 
 **Voltage levels.** At least three stress voltages per candidate, chosen so the
 assumed median times are about one decade apart inside an observation window of
@@ -85,7 +101,30 @@ candidate's TDDB block is never pooled with another candidate's.
 Option L meets "at least 3 voltages, at least 60 per voltage" and leaves 66
 cells of spare/excluded replacement. It consumes three quarters of a region, so
 that candidate keeps one sub-combination of ~17.6 cells per pulse condition for
-the ratified yield curve. Partial offset: the first-pulse outcome of the TDDB
+the ratified yield curve.
+
+**Cell ledger per option** (Regions I/II, one candidate; sub-combination = 88
+cells; Region III has 80, so subtract 8 per sub-combination). Each cell is
+counted once. Soak cells are drawn only from the spare column; the yield-curve
+sub-combinations are not touched by soak.
+
+| Option | Sub-combos used by TDDB | TDDB cells | Spare in those strata | Soak cells (from spare) | Yield-curve sub-combos left | Spare left for excluded-cell replacement |
+|---|---|---|---|---|---|---|
+| S | 1 (88) | 84 | 4 | 0 (none fit) | 3 | 4 |
+| M | 2 (176) | 120 | 56 | up to 56 (4 classes x 14) | 2 | 0 if all spent |
+| L | 3 (264) | 198 | 66 | up to 66 (4 classes x 16) | 1 | 0 if all spent |
+| D | 0 | 0 | -- | see §8 | 4 | -- |
+
+Soak cells spent from the spare column are not available to replace excluded
+TDDB cells; the operator trades the two (OPEN-T2). A soak class must also be
+sited so its neighbour class is true: *isolated* soak cells must have no
+programmed or broken-down neighbour, and *adjacent* soak cells must neighbour
+cells that the TDDB run breaks down. Both classes sit inside TDDB strata (the
+spare cells), so the placement map (OPEN-T4) must put spare cells where each
+class definition holds, and *adjacent* soak is read only after the neighbouring
+TDDB cells have broken down while *isolated* soak is run on spare cells away
+from them. If the layout cannot do both, one class is dropped and the
+remaining classes get larger n. Partial offset: the first-pulse outcome of the TDDB
 cells is itself a yield outcome at (stress voltage, width) with n of 66 per
 voltage, provided the stress levels coincide with ratified pulse-condition
 voltages and widths; it would be a separate record, since one record is one
@@ -149,17 +188,29 @@ already broken down supply those neighbours). The neighbour definition
 
 Result per record: `k` failures of `n` with the exact two-sided 95 %
 Clopper-Pearson interval, computed per record as in `spec/run3-bench-plan.md`.
-Zero-failure upper bounds (same script): n = 15: 0.218; 22: 0.154; 30: 0.116;
-60: 0.060; 100: 0.036. With the Option L spare sub-combination (88 cells) split
-into 4 classes the bound is 0.154 at best.
+Zero-failure upper bounds (same script): n = 14: 0.232; 15: 0.218; 16: 0.206;
+22: 0.154; 30: 0.116; 60: 0.060; 100: 0.036. With the Option L spare cells (66
+cells, §3 ledger) split into 4 classes (n = 16) the bound is 0.206 at best; for
+Option M (56 spare, n = 14) it is 0.232. A bound of 0.154 (n = 22 per class)
+needs 88 soak cells, which Option L's ledger does not have unless the cells come
+from the yield-curve sub-combination at a cost the operator must accept, or
+from Option D's larger grid (§8).
 
 Limit stated plainly: under the assumed E-model (`gamma` = 3 decades per MV/cm,
 `assumed`) halving the voltage lengthens the time by many orders of magnitude,
 so a failure is not expected. A zero-failure soak at these n bounds the
 probability only to about 5-20 %; it checks that the extrapolation is not
 grossly wrong (e.g. a non-exponential voltage law or a defect tail). It cannot
-measure a small disturb probability. That quantity comes from the fitted slope
-and acceleration of §4, which is why §4 matters.
+measure a small disturb probability. The §4 fit does not supply it either: the
+fit of about 66 cells per voltage constrains the Weibull body near the median
+time, while a disturb probability of 1e-3 or below lies in the lower tail. If
+the population has an extrinsic defect mode (`bd_beta` = 1.5 is already the
+assumed "defect-limited" shape), the lower tail is set by that mode, not by the
+fitted slope and acceleration, and neither source (a 15-20 % zero-failure bound,
+a fit of the body) reaches it. Extrapolating the fit to a small disturb
+probability is therefore a model assumption, not a result of this plan. The
+soak and the fit are complementary checks on gross failure of the extrapolation
+and on the body; the tail-sampling limit stands.
 
 ## 6. Area and edge (Wanted item 3)
 
@@ -224,8 +275,10 @@ per fraction pair per candidate for a 0.116 zero-failure bound.
 - **OPEN-T5: record-format extension.** Add `tddb` quantity and the §2 fields to
   `measurements/TEMPLATE.md` and `scripts/check_measurements.py` (follow-up,
   not in this record).
-- **OPEN-T6: pulsed-vs-continuous equivalence** (§2), checkable only on pad
-  structures.
+- **OPEN-T6: pulsed-vs-continuous equivalence** (§2). Tested inside the array by
+  the multi-width check; it can reject pulsed/continuous equivalence but cannot
+  prove equality with true DC stress, which has no venue (§7). Width codes and
+  the cell split are the operator's call.
 
 ## References
 
