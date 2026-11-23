@@ -112,7 +112,7 @@ sub-combinations are not touched by soak.
 |---|---|---|---|---|---|---|
 | S | 1 (88) | 84 | 4 | 0 (none fit) | 3 | 4 |
 | M | 2 (176) | 120 | 56 | up to 56 (4 classes x 14) | 2 | 0 if all spent |
-| L | 3 (264) | 198 | 66 | up to 66 (4 classes x 16) | 1 | 0 if all spent |
+| L | 3 (264) | 198 | 66 | 64 of 66 (4 classes x 16) | 1 | 2 at this allocation |
 | D | 0 | 0 | -- | see §8 | 4 | -- |
 
 Soak cells spent from the spare column are not available to replace excluded
@@ -136,9 +136,10 @@ Each additional candidate costs the same again.
 
 ## 4. Expected interval width (method and assumptions)
 
-Method: Monte Carlo of the maximum-likelihood fit, `scripts/tddb_ci_width.py`
-(`python3 -I scripts/tddb_ci_width.py --reps 200`, seed 255, about 16 s). Model:
-`ln t = mu_stratum - g*k + (1/beta) w`, `w` smallest-extreme-value, with
+To reproduce the Monte Carlo results, run `python3 -I scripts/tddb_ci_width.py --reps 200`
+with NumPy and SciPy installed (default seed 255, about 16 s). The
+maximum-likelihood fit uses `ln t = mu_stratum - g*k + (1/beta) w`,
+where `w` follows a smallest-extreme-value distribution, with
 left/right censoring at the window edges. The table gives the central 95 % range
 of the estimator over 200 simulated experiments, as a ratio to the true value.
 That is a **finite-sample sampling range, not an asymptotic figure and not a
@@ -189,24 +190,25 @@ already broken down supply those neighbours). The neighbour definition
 Result per record: `k` failures of `n` with the exact two-sided 95 %
 Clopper-Pearson interval, computed per record as in `spec/run3-bench-plan.md`.
 Zero-failure upper bounds (same script): n = 14: 0.232; 15: 0.218; 16: 0.206;
-22: 0.154; 30: 0.116; 60: 0.060; 100: 0.036. With the Option L spare cells (66
-cells, §3 ledger) split into 4 classes (n = 16) the bound is 0.206 at best; for
-Option M (56 spare, n = 14) it is 0.232. A bound of 0.154 (n = 22 per class)
+22: 0.154; 30: 0.116; 60: 0.060; 100: 0.036. In the §3 ledger, Option L uses
+64 of its 66 spare cells for soak (4 classes of 16), giving an upper bound of
+0.206 per class. Option M uses all 56 spare cells (4 classes of 14), giving
+0.232 per class. A bound of 0.154 (n = 22 per class)
 needs 88 soak cells, which Option L's ledger does not have unless the cells come
 from the yield-curve sub-combination at a cost the operator must accept, or
 from Option D's larger grid (§8).
 
 Limit stated plainly: under the assumed E-model (`gamma` = 3 decades per MV/cm,
 `assumed`) halving the voltage lengthens the time by many orders of magnitude,
-so a failure is not expected. A zero-failure soak at these n bounds the
-probability only to about 5-20 %; it checks that the extrapolation is not
-grossly wrong (e.g. a non-exponential voltage law or a defect tail). It cannot
+so a failure is not expected. Even with zero failures, the upper bound is
+about 21 % for Option L and 23 % for Option M. The soak checks for large
+departures from the extrapolation (e.g. a non-exponential voltage law or a defect tail). It cannot
 measure a small disturb probability. The §4 fit does not supply it either: the
 fit of about 66 cells per voltage constrains the Weibull body near the median
 time, while a disturb probability of 1e-3 or below lies in the lower tail. If
 the population has an extrinsic defect mode (`bd_beta` = 1.5 is already the
 assumed "defect-limited" shape), the lower tail is set by that mode, not by the
-fitted slope and acceleration, and neither source (a 15-20 % zero-failure bound,
+fitted slope and acceleration, and neither source (the zero-failure bound,
 a fit of the body) reaches it. Extrapolating the fit to a small disturb
 probability is therefore a model assumption, not a result of this plan. The
 soak and the fit are complementary checks on gross failure of the extrapolation

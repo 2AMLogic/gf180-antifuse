@@ -159,7 +159,7 @@ def main():
         hb, hg = asymptotic(1.5, 1.0, 0.0, W, per_level=n)
         print(f"n/level={n}: beta +-{hb:.2f}, g +-{hg:.2f} (asymptotic)")
     print("# zero-failure upper bound, exact two-sided 95% (k=0 of n)")
-    for n in (15, 22, 30, 60, 100):
+    for n in (14, 15, 16, 22, 30, 60, 100):
         print(f"n={n}: <= {1 - 0.025 ** (1.0 / n):.3f}")
 
 
