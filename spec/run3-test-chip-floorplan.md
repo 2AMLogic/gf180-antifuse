@@ -1,9 +1,10 @@
 # Decision Record: Run 3 Test Chip Floorplan, Instance Counts and Pad Budget
 
 **Status**: Proposed for operator ratification. Adds a new chip-level floorplan
-for the Run 3 quarter-slot test chip; relaxes and amends nothing in
-`spec/cell-candidates.md`, `spec/split-axis-plan.md`, `spec/architecture.md` or
-any other ratified record. Where this chip deliberately covers less than the
+for the Run 3 test chip (quarter-slot target; space not yet secured);
+relaxes and amends nothing in `spec/cell-candidates.md`,
+`spec/split-axis-plan.md`, `spec/architecture.md` or any other ratified
+record. Where this chip deliberately covers less than the
 ratified 32x32 plan, that is stated as a chip-level scope cut (the array is out
 of scope for this chip per #203), not as a change to the plan.
 **Date**: 2026-10-29
@@ -228,21 +229,22 @@ Core = 1.73 mm^2 (1.05 x 1.65 mm). Every footprint below is **in um^2**.
 | C1 `Gmin`/`Amin` instance | 35.9 (8.36 x 4.30) | 4 | 144 | **Measured**: `klt stats layout/cell_candidate1/cell_candidate1.gds` bbox (-1.23,-1.23)-(7.13,3.07), including both tap rings |
 | C1 `G2x`/`A2x` instances | 72 | 12 | 864 | **Estimate**: upper bound of 2x the drawn cell for any doubled axis |
 | C2 instance | 360 | 10 | 3,600 | **Estimate**: 10x C1 for the drain-extended LDNMOS and thick-oxide cap; not drawn |
-| C3 instance | 110 | 10 | 1,100 | **Estimate**: upper bound: 1.5x C1 for the n-well, doubled, applied to all 10 |
-| Cell subtotal | | 36 | **5,708** (0.0057 mm^2) | |
+| C3 `Gmin` instance | 59.5 (10.12 x 5.88) | 5 | 297.5 | **Measured**: `klt stats layout/cell_candidate3/cell_candidate3.gds` bbox (-2.02,-2.02)-(8.10,3.86), including both tap rings. The access block's tap ring is drawn at the raised generator padding 1.29 um (#297); the block offset grows with it |
+| C3 `G2x` instance | 67.5 (10.12 x 6.67) | 5 | 337.5 | **Measured**: `klt stats layout/cell_candidate3_Amin_G2x/cell_candidate3_Amin_G2x.gds` bbox (-2.02,-2.02)-(8.10,4.65), including both tap rings. Same raised acc-ring padding as the `Gmin` cell (#297's parameter, re-bisected on this cell by #382); the grown bbox replaces the row the C3 budget used to share |
+| Cell subtotal | | 36 | **5,243** (0.0052 mm^2) | |
 | PL routes to pads | 5 um x ~800 um | 36 | 144,000 | **Estimate**: 5 um pitch (HV-spacing allowance) x ~0.8 mm mean run |
 | BL/WL routes | 2 um x ~1.0 mm | 8 | 16,000 | **Estimate** |
 | HV protection/clamp allowance | placeholder | | 500,000 | **Placeholder**: the HV-pad sibling sets the real figure |
-| **Total** | | | **~665,700** (0.67 mm^2) | |
+| **Total** | | | **~665,240** (0.67 mm^2) | |
 
 Margin: 0.67 mm^2 against 1.73 mm^2 core leaves 1.06 mm^2 (about 61 %) free.
 Even if every estimate were doubled the total (1.33 mm^2) stays under the
-core. The cells are a negligible fraction (about 0.33 % of the core); the
+core. The cells are a negligible fraction (about 0.30 % of the core); the
 binding limit is the **pad count**, not area. Instance counts therefore
-cannot be raised by area alone. Candidate 1's drawn size is from the
-committed GDS; Candidates 2 and 3 are not drawn (sibling issues), so their
-rows are estimates and must be replaced by their drawn bounding boxes when
-those layouts exist.
+cannot be raised by area alone. Candidates 1 and 3 are drawn; candidate 1's
+and candidate 3's drawn sizes are from the committed GDS. Candidate 2 is not
+drawn (sibling issue), so its row is an estimate and must be replaced by its
+drawn bounding box when that layout exists.
 
 ## Shuttle-offering dependency
 

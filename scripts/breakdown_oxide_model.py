@@ -15,17 +15,18 @@ Nothing here edits design/breakdown/breakdown_params.spice; it only reads it.
 from __future__ import annotations
 
 import math
-import re
 import sys
 from dataclasses import dataclass, replace
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-import gen_blocks  # noqa: E402
-from gen_blocks import block_re, table  # noqa: E402,F401
-
 ROOT = Path(__file__).resolve().parent.parent
-PARAMS_FILE = ROOT / "design" / "breakdown" / "breakdown_params.spice"
+sys.path.insert(0, str(ROOT / "scripts"))
+sys.path.insert(0, str(ROOT / "design" / "breakdown"))
+import check_params  # noqa: E402
+import gen_blocks  # noqa: E402
+from gen_blocks import table  # noqa: E402
+
+PARAMS_FILE = check_params.PARAMS
 NOTE = ROOT / "docs" / "breakdown-oxide-model.md"
 
 MVCM = 1e8  # V/m per MV/cm
@@ -36,13 +37,7 @@ EPS0 = 8.854e-12  # F/m
 EPS_R = 3.9  # SiO2, as the S2 cross-check in docs/breakdown-vbd-sources.md
 
 # --- parameters read from the params file (tox is PDK-sourced; the rest are the existing assumed values)
-def read_params(path: Path = PARAMS_FILE) -> dict[str, float]:
-    out = {}
-    for m in re.finditer(r"^\.param\s+(\w+)\s*=\s*([-+0-9.eE]+)\s*$", path.read_text(), re.M):
-        out[m.group(1)] = float(m.group(2))
-    return out
-
-
+read_params = check_params.read_param_values
 P = read_params()
 
 # --- assumed model inputs (every one is listed with source and uncertainty in the note)
@@ -335,10 +330,6 @@ def render() -> dict[str, str]:
 
 def check(note: Path = NOTE) -> list[str]:
     return gen_blocks.check(render(), note)
-
-
-def update(note: Path = NOTE) -> None:
-    gen_blocks.update(render(), note)
 
 
 def main(argv: list[str]) -> int:

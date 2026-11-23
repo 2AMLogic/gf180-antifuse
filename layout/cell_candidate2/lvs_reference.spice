@@ -1,0 +1,26 @@
+* LVS reference for layout/cell_candidate2/cell_candidate2.gds.
+* Derived from design/netlists/cell_candidate2.spice (do not edit that file):
+* same subcircuit, same device models and connectivity, with the subcircuit's
+* parameters (wcap, lcap, wacc, lacc) resolved to the drawn geometry, because
+* klt lvs --reference-form subckt-call cannot carry parameter expressions.
+*
+* Two stated deviations from the schematic defaults, both forced by the drawn
+* PCell and both resolved to what is actually drawn:
+*   W=8u nf=2  the PDK nfet_10v0_asym PCell draws two gate fingers of
+*              W = 4 um sharing the centre drain stripe (it clamps any
+*              smaller w request up to 4 um), so the drawn total width is
+*              8 um, not the schematic default wacc = 25 um. The request sets
+*              options.combine_devices so klt lvs folds the two per-finger
+*              layout devices into one device of w_um = 8.0 before comparing
+*              (the gf180mcu extraction deck models nfet_10v0_asym as a mos
+*              *flavour*, not a device class, so the PCell always extracts as
+*              two plain nfet devices -- klayout-tools docs/cli/lvs.md,
+*              "gf180mcu LDMOS PCell against a single reference device").
+*              KLayout's comparer compares w_um and l_um only; nf and m are
+*              not compared, and are written here to record the drawn finger
+*              count, not as a compared assertion.
+*   capacitor  c_width/c_length resolved to the drawn 1.0 um x 0.70 um.
+.subckt cell_candidate2 BL WL PL VB
+XM1 BL WL CN VB nfet_10v0_asym L=0.60u W=8u nf=2 m=1
+XC1 CN PL cap_nmos_06v0 c_width=1.0u c_length=0.70u m=1
+.ends

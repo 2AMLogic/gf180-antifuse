@@ -6,7 +6,8 @@ A generated block in a note looks like
     ...table...
     <!-- /gen:NAME -->
 
-Used by breakdown_oxide_model.py and breakdown_filament_model.py.
+Used by breakdown_oxide_model.py, breakdown_filament_model.py and
+breakdown_c3_junction_model.py.
 """
 from __future__ import annotations
 

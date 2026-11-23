@@ -7,8 +7,10 @@ v {xschem version=3.4.7 file_version=1.2
 *                per spec/split-axis-plan.md; the values below are the PDK
 *                cap_pmos_03v3 symbol template defaults, carried through
 *                verbatim as placeholders. They are NOT a process-minimum
-*                claim - the minimum-legal geometry is a PDK design-rule
-*                lookup deferred to follow-on work.
+*                claim - that minimum (1.0 x 0.28 um for cap_pmos_03v3) is
+*                ratified in spec/capacitor-geometry-decision.md; the
+*                minimum-legal access geometry (wacc/lacc) is still a PDK
+*                design-rule lookup with no ratified record behind it.
 *   wacc, lacc - access-device width and length, same placeholder rule
 *                (pfet_06v0 symbol template defaults).
 *

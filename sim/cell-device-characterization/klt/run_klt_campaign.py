@@ -62,6 +62,27 @@ def sub_names(n):
     return [f"c{n}_access-{s}_cap-{g}" for s in SIZING for g in GEOM]
 
 
+def write_report(path: Path, stdout: str) -> None:
+    """Commit klt's `--format json` stdout with the coverage id lists elided.
+
+    klt serialises the report at indent 2 with a trailing newline, so the
+    elided text is re-dumped the same way and `<path>.sha256` commits to the
+    stdout that was received -- the elision stays auditable. Stdout that is not
+    a klt report (a failed submit prints an error, or nothing) is kept verbatim
+    with no sidecar: there is nothing to elide and nothing to attest.
+    """
+    try:
+        rep = json.loads(stdout)
+    except json.JSONDecodeError:
+        rep = None
+    if not isinstance(rep, dict) or "corners" not in rep:
+        path.write_text(stdout)
+        return
+    text, full_sha = R.klt_report_payload(rep, indent=2)
+    path.write_text(text)
+    path.with_name(path.name + ".sha256").write_text(full_sha + "\n")
+
+
 def submit_one(rundir: Path, sub: str, which: str, workers_note: str = "") -> tuple[str, str, int, str]:
     req = REQ_DIR / sub / f"{which}.json"
     out = rundir / sub / which
@@ -70,7 +91,7 @@ def submit_one(rundir: Path, sub: str, which: str, workers_note: str = "") -> tu
         [*shlex.split(os.environ.get("KLT_CMD", "klt")), "sim", "-o", str(out), str(req), "--format", "json"],
         capture_output=True, text=True,
     )
-    (out / "report.json").write_text(proc.stdout)
+    write_report(out / "report.json", proc.stdout)
     if proc.stderr.strip():
         (out / "stderr.txt").write_text(proc.stderr)
     return sub, which, proc.returncode, proc.stderr

@@ -4,7 +4,11 @@
 Fails on a malformed manifest, any `uri` not starting with `artifact:`, a
 storage locator (`s3://`, `arn:aws:`) anywhere in the file, and any stored
 object whose sha256 matches the bytes of a tracked file (bytes committed as
-well as stored). Stdlib only.
+well as stored). Exemption (operator ruling on issue #346, 2026-11-15):
+manifests named in manifests/artifacts/grandfathered.txt are exempt from the
+tracked-bytes check, but a tracked file is exempt only when EVERY manifest
+listing its (size, sha256) is on that list — any manifest off the list keeps
+the object fully checked. Stdlib only.
 
 Usage:
     scripts/check_artifact_manifests.py [PATH ...]
@@ -73,14 +77,33 @@ def tracked_files(root: Path) -> list[Path]:
     return [root / p for p in out.decode().split("\0") if p]
 
 
-def check_no_tracked_bytes(manifests: dict[Path, str], root: Path) -> list[str]:
-    """Error for each stored object whose bytes are also a tracked file."""
-    wanted: dict[int, dict[str, Path]] = {}
+def load_allowlist(path: Path) -> frozenset[str]:
+    """Load grandfathered manifest filenames, one per line; '#' comments and
+    blank lines are ignored. A missing file means an empty allowlist."""
+    if not path.is_file():
+        return frozenset()
+    names = []
+    for raw in path.read_text().splitlines():
+        line = raw.strip()
+        if line and not line.startswith("#"):
+            names.append(line)
+    return frozenset(names)
+
+
+def check_no_tracked_bytes(manifests: dict[Path, str], root: Path,
+                           grandfathered: frozenset[str] = frozenset()) -> list[str]:
+    """Error for each stored object whose bytes are also a tracked file.
+
+    A tracked file is exempt only when every manifest listing its
+    (size, sha256) is named in `grandfathered`; any non-grandfathered lister
+    keeps the file fully checked.
+    """
+    wanted: dict[tuple[int, str], set[str]] = {}
     for mpath, text in manifests.items():
         try:
             entries = json.loads(text)["entries"]
             for e in entries:
-                wanted.setdefault(e["size"], {})[e["sha256"]] = mpath
+                wanted.setdefault((e["size"], e["sha256"]), set()).add(mpath.name)
         except (ValueError, KeyError, TypeError):
             continue  # reported by check_text
     errs = []
@@ -89,11 +112,12 @@ def check_no_tracked_bytes(manifests: dict[Path, str], root: Path) -> list[str]:
             size = f.stat().st_size
         except OSError:
             continue
-        if size in wanted:
-            digest = hashlib.sha256(f.read_bytes()).hexdigest()
-            if digest in wanted[size]:
-                errs.append(f"{f.relative_to(root)}: bytes are committed AND stored "
-                            f"(manifest {wanted[size][digest].name})")
+        digest = hashlib.sha256(f.read_bytes()).hexdigest()
+        names = wanted.get((size, digest))
+        offenders = names - grandfathered if names else None
+        if offenders:
+            errs.append(f"{f.relative_to(root)}: bytes are committed AND stored "
+                        f"(manifest {', '.join(sorted(offenders))})")
     return errs
 
 
@@ -103,13 +127,14 @@ def main(argv: list[str]) -> int:
     for t in targets:
         files += sorted(t.glob("*.manifest.json")) if t.is_dir() else [t]
     texts = {f: f.read_text() for f in files}
+    grandfathered = load_allowlist(ROOT / "manifests" / "artifacts" / "grandfathered.txt")
     failed = False
     for f, text in texts.items():
         for e in check_text(text):
             print(f"{f}: {e}", file=sys.stderr)
             failed = True
     if not failed and texts:
-        for e in check_no_tracked_bytes(texts, ROOT):
+        for e in check_no_tracked_bytes(texts, ROOT, grandfathered):
             print(e, file=sys.stderr)
             failed = True
     print(f"checked {len(files)} manifest(s): {'FAIL' if failed else 'ok'}")

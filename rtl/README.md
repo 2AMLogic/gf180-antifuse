@@ -199,19 +199,24 @@ report (exit 0). Result (reports regenerated with klayout-tools 0.8.0; netlists 
 | ABC critical-path estimate | 13621 ps, wire-free, pre-layout; not signoff timing |
 
 The one Yosys warning is the `translate_off` elaboration guard in the RTL.
-Decoder function is checked at RTL by `verification/run_decode.sh`; there is no
-gate-level simulation of this netlist (same limits as below). Both
-`--check --rerun` commands are the freshness checks in
+Decoder function is checked at RTL by `verification/run_decode.sh`; the
+routed netlist has the gate-level run below, but these pre-route synthesized
+netlists do not. Both `--check --rerun` commands are the freshness checks in
 `signoff/inventories/item-1-digital.json`, which backs `1.digital`.
 
 Not done (for either netlist):
 
-- **Gate-level simulation.** `verification/run_spi_regs.sh` cannot take the
-  netlist as `RTL=`: the bench reads RTL-internal signals (`dut.arm`,
-  `dut.commit_ev`, `dut.read_valid`) the netlist does not have, the netlist is
-  fixed at N = 32 so the N = 20 configuration cannot apply, and the
-  installed iverilog rejects the PDK cell models (`ifnone with an edge-sensitive
-  path is not supported`). The RTL bench is unchanged and covers the RTL only.
+- **Gate-level simulation.** The *routed* netlist has one: the port-only
+  cocotb suite through `klt functional-verification` ("Gate-level functional
+  verification" below). The Verilog benches still cannot take a netlist as
+  `RTL=`: they read RTL-internal signals (`dut.arm`, `dut.commit_ev`,
+  `dut.read_valid`) the netlist does not have, and the netlist is fixed at
+  N = 32 so the N = 20 configuration cannot apply — they stay RTL-only. (The
+  earlier note that iverilog "rejects the PDK cell models" was the timing
+  branch: iverilog 13.0 logs `sorry: ifnone with an edge-sensitive path is
+  not supported` 120 times over the `gf180mcu_fd_sc_mcu7t5v0` timing models
+  but exits 0 — the arcs are skipped, the build succeeds. The zero-delay
+  `FUNCTIONAL` branch compiles silently.)
 - **Equivalence.** `klt synthesize --verify-equivalence` is combinational-only
   and this block is sequential.
 - **Timing.** Nothing beyond the ABC estimate above and the unsigned P&R figures under "Place-and-route".
@@ -221,8 +226,12 @@ Not done (for either netlist):
 `antifuse_digital_top` at the default **N = 32** (the array size captured in
 the RTL; a different ratified N means a re-run, not a redesign), routed from
 `synth/antifuse_digital_top_synth.v` with `klt place-and-route` (klayout-tools
-0.7.0, OpenROAD `26Q3-1510-g6cb3f2b704`, PDK gf180mcuD, `gf180mcu_fd_sc_mcu7t5v0`).
-One local single-unit run, about 4 minutes.
+0.8.0, OpenROAD `26Q3-1510-g6cb3f2b704`, PDK gf180mcuD, `gf180mcu_fd_sc_mcu7t5v0`).
+One local single-unit run, about 4 minutes. The route was re-run once for the
+slow corners (issue #446): optimization liberty `pdk.corner:
+"ss_125C_1v62"` (was nominal only) plus a zero output delay (below), which is
+the request delta that took both failing 1.62 V corners positive — see
+"Post-route STA" for the SPEF-annotated result on this geometry.
 
 ```sh
 rtl/pnr/run_pnr.sh            # re-run, refresh the committed artifacts
@@ -232,53 +241,116 @@ rtl/pnr/run_pnr.sh --rerun    # full re-run diffed against the committed report
 
 | File | What it is |
 |---|---|
-| [`pnr/antifuse_digital_top.pnr.json`](pnr/antifuse_digital_top.pnr.json) | The request: 35 % utilization, 10 um core margin, `power.preset: gf180mcu_7t_6M` (PDN on Metal1/4/5 plus tapcells, endcaps, fill), seed 1. |
-| `pnr/antifuse_digital_top.pnr.report.json` | The `klt place-and-route` response, with host paths rewritten repo-relative by the script. |
+| [`pnr/antifuse_digital_top.pnr.json`](pnr/antifuse_digital_top.pnr.json) | The request: 35 % utilization, 10 um core margin, `power.preset: gf180mcu_7t_6M` (PDN on Metal1/4/5 plus tapcells, endcaps, fill), seed 1, optimization corner `ss_125C_1v62` and `constraints.output_delay_ns: 0` (issue #446; both P&R inputs chosen here, like the clock target — not spec values). |
+| `pnr/antifuse_digital_top.pnr.report.json` | The `klt place-and-route` response, with host paths rewritten repo-relative by `scrub_report_paths.py` (shared with `rtl/sta`, issue #285). |
 | `pnr/antifuse_digital_top.{gds,def}`, `pnr/antifuse_digital_top_routed.v` | Routed GDS, DEF and the as-built netlist (CTS buffers and fill included): the reference a later LVS run should use. |
 | `pnr/antifuse_digital_top.attest.json` | The T1 item 2 attestation, written by `pnr/attest.py` and cited as `2.digital` in `signoff/manifest.json`. |
 
 Result: status `ok`, stage `route`, `power.pdn: true`, tapcell master
-`gf180mcu_fd_sc_mcu7t5v0__filltie` (55 tapcells, 106 endcaps), 0 antenna and 0
-route DRC violations, die 54333 um^2, 38 % utilization.
+`gf180mcu_fd_sc_mcu7t5v0__filltie` (220 tapcells, 106 endcaps, per
+`power.placed`), 0 antenna and 0 route DRC violations, die 54333 um^2,
+40.6 % utilization at route.
 
 Not claimed, and not part of this change:
 
-- **Pin plan.** klt 0.7.0 exposes only the pin layers (`io.layer_h`/`layer_v`);
+- **Pin plan.** klt 0.8.0 exposes only the pin layers (`io.layer_h`/`layer_v`);
   OpenROAD places the ports itself. The pins are not placed to match the
   analog interface, so any analog/digital integration needs its own plan.
-- **Timing is not signed off.** The 50 ns `clk` target is a P&R input chosen
-  here, not a spec value. OpenROAD's in-flow estimate (`corners[]` in the P&R
-  report, `spef_sta: null`) shows setup slack -3.773 ns at `ss_125C_1v62` and
-  -0.348 ns at `ss_n40C_1v62`; the latter corner has 15 max-transition and 1
-  max-capacitance violations. The post-route SPEF-annotated STA below
-  supersedes those figures and fails the same two corners, by more.
+- **Timing target, not timing signoff.** The 50 ns `clk` target is a P&R input
+  chosen here, not a spec value (the open question is `docs/ROADMAP.md`,
+  "Digital timing"). Setup at the two slow 1.62 V corners is closed on this
+  route (issue #446): OpenROAD's in-flow estimate (`corners[]` in the P&R
+  report, `spef_sta: null`, optimized at `ss_125C_1v62`) is non-negative at
+  every corner (worst setup +1.864 ns at `ss_125C_1v62`), and the post-route
+  SPEF-annotated STA below confirms the same geometry. Timing signoff as a T1
+  citation additionally needs a ratified target (the routed zero-delay
+  `klt functional-verification` report is now committed below, #445); until
+  then the STA report stays `supporting_evidence`.
 - **DRC** of the routed GDS is `rtl/pnr/antifuse_digital_top.drc.json`
   (`klt drc`, regenerated by `rtl/pnr/run_drc.sh`; coverage in
   `signoff/README.md`). **LVS and power-delivery checks** are separate items.
+
+### Foreign-host re-run and the report-path guard (issue #316)
+
+`run_pnr.sh` and `run_sta.sh` lint the scrubbed report with
+`klt env-provenance lint-envelope` (klayout-tools 0.8.0) and fail the run on
+its exit 3, so an absolute host path the scrubber has no rule for stops the
+run instead of landing silently in the append-only committed report.
+`PRESERVE_RAW=<path>` copies the pre-scrub report aside for evidence runs that
+must show what `klt` emitted before scrubbing; both scripts otherwise destroy
+it. The scrubber (`rtl/scrub_report_paths.py`) collapses `$PDK_ROOT` to
+`~/<basename>` — the portable form this report already carries for the
+`~/.ciel`/`~/.volare` search roots — because a PDK resolved outside `$HOME`
+has no `~`-under-`$HOME` shape for the plain home collapse to catch.
+`tests/test_scrub_report_paths.py` pins the rule and its negative control:
+without `$PDK_ROOT` set, an outside-`$HOME` PDK root survives the scrub as an
+absolute path while every `$HOME`-shaped check reads clean — the lint is what
+stops it.
+
+Foreign-host evidence (2026-11-15, klayout-tools 0.8.0, this report's flow):
+
+- **Host form**: a second checkout at `/tmp/fh316/checkout` (recorded repo
+  path `/home/ubuntu/GitHub/gf180-antifuse`), `HOME=/tmp/fh316/home` (recorded
+  `/home/ubuntu`), `PDK_ROOT=/home/ubuntu/.ciel` — resolving outside that
+  `$HOME`, so the `~/` collapse cannot fire. Single-unit local runs; no job or
+  parallelism flag raised.
+- `rtl/pnr/run_pnr.sh`: **exit 0**. The pre-scrub report carried
+  `layer_map.path: /home/ubuntu/.ciel/gf180mcuD/libs.tech/klayout/tech/gf180mcu.map`
+  — absolute, outside the synthetic `$HOME`; the scrubbed report carries
+  `~/.ciel/gf180mcuD/...`, byte-identical to the committed form.
+  `provenance.pdk.source` records the resolution method
+  (`PDK_ROOT environment variable`), not a path, and `ambiguous_sources` is
+  absent, so neither leaks. Lint: `clean: 0 absolute path(s)`, exit 0. Note
+  the raw report contains `/home/ubuntu/...` while `grep -c '/home/'` on the
+  scrubbed report is 0 — the grep this issue's parent leaned on passes a
+  leaking report; the lint is the guard.
+- `rtl/pnr/run_pnr.sh --check` on that host: **exit 0** (`match` on both
+  content hashes).
+- `rtl/pnr/run_pnr.sh --rerun` on that host: **exit 3**, a deviation from the
+  expectation that it verifies cross-host reproduction. The drift list is
+  exactly the fresh side being unscrubbed (`gds_path`/`def_path`/`verilog_path`/
+  `power.placed.def_path` absolute vs committed repo-relative, `layer_map.path`
+  absolute vs `~/`) plus resolution provenance (`provenance.pdk.source` and
+  `ambiguous_sources`: `PDK_ROOT` env vs search roots). **No verdict field
+  drifted** — status, stage, power and routing all reproduced. Diffing the
+  fresh report *after* the same scrub leaves only run-scoped bookkeeping
+  (invocation ids and their interpolated paths), `provenance.klayout_version`
+  (0.30.12 committed vs 0.30.13 fresh — version drift under the repo pin) and
+  the two resolution-provenance fields. Filed upstream as
+  [2AMLogic/klayout-tools#5863](https://github.com/2AMLogic/klayout-tools/issues/5863);
+  until it lands, `--check` (hash-level, exit 0 above) plus this drift
+  classification is the cross-host verification available for this report.
 
 ### Post-route STA (issue #250)
 
 `rtl/sta/run_sta.sh` runs `klt extract --parasitics` on the routed GDS to write a
 SPEF, then one `klt sta` request that times that fixed routed geometry at all 15
 corners of the P&R report (`klayout-tools==0.8.0`, PDK `gf180mcuD`, 50 ns `clk`,
-no other constraint). `rtl/sta/run_sta.sh --check` re-hashes the inputs against
+`output_delay_ns: 0`). `rtl/sta/run_sta.sh --check` re-hashes the inputs against
 `rtl/sta/inputs.sha256` and re-validates the report shape without OpenROAD.
 
 | File | What it is |
 |---|---|
 | `sta/antifuse_digital_top.extract.json`, `sta/antifuse_digital_top.sta.json` | The two requests. |
 | `sta/antifuse_digital_top.spef` | The extracted parasitics (`def_net_names`, DEF connections and pins, so OpenSTA can attach every net). |
-| `sta/antifuse_digital_top.sta.report.json` | The `klt sta` response, `geometry_source: routed`, host paths rewritten. |
+| `sta/antifuse_digital_top.sta.report.json` | The `klt sta` response, `geometry_source: routed`, host paths rewritten by `scrub_report_paths.py`. |
 | `sta/inputs.sha256` | sha256 of GDS, DEF, routed netlist, SPEF and both requests. |
 
-Annotation: 544 of 544 design nets are named by the SPEF at every corner and
+Annotation: 550 of 550 design nets are named by the SPEF at every corner and
 `annotation_complete` is true. The DEF carries the connectivity STA reads; the
 routed netlist is hashed as the as-built reference but is not read by `klt sta`.
-Caveats recorded by klt: 7 floating `clkload*` cell outputs have no
-parasitics; the extractor omitted `*D_NET` blocks for 1101 nets the DEF does
-not know (unlabelled or duplicate-named nets); and `constraint_completeness`
-is `incomplete`: 83 endpoints (the output ports) are unconstrained because the
-request sets only the clock, so no I/O delay is analysed.
+Seven floating `clkload*` cell outputs have no parasitics. The extractor
+computed parasitics for 1663 nets but wrote `*D_NET` blocks only for the 550
+the DEF names (unlabelled or duplicate-named nets get none).
+
+The baseline STA reported 83 unconstrained endpoints. Setting
+`output_delay_ns: 0` constrains all 79 output ports in the routed DEF. This
+zero delay is a P&R assumption chosen for issue #446. The request sets no
+input delay on the asynchronous SPI inputs `cs_n`, `sclk` and `mosi`, or on
+the asynchronous sense-amplifier input `sense_in`. Each feeds a two-flop
+synchronizer whose first-stage D pin remains unconstrained. At all 15 corners,
+STA reports `timing_status` as `constrained` and `constraint_completeness`
+as `incomplete` for those four endpoints.
 
 Setup and hold slack are the worst slack in ns; violations are path counts;
 max-tran and max-cap are the `electrical_checks` counts; the last column is the
@@ -286,27 +358,114 @@ in-flow estimate from the P&R report.
 
 | Corner | Setup | Hold | Setup viol. | Hold viol. | Max-tran | Max-cap | P&R setup (in-flow) |
 |---|---|---|---|---|---|---|---|
-| `ff_125C_1v98` | 36.235 | 1.381 | 0 | 0 | 0 | 0 | 36.622 |
-| `ff_125C_3v60` | 43.017 | 0.676 | 0 | 0 | 0 | 0 | 43.215 |
-| `ff_125C_5v50` | 44.952 | 0.458 | 0 | 0 | 0 | 0 | 45.107 |
-| `ff_n40C_1v98` | 40.013 | 1.050 | 0 | 0 | 0 | 0 | 40.325 |
-| `ff_n40C_3v60` | 45.338 | 0.476 | 0 | 0 | 0 | 0 | 45.475 |
-| `ff_n40C_5v50` | 46.575 | 0.340 | 0 | 0 | 0 | 0 | 46.661 |
-| `ss_125C_1v62` | **-5.533** | 5.527 | 15 | 0 | 0 | 0 | -3.773 |
-| `ss_125C_3v00` | 33.049 | 1.760 | 0 | 0 | 0 | 0 | 33.517 |
-| `ss_125C_4v50` | 39.462 | 1.058 | 0 | 0 | 0 | 0 | 39.754 |
-| `ss_n40C_1v62` | **-2.231** | 5.118 | 1 | 0 | 15 | 1 | -0.348 |
-| `ss_n40C_3v00` | 38.552 | 1.242 | 0 | 0 | 0 | 0 | 38.892 |
-| `ss_n40C_4v50` | 42.997 | 0.733 | 0 | 0 | 0 | 0 | 43.206 |
-| `tt_025C_1v80` | 27.803 | 2.276 | 0 | 0 | 0 | 0 | 28.503 |
-| `tt_025C_3v30` | 41.700 | 0.854 | 0 | 0 | 0 | 0 | 41.938 |
-| `tt_025C_5v00` | 44.430 | 0.556 | 0 | 0 | 0 | 0 | 44.596 |
+| `ff_125C_1v98` | 37.816 | 1.369 | 0 | 0 | 0 | 0 | 38.130 |
+| `ff_125C_3v60` | 43.822 | 0.668 | 0 | 0 | 0 | 0 | 43.990 |
+| `ff_125C_5v50` | 45.544 | 0.454 | 0 | 0 | 0 | 0 | 45.620 |
+| `ff_n40C_1v98` | 41.076 | 1.041 | 0 | 0 | 0 | 0 | 41.334 |
+| `ff_n40C_3v60` | 45.810 | 0.471 | 0 | 0 | 0 | 0 | 45.932 |
+| `ff_n40C_5v50` | 46.903 | 0.336 | 0 | 0 | 0 | 0 | 46.974 |
+| `ss_125C_1v62` | 0.640 | 5.486 | 0 | 0 | 0 | 0 | 1.864 |
+| `ss_125C_3v00` | 34.805 | 1.746 | 0 | 0 | 0 | 0 | 35.200 |
+| `ss_125C_4v50` | 40.558 | 1.048 | 0 | 0 | 0 | 0 | 40.805 |
+| `ss_n40C_1v62` | 4.195 | 5.082 | 0 | 0 | 0 | 0 | 5.240 |
+| `ss_n40C_3v00` | 39.616 | 1.231 | 0 | 0 | 0 | 0 | 39.921 |
+| `ss_n40C_4v50` | 43.618 | 0.726 | 0 | 0 | 0 | 0 | 43.797 |
+| `tt_025C_1v80` | 30.231 | 2.258 | 0 | 0 | 0 | 0 | 30.756 |
+| `tt_025C_3v30` | 42.556 | 0.847 | 0 | 0 | 0 | 0 | 42.765 |
+| `tt_025C_5v00` | 44.987 | 0.550 | 0 | 0 | 0 | 0 | 45.125 |
 
-All 15 corners ran. Two fail setup: `ss_125C_1v62` (TNS -36.603 ns) and
-`ss_n40C_1v62` (TNS -2.231 ns, which also carries all the max-transition and
-max-capacitance violations). Hold is met everywhere. Both failing corners are
-the 1.62 V corners, which lie outside the 3.3 V-class `VDD_LOGIC` assumption in
-`spec/supply-domains-decision.md` row 1 (OI-1 still open); the 50 ns target and
-the failing corners are not changed here. The routed design still has no
-`klt functional-verification` report, so T1 item 5 (digital) stays `unmet`; the
-STA report is `supporting_evidence` only (`signoff/README.md`).
+All 15 corners ran and all meet setup and hold with zero max-transition and
+max-capacitance violations: worst setup +0.640 ns at `ss_125C_1v62`, worst
+hold +0.336 ns at `ff_n40C_5v50` (issue #446; the previous route failed
+setup at `ss_125C_1v62` (-5.533 ns, 15 paths) and `ss_n40C_1v62` (-2.231 ns,
+which also carried 15 max-transition and 1 max-capacitance violations)). The
+two 1.62 V corners still lie outside the 3.3 V-class `VDD_LOGIC` assumption
+in `spec/supply-domains-decision.md` row 1 (OI-1 still open), and the 50 ns
+target is not a ratified spec value; the corner set and the target are
+unchanged here. Without a ratified timing target, T1 item 5 (digital) stays
+`unmet` even with the routed zero-delay `klt functional-verification` report
+below (#445); both reports stay `supporting_evidence` only (`signoff/README.md`).
+
+Foreign-host evidence (issue #316, 2026-11-15; same host form as the P&R run
+recorded above — a second checkout at a different repo path,
+`HOME=/tmp/fh316/home`, `PDK_ROOT=/home/ubuntu/.ciel` resolving outside it):
+`rtl/sta/run_sta.sh` **exit 0**, lint `clean: 0 absolute path(s)`,
+`report ok: 15 corners, all SPEF-annotated`. The raw report carries no
+absolute PDK path at all: `provenance.pdk.source` is the resolution-method
+string, identical before and after the scrub, `ambiguous_sources` is absent,
+and this envelope has no `layer_map` field — the only host-dependence is the
+repo-root prefix, which the scrubber has always collapsed.
+`rtl/sta/run_sta.sh --check` on that host: **exit 0** — all six input hashes
+verify, including `sta/antifuse_digital_top.spef`, which the foreign-host
+`klt extract` regenerated **byte-identically** (`inputs.sha256` is unchanged
+by the run). There is no `klt sta --check --rerun` equivalent
+([2AMLogic/klayout-tools#5841](https://github.com/2AMLogic/klayout-tools/issues/5841));
+the hash-plus-shape `--check` above is the available cross-host verification
+for this report.
+
+## Gate-level functional verification (issue #445)
+
+`rtl/run_gate_sim.sh` runs one `klt functional-verification` request
+(`verification/cocotb/request_digital_top.json`) whose only repo source is
+the routed netlist `pnr/antifuse_digital_top_routed.v`, with the
+`gf180mcu_fd_sc_mcu7t5v0` behavioural cell models resolved from the
+installed PDK by the request's `pdk` block (zero-delay `FUNCTIONAL` branch;
+no SDF — see the `--sdf` leg below). Top `antifuse_digital_top`, N = 32,
+`ARM_TIMEOUT` 4096 and `READ_SETTLE` 8 baked into the cells, Icarus 13.0,
+cocotb. **Result: 21/21 tests pass** (`verification/cocotb/report_digital_top.json`
+is committed; the suite is the port-only
+`verification/cocotb/test_antifuse_digital_top.py` — SPI registers through
+the top-level pins plus row/column decoder coverage through the `*_onehot`
+ports, with a per-cycle monitor checking the one-hot lines every test).
+`rtl/run_gate_sim.sh --check` re-hashes the inputs
+(`verification/cocotb/inputs_digital_top.sha256`) and re-validates the
+report shape and the port-only discipline, no simulator needed.
+
+| File | What it is |
+|---|---|
+| `verification/cocotb/request_digital_top.json` | The zero-delay request: routed netlist + `pdk` block (variant `gf180mcuD`, library `gf180mcu_fd_sc_mcu7t5v0`). |
+| `verification/cocotb/test_antifuse_digital_top.py` | Port-only suite (21 tests): the port-applicable `test_spi_regs.py` coverage at the netlist's own constants, plus `decoder_onehot_all_indices` (all 32 rows and columns) and `onehot_idle_while_sel_changes`. |
+| `verification/cocotb/report_digital_top.json` | The committed report, host-path-scrubbed by `scrub_report_paths.py` and linted clean (`klt env-provenance lint-envelope`, issue #316's guard). |
+| `verification/cocotb/inputs_digital_top.sha256` | sha256 of the netlist, suite, both requests and the SDF-writing sta request. |
+| `rtl/run_gate_sim.sh` | The runner: no args runs and refreshes; `--check` verifies; `--sdf` re-attempts the annotated leg. |
+| `rtl/sta/antifuse_digital_top.sdf.json`, `verification/cocotb/request_digital_top_sdf.json` | The `--sdf` leg's two requests (below). |
+
+The flow pins klayout-tools git rev
+`6bd18bbc8637f6d767b3c24e77bd5db7a39e4bbe` (0.9.3.dev2575): the request
+`pdk` block that keeps host PDK paths out of the committed request is
+unreleased ([2AMLogic/klayout-tools#6977](https://github.com/2AMLogic/klayout-tools/issues/6977)),
+and that build's report envelope emits checkout-free artifact paths
+(`scope: "external", path: null`). `KLT_CMD` overrides the invocation for a
+host dev install of the same rev.
+
+### The SDF-annotated leg: recorded outcome (issue #445 step 4)
+
+`rtl/run_gate_sim.sh --sdf` writes one post-route SDF from the same
+committed DEF + SPEF the STA flow uses (`rtl/sta/antifuse_digital_top.sdf.json`,
+`write_sdf -divider . -include_typ`, corner `tt_025C_1v80`), then re-runs
+the identical suite with `options.sdf` at `corner: "typ"`
+(`verification/cocotb/request_digital_top_sdf.json`). With the pinned build
+the run **fails functionally (3/21 pass), exit 3**:
+
+- `2AMLogic/klayout-tools#5002` does **not** reproduce — no `vvp` abort in
+  `vpi_scan`; this klt build's up-front validation and drop machinery
+  prevent the shapes #5002 reports. No comment was added there.
+- Instead the annotation is `partial`: `iopath_cond_expression` x1070 and
+  `iopath_ifnone_edge_modpath` x144 arcs are dropped (the Icarus
+  compatibility classes), and the annotated remainder mis-simulates — SPI
+  writes stop committing and MISO stays 0 (3/21 pass) — at `typ` **and**
+  `min` alike, and with every `INTERCONNECT` entry stripped from the SDF the
+  failure is unchanged, so the trigger is on the cell-arc side, not the
+  nets. Discriminators: the same netlist and suite pass the zero-delay run
+  above, and pass with the timing-branch models compiled **without**
+  annotation (the models' own 1.0 ns `specify` defaults); OpenSTA hold is
+  clean at all 15 corners. Filed as
+  [2AMLogic/klayout-tools#6991](https://github.com/2AMLogic/klayout-tools/issues/6991);
+  related open: #5784 (SDF file path echoed absolute — why the failing
+  annotated report is not committed) and #6937 (bus-port INTERCONNECT
+  class).
+
+So the unannotated 21/21 report stays the committed evidence, `7.digital`
+stays `unmet` (its rule requires `environment.sdf.annotated: true`; an
+unannotated run renders `not_post_layout`), and `--sdf`'s nonzero exit is
+the recorded, reproducible outcome until #6991 is fixed.

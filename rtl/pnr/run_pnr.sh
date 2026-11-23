@@ -28,20 +28,13 @@ for key, dst in (("gds_path", "rtl/pnr/antifuse_digital_top.gds"),
                  ("def_path", "rtl/pnr/antifuse_digital_top.def"),
                  ("verilog_path", "rtl/pnr/antifuse_digital_top_routed.v")):
     shutil.copyfile(r[key], dst)
-
-# Keep the committed report free of host paths: repo-relative, or ~ for the PDK.
-import os
-root, home = os.getcwd() + "/", os.path.expanduser("~") + "/"
-def clean(v):
-    if isinstance(v, str):
-        return v.replace(root, "").replace(home, "~/")
-    if isinstance(v, list):
-        return [clean(x) for x in v]
-    if isinstance(v, dict):
-        return {k: clean(x) for k, x in v.items()}
-    return v
-with open(sys.argv[1], "w") as f:
-    json.dump(clean(r), f, indent=2)
-    f.write("\n")
 PY
+# PRESERVE_RAW=<path> copies the pre-scrub report aside first, for an evidence
+# run that must show what klt actually emitted before scrubbing (issue #316).
+[ -z "${PRESERVE_RAW:-}" ] || cp "$REPORT" "$PRESERVE_RAW"
+python3 -I rtl/scrub_report_paths.py "$REPORT"
+# Anything the scrubber could not collapse is an absolute host path; the lint
+# stops the run here instead of letting it into the append-only committed
+# report (issue #316). Exit 3 on findings, 0 clean.
+$KLT env-provenance lint-envelope "$REPORT"
 python3 -I rtl/pnr/attest.py

@@ -3,6 +3,164 @@
 Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 
+### 2026-11-18
+
+- **Issue #438** (closed): #176 is parked on #436, whose resolution moves the real blocker to klayout-tools#6742
+- **PR #440**: docs: state geometry-claims checker scope and mark rtl/pnr note as unpinned
+- **Issue #439** (closed): Geometry-claims checker does not cover design-record docs outside layout/README.md
+- **PR #437**: docs(rtl): localize col_sel[2] LVS split to an abstract-cell multi-pad pin artifact
+- **Issue #436** (closed): Routed digital GDS: col_sel[2] extracts as two nets, gate-level LVS mismatch
+- **PR #433**: checker: fail claims whose quote spells an interval but omit quote_values
+- **Issue #419** (closed): geometry-claims checker: deleting quote_values re-opens the #414 coordinated-edit bypass
+- **PR #431**: test: guard WORK_PLAN.md plan-body block against generator-foreign annotations
+- **Issue #430** (closed): Guide plan-body block carries hand-applied annotations the generator never emits (recurrence of #420)
+- **PR #428**: test: pin erc/lvs/economy sign-off reports to the committed layout by name
+- **Issue #427** (closed): Pin the ERC/LVS/economy sign-off reports to the committed layout, and name the expected report set
+- **PR #426**: test: pin run3_top stage report hashes to the committed GDS
+- **Issue #424** (closed): run3_top stage evidence: no test pins a report's recorded input hash to the committed GDS
+- **PR #423**: layout: record the run3 antenna stage's measured ratios and after-round report
+- **Issue #422** (closed): run3_top README: the antenna groups' measured ratios and the deferred remedy's "after: 0" round have no committed source
+- **PR #421**: docs: drop hand-applied *(held)* markers from WORK_PLAN.md rows
+- **Issue #420** (closed): WORK_PLAN.md *(held)* annotation is hand-applied post-generation and drifts between Guide runs
+- **PR #417**: checker: pin readme_quote numerals to bbox_um via per-claim quote_values
+- **Issue #414** (closed): Geometry-claims checker does not tie readme_quote's numbers to bbox_um — a coordinated prose+sidecar edit still passes
+- **PR #416**: layout: fix the run3 chip-level findings the precheck's own stages enforce
+- **Issue #404** (closed): Chip-level native DRC findings in repo-drawn geometry (antenna, die-level density, CUP.2) have no tracking work
+- **PR #413**: check: pin README-quoted VB-strap and gate-pad intervals to the committed GDS
+- **Issue #407** (closed): No check ties layout/README.md's quoted geometry intervals to the committed GDS (three hand-found drifts: #378, #391, #401)
+- **PR #411**: docs(sim): correct stale klt concurrency-cap retry comment in cell-breakdown-model
+- **Issue #300** (closed): Decide whether sim/program-read-legs requests should carry a klt-side batch.capacity_wait_s
+- **PR #410**: docs(spec): repoint CN ring-gap citations at the shared point modules
+- **Issue #409** (closed): spec/capacitor-geometry-decision.md cites the candidate-1/3 generate.py shims for CN gap-span measurements that now live in the points modules
+- **PR #403**: refactor(layout): share candidate-3 geometry via a candidate3_points table
+- **Issue #397** (closed): Consolidate the two candidate-3 generators onto a shared point table (as #315 did for candidate 1)
+- **PR #405**: docs: correct candidate-1 VB-strap metal band bottoms in layout README
+- **Issue #401** (closed): layout: candidate-1 family VB-strap bullet quotes access north-band bottoms 0.04 um low (README:426-437)
+- **PR #402**: layout: assemble the Run 3 test chip (run3_top.gds) with DRC/LVS/ERC evidence
+- **Issue #211** (closed): Run 3 test chip: full-chip assembly with DRC/LVS through klt
+- **PR #400**: docs(layout): correct Amin_G2x VB-strap rationale to the measured spacing constraint
+- **Issue #391** (closed): layout: cell_candidate3_Amin_G2x's VB-strap rationale says the cap gate pad sits BETWEEN the two ring north bands; measured, it now sits below both
+- **PR #398**: docs: sync signoff README 3.analog row with the committed 5-finding DRC report
+- **Issue #396** (closed): signoff/README.md's 3.analog rationale is stale: it cites candidate 1's DF.1c and "6 findings", but the committed drc_native_report.json has 5 and no DF.1c (#287 is closed)
+- **PR #386**: docs: refresh candidate-1/3 native DRC finding counts in ROADMAP and PCell-exception record
+- **Issue #383** (closed): docs/spec: the native-finding count tables in docs/ROADMAP.md and spec/pdk-pcell-drc-exception-decision.md are stale for candidates 1 and 3 (DF.1c cleared by #296, DF.4d_MV/DV.6 by #297)
+- **Issue #287** (closed): Native PDK runset finds real DRC violations in all three bitcells that the curated deck misses: MOSCAP COMP width (all 3), 6 V gate length (cand 2), Nwell overlap and Dualgate enclose (cand 3)
+- **PR #394**: refactor(layout): one drift-check driver — candidate-2 generators reuse bitcell_gen drive/helpers
+- **PR #392**: docs(spec): anchor the generate.py PCell citation to the acc bg.run call, not line numbers
+- **Issue #390** (closed): spec: pdk-pcell-drc-exception-decision.md cites generate.py "lines 96-99", now lines 110-112
+- **Issue #280** (closed): Remove the second copy of the GDS drift-check driver in layout/cell_candidate2/generate.py (reuse bitcell_gen)
+- **PR #389**: layout: clear candidate3_Amin_G2x's generator-owned DF.4d_MV/DV.6 via acc-block ring padding (1.29 um), re-fit DX, Y_TAP_ACC and the strap x-extents
+- **PR #388**: docs(spec): re-record candidate 2's DRC census (27 -> 25) after #296 cleared the cap__core findings
+- **PR #387**: docs: qualify Run 3 slot-booking and GDS-date claims in spec/ and ROADMAP
+- **PR #384**: docs: replace stale inline ERC coverage figures with per-cell table pointer
+- **PR #381**: layout: clear candidate 3's generator-owned DF.4d_MV/DV.6 via acc-block ring padding (1.29 um), re-fit DX and VB strap
+- **Issue #385** (closed): docs/spec: candidate 2's native DRC finding count is stale in pdk-pcell-drc-exception-decision.md (27 quoted, committed report says 25)
+- **Issue #382** (closed): layout: cell_candidate3_Amin_G2x still carries the generator-owned DF.4d_MV x5 + DV.6 x1 that #297 cleared on cell_candidate3; apply ring_padding_acc_um to the 2x-area pfet variant
+- **Issue #379** (closed): Correct the remaining unqualified "Run 3 quarter slot" / "GDS due 2026-12-16" wording in spec/ and docs/ROADMAP.md
+- **Issue #378** (closed): layout/erc/README.md: candidate-1 coverage figures (11.79 um2, extent_uncovered_fraction 0.055) are stale against the committed report (13.0148, 0.114166)
+- **Issue #297** (closed): layout: clear candidate 3's generator-owned DF.4d_MV x5 and DV.6 via ring_padding_um, and file the klayout-tools well-overlap defect upstream
+
+### 2026-11-17
+
+- **PR #377**: layout: draw the Run 3 bare-cap C2 fallback (2F), measure its native runset, propose the decision record
+- **PR #375**: fix: give cell_candidate2 its own fitted ERC supply spec (supplies_c2.json)
+- **Issue #373** (closed): layout/erc: cell_candidate2 shares candidate 1's supplies.json, so its Region-I missing_tie 'clean' covers only ~45% of its drawn tap area
+- **Issue #372** (closed): Run 3 fallback: a variant that passes the native runset without candidate 2's nfet_10v0_asym findings (decide by 2026-12-01)
+- **Issue #207** (closed): Run 3 test chip: Candidate 2 and Candidate 3 bitcell layouts
+- **PR #371**: layout: draw the ratified capacitor geometry (1.0/2.0 um) in all seven cells; re-fit marker, CN and VB
+- **Issue #296** (closed): layout: draw the ratified legal capacitor geometry in all seven cells (clears DF.1c on all seven and PL.2_MV on candidate 2; re-fit the three base cells hardcoded MOSCAP marker and CN/VB straps)
+- **PR #367**: test: pin numfmt.close tolerance and numfmt.logical_lines continuation rules
+- **PR #366**: docs: note candidate-1 split-point exception in layout README
+- **Issue #344** (closed): layout/README.md still says per-candidate geometry stays in each generate.py
+- **Issue #340** (closed): sim/harness/tests/test_numfmt.py: no direct coverage for numfmt.close and numfmt.logical_lines
+- **PR #363**: fix(sim): state the stored contract on post-manifest cleanup failure; refuse empty retab records
+- **PR #361**: fix: remove stored run-dir copies once the evidence manifest lands
+- **Issue #362** (closed): Evidence store: two diagnostics gaps left after the run-dir-consuming store (#356)
+- **Issue #356** (closed): Runs since the 10-23 store-only rule commit raw sim bytes as well as storing them: find and fix the cause
+- **PR #359**: fix(check): grandfather ruling-era manifests out of tracked-bytes rule
+- **Issue #346** (closed): check:ci fails on main: check_artifact_manifests.py reports committed-and-stored bytes for sim/ artifacts
+
+### 2026-11-16
+
+- **PR #352**: fix: reject --analyze-report with --mode full-band; run its tests in a tmp checkout
+- **Issue #351** (closed): array-slice-bench: test_analyze_report writes into the live evidence tree on regression; --analyze-report note is false under --mode full-band
+- **PR #350**: sim: --analyze-report grades only, implying --no-write
+- **Issue #349** (closed): sim: --analyze-report writes a record claiming the full 5-process PVT matrix while grading one process
+- **PR #348**: fix(bench): write the report sha256 sidecar only when the full text was held
+- **Issue #330** (closed): array-slice-bench --analyze-report writes a sidecar that attests only the elided text
+- **PR #345**: spec: record scoped DRC exception for unmodified PDK PCell geometry
+- **Issue #299** (closed): Operator ruling: candidate 2's unmodified PDK nfet_10v0_asym PCell trips 20 native sign-off rules that cannot be waived, hand-edited or substituted away
+- **PR #343**: Consolidate the three candidate-1 split-grid generators into one point table
+- **Issue #315** (closed): Consolidate three near-identical candidate-1 split-grid generators into a point table
+- **PR #339**: fix(tests): expect the post-#326 remote sharding key in request shape assertions
+- **Issue #333** (closed): check:ci red: RequestBatchOpts shape assertions reject the remote sharding key (PR #326)
+- **Issue #337** (closed): main red: program-read-legs request tests not updated for the remote sharding key
+- **PR #336**: docs: narrow the stale process-minimum caveats to the access axis and fix the check-header numbering
+- **Issue #307** (closed): design/check-netlists.sh comment asserts no ratified record fixes the process-minimum geometry — stale once the capacitor-geometry record lands
+- **PR #335**: refactor: consolidate the design checkers' duplicated SPICE helpers into numfmt
+- **Issue #331** (closed): Consolidate duplicated SPICE helpers in design checkers into numfmt
+- **PR #332**: fix(rtl): lint scrubbed flow reports for absolute host paths; collapse a $PDK_ROOT outside $HOME
+- **PR #325**: fix(design): derive geometry-basis owner/status per entry from ratified capacitor levels
+- **Issue #314** (closed): geometry-basis record cites closed #294 as a live owner for the capacitor divergences
+- **PR #322**: Remove three test-only symbols: object_table, summarise, BIAS_BY_NAME
+- **Issue #290** (closed): Remove three shipped symbols whose only consumer is a test: object_table, summarise, BIAS_BY_NAME
+
+### 2026-11-15
+
+- **PR #334**: docs: re-derive the ROADMAP snapshot from committed evidence
+- **Issue #324** (closed): docs/ROADMAP.md T1-ladder paragraph will be stale after #323: 7 rows met incl. 3.analog, now 6 with 3.analog unmet
+- **PR #329**: feat: generate run3_top chip-level reference netlist and pad table, checked against the spec sources
+- **Issue #275** (closed): Run 3 test chip: chip-level reference netlist and machine-readable pad table, checked against the floorplan record
+- **PR #327**: sim: commit klt reports with per-report sha256 sidecars at the last two raw write sites
+- **Issue #283** (closed): Finish the klt coverage-elision policy: two write sites #271 left re-deriving the raw write
+- **PR #326**: feat(sim): shard program-read-legs requests under the fleet's 3600s job ceiling
+- **PR #323**: layout/signoff: commit native-deck DRC reports for all seven cells; grade 3.analog on the native verdict
+- **Issue #295** (closed): layout/signoff: commit a native-deck DRC report for all seven cells and stop recording curated-only 'clean' as DRC clean
+- **PR #319**: test: assert exactly one B-element card names each measured HV pad node
+- **Issue #302** (closed): HV pad deck test: the `"B" in text` half of the measured-node assertion is vacuous
+- **PR #311**: feat(sim): emit batch.capacity_wait_s from program-read-legs requests
+- **Issue #317** (closed): check_artifact_manifests.py fails on main: 2026-11-06 re-qualification manifests store bytes that are also committed
+- **PR #320**: docs: move WORK_LOG '## Archives' index to EOF so live entries stop nesting under it
+- **Issue #304** (closed): WORK_LOG rotation: the '## Archives' index nests the whole live log under it
+- **PR #318**: refactor: remove dead declarations left by numfmt and gen_blocks consolidations
+- **PR #309**: refactor(rtl): dedupe the committed-report host-path scrubber
+- **PR #308**: design: add drawn-vs-simulated geometry-basis gate with a recorded divergence set
+- **PR #305**: spec: decision record pinning capacitor-geometry split levels to the process-minimum legal W/L
+- **Issue #294** (closed): spec: decision record pinning the capacitor-geometry split levels to the process-minimum LEGAL W/L
+- **Issue #292** (closed): Drawn bitcell geometry and the geometry the committed SPICE evidence was run at differ, and nothing compares them
+- **Issue #285** (closed): Remove the duplicated host-path scrubber embedded in rtl/pnr/run_pnr.sh and rtl/sta/run_sta.sh
+- **Issue #282** (closed): Remove dead module-level declarations left behind by the numfmt and gen_blocks consolidations
+- **PR #291**: test: port test_hv_pad_protection.py from pytest to unittest
+- **PR #298**: layout: draw the Candidate 3 G2x-capacitor bitcell (cell_candidate3_Amin_G2x)
+- **Issue #310** (closed): check_artifact_manifests.py fails on main: 15,713 entries flagged 'bytes are committed AND stored'
+- **Issue #306** (closed): check_artifact_manifests.py is red on main: 15.7k 'bytes are committed AND stored' findings across the 202610/202611 sim manifest families
+- **Issue #276** (closed): tests/test_hv_pad_protection.py needs pytest, so check:ci cannot run it
+- **PR #289**: docs: state the breakdown params' 12/3 provenance split in the roadmap
+- **PR #286**: refactor(sim): delegate program-read-legs klt retry to the harness policy
+- **PR #284**: fix: skip disposable .work/ scratch when publishing run evidence
+- **Issue #278** (closed): docs/ROADMAP.md: breakdown-model row says "every parameter assumed"; 3 of 15 are provenance=literature
+- **Issue #277** (closed): Remove the hand-rolled klt retry loop in sim/program-read-legs: harness/klt.py owns fleet-refusal retry and this driver opts out of it
+- **Issue #274** (closed): Run 3 test chip: draw the Candidate 3 G2x-capacitor bitcell
+- **Issue #270** (closed): Stop publishing the git-ignored .work/ scratch tree as evidence: 42% of tracked manifest bytes index disposable files
+
+### 2026-11-14
+
+- **PR #288**: layout: reach LVS match on candidate 2 at klt 0.9.2 and cross-check DRC against the PDK runset
+- **PR #281**: feat(sim): elide klt coverage id lists from committed reports in four runners
+- **PR #279**: feat: draw the three remaining Candidate 1 split-grid bitcells
+- **PR #272**: docs: roadmap as of 2026-11-13
+- **Issue #273** (closed): Run 3 test chip: draw the Candidate 1 split-variant bitcells (G2x capacitor, A2x access)
+- **Issue #271** (closed): Elide klt coverage id lists before committing report.json: 101 MiB (33% of tracked bytes) of uniform 'characterization_without_limits' bookkeeping, already solved in array-slice-bench
+
+### 2026-11-13
+
+- **PR #261**: docs: add Run 3 bench fixture requirements note
+- **Issue #260** (closed): Run 3 test chip: bench test board and fixture for breakdown and programming measurements
+
+### 2026-11-10
+
+- **PR #258**: feat(layout): draw candidate-2 bitcell on klt 0.9.1, record DRC/LVS gaps
+
 ### 2026-11-06
 
 - **PR #253**: sim: re-qualify breakdown-model #130 V_bd sensitivity points under open_pdks f6eeac7d
@@ -210,41 +368,6 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 - **PR #44**: signoff: commit a klt signoff block manifest and its graded T1 verdict
 - **Issue #43** (closed): Commit a klt signoff block manifest so this block's T1 state is graded, not hand-read
 
-### 2026-09-14
+## Archives
 
-- **Issue #42** (closed): Remove tracked __pycache__/*.pyc bytecode files
-- **Issue #37** (closed): Remove phantom --check-env usage line from sim/run_corners.py docstring
-
-### 2026-09-13
-
-- **PR #41**: refactor: remove append_log wrapper, call write_once directly
-- **Issue #40** (closed): Remove append_log wrapper: identical pass-through of write_once
-
-### 2026-09-12
-
-- **PR #39**: Remove NgspiceRun wrapper: single-field dataclass adds no value
-- **PR #36**: refactor: remove dead pdk_root assignment in resolve_pdk() env-path branch
-- **PR #35**: Remove dead ok/returncode fields from harness NgspiceRun
-- **PR #31**: refactor: remove unused pdk_root field from PDKPaths
-- **PR #29**: refactor: consolidate scratch-dir/deck-write/run duplication in run_experiment.py
-- **PR #27**: refactor: remove unused claim_extra parameter from render_record()
-- **PR #25**: fix: consolidate gen_models/gen_models_moscap duplication in run_experiment.py
-- **PR #23**: Remove unused variant_override parameter in resolve_pdk()
-- **PR #20**: fix: enforce append-only guard on raw per-corner ngspice logs
-- **Issue #38** (closed): Remove NgspiceRun wrapper: single-field dataclass adds no value
-- **Issue #34** (closed): Remove dead pdk_root local variable in resolve_pdk()'s GF180_PDK_PATH branch
-- **Issue #33** (closed): Remove dead ok/returncode fields from harness NgspiceRun
-- **Issue #32** (closed): Remove unused PDKPaths.pdk_root field
-- **Issue #30** (closed): Remove unused pdk_root field from PDKPaths
-- **Issue #28** (closed): Consolidate scratch-dir/deck-write/run duplication in run_experiment.py
-- **Issue #26** (closed): Remove unused claim_extra parameter from render_record()
-- **Issue #24** (closed): Consolidate gen_models/gen_models_moscap duplication in run_experiment.py
-- **Issue #22** (closed): Remove unused variant_override parameter in sim/harness/pdk.py's resolve_pdk()
-- **Issue #21** (closed): Remove dead code in sim/harness: unused append_log function and variant_override parameter
-- **Issue #19** (closed): Remove unused append_log helper in sim/harness/report.py (or wire it into raw-log writes)
-- **Issue #18** (closed): Remove unused append_log() in sim/harness/report.py
-
-### 2026-09-09
-
-- **PR #17**: sim: stand up sim/ evidence convention + cell-device-characterization experiment
-- **Issue #16** (closed): sim: access-device OFF-leakage / ON-resistance and moscap C–V characterization over PVT for all three cells — bound `I_sneak_max` at N=32 (architecture §3/§4 "required design input")
+- [2026-09](work_log/WORK_LOG_2026-09.md)

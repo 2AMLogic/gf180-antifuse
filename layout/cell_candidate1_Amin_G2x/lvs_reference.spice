@@ -1,0 +1,10 @@
+* LVS reference for layout/cell_candidate1_Amin_G2x/cell_candidate1_Amin_G2x.gds.
+* Derived from design/netlists/cell_candidate1.spice (do not edit that file):
+* same subcircuit, same device models and connectivity, with the subcircuit's
+* parameters (wcap, lcap, wacc, lacc) resolved to the drawn access Minimum x capacitor 2x
+* geometry point, because klt lvs --reference-form subckt-call cannot carry
+* parameter expressions. Only literal geometry differs from the source netlist.
+.subckt cell_candidate1_Amin_G2x BL WL PL VB
+XM1 BL WL CN VB nfet_06v0 L=0.70u W=0.42u nf=1 m=1
+XC1 CN PL cap_nmos_03v3 c_width=2.0u c_length=0.28u m=1
+.ends

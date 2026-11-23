@@ -35,7 +35,7 @@ def fake_pdk(tmp: Path):
 
 
 def sc(name):
-    return X.BIAS_BY_NAME[name]
+    return next(s for s in X.BIAS_SCENARIOS if s.name == name)
 
 
 def corner_vals(sc_, off=1e-13, un=1e-13, pw=1e-6, pm=2e-6):
@@ -112,7 +112,7 @@ class BiasReachesDeck(unittest.TestCase):
         self.assertEqual(req["analysis"]["kind"], "dc")
 
     def test_chosen_scenario_exists(self):
-        self.assertIn(X.CHOSEN_C3_SCENARIO, X.BIAS_BY_NAME)
+        self.assertIn(X.CHOSEN_C3_SCENARIO, {s.name for s in X.BIAS_SCENARIOS})
 
 
 class FeasibilityVerdict(unittest.TestCase):

@@ -74,7 +74,8 @@ make_bench.py                  generates testbench/ (checked: --check)
 run_bench.py                   submits via klt sim, grades, writes records
 testbench/tb_<slice>_<process>.spice      klt circuit body
 testbench/<slice>_<process>.request.json  the klt sim request (temperature x selection x supply)
-reports/<record-id>/<slice>_<process>.report.json   raw klt report (coverage id lists elided, sha recorded)
+reports/<record-id>/<slice>_<process>.report.json   raw klt report (coverage id lists elided by `harness.report.elide_coverage`), each beside a `<...>.report.json.sha256` sidecar carrying the sha256 of its full, un-elided text; the sidecar is written only when this runner held the full text -- `--analyze-report` on an already-elided report cannot digest bytes it never had and writes no sidecar
+reports/<record-id>/leak_<variant>_<band>_<process>.report.json   the same committed form, full-band leakage mode; its sidecar is written only when this runner wrote the report itself (a resumed run reuses an older report and cannot digest bytes it never had)
 records/<record-id>.md         evidence record
 ../../measurements/array-slice-bench/<record-id>.md   per-region view
 ```

@@ -4,7 +4,7 @@
     python3 sim/array-slice-bench/run_bench.py                 # both slices
     python3 sim/array-slice-bench/run_bench.py --slice slice_i_ii
     python3 sim/array-slice-bench/run_bench.py --backend local # debug only
-    python3 sim/array-slice-bench/run_bench.py --analyze-report PATH --slice S   # one process request's report
+    python3 sim/array-slice-bench/run_bench.py --analyze-report PATH --slice S   # grade one process report only (--no-write implied)
     python3 sim/array-slice-bench/run_bench.py --mode full-band   # issue #70: full-band leakage (fullband.py)
 
 What it does (and does not do)
@@ -19,6 +19,8 @@ What it does (and does not do)
 * It then grades the returned per-corner measurements against the acceptance
   statements in README.md and writes an append-only record:
       sim/array-slice-bench/reports/<record-id>/<slice>_<process>.report.json   raw reports
+        (staged only; once the run is stored the in-tree copies are removed
+         and manifests/artifacts/array-slice-bench-<record-id>.manifest.json holds them)
       sim/array-slice-bench/records/<record-id>.md                    record
       measurements/array-slice-bench/<record-id>.md                   per-region
   Records are never edited; a re-run mints a new <record-id>.
@@ -31,7 +33,6 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
-import hashlib
 import json
 import re
 import sys
@@ -206,16 +207,34 @@ def merge_reports(reps: list[dict]) -> dict:
     return out
 
 
-def slim(report: dict) -> dict:
-    """Drop the per-measurement coverage bookkeeping (tens of thousands of
-    ids that restate 'characterization without limits'); everything else, and
-    every measurement value, is kept. The sha256 of the full text is recorded."""
-    r = json.loads(json.dumps(report))
-    cov = r.get("coverage", {})
-    for k in ("checked", "inapplicable"):
-        if k in cov:
-            cov[k] = f"<{len(cov[k])} entries elided by run_bench.py slim()>"
-    return r
+def slim_payload(report: dict) -> tuple[str, str | None]:
+    """-> (committed text of a klt report, sha256 of its full text, or None).
+
+    The text is the coverage-elided form (`harness.report.elide_coverage`);
+    every measurement value and everything else is kept. The digest commits to
+    the full, un-elided text at the same serialisation options (see
+    `harness.report.klt_report_payload`): write it beside the report as a
+    `<name>.report.json.sha256` sidecar so the elision stays auditable.
+
+    None means no attestable digest: the input was already coverage-elided
+    (`harness.report.coverage_is_elided` -- as `--analyze-report` on a
+    committed report is), the elision is a no-op on it, and a digest would
+    attest the elided text sitting beside the sidecar instead of the raw
+    report it claims to attest. Skip the sidecar write in that case -- the
+    same carve-out the full-band resume path gets by never re-writing a
+    reused report (it cannot digest bytes it never had)."""
+    if R.coverage_is_elided(report):
+        return R.klt_report_payload(report, indent=None, separators=(",", ":"))[0], None
+    return R.klt_report_payload(report, indent=None, separators=(",", ":"))
+
+
+def write_report_and_digest(rp: Path, payload: tuple[str, str | None]) -> None:
+    """Commit the report text, plus its sidecar only when a full-text digest
+    was attestable (a None digest means the input was already elided)."""
+    text, full_sha = payload
+    rp.write_text(text)
+    if full_sha is not None:
+        R.write_once(rp.with_name(rp.name + ".sha256"), full_sha + "\n")
 
 
 # ---------------------------------------------------------------------------
@@ -229,7 +248,7 @@ def fmt_e(x):
     return f"{x:.3g}"
 
 
-def slice_section(sl, report, per, full_sha):
+def slice_section(sl, report, per, report_shas, write=True):
     r0, r1, c0, c1 = G.SLICES[sl]
     reach, iso, errors = region_tables(sl, per)
     env = report.get("environment", {})
@@ -243,7 +262,17 @@ def slice_section(sl, report, per, full_sha):
         ", ".join(f"`{j.get('job_id')}` ({j.get('provider')}, {j.get('instance_type')}, {j.get('lifecycle')})" for j in jobs)
         if any(jobs) else "none reported (local run)"))
     out.append(f"- pdk: {report.get('provenance', {}).get('pdk')}")
-    out.append(f"- full klt report sha256: `{full_sha}`")
+    missing = sorted(k for k, v in report_shas.items() if not v)
+    if missing:
+        out.append(f"- sha256 of the full, un-elided text: none attestable ({', '.join(missing)}: the input "
+                   f"report is already coverage-elided); no sidecar written")
+    elif write:
+        shas = ", ".join(f"{k}: `{v}`" for k, v in sorted(report_shas.items()))
+        out.append(f"- per-report sha256 of the full, un-elided text ({shas}); each is committed "
+                   f"beside its report as `{sl}_<process>.report.json.sha256`")
+    else:
+        shas = ", ".join(f"{k}: `{v}`" for k, v in sorted(report_shas.items()))
+        out.append(f"- per-report sha256 of the full, un-elided text ({shas}); not committed (--no-write)")
     out.append("")
     out.append("**Selected cell reaches the BL/PL program path** (per region, per capacitor-geometry x "
                "access-sizing sub-combination; worst case over every corner and every selected cell of that "
@@ -288,7 +317,7 @@ def orientation_section():
     return out
 
 
-def write_records(record_id, sections, rep_paths, per_slice_summary, clean, now):
+def write_records(record_id, sections, per_slice_summary, clean, now):
     sha = git("rev-parse", "HEAD")
     rec = [f"# Record {record_id}", "",
            "- **Record ID**: " + record_id,
@@ -306,8 +335,8 @@ def write_records(record_id, sections, rep_paths, per_slice_summary, clean, now)
            "slice. This is the full CLAUDE.md PVT matrix; no subset.",
            "- **Result**: see per-slice sections below. Per region, per sub-combination; nothing is averaged "
            "across regions or sub-combinations.",
-           "- **Links**: testbench `sim/array-slice-bench/testbench/`; raw klt reports "
-           + ", ".join(f"`{p}`" for p in rep_paths) + ".",
+           "- **Links**: testbench `sim/array-slice-bench/testbench/`; raw klt reports in the artifact "
+           f"store, manifest `manifests/artifacts/array-slice-bench-{record_id}.manifest.json`.",
            f"- **Timestamp / author**: {now:%Y-%m-%dT%H:%M:%SZ} / Claude Sonnet 5.5 (Loom builder, issue #64)",
            "- **Supersedes**: (none)", "",
            "## Acceptance thresholds used (this record's own; not spec numbers)", "",
@@ -360,7 +389,7 @@ def run_full_band(a) -> int:
                 req = B.TB_DIR / f"leak_{variant}_{name}_{proc}.request.json"
                 rep = run_klt(name, proc, a.backend, Path("/tmp") / f"klt-sim-{record_id}-{variant}-{name}-{proc}", req)
                 rep_dir.mkdir(parents=True, exist_ok=True)
-                rp.write_text(json.dumps(slim(rep), indent=None, separators=(",", ":")) + "\n")
+                write_report_and_digest(rp, slim_payload(rep))
                 reports[(name, variant)][proc] = rep
                 print(f"wrote {rp.relative_to(REPO)}", flush=True)
     return finish_full_band(F, record_id, clean, now, bands, reports, a)
@@ -410,7 +439,8 @@ def finish_full_band(F, record_id, clean, now, bands, reports, a) -> int:
             "points, approximated as a scaling of the level; `sel` runs level scale 1.0 only). Full CLAUDE.md PVT "
             "matrix; no subset.",
             "- **Result**: see the per-region tables below; nothing is averaged across regions or read levels.",
-            f"- **Links**: raw klt reports `sim/array-slice-bench/reports/{record_id}/`; per-corner CSV "
+            f"- **Links**: raw klt reports in the artifact store, manifest "
+            f"`manifests/artifacts/array-slice-bench-{record_id}.manifest.json`; per-corner CSV "
             f"`measurements/array-slice-bench/{record_id}.csv`; per-region view "
             f"`measurements/array-slice-bench/{record_id}.md`.",
             f"- **Timestamp / author**: {now:%Y-%m-%dT%H:%M:%SZ} / Claude Sonnet 5.5 (Loom builder, issue #70)",
@@ -486,9 +516,16 @@ def main():
     ap.add_argument("--record-id", help="full-band mode: resume an interrupted run (reuses reports already on disk)")
     ap.add_argument("--slice", action="append", choices=list(G.SLICES))
     ap.add_argument("--backend", default=None, help="klt sim backend override (default: host default)")
-    ap.add_argument("--analyze-report", type=Path, help="grade an existing klt JSON report (one process request) instead of running")
+    ap.add_argument("--analyze-report", type=Path,
+                    help="grade an existing klt JSON report (one process request) instead of running; "
+                         "grades only -- implies --no-write, nothing is written")
     ap.add_argument("--no-write", action="store_true", help="grade and print only")
     a = ap.parse_args()
+    if a.analyze_report and a.mode == "full-band":
+        ap.error("--analyze-report cannot be combined with --mode full-band: full-band never grades the report path")
+    if a.analyze_report:
+        a.no_write = True
+        print("note: --analyze-report grades only; nothing is written (--no-write implied)", file=sys.stderr)
     slices = a.slice or list(G.SLICES)
 
     if any((not p.exists()) or p.read_text() != t for p, t in B.outputs().items()):
@@ -501,8 +538,7 @@ def main():
     now = dt.datetime.now(dt.timezone.utc)
     record_id = f"{now:%Y%m%d-%H%M%S}-{git('rev-parse', '--short', 'HEAD')}"
     clean = not R.git_is_dirty(REPO)
-    sections, rep_paths = [], []
-    summary = {}
+    sections, summary = [], {}
     worst_bad = 0
     for sl in slices:
         if a.analyze_report:
@@ -512,26 +548,27 @@ def main():
             for proc in B.PROCESS:
                 reps.append((proc, run_klt(sl, proc, a.backend, Path("/tmp") / f"klt-sim-{record_id}-{sl}-{proc}")))
         report = merge_reports([r for _p, r in reps])
-        full_sha = hashlib.sha256(json.dumps([r for _p, r in reps], sort_keys=True).encode()).hexdigest()
+        payloads = {proc or "all": slim_payload(r) for proc, r in reps}
         per = analyze(sl, report)
-        sec, reach, iso, errors = slice_section(sl, report, per, full_sha)
+        sec, reach, iso, errors = slice_section(sl, report, per,
+                                                {k: s for k, (_t, s) in payloads.items()},
+                                                write=not a.no_write)
         sections.append(sec)
         bad = sum(t["bad"] for t in reach.values()) + sum(u["bad"] for u in iso.values()) + errors
         worst_bad += bad
         summary[sl] = bad
         print(f"{sl}: {report['corner_count']} corners, {bad} criteria violations / ungradable")
         if not a.no_write:
-            for proc, r in reps:
-                rp = HERE / "reports" / record_id / f"{sl}_{proc or 'all'}.report.json"
+            for proc, _r in reps:
+                rp = HERE / "reports" / record_id / f"{sl}_{proc}.report.json"
                 rp.parent.mkdir(parents=True, exist_ok=True)
-                rp.write_text(json.dumps(slim(r), indent=None, separators=(",", ":")) + "\n")
-                rep_paths.append(str(rp.relative_to(REPO)))
+                write_report_and_digest(rp, payloads[proc])
 
     if a.no_write:
         for s in sections:
             print("\n".join(s))
         return 0 if worst_bad == 0 else 3
-    text = write_records(record_id, sections, rep_paths, summary, clean, now)
+    text = write_records(record_id, sections, summary, clean, now)
     rec = HERE / "records" / f"{record_id}.md"
     rec.parent.mkdir(parents=True, exist_ok=True)
     rec.write_text(text)

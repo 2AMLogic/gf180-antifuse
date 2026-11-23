@@ -8,6 +8,14 @@ __pycache__/
 # sim/ harness: per-corner ngspice logs under corners/ are committed evidence
 # (append-only record trail), so they escape the *.log rule.
 !sim/*/corners/**/*.log
+# the run3 density stage's own deck log is committed evidence alongside its
+# klt report (the report alone cannot carry a clean native-deck verdict,
+# issue #404).
+!layout/run3_top/drc_density_stage.log
+# the run3 antenna stage's deck log escapes the same rule, and with the RDB
+# committed beside it (not ignored) is the record of the per-finding measured
+# ratios the klt report's envelope drops (issue #422).
+!layout/run3_top/drc_antenna_stage.log
 # (History only: runs adopting the artifact store do not use this exception;
 # their raw outputs are staged below and only a manifest is committed.)
 sim/.artifact-scratch/
@@ -102,3 +110,4 @@ rtl/synth/.klt/
 # <<< loom-managed <<<
 rtl/pnr/.klt/
 rtl/sta/.klt/
+verification/cocotb/.klt/

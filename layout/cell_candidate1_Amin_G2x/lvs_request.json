@@ -1,0 +1,4 @@
+{
+  "layout": {"file": "cell_candidate1_Amin_G2x.gds", "deck": "gf180mcu", "top": "cell_candidate1_Amin_G2x"},
+  "reference": {"netlist": "lvs_reference.spice", "form": "subckt-call", "deck": "gf180mcu", "top": "cell_candidate1_Amin_G2x"}
+}

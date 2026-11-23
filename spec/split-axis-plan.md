@@ -163,6 +163,13 @@ levels, checkerboarded across the region's row extent:
 - **2x-area**: double the minimum capacitor area (via W and/or L scaling),
   same device and oxide flavor.
 
+The concrete levels are pinned by
+[`capacitor-geometry-decision.md`](capacitor-geometry-decision.md): Minimum
+W x L is 1.0 x 0.28 um (`cap_nmos_03v3`, `cap_pmos_03v3`) and 1.0 x 0.70 um
+(`cap_nmos_06v0`); "2x-area" doubles W at that fixed L (exactly 2.000x C at
+fixed bias). The pair the generator drew before that record (0.42 / 0.84 um)
+was its enclosed-contact floor, not the process minimum.
+
 **Rationale**: gate-oxide breakdown is commonly modeled with area-dependent
 (Weibull-type) statistics — more oxide area under stress has a higher
 probability of containing the defect that nucleates breakdown at a given

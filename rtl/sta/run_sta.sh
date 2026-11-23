@@ -26,7 +26,7 @@ want = [c["name"] for c in pnr["corners"]]
 got = [c["corner"] for c in rep["corners"]]
 assert got == want, f"corner list drifted: {got} != {want}"
 assert req["pdk"]["corners"] == want, "sta request does not name every P&R corner"
-assert req["constraints"] == {"clock_port": "clk", "clock_period_ns": 50}
+assert req["constraints"] == {"clock_port": "clk", "clock_period_ns": 50, "output_delay_ns": 0}
 assert rep["geometry_source"] == "routed" and rep["status"] == "ok"
 assert rep["spef_path"]["path"] == "rtl/sta/antifuse_digital_top.spef"
 for c in rep["corners"]:
@@ -45,25 +45,17 @@ case "${1:-}" in
   *) echo "usage: $0 [--check]" >&2; exit 2 ;;
 esac
 
-$KLT extract "$EXTRACT_REQ" --format json > "$D/extract.tmp.json"
-rm -f "$D/extract.tmp.json"
+$KLT extract "$EXTRACT_REQ" --format json > /dev/null
 $KLT sta "$STA_REQ" --pdk gf180mcuD --format json > "$REPORT.tmp"
-python3 -I - "$REPORT.tmp" "$REPORT" <<'PY'
-import json, os, sys
-r = json.load(open(sys.argv[1]))
-root, home = os.getcwd() + "/", os.path.expanduser("~") + "/"
-def clean(v):
-    if isinstance(v, str):
-        return v.replace(root, "").replace(home, "~/")
-    if isinstance(v, list):
-        return [clean(x) for x in v]
-    if isinstance(v, dict):
-        return {k: clean(x) for k, x in v.items()}
-    return v
-with open(sys.argv[2], "w") as f:
-    json.dump(clean(r), f, indent=2)
-    f.write("\n")
-PY
+python3 -I rtl/scrub_report_paths.py "$REPORT.tmp" "$REPORT"
+# PRESERVE_RAW=<path> copies the pre-scrub report aside before the rm, for an
+# evidence run that must show what klt actually emitted before scrubbing.
+[ -z "${PRESERVE_RAW:-}" ] || cp "$REPORT.tmp" "$PRESERVE_RAW"
+# Anything the scrubber could not collapse is an absolute host path; the lint
+# stops the run here instead of letting it into the append-only committed
+# report (issue #316). Exit 3 on findings, 0 clean. On a failure the .tmp
+# survives the rm below for forensics.
+$KLT env-provenance lint-envelope "$REPORT"
 rm -f "$REPORT.tmp"
 sha256sum "${INPUTS[@]}" > "$SUMS"
 check_report

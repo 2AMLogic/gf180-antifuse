@@ -18,6 +18,7 @@ def _load():
 
 
 M = _load()
+import gen_blocks  # noqa: E402  (scripts/ is on sys.path via the module load above)
 
 
 class Limits(unittest.TestCase):
@@ -114,7 +115,7 @@ class NoteAgreement(unittest.TestCase):
     def test_all_blocks_present(self):
         text = M.NOTE.read_text()
         for k in M.BLOCKS:
-            self.assertEqual(len(M.block_re(k).findall(text)), 1, k)
+            self.assertEqual(len(gen_blocks.block_re(k).findall(text)), 1, k)
 
 
 if __name__ == "__main__":

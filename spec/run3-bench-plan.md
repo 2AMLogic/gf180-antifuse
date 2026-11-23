@@ -1,10 +1,10 @@
 # Decision Record: Run 3 Test Chip Bench Plan (Direct-Pad Cells)
 
 **Status**: Proposed for operator ratification. Adds a bench and extraction
-plan for the Run 3 quarter-slot test chip; relaxes and amends nothing in
-`spec/measurement-matrix.md` (ratified, tied to the SPI path of the 32x32
-array), `spec/run3-test-chip-floorplan.md`, `spec/cell-candidates.md` or any
-other record. Numeric values not derived from a model, a ratified record or a
+plan for the Run 3 test chip (quarter-slot target; space not yet secured);
+relaxes and amends nothing in `spec/measurement-matrix.md` (ratified, tied to
+the SPI path of the 32x32 array), `spec/run3-test-chip-floorplan.md`,
+`spec/cell-candidates.md` or any other record. Numeric values not derived from a model, a ratified record or a
 measurement are **OPEN items**; none is invented here.
 **Date**: 2026-10-29
 **Scope**: Issue #212, part of #203. For the direct-pad cells of the floorplan
@@ -322,6 +322,7 @@ append-only (matrix record §6); a re-measurement is a new record whose
 - `spec/program-bias-scheme-proposed-decision.md`,
   `spec/candidate3-read-bias-decision.md`: PROPOSED, unratified.
 - `spec/vbd-sensitivity-comparison-proposed.md` (conditional on assumed V_bd).
+- `spec/run3-bench-fixture-requirements.md` (pad-ring needs of the bench fixture, delivery form and measurement route; cross-reference only).
 
 ## Decision
 

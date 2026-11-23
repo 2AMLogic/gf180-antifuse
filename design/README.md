@@ -93,11 +93,16 @@ them per instance; no cell schematic edit is involved.
 
 **The defaults above are placeholders, not design values.** They are the PDK
 symbol template defaults, carried through verbatim. `spec/split-axis-plan.md`
-names its two geometry levels "process-minimum" and "2x-area", but no ratified
-spec document fixes what the process-minimum legal geometry actually is — that
-is a PDK design-rule lookup, deliberately out of scope for this first drop of
-sources. Choosing those numbers is follow-on work; nothing in this directory
-should be read as asserting them.
+names its two geometry levels "process-minimum" and "2x-area". For the
+capacitor half those numbers are now fixed by
+[`spec/capacitor-geometry-decision.md`](../spec/capacitor-geometry-decision.md)
+(1.0 x 0.28 um / 2.0 x 0.28 um thin-oxide, 1.0 x 0.70 um / 2.0 x 0.70 um
+6 V) — regenerating `design/` against them is authorised but not yet
+performed, so the instances below still carry the placeholder values. The
+access half (`wacc`/`lacc`) remains a PDK design-rule lookup, deliberately
+out of scope for this first drop of sources; choosing those numbers is
+follow-on work, and nothing in this directory should be read as asserting
+either half's final values.
 
 ## Program leg and read leg
 
@@ -203,6 +208,22 @@ decision record and the generator + netlists regenerate.
    re-scales, and the recorded bench numbers (path efficiency, isolation,
    leakage) scale with them — current results remain valid as structure
    evidence only; a re-run mints a new append-only record.
+   **Decided (capacitor half), 2026-11-15**: fixed by
+   [`spec/capacitor-geometry-decision.md`](../spec/capacitor-geometry-decision.md)
+   — Minimum `wcap` x `lcap` = 1.0 x 0.28 um (`cap_nmos_03v3` /
+   `cap_pmos_03v3`) and 1.0 x 0.70 um (`cap_nmos_06v0`); "2x" doubles
+   `wcap` only. Decided in spec but not yet conformed: the committed
+   sources here still carry the placeholder defaults until the authorised
+   regeneration lands (scoped by closed #292, tracked by this open item);
+   the drawn cells no longer wait — #296 redrew all seven at these levels
+   (2026-11-17). Measured state: every
+   drawn-vs-simulated divergence this placeholder numbering currently
+   implies is recorded in
+   [`geometry-basis.json`](geometry-basis.json) (validated by check 7,
+   `check-geometry-basis.py`) with a per-entry `owner`/`status` derived
+   from the ratified levels — drawn side stale → #296, simulated side
+   stale → this item, both → both; the access half (`wacc`/`lacc`)
+   remains PROVISIONAL (the section-3 axis) and stays `unresolved` there.
 
 2. **(b) Phase and pitch of the two interleaved sub-axes.**
    Resolution: the plan says "checkerboarded" and "orthogonal" without
@@ -293,6 +314,8 @@ evidence — see below. The cornered per-region bench for the array slices is
 | `gen_array.py` | **Generator** for everything under `array/` and `mux/` (schematics, symbols, driver). `--check` diffs instead of writing. |
 | `array/`, `mux/` | **Generated** xschem sources: the 32x32 array, the two slices, level shifters, pass-gates, and `array/array_library.sch` (netlist driver). |
 | `check-array.py` | Region-map drift check (see above). stdlib only. |
+| `check-geometry-basis.py` | Drawn-vs-simulated geometry-basis check (check 7 below; issue #292). stdlib only; validates `geometry-basis.json`. |
+| `geometry-basis.json` | The acknowledged drawn-vs-simulated divergence record that `check-geometry-basis.py` validates (issue #292). |
 | `cells/{leg_interlock,program_leg,read_leg}.sch` / `.sym` | Program-leg / read-leg blocks (generated, see above). |
 | `cells/leg_library.sch` | Netlist driver for the leg blocks. |
 | `tools/gen_leg_schematics.py` | Generator for the leg schematics and symbols. `--check` diffs instead of writing. |
@@ -303,7 +326,7 @@ evidence — see below. The cornered per-region bench for the array slices is
 | `breakdown/` | Behavioral breakdown-augmented wrappers `cell_candidateN_bd` around the unmodified netlists, plus the labelled-parameter file. Hand-written, not derived; see [`breakdown/README.md`](breakdown/README.md). |
 | `xschemrc` | Project xschem config: PDK library path, this repo's cells, `split_files`. |
 | `regen-netlists.sh` | Runs `gen_array.py` and `tools/gen_leg_schematics.py`, then regenerates `netlists/` from `cells/` and `array/`. `--check` diffs instead of writing. |
-| `check-netlists.sh` | Runs all five checks below. |
+| `check-netlists.sh` | Runs all seven checks below. |
 
 ## Working with these sources
 
@@ -343,7 +366,7 @@ design/run_analog_cold_start.sh
 It runs `check-netlists.sh --skip-regen`, which skips step 1 below (including
 the generator `--check` runs inside `regen-netlists.sh`) and prints
 `== 1. netlist reproducibility == SKIPPED (--skip-regen)` so the log never
-implies it ran. Steps 2-6 are unchanged; it ends with
+implies it ran. Steps 2-7 are unchanged; it ends with
 `ANALOG COLD START PASSED` or `FAILED`. Typical corner, elaboration and
 mechanism only: not a result.
 
@@ -374,6 +397,19 @@ which asserts, in order:
    `res_typical` section for the ballast) and `leg_interlock`'s truth table
    holds at the typical corner. Structure only; the PVT mutual-exclusion and
    margin benches are in `sim/program-read-legs/`.
+7. **Geometry basis** — `check-geometry-basis.py` (above; issue #292): the
+   drawn bitcell geometry (the `XM1`/`XC1` literals in
+   `layout/cell_*/lvs_reference.spice`) against the geometry the committed
+   SPICE evidence was run at (the `netlists/cell_candidateN.spice` `.subckt`
+   defaults and the 2x split levels derived from them the same way check 4
+   derives them). Every divergence must be recorded in
+   [`geometry-basis.json`](geometry-basis.json) with both numbers, their
+   ratio, a status and an owning issue; a recorded entry whose numbers no
+   longer match the tree fails too, so the record cannot go silently stale.
+   Needs no ngspice, PDK or `klt`. Green means the divergences are
+   acknowledged and owned — **not** that the two worlds agree: a within-axis
+   *relative* claim (exactly 2x per axis in both worlds) is unaffected, an
+   *absolute* claim is not.
 
 ### Two things worth knowing about the flow
 

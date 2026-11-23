@@ -28,7 +28,11 @@ To regenerate, on a host with `KLT_SIM_BACKEND=batch`:
 
     python3 sim/run_corners.py program-read-legs
 
-A failed submit writes nothing.
+A failed submit writes nothing. Every request carries
+`batch.capacity_wait_s = 1800` (the fleet rule's floor is 600 s; the value
+matches `sim/cell-breakdown-model`), so klt waits for fleet capacity *before*
+refusing a launch, and a refusal that still happens is retried by the harness
+policy (`K.BACKOFF`) as the same request — two layers: wait, then resubmit.
 
 ## Mismatch Monte Carlo (record `records/20261016-010943-88897b2.md`)
 
@@ -113,11 +117,22 @@ made here). Region III's read path is **unproven**, not passing.
 ```
 sim/program-read-legs/
   benches.py            netlist-body + measurement generators (all bench numbers live here)
-  run_experiment.py     klt request builder / runner / record writer (stdlib only)
+  model.py              library: constants, klt request/bench builders, analysis + statistics
+  render.py             library: record renderers
+  run_experiment.py     CLI runner / record writer; re-exports model.py + render.py (stdlib only)
   models/preamble.lib   design.ngspice wrapper section (see "Harness notes")
   .work/                git-ignored: generated decks and requests with host paths
   records/, corners/, netlist-snapshots/   written by each successful run (append-only)
 ```
+
+The committed `<bench>[.<point>].report.json` has its `coverage.checked` /
+`coverage.inapplicable` id lists replaced by their counts
+(`harness.report.elide_coverage`): these are characterization benches, so every
+entry restates `characterization_without_limits` and the counters beside the
+lists already say how many. Every measurement value, corner status, diagnostic,
+`environment`, `provenance` and coverage counter is kept, and the sha256 of the
+full klt report is committed alongside it as
+`<bench>[.<point>].report.json.sha256`.
 
 `python3 sim/run_corners.py program-read-legs --probe` runs ONE typical corner
 on the `local` backend as a debug aid; it records nothing.

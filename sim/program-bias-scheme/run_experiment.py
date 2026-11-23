@@ -182,10 +182,11 @@ def fill(res, report: dict, bdir: Path, cand, params: dict, write: bool) -> None
                                                res.values[cid])
 
 
-def load_saved(cand, rid: str, params: dict) -> dict:
+def load_saved(cand, rid: str, params: dict, base_dir: Path | None = None) -> dict:
     out = {}
+    base = Path(base_dir) if base_dir is not None else THIS_DIR / "corners" / rid
     for bench in BENCHES:
-        bdir = THIS_DIR / "corners" / rid / bench
+        bdir = base / bench
         if (bdir / "report.json").is_file():
             report = json.loads((bdir / "report.json").read_text())
             env = report.get("environment", {})
@@ -301,16 +302,32 @@ def common_header(a, cand, rid: str, params: dict, claim: str, note: str | None,
       "corner; level summaries take the worst corner WITHIN one level only.")
 
 
-def render_retab(pdk, cand, rid: str, params: dict, note: str | None, src: str | None = None) -> str:
+def render_retab(pdk, cand, rid: str, params: dict, note: str | None, src: str | None = None) -> str | None:
+    """Re-tabulate the existing BL-driven evidence into one record body.
+
+    Refuses to mint an empty record: when no ``progc_*`` reports can be
+    found for ``src`` (disk or artifact store) it prints the reason and
+    returns None, and the caller must not write — write_once is append-only,
+    so a record with no result sections whose Links line cites the source
+    anyway could never be corrected in place.
+    """
     src = src or EXISTING_PROGC[cand.n]
-    res = CB.results_from_reports(cand, src, params, benches=("progc_st", "progc_b1m", "progc_b1l"))
+    src_corn = CB.THIS_DIR / "corners" / src
+    src_base = ES.run_dir_for_reading("cell-breakdown-model", src, REPO_ROOT, src_corn)
+    src_reports = (f"`sim/cell-breakdown-model/corners/{src}/`" if src_base == src_corn
+                   else f"manifest `manifests/artifacts/cell-breakdown-model-{src}.manifest.json`")
+    res = CB.results_from_reports(cand, src, params, benches=("progc_st", "progc_b1m", "progc_b1l"),
+                                  base_dir=src_base)
+    if not res:
+        print(f"ERROR: no saved progc_* reports for {src} (disk or artifact store)", file=sys.stderr)
+        return None
     rating = CB.ACCESS_RATING_V[cand.n]
     L: list[str] = []
     a = L.append
     common_header(a, cand, rid, params,
                   "BL-driven program leg (the scheme #62/#74 used), re-tabulated per PVT corner from the existing "
                   "fleet evidence. NO NEW SIMULATION: the numbers are the `mx_*`/`mn_*` measurements already in "
-                  f"`sim/cell-breakdown-model/corners/{src}/progc_*/report.json`.", note)
+                  f"the `{src}` run's `progc_*/report.json` ({src_reports}).", note)
     a("- **Scheme (BL-driven)**: VPP pulse -> ideal ballast "
       f"{CB.prog_rballast(cand, params)/1e3:.4g} kOhm (PLACEHOLDER, V_bd / 500 uA) -> BL; PL = 0 V; "
       f"WL = {cand.moscap_wl_on:g} V + VPP(t)"
@@ -329,8 +346,8 @@ def render_retab(pdk, cand, rid: str, params: dict, note: str | None, src: str |
         level_summary(a, cand, params, r, "progc", rating)
         per_corner_table(a, cand, params, r, "progc", rating, "ibl" if b != "progc_st" else "ibl")
     a("- **Links**:")
-    a(f"  - Source records and raw reports: `sim/cell-breakdown-model/records/{src}.md`, "
-      f"`sim/cell-breakdown-model/corners/{src}/`")
+    a(f"  - Source records and raw reports: `sim/cell-breakdown-model/records/{src}.md`, raw `progc_*` "
+      f"reports in {src_reports}")
     a("- **Method**: the table is produced by `sim/program-bias-scheme/run_experiment.py --retabulate`; "
       "no simulation was run for this record.")
     a(f"- **Timestamp / author**: {time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())}, agent-builder")
@@ -445,7 +462,8 @@ def render_pl(pdk, cand, rid: str, params: dict, results: dict, note: str | None
     if any(b in results for b in GWD_BENCHES):
         gwd_verdict(a, cand, params, results, rating, n)
     a("- **Links**:")
-    a(f"  - Requests, bodies, klt reports, per-corner decks and logs: `sim/program-bias-scheme/corners/{rid}/<bench>/`")
+    a(f"  - Requests, bodies, klt reports, per-corner decks and logs: artifact store manifest "
+      f"`manifests/artifacts/program-bias-scheme-{rid}.manifest.json`, entries `<bench>/…`")
     a(f"  - Netlist snapshot: `sim/program-bias-scheme/netlist-snapshots/{rid}.spice`")
     a("  - BL-driven counterpart (same levels, same cell): `sim/cell-breakdown-model/records/"
       f"{EXISTING_PROGC[cand.n]}.md`")
@@ -484,6 +502,30 @@ def smoke(pdk, cand, bench: str, params: dict, idx: int = 3) -> int:
     for m in c["measurements"]:
         print(f"   {m['name']} = {m['value']}")
     return 0 if c["status"] == "pass" else 1
+
+
+def render_only(pdk, cand, rid: str, base_params: dict, note: str | None = None,
+                vbd_case: str | None = None) -> int:
+    """Re-render one record from saved reports; refuse to mint an empty one.
+
+    Reads the run dir, or the artifact store once the run has been consumed
+    (run_dir_for_reading fetches the stored copy back). An empty result means
+    the reports could not be found anywhere: writing would commit a record
+    with an empty convergence table and no per-bench sections, and write_once
+    makes that permanent, so error out instead.
+    """
+    params = CB.apply_vbd_case(base_params, vbd_case, cand.n)
+    res = load_saved(cand, rid, params,
+                     base_dir=ES.run_dir_for_reading("program-bias-scheme", rid, REPO_ROOT,
+                                                     THIS_DIR / "corners" / rid))
+    if not res:
+        print(f"ERROR: no saved reports for {rid} (disk or artifact store)", file=sys.stderr)
+        return 2
+    R.write_once(THIS_DIR / "records" / f"{rid}.md",
+                 CB.tag_record(render_pl(pdk, cand, rid, params, res, note),
+                               CB.sensitivity_block(vbd_case, cand.n, params)))
+    print(f"record: records/{rid}.md (rendered from saved reports)")
+    return 0
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -531,17 +573,12 @@ def main(argv: list[str] | None = None) -> int:
         return smoke(pdk, by_n[int(n)], bench, CB.apply_vbd_case(base_params, args.vbd_case, int(n)),
                      int(ix[0]) if ix else 3)
     if args.render:
-        cand = by_n[wanted[0]]
-        params = CB.apply_vbd_case(base_params, args.vbd_case, cand.n)
-        res = load_saved(cand, args.render, params)
-        R.write_once(THIS_DIR / "records" / f"{args.render}.md",
-                     CB.tag_record(render_pl(pdk, cand, args.render, params, res, args.note),
-                                   CB.sensitivity_block(args.vbd_case, cand.n, params)))
-        return 0
+        return render_only(pdk, by_n[wanted[0]], args.render, base_params, args.note, args.vbd_case)
     if args.retabulate:
         if args.retab_src and len(wanted) != 1:
             print("ERROR: --retab-src applies to exactly one candidate", file=sys.stderr)
             return 2
+        rc = 0
         for n in wanted:
             cand = by_n[n]
             params = CB.apply_vbd_case(base_params, args.vbd_case, n)
@@ -550,12 +587,15 @@ def main(argv: list[str] | None = None) -> int:
                       file=sys.stderr)
                 return 2
             rid = R.allocate_record_id(THIS_DIR, REPO_ROOT)
+            body = render_retab(pdk, cand, rid, params, args.note, args.retab_src)
+            if body is None:
+                rc = 2   # no progc_* reports anywhere: no empty append-only record
+                continue
             R.write_once(THIS_DIR / "records" / f"{rid}.md",
-                         CB.tag_record(render_retab(pdk, cand, rid, params, args.note, args.retab_src),
-                                       CB.sensitivity_block(args.vbd_case, n, params)))
+                         CB.tag_record(body, CB.sensitivity_block(args.vbd_case, n, params)))
             print(f"Candidate {n}: records/{rid}.md (re-tabulation, no simulation)")
             time.sleep(1.1)
-        return 0
+        return rc
 
     benches = [b for b in args.benches.split(",") if b.strip()]
     unknown = [b for b in benches if b not in BENCHES]
@@ -576,6 +616,8 @@ def main(argv: list[str] | None = None) -> int:
         if not args.resume:
             R.write_once(THIS_DIR / "corners" / rid / "run-provenance.json",
                          json.dumps({"git_sha": R.git_short_sha(REPO_ROOT), "dirty": dirty}) + "\n")
+        # resume reads the run dir directly: resuming happens before a successful
+        # publish, and publish is what removes the stored sources.
         results = load_saved(cand, rid, params) if args.resume else {}
         for bench in benches:
             if bench in results:
@@ -591,7 +633,9 @@ def main(argv: list[str] | None = None) -> int:
             t0 = time.time()
             report, err = CB.run_klt(bdir / "request.json", bdir / ".work" / "klt", None)
             if report is not None:
-                R.write_once(bdir / "report.json", json.dumps(report, indent=2) + "\n")
+                text, full_sha = R.klt_report_payload(report, indent=2)
+                R.write_once(bdir / "report.json", text)
+                R.write_once(bdir / "report.json.sha256", full_sha + "\n")
             res = collect(bench, report, err, bdir, cand, params)
             if res.error:
                 R.write_once(bdir / "submit-error.txt", res.error + "\n")

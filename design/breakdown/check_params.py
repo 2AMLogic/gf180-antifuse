@@ -86,6 +86,14 @@ def parse_params(text: str) -> tuple[dict[str, dict], list[str]]:
     return params, errors
 
 
+def read_param_values(path: Path = PARAMS) -> dict[str, float]:
+    """Read the numeric values or raise ValueError with all parser diagnostics."""
+    params, errors = parse_params(path.read_text())
+    if errors:
+        raise ValueError("\n".join(errors))
+    return {name: param["value"] for name, param in params.items()}
+
+
 def measurements_have_data() -> bool:
     if not MEASUREMENTS.is_dir():
         return False

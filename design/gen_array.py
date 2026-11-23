@@ -38,11 +38,16 @@ NOT ratified, so fixed here as an explicit PROVISIONAL convention, each an
 open item for the operator (see "PROVISIONAL resolutions - open items for
 the operator" in design/README.md; the same marking is stamped into the
 generated sources):
-  (a) The numeric "min" geometry. spec/split-axis-plan.md says "process-minimum"
-      but no ratified document fixes that number. "min" here is the committed
-      cell subcircuit's own parameter default (placeholders carried from the PDK
-      symbol templates, see design/README.md); "2x" doubles the capacitor WIDTH
-      (2x area at fixed length) or the access-device WIDTH (fixed length).
+  (a) The numeric "min" geometry. The capacitor half of the plan's
+      "process-minimum" level is fixed by spec/capacitor-geometry-decision.md
+      (Minimum wcap x lcap = 1.0 x 0.28 um for cap_nmos_03v3 / cap_pmos_03v3,
+      1.0 x 0.70 um for cap_nmos_06v0); the access half (wacc/lacc) is the
+      plan's section-3 axis and still has no ratified record behind it.
+      "min" here is the committed cell subcircuit's own parameter default
+      (placeholders carried from the PDK symbol templates, see
+      design/README.md), pending the authorised regeneration; "2x" doubles
+      the capacitor WIDTH (2x area at fixed length) or the access-device
+      WIDTH (fixed length).
   (b) The phase / pitch of the two interleaved sub-axes (see level_indices()).
   (c) Band axis = column, so rows span all three bands and the row stage
       (level shifter + return pass-gate + word line) is instantiated per
@@ -121,8 +126,6 @@ def band_of_col(c: int):
 # ---------------------------------------------------------------------------
 # Cell parameter levels
 # ---------------------------------------------------------------------------
-
-_SUFFIX = {"f": 1e-15, "p": 1e-12, "n": 1e-9, "u": 1e-6, "m": 1e-3}
 
 
 def _split_token(tok: str):

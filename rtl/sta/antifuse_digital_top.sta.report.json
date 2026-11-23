@@ -30,7 +30,7 @@
     },
     "deck": null,
     "input": {
-      "content_hash": "sha256:1d10c317fcd63a698571dd898f72e16e93ca688f6b27e5ae6988cf88bbc95934",
+      "content_hash": "sha256:19e277921100398ed87f45b37e2d5ba0c583225a55d3e0ff6b4a7c2a17632484",
       "role": "layout"
     }
   },
@@ -38,13 +38,13 @@
     {
       "corner": "ff_125C_1v98",
       "engine_log": {
-        "invocation_id": "bf07aff449b545958148c718daf2e14b",
+        "invocation_id": "1e3eae2e342a470294e617550015405f",
         "script_name": "sta_antifuse_digital_top__ff_125C_1v98.tcl",
         "script_path": {
           "path": "rtl/sta/.klt/sta/sta_antifuse_digital_top__ff_125C_1v98.tcl",
           "scope": "repo"
         },
-        "script_sha256": "9f2030f5e9e0b007bc9872c06b2f6f44cd4bd50cdf3a59d82fbb3e5c75fe1fdf",
+        "script_sha256": "c96ae17caf5923bac453f6d65f21ae19d1f613988984c36e85ca935465c35dcf",
         "metrics_path": {
           "path": "rtl/sta/.klt/sta/antifuse_digital_top__ff_125C_1v98_metrics.json",
           "scope": "repo"
@@ -52,57 +52,41 @@
         "outcome": "exited",
         "returncode": 0,
         "directory": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/bf07aff449b545958148c718daf2e14b",
+          "path": "rtl/sta/.klt/sta/openroad-logs/1e3eae2e342a470294e617550015405f",
           "scope": "repo"
         },
         "stdout_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/bf07aff449b545958148c718daf2e14b/stdout.log",
+          "path": "rtl/sta/.klt/sta/openroad-logs/1e3eae2e342a470294e617550015405f/stdout.log",
           "scope": "repo"
         },
         "stderr_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/bf07aff449b545958148c718daf2e14b/stderr.log",
+          "path": "rtl/sta/.klt/sta/openroad-logs/1e3eae2e342a470294e617550015405f/stderr.log",
           "scope": "repo"
         },
         "metadata_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/bf07aff449b545958148c718daf2e14b/invocation.json",
+          "path": "rtl/sta/.klt/sta/openroad-logs/1e3eae2e342a470294e617550015405f/invocation.json",
           "scope": "repo"
         },
         "retention_errors": []
       },
-      "worst_slack_ns": 36.2347,
+      "worst_slack_ns": 37.8157,
       "total_negative_slack_ns": 0,
-      "worst_hold_slack_ns": 1.38107,
+      "worst_hold_slack_ns": 1.36851,
       "total_negative_hold_slack_ns": 0,
-      "fmax_mhz": 72.6465,
+      "fmax_mhz": 82.0731,
       "timing_status": "constrained",
       "constraint_completeness": {
         "status": "incomplete",
         "unconstrained_endpoints": {
           "status": "ok",
-          "count": 83,
+          "count": 4,
           "sample": [
-            "busy",
-            "col_onehot[0]",
-            "col_onehot[10]",
-            "col_onehot[11]",
-            "col_onehot[12]",
-            "col_onehot[13]",
-            "col_onehot[14]",
-            "col_onehot[15]",
-            "col_onehot[16]",
-            "col_onehot[17]",
-            "col_onehot[18]",
-            "col_onehot[19]",
-            "col_onehot[1]",
-            "col_onehot[20]",
-            "col_onehot[21]",
-            "col_onehot[22]",
-            "col_onehot[23]",
-            "col_onehot[24]",
-            "col_onehot[25]",
-            "col_onehot[26]"
+            "u_regs/_730_/D",
+            "u_regs/_733_/D",
+            "u_regs/_736_/D",
+            "u_regs/_738_/D"
           ],
-          "truncated": true,
+          "truncated": false,
           "reason": null
         },
         "unclocked_registers": {
@@ -120,9 +104,9 @@
         "status": "ok",
         "check_type": "setup",
         "engine_check_role": "setup",
-        "startpoint": "u_regs/_720_/Q",
-        "endpoint": "u_regs/_727_/D",
-        "slack_ns": 36.23471,
+        "startpoint": "u_regs/_684_/Q",
+        "endpoint": "u_regs/_686_/D",
+        "slack_ns": 37.81573,
         "consistent_with_aggregate": true,
         "reason": null
       },
@@ -130,14 +114,14 @@
         "status": "ok",
         "check_type": "hold",
         "engine_check_role": "hold",
-        "startpoint": "u_regs/_738_/Q",
-        "endpoint": "u_regs/_739_/D",
-        "slack_ns": 1.38107,
+        "startpoint": "u_regs/_736_/Q",
+        "endpoint": "u_regs/_737_/D",
+        "slack_ns": 1.36851,
         "consistent_with_aggregate": true,
         "reason": null
       },
-      "clock_skew_ns": 0.05877,
-      "estimated_power_mw": 0.2988,
+      "clock_skew_ns": 0.06483,
+      "estimated_power_mw": 0.2978,
       "power_basis": {
         "activity_source": "engine_default",
         "activity": null,
@@ -145,10 +129,10 @@
         "parasitics": "spef_annotated"
       },
       "spef_annotation": {
-        "nets_annotated": 544,
-        "nets_total": 544,
-        "design_nets_annotated": 544,
-        "design_nets_total": 544,
+        "nets_annotated": 550,
+        "nets_total": 550,
+        "design_nets_annotated": 550,
+        "design_nets_total": 550,
         "design_nets_missing_sample": [],
         "reader_warning_count": 0,
         "reader_warning_sample": [],
@@ -207,13 +191,13 @@
     {
       "corner": "ff_125C_3v60",
       "engine_log": {
-        "invocation_id": "ab712e74ce47430f97412094458465bc",
+        "invocation_id": "cd70101e5a44414894fca6f259c25179",
         "script_name": "sta_antifuse_digital_top__ff_125C_3v60.tcl",
         "script_path": {
           "path": "rtl/sta/.klt/sta/sta_antifuse_digital_top__ff_125C_3v60.tcl",
           "scope": "repo"
         },
-        "script_sha256": "e675de2a1c78aa95ef0a8fe72a2d328f7f5c87729fd5db7fef98c8de9be36c1b",
+        "script_sha256": "aca5be5b152f4d3753a0db650a542014d7e59842ad59b094e70d7047d840ef73",
         "metrics_path": {
           "path": "rtl/sta/.klt/sta/antifuse_digital_top__ff_125C_3v60_metrics.json",
           "scope": "repo"
@@ -221,57 +205,41 @@
         "outcome": "exited",
         "returncode": 0,
         "directory": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/ab712e74ce47430f97412094458465bc",
+          "path": "rtl/sta/.klt/sta/openroad-logs/cd70101e5a44414894fca6f259c25179",
           "scope": "repo"
         },
         "stdout_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/ab712e74ce47430f97412094458465bc/stdout.log",
+          "path": "rtl/sta/.klt/sta/openroad-logs/cd70101e5a44414894fca6f259c25179/stdout.log",
           "scope": "repo"
         },
         "stderr_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/ab712e74ce47430f97412094458465bc/stderr.log",
+          "path": "rtl/sta/.klt/sta/openroad-logs/cd70101e5a44414894fca6f259c25179/stderr.log",
           "scope": "repo"
         },
         "metadata_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/ab712e74ce47430f97412094458465bc/invocation.json",
+          "path": "rtl/sta/.klt/sta/openroad-logs/cd70101e5a44414894fca6f259c25179/invocation.json",
           "scope": "repo"
         },
         "retention_errors": []
       },
-      "worst_slack_ns": 43.0175,
+      "worst_slack_ns": 43.8217,
       "total_negative_slack_ns": 0,
-      "worst_hold_slack_ns": 0.67612,
+      "worst_hold_slack_ns": 0.66834,
       "total_negative_hold_slack_ns": 0,
-      "fmax_mhz": 143.215,
+      "fmax_mhz": 161.857,
       "timing_status": "constrained",
       "constraint_completeness": {
         "status": "incomplete",
         "unconstrained_endpoints": {
           "status": "ok",
-          "count": 83,
+          "count": 4,
           "sample": [
-            "busy",
-            "col_onehot[0]",
-            "col_onehot[10]",
-            "col_onehot[11]",
-            "col_onehot[12]",
-            "col_onehot[13]",
-            "col_onehot[14]",
-            "col_onehot[15]",
-            "col_onehot[16]",
-            "col_onehot[17]",
-            "col_onehot[18]",
-            "col_onehot[19]",
-            "col_onehot[1]",
-            "col_onehot[20]",
-            "col_onehot[21]",
-            "col_onehot[22]",
-            "col_onehot[23]",
-            "col_onehot[24]",
-            "col_onehot[25]",
-            "col_onehot[26]"
+            "u_regs/_730_/D",
+            "u_regs/_733_/D",
+            "u_regs/_736_/D",
+            "u_regs/_738_/D"
           ],
-          "truncated": true,
+          "truncated": false,
           "reason": null
         },
         "unclocked_registers": {
@@ -289,9 +257,9 @@
         "status": "ok",
         "check_type": "setup",
         "engine_check_role": "setup",
-        "startpoint": "u_regs/_720_/Q",
-        "endpoint": "u_regs/_727_/D",
-        "slack_ns": 43.01749,
+        "startpoint": "u_regs/_684_/Q",
+        "endpoint": "u_regs/_686_/D",
+        "slack_ns": 43.8217,
         "consistent_with_aggregate": true,
         "reason": null
       },
@@ -299,14 +267,14 @@
         "status": "ok",
         "check_type": "hold",
         "engine_check_role": "hold",
-        "startpoint": "u_regs/_738_/Q",
-        "endpoint": "u_regs/_739_/D",
-        "slack_ns": 0.67612,
+        "startpoint": "u_regs/_740_/Q",
+        "endpoint": "u_regs/_741_/D",
+        "slack_ns": 0.66834,
         "consistent_with_aggregate": true,
         "reason": null
       },
-      "clock_skew_ns": 0.03031,
-      "estimated_power_mw": 1.0283,
+      "clock_skew_ns": 0.03357,
+      "estimated_power_mw": 1.0246,
       "power_basis": {
         "activity_source": "engine_default",
         "activity": null,
@@ -314,10 +282,10 @@
         "parasitics": "spef_annotated"
       },
       "spef_annotation": {
-        "nets_annotated": 544,
-        "nets_total": 544,
-        "design_nets_annotated": 544,
-        "design_nets_total": 544,
+        "nets_annotated": 550,
+        "nets_total": 550,
+        "design_nets_annotated": 550,
+        "design_nets_total": 550,
         "design_nets_missing_sample": [],
         "reader_warning_count": 0,
         "reader_warning_sample": [],
@@ -376,13 +344,13 @@
     {
       "corner": "ff_125C_5v50",
       "engine_log": {
-        "invocation_id": "f31b966cd804410d9be3103d38163e5f",
+        "invocation_id": "9cc59216ec164026b5dead2fa5732734",
         "script_name": "sta_antifuse_digital_top__ff_125C_5v50.tcl",
         "script_path": {
           "path": "rtl/sta/.klt/sta/sta_antifuse_digital_top__ff_125C_5v50.tcl",
           "scope": "repo"
         },
-        "script_sha256": "a8abe3ad62dd55388cb9150e3c10be4b442db9f2371cb6fc2070b3362d153974",
+        "script_sha256": "2fd99125cad75d183bd22314b508840371553f015c862945f918ad68e1e98a76",
         "metrics_path": {
           "path": "rtl/sta/.klt/sta/antifuse_digital_top__ff_125C_5v50_metrics.json",
           "scope": "repo"
@@ -390,57 +358,41 @@
         "outcome": "exited",
         "returncode": 0,
         "directory": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/f31b966cd804410d9be3103d38163e5f",
+          "path": "rtl/sta/.klt/sta/openroad-logs/9cc59216ec164026b5dead2fa5732734",
           "scope": "repo"
         },
         "stdout_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/f31b966cd804410d9be3103d38163e5f/stdout.log",
+          "path": "rtl/sta/.klt/sta/openroad-logs/9cc59216ec164026b5dead2fa5732734/stdout.log",
           "scope": "repo"
         },
         "stderr_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/f31b966cd804410d9be3103d38163e5f/stderr.log",
+          "path": "rtl/sta/.klt/sta/openroad-logs/9cc59216ec164026b5dead2fa5732734/stderr.log",
           "scope": "repo"
         },
         "metadata_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/f31b966cd804410d9be3103d38163e5f/invocation.json",
+          "path": "rtl/sta/.klt/sta/openroad-logs/9cc59216ec164026b5dead2fa5732734/invocation.json",
           "scope": "repo"
         },
         "retention_errors": []
       },
-      "worst_slack_ns": 44.9524,
+      "worst_slack_ns": 45.5437,
       "total_negative_slack_ns": 0,
-      "worst_hold_slack_ns": 0.45848,
+      "worst_hold_slack_ns": 0.45354,
       "total_negative_hold_slack_ns": 0,
-      "fmax_mhz": 198.115,
+      "fmax_mhz": 224.404,
       "timing_status": "constrained",
       "constraint_completeness": {
         "status": "incomplete",
         "unconstrained_endpoints": {
           "status": "ok",
-          "count": 83,
+          "count": 4,
           "sample": [
-            "busy",
-            "col_onehot[0]",
-            "col_onehot[10]",
-            "col_onehot[11]",
-            "col_onehot[12]",
-            "col_onehot[13]",
-            "col_onehot[14]",
-            "col_onehot[15]",
-            "col_onehot[16]",
-            "col_onehot[17]",
-            "col_onehot[18]",
-            "col_onehot[19]",
-            "col_onehot[1]",
-            "col_onehot[20]",
-            "col_onehot[21]",
-            "col_onehot[22]",
-            "col_onehot[23]",
-            "col_onehot[24]",
-            "col_onehot[25]",
-            "col_onehot[26]"
+            "u_regs/_730_/D",
+            "u_regs/_733_/D",
+            "u_regs/_736_/D",
+            "u_regs/_738_/D"
           ],
-          "truncated": true,
+          "truncated": false,
           "reason": null
         },
         "unclocked_registers": {
@@ -459,8 +411,8 @@
         "check_type": "setup",
         "engine_check_role": "setup",
         "startpoint": "u_regs/_721_/Q",
-        "endpoint": "u_regs/_727_/D",
-        "slack_ns": 44.95242,
+        "endpoint": "u_regs/_711_/D",
+        "slack_ns": 45.54374,
         "consistent_with_aggregate": true,
         "reason": null
       },
@@ -468,14 +420,14 @@
         "status": "ok",
         "check_type": "hold",
         "engine_check_role": "hold",
-        "startpoint": "u_regs/_738_/Q",
-        "endpoint": "u_regs/_739_/D",
-        "slack_ns": 0.45848,
+        "startpoint": "u_regs/_736_/Q",
+        "endpoint": "u_regs/_737_/D",
+        "slack_ns": 0.45354,
         "consistent_with_aggregate": true,
         "reason": null
       },
-      "clock_skew_ns": 0.02168,
-      "estimated_power_mw": 2.4583,
+      "clock_skew_ns": 0.024,
+      "estimated_power_mw": 2.449,
       "power_basis": {
         "activity_source": "engine_default",
         "activity": null,
@@ -483,10 +435,10 @@
         "parasitics": "spef_annotated"
       },
       "spef_annotation": {
-        "nets_annotated": 544,
-        "nets_total": 544,
-        "design_nets_annotated": 544,
-        "design_nets_total": 544,
+        "nets_annotated": 550,
+        "nets_total": 550,
+        "design_nets_annotated": 550,
+        "design_nets_total": 550,
         "design_nets_missing_sample": [],
         "reader_warning_count": 0,
         "reader_warning_sample": [],
@@ -545,13 +497,13 @@
     {
       "corner": "ff_n40C_1v98",
       "engine_log": {
-        "invocation_id": "8a6d20fca8724e9395094fb8ffe25cb8",
+        "invocation_id": "cab30ad2fece4e789397e059b9a8981c",
         "script_name": "sta_antifuse_digital_top__ff_n40C_1v98.tcl",
         "script_path": {
           "path": "rtl/sta/.klt/sta/sta_antifuse_digital_top__ff_n40C_1v98.tcl",
           "scope": "repo"
         },
-        "script_sha256": "242de994271adf1c0fbc321a4de776523722289aead657c12e20b4b5ea281549",
+        "script_sha256": "fdee77d430166b070ee690e8e2a417fbbc3874f9ef7d3de671a393a7d95f95b9",
         "metrics_path": {
           "path": "rtl/sta/.klt/sta/antifuse_digital_top__ff_n40C_1v98_metrics.json",
           "scope": "repo"
@@ -559,57 +511,41 @@
         "outcome": "exited",
         "returncode": 0,
         "directory": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/8a6d20fca8724e9395094fb8ffe25cb8",
+          "path": "rtl/sta/.klt/sta/openroad-logs/cab30ad2fece4e789397e059b9a8981c",
           "scope": "repo"
         },
         "stdout_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/8a6d20fca8724e9395094fb8ffe25cb8/stdout.log",
+          "path": "rtl/sta/.klt/sta/openroad-logs/cab30ad2fece4e789397e059b9a8981c/stdout.log",
           "scope": "repo"
         },
         "stderr_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/8a6d20fca8724e9395094fb8ffe25cb8/stderr.log",
+          "path": "rtl/sta/.klt/sta/openroad-logs/cab30ad2fece4e789397e059b9a8981c/stderr.log",
           "scope": "repo"
         },
         "metadata_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/8a6d20fca8724e9395094fb8ffe25cb8/invocation.json",
+          "path": "rtl/sta/.klt/sta/openroad-logs/cab30ad2fece4e789397e059b9a8981c/invocation.json",
           "scope": "repo"
         },
         "retention_errors": []
       },
-      "worst_slack_ns": 40.013,
+      "worst_slack_ns": 41.0756,
       "total_negative_slack_ns": 0,
-      "worst_hold_slack_ns": 1.04972,
+      "worst_hold_slack_ns": 1.04071,
       "total_negative_hold_slack_ns": 0,
-      "fmax_mhz": 100.131,
+      "fmax_mhz": 112.053,
       "timing_status": "constrained",
       "constraint_completeness": {
         "status": "incomplete",
         "unconstrained_endpoints": {
           "status": "ok",
-          "count": 83,
+          "count": 4,
           "sample": [
-            "busy",
-            "col_onehot[0]",
-            "col_onehot[10]",
-            "col_onehot[11]",
-            "col_onehot[12]",
-            "col_onehot[13]",
-            "col_onehot[14]",
-            "col_onehot[15]",
-            "col_onehot[16]",
-            "col_onehot[17]",
-            "col_onehot[18]",
-            "col_onehot[19]",
-            "col_onehot[1]",
-            "col_onehot[20]",
-            "col_onehot[21]",
-            "col_onehot[22]",
-            "col_onehot[23]",
-            "col_onehot[24]",
-            "col_onehot[25]",
-            "col_onehot[26]"
+            "u_regs/_730_/D",
+            "u_regs/_733_/D",
+            "u_regs/_736_/D",
+            "u_regs/_738_/D"
           ],
-          "truncated": true,
+          "truncated": false,
           "reason": null
         },
         "unclocked_registers": {
@@ -627,9 +563,9 @@
         "status": "ok",
         "check_type": "setup",
         "engine_check_role": "setup",
-        "startpoint": "u_regs/_720_/Q",
-        "endpoint": "u_regs/_727_/D",
-        "slack_ns": 40.01303,
+        "startpoint": "u_regs/_684_/Q",
+        "endpoint": "u_regs/_686_/D",
+        "slack_ns": 41.07561,
         "consistent_with_aggregate": true,
         "reason": null
       },
@@ -637,14 +573,14 @@
         "status": "ok",
         "check_type": "hold",
         "engine_check_role": "hold",
-        "startpoint": "u_regs/_738_/Q",
-        "endpoint": "u_regs/_739_/D",
-        "slack_ns": 1.04972,
+        "startpoint": "u_regs/_736_/Q",
+        "endpoint": "u_regs/_737_/D",
+        "slack_ns": 1.04071,
         "consistent_with_aggregate": true,
         "reason": null
       },
-      "clock_skew_ns": 0.04578,
-      "estimated_power_mw": 0.2819,
+      "clock_skew_ns": 0.05032,
+      "estimated_power_mw": 0.281,
       "power_basis": {
         "activity_source": "engine_default",
         "activity": null,
@@ -652,10 +588,10 @@
         "parasitics": "spef_annotated"
       },
       "spef_annotation": {
-        "nets_annotated": 544,
-        "nets_total": 544,
-        "design_nets_annotated": 544,
-        "design_nets_total": 544,
+        "nets_annotated": 550,
+        "nets_total": 550,
+        "design_nets_annotated": 550,
+        "design_nets_total": 550,
         "design_nets_missing_sample": [],
         "reader_warning_count": 0,
         "reader_warning_sample": [],
@@ -714,13 +650,13 @@
     {
       "corner": "ff_n40C_3v60",
       "engine_log": {
-        "invocation_id": "3d74fa413d194978bfd495d11044d528",
+        "invocation_id": "a448f1f520cd45f39c0273aaf68faf3b",
         "script_name": "sta_antifuse_digital_top__ff_n40C_3v60.tcl",
         "script_path": {
           "path": "rtl/sta/.klt/sta/sta_antifuse_digital_top__ff_n40C_3v60.tcl",
           "scope": "repo"
         },
-        "script_sha256": "b81847e2be47c066c11f64a2efee193d8cd86b4f4651d53c56f728201d20aa2a",
+        "script_sha256": "89a34563061f636855785a91b8dd34308885f98e4a89eb8e6331e365197bccf2",
         "metrics_path": {
           "path": "rtl/sta/.klt/sta/antifuse_digital_top__ff_n40C_3v60_metrics.json",
           "scope": "repo"
@@ -728,57 +664,41 @@
         "outcome": "exited",
         "returncode": 0,
         "directory": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/3d74fa413d194978bfd495d11044d528",
+          "path": "rtl/sta/.klt/sta/openroad-logs/a448f1f520cd45f39c0273aaf68faf3b",
           "scope": "repo"
         },
         "stdout_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/3d74fa413d194978bfd495d11044d528/stdout.log",
+          "path": "rtl/sta/.klt/sta/openroad-logs/a448f1f520cd45f39c0273aaf68faf3b/stdout.log",
           "scope": "repo"
         },
         "stderr_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/3d74fa413d194978bfd495d11044d528/stderr.log",
+          "path": "rtl/sta/.klt/sta/openroad-logs/a448f1f520cd45f39c0273aaf68faf3b/stderr.log",
           "scope": "repo"
         },
         "metadata_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/3d74fa413d194978bfd495d11044d528/invocation.json",
+          "path": "rtl/sta/.klt/sta/openroad-logs/a448f1f520cd45f39c0273aaf68faf3b/invocation.json",
           "scope": "repo"
         },
         "retention_errors": []
       },
-      "worst_slack_ns": 45.3383,
+      "worst_slack_ns": 45.8101,
       "total_negative_slack_ns": 0,
-      "worst_hold_slack_ns": 0.47585,
+      "worst_hold_slack_ns": 0.47106,
       "total_negative_hold_slack_ns": 0,
-      "fmax_mhz": 214.514,
+      "fmax_mhz": 238.672,
       "timing_status": "constrained",
       "constraint_completeness": {
         "status": "incomplete",
         "unconstrained_endpoints": {
           "status": "ok",
-          "count": 83,
+          "count": 4,
           "sample": [
-            "busy",
-            "col_onehot[0]",
-            "col_onehot[10]",
-            "col_onehot[11]",
-            "col_onehot[12]",
-            "col_onehot[13]",
-            "col_onehot[14]",
-            "col_onehot[15]",
-            "col_onehot[16]",
-            "col_onehot[17]",
-            "col_onehot[18]",
-            "col_onehot[19]",
-            "col_onehot[1]",
-            "col_onehot[20]",
-            "col_onehot[21]",
-            "col_onehot[22]",
-            "col_onehot[23]",
-            "col_onehot[24]",
-            "col_onehot[25]",
-            "col_onehot[26]"
+            "u_regs/_730_/D",
+            "u_regs/_733_/D",
+            "u_regs/_736_/D",
+            "u_regs/_738_/D"
           ],
-          "truncated": true,
+          "truncated": false,
           "reason": null
         },
         "unclocked_registers": {
@@ -796,9 +716,9 @@
         "status": "ok",
         "check_type": "setup",
         "engine_check_role": "setup",
-        "startpoint": "u_regs/_721_/Q",
-        "endpoint": "u_regs/_727_/D",
-        "slack_ns": 45.33829,
+        "startpoint": "u_regs/_684_/Q",
+        "endpoint": "u_regs/_686_/D",
+        "slack_ns": 45.81014,
         "consistent_with_aggregate": true,
         "reason": null
       },
@@ -806,14 +726,14 @@
         "status": "ok",
         "check_type": "hold",
         "engine_check_role": "hold",
-        "startpoint": "u_regs/_738_/Q",
-        "endpoint": "u_regs/_739_/D",
-        "slack_ns": 0.47585,
+        "startpoint": "u_regs/_736_/Q",
+        "endpoint": "u_regs/_737_/D",
+        "slack_ns": 0.47106,
         "consistent_with_aggregate": true,
         "reason": null
       },
-      "clock_skew_ns": 0.02299,
-      "estimated_power_mw": 0.9868,
+      "clock_skew_ns": 0.02542,
+      "estimated_power_mw": 0.9833,
       "power_basis": {
         "activity_source": "engine_default",
         "activity": null,
@@ -821,10 +741,10 @@
         "parasitics": "spef_annotated"
       },
       "spef_annotation": {
-        "nets_annotated": 544,
-        "nets_total": 544,
-        "design_nets_annotated": 544,
-        "design_nets_total": 544,
+        "nets_annotated": 550,
+        "nets_total": 550,
+        "design_nets_annotated": 550,
+        "design_nets_total": 550,
         "design_nets_missing_sample": [],
         "reader_warning_count": 0,
         "reader_warning_sample": [],
@@ -883,13 +803,13 @@
     {
       "corner": "ff_n40C_5v50",
       "engine_log": {
-        "invocation_id": "5dcc6a95016b428dbb1f160e7f57b5d7",
+        "invocation_id": "c754aaae06b546cfa6d7a602ff2617ac",
         "script_name": "sta_antifuse_digital_top__ff_n40C_5v50.tcl",
         "script_path": {
           "path": "rtl/sta/.klt/sta/sta_antifuse_digital_top__ff_n40C_5v50.tcl",
           "scope": "repo"
         },
-        "script_sha256": "1a7061f6172542f9f186ddcb833796a392ca56e88ebb1ffe31c975e7e65a5a67",
+        "script_sha256": "94ba1282ecd3703c775ade975a7363142afbdffa0504075eeea79a656674ef0c",
         "metrics_path": {
           "path": "rtl/sta/.klt/sta/antifuse_digital_top__ff_n40C_5v50_metrics.json",
           "scope": "repo"
@@ -897,57 +817,41 @@
         "outcome": "exited",
         "returncode": 0,
         "directory": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/5dcc6a95016b428dbb1f160e7f57b5d7",
+          "path": "rtl/sta/.klt/sta/openroad-logs/c754aaae06b546cfa6d7a602ff2617ac",
           "scope": "repo"
         },
         "stdout_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/5dcc6a95016b428dbb1f160e7f57b5d7/stdout.log",
+          "path": "rtl/sta/.klt/sta/openroad-logs/c754aaae06b546cfa6d7a602ff2617ac/stdout.log",
           "scope": "repo"
         },
         "stderr_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/5dcc6a95016b428dbb1f160e7f57b5d7/stderr.log",
+          "path": "rtl/sta/.klt/sta/openroad-logs/c754aaae06b546cfa6d7a602ff2617ac/stderr.log",
           "scope": "repo"
         },
         "metadata_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/5dcc6a95016b428dbb1f160e7f57b5d7/invocation.json",
+          "path": "rtl/sta/.klt/sta/openroad-logs/c754aaae06b546cfa6d7a602ff2617ac/invocation.json",
           "scope": "repo"
         },
         "retention_errors": []
       },
-      "worst_slack_ns": 46.5752,
+      "worst_slack_ns": 46.9027,
       "total_negative_slack_ns": 0,
-      "worst_hold_slack_ns": 0.34003,
+      "worst_hold_slack_ns": 0.33632,
       "total_negative_hold_slack_ns": 0,
-      "fmax_mhz": 291.985,
+      "fmax_mhz": 322.864,
       "timing_status": "constrained",
       "constraint_completeness": {
         "status": "incomplete",
         "unconstrained_endpoints": {
           "status": "ok",
-          "count": 83,
+          "count": 4,
           "sample": [
-            "busy",
-            "col_onehot[0]",
-            "col_onehot[10]",
-            "col_onehot[11]",
-            "col_onehot[12]",
-            "col_onehot[13]",
-            "col_onehot[14]",
-            "col_onehot[15]",
-            "col_onehot[16]",
-            "col_onehot[17]",
-            "col_onehot[18]",
-            "col_onehot[19]",
-            "col_onehot[1]",
-            "col_onehot[20]",
-            "col_onehot[21]",
-            "col_onehot[22]",
-            "col_onehot[23]",
-            "col_onehot[24]",
-            "col_onehot[25]",
-            "col_onehot[26]"
+            "u_regs/_730_/D",
+            "u_regs/_733_/D",
+            "u_regs/_736_/D",
+            "u_regs/_738_/D"
           ],
-          "truncated": true,
+          "truncated": false,
           "reason": null
         },
         "unclocked_registers": {
@@ -965,9 +869,9 @@
         "status": "ok",
         "check_type": "setup",
         "engine_check_role": "setup",
-        "startpoint": "u_regs/_721_/Q",
-        "endpoint": "u_regs/_727_/D",
-        "slack_ns": 46.57517,
+        "startpoint": "u_regs/_720_/Q",
+        "endpoint": "u_regs/_711_/D",
+        "slack_ns": 46.90272,
         "consistent_with_aggregate": true,
         "reason": null
       },
@@ -975,14 +879,14 @@
         "status": "ok",
         "check_type": "hold",
         "engine_check_role": "hold",
-        "startpoint": "u_regs/_738_/Q",
-        "endpoint": "u_regs/_739_/D",
-        "slack_ns": 0.34003,
+        "startpoint": "u_regs/_736_/Q",
+        "endpoint": "u_regs/_737_/D",
+        "slack_ns": 0.33632,
         "consistent_with_aggregate": true,
         "reason": null
       },
-      "clock_skew_ns": 0.01734,
-      "estimated_power_mw": 2.381,
+      "clock_skew_ns": 0.01911,
+      "estimated_power_mw": 2.3723,
       "power_basis": {
         "activity_source": "engine_default",
         "activity": null,
@@ -990,10 +894,10 @@
         "parasitics": "spef_annotated"
       },
       "spef_annotation": {
-        "nets_annotated": 544,
-        "nets_total": 544,
-        "design_nets_annotated": 544,
-        "design_nets_total": 544,
+        "nets_annotated": 550,
+        "nets_total": 550,
+        "design_nets_annotated": 550,
+        "design_nets_total": 550,
         "design_nets_missing_sample": [],
         "reader_warning_count": 0,
         "reader_warning_sample": [],
@@ -1052,13 +956,13 @@
     {
       "corner": "ss_125C_1v62",
       "engine_log": {
-        "invocation_id": "7bb803fba35b464f8d2c74bf524afa99",
+        "invocation_id": "828f6fb0730444be918a5ff041f3cea0",
         "script_name": "sta_antifuse_digital_top__ss_125C_1v62.tcl",
         "script_path": {
           "path": "rtl/sta/.klt/sta/sta_antifuse_digital_top__ss_125C_1v62.tcl",
           "scope": "repo"
         },
-        "script_sha256": "44c14c64b0c1c4c7cf4d06aa36743979eaccbf0ea2dc7ff6bf63554be8f906c7",
+        "script_sha256": "4db1e5359a94cb7d808d36ab132fbc3813d8688c277a131133a6d41c18f1da28",
         "metrics_path": {
           "path": "rtl/sta/.klt/sta/antifuse_digital_top__ss_125C_1v62_metrics.json",
           "scope": "repo"
@@ -1066,57 +970,41 @@
         "outcome": "exited",
         "returncode": 0,
         "directory": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/7bb803fba35b464f8d2c74bf524afa99",
+          "path": "rtl/sta/.klt/sta/openroad-logs/828f6fb0730444be918a5ff041f3cea0",
           "scope": "repo"
         },
         "stdout_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/7bb803fba35b464f8d2c74bf524afa99/stdout.log",
+          "path": "rtl/sta/.klt/sta/openroad-logs/828f6fb0730444be918a5ff041f3cea0/stdout.log",
           "scope": "repo"
         },
         "stderr_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/7bb803fba35b464f8d2c74bf524afa99/stderr.log",
+          "path": "rtl/sta/.klt/sta/openroad-logs/828f6fb0730444be918a5ff041f3cea0/stderr.log",
           "scope": "repo"
         },
         "metadata_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/7bb803fba35b464f8d2c74bf524afa99/invocation.json",
+          "path": "rtl/sta/.klt/sta/openroad-logs/828f6fb0730444be918a5ff041f3cea0/invocation.json",
           "scope": "repo"
         },
         "retention_errors": []
       },
-      "worst_slack_ns": -5.53319,
-      "total_negative_slack_ns": -36.6034,
-      "worst_hold_slack_ns": 5.52703,
+      "worst_slack_ns": 0.64007,
+      "total_negative_slack_ns": 0,
+      "worst_hold_slack_ns": 5.48594,
       "total_negative_hold_slack_ns": 0,
-      "fmax_mhz": 18.0073,
+      "fmax_mhz": 20.2593,
       "timing_status": "constrained",
       "constraint_completeness": {
         "status": "incomplete",
         "unconstrained_endpoints": {
           "status": "ok",
-          "count": 83,
+          "count": 4,
           "sample": [
-            "busy",
-            "col_onehot[0]",
-            "col_onehot[10]",
-            "col_onehot[11]",
-            "col_onehot[12]",
-            "col_onehot[13]",
-            "col_onehot[14]",
-            "col_onehot[15]",
-            "col_onehot[16]",
-            "col_onehot[17]",
-            "col_onehot[18]",
-            "col_onehot[19]",
-            "col_onehot[1]",
-            "col_onehot[20]",
-            "col_onehot[21]",
-            "col_onehot[22]",
-            "col_onehot[23]",
-            "col_onehot[24]",
-            "col_onehot[25]",
-            "col_onehot[26]"
+            "u_regs/_730_/D",
+            "u_regs/_733_/D",
+            "u_regs/_736_/D",
+            "u_regs/_738_/D"
           ],
-          "truncated": true,
+          "truncated": false,
           "reason": null
         },
         "unclocked_registers": {
@@ -1128,15 +1016,15 @@
         },
         "sample_limit": 20
       },
-      "setup_violation_count": 15,
+      "setup_violation_count": 0,
       "hold_violation_count": 0,
       "worst_setup_path": {
         "status": "ok",
         "check_type": "setup",
         "engine_check_role": "setup",
-        "startpoint": "u_regs/_720_/Q",
-        "endpoint": "u_regs/_727_/D",
-        "slack_ns": -5.53319,
+        "startpoint": "u_regs/_684_/Q",
+        "endpoint": "u_regs/_686_/D",
+        "slack_ns": 0.64007,
         "consistent_with_aggregate": true,
         "reason": null
       },
@@ -1144,14 +1032,14 @@
         "status": "ok",
         "check_type": "hold",
         "engine_check_role": "hold",
-        "startpoint": "u_regs/_738_/Q",
-        "endpoint": "u_regs/_739_/D",
-        "slack_ns": 5.52703,
+        "startpoint": "u_regs/_736_/Q",
+        "endpoint": "u_regs/_737_/D",
+        "slack_ns": 5.48594,
         "consistent_with_aggregate": true,
         "reason": null
       },
-      "clock_skew_ns": 0.20777,
-      "estimated_power_mw": 0.1878,
+      "clock_skew_ns": 0.22915,
+      "estimated_power_mw": 0.1873,
       "power_basis": {
         "activity_source": "engine_default",
         "activity": null,
@@ -1159,10 +1047,10 @@
         "parasitics": "spef_annotated"
       },
       "spef_annotation": {
-        "nets_annotated": 544,
-        "nets_total": 544,
-        "design_nets_annotated": 544,
-        "design_nets_total": 544,
+        "nets_annotated": 550,
+        "nets_total": 550,
+        "design_nets_annotated": 550,
+        "design_nets_total": 550,
         "design_nets_missing_sample": [],
         "reader_warning_count": 0,
         "reader_warning_sample": [],
@@ -1221,13 +1109,13 @@
     {
       "corner": "ss_125C_3v00",
       "engine_log": {
-        "invocation_id": "c0232b01c80147879bbfe8fb1a11d535",
+        "invocation_id": "865fa76b6772478297d9557bd55cbdee",
         "script_name": "sta_antifuse_digital_top__ss_125C_3v00.tcl",
         "script_path": {
           "path": "rtl/sta/.klt/sta/sta_antifuse_digital_top__ss_125C_3v00.tcl",
           "scope": "repo"
         },
-        "script_sha256": "680521a7407b501a35adbfebd2480327614b085de42994ab3ed0ca7810819dca",
+        "script_sha256": "b1faa38db98285bc0f7248104200adfe01fec41212aae5210d7048161056df5d",
         "metrics_path": {
           "path": "rtl/sta/.klt/sta/antifuse_digital_top__ss_125C_3v00_metrics.json",
           "scope": "repo"
@@ -1235,57 +1123,41 @@
         "outcome": "exited",
         "returncode": 0,
         "directory": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/c0232b01c80147879bbfe8fb1a11d535",
+          "path": "rtl/sta/.klt/sta/openroad-logs/865fa76b6772478297d9557bd55cbdee",
           "scope": "repo"
         },
         "stdout_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/c0232b01c80147879bbfe8fb1a11d535/stdout.log",
+          "path": "rtl/sta/.klt/sta/openroad-logs/865fa76b6772478297d9557bd55cbdee/stdout.log",
           "scope": "repo"
         },
         "stderr_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/c0232b01c80147879bbfe8fb1a11d535/stderr.log",
+          "path": "rtl/sta/.klt/sta/openroad-logs/865fa76b6772478297d9557bd55cbdee/stderr.log",
           "scope": "repo"
         },
         "metadata_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/c0232b01c80147879bbfe8fb1a11d535/invocation.json",
+          "path": "rtl/sta/.klt/sta/openroad-logs/865fa76b6772478297d9557bd55cbdee/invocation.json",
           "scope": "repo"
         },
         "retention_errors": []
       },
-      "worst_slack_ns": 33.0486,
+      "worst_slack_ns": 34.8048,
       "total_negative_slack_ns": 0,
-      "worst_hold_slack_ns": 1.75999,
+      "worst_hold_slack_ns": 1.74553,
       "total_negative_hold_slack_ns": 0,
-      "fmax_mhz": 58.9921,
+      "fmax_mhz": 65.8104,
       "timing_status": "constrained",
       "constraint_completeness": {
         "status": "incomplete",
         "unconstrained_endpoints": {
           "status": "ok",
-          "count": 83,
+          "count": 4,
           "sample": [
-            "busy",
-            "col_onehot[0]",
-            "col_onehot[10]",
-            "col_onehot[11]",
-            "col_onehot[12]",
-            "col_onehot[13]",
-            "col_onehot[14]",
-            "col_onehot[15]",
-            "col_onehot[16]",
-            "col_onehot[17]",
-            "col_onehot[18]",
-            "col_onehot[19]",
-            "col_onehot[1]",
-            "col_onehot[20]",
-            "col_onehot[21]",
-            "col_onehot[22]",
-            "col_onehot[23]",
-            "col_onehot[24]",
-            "col_onehot[25]",
-            "col_onehot[26]"
+            "u_regs/_730_/D",
+            "u_regs/_733_/D",
+            "u_regs/_736_/D",
+            "u_regs/_738_/D"
           ],
-          "truncated": true,
+          "truncated": false,
           "reason": null
         },
         "unclocked_registers": {
@@ -1303,9 +1175,9 @@
         "status": "ok",
         "check_type": "setup",
         "engine_check_role": "setup",
-        "startpoint": "u_regs/_720_/Q",
-        "endpoint": "u_regs/_727_/D",
-        "slack_ns": 33.04858,
+        "startpoint": "u_regs/_684_/Q",
+        "endpoint": "u_regs/_686_/D",
+        "slack_ns": 34.80482,
         "consistent_with_aggregate": true,
         "reason": null
       },
@@ -1313,14 +1185,14 @@
         "status": "ok",
         "check_type": "hold",
         "engine_check_role": "hold",
-        "startpoint": "u_regs/_738_/Q",
-        "endpoint": "u_regs/_739_/D",
-        "slack_ns": 1.75999,
+        "startpoint": "u_regs/_736_/Q",
+        "endpoint": "u_regs/_737_/D",
+        "slack_ns": 1.74553,
         "consistent_with_aggregate": true,
         "reason": null
       },
-      "clock_skew_ns": 0.06802,
-      "estimated_power_mw": 0.7003,
+      "clock_skew_ns": 0.07574,
+      "estimated_power_mw": 0.6979,
       "power_basis": {
         "activity_source": "engine_default",
         "activity": null,
@@ -1328,10 +1200,10 @@
         "parasitics": "spef_annotated"
       },
       "spef_annotation": {
-        "nets_annotated": 544,
-        "nets_total": 544,
-        "design_nets_annotated": 544,
-        "design_nets_total": 544,
+        "nets_annotated": 550,
+        "nets_total": 550,
+        "design_nets_annotated": 550,
+        "design_nets_total": 550,
         "design_nets_missing_sample": [],
         "reader_warning_count": 0,
         "reader_warning_sample": [],
@@ -1390,13 +1262,13 @@
     {
       "corner": "ss_125C_4v50",
       "engine_log": {
-        "invocation_id": "cbc6ebeaa4ba497aaa2f7f330c19ac97",
+        "invocation_id": "647634aac09749fab3d503180894b7de",
         "script_name": "sta_antifuse_digital_top__ss_125C_4v50.tcl",
         "script_path": {
           "path": "rtl/sta/.klt/sta/sta_antifuse_digital_top__ss_125C_4v50.tcl",
           "scope": "repo"
         },
-        "script_sha256": "b36e7a8c473ee2f6ee204f89c12c3a5ab7105b76ee579e62448972b88d273330",
+        "script_sha256": "bc5688d918e4cbaf65eafe49bc1aee737b9ffcada7b0dd60a4d1c7094039d3df",
         "metrics_path": {
           "path": "rtl/sta/.klt/sta/antifuse_digital_top__ss_125C_4v50_metrics.json",
           "scope": "repo"
@@ -1404,57 +1276,41 @@
         "outcome": "exited",
         "returncode": 0,
         "directory": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/cbc6ebeaa4ba497aaa2f7f330c19ac97",
+          "path": "rtl/sta/.klt/sta/openroad-logs/647634aac09749fab3d503180894b7de",
           "scope": "repo"
         },
         "stdout_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/cbc6ebeaa4ba497aaa2f7f330c19ac97/stdout.log",
+          "path": "rtl/sta/.klt/sta/openroad-logs/647634aac09749fab3d503180894b7de/stdout.log",
           "scope": "repo"
         },
         "stderr_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/cbc6ebeaa4ba497aaa2f7f330c19ac97/stderr.log",
+          "path": "rtl/sta/.klt/sta/openroad-logs/647634aac09749fab3d503180894b7de/stderr.log",
           "scope": "repo"
         },
         "metadata_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/cbc6ebeaa4ba497aaa2f7f330c19ac97/invocation.json",
+          "path": "rtl/sta/.klt/sta/openroad-logs/647634aac09749fab3d503180894b7de/invocation.json",
           "scope": "repo"
         },
         "retention_errors": []
       },
-      "worst_slack_ns": 39.4625,
+      "worst_slack_ns": 40.5583,
       "total_negative_slack_ns": 0,
-      "worst_hold_slack_ns": 1.05799,
+      "worst_hold_slack_ns": 1.04755,
       "total_negative_hold_slack_ns": 0,
-      "fmax_mhz": 94.8996,
+      "fmax_mhz": 105.913,
       "timing_status": "constrained",
       "constraint_completeness": {
         "status": "incomplete",
         "unconstrained_endpoints": {
           "status": "ok",
-          "count": 83,
+          "count": 4,
           "sample": [
-            "busy",
-            "col_onehot[0]",
-            "col_onehot[10]",
-            "col_onehot[11]",
-            "col_onehot[12]",
-            "col_onehot[13]",
-            "col_onehot[14]",
-            "col_onehot[15]",
-            "col_onehot[16]",
-            "col_onehot[17]",
-            "col_onehot[18]",
-            "col_onehot[19]",
-            "col_onehot[1]",
-            "col_onehot[20]",
-            "col_onehot[21]",
-            "col_onehot[22]",
-            "col_onehot[23]",
-            "col_onehot[24]",
-            "col_onehot[25]",
-            "col_onehot[26]"
+            "u_regs/_730_/D",
+            "u_regs/_733_/D",
+            "u_regs/_736_/D",
+            "u_regs/_738_/D"
           ],
-          "truncated": true,
+          "truncated": false,
           "reason": null
         },
         "unclocked_registers": {
@@ -1472,9 +1328,9 @@
         "status": "ok",
         "check_type": "setup",
         "engine_check_role": "setup",
-        "startpoint": "u_regs/_721_/Q",
-        "endpoint": "u_regs/_727_/D",
-        "slack_ns": 39.46254,
+        "startpoint": "u_regs/_684_/Q",
+        "endpoint": "u_regs/_686_/D",
+        "slack_ns": 40.55825,
         "consistent_with_aggregate": true,
         "reason": null
       },
@@ -1482,14 +1338,14 @@
         "status": "ok",
         "check_type": "hold",
         "engine_check_role": "hold",
-        "startpoint": "u_regs/_738_/Q",
-        "endpoint": "u_regs/_739_/D",
-        "slack_ns": 1.05799,
+        "startpoint": "u_regs/_736_/Q",
+        "endpoint": "u_regs/_737_/D",
+        "slack_ns": 1.04755,
         "consistent_with_aggregate": true,
         "reason": null
       },
-      "clock_skew_ns": 0.04238,
-      "estimated_power_mw": 1.6206,
+      "clock_skew_ns": 0.04735,
+      "estimated_power_mw": 1.6147,
       "power_basis": {
         "activity_source": "engine_default",
         "activity": null,
@@ -1497,10 +1353,10 @@
         "parasitics": "spef_annotated"
       },
       "spef_annotation": {
-        "nets_annotated": 544,
-        "nets_total": 544,
-        "design_nets_annotated": 544,
-        "design_nets_total": 544,
+        "nets_annotated": 550,
+        "nets_total": 550,
+        "design_nets_annotated": 550,
+        "design_nets_total": 550,
         "design_nets_missing_sample": [],
         "reader_warning_count": 0,
         "reader_warning_sample": [],
@@ -1559,13 +1415,13 @@
     {
       "corner": "ss_n40C_1v62",
       "engine_log": {
-        "invocation_id": "0693df99ba944efeb4627b9296005f81",
+        "invocation_id": "94a6c3da1f094c0da8af97cd0e962f4a",
         "script_name": "sta_antifuse_digital_top__ss_n40C_1v62.tcl",
         "script_path": {
           "path": "rtl/sta/.klt/sta/sta_antifuse_digital_top__ss_n40C_1v62.tcl",
           "scope": "repo"
         },
-        "script_sha256": "0f781b3a8fa1aeffd81fd70ca65c51ba6dd353c3d90554a06a7c4ff959b5392a",
+        "script_sha256": "2b78fabd4d0c4afd2cca44869328c057a00fb351b5c6912312f4b7555c74e9e2",
         "metrics_path": {
           "path": "rtl/sta/.klt/sta/antifuse_digital_top__ss_n40C_1v62_metrics.json",
           "scope": "repo"
@@ -1573,57 +1429,41 @@
         "outcome": "exited",
         "returncode": 0,
         "directory": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/0693df99ba944efeb4627b9296005f81",
+          "path": "rtl/sta/.klt/sta/openroad-logs/94a6c3da1f094c0da8af97cd0e962f4a",
           "scope": "repo"
         },
         "stdout_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/0693df99ba944efeb4627b9296005f81/stdout.log",
+          "path": "rtl/sta/.klt/sta/openroad-logs/94a6c3da1f094c0da8af97cd0e962f4a/stdout.log",
           "scope": "repo"
         },
         "stderr_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/0693df99ba944efeb4627b9296005f81/stderr.log",
+          "path": "rtl/sta/.klt/sta/openroad-logs/94a6c3da1f094c0da8af97cd0e962f4a/stderr.log",
           "scope": "repo"
         },
         "metadata_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/0693df99ba944efeb4627b9296005f81/invocation.json",
+          "path": "rtl/sta/.klt/sta/openroad-logs/94a6c3da1f094c0da8af97cd0e962f4a/invocation.json",
           "scope": "repo"
         },
         "retention_errors": []
       },
-      "worst_slack_ns": -2.23062,
-      "total_negative_slack_ns": -2.23062,
-      "worst_hold_slack_ns": 5.11763,
+      "worst_slack_ns": 4.19503,
+      "total_negative_slack_ns": 0,
+      "worst_hold_slack_ns": 5.08157,
       "total_negative_hold_slack_ns": 0,
-      "fmax_mhz": 19.1459,
+      "fmax_mhz": 21.8317,
       "timing_status": "constrained",
       "constraint_completeness": {
         "status": "incomplete",
         "unconstrained_endpoints": {
           "status": "ok",
-          "count": 83,
+          "count": 4,
           "sample": [
-            "busy",
-            "col_onehot[0]",
-            "col_onehot[10]",
-            "col_onehot[11]",
-            "col_onehot[12]",
-            "col_onehot[13]",
-            "col_onehot[14]",
-            "col_onehot[15]",
-            "col_onehot[16]",
-            "col_onehot[17]",
-            "col_onehot[18]",
-            "col_onehot[19]",
-            "col_onehot[1]",
-            "col_onehot[20]",
-            "col_onehot[21]",
-            "col_onehot[22]",
-            "col_onehot[23]",
-            "col_onehot[24]",
-            "col_onehot[25]",
-            "col_onehot[26]"
+            "u_regs/_730_/D",
+            "u_regs/_733_/D",
+            "u_regs/_736_/D",
+            "u_regs/_738_/D"
           ],
-          "truncated": true,
+          "truncated": false,
           "reason": null
         },
         "unclocked_registers": {
@@ -1635,15 +1475,15 @@
         },
         "sample_limit": 20
       },
-      "setup_violation_count": 1,
+      "setup_violation_count": 0,
       "hold_violation_count": 0,
       "worst_setup_path": {
         "status": "ok",
         "check_type": "setup",
         "engine_check_role": "setup",
-        "startpoint": "u_regs/_720_/Q",
-        "endpoint": "u_regs/_727_/D",
-        "slack_ns": -2.23062,
+        "startpoint": "u_regs/_675_/Q",
+        "endpoint": "u_regs/_686_/D",
+        "slack_ns": 4.19503,
         "consistent_with_aggregate": true,
         "reason": null
       },
@@ -1651,14 +1491,14 @@
         "status": "ok",
         "check_type": "hold",
         "engine_check_role": "hold",
-        "startpoint": "u_regs/_738_/Q",
-        "endpoint": "u_regs/_739_/D",
-        "slack_ns": 5.11762,
+        "startpoint": "u_regs/_736_/Q",
+        "endpoint": "u_regs/_737_/D",
+        "slack_ns": 5.08157,
         "consistent_with_aggregate": true,
         "reason": null
       },
-      "clock_skew_ns": 0.20294,
-      "estimated_power_mw": 0.185,
+      "clock_skew_ns": 0.22267,
+      "estimated_power_mw": 0.1844,
       "power_basis": {
         "activity_source": "engine_default",
         "activity": null,
@@ -1666,10 +1506,10 @@
         "parasitics": "spef_annotated"
       },
       "spef_annotation": {
-        "nets_annotated": 544,
-        "nets_total": 544,
-        "design_nets_annotated": 544,
-        "design_nets_total": 544,
+        "nets_annotated": 550,
+        "nets_total": 550,
+        "design_nets_annotated": 550,
+        "design_nets_total": 550,
         "design_nets_missing_sample": [],
         "reader_warning_count": 0,
         "reader_warning_sample": [],
@@ -1698,19 +1538,19 @@
           "coverage": "checked",
           "limit_source": "liberty",
           "unit": "ns",
-          "violation_count": 15,
-          "net_count": 1,
-          "worst_excess": 1.25303,
-          "worst_pin": "u_regs/_391_/ZN"
+          "violation_count": 0,
+          "net_count": 0,
+          "worst_excess": null,
+          "worst_pin": null
         },
         "max_capacitance": {
           "coverage": "checked",
           "limit_source": "liberty",
           "unit": "pF",
-          "violation_count": 1,
-          "net_count": 1,
-          "worst_excess": 0.00458,
-          "worst_pin": "u_regs/_391_/ZN"
+          "violation_count": 0,
+          "net_count": 0,
+          "worst_excess": null,
+          "worst_pin": null
         }
       },
       "clock_propagation": null,
@@ -1728,13 +1568,13 @@
     {
       "corner": "ss_n40C_3v00",
       "engine_log": {
-        "invocation_id": "7d9302e76d33427eb8044567346e5bc9",
+        "invocation_id": "1bf43137a6a543959a878d5052cb7444",
         "script_name": "sta_antifuse_digital_top__ss_n40C_3v00.tcl",
         "script_path": {
           "path": "rtl/sta/.klt/sta/sta_antifuse_digital_top__ss_n40C_3v00.tcl",
           "scope": "repo"
         },
-        "script_sha256": "49a83e8fbd460a22555b2dc21907237b9758bf63ffe4b97de4ac3b8c08591ae5",
+        "script_sha256": "f78ed9e6ca1248d988afdcaa5c3ec4272285c9aa4ac529ad23fda5fe5eb59ca1",
         "metrics_path": {
           "path": "rtl/sta/.klt/sta/antifuse_digital_top__ss_n40C_3v00_metrics.json",
           "scope": "repo"
@@ -1742,57 +1582,41 @@
         "outcome": "exited",
         "returncode": 0,
         "directory": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/7d9302e76d33427eb8044567346e5bc9",
+          "path": "rtl/sta/.klt/sta/openroad-logs/1bf43137a6a543959a878d5052cb7444",
           "scope": "repo"
         },
         "stdout_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/7d9302e76d33427eb8044567346e5bc9/stdout.log",
+          "path": "rtl/sta/.klt/sta/openroad-logs/1bf43137a6a543959a878d5052cb7444/stdout.log",
           "scope": "repo"
         },
         "stderr_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/7d9302e76d33427eb8044567346e5bc9/stderr.log",
+          "path": "rtl/sta/.klt/sta/openroad-logs/1bf43137a6a543959a878d5052cb7444/stderr.log",
           "scope": "repo"
         },
         "metadata_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/7d9302e76d33427eb8044567346e5bc9/invocation.json",
+          "path": "rtl/sta/.klt/sta/openroad-logs/1bf43137a6a543959a878d5052cb7444/invocation.json",
           "scope": "repo"
         },
         "retention_errors": []
       },
-      "worst_slack_ns": 38.5516,
+      "worst_slack_ns": 39.6164,
       "total_negative_slack_ns": 0,
-      "worst_hold_slack_ns": 1.24203,
+      "worst_hold_slack_ns": 1.23149,
       "total_negative_hold_slack_ns": 0,
-      "fmax_mhz": 87.3483,
+      "fmax_mhz": 96.3055,
       "timing_status": "constrained",
       "constraint_completeness": {
         "status": "incomplete",
         "unconstrained_endpoints": {
           "status": "ok",
-          "count": 83,
+          "count": 4,
           "sample": [
-            "busy",
-            "col_onehot[0]",
-            "col_onehot[10]",
-            "col_onehot[11]",
-            "col_onehot[12]",
-            "col_onehot[13]",
-            "col_onehot[14]",
-            "col_onehot[15]",
-            "col_onehot[16]",
-            "col_onehot[17]",
-            "col_onehot[18]",
-            "col_onehot[19]",
-            "col_onehot[1]",
-            "col_onehot[20]",
-            "col_onehot[21]",
-            "col_onehot[22]",
-            "col_onehot[23]",
-            "col_onehot[24]",
-            "col_onehot[25]",
-            "col_onehot[26]"
+            "u_regs/_730_/D",
+            "u_regs/_733_/D",
+            "u_regs/_736_/D",
+            "u_regs/_738_/D"
           ],
-          "truncated": true,
+          "truncated": false,
           "reason": null
         },
         "unclocked_registers": {
@@ -1810,9 +1634,9 @@
         "status": "ok",
         "check_type": "setup",
         "engine_check_role": "setup",
-        "startpoint": "u_regs/_720_/Q",
-        "endpoint": "u_regs/_727_/D",
-        "slack_ns": 38.55158,
+        "startpoint": "u_regs/_684_/Q",
+        "endpoint": "u_regs/_686_/D",
+        "slack_ns": 39.61637,
         "consistent_with_aggregate": true,
         "reason": null
       },
@@ -1820,14 +1644,14 @@
         "status": "ok",
         "check_type": "hold",
         "engine_check_role": "hold",
-        "startpoint": "u_regs/_738_/Q",
-        "endpoint": "u_regs/_739_/D",
-        "slack_ns": 1.24203,
+        "startpoint": "u_regs/_736_/Q",
+        "endpoint": "u_regs/_737_/D",
+        "slack_ns": 1.23149,
         "consistent_with_aggregate": true,
         "reason": null
       },
-      "clock_skew_ns": 0.0489,
-      "estimated_power_mw": 0.6747,
+      "clock_skew_ns": 0.05432,
+      "estimated_power_mw": 0.6724,
       "power_basis": {
         "activity_source": "engine_default",
         "activity": null,
@@ -1835,10 +1659,10 @@
         "parasitics": "spef_annotated"
       },
       "spef_annotation": {
-        "nets_annotated": 544,
-        "nets_total": 544,
-        "design_nets_annotated": 544,
-        "design_nets_total": 544,
+        "nets_annotated": 550,
+        "nets_total": 550,
+        "design_nets_annotated": 550,
+        "design_nets_total": 550,
         "design_nets_missing_sample": [],
         "reader_warning_count": 0,
         "reader_warning_sample": [],
@@ -1897,13 +1721,13 @@
     {
       "corner": "ss_n40C_4v50",
       "engine_log": {
-        "invocation_id": "1c03bef8c4fe46ccb7c9485ffb207626",
+        "invocation_id": "246b723988414802a3907520e1ebd403",
         "script_name": "sta_antifuse_digital_top__ss_n40C_4v50.tcl",
         "script_path": {
           "path": "rtl/sta/.klt/sta/sta_antifuse_digital_top__ss_n40C_4v50.tcl",
           "scope": "repo"
         },
-        "script_sha256": "d16938e6117803534101d15c0e6c5d1aaadf84aa5c50f9461df7fcdb1b026789",
+        "script_sha256": "4ca264169ce1578b08e94ace78f9fee9eee92734bf2a09e16ca2c875005a93b5",
         "metrics_path": {
           "path": "rtl/sta/.klt/sta/antifuse_digital_top__ss_n40C_4v50_metrics.json",
           "scope": "repo"
@@ -1911,57 +1735,41 @@
         "outcome": "exited",
         "returncode": 0,
         "directory": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/1c03bef8c4fe46ccb7c9485ffb207626",
+          "path": "rtl/sta/.klt/sta/openroad-logs/246b723988414802a3907520e1ebd403",
           "scope": "repo"
         },
         "stdout_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/1c03bef8c4fe46ccb7c9485ffb207626/stdout.log",
+          "path": "rtl/sta/.klt/sta/openroad-logs/246b723988414802a3907520e1ebd403/stdout.log",
           "scope": "repo"
         },
         "stderr_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/1c03bef8c4fe46ccb7c9485ffb207626/stderr.log",
+          "path": "rtl/sta/.klt/sta/openroad-logs/246b723988414802a3907520e1ebd403/stderr.log",
           "scope": "repo"
         },
         "metadata_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/1c03bef8c4fe46ccb7c9485ffb207626/invocation.json",
+          "path": "rtl/sta/.klt/sta/openroad-logs/246b723988414802a3907520e1ebd403/invocation.json",
           "scope": "repo"
         },
         "retention_errors": []
       },
-      "worst_slack_ns": 42.9973,
+      "worst_slack_ns": 43.6184,
       "total_negative_slack_ns": 0,
-      "worst_hold_slack_ns": 0.73321,
+      "worst_hold_slack_ns": 0.72611,
       "total_negative_hold_slack_ns": 0,
-      "fmax_mhz": 142.802,
+      "fmax_mhz": 156.7,
       "timing_status": "constrained",
       "constraint_completeness": {
         "status": "incomplete",
         "unconstrained_endpoints": {
           "status": "ok",
-          "count": 83,
+          "count": 4,
           "sample": [
-            "busy",
-            "col_onehot[0]",
-            "col_onehot[10]",
-            "col_onehot[11]",
-            "col_onehot[12]",
-            "col_onehot[13]",
-            "col_onehot[14]",
-            "col_onehot[15]",
-            "col_onehot[16]",
-            "col_onehot[17]",
-            "col_onehot[18]",
-            "col_onehot[19]",
-            "col_onehot[1]",
-            "col_onehot[20]",
-            "col_onehot[21]",
-            "col_onehot[22]",
-            "col_onehot[23]",
-            "col_onehot[24]",
-            "col_onehot[25]",
-            "col_onehot[26]"
+            "u_regs/_730_/D",
+            "u_regs/_733_/D",
+            "u_regs/_736_/D",
+            "u_regs/_738_/D"
           ],
-          "truncated": true,
+          "truncated": false,
           "reason": null
         },
         "unclocked_registers": {
@@ -1979,9 +1787,9 @@
         "status": "ok",
         "check_type": "setup",
         "engine_check_role": "setup",
-        "startpoint": "u_regs/_721_/Q",
-        "endpoint": "u_regs/_727_/D",
-        "slack_ns": 42.9973,
+        "startpoint": "u_regs/_684_/Q",
+        "endpoint": "u_regs/_686_/D",
+        "slack_ns": 43.6184,
         "consistent_with_aggregate": true,
         "reason": null
       },
@@ -1989,14 +1797,14 @@
         "status": "ok",
         "check_type": "hold",
         "engine_check_role": "hold",
-        "startpoint": "u_regs/_738_/Q",
-        "endpoint": "u_regs/_739_/D",
-        "slack_ns": 0.73321,
+        "startpoint": "u_regs/_736_/Q",
+        "endpoint": "u_regs/_737_/D",
+        "slack_ns": 0.72611,
         "consistent_with_aggregate": true,
         "reason": null
       },
-      "clock_skew_ns": 0.03085,
-      "estimated_power_mw": 1.5746,
+      "clock_skew_ns": 0.0344,
+      "estimated_power_mw": 1.5692,
       "power_basis": {
         "activity_source": "engine_default",
         "activity": null,
@@ -2004,10 +1812,10 @@
         "parasitics": "spef_annotated"
       },
       "spef_annotation": {
-        "nets_annotated": 544,
-        "nets_total": 544,
-        "design_nets_annotated": 544,
-        "design_nets_total": 544,
+        "nets_annotated": 550,
+        "nets_total": 550,
+        "design_nets_annotated": 550,
+        "design_nets_total": 550,
         "design_nets_missing_sample": [],
         "reader_warning_count": 0,
         "reader_warning_sample": [],
@@ -2066,13 +1874,13 @@
     {
       "corner": "tt_025C_1v80",
       "engine_log": {
-        "invocation_id": "3d8100114bf74c56994257af6178b14e",
+        "invocation_id": "8da10c2494ca442cbe4a1b4e63bbfab9",
         "script_name": "sta_antifuse_digital_top__tt_025C_1v80.tcl",
         "script_path": {
           "path": "rtl/sta/.klt/sta/sta_antifuse_digital_top__tt_025C_1v80.tcl",
           "scope": "repo"
         },
-        "script_sha256": "f032788078faeea4b75fc9665e9a5008cd31576dae194487bfe9dd95c92dc2ca",
+        "script_sha256": "2ee762867e9e755ab544181eab88b896c8fd7da559c49b889dd423092020cdee",
         "metrics_path": {
           "path": "rtl/sta/.klt/sta/antifuse_digital_top__tt_025C_1v80_metrics.json",
           "scope": "repo"
@@ -2080,57 +1888,41 @@
         "outcome": "exited",
         "returncode": 0,
         "directory": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/3d8100114bf74c56994257af6178b14e",
+          "path": "rtl/sta/.klt/sta/openroad-logs/8da10c2494ca442cbe4a1b4e63bbfab9",
           "scope": "repo"
         },
         "stdout_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/3d8100114bf74c56994257af6178b14e/stdout.log",
+          "path": "rtl/sta/.klt/sta/openroad-logs/8da10c2494ca442cbe4a1b4e63bbfab9/stdout.log",
           "scope": "repo"
         },
         "stderr_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/3d8100114bf74c56994257af6178b14e/stderr.log",
+          "path": "rtl/sta/.klt/sta/openroad-logs/8da10c2494ca442cbe4a1b4e63bbfab9/stderr.log",
           "scope": "repo"
         },
         "metadata_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/3d8100114bf74c56994257af6178b14e/invocation.json",
+          "path": "rtl/sta/.klt/sta/openroad-logs/8da10c2494ca442cbe4a1b4e63bbfab9/invocation.json",
           "scope": "repo"
         },
         "retention_errors": []
       },
-      "worst_slack_ns": 27.8034,
+      "worst_slack_ns": 30.2307,
       "total_negative_slack_ns": 0,
-      "worst_hold_slack_ns": 2.27619,
+      "worst_hold_slack_ns": 2.25785,
       "total_negative_hold_slack_ns": 0,
-      "fmax_mhz": 45.0519,
+      "fmax_mhz": 50.5836,
       "timing_status": "constrained",
       "constraint_completeness": {
         "status": "incomplete",
         "unconstrained_endpoints": {
           "status": "ok",
-          "count": 83,
+          "count": 4,
           "sample": [
-            "busy",
-            "col_onehot[0]",
-            "col_onehot[10]",
-            "col_onehot[11]",
-            "col_onehot[12]",
-            "col_onehot[13]",
-            "col_onehot[14]",
-            "col_onehot[15]",
-            "col_onehot[16]",
-            "col_onehot[17]",
-            "col_onehot[18]",
-            "col_onehot[19]",
-            "col_onehot[1]",
-            "col_onehot[20]",
-            "col_onehot[21]",
-            "col_onehot[22]",
-            "col_onehot[23]",
-            "col_onehot[24]",
-            "col_onehot[25]",
-            "col_onehot[26]"
+            "u_regs/_730_/D",
+            "u_regs/_733_/D",
+            "u_regs/_736_/D",
+            "u_regs/_738_/D"
           ],
-          "truncated": true,
+          "truncated": false,
           "reason": null
         },
         "unclocked_registers": {
@@ -2148,9 +1940,9 @@
         "status": "ok",
         "check_type": "setup",
         "engine_check_role": "setup",
-        "startpoint": "u_regs/_720_/Q",
-        "endpoint": "u_regs/_727_/D",
-        "slack_ns": 27.80337,
+        "startpoint": "u_regs/_684_/Q",
+        "endpoint": "u_regs/_686_/D",
+        "slack_ns": 30.23075,
         "consistent_with_aggregate": true,
         "reason": null
       },
@@ -2158,14 +1950,14 @@
         "status": "ok",
         "check_type": "hold",
         "engine_check_role": "hold",
-        "startpoint": "u_regs/_738_/Q",
-        "endpoint": "u_regs/_739_/D",
-        "slack_ns": 2.27619,
+        "startpoint": "u_regs/_736_/Q",
+        "endpoint": "u_regs/_737_/D",
+        "slack_ns": 2.25785,
         "consistent_with_aggregate": true,
         "reason": null
       },
-      "clock_skew_ns": 0.09207,
-      "estimated_power_mw": 0.2335,
+      "clock_skew_ns": 0.10124,
+      "estimated_power_mw": 0.2327,
       "power_basis": {
         "activity_source": "engine_default",
         "activity": null,
@@ -2173,10 +1965,10 @@
         "parasitics": "spef_annotated"
       },
       "spef_annotation": {
-        "nets_annotated": 544,
-        "nets_total": 544,
-        "design_nets_annotated": 544,
-        "design_nets_total": 544,
+        "nets_annotated": 550,
+        "nets_total": 550,
+        "design_nets_annotated": 550,
+        "design_nets_total": 550,
         "design_nets_missing_sample": [],
         "reader_warning_count": 0,
         "reader_warning_sample": [],
@@ -2235,13 +2027,13 @@
     {
       "corner": "tt_025C_3v30",
       "engine_log": {
-        "invocation_id": "1a82f81618fc40d6badc604d339a5b76",
+        "invocation_id": "136fc6fb0fbd46c0acb60bdaa972966a",
         "script_name": "sta_antifuse_digital_top__tt_025C_3v30.tcl",
         "script_path": {
           "path": "rtl/sta/.klt/sta/sta_antifuse_digital_top__tt_025C_3v30.tcl",
           "scope": "repo"
         },
-        "script_sha256": "71cee20f44c9857f4e26f9ca4caf0736ecab1c856bf6c72807f94f06915bb5ae",
+        "script_sha256": "a4cf2854cd92f530801a3f9e869e4b5e6f219c425c03236071114d2aaf161dad",
         "metrics_path": {
           "path": "rtl/sta/.klt/sta/antifuse_digital_top__tt_025C_3v30_metrics.json",
           "scope": "repo"
@@ -2249,57 +2041,41 @@
         "outcome": "exited",
         "returncode": 0,
         "directory": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/1a82f81618fc40d6badc604d339a5b76",
+          "path": "rtl/sta/.klt/sta/openroad-logs/136fc6fb0fbd46c0acb60bdaa972966a",
           "scope": "repo"
         },
         "stdout_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/1a82f81618fc40d6badc604d339a5b76/stdout.log",
+          "path": "rtl/sta/.klt/sta/openroad-logs/136fc6fb0fbd46c0acb60bdaa972966a/stdout.log",
           "scope": "repo"
         },
         "stderr_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/1a82f81618fc40d6badc604d339a5b76/stderr.log",
+          "path": "rtl/sta/.klt/sta/openroad-logs/136fc6fb0fbd46c0acb60bdaa972966a/stderr.log",
           "scope": "repo"
         },
         "metadata_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/1a82f81618fc40d6badc604d339a5b76/invocation.json",
+          "path": "rtl/sta/.klt/sta/openroad-logs/136fc6fb0fbd46c0acb60bdaa972966a/invocation.json",
           "scope": "repo"
         },
         "retention_errors": []
       },
-      "worst_slack_ns": 41.6998,
+      "worst_slack_ns": 42.5556,
       "total_negative_slack_ns": 0,
-      "worst_hold_slack_ns": 0.85442,
+      "worst_hold_slack_ns": 0.84676,
       "total_negative_hold_slack_ns": 0,
-      "fmax_mhz": 120.479,
+      "fmax_mhz": 134.329,
       "timing_status": "constrained",
       "constraint_completeness": {
         "status": "incomplete",
         "unconstrained_endpoints": {
           "status": "ok",
-          "count": 83,
+          "count": 4,
           "sample": [
-            "busy",
-            "col_onehot[0]",
-            "col_onehot[10]",
-            "col_onehot[11]",
-            "col_onehot[12]",
-            "col_onehot[13]",
-            "col_onehot[14]",
-            "col_onehot[15]",
-            "col_onehot[16]",
-            "col_onehot[17]",
-            "col_onehot[18]",
-            "col_onehot[19]",
-            "col_onehot[1]",
-            "col_onehot[20]",
-            "col_onehot[21]",
-            "col_onehot[22]",
-            "col_onehot[23]",
-            "col_onehot[24]",
-            "col_onehot[25]",
-            "col_onehot[26]"
+            "u_regs/_730_/D",
+            "u_regs/_733_/D",
+            "u_regs/_736_/D",
+            "u_regs/_738_/D"
           ],
-          "truncated": true,
+          "truncated": false,
           "reason": null
         },
         "unclocked_registers": {
@@ -2317,9 +2093,9 @@
         "status": "ok",
         "check_type": "setup",
         "engine_check_role": "setup",
-        "startpoint": "u_regs/_720_/Q",
-        "endpoint": "u_regs/_727_/D",
-        "slack_ns": 41.69981,
+        "startpoint": "u_regs/_684_/Q",
+        "endpoint": "u_regs/_686_/D",
+        "slack_ns": 42.55561,
         "consistent_with_aggregate": true,
         "reason": null
       },
@@ -2327,14 +2103,14 @@
         "status": "ok",
         "check_type": "hold",
         "engine_check_role": "hold",
-        "startpoint": "u_regs/_738_/Q",
-        "endpoint": "u_regs/_739_/D",
-        "slack_ns": 0.85442,
+        "startpoint": "u_regs/_736_/Q",
+        "endpoint": "u_regs/_737_/D",
+        "slack_ns": 0.84676,
         "consistent_with_aggregate": true,
         "reason": null
       },
-      "clock_skew_ns": 0.03726,
-      "estimated_power_mw": 0.8278,
+      "clock_skew_ns": 0.04131,
+      "estimated_power_mw": 0.8249,
       "power_basis": {
         "activity_source": "engine_default",
         "activity": null,
@@ -2342,10 +2118,10 @@
         "parasitics": "spef_annotated"
       },
       "spef_annotation": {
-        "nets_annotated": 544,
-        "nets_total": 544,
-        "design_nets_annotated": 544,
-        "design_nets_total": 544,
+        "nets_annotated": 550,
+        "nets_total": 550,
+        "design_nets_annotated": 550,
+        "design_nets_total": 550,
         "design_nets_missing_sample": [],
         "reader_warning_count": 0,
         "reader_warning_sample": [],
@@ -2404,13 +2180,13 @@
     {
       "corner": "tt_025C_5v00",
       "engine_log": {
-        "invocation_id": "0ec04e3eea6c4462b565214eb83a17f2",
+        "invocation_id": "ce6a7f3cb4a6468288d01d46bf14cf0c",
         "script_name": "sta_antifuse_digital_top__tt_025C_5v00.tcl",
         "script_path": {
           "path": "rtl/sta/.klt/sta/sta_antifuse_digital_top__tt_025C_5v00.tcl",
           "scope": "repo"
         },
-        "script_sha256": "17e511db611ff86071dd11cae6844d43bc82f355b28a99b8a6989c6e965e6244",
+        "script_sha256": "f4672140ad85f22fd1c830457f20815a178d32d8d7e5b1cbafce6ee8773ea4b9",
         "metrics_path": {
           "path": "rtl/sta/.klt/sta/antifuse_digital_top__tt_025C_5v00_metrics.json",
           "scope": "repo"
@@ -2418,57 +2194,41 @@
         "outcome": "exited",
         "returncode": 0,
         "directory": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/0ec04e3eea6c4462b565214eb83a17f2",
+          "path": "rtl/sta/.klt/sta/openroad-logs/ce6a7f3cb4a6468288d01d46bf14cf0c",
           "scope": "repo"
         },
         "stdout_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/0ec04e3eea6c4462b565214eb83a17f2/stdout.log",
+          "path": "rtl/sta/.klt/sta/openroad-logs/ce6a7f3cb4a6468288d01d46bf14cf0c/stdout.log",
           "scope": "repo"
         },
         "stderr_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/0ec04e3eea6c4462b565214eb83a17f2/stderr.log",
+          "path": "rtl/sta/.klt/sta/openroad-logs/ce6a7f3cb4a6468288d01d46bf14cf0c/stderr.log",
           "scope": "repo"
         },
         "metadata_path": {
-          "path": "rtl/sta/.klt/sta/openroad-logs/0ec04e3eea6c4462b565214eb83a17f2/invocation.json",
+          "path": "rtl/sta/.klt/sta/openroad-logs/ce6a7f3cb4a6468288d01d46bf14cf0c/invocation.json",
           "scope": "repo"
         },
         "retention_errors": []
       },
-      "worst_slack_ns": 44.4297,
+      "worst_slack_ns": 44.9874,
       "total_negative_slack_ns": 0,
-      "worst_hold_slack_ns": 0.55567,
+      "worst_hold_slack_ns": 0.5498,
       "total_negative_hold_slack_ns": 0,
-      "fmax_mhz": 179.525,
+      "fmax_mhz": 199.495,
       "timing_status": "constrained",
       "constraint_completeness": {
         "status": "incomplete",
         "unconstrained_endpoints": {
           "status": "ok",
-          "count": 83,
+          "count": 4,
           "sample": [
-            "busy",
-            "col_onehot[0]",
-            "col_onehot[10]",
-            "col_onehot[11]",
-            "col_onehot[12]",
-            "col_onehot[13]",
-            "col_onehot[14]",
-            "col_onehot[15]",
-            "col_onehot[16]",
-            "col_onehot[17]",
-            "col_onehot[18]",
-            "col_onehot[19]",
-            "col_onehot[1]",
-            "col_onehot[20]",
-            "col_onehot[21]",
-            "col_onehot[22]",
-            "col_onehot[23]",
-            "col_onehot[24]",
-            "col_onehot[25]",
-            "col_onehot[26]"
+            "u_regs/_730_/D",
+            "u_regs/_733_/D",
+            "u_regs/_736_/D",
+            "u_regs/_738_/D"
           ],
-          "truncated": true,
+          "truncated": false,
           "reason": null
         },
         "unclocked_registers": {
@@ -2486,9 +2246,9 @@
         "status": "ok",
         "check_type": "setup",
         "engine_check_role": "setup",
-        "startpoint": "u_regs/_721_/Q",
-        "endpoint": "u_regs/_727_/D",
-        "slack_ns": 44.42975,
+        "startpoint": "u_regs/_684_/Q",
+        "endpoint": "u_regs/_686_/D",
+        "slack_ns": 44.98735,
         "consistent_with_aggregate": true,
         "reason": null
       },
@@ -2496,14 +2256,14 @@
         "status": "ok",
         "check_type": "hold",
         "engine_check_role": "hold",
-        "startpoint": "u_regs/_738_/Q",
-        "endpoint": "u_regs/_739_/D",
-        "slack_ns": 0.55567,
+        "startpoint": "u_regs/_736_/Q",
+        "endpoint": "u_regs/_737_/D",
+        "slack_ns": 0.54981,
         "consistent_with_aggregate": true,
         "reason": null
       },
-      "clock_skew_ns": 0.02531,
-      "estimated_power_mw": 1.9614,
+      "clock_skew_ns": 0.0281,
+      "estimated_power_mw": 1.9542,
       "power_basis": {
         "activity_source": "engine_default",
         "activity": null,
@@ -2511,10 +2271,10 @@
         "parasitics": "spef_annotated"
       },
       "spef_annotation": {
-        "nets_annotated": 544,
-        "nets_total": 544,
-        "design_nets_annotated": 544,
-        "design_nets_total": 544,
+        "nets_annotated": 550,
+        "nets_total": 550,
+        "design_nets_annotated": 550,
+        "design_nets_total": 550,
         "design_nets_missing_sample": [],
         "reader_warning_count": 0,
         "reader_warning_sample": [],
