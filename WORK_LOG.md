@@ -3,8 +3,38 @@
 Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 
+### 2026-11-23
+
+- **PR #477**: refactor(sim): route cell-device klt campaign submissions through harness.klt
+- **PR #475**: docs(sim): name model.py/render.py in the cell-breakdown-model README; add facade __dir__
+- **Issue #465** (closed): cell-breakdown-model README does not point at the new model.py / render.py siblings
+- **Issue #301** (closed): Route cell-device KLT campaign submissions through harness.klt and preserve --resume
+
+### 2026-11-22
+
+- **PR #474**: refactor(sim): split program-read-legs run_experiment.py into model and render modules
+- **PR #473**: fix(signoff): pin verify.sh grader to klayout-tools 0.8.0
+- **PR #472**: test: pin full rendered records for programming-yield and cell-breakdown
+- **Issue #471** (closed): Split program-read-legs run_experiment.py into model, render, and CLI modules
+- **Issue #470** (closed): Add record-rendering regression tests for programming yield and cell breakdown
+- **Issue #469** (closed): signoff/verify.sh fails on hosts with klt newer than 0.8.0: the committed report.json grader is not pinned
+- **PR #468**: test(verification): assert monitor per test, cover d alias in guard
+- **PR #467**: refactor(sim): split programming-yield run_experiment.py into model, render, and CLI modules
+- **Issue #466** (closed): Split sim/programming-yield/run_experiment.py (880 LOC) into model, render, and CLI modules
+- **PR #464**: refactor(sim): split cell-breakdown-model run_experiment into model and render siblings
+- **Issue #463** (closed): Gate-level cocotb suite: close two self-check gaps in test_antifuse_digital_top.py and run_gate_sim.sh --check
+- **PR #462**: refactor(layout): route cell_candidate1 generator through candidate1_points POINTS
+- **Issue #461** (closed): Split sim/cell-breakdown-model/run_experiment.py (2,194 LOC) into model, render, and CLI modules
+- **Issue #460** (closed): Route layout/cell_candidate1/generate.py through candidate1_points.POINTS
+- **PR #456**: fix(rtl): close setup at both 1.62 V corners by re-routing with slow-corner optimization liberty
+- **PR #455**: verification(rtl): zero-delay gate-level functional-verification of the routed digital top (21/21)
+- **Issue #446** (closed): Digital timing: close setup at ss_125C_1v62 and ss_n40C_1v62 on the routed antifuse_digital_top (bounded design iteration; 5.digital stays uncited)
+- **Issue #445** (closed): Digital: klt functional-verification of the routed antifuse_digital_top netlist (item 5 digital's missing report; groundwork for item 7 digital)
+
 ### 2026-11-21
 
+- **PR #451**: fix: re-pin analog signoff evidence to post-#296 GDS hash and guard pins in check:ci
+- **Issue #443** (closed): signoff: manifest still pins the pre-#296 GDS hash, so 4.analog and 11.analog grade stale_evidence and verify.sh fails on main
 - **Issue #449** (closed): Use the breakdown parameter checker in the oxide model and HV pad bench
 - **PR #450**: fix: validate oxide model and pad bench parameters with the design parser
 
