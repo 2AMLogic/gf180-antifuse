@@ -42,6 +42,8 @@ sys.path.insert(0, str(EXP.parent))
 import run_klt_campaign as RK  # noqa: E402
 from harness import report as R  # noqa: E402
 from harness import numfmt as NF  # noqa: E402
+sys.path.insert(0, str(HERE))
+from extraction_check import check_extraction  # noqa: E402
 
 REQ_DIR = HERE / "requests"
 RUNS_DIR = HERE / "runs"
@@ -82,6 +84,13 @@ def submit_one(rundir: Path, sub: str, which: str):
 
 def submit_all(rundir: Path, parallel: int, only_missing: bool = False) -> None:
     jobs = [(sub, w) for n in PROBE_ORDER for sub in leg_names(n) for w in ("ioff", "ron")]
+    blocked = {n: f for n in PROBE_ORDER if (f := check_extraction(REPO, n))}
+    if blocked:
+        rundir.mkdir(parents=True, exist_ok=True)
+        with open(rundir / "submit-errors.txt", "a") as fh:
+            for n, f in blocked.items():
+                fh.write(f"== c{n}: NOT SUBMITTED, extraction unusable: {'; '.join(f)}\n")
+        jobs = [(s_, w) for s_, w in jobs if int(s_[1]) not in blocked]
     if only_missing:
         jobs = [(s, w) for s, w in jobs if RK.load_report(rundir, s, w) is None]
     errs = []
@@ -99,11 +108,35 @@ def submit_all(rundir: Path, parallel: int, only_missing: bool = False) -> None:
 # Ingest
 # ---------------------------------------------------------------------------
 
+def expected_points(n: int, leg: str, which: str) -> list[tuple]:
+    """(process, temp_c, vbl, vwl) tuples the committed request asks for."""
+    q = json.loads((REQ_DIR / f"c{n}_{leg}" / f"{which}.json").read_text())["corners"]
+    sv = q["supply_v"]
+    return sorted((pr["name"], t, round(b, 6), round(w, 6))
+                  for pr in q["process"] for t in q["temperature_c"]
+                  for b, w in zip(sv["vbl"], sv["vwl"]))
+
+
+def points_error(rep, n: int, leg: str, which: str):
+    """None if the report's corners are exactly the request's expected points."""
+    got = sorted((c["process"], c["temperature_c"], round(c["supply_v"]["vbl"], 6),
+                  round(c["supply_v"]["vwl"], 6)) for c in rep["corners"])
+    want = expected_points(n, leg, which)
+    if got == want:
+        return None
+    miss = [w for w in want if w not in got]
+    extra = [g for g in got if g not in want]
+    return f"bound points mismatch (missing {miss}, unexpected {extra})"
+
+
 def leg_ioff_worst(rundir: Path, n: int, leg: str):
     """Worst |I_off| over the three OFF-gate biases at the bound corner."""
     rep = RK.load_report(rundir, f"c{n}_{leg}", "ioff")
     if rep is None:
         return None, None, "no report (submit failed; see submit-errors.txt)"
+    perr = points_error(rep, n, leg, "ioff")
+    if perr:
+        return None, rep, perr
     pts = RK.ioff_points(rep)
     bad = [p for p in pts if p["status"] != "pass" or p["ioff"] is None]
     vals = [p["ioff"] for p in pts if p["ioff"] is not None]
@@ -116,6 +149,9 @@ def leg_ron(rundir: Path, n: int, leg: str):
     rep = RK.load_report(rundir, f"c{n}_{leg}", "ron")
     if rep is None:
         return None, None, None, "no report (submit failed; see submit-errors.txt)"
+    perr = points_error(rep, n, leg, "ron")
+    if perr:
+        return None, None, rep, perr
     pts = RK.ron_points(rep)
     bad = [p for p in pts if p["status"] != "pass" or p["ron"] is None]
     if bad or not pts:
@@ -146,31 +182,27 @@ def collect(rundir: Path) -> dict:
         i_e, ri_e, e_e = leg_ioff_worst(rundir, n, "extracted")
         r_s, zi_s, rr_s, re_s = leg_ron(rundir, n, "schematic")
         r_e, zi_e, rr_e, re_e = leg_ron(rundir, n, "extracted")
-        # The R_on bench reads only Re(VBL / -I(VBL)) at 10 MHz; the input
-        # reactance at that frequency is dominated by the storage-node MOS
-        # capacitor (the only AC return from that node).  Two joint conditions
-        # say the R_on difference is dominated by the cap representation
-        # divergence (drawn tanh C(V) law vs extracted linear area-law C,
-        # klayout-tools#7004) rather than by extracted parasitics:
-        #   (a) the legs' input reactances differ by more than 2x, and
-        #   (b) |delta| exceeds 25% of the schematic value -- the extracted
-        #       interconnect adds at most ~80 ohm of series R on any net of
-        #       these cells (see the R cards in each extracted.spice), so a
-        #       change of that size cannot be a parasitic effect.
-        rep_dom = (
-            zi_s is not None and zi_e is not None and zi_s != 0 and zi_e != 0
-            and abs(zi_s / zi_e) > 2
-            and r_s not in (None, 0) and delta(r_s, r_e) is not None
-            and abs(delta(r_s, r_e)) > 0.25 * abs(r_s)
-        )
+        # The R_on delta is always reported when both legs are valid.  The
+        # extracted leg carries a linear C card where the schematic leg has the
+        # PDK's nonlinear MOS capacitor (model_mismatch, klayout-tools#7004),
+        # so the cause of a large R_on difference is NOT attributed here: a
+        # single-component control (capacitor card swapped alone on each leg)
+        # showed a large difference with the same capacitor representation on
+        # both legs (see README).  `model_mismatch_disclosed` flags every
+        # R_on pairing whose legs use different capacitor representations.
+        finding = check_extraction(REPO, n)
+        if finding:
+            i_s = i_e = r_s = r_e = None
+            e_s = e_e = re_s = re_e = "extraction unusable: " + "; ".join(finding)
         out["cells"][str(n)] = {
+            "extraction_findings": finding,
             "ioff": {"schematic": i_s, "extracted": i_e, "delta": delta(i_s, i_e),
                      "schematic_error": e_s, "extracted_error": e_e,
                      "jobs": [job_id(ri_s), job_id(ri_e)]},
             "ron": {"schematic": r_s, "extracted": r_e, "delta": delta(r_s, r_e),
                     "schematic_error": re_s, "extracted_error": re_e,
                     "z_imag_schematic_ohm": zi_s, "z_imag_extracted_ohm": zi_e,
-                    "representation_dominated": rep_dom,
+                    "model_mismatch_disclosed": True,
                     "jobs": [job_id(rr_s), job_id(rr_e)]},
         }
     return out
@@ -238,9 +270,7 @@ def render_readme(rundir: Path, summary: dict) -> str:
                  f"| {fmt_val(i['schematic'], i['schematic_error'], 'A')} "
                  f"| {fmt_val(i['extracted'], i['extracted_error'], 'A')} "
                  f"| {fmt_val(delta(i['schematic'], i['extracted']) if not (i['schematic_error'] or i['extracted_error']) else None, None, 'A')} |")
-        if r.get("representation_dominated"):
-            diff = "WITHHELD (representation-dominated; see note)"
-        elif r["schematic_error"] or r["extracted_error"]:
+        if r["schematic_error"] or r["extracted_error"]:
             diff = "MISSING"
         else:
             diff = fmt_val(delta(r["schematic"], r["extracted"]), None, "ohm")
@@ -249,15 +279,15 @@ def render_readme(rundir: Path, summary: dict) -> str:
                  f"| {fmt_val(r['extracted'], r['extracted_error'], 'ohm')} "
                  f"| {diff} |")
         L.append("")
-        if r.get("representation_dominated"):
-            L.append(f"  - **R_on delta WITHHELD for this cell**: the input reactance at 10 MHz is")
-            L.append(f"    {sci(r['z_imag_schematic_ohm'])} ohm (schematic) vs "
-                     f"{sci(r['z_imag_extracted_ohm'])} ohm (extracted). That reactance IS the")
-            L.append("    storage-node MOS capacitor -- the drawn cell's tanh C(V) law sits in deep")
-            L.append("    depletion at this bias while the extracted linear area-law C does not, so")
-            L.append("    the two legs divide AC current differently and the Re difference is a")
-            L.append("    device-representation artifact (2AMLogic/klayout-tools#7004), not a")
-            L.append("    parasitic measure. Both raw values remain above for traceability.")
+        if not (r["schematic_error"] or r["extracted_error"]):
+            L.append("  - R_on pairing carries the capacitor-model mismatch: the extracted leg has a")
+            L.append("    linear `C` card where the schematic leg has the PDK MOS capacitor")
+            L.append("    (2AMLogic/klayout-tools#7004). The measured difference is reported as is;")
+            L.append("    its cause is **left open** -- a single-component control did not attribute it")
+            L.append("    to the capacitor model (see Dispositions).")
+            L.append("")
+        if c.get("extraction_findings"):
+            L.append("  - **Extraction unusable, pair suppressed**: " + "; ".join(c["extraction_findings"]))
             L.append("")
         L.append(f"batch jobs ioff [schematic, extracted]: {i['jobs']}; ron: {r['jobs']}")
         L.append("")
@@ -271,15 +301,48 @@ def render_readme(rundir: Path, summary: dict) -> str:
     L.append("  linearisation finding is linked on 2AMLogic/klayout-tools#7004 (the runset-route")
     L.append("  issues #6559/#6606 cover families the curated deck cannot recognise at all --")
     L.append("  not this case: all device families here bind under the curated deck with `--pdk`).")
+    L.append("- **C3 R_on difference: measured, cause open.** The fleet summary gives a large")
+    L.append("  negative C3 R_on difference.  A local single-component control (committed C3")
+    L.append("  DUTs, same PDK sections and source biases, `Re(-V(BL)/I(VBL))` at ss, -40 degC,")
+    L.append("  10 MHz, libngspice 42; the fleet ran ngspice 47) swapped only the capacitor card")
+    L.append("  within each row:")
+    L.append("")
+    L.append("  | C3 circuit | PDK MOS capacitor | Linear 1.232 fF capacitor |")
+    L.append("  |---|---:|---:|")
+    L.append("  | Schematic | 2912.900 ohm | 2912.905 ohm |")
+    L.append("  | Extracted | 118.822 ohm | 168.011 ohm |")
+    L.append("")
+    L.append("  The large schematic-vs-extracted difference persists with the same capacitor")
+    L.append("  representation on both legs, so it is not attributed to the capacitor model;")
+    L.append("  no controlled comparison has yet established the cause.")
     L.append("- Numbers above cover exactly the drawn Minimum x Minimum split of each")
     L.append("  candidate's GDS (one cell per candidate; no other splits, no averaging).")
     L.append("")
     return "\n".join(L)
 
 
+def write_summary(rundir: Path, summary: dict) -> Path:
+    """Write the summary without ever overwriting evidence.
+
+    An identical replay reuses the existing file; a differing result (e.g. a
+    resume that recovered missing reports) goes to the next free
+    `summary.rev<k>.json`, an identical earlier revision being reused, so the
+    original `summary.json` is preserved."""
+    text = json.dumps(summary, indent=2) + "\n"
+    k = 0
+    while True:
+        path = rundir / ("summary.json" if k == 0 else f"summary.rev{k}.json")
+        if not path.exists():
+            R.write_once(path, text)
+            return path
+        if path.read_text() == text:
+            return path
+        k += 1
+
+
 def ingest(rundir: Path) -> None:
     summary = collect(rundir)
-    R.write_once(rundir / "summary.json", json.dumps(summary, indent=2) + "\n")
+    write_summary(rundir, summary)
     (HERE / "README.md").write_text(render_readme(rundir, summary))
     for n in PROBE_ORDER:
         c = summary["cells"][str(n)]

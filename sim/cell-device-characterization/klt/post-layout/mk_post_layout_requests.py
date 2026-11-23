@@ -58,6 +58,8 @@ sys.path.insert(0, str(EXP))
 sys.path.insert(0, str(EXP.parent))
 
 import mk_klt_requests as MK  # noqa: E402
+sys.path.insert(0, str(HERE))
+from extraction_check import check_extraction  # noqa: E402
 from harness import numfmt as NF  # noqa: E402
 from harness.modload import load_module  # noqa: E402
 
@@ -148,9 +150,21 @@ def main() -> int:
     REQ_DIR.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(KLT / "requests" / "design.ngspice", REQ_DIR / "design.ngspice")
     n = 0
+    bad = 0
     for cand in RE.CANDIDATES:
         if cand.n not in PROBE_ORDER:
             continue
+        findings = check_extraction(REPO, cand.n)
+        pd = REQ_DIR / f"c{cand.n}"
+        pd.mkdir(parents=True, exist_ok=True)
+        if findings:
+            # No pair is emitted for an unusable extraction; the finding is
+            # recorded where the runner (and a replay) will see it.
+            (pd / "extraction_finding.json").write_text(json.dumps({"findings": findings}, indent=2) + "\n")
+            print(f"c{cand.n}: EXTRACTION UNUSABLE, no requests emitted: {'; '.join(findings)}", file=sys.stderr)
+            bad += 1
+            continue
+        (pd / "extraction_finding.json").unlink(missing_ok=True)
         layout_dir = REPO / "layout" / f"cell_candidate{cand.n}"
         ref = layout_dir / "lvs_reference.spice"
         ext = layout_dir / "pex" / "extracted.spice"
@@ -173,12 +187,10 @@ def main() -> int:
             "extracted": extracted,
             "extracted_pin_map": pin_map,
         }
-        pd = REQ_DIR / f"c{cand.n}"
-        pd.mkdir(parents=True, exist_ok=True)
         (pd / "provenance.json").write_text(json.dumps(prov, indent=2) + "\n")
         n += 2
     print(f"wrote {n} leg request sets ({n} legs x ioff+ron) under {REQ_DIR}")
-    return 0
+    return 1 if bad else 0
 
 
 if __name__ == "__main__":

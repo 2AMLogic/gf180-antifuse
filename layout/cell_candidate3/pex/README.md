@@ -74,9 +74,9 @@ card's fourth terminal is `VB__t0`, wired through `RVB_t0` (7.34 ohm) to the
 `extracted {pfet_06v0: 1}`. The access device binds correctly; the drawn MOS
 capacitor extracts as a linear `C` card, not the PDK's nonlinear
 `cap_pmos_03v3` tanh C(V) subcircuit. Tracked upstream:
-2AMLogic/klayout-tools#7004. **This is the cell where that divergence bites
-the bench**: at the R_on bias the drawn pmos capacitor sits in deep depletion
-(effective ~0.1 fF from the tanh law) while the extracted linear card is
-1.232 fF, so the paired R_on comparison is withheld as
-representation-dominated -- see
+2AMLogic/klayout-tools#7004. The C3 paired R_on difference is large (fleet:
+2903.51 ohm schematic, 168.01 ohm extracted) and is **reported as measured**.
+Its cause is left open: a single-component control (only the capacitor card
+swapped, per leg) kept a large difference with the same capacitor
+representation on both legs -- see
 `sim/cell-device-characterization/klt/post-layout/README.md`.
