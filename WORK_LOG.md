@@ -5,6 +5,8 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-23
 
+- **PR #459**: signoff: hash supporting_evidence pins in the offline CI guard
+- **Issue #453** (closed): Offline pin guard covers evidence only; supporting_evidence hashes stay klt-gated
 - **PR #477**: refactor(sim): route cell-device klt campaign submissions through harness.klt
 - **PR #475**: docs(sim): name model.py/render.py in the cell-breakdown-model README; add facade __dir__
 - **Issue #465** (closed): cell-breakdown-model README does not point at the new model.py / render.py siblings
