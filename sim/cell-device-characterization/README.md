@@ -237,12 +237,14 @@ Per candidate (= per `spec/split-axis-plan.md` region):
 
 ## Running it
 
-The PVT grid runs as a `klt sim` campaign (next section); on a dispatch worker
-it goes to the Spot batch fleet and is never looped locally:
+The PVT grid runs as a `klt sim` campaign (next section); with
+`KLT_SIM_BACKEND=batch` exported (as on a dispatch worker), it goes to the Spot
+batch fleet and is never looped locally (with `KLT_SIM_BACKEND` unset on a
+fresh shell, `klt` defaults to `local`):
 
 ```bash
-python3 sim/run_corners.py cell-device-characterization
-# equivalently
+export KLT_SIM_BACKEND=batch
+python3 sim/cell-device-characterization/klt/run_klt_campaign.py
 python3 sim/cell-device-characterization/klt/run_klt_campaign.py --candidates 1,2,3
 ```
 

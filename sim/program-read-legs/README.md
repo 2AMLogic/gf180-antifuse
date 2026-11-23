@@ -26,7 +26,7 @@ at every VPP; Regions I and II decide correctly at 45/45 corners on both sides a
 
 To regenerate, on a host with `KLT_SIM_BACKEND=batch`:
 
-    python3 sim/run_corners.py program-read-legs
+    python3 sim/program-read-legs/run_experiment.py
 
 A failed submit writes nothing. Every request carries
 `batch.capacity_wait_s = 1800` (the fleet rule's floor is 600 s; the value
@@ -36,9 +36,9 @@ policy (`K.BACKOFF`) as the same request — two layers: wait, then resubmit.
 
 ## Mismatch Monte Carlo (record `records/20261016-010943-88897b2.md`)
 
-`python3 sim/run_corners.py program-read-legs --mc` submits, per bench, one `klt sim` request per
+`python3 sim/program-read-legs/run_experiment.py --mc` submits, per bench, one `klt sim` request per
 corner point (typical/27 C/3.30 V, ss/-40 C/2.97 V, ff/125 C/3.63 V) with
-`monte_carlo = {n: 200, vary: "mismatch"}` on the batch backend. `sw_stat_mismatch` is set by the
+`monte_carlo = {n: 200, vary: "mismatch"}` on the batch backend (requires `KLT_SIM_BACKEND=batch` or `--backend batch`). `sw_stat_mismatch` is set by the
 `design_mm` section of `models/preamble.lib`; it is one PDK-wide switch, so every MOS in the bench is
 varied, not only the sense mirror (the record says so). Each margin row has 200 independent draws and
 reports the decision yield with its one-sided 95 % Clopper-Pearson lower bound (98.5 % is the best a
@@ -134,5 +134,5 @@ lists already say how many. Every measurement value, corner status, diagnostic,
 full klt report is committed alongside it as
 `<bench>[.<point>].report.json.sha256`.
 
-`python3 sim/run_corners.py program-read-legs --probe` runs ONE typical corner
+`python3 sim/program-read-legs/run_experiment.py --probe` runs ONE typical corner
 on the `local` backend as a debug aid; it records nothing.

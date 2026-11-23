@@ -227,8 +227,8 @@ or `error`; the supplement records say which conditions they re-run.
 ## Running it
 
 ```bash
-python3 sim/run_corners.py --check-env programming-yield
-python3 sim/run_corners.py programming-yield -- --candidates 1,2,3 --n 100
+python3 sim/programming-yield/run_experiment.py --check-env
+python3 sim/programming-yield/run_experiment.py --candidates 1,2,3 --n 100
 python3 sim/programming-yield/run_experiment.py --smoke 1      # ONE sample, locally
 python3 sim/programming-yield/run_experiment.py --render RID --candidates N
 ```
@@ -243,8 +243,8 @@ Code layout (as in `sim/cell-breakdown-model/`): the experiment's library
 lives in the siblings `model.py` (campaign constants, deck and `klt sim`
 request builders, statistical analysis, saved-report loaders) and `render.py`
 (the Markdown record renderer); `run_experiment.py` is the CLI driver and
-re-exports their surface, so `sim/run_corners.py` keeps loading it as the
-library. `render.py` imports one-way from `model.py`; neither imports the
+re-exports their surface, so loading it as a library keeps every attribute
+unchanged. `render.py` imports one-way from `model.py`; neither imports the
 CLI.
 
 Evidence layout, all write-once and append-only (`sim/README.md`):

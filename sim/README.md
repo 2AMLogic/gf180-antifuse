@@ -34,10 +34,8 @@ sim/
   harness/                            shared PDK-resolution / record-writer
                                        machinery (pdk.py, corners.py,
                                        report.py) -- stdlib only
-  run_corners.py                      the one cold-start entry point (see
-                                       below)
   <experiment-slug>/                  e.g. cell-device-characterization
-    testbench/                        testbench netlist(s) used
+    testbench/                        testbench netlist(s) used (where static)
     netlist-snapshots/
       <record-id>.spice               frozen DUT netlist for this record
     corners/
@@ -45,8 +43,11 @@ sim/
         <corner-id>.log                raw ngspice output per PVT point
     records/
       <record-id>.md                  append-only summary record
-    run_experiment.py                 the experiment's own runner (imported
-                                       by run_corners.py as a library)
+    <driver>.py                       the experiment's own CLI driver:
+                                       run_experiment.py, run_bench.py, or
+                                       klt/run_klt_campaign.py for
+                                       cell-device-characterization (see
+                                       "Cold start")
 ```
 
 - **`<experiment-slug>`** — short, descriptive, kebab-case name for what is
@@ -129,10 +130,10 @@ record per sub-configuration.
 
 ## Experiments that run through `klt sim`
 
-`sim/array-slice-bench/` expresses its PVT grid as a `klt sim` request (so it
-goes to the batch fleet on the dispatch workers) instead of the stdlib
-`run_corners.py` flow above, and is not wired into it. It still keeps
-this directory's record / append-only conventions; see its README.
+`sim/array-slice-bench/` expresses its PVT grid as a `klt sim` request (so with
+`KLT_SIM_BACKEND=batch`, as on the dispatch workers, it goes to the batch
+fleet). It still keeps this directory's record / append-only conventions; see
+its README.
 
 ## Evidence store (new runs)
 
@@ -171,22 +172,44 @@ linter is not.
 
 ## Cold start
 
-Every experiment is runnable with one command, stdlib Python only, no venv,
-needing only `ngspice` on `PATH` and `PDK_ROOT` (or `GF180_PDK_PATH`) pointing
-at a gf180mcu install:
+Each experiment is run directly by its own driver, stdlib Python only, no
+venv. Every one of them expresses its corner grid as `klt sim` requests
+submitted through `klt`, so the drivers need `klt` on `PATH` and a
+gf180mcuD install the PDK resolver finds (`PDK_ROOT` or `GF180_PDK_PATH`;
+`sim/harness/pdk.py`); `ngspice` itself is needed only for local runs and
+debug modes.
+
+For fleet runs on a fresh shell, select the Spot batch backend before running a
+campaign (dispatch workers already export this; without it, `klt` defaults to
+`local` for the four drivers whose requests omit `"backend"` —
+`array-slice-bench`, `cell-device-characterization`, `integrated-transition`,
+and `program-read-legs` — while the other four pin `"backend": "batch"` in
+their requests):
 
 ```bash
-python3 sim/run_corners.py --list
-python3 sim/run_corners.py cell-device-characterization
+export KLT_SIM_BACKEND=batch
 ```
 
-`sim/run_corners.py` is a thin dispatcher: it resolves an experiment slug to
-that experiment's own driver (`sim/<slug>/run_experiment.py`; for
-`cell-device-characterization`, `klt/run_klt_campaign.py`) and calls its `main()`.
-Per the "multi-sub-configuration experiments" note above, each experiment
-owns its own corner grid and record format rather than being forced through
-one generic contract — `run_corners.py`'s job is discovery and a single
-documented invocation, not re-implementing per-experiment logic.
+With that set, every campaign's grid goes to the Spot batch fleet (job id in
+each report's `environment.remote`) instead of looping ngspice locally.
+Commands are copyable from the repository root:
+
+| Experiment | Command from the repository root |
+|---|---|
+| [array-slice-bench](array-slice-bench/README.md) | `python3 sim/array-slice-bench/run_bench.py` |
+| [cell-breakdown-model](cell-breakdown-model/README.md) | `python3 sim/cell-breakdown-model/run_experiment.py` |
+| [cell-device-characterization](cell-device-characterization/README.md) | `python3 sim/cell-device-characterization/klt/run_klt_campaign.py` |
+| [hv-pad-protection](hv-pad-protection/README.md) | `python3 sim/hv-pad-protection/run_experiment.py` |
+| [integrated-transition](integrated-transition/README.md) | `python3 sim/integrated-transition/run_bench.py` |
+| [program-bias-scheme](program-bias-scheme/README.md) | `python3 sim/program-bias-scheme/run_experiment.py` |
+| [program-read-legs](program-read-legs/README.md) | `python3 sim/program-read-legs/run_experiment.py` |
+| [programming-yield](programming-yield/README.md) | `python3 sim/programming-yield/run_experiment.py` |
+
+Each experiment owns its own corner grid, flags and record format rather
+than being forced through one generic contract (see the
+"multi-sub-configuration experiments" note above); `--help` on any driver
+lists its surface, and each experiment's README covers its prerequisites
+and local modes (`--probe`, `--smoke`, `--backend local`).
 
 See [`sim/cell-device-characterization/README.md`](cell-device-characterization/README.md)
 for that experiment's methodology, the two PDK/ngspice findings that shaped

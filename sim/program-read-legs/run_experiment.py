@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
 """sim/program-read-legs -- program-leg / read-leg benches and margin tables.
 
-Run through the shared entry point:
+Run directly:
 
-    python3 sim/run_corners.py program-read-legs [--benches ...] [--probe]
+    python3 sim/program-read-legs/run_experiment.py [--benches ...] [--probe]
 
-Unlike sim/cell-device-characterization (which drives ngspice itself), this
-experiment expresses every grid as a ``klt sim`` request (corners axes), so a
-multi-corner sweep goes to whichever backend ``KLT_SIM_BACKEND`` / ``--backend``
-selects -- the Spot batch fleet on the dispatch hosts. This script never loops
-over ngspice itself. ``--probe`` runs ONE typical corner on the ``local``
-backend, as a debug aid only; its output is not evidence and is not recorded.
+Every grid in this experiment is expressed as a ``klt sim`` request (corners
+axes), so a multi-corner sweep goes to whichever backend ``KLT_SIM_BACKEND`` /
+``--backend`` selects -- export ``KLT_SIM_BACKEND=batch`` for the Spot batch
+fleet (the dispatch-host default); when unset, ``klt`` defaults to ``local``.
+This script never loops over ngspice itself. ``--probe`` runs ONE typical
+corner on the ``local`` backend, as a debug aid only; its output is not
+evidence and is not recorded.
 
 Benches (see README.md):
     exclusion        PROG_EN/READ_EN states x VPP x bit-line level, both legs
@@ -24,7 +25,7 @@ Stdlib only (klt is the only external tool; set KLT to override its path).
 The library itself lives in the siblings model.py (constants, request/bench
 builders, analysis and statistics) and render.py (the record renderers);
 this file is the CLI driver and re-exports their surface, so loading
-run_experiment.py as a library (as sim/run_corners.py and the tests do)
+run_experiment.py as a library (as the tests do)
 keeps every attribute unchanged.
 """
 
