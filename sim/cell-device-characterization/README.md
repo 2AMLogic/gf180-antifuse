@@ -266,9 +266,18 @@ append-only reproduction baseline.
 ```bash
 python3 sim/cell-device-characterization/klt/mk_klt_requests.py        # regenerate klt/requests/ (deterministic)
 python3 sim/cell-device-characterization/klt/run_klt_campaign.py       # submit (backend from $KLT_SIM_BACKEND) + ingest
-python3 sim/cell-device-characterization/klt/run_klt_campaign.py --resume klt/runs/<run-id> --candidates 1,3   # re-submit only requests with no report
+python3 sim/cell-device-characterization/klt/run_klt_campaign.py --resume klt/runs/<run-id> --candidates 1,3   # re-submit only requests with no usable report
 python3 sim/cell-device-characterization/klt/run_klt_campaign.py --ingest-only klt/runs/<run-id>
 ```
+
+Submissions go through the shared `sim/harness/klt.py` wrapper: while the
+campaign is still running, a fleet refusal (`BATCH_MAX_CONCURRENT_INSTANCES`,
+`batch_no_capacity`) is retried as the same request with bounded backoff
+(`K.BACKOFF`), never replayed locally. If the run is interrupted anyway (or
+the retry budget runs out), `--resume` re-submits only the requests whose run
+directory holds no usable report -- completed reports and their sidecars are
+kept as committed, and ingest reuses the same run ID. `--ingest-only`
+submits nothing.
 
 - **Requests**: `klt/requests/c<N>_access-<sizing>_cap-<geometry>/{body.spice,ioff.json,ron.json}`.
   The cell is the committed `design/netlists/cell_candidate<N>.spice`,

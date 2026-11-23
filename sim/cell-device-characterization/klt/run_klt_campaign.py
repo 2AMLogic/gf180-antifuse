@@ -2,16 +2,21 @@
 """Submit the checked-in `klt sim` request set and ingest the reports.
 
     python3 sim/cell-device-characterization/klt/run_klt_campaign.py            # submit + ingest
+    python3 sim/cell-device-characterization/klt/run_klt_campaign.py --resume klt/runs/<run-id>   # re-submit only requests with no usable report
     python3 sim/cell-device-characterization/klt/run_klt_campaign.py --ingest-only klt/runs/<run-id>
 
 Submission: one `klt sim -o <rundir>/<sub>/<ioff|ron> <request> --format json`
-per request. The backend is whatever the environment selects
-(`KLT_SIM_BACKEND`; on the dispatch workers that is `batch`, i.e. the Spot
-fleet). `KLT_CMD` overrides the klt launcher, e.g.
-`KLT_CMD='uvx --from klayout-tools==0.7.0 klt'` to match the fleet runner's
-klt version (the runner refuses a newer client). This script never falls back to a local grid: a request whose submit
-fails is recorded verbatim in `<rundir>/submit-errors.txt` and its sub-
-configuration is left out of the record (the record then says so).
+per request, through the shared `sim/harness/klt.py` wrapper: a fleet refusal
+(concurrency cap / no capacity) is retried as the SAME request, bounded by
+`K.BACKOFF`, and a failed submit is never replayed locally. The backend is
+whatever the environment selects (`KLT_SIM_BACKEND`; on the dispatch workers
+that is `batch`, i.e. the Spot fleet). `KLT_CMD` overrides the klt launcher,
+e.g. `KLT_CMD='uvx --from klayout-tools==0.7.0 klt'` to match the fleet
+runner's klt version (the runner refuses a newer client). A request whose
+submit still fails keeps its evidence in the per-request `report.json` (the
+parsed klt error object, or the harness diagnostic when no JSON was produced)
+and is named with its failure details in `<rundir>/submit-errors.txt`; its
+sub-configuration is left out of the record (the record then says so).
 
 Ingest: builds one append-only per-region (= per-candidate) Markdown record
 `records/<run-id>-c<N>.md`. Per-region, per-sub-configuration results are
@@ -30,7 +35,6 @@ import json
 import os
 import re
 import shlex
-import subprocess
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
@@ -41,6 +45,7 @@ EXP = HERE.parent
 REPO = EXP.parent.parent
 sys.path.insert(0, str(EXP.parent))
 
+from harness import klt as K  # noqa: E402
 from harness import numfmt as NF  # noqa: E402
 from harness import pdk as PDK  # noqa: E402
 from harness import report as R  # noqa: E402
@@ -62,53 +67,56 @@ def sub_names(n):
     return [f"c{n}_access-{s}_cap-{g}" for s in SIZING for g in GEOM]
 
 
-def write_report(path: Path, stdout: str) -> None:
-    """Commit klt's `--format json` stdout with the coverage id lists elided.
+def submit_one(rundir: Path, sub: str, which: str) -> tuple[str, str, bool, str]:
+    """Submit one request through the shared harness; persist its evidence.
 
-    klt serialises the report at indent 2 with a trailing newline, so the
-    elided text is re-dumped the same way and `<path>.sha256` commits to the
-    stdout that was received -- the elision stays auditable. Stdout that is not
-    a klt report (a failed submit prints an error, or nothing) is kept verbatim
-    with no sidecar: there is nothing to elide and nothing to attest.
+    `sim/harness/klt.py` owns the launcher policy (absolute `-o`, fleet-refusal
+    retry as the SAME request under `K.BACKOFF`, never replayed locally). A
+    parsed corners report commits exactly as the direct-submission writer did:
+    the coverage-elided text and its `.sha256` sidecar come from the shared
+    serializer applied to the parsed report, so the bytes are unchanged.
+    Anything else is a failure: a parsed klt error object is saved as JSON
+    even when stderr is empty, and a `None` report (no JSON produced -- budget
+    exhausted, timeout, crashed launcher) saves the harness diagnostic, which
+    carries formatted output tails rather than the old raw stdout. Failures
+    produce no sidecar; the returned detail feeds `submit-errors.txt`.
     """
-    try:
-        rep = json.loads(stdout)
-    except json.JSONDecodeError:
-        rep = None
-    if not isinstance(rep, dict) or "corners" not in rep:
-        path.write_text(stdout)
-        return
-    text, full_sha = R.klt_report_payload(rep, indent=2)
-    path.write_text(text)
-    path.with_name(path.name + ".sha256").write_text(full_sha + "\n")
-
-
-def submit_one(rundir: Path, sub: str, which: str, workers_note: str = "") -> tuple[str, str, int, str]:
     req = REQ_DIR / sub / f"{which}.json"
     out = rundir / sub / which
     out.mkdir(parents=True, exist_ok=True)
-    proc = subprocess.run(
-        [*shlex.split(os.environ.get("KLT_CMD", "klt")), "sim", "-o", str(out), str(req), "--format", "json"],
-        capture_output=True, text=True,
+    report, diag = K.run_klt(
+        req, out, None,
+        klt_cmd=shlex.split(os.environ.get("KLT_CMD", "klt")),
+        retry=K.BACKOFF,
     )
-    write_report(out / "report.json", proc.stdout)
-    if proc.stderr.strip():
-        (out / "stderr.txt").write_text(proc.stderr)
-    return sub, which, proc.returncode, proc.stderr
+    if report is not None:
+        if diag.strip():
+            (out / "stderr.txt").write_text(diag)
+        if "corners" in report and not K.error_of(report):
+            text, full_sha = R.klt_report_payload(report, indent=2)
+            (out / "report.json").write_text(text)
+            (out / "report.json.sha256").write_text(full_sha + "\n")
+            return sub, which, True, ""
+        detail = json.dumps(report, indent=2) + "\n"
+    else:
+        detail = diag
+    (out / "report.json").write_text(detail)
+    return sub, which, False, detail
 
 
 def submit_all(rundir: Path, cands: list[int], parallel: int, only_missing: bool = False) -> None:
     jobs = [(sub, w) for n in cands for sub in sub_names(n) for w in ("ioff", "ron")]
     if only_missing:
         # Re-submit (to the batch backend again -- never locally) only requests
-        # that produced no report at all, e.g. a fleet capacity refusal.
+        # that produced no usable report: a fleet capacity refusal that
+        # outlived the harness retry budget, or an interrupted run.
         jobs = [(s, w) for s, w in jobs if load_report(rundir, s, w) is None]
     errs = []
     with ThreadPoolExecutor(max_workers=parallel) as pool:
-        for sub, w, rc, err in pool.map(lambda j: submit_one(rundir, *j), jobs):
-            print(f"{sub}/{w}: klt sim rc={rc}", flush=True)
-            if rc != 0:
-                errs.append(f"== {sub}/{w}: rc={rc}\n{err}\n")
+        for sub, w, ok, detail in pool.map(lambda j: submit_one(rundir, *j), jobs):
+            print(f"{sub}/{w}: klt sim {'ok' if ok else 'FAILED'}", flush=True)
+            if not ok:
+                errs.append(f"== {sub}/{w}: klt sim failed\n{detail}\n")
     if errs:
         with open(rundir / "submit-errors.txt", "a") as fh:
             fh.write("".join(errs))
