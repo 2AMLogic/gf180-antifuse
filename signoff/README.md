@@ -452,5 +452,8 @@ for DRC/ERC, top-level `layout` for LVS). This is the drift `verify.sh`
 cannot see: a stale pin on a row that already grades `check_failed`
 (`3.analog`) renders no citation in `report.json`, so the grader's freshness
 check and the byte-compare both pass while the manifest pins a hash whose
-bytes are gone. `tests/test_check_signoff_pins.py` covers the stale-pin,
+bytes are gone. Since issue #453 the same guard also hashes every
+`supporting_evidence` entry's `file` against its pinned `content_hash` --
+`verify.sh`'s check for that block, without the `klt` dependency.
+`tests/test_check_signoff_pins.py` covers the stale-pin,
 compound-part and moved-bytes cases.
