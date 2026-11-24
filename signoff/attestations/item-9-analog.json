@@ -1,0 +1,1095 @@
+{
+  "schema_version": 1,
+  "kind": "generic",
+  "status": "pass",
+  "t1_item": 9,
+  "summary": "T1 item 9 (Testbenches shipped): 151/151 attestation checks passed (klt signoff --attest)",
+  "source": "signoff/inventories/item-9-analog.json",
+  "attestation": {
+    "producer": "klt signoff --attest",
+    "inventory_schema_version": 1,
+    "hash_algorithm": "sha256-raw-bytes",
+    "check_count": 151,
+    "passed_count": 151,
+    "checks": [
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "design/tb/tb_cell_candidate1.spice",
+        "passed": true,
+        "content_hash": "sha256:ea4ce8a39ad101c764f33014d5cebea277bf86f477bb5f8b686a5557d2c4c7d5"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "design/tb/tb_cell_candidate2.spice",
+        "passed": true,
+        "content_hash": "sha256:1d63e9c0847a2084ed16488aa42d6c274cba5a3b56be3caeb54b1f2419a896e1"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "design/tb/tb_cell_candidate3.spice",
+        "passed": true,
+        "content_hash": "sha256:8e025736dd55b234688c593780f606c6d50e552782c3c2f570b5201c96fa9f53"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "design/tb/tb_legs.spice",
+        "passed": true,
+        "content_hash": "sha256:ff218d41c05912f3c1825dbcffb7575c59b32695d5c1a5440d58d935088c03e6"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_nat_band_i_ff.request.json",
+        "passed": true,
+        "content_hash": "sha256:a4e182a4b0a51314f4cb0666589a049944f8600ace3087d2496a863e7b592baa"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_nat_band_i_fs.request.json",
+        "passed": true,
+        "content_hash": "sha256:ea38ff2c66c2b39654ee26708c131647c77de11a825a6a2352f05ded750c7a87"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_nat_band_i_sf.request.json",
+        "passed": true,
+        "content_hash": "sha256:9b71b44e1fbaeb62b734f10e82a5969767bfba7f07a60f0ae84b90417d541f68"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_nat_band_i_ss.request.json",
+        "passed": true,
+        "content_hash": "sha256:bef2ab05ea0de457b8e4c354fe626d08b6c57dddfa5118e0623c1f6e753589f8"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_nat_band_i_typical.request.json",
+        "passed": true,
+        "content_hash": "sha256:39490212eb7c3d76041cdf04ebdc7a5b7638f5817fb819bd48625362639ad445"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_nat_band_ii_ff.request.json",
+        "passed": true,
+        "content_hash": "sha256:c36051f0d0d1a51ca41d6008c62ec21bc8dbf94e541668db6aee7df00a26f60c"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_nat_band_ii_fs.request.json",
+        "passed": true,
+        "content_hash": "sha256:8f8a6b53d4aa33b6852650e211fe86ad9993cb000bdc171e18abc8553d2552b4"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_nat_band_ii_sf.request.json",
+        "passed": true,
+        "content_hash": "sha256:c3b96dd51090ccd1ad254ced77cd6ad7e1ba2f0cfeb403ff2f71f60dce90ee64"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_nat_band_ii_ss.request.json",
+        "passed": true,
+        "content_hash": "sha256:7dc4c370dfaa0b522f2942e13f0af562df4274f988e44af102547b80b4d12288"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_nat_band_ii_typical.request.json",
+        "passed": true,
+        "content_hash": "sha256:d2cb49aaa20fef5a527cfdc22a8abb3c671292b7d11077262a7a34c4df20d3cf"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_nat_band_iii_ff.request.json",
+        "passed": true,
+        "content_hash": "sha256:aa7b145c47919e3ba9bba3e6810e5d28a179d3ca4e2eeafa1ccb9638f34e4a95"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_nat_band_iii_fs.request.json",
+        "passed": true,
+        "content_hash": "sha256:56c388a9cd6650a41218c80411d47722419eeb0bef0058d775f1154634a7fcc8"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_nat_band_iii_sf.request.json",
+        "passed": true,
+        "content_hash": "sha256:67b7fe7be18da667afd7193d5375216232fc26afb9afde4952aefb10ed1ae2e8"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_nat_band_iii_ss.request.json",
+        "passed": true,
+        "content_hash": "sha256:977c01320eec6bd7b612d97498a9f6cd1364b3647e2212990530446abc7e0901"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_nat_band_iii_typical.request.json",
+        "passed": true,
+        "content_hash": "sha256:23da7e3fb7e9deaa7ea7ec83b3e21f7a912c72d2acbb67c1e47462d5aafb0dc3"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_pgoff_band_i_ff.request.json",
+        "passed": true,
+        "content_hash": "sha256:f86f9f342054f9d559a3be57346d86a40c79bb741d9e584b067c5fbea9573caf"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_pgoff_band_i_fs.request.json",
+        "passed": true,
+        "content_hash": "sha256:96ea0be8f750c92df7feb08bad56894e748ccba5a6bf57aa765d30a67f2cfbe5"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_pgoff_band_i_sf.request.json",
+        "passed": true,
+        "content_hash": "sha256:cda0ac6e67bcacf597a6fe480a24bdfe7bc2be75f28b7a76ff85623df1365503"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_pgoff_band_i_ss.request.json",
+        "passed": true,
+        "content_hash": "sha256:b7f73facfeda449d07fb51c07aa89259d00f4c589a59b0510812ee036fc1d104"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_pgoff_band_i_typical.request.json",
+        "passed": true,
+        "content_hash": "sha256:9d3e4d4bc1cc548436038827c141f39a827938144a3e3e2531a957dffdc59ab3"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_pgoff_band_ii_ff.request.json",
+        "passed": true,
+        "content_hash": "sha256:08b01f3935e7ad08c8bd390b710694f9d2ba5110eaae489a13d16c5c71555cb9"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_pgoff_band_ii_fs.request.json",
+        "passed": true,
+        "content_hash": "sha256:24214db9675eb1530828042a940c06ec471ab48b839f31e4a561de20533c646b"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_pgoff_band_ii_sf.request.json",
+        "passed": true,
+        "content_hash": "sha256:b11e4b24b179a168c102b6e8b4a74b7fdd61ebe3573d9199d9adfddcc43c12bc"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_pgoff_band_ii_ss.request.json",
+        "passed": true,
+        "content_hash": "sha256:1cc8b3cada8bcf5b16be6cbd97adfce6f3c2773f81ca98d6e61738952d4a9386"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_pgoff_band_ii_typical.request.json",
+        "passed": true,
+        "content_hash": "sha256:44904e44c848b282184c00727a00a3d68fcdbba9b244d56fe66af96e7641fbcc"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_pgoff_band_iii_ff.request.json",
+        "passed": true,
+        "content_hash": "sha256:26c1e218a5ff4f221a3e0958b11eb787a97394b4d993db1dd606221f731e6126"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_pgoff_band_iii_fs.request.json",
+        "passed": true,
+        "content_hash": "sha256:a6804887601d883fcc5c496f54cc810e17182398f7c26db691a8ec79bedad651"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_pgoff_band_iii_sf.request.json",
+        "passed": true,
+        "content_hash": "sha256:eff38edab1e02156d1007dbd87369762d9cc78f996860868058e9dec20f52ec2"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_pgoff_band_iii_ss.request.json",
+        "passed": true,
+        "content_hash": "sha256:e24f6cbf35ca396b03c625548519c92940918eabfc37fde8d9ae1e7407871872"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_pgoff_band_iii_typical.request.json",
+        "passed": true,
+        "content_hash": "sha256:261e3e95c15419dd8f9eaa8f416419a2dae3da7a203b4ef3082557ad8b6df670"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_sel_band_i_ff.request.json",
+        "passed": true,
+        "content_hash": "sha256:91b7aee849100acce6146bad4d764cb71cdb1e7b6cb06fc2e02c09b8d46e6a73"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_sel_band_i_fs.request.json",
+        "passed": true,
+        "content_hash": "sha256:7f6292f469a149710e8f5753883ae25ec4d7b8cc40cb1a4e6a3ce54b3094f2aa"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_sel_band_i_sf.request.json",
+        "passed": true,
+        "content_hash": "sha256:7f51c859df254f9b1eae5224b0b935656e94a4e4fc4cf762a7618f709290c746"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_sel_band_i_ss.request.json",
+        "passed": true,
+        "content_hash": "sha256:23f197dab865edf16ff30094dc1ef1062f68d85a92b43e5a6c42214d5349d495"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_sel_band_i_typical.request.json",
+        "passed": true,
+        "content_hash": "sha256:f339da4b1a06381f490a97d683f422ec8048519afab5b40eab8435f4ccded31f"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_sel_band_ii_ff.request.json",
+        "passed": true,
+        "content_hash": "sha256:b889325e28370fc5ec3b7792dec590bf0fd4c822fa752a5ffc540fd9f9084064"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_sel_band_ii_fs.request.json",
+        "passed": true,
+        "content_hash": "sha256:64b8020fa9258c44e81918a272552b412cf17743bf332bc3b142b2ea3e9e2655"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_sel_band_ii_sf.request.json",
+        "passed": true,
+        "content_hash": "sha256:a17dcaf4c8b3d76753fa5d0c6a446add91d9ad3b1ef87492b4ac781afc66f160"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_sel_band_ii_ss.request.json",
+        "passed": true,
+        "content_hash": "sha256:0b19db72cd8594d10142310c5f19aca3aa2a69710a08da32c841a5c6ba2977c4"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_sel_band_ii_typical.request.json",
+        "passed": true,
+        "content_hash": "sha256:2df6961653d57709ca4182f7909843ed70c615bc81164a353d311e5cc1b87b6c"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_sel_band_iii_ff.request.json",
+        "passed": true,
+        "content_hash": "sha256:5f74c5ac057dc35ba58b0855cba65800ca6c00db9fa781ed88c7842f9fb9b10d"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_sel_band_iii_fs.request.json",
+        "passed": true,
+        "content_hash": "sha256:53373d3feec54eab4dc1c9f0db6ba6de16f9a24b6379bc318c2177ede17f27a3"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_sel_band_iii_sf.request.json",
+        "passed": true,
+        "content_hash": "sha256:0d8ed5f6e238f8f4c0ed43f0b76ddc7c64ca4e70e359c1db5f8dd1c4efbcecc6"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_sel_band_iii_ss.request.json",
+        "passed": true,
+        "content_hash": "sha256:dd5a591051de205f1d296c7c31a28cf43362dfa5aa3aa853a49fa1c786a0a326"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/leak_sel_band_iii_typical.request.json",
+        "passed": true,
+        "content_hash": "sha256:957a2b15c089c18ba3d9a0457a14e6c9f2470ce01e27488d2f104c20b6865d17"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/slice_i_ii_ff.request.json",
+        "passed": true,
+        "content_hash": "sha256:09ff6ea1c25c006ab525dd19efd4540f2805c42d3ee9e3621c69c8430b792876"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/slice_i_ii_fs.request.json",
+        "passed": true,
+        "content_hash": "sha256:8eae741f61371e655f90fe56ad8b6e2e5a947a3a4c199385d8eb89e9c7e9b173"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/slice_i_ii_sf.request.json",
+        "passed": true,
+        "content_hash": "sha256:ddc533aa4c7261d6825bd6fa24382d526f07da1c958572bf0d14edae3c3553f7"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/slice_i_ii_ss.request.json",
+        "passed": true,
+        "content_hash": "sha256:2dcbcf2b7af13da8625cfdff4c3d8c5ae9db8571bb2fbc87abe8e52171154585"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/slice_i_ii_typical.request.json",
+        "passed": true,
+        "content_hash": "sha256:0d58851486f3248850a9b8ee47e48f629850fb13b5a1cbbc3af67109da476935"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/slice_ii_iii_ff.request.json",
+        "passed": true,
+        "content_hash": "sha256:e3396321347652bfb16546d71b19e7ca7423e9cc629fe7a8092e076ab864645f"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/slice_ii_iii_fs.request.json",
+        "passed": true,
+        "content_hash": "sha256:f223d1a5914e39f1c77e3aefde840627ba5c5d06054217991798ebb477e74df4"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/slice_ii_iii_sf.request.json",
+        "passed": true,
+        "content_hash": "sha256:1a41dae8c72c6a5e2350333a8f4f2134fbf7f2cee947d92520cf7e59f5ecf865"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/slice_ii_iii_ss.request.json",
+        "passed": true,
+        "content_hash": "sha256:9706220a074bda66c8dbc91676db12086c3987cd24bec004ba0b35777bb2d984"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/slice_ii_iii_typical.request.json",
+        "passed": true,
+        "content_hash": "sha256:232d8960bb2f3cd87d4aa6fbb2eec695fcdf6842349d816a5ea8d2591c89dae9"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_nat_band_i_ff.spice",
+        "passed": true,
+        "content_hash": "sha256:db1c6cd47ce3c04f5c0cdea546d9b8385bbb9113a84388692659a949457d5448"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_nat_band_i_fs.spice",
+        "passed": true,
+        "content_hash": "sha256:421e607968d03823eec8999fede4a389c82514f34f24be15dbe6c7dbe0247f56"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_nat_band_i_sf.spice",
+        "passed": true,
+        "content_hash": "sha256:402077aae9793d77879d01e0718744557a6f3cf7428fd629a77ef44194cb79a6"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_nat_band_i_ss.spice",
+        "passed": true,
+        "content_hash": "sha256:03344c0f40b8907379236d4286a95ee720a20cfc17a9d727623fa69ffef959ea"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_nat_band_i_typical.spice",
+        "passed": true,
+        "content_hash": "sha256:290b1bf04a1a55de0a823cfecabd30bb9f57a13e16223d869429fef6bc920aaf"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_nat_band_ii_ff.spice",
+        "passed": true,
+        "content_hash": "sha256:5595481df337fec1f30332572b7173d3af69b75d0a81d175407139d9e8c5b8f7"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_nat_band_ii_fs.spice",
+        "passed": true,
+        "content_hash": "sha256:233f7f4d7197d2ff91d6a49d107871f46e441e8c0f926cc23c88b27b5eaedca6"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_nat_band_ii_sf.spice",
+        "passed": true,
+        "content_hash": "sha256:b0189413c4e9cb084bb2dc247c133f524dc9f4e47b38a25836d8b106e1068959"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_nat_band_ii_ss.spice",
+        "passed": true,
+        "content_hash": "sha256:9d66da608eb8669dbf69423ea05e32b85fae10d450a3d7f7b1477774af264ea2"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_nat_band_ii_typical.spice",
+        "passed": true,
+        "content_hash": "sha256:0d595e498a90dd0614b7c9fe19141ea71bef5c79e293175fb1d82227b8fdd2f8"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_nat_band_iii_ff.spice",
+        "passed": true,
+        "content_hash": "sha256:41e6b7cfab0364bed6a83f52ad0900c7ef32ba7cc63f1b9efebe60e4aa530d3e"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_nat_band_iii_fs.spice",
+        "passed": true,
+        "content_hash": "sha256:ea293733a0800062d093d837f0f0688d0e97857796f2e55da0d41b18fd30466c"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_nat_band_iii_sf.spice",
+        "passed": true,
+        "content_hash": "sha256:5065b1af47a2f6478e1d10543994bc5fab3266957c251405fe9c310d0ff9c898"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_nat_band_iii_ss.spice",
+        "passed": true,
+        "content_hash": "sha256:249a0f6e5b9b375dc8a366253a3c446f170bd916edc25ffd29a64444733336fb"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_nat_band_iii_typical.spice",
+        "passed": true,
+        "content_hash": "sha256:06f3b0afb0098eeae4d4179fd9a248e66fc2a0451347704e7a9bf52fef11e7c9"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_pgoff_band_i_ff.spice",
+        "passed": true,
+        "content_hash": "sha256:6917a2796e1a23a83239f153d646d0b5c3a9d34e85b861a98fa92ea1fd486d67"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_pgoff_band_i_fs.spice",
+        "passed": true,
+        "content_hash": "sha256:a9c801153fb80d773a61f06ffaaa58bb9b88d33089041d0f61c27a6c28afde8d"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_pgoff_band_i_sf.spice",
+        "passed": true,
+        "content_hash": "sha256:89b82f91393448a5146c06d905ec8226c8c31079042a03251d30cf519de8c761"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_pgoff_band_i_ss.spice",
+        "passed": true,
+        "content_hash": "sha256:b0a7e041b56a5bbf75088150e91d82b95ec0a1d2f95a038618959331c6e5665e"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_pgoff_band_i_typical.spice",
+        "passed": true,
+        "content_hash": "sha256:0c37870cf00d17b3aeb38c041f8798ca7ac52bac2f5ff6e0a238c0ebcfcec7c1"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_pgoff_band_ii_ff.spice",
+        "passed": true,
+        "content_hash": "sha256:1dce958b0558696495fdc2bca13c429180104bfa505b7b796a7bb5f3ffb5b9f8"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_pgoff_band_ii_fs.spice",
+        "passed": true,
+        "content_hash": "sha256:4773c54451053fc540cadd7f0c1a16500aefc5ab85fe941638c03cfc664d700c"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_pgoff_band_ii_sf.spice",
+        "passed": true,
+        "content_hash": "sha256:0af6deb3711278ab0d7a9c99e152e6fae65cb26b205817b62ca7ded21a5b603e"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_pgoff_band_ii_ss.spice",
+        "passed": true,
+        "content_hash": "sha256:592db580fb8fa5a3f27c669b7c51f226b7862bc7de302787a5ba61ba351862cc"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_pgoff_band_ii_typical.spice",
+        "passed": true,
+        "content_hash": "sha256:6d74f6eee766fc5ba72d153805c9e875814611ef2befb61dcd0fa8c55d36b37f"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_pgoff_band_iii_ff.spice",
+        "passed": true,
+        "content_hash": "sha256:38a91579841eb967db07917841e59c5198ebc79c396a0a0730fb1c3429416a0f"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_pgoff_band_iii_fs.spice",
+        "passed": true,
+        "content_hash": "sha256:0ab269193e4f31ac8773091965965e9005ccfe152739ea23843531f5efcd599b"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_pgoff_band_iii_sf.spice",
+        "passed": true,
+        "content_hash": "sha256:2ebbe53a05a33f4d3c354cb08cd107dad4f3f6629316439ba0e1fc6d24675060"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_pgoff_band_iii_ss.spice",
+        "passed": true,
+        "content_hash": "sha256:696e052066f73e978a56dd5d6d41bb22ffc6cdbe6b31fbe4a9c4fdc39e522b5f"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_pgoff_band_iii_typical.spice",
+        "passed": true,
+        "content_hash": "sha256:dadddbe5c3b6004677ccb7c574f9768e52fc2294335014ab49004cce466efe6c"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_sel_band_i_ff.spice",
+        "passed": true,
+        "content_hash": "sha256:a86b074c80bc9953db75b57661d0145d160811267426121f7604edca272a89c7"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_sel_band_i_fs.spice",
+        "passed": true,
+        "content_hash": "sha256:35dfd8136717c6263d4279cf641933d3b4894ffabae09106762eb40bc8abbe73"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_sel_band_i_sf.spice",
+        "passed": true,
+        "content_hash": "sha256:edf43ea76497b7531e2f60b139a74691b90b2bdc6c4b0fe5f6a57afbbf610a18"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_sel_band_i_ss.spice",
+        "passed": true,
+        "content_hash": "sha256:664c5e47aea3f78006931bca34dd63974e9c49cec92c1bc637284be1298ba3de"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_sel_band_i_typical.spice",
+        "passed": true,
+        "content_hash": "sha256:f4adb4ed601ea419b302b6ce07cfd08ba32a076fbbd0aa1db615f1f07fb21be9"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_sel_band_ii_ff.spice",
+        "passed": true,
+        "content_hash": "sha256:ca3d72df180fab41d3be89b70918b19e0472afcbb62eb8010d13a2c2924f6463"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_sel_band_ii_fs.spice",
+        "passed": true,
+        "content_hash": "sha256:fa59d07bab648fc0472e7bbc7f2e27b1d32b057bf59c82a2608dcf1078bcbe62"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_sel_band_ii_sf.spice",
+        "passed": true,
+        "content_hash": "sha256:a096f2e3c316edaf02fbb4bfc613cb95f3e1d77d10f8a2d917d30b94110abc5b"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_sel_band_ii_ss.spice",
+        "passed": true,
+        "content_hash": "sha256:355b8a1ca03a866eb79bc10793dcc64b886c04475f9968a45ca615b0fa2d8e10"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_sel_band_ii_typical.spice",
+        "passed": true,
+        "content_hash": "sha256:62be43ac46911fc1efe9fdcc4d95ebe1cbc18dca8f4c970061ae7cfdc3944b97"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_sel_band_iii_ff.spice",
+        "passed": true,
+        "content_hash": "sha256:d0f8b15daab25cc24ad6cf6828eea21d6c9bd482ee98c1a40fba65b125710143"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_sel_band_iii_fs.spice",
+        "passed": true,
+        "content_hash": "sha256:748a6d30c4d32e643689835720cd24d19c2f508cb641cdb150c75473c8dfb35f"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_sel_band_iii_sf.spice",
+        "passed": true,
+        "content_hash": "sha256:88fe2e4018977dad0ef1fc6be022cd13145a43daf228a662081cbecae0d8c6f8"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_sel_band_iii_ss.spice",
+        "passed": true,
+        "content_hash": "sha256:75fcc35fec0c26603188a44fd3862dd7278414c3966926b9eece5ad8a1e90c8d"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_leak_sel_band_iii_typical.spice",
+        "passed": true,
+        "content_hash": "sha256:464ede89298195aafb4e2869ba82f1fa42afaf2a9c96e99a52a0d3f98b314d18"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_slice_i_ii_ff.spice",
+        "passed": true,
+        "content_hash": "sha256:30428d5db9e0161b677082a894abbd3d4ac28d281d31b98d576bd14831dcae7c"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_slice_i_ii_fs.spice",
+        "passed": true,
+        "content_hash": "sha256:7c744e70891775aed543fa2e34c3db086c1587c64c85d29075d86d473d631f40"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_slice_i_ii_sf.spice",
+        "passed": true,
+        "content_hash": "sha256:0e9a15b05409d7a4c9c7268f03097236823d0d4f257dfe0f03387358273a0166"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_slice_i_ii_ss.spice",
+        "passed": true,
+        "content_hash": "sha256:ed8730962e3279c61312acc9de808bc1ec653c7057fa6cab345b42a26824bbc0"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_slice_i_ii_typical.spice",
+        "passed": true,
+        "content_hash": "sha256:9995e53c1505d5e8ee05ddc6ec30aeb0e045c9c157afd449c2533df53dafd02a"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_slice_ii_iii_ff.spice",
+        "passed": true,
+        "content_hash": "sha256:c7dc02bc57e346e0176142afa1e377413596e31a599c22b92434edc6cef84ecf"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_slice_ii_iii_fs.spice",
+        "passed": true,
+        "content_hash": "sha256:3bd706c69c75920e044172de2035f5a9689ae3982716bb9aa5f35f7c1c04f796"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_slice_ii_iii_sf.spice",
+        "passed": true,
+        "content_hash": "sha256:690bfae5b5a9273457a169fe9d00449251436a160c8002f43d4a3c501b0b9831"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_slice_ii_iii_ss.spice",
+        "passed": true,
+        "content_hash": "sha256:83cd078eb117bea106cf938e9e570947a7a6b0a9fc7ef3bf3bc4ad8dff5aaef9"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/array-slice-bench/testbench/tb_slice_ii_iii_typical.spice",
+        "passed": true,
+        "content_hash": "sha256:42a07985d0675bf3748ca6c2019552f7c21934c16a9f37f7a58ccecfd432eb31"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/cell-device-characterization/testbench/tb_access_device.spice",
+        "passed": true,
+        "content_hash": "sha256:517d1f9c3859d11619a19e94812a1f745b39710f779617444b75c5618686bf53"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/cell-device-characterization/testbench/tb_moscap_cv.spice",
+        "passed": true,
+        "content_hash": "sha256:d89b076312cf939a0913e1a28bdaae93a7a8fa0125f8feed00b51da0a6c0e8e4"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/integrated-transition/testbench/probes_slice_i_ii.json",
+        "passed": true,
+        "content_hash": "sha256:33f739edde7392ac6274b1d90f3d2f25951b6b18f1bddfb243a4082eabb71489"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/integrated-transition/testbench/probes_slice_ii_iii.json",
+        "passed": true,
+        "content_hash": "sha256:632b216648baaa40fea01137d67854f51d87c1fb52b4e54cf8ecb9b052e38daa"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/integrated-transition/testbench/slice_i_ii_ff.request.json",
+        "passed": true,
+        "content_hash": "sha256:ccf7753bfbad23193bb86e7983aca2b237014891fcf2ab4a44e0e81f8c4462f9"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/integrated-transition/testbench/slice_i_ii_ff_x.request.json",
+        "passed": true,
+        "content_hash": "sha256:7c30a38021ec86eb8d19a0ab8f108d1d46c1da832e208c8b052200d10260f1c8"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/integrated-transition/testbench/slice_i_ii_fs.request.json",
+        "passed": true,
+        "content_hash": "sha256:07b8f69aa1223ce8f893838172952bfaceeac11475343be830c5e30de28a3f88"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/integrated-transition/testbench/slice_i_ii_fs_x.request.json",
+        "passed": true,
+        "content_hash": "sha256:70f22c49ee8e36bdfbac3e13a41271c2099ee61b4b0b93a2f7ea5709db6b9268"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/integrated-transition/testbench/slice_i_ii_sf.request.json",
+        "passed": true,
+        "content_hash": "sha256:376b0f61386a694d6a9fd6e6d0d63d7b3a2240aaa7b27f494d46b7060e322b9e"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/integrated-transition/testbench/slice_i_ii_sf_x.request.json",
+        "passed": true,
+        "content_hash": "sha256:25bb88b2bdbbc391f9e63b67276106024686f2faf2ef7adb138446d345fe0dc1"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/integrated-transition/testbench/slice_i_ii_ss.request.json",
+        "passed": true,
+        "content_hash": "sha256:62f0cdbb69b592a383e001476d5c09814ade29019483d81b8450c77eccf0ee97"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/integrated-transition/testbench/slice_i_ii_ss_x.request.json",
+        "passed": true,
+        "content_hash": "sha256:7288b854067c018eb104b4e97562d240c431b5d5a0207ef890bd1ba88a76889b"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/integrated-transition/testbench/slice_i_ii_typical.request.json",
+        "passed": true,
+        "content_hash": "sha256:e009137cb1073407805485986884309a51782fc607d6d1ac0d40430e67609c9e"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/integrated-transition/testbench/slice_i_ii_typical_x.request.json",
+        "passed": true,
+        "content_hash": "sha256:4e605855c72e3473d6f67866aeb09ccf6e9228e0e1b027f8425c3012666ea9c0"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/integrated-transition/testbench/slice_ii_iii_ff.request.json",
+        "passed": true,
+        "content_hash": "sha256:7082dc719c2dee8ae5bd445b71e90358bde07e9d42d02d24b5f3be77c14d686b"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/integrated-transition/testbench/slice_ii_iii_ff_x.request.json",
+        "passed": true,
+        "content_hash": "sha256:566b792cadc932f6e31e44356634d05251aed6d589b9cf18be9534c76b2eee23"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/integrated-transition/testbench/slice_ii_iii_fs.request.json",
+        "passed": true,
+        "content_hash": "sha256:4762a6545386e425f4d67eb0f43b51776260cecf02e2fbc9df49db3058387cbc"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/integrated-transition/testbench/slice_ii_iii_fs_x.request.json",
+        "passed": true,
+        "content_hash": "sha256:6b5c74fa340a99e46bb391653b08aa6bb3f6b05f548b3426726817d619110b24"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/integrated-transition/testbench/slice_ii_iii_sf.request.json",
+        "passed": true,
+        "content_hash": "sha256:f690ecc18a01083c02c59c71c6b25f5e5117873e976e23478fc0ae8e1b125824"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/integrated-transition/testbench/slice_ii_iii_sf_x.request.json",
+        "passed": true,
+        "content_hash": "sha256:ef50e40257b13a8683d27c67c521d32edae7b21ec23be3e6285b3e9a7ca5d5d6"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/integrated-transition/testbench/slice_ii_iii_ss.request.json",
+        "passed": true,
+        "content_hash": "sha256:ef5977ae6280ac330a67f859381740fc27c999b857a482008caf7f71a665daa1"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/integrated-transition/testbench/slice_ii_iii_ss_x.request.json",
+        "passed": true,
+        "content_hash": "sha256:8d1f01c8e7a09baa282a40d026e98d40de40b5af6a0b44a0db2c1aaeed147e04"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/integrated-transition/testbench/slice_ii_iii_typical.request.json",
+        "passed": true,
+        "content_hash": "sha256:4231347e4edec68b7f9acee373f4c9b7dc757119948bad0a40acf4d5fb316fe7"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/integrated-transition/testbench/slice_ii_iii_typical_x.request.json",
+        "passed": true,
+        "content_hash": "sha256:930764f8075d3185506f67c330bc497c82fb74e4e9bf2b2e15e9bf2b74e2189f"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/integrated-transition/testbench/tb_slice_i_ii_ff.spice",
+        "passed": true,
+        "content_hash": "sha256:c4958a86358c4e3f78bc0dec088c87b3b870e0b764953443f2c1f61149b58256"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/integrated-transition/testbench/tb_slice_i_ii_fs.spice",
+        "passed": true,
+        "content_hash": "sha256:979e3c377b0725c06c50b91e8d56b8c1e085c89d1cf908f120dd7f882d385019"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/integrated-transition/testbench/tb_slice_i_ii_sf.spice",
+        "passed": true,
+        "content_hash": "sha256:ed963ece1c64bea730785eb5f049d74d161ea0aa69204fc0a1464897dbfc85ca"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/integrated-transition/testbench/tb_slice_i_ii_ss.spice",
+        "passed": true,
+        "content_hash": "sha256:1314f77390e129c1514e53a8073619cb7bb76719892e7a6e497b12c377651179"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/integrated-transition/testbench/tb_slice_i_ii_typical.spice",
+        "passed": true,
+        "content_hash": "sha256:e44f998fd2707f9ec94ac72a7ebb130f329a6328f0612bcfcdd09aea339884d3"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/integrated-transition/testbench/tb_slice_ii_iii_ff.spice",
+        "passed": true,
+        "content_hash": "sha256:ca566e8440b63cab8292939a293774ee1390de4a9e95e3938b65c5f2756038c1"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/integrated-transition/testbench/tb_slice_ii_iii_fs.spice",
+        "passed": true,
+        "content_hash": "sha256:9b6e0f3d33397e4a4eb800693734f10fe3268303680764d0395f9ac04acff99b"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/integrated-transition/testbench/tb_slice_ii_iii_sf.spice",
+        "passed": true,
+        "content_hash": "sha256:f5367febe3efb432cf7e2600d687435c17ab1bf216c4d2bd371ed6ae810e2eb6"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/integrated-transition/testbench/tb_slice_ii_iii_ss.spice",
+        "passed": true,
+        "content_hash": "sha256:68ec628e4d9b45bc9fdfb38b5282c1198113713cbb41fc53542376054d33f345"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/integrated-transition/testbench/tb_slice_ii_iii_typical.spice",
+        "passed": true,
+        "content_hash": "sha256:e00a1e454a752e319c36bea3543f3932c9320c8336e096d6e19d01606e7e6c21"
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "argv": [
+          "design/run_analog_cold_start.sh"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "pin",
+        "role": "pdk",
+        "passed": true,
+        "value": {
+          "name": "gf180mcu",
+          "revision": "f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
+        }
+      },
+      {
+        "check": "pin",
+        "role": "tools",
+        "passed": true,
+        "value": {
+          "klt": "0.8.0",
+          "ngspice": "47"
+        }
+      }
+    ]
+  },
+  "provenance": {
+    "klt_version": "0.8.0",
+    "klayout_version": null,
+    "pdk": null,
+    "deck": null,
+    "input": {
+      "path": {
+        "path": "signoff/inventories/item-9-analog.json",
+        "scope": "repo"
+      },
+      "content_hash": "sha256:cb1aeea225c7bb04b37b62b1bd0143fcb32ba755e0fcb874cbbd2e2e5efff7d1"
+    }
+  }
+}
