@@ -5,6 +5,10 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-24
 
+- **PR #515**: docs(sim): add Layout section to program-bias-scheme README
+- **Issue #512** (closed): sim/program-bias-scheme/README.md has no Layout section documenting the new model.py / render.py siblings
+- **PR #509**: docs: disclose uncited generated benches in the 9.analog signoff row
+- **Issue #505** (closed): 9.analog coverage: disclose that the five run_experiment.py-driven sim experiments' benches are not cited
 - **PR #511**: refactor(sim): split program-bias-scheme runner into model, render, and CLI facade
 - **Issue #503** (closed): Split sim/program-bias-scheme/run_experiment.py (658 LOC) into model, render, and CLI modules
 - **PR #508**: docs: record check:ci green on main and unwired CI in ROADMAP repo-checks passages
