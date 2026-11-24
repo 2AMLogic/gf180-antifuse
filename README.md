@@ -108,4 +108,4 @@ product, PVT corners on every recorded result, spec changes via decision
 record, and tool friction filed upstream at `2AMLogic/klayout-tools`
 (generically — no design detail in that public tracker).
 
-Apache-2.0.
+Proprietary. Copyright Two AM Logic Inc. No licence is granted; see [LICENSE](LICENSE). This repository is private and stays private.
