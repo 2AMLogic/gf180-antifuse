@@ -49,7 +49,9 @@ freshness check (`design/check-netlists.sh`, whose step 1 is
 the worker-safe export path issue #444 landed -- which exists only in the
 unreleased post-`0.9.2` dev line; no released klayout-tools has it (tracked
 upstream as
-[2AMLogic/klayout-tools#7826](https://github.com/2AMLogic/klayout-tools/issues/7826);
+[2AMLogic/klayout-tools#7826](https://github.com/2AMLogic/klayout-tools/issues/7826),
+closed as a duplicate of klayout-tools#6897, which carries `--output-dir`
+into the `0.10.0` release;
 the
 attest run had the host `0.9.3.dev5396+g83764a3c6b6f` on `PATH`, the
 producer itself invoked by absolute path from the `0.8.0` venv). Until
@@ -57,8 +59,9 @@ producer itself invoked by absolute path from the `0.8.0` venv). Until
 --inventory signoff/inventories/item-1-analog.json --check
 signoff/attestations/item-1-analog.json` needs such a klt on `PATH`; the
 `9.analog` cold start is `local_only`, so its `--check` re-runs anywhere.
-The envelope's own `build` block still names `0.8.0`, and `--attest --check`
-excludes build version strings from drift comparison by design.
+The envelope records the producer in `provenance.klt_version` (`0.8.0`); an
+`--attest` envelope has no `build` block, and `--attest --check` excludes
+build version strings from drift comparison by design.
 
 `klt signoff --manifest` exits **3** whenever any T1 item is `unmet`
 (`tier: null`) and **0** only when every item is met. Exit 3 is a *verdict*,

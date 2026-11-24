@@ -43,7 +43,7 @@ rows met: `1.analog`, `1.digital`, `2.digital`, `3.digital`, `4.analog`,
 `check_failed`: its DRC evidence is
 now graded on the native runset, which reports violations on the Candidate 1
 bitcell, superseding the curated-deck `clean` the row once rested on. The
-remaining analog met rows (`4.analog`, `11.analog`) still rest on the
+layout-backed analog met rows (`4.analog`, `11.analog`) still rest on the
 Candidate 1 bitcell only; `2.analog` stays uncited until array layout exists.
 
 **Digital block.** `antifuse_digital_top` is routed (`rtl/pnr/`) and `klt drc`
