@@ -5,6 +5,8 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-24
 
+- **PR #486**: docs(sim): diagnose C3 R_on extracted-vs-schematic gap as S/D junction geometry
+- **Issue #481** (closed): Post-layout probe: C3 R_on reads ~17x lower on the extracted leg, cause unexplained (from #447)
 - **PR #489**: refactor(sim): route post-layout klt submits through shared harness helper
 - **Issue #487** (closed): Route post-layout klt campaign through harness.klt and share run_klt_campaign persistence
 
