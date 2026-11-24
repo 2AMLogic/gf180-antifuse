@@ -5,12 +5,39 @@ Each variant is a self-contained ngspice deck: same PDK sections, bias and
 10 MHz AC measurement as requests/c3_{schematic,extracted}/ron.json.
 R_on = Re(-V(BL)/I(VBL)).  One ngspice -b per variant, run serially.
 Usage: run_c3_diagnosis.py [--corner ss|ff|tt --temp C --vbl V] -o results.json
+PDK models: $PDK_ROOT first (pinned open_pdks revision beneath it), else ~/.ciel.
 """
-import argparse, json, pathlib, re, subprocess, sys, tempfile
+import argparse, json, os, pathlib, re, subprocess, sys, tempfile
+from datetime import datetime, timezone
 
 HERE = pathlib.Path(__file__).resolve().parent
 ROOT = HERE.parents[4]
-PDK = pathlib.Path.home() / ".ciel/ciel/gf180mcu/versions/f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7/gf180mcuD/libs.tech/ngspice"
+# open_pdks revision pin; twins: sim/harness/pdk.py PINNED_OPEN_PDKS and
+# design/lib-pdk-root.sh PINNED_OPEN_PDKS.
+PINNED_OPEN_PDKS = "f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
+PDK_REL = f"ciel/gf180mcu/versions/{PINNED_OPEN_PDKS}/gf180mcuD/libs.tech/ngspice"
+
+
+def pdk_dir():
+    """Pinned-revision ngspice model dir: under $PDK_ROOT when it is set and
+    holds the pinned path, else under the ~/.ciel default."""
+    roots = []
+    env = os.environ.get("PDK_ROOT")
+    if env:
+        roots.append(pathlib.Path(env).expanduser())
+    home = pathlib.Path.home() / ".ciel"
+    if not roots or roots[0] != home:
+        roots.append(home)
+    for root in roots:
+        p = root / PDK_REL
+        if p.is_dir():
+            return p
+    sys.exit("ERROR: pinned gf180mcu ngspice models not found. Looked under:\n  "
+             + "\n  ".join(str(r / PDK_REL) for r in roots)
+             + "\nSet PDK_ROOT to a ciel/open_pdks install root.")
+
+
+PDK = pdk_dir()
 EXTRACTED = (ROOT / "layout/cell_candidate3/pex/extracted.spice").read_text()
 CAP = "XC1 CN PL cap_pmos_03v3 c_width=1.0u c_length=0.28u m=1"
 
@@ -79,7 +106,27 @@ def variants():
     v["ext_cap_only"] = ("ext", ext_variant(drop=all_sub_caps), "BL PL VB WL")
     return v
 
-def deck(kind, body, pins, corner, temp, vbl, vwl, vvb=3.3):
+def _git_sha():
+    try:
+        r = subprocess.run(["git", "-C", str(ROOT), "rev-parse", "HEAD"],
+                           capture_output=True, text=True, timeout=30)
+        return r.stdout.strip() if r.returncode == 0 else "unknown"
+    except (OSError, subprocess.SubprocessError):
+        return "unknown"
+
+
+def provenance():
+    v = subprocess.run(["ngspice", "--version"], capture_output=True, text=True)
+    m = re.search(r"ngspice-(\S+)", v.stdout)
+    return {
+        "ngspice_version": m.group(1) if m else "unknown",
+        "pdk_revision": PINNED_OPEN_PDKS,
+        "git_sha": _git_sha(),
+        "run_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+    }
+
+
+def deck(body, pins, corner, temp, vbl, vwl, vvb=3.3):
     return f"""* issue #481 diagnosis deck
 .include "{PDK}/design.ngspice"
 .lib "{PDK}/sm141064.ngspice" {corner}
@@ -101,8 +148,8 @@ print real(z) imag(z)
 .end
 """
 
-def run(kind, body, pins, args):
-    d = deck(kind, body, pins, args.corner, args.temp, args.vbl, args.vwl)
+def run(body, pins, args):
+    d = deck(body, pins, args.corner, args.temp, args.vbl, args.vwl)
     with tempfile.TemporaryDirectory() as td:
         p = pathlib.Path(td) / "d.cir"; p.write_text(d)
         r = subprocess.run(["ngspice", "-b", str(p)], capture_output=True, text=True, timeout=300, cwd=td)
@@ -118,9 +165,10 @@ if __name__ == "__main__":
     ap.add_argument("--vbl", type=float, default=0.9); ap.add_argument("--vwl", type=float, default=0.0)
     ap.add_argument("-o", default="-")
     a = ap.parse_args()
-    res = {"corner": a.corner, "temp_c": a.temp, "vbl": a.vbl, "vwl": a.vwl, "freq_hz": 1e7, "variants": {}}
-    for k, (kind, body, pins) in variants().items():
-        res["variants"][k] = run(kind, body, pins, a)
+    res = {"corner": a.corner, "temp_c": a.temp, "vbl": a.vbl, "vwl": a.vwl, "freq_hz": 1e7,
+           **provenance(), "variants": {}}
+    for k, (_kind, body, pins) in variants().items():
+        res["variants"][k] = run(body, pins, a)
         print(k, res["variants"][k], file=sys.stderr)
     s = json.dumps(res, indent=2)
     (sys.stdout if a.o == "-" else open(a.o, "w")).write(s)
