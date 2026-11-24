@@ -4,6 +4,10 @@
   "vbl": 1.1,
   "vwl": 0.0,
   "freq_hz": 10000000.0,
+  "ngspice_version": "47",
+  "pdk_revision": "f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7",
+  "git_sha": "5e3711e13b75c69528cac33f9abedc2737c257e6",
+  "run_utc": "2026-11-24T10:20:40Z",
   "variants": {
     "sch_baseline": {
       "re_ohm": 3095461.0,
