@@ -2,6 +2,18 @@
 
 Sections moved byte-for-byte from [WORK_LOG.md](../WORK_LOG.md) by `loom-daemon work-docs archive`.
 
+### 2026-09-24
+
+- **PR #49**: fix: resolve PDK root from $PDK_ROOT before falling back to ~/.volare
+- **PR #47**: docs: name the exact klt build signoff/report.json was graded with
+- **Issue #48** (closed): check-netlists.sh: honour $PDK_ROOT before falling back to ~/.volare (the CI runner now sets it)
+- **Issue #45** (closed): signoff/README.md should name the exact klt build verify.sh was verified against
+
+### 2026-09-22
+
+- **PR #44**: signoff: commit a klt signoff block manifest and its graded T1 verdict
+- **Issue #43** (closed): Commit a klt signoff block manifest so this block's T1 state is graded, not hand-read
+
 ### 2026-09-14
 
 - **Issue #42** (closed): Remove tracked __pycache__/*.pyc bytecode files

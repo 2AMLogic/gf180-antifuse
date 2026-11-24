@@ -30,26 +30,21 @@ Human-approved issues ready for implementation (`loom:issue`).
 
 Issues currently being built (`loom:building`).
 
-- **#255**: Measurement plan: constant-voltage time-to-breakdown statistics (Weibull slope, voltage acceleration) and a sub-programming soak
-- **#443**: signoff: manifest still pins the pre-#296 GDS hash, so 4.analog and 11.analog grade stale_evidence and verify.sh fails on main
-- **#445**: Digital: klt functional-verification of the routed antifuse_digital_top netlist (item 5 digital's missing report; groundwork for item 7 digital)
-- **#446**: Digital timing: close setup at ss_125C_1v62 and ss_n40C_1v62 on the routed antifuse_digital_top (bounded design iteration; 5.digital stays uncited)
-- **#447**: T1 item 7 (analog) probe: klt pex on the drawn bitcells and a post-layout re-run of the access-device bench
+- **#176**: T1 item 4 (LVS clean, digital partition): klt lvs against the gate-level netlist with power_connectivity
+- **#491**: C3 diagnosis harness: honour $PDK_ROOT and record run provenance in results JSON
 
 ## PRs Awaiting Review
 
 PRs waiting on Judge (`loom:review-requested`).
 
 - **#347**: docs: sourced wafer.space Run 3 precheck reading (would-reject verdict)
-- **#455**: verification(rtl): zero-delay gate-level functional-verification of the routed digital top (21/21)
-- **#456**: fix(rtl): close setup at both 1.62 V corners by re-routing with slow-corner optimization liberty
+- **#495**: fix: honour $PDK_ROOT and record run provenance in C3 diagnosis harness
 
 ## Approved (Awaiting Merge)
 
 PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
 - **#256**: docs(spec): propose constant-voltage TDDB and sub-programming soak plan
-- **#451**: fix: re-pin analog signoff evidence to post-#296 GDS hash and guard pins in check:ci
 
 ## Proposed
 
@@ -64,16 +59,11 @@ Issues carrying `loom:curated`.
 - **#313**: sim/program-read-legs: capacity_wait_s spends the same per-submit subprocess budget as the run, and a subprocess timeout is not retried *(curated)*
 - **#316**: Follow-on: establish the foreign-host re-run byte-identity evidence for the shared report scrubber (PR #309 / #285 step 5) *(curated)*
 - **#338**: wafer.space: precheck treatment and foundry conversation on the unmodified nfet_10v0_asym PCell's CO.4/DF.6_MV/PL.4_MV findings (#299) *(curated)*
-- **#443**: signoff: manifest still pins the pre-#296 GDS hash, so 4.analog and 11.analog grade stale_evidence and verify.sh fails on main *(curated)*
 - **#444**: design/regen-netlists.sh: export through klt netlist instead of raw xschem so the item-1 freshness check can run on a worker (unblocks #117) *(curated)*
-- **#445**: Digital: klt functional-verification of the routed antifuse_digital_top netlist (item 5 digital's missing report; groundwork for item 7 digital) *(curated)*
-- **#446**: Digital timing: close setup at ss_125C_1v62 and ss_n40C_1v62 on the routed antifuse_digital_top (bounded design iteration; 5.digital stays uncited) *(curated)*
-- **#447**: T1 item 7 (analog) probe: klt pex on the drawn bitcells and a post-layout re-run of the access-device bench *(curated)*
+- **#491**: C3 diagnosis harness: honour $PDK_ROOT and record run provenance in results JSON *(curated)*
 
 ## Proposed (Architect / Hermit)
 
-- **#267**: Remove sim/run_corners.py: dispatcher registers 4 of 8 experiments and only forwards to drivers that run directly *(hermit)*
-- **#301**: Route run_klt_campaign through harness.klt; drop manual --resume resubmit *(hermit)*
 - **#454**: Remove the unused Run 3 pad helper that puts L37–L48 on the wrong edge *(hermit)*
 
 ## Epics
@@ -89,11 +79,11 @@ Issues carrying `loom:curated`.
 | Very important | 0 |
 | Important | 2 |
 | Ready (`loom:issue`) | 1 |
-| In Progress (`loom:building`) | 5 |
-| PRs awaiting review | 3 |
-| Approved PRs awaiting merge | 2 |
-| Curated | 14 |
-| Architect / Hermit proposals | 3 |
+| In Progress (`loom:building`) | 2 |
+| PRs awaiting review | 2 |
+| Approved PRs awaiting merge | 1 |
+| Curated | 11 |
+| Architect / Hermit proposals | 1 |
 | Active epics | 2 |
 <!-- guide:plan-body:end -->
 
