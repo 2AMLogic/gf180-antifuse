@@ -75,6 +75,19 @@ diagnostic, `environment`, `provenance` and coverage counter is kept -- includin
 everything `--resume` reads back out of a saved report -- and the sha256 of the
 full klt report is committed alongside it as `report.json.sha256`.
 
+## Layout
+
+```
+sim/program-bias-scheme/
+  model.py                  library: bench/drive constants, deck-body and klt request builders, saved-report loaders
+  render.py                 library: record renderers
+  run_experiment.py         CLI driver / record writer; library facade re-exporting model.py + render.py
+  compare_vbd.py            V_bd sensitivity comparison (#130); reads saved reports only, runs no simulation
+  vbd-sensitivity-runs.json run manifest: record ids of the typ / floor sensitivity runs compare_vbd.py reads
+  .work/                    git-ignored: local --smoke probe debris with host paths
+  records/, corners/, netlist-snapshots/   written by each successful run (append-only)
+```
+
 ## Limits of these benches
 
 - The ballast is an ideal resistor (PLACEHOLDER 500 uA target at V_bd); the
