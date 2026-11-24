@@ -5,6 +5,8 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-24
 
+- **PR #502**: signoff: attest T1 items 1 and 9 (analog) via klt signoff --attest
+- **Issue #117** (closed): T1 items 1 and 9 (analog partition): attest the cell sources and testbenches with klt signoff --attest
 - **PR #500**: build(design): export netlists through klt netlist instead of raw xschem
 - **Issue #444** (closed): design/regen-netlists.sh: export through klt netlist instead of raw xschem so the item-1 freshness check can run on a worker (unblocks #117)
 - **PR #495**: fix: honour $PDK_ROOT and record run provenance in C3 diagnosis harness
