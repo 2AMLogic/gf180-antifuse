@@ -25,7 +25,7 @@ _None._
 Human-approved issues ready for implementation (`loom:issue`).
 
 - **#14**: CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4)
-- **#444**: design/regen-netlists.sh: export through klt netlist instead of raw xschem so the item-1 freshness check can run on a worker (unblocks #117)
+- **#255**: Measurement plan: constant-voltage time-to-breakdown statistics (Weibull slope, voltage acceleration) and a sub-programming soak
 
 ## In Progress
 
@@ -58,7 +58,6 @@ Issues carrying `loom:curated`.
 - **#313**: sim/program-read-legs: capacity_wait_s spends the same per-submit subprocess budget as the run, and a subprocess timeout is not retried *(curated)*
 - **#316**: Follow-on: establish the foreign-host re-run byte-identity evidence for the shared report scrubber (PR #309 / #285 step 5) *(curated)*
 - **#338**: wafer.space: precheck treatment and foundry conversation on the unmodified nfet_10v0_asym PCell's CO.4/DF.6_MV/PL.4_MV findings (#299) *(curated)*
-- **#444**: design/regen-netlists.sh: export through klt netlist instead of raw xschem so the item-1 freshness check can run on a worker (unblocks #117) *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -80,7 +79,7 @@ Issues carrying `loom:curated`.
 | In Progress (`loom:building`) | 1 |
 | PRs awaiting review | 1 |
 | Approved PRs awaiting merge | 1 |
-| Curated | 10 |
+| Curated | 9 |
 | Architect / Hermit proposals | 1 |
 | Active epics | 2 |
 <!-- guide:plan-body:end -->

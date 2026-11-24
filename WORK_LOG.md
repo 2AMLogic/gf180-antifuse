@@ -5,6 +5,8 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-24
 
+- **PR #500**: build(design): export netlists through klt netlist instead of raw xschem
+- **Issue #444** (closed): design/regen-netlists.sh: export through klt netlist instead of raw xschem so the item-1 freshness check can run on a worker (unblocks #117)
 - **PR #495**: fix: honour $PDK_ROOT and record run provenance in C3 diagnosis harness
 - **Issue #491** (closed): C3 diagnosis harness: honour $PDK_ROOT and record run provenance in results JSON
 - **PR #478**: sim: add __dir__ to the programming-yield and program-read-legs facades
