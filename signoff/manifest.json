@@ -14,6 +14,10 @@
       "file": "rtl/pnr/antifuse_digital_top.drc.json",
       "content_hash": "sha256:dae02f43855fda9b7c8f880fa62be529f3479af070dc34a82cbab4b140373bf5"
     },
+    "4.digital": {
+      "file": "rtl/pnr/antifuse_digital_top.lvs.report.json",
+      "content_hash": "sha256:0f2a9f5f30b0387c8054233d358afcb10f765e3a22a27a81ba333fd9878434a2"
+    },
     "3.analog": {
       "file": "layout/cell_candidate1/drc_native_report.json",
       "content_hash": "sha256:d31a786ed748a9e3bf6e46dcec4d59ccdd3cd095ddace86714574e624d3305cd"
