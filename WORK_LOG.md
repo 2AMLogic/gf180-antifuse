@@ -5,6 +5,10 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-24
 
+- **PR #478**: sim: add __dir__ to the programming-yield and program-read-legs facades
+- **Issue #476** (closed): sim: the programming-yield and program-read-legs CLI facades have the same dir() blindness #465 fixed for cell-breakdown-model
+- **PR #493**: docs: replace Apache-2.0 licence with proprietary notice
+- **Issue #488** (closed): Licence: replace this repo's current licence with the canonical proprietary text (2am#8353)
 - **PR #486**: docs(sim): diagnose C3 R_on extracted-vs-schematic gap as S/D junction geometry
 - **Issue #481** (closed): Post-layout probe: C3 R_on reads ~17x lower on the extracted leg, cause unexplained (from #447)
 - **PR #489**: refactor(sim): route post-layout klt submits through shared harness helper
@@ -403,18 +407,6 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 - **Issue #53** (closed): check-netlists.sh error detection uses GNU-only \s in grep -E, likely silently misses indented ngspice errors on macOS
 - **Issue #52** (closed): regen-netlists.sh fails on macOS: sed -i needs a backup suffix for BSD sed
 - **Issue #50** (closed): Remove duplicated PDK_ROOT resolution: consolidate check-netlists.sh and regen-netlists.sh
-
-### 2026-09-24
-
-- **PR #49**: fix: resolve PDK root from $PDK_ROOT before falling back to ~/.volare
-- **PR #47**: docs: name the exact klt build signoff/report.json was graded with
-- **Issue #48** (closed): check-netlists.sh: honour $PDK_ROOT before falling back to ~/.volare (the CI runner now sets it)
-- **Issue #45** (closed): signoff/README.md should name the exact klt build verify.sh was verified against
-
-### 2026-09-22
-
-- **PR #44**: signoff: commit a klt signoff block manifest and its graded T1 verdict
-- **Issue #43** (closed): Commit a klt signoff block manifest so this block's T1 state is graded, not hand-read
 
 ## Archives
 
