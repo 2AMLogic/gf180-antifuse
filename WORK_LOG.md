@@ -5,6 +5,8 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-24
 
+- **PR #495**: fix: honour $PDK_ROOT and record run provenance in C3 diagnosis harness
+- **Issue #491** (closed): C3 diagnosis harness: honour $PDK_ROOT and record run provenance in results JSON
 - **PR #478**: sim: add __dir__ to the programming-yield and program-read-legs facades
 - **Issue #476** (closed): sim: the programming-yield and program-read-legs CLI facades have the same dir() blindness #465 fixed for cell-breakdown-model
 - **PR #493**: docs: replace Apache-2.0 licence with proprietary notice
