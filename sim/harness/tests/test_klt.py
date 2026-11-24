@@ -61,6 +61,17 @@ class RunKltTest(unittest.TestCase):
         self.assertIsNone(rep)
         self.assertIn("not json", diag)
 
+    def test_capacity_wait_forwarded_when_given(self):
+        cmd = self.fake("cap", '{"corners": []}')
+        K.run_klt(self.tmp / "r.json", self.tmp / "o", "batch", klt_cmd=cmd, capacity_wait_s=600)
+        args = self.calls("cap")[0].split()
+        self.assertEqual(args[args.index("--wait-for-capacity") + 1], "600")
+
+    def test_capacity_wait_omitted_by_default(self):
+        cmd = self.fake("nocap", '{"corners": []}')
+        K.run_klt(self.tmp / "r.json", self.tmp / "o", "batch", klt_cmd=cmd)
+        self.assertNotIn("--wait-for-capacity", self.calls("nocap")[0])
+
 
 if __name__ == "__main__":
     unittest.main()

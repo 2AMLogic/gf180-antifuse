@@ -5,13 +5,20 @@
     python3 sim/cell-device-characterization/klt/post-layout/run_post_layout_campaign.py --ingest-only <rundir>
     python3 sim/cell-device-characterization/klt/post-layout/run_post_layout_campaign.py --resume <rundir>
 
-Submission: one `klt sim -o <rundir>/<leg>/<ioff|ron> <request> --format json
---wait-for-capacity 600` per request (12 requests: 3 cells x 2 legs x 2
-metrics).  The backend is whatever the environment selects (`KLT_SIM_BACKEND`;
-on the dispatch workers that is `batch`, the Spot fleet); the capacity wait is
-the host's standing rule for batch submits.  `KLT_CMD` overrides the klt
-launcher.  A request whose submit fails is recorded verbatim in
-`<rundir>/submit-errors.txt`; there is no local fallback.
+Submission: one `klt sim` per request (12 requests: 3 cells x 2 legs x 2
+metrics) through the parent campaign's shared submission helper
+(`run_klt_campaign.submit_request` -> `sim/harness/klt.py`): a fleet refusal
+(concurrency cap / no capacity) is retried as the SAME request, bounded by
+`K.BACKOFF`, and a failed submit is never replayed locally.  The backend is
+whatever the environment selects (`KLT_SIM_BACKEND`; on the dispatch workers
+that is `batch`, the Spot fleet), passed as an explicit `--backend` because
+an inline env prefix does not reliably survive the uvx launcher; batch
+submits carry `--wait-for-capacity 600` (the host's standing rule for batch
+submits).  `KLT_CMD` overrides the klt launcher.  A request whose submit
+fails keeps its evidence in the per-request `report.json` (the parsed klt
+error object, or the harness diagnostic when no JSON was produced) and is
+named with its failure details in `<rundir>/submit-errors.txt`; there is no
+local fallback.
 
 Ingest: nothing is averaged -- one row per cell, per metric, per leg, at the
 single bound corner.  Writes `<rundir>/summary.json` and renders the results
@@ -25,8 +32,6 @@ import argparse
 import hashlib
 import json
 import os
-import shlex
-import subprocess
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
@@ -62,44 +67,18 @@ def leg_names(n: int) -> list[str]:
     return [f"c{n}_schematic", f"c{n}_extracted"]
 
 
-def submit_one(rundir: Path, sub: str, which: str):
-    req = REQ_DIR / sub / f"{which}.json"
-    out = rundir / sub / which
-    out.mkdir(parents=True, exist_ok=True)
+def submit_one(rundir: Path, sub: str, which: str) -> tuple[str, str, bool, str]:
     # KLT_SIM_BACKEND selects the backend (default batch on the dispatch
     # workers); --backend is passed explicitly because an inline env prefix
-    # does not reliably survive the uvx launcher.
+    # does not reliably survive the uvx launcher.  Persistence, absolute -o,
+    # and K.BACKOFF fleet-refusal retry live in the shared helper.
     backend = os.environ.get("KLT_SIM_BACKEND", "batch")
-    cmd = [
-        *shlex.split(os.environ.get("KLT_CMD", "klt")), "sim", "--backend", backend,
-        "-o", str(out), str(req), "--format", "json",
-    ]
-    if backend == "batch":
-        cmd += ["--wait-for-capacity", CAPACITY_WAIT_S]
-    proc = subprocess.run(cmd, capture_output=True, text=True)
-    # Same persistence as the parent runner (run_klt_campaign.submit_one): a
-    # parsed corners report commits as the coverage-elided text plus a sha256
-    # sidecar of the full text; anything else (a klt error object, or no JSON)
-    # is saved verbatim as report.json so the failure stays diagnosable, and
-    # the stderr tail is kept.
-    try:
-        report = json.loads(proc.stdout)
-    except json.JSONDecodeError:
-        report = None
-    ok = False
-    if isinstance(report, dict) and "corners" in report and not report.get("error"):
-        text, full_sha = R.klt_report_payload(report, indent=2)
-        (out / "report.json").write_text(text)
-        (out / "report.json.sha256").write_text(full_sha + "\n")
-        ok = True
-    elif isinstance(report, dict):
-        (out / "report.json").write_text(json.dumps(report, indent=2) + "\n")
-    else:
-        (out / "report.json").write_text(
-            f"exit {proc.returncode}\nstdout:\n{proc.stdout[-4000:]}\nstderr:\n{proc.stderr[-4000:]}\n")
-    if proc.stderr.strip():
-        (out / "stderr.txt").write_text(proc.stderr)
-    return sub, which, (proc.returncode if ok else (proc.returncode or 1)), proc.stderr
+    ok, detail = RK.submit_request(
+        REQ_DIR / sub / f"{which}.json", rundir / sub / which,
+        backend=backend,
+        capacity_wait_s=CAPACITY_WAIT_S if backend == "batch" else None,
+    )
+    return sub, which, ok, detail
 
 
 def submit_all(rundir: Path, parallel: int, only_missing: bool = False) -> None:
@@ -115,10 +94,10 @@ def submit_all(rundir: Path, parallel: int, only_missing: bool = False) -> None:
         jobs = [(s, w) for s, w in jobs if RK.load_report(rundir, s, w) is None]
     errs = []
     with ThreadPoolExecutor(max_workers=parallel) as pool:
-        for sub, w, rc, err in pool.map(lambda j: submit_one(rundir, *j), jobs):
-            print(f"{sub}/{w}: klt sim rc={rc}", flush=True)
-            if rc != 0:
-                errs.append(f"== {sub}/{w}: rc={rc}\n{err}\n")
+        for sub, w, ok, detail in pool.map(lambda j: submit_one(rundir, *j), jobs):
+            print(f"{sub}/{w}: klt sim {'ok' if ok else 'FAILED'}", flush=True)
+            if not ok:
+                errs.append(f"== {sub}/{w}: klt sim failed\n{detail}\n")
     if errs:
         with open(rundir / "submit-errors.txt", "a") as fh:
             fh.write("".join(errs))
