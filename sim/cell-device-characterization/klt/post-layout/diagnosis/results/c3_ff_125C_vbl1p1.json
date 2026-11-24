@@ -1,0 +1,109 @@
+{
+  "corner": "ff",
+  "temp_c": 125.0,
+  "vbl": 1.1,
+  "vwl": 0.0,
+  "freq_hz": 10000000.0,
+  "variants": {
+    "sch_baseline": {
+      "re_ohm": 3095461.0,
+      "im_ohm": -41103700.0
+    },
+    "ext_baseline": {
+      "re_ohm": 7027307.0,
+      "im_ohm": -8303950.0
+    },
+    "sch_swapDS": {
+      "re_ohm": 3096268.0,
+      "im_ohm": -41096200.0
+    },
+    "sch_body_to_D": {
+      "re_ohm": 24308.42,
+      "im_ohm": -23188300.0
+    },
+    "sch_gate_BL": {
+      "re_ohm": -3110.8,
+      "im_ohm": -67011000.0
+    },
+    "ext_swapDS": {
+      "re_ohm": 7028647.0,
+      "im_ohm": -8303580.0
+    },
+    "ext_no_C_3_storage": {
+      "re_ohm": 6232438.0,
+      "im_ohm": -9161220.0
+    },
+    "ext_no_CBL": {
+      "re_ohm": 7532766.0,
+      "im_ohm": -8306720.0
+    },
+    "ext_no_CPL": {
+      "re_ohm": 7019501.0,
+      "im_ohm": -8324600.0
+    },
+    "ext_no_CVB": {
+      "re_ohm": 6870983.0,
+      "im_ohm": -8719810.0
+    },
+    "ext_no_CWL": {
+      "re_ohm": 7020371.0,
+      "im_ohm": -8322300.0
+    },
+    "ext_no_R_storage": {
+      "re_ohm": 7027307.0,
+      "im_ohm": -8303950.0
+    },
+    "ext_no_RBL": {
+      "re_ohm": 7027307.0,
+      "im_ohm": -8303950.0
+    },
+    "ext_no_RPL": {
+      "re_ohm": 7027300.0,
+      "im_ohm": -8303950.0
+    },
+    "ext_no_RVB": {
+      "re_ohm": 7027306.0,
+      "im_ohm": -8303960.0
+    },
+    "ext_no_RWL": {
+      "re_ohm": 7027307.0,
+      "im_ohm": -8303960.0
+    },
+    "ext_noJunctionGeom": {
+      "re_ohm": 9576380.0,
+      "im_ohm": -9088640.0
+    },
+    "ext_cap_only_noJunctionGeom": {
+      "re_ohm": 9578947.0,
+      "im_ohm": -11396500.0
+    },
+    "ext_all_parasitics_removed": {
+      "re_ohm": 6763292.0,
+      "im_ohm": -9353400.0
+    },
+    "ext_all_parasitics_removed_noJunctionGeom": {
+      "re_ohm": 9578913.0,
+      "im_ohm": -11396500.0
+    },
+    "ext_all_R_shorted_C_kept": {
+      "re_ohm": 7027298.0,
+      "im_ohm": -8303950.0
+    },
+    "sch_withJunctionGeom": {
+      "re_ohm": 3007073.0,
+      "im_ohm": -16040300.0
+    },
+    "sch_linearcap": {
+      "re_ohm": 9578913.0,
+      "im_ohm": -11396500.0
+    },
+    "sch_linearcap_withJunctionGeom": {
+      "re_ohm": 6763292.0,
+      "im_ohm": -9353400.0
+    },
+    "ext_cap_only": {
+      "re_ohm": 6763307.0,
+      "im_ohm": -9353410.0
+    }
+  }
+}
