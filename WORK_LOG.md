@@ -5,6 +5,11 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-24
 
+- **PR #511**: refactor(sim): split program-bias-scheme runner into model, render, and CLI facade
+- **Issue #503** (closed): Split sim/program-bias-scheme/run_experiment.py (658 LOC) into model, render, and CLI modules
+- **PR #508**: docs: record check:ci green on main and unwired CI in ROADMAP repo-checks passages
+- **Issue #510** (closed): docs/ROADMAP.md relays #99's `CommittedBundleTests fails on main` claim, but no such test exists in the tree
+- **Issue #504** (closed): docs/ROADMAP.md 'Repo checks' paragraph is stale: check:ci now passes end to end
 - **PR #502**: signoff: attest T1 items 1 and 9 (analog) via klt signoff --attest
 - **Issue #117** (closed): T1 items 1 and 9 (analog partition): attest the cell sources and testbenches with klt signoff --attest
 - **PR #500**: build(design): export netlists through klt netlist instead of raw xschem
