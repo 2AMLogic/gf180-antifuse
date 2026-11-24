@@ -15,12 +15,31 @@ ROOT = HERE.parents[4]
 # open_pdks revision pin; twins: sim/harness/pdk.py PINNED_OPEN_PDKS and
 # design/lib-pdk-root.sh PINNED_OPEN_PDKS.
 PINNED_OPEN_PDKS = "f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
-PDK_REL = f"ciel/gf180mcu/versions/{PINNED_OPEN_PDKS}/gf180mcuD/libs.tech/ngspice"
+# Documented contract (README): <root>/<variant>/libs.tech/ngspice.  The ciel
+# store layout is probed as an additional candidate, never the only one.
+PDK_RELS = ("gf180mcuD/libs.tech/ngspice",
+            f"ciel/gf180mcu/versions/{PINNED_OPEN_PDKS}/gf180mcuD/libs.tech/ngspice")
+
+
+def _sources_revision(variant_dir):
+    """open_pdks hash from <variant_dir>/SOURCES, or None."""
+    try:
+        text = (variant_dir / "SOURCES").read_text()
+    except OSError:
+        return None
+    for line in text.splitlines():
+        parts = line.split()
+        if len(parts) >= 2 and parts[0] == "open_pdks":
+            return parts[1]
+    return None
 
 
 def pdk_dir():
-    """Pinned-revision ngspice model dir: under $PDK_ROOT when it is set and
-    holds the pinned path, else under the ~/.ciel default."""
+    """Return (ngspice model dir, open_pdks revision read from SOURCES).
+
+    Roots: $PDK_ROOT when set, then ~/.ciel.  On the first candidate holding
+    the models, SOURCES must name PINNED_OPEN_PDKS; a mismatch is an error,
+    never a fall-through to another tree."""
     roots = []
     env = os.environ.get("PDK_ROOT")
     if env:
@@ -29,15 +48,21 @@ def pdk_dir():
     if not roots or roots[0] != home:
         roots.append(home)
     for root in roots:
-        p = root / PDK_REL
-        if p.is_dir():
-            return p
+        for rel in PDK_RELS:
+            p = root / rel
+            if p.is_dir():
+                found = _sources_revision(p.parents[1])
+                if found != PINNED_OPEN_PDKS:
+                    sys.exit(f"ERROR: PDK at {p.parents[1]} is open_pdks "
+                             f"{found or '<unreadable/missing SOURCES>'}, but this repo pins "
+                             f"{PINNED_OPEN_PDKS}. Refusing to use it.")
+                return p, found
     sys.exit("ERROR: pinned gf180mcu ngspice models not found. Looked under:\n  "
-             + "\n  ".join(str(r / PDK_REL) for r in roots)
-             + "\nSet PDK_ROOT to a ciel/open_pdks install root.")
+             + "\n  ".join(str(r / rel) for r in roots for rel in PDK_RELS)
+             + "\nSet PDK_ROOT to a root containing gf180mcuD/ (or a ciel install root).")
 
 
-PDK = pdk_dir()
+PDK, PDK_REVISION = pdk_dir()
 EXTRACTED = (ROOT / "layout/cell_candidate3/pex/extracted.spice").read_text()
 CAP = "XC1 CN PL cap_pmos_03v3 c_width=1.0u c_length=0.28u m=1"
 
@@ -110,17 +135,31 @@ def _git_sha():
     try:
         r = subprocess.run(["git", "-C", str(ROOT), "rev-parse", "HEAD"],
                            capture_output=True, text=True, timeout=30)
-        return r.stdout.strip() if r.returncode == 0 else "unknown"
+        if r.returncode != 0:
+            return "unknown"
+        st = subprocess.run(["git", "-C", str(ROOT), "status", "--porcelain",
+                             "--untracked-files=no"],
+                            capture_output=True, text=True, timeout=30)
+        dirty = "-dirty" if st.returncode == 0 and st.stdout.strip() else ""
+        return r.stdout.strip() + dirty
     except (OSError, subprocess.SubprocessError):
         return "unknown"
 
 
-def provenance():
-    v = subprocess.run(["ngspice", "--version"], capture_output=True, text=True)
+def _ngspice_version():
+    try:
+        v = subprocess.run(["ngspice", "--version"], capture_output=True, text=True,
+                           timeout=30)
+    except (OSError, subprocess.SubprocessError):
+        return "unknown"
     m = re.search(r"ngspice-(\S+)", v.stdout)
+    return m.group(1) if m else "unknown"
+
+
+def provenance():
     return {
-        "ngspice_version": m.group(1) if m else "unknown",
-        "pdk_revision": PINNED_OPEN_PDKS,
+        "ngspice_version": _ngspice_version(),
+        "pdk_revision": PDK_REVISION,
         "git_sha": _git_sha(),
         "run_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
     }
