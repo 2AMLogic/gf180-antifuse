@@ -3,8 +3,14 @@
 Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 
+### 2026-11-24
+
+- **PR #489**: refactor(sim): route post-layout klt submits through shared harness helper
+- **Issue #487** (closed): Route post-layout klt campaign through harness.klt and share run_klt_campaign persistence
+
 ### 2026-11-23
 
+- **PR #458**: layout(sim): probe klt pex on the three drawn bitcells and re-run the access-device bench post-layout
 - **Issue #447** (closed): T1 item 7 (analog) probe: klt pex on the drawn bitcells and a post-layout re-run of the access-device bench
 - **PR #479**: docs(sim): remove run_corners.py dispatcher, document direct driver commands
 - **Issue #267** (closed): Remove sim/run_corners.py: dispatcher registers 4 of 8 experiments and only forwards to drivers that run directly
