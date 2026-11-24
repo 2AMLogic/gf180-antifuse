@@ -49,10 +49,6 @@
       "re_ohm": 7020371.0,
       "im_ohm": -8322300.0
     },
-    "ext_no_all_Csubs": {
-      "re_ohm": 6763307.0,
-      "im_ohm": -9353410.0
-    },
     "ext_no_R_storage": {
       "re_ohm": 7027307.0,
       "im_ohm": -8303950.0
@@ -80,6 +76,18 @@
     "ext_cap_only_noJunctionGeom": {
       "re_ohm": 9578947.0,
       "im_ohm": -11396500.0
+    },
+    "ext_all_parasitics_removed": {
+      "re_ohm": 6763292.0,
+      "im_ohm": -9353400.0
+    },
+    "ext_all_parasitics_removed_noJunctionGeom": {
+      "re_ohm": 9578913.0,
+      "im_ohm": -11396500.0
+    },
+    "ext_all_R_shorted_C_kept": {
+      "re_ohm": 7027298.0,
+      "im_ohm": -8303950.0
     },
     "sch_withJunctionGeom": {
       "re_ohm": 3007073.0,

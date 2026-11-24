@@ -129,32 +129,41 @@ extracted 168.0 ohm -- reproduces the fleet numbers before any perturbation.
 | extracted baseline | 168.0 |
 | extracted, pfet D/S swapped | 166.3 |
 | extracted, all substrate C removed | 282.4 |
-| extracted, each lumped R shorted (storage / BL / PL / VB / WL) | 162.9 - 167.9 |
+| extracted, each lumped R shorted separately (storage / BL / PL / VB / WL) | 162.9 - 167.9 |
+| extracted, all 6 lumped R shorted, C kept | 163.2 |
+| extracted, all substrate C removed **and** all 6 lumped R shorted | 275.4 |
 | extracted, pfet `AS/AD/PS/PD` removed | 975.9 |
-| extracted, parasitics removed **and** `AS/AD/PS/PD` removed | 2938.2 |
+| extracted, all substrate C removed (R kept), `AS/AD/PS/PD` removed | 2938.2 |
+| extracted, all substrate C removed **and** all 6 R shorted, `AS/AD/PS/PD` removed | 2912.9 |
 | schematic, `AS=AD=0.21p PS=PD=1.84u` added | 274.5 |
 | schematic, linear 1.232 fF cap, no junction geometry | 2912.9 |
 | schematic, linear 1.232 fF cap **plus** junction geometry | 275.4 |
 
 Confirmation at a second corner (ff / 125 degC / vbl 1.1 V; the channel is far
-less conductive so absolute values are MOhm): schematic linear-cap 9.579e6 vs
-extracted cap-only without junction geometry 9.579e6; schematic linear-cap plus
-junction geometry 6.763e6 vs extracted cap-only 6.763e6 (equal to all printed digits).
+less conductive so absolute values are MOhm): schematic linear-cap 9.578913e6 vs
+extracted all-parasitics-removed without junction geometry 9.578913e6; schematic
+linear-cap plus junction geometry 6.763292e6 vs extracted all-parasitics-removed
+6.763292e6 (equal to all printed digits). `sch_gate_BL` in the results is a sanity
+permutation (unphysical), not a hypothesis.
 
 **Hypotheses**
 - *pfet S/D/body orientation (vs `lvs_reference.spice`)*: **refuted.** The extracted
   card's order is D=storage, G=WL, S=BL, B=VB, identical to the reference; swapping
   D/S on either leg moves R_on by <1.2%.
 - *Extracted per-net R / substrate C shunting the 10 MHz path*: **refuted as the
-  cause.** Removing every parasitic R and C changes the extracted leg 168 -> 282
-  ohm (1.7x), nowhere near the 17x gap; each lumped R moves it by <=3%.
+  cause.** Removing every parasitic C and shorting every lumped R changes the
+  extracted leg 168 -> 275.4 ohm (1.64x), nowhere near the 17x gap; removing the
+  substrate C alone gives 282.4, and each lumped R shorted separately moves it by <=3.1%.
 - *Not in the issue's list, measured:* the extracted pfet card carries explicit
   junction geometry (`AS=AD=0.21P PS=PD=1.84U`); the LVS reference card carries
   none, so the schematic leg has no S/D junction capacitance to the AC-grounded
   body (VB). Adding that geometry to the schematic leg drops it 2903.5 -> 274.5
-  ohm; removing it from the extracted leg (with parasitics also removed) lifts it
-  168 -> 2938 ohm. With capacitor model, parasitics and junction geometry equalised
-  the legs agree to 2.5% (ss) / exactly (ff). **Confirmed: this accounts for
+  ohm; removing it from the extracted leg (with all parasitic C and R also removed) lifts it
+  168 -> 2912.9 ohm (2938.2 with the lumped R left in). With capacitor model,
+  parasitics and junction geometry equalised the legs agree exactly at both
+  corners: ss 275.4232 vs 275.4232 (with geometry), 2912.905 vs 2912.905 (without);
+  ff 6.763292e6 vs 6.763292e6 and 9.578913e6 vs 9.578913e6. (The earlier 2.5%
+  residual was only the lumped R left in the extracted deck.) **Confirmed: this accounts for
   essentially the whole gap.**
 
 **Cause: correct parasitic result** -- the extracted leg models real S/D junction

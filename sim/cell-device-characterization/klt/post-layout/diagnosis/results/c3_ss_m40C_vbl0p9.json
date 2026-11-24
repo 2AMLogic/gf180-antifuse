@@ -1,6 +1,6 @@
 {
   "corner": "ss",
-  "temp_c": -40,
+  "temp_c": -40.0,
   "vbl": 0.9,
   "vwl": 0.0,
   "freq_hz": 10000000.0,
@@ -49,10 +49,6 @@
       "re_ohm": 164.6876,
       "im_ohm": -30915700.0
     },
-    "ext_no_all_Csubs": {
-      "re_ohm": 282.3716,
-      "im_ohm": -35804200.0
-    },
     "ext_no_R_storage": {
       "re_ohm": 166.314,
       "im_ohm": -30909100.0
@@ -80,6 +76,18 @@
     "ext_cap_only_noJunctionGeom": {
       "re_ohm": 2938.224,
       "im_ohm": -116439000.0
+    },
+    "ext_all_parasitics_removed": {
+      "re_ohm": 275.4232,
+      "im_ohm": -35804200.0
+    },
+    "ext_all_parasitics_removed_noJunctionGeom": {
+      "re_ohm": 2912.905,
+      "im_ohm": -116439000.0
+    },
+    "ext_all_R_shorted_C_kept": {
+      "re_ohm": 163.2201,
+      "im_ohm": -30909100.0
     },
     "sch_withJunctionGeom": {
       "re_ohm": 274.5349,

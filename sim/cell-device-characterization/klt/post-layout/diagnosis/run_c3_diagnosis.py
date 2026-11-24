@@ -28,6 +28,14 @@ def ext_variant(drop=(), transform=None):
     t = "\n".join(out) + "\n"
     return transform(t) if transform else t
 
+def short_resistors(t, names):
+    """Replace each named R element with a 0 V source (keeps connectivity)."""
+    lines = []
+    for ln in t.splitlines():
+        tok = ln.split()
+        lines.append(f"V{tok[0]}s {tok[1]} {tok[2]} 0" if tok and tok[0] in names else ln)
+    return "\n".join(lines) + "\n"
+
 def sub(old, new):
     return lambda t: t.replace(old, new)
 
@@ -35,7 +43,8 @@ def variants():
     v = {}
     v["sch_baseline"] = ("sch", sch(), "BL WL PL VB")
     v["ext_baseline"] = ("ext", ext_variant(), "BL PL VB WL")
-    # H1: terminal orientation on the schematic reference (D/S swap, body perms)
+    # H1: terminal orientation on the schematic reference (D/S swap, body perms).
+    # sch_gate_BL is a sanity permutation (unphysical, negative R), not a hypothesis.
     for name, order in [("sch_swapDS", "BL WL CN VB"), ("sch_body_to_D", "CN WL BL CN"),
                         ("sch_gate_BL", "CN BL WL VB")]:
         v[name] = ("sch", sch(order), "BL WL PL VB")
@@ -46,32 +55,28 @@ def variants():
     groups = {
         "no_C_3_storage": ("C_3",), "no_CBL": ("CBL",), "no_CPL": ("CPL",),
         "no_CVB": ("CVB",), "no_CWL": ("CWL",),
-        "no_all_Csubs": ("C_3", "CBL", "CPL", "CVB", "CWL"),
         "no_R_storage": ("R_3_t0", "R_3_t1"), "no_RBL": ("RBL_t0",),
         "no_RPL": ("RPL_t0",), "no_RVB": ("RVB_t0",), "no_RWL": ("RWL_t0",),
     }
     for k, d in groups.items():
-        t = ext_variant(drop=d)
         # shorted resistors: reconnect nets so dropping an R keeps connectivity
-        if k.startswith("no_R"):
-            t = ext_variant(transform=None)
-            lines = []
-            for ln in t.splitlines():
-                tok = ln.split()
-                if tok and tok[0] in d:
-                    lines.append(f"V{tok[0]}s {tok[1]} {tok[2]} 0")  # 0 V short
-                else:
-                    lines.append(ln)
-            t = "\n".join(lines) + "\n"
+        t = ext_variant(drop=d) if not k.startswith("no_R") else short_resistors(ext_variant(), d)
         v["ext_" + k] = ("ext", t, "BL PL VB WL")
-    allpar = ("C_3","CBL","CPL","CVB","CWL")
+    # NOTE: all_sub_caps = the five substrate CAPACITORS only; every lumped R stays.
+    all_sub_caps = ("C_3", "CBL", "CPL", "CVB", "CWL")
+    all_R = ("R_3_t0", "R_3_t1", "RBL_t0", "RPL_t0", "RVB_t0", "RWL_t0")
+    nojg = lambda t: t.replace(" AS=0.21P AD=0.21P\n+ PS=1.84U PD=1.84U", "")
     # H3: explicit AS/AD/PS/PD junction geometry on the extracted pfet card
-    v["ext_noJunctionGeom"] = ("ext", ext_variant(transform=lambda t: re.sub(r"\n\+ AS=\S+ AD=\S+\n\+ PS=\S+ PD=\S+", "", t.replace(" AS=0.21P AD=0.21P\n+ PS=1.84U PD=1.84U", ""))), "BL PL VB WL")
-    v["ext_cap_only_noJunctionGeom"] = ("ext", ext_variant(drop=allpar, transform=lambda t: t.replace(" AS=0.21P AD=0.21P\n+ PS=1.84U PD=1.84U", "")), "BL PL VB WL")
+    v["ext_noJunctionGeom"] = ("ext", ext_variant(transform=lambda t: re.sub(r"\n\+ AS=\S+ AD=\S+\n\+ PS=\S+ PD=\S+", "", nojg(t))), "BL PL VB WL")
+    v["ext_cap_only_noJunctionGeom"] = ("ext", ext_variant(drop=all_sub_caps, transform=nojg), "BL PL VB WL")
+    # ALL parasitics removed: five substrate C dropped AND six lumped R shorted
+    v["ext_all_parasitics_removed"] = ("ext", short_resistors(ext_variant(drop=all_sub_caps), all_R), "BL PL VB WL")
+    v["ext_all_parasitics_removed_noJunctionGeom"] = ("ext", short_resistors(ext_variant(drop=all_sub_caps, transform=nojg), all_R), "BL PL VB WL")
+    v["ext_all_R_shorted_C_kept"] = ("ext", short_resistors(ext_variant(), all_R), "BL PL VB WL")
     v["sch_withJunctionGeom"] = ("sch", sch().replace("m=1\nXC1", "m=1 AS=0.21P AD=0.21P PS=1.84U PD=1.84U\nXC1"), "BL WL PL VB")
     v["sch_linearcap"] = ("sch", sch(cap="CC1 CN PL 1.232f"), "BL WL PL VB")
     v["sch_linearcap_withJunctionGeom"] = ("sch", sch(cap="CC1 CN PL 1.232f").replace("m=1\nCC1", "m=1 AS=0.21P AD=0.21P PS=1.84U PD=1.84U\nCC1"), "BL WL PL VB")
-    v["ext_cap_only"] = ("ext", ext_variant(drop=allpar), "BL PL VB WL")
+    v["ext_cap_only"] = ("ext", ext_variant(drop=all_sub_caps), "BL PL VB WL")
     return v
 
 def deck(kind, body, pins, corner, temp, vbl, vwl, vvb=3.3):
