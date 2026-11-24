@@ -1,0 +1,579 @@
+{
+  "schema_version": 1,
+  "kind": "generic",
+  "status": "pass",
+  "t1_item": 1,
+  "summary": "T1 item 1 (Design sources): 67/67 attestation checks passed (klt signoff --attest)",
+  "source": "signoff/inventories/item-1-analog.json",
+  "attestation": {
+    "producer": "klt signoff --attest",
+    "inventory_schema_version": 1,
+    "hash_algorithm": "sha256-raw-bytes",
+    "check_count": 67,
+    "passed_count": 67,
+    "checks": [
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/array/array_32x32.sch",
+        "passed": true,
+        "content_hash": "sha256:60eab2ff3ccb23bee92570d6bac6cedc7f0ac17d02eb0331175deaeb14a0f56c"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/array/array_32x32.sym",
+        "passed": true,
+        "content_hash": "sha256:bcadb73ab4cac180fcf7738441edea1ddd4b6d040cfa4da74c06033a7ad30563"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/array/array_library.sch",
+        "passed": true,
+        "content_hash": "sha256:ac478e8a3e1d45e09687cc30fd440a360273e7cc87ac7965416dd061472d3b86"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/array/band_i.sch",
+        "passed": true,
+        "content_hash": "sha256:13a1fbcd098ac5e354ad07f947c31b33dbb4543aff4a76bd7c1ec3e1e6685f57"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/array/band_i.sym",
+        "passed": true,
+        "content_hash": "sha256:22d2b482d41398d43ab9e140d2b4f32127cf728b39e7cd109fca2102bd132978"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/array/band_ii.sch",
+        "passed": true,
+        "content_hash": "sha256:45715f948c3423c3efb1ca75bd3122b64f8a86ab14c828bae4c9b327d29f87db"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/array/band_ii.sym",
+        "passed": true,
+        "content_hash": "sha256:0cfdbcd8fbc7a358819ede21f3c6d987b7b88e13b31b77ede020edd74eed1adf"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/array/band_iii.sch",
+        "passed": true,
+        "content_hash": "sha256:27cd94aa9a5bf26b88482deb99bb3f38e2034d6c38f098a072d963d0963004ff"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/array/band_iii.sym",
+        "passed": true,
+        "content_hash": "sha256:eb8ca4dd073dc68f723b931d57dd3def6c95456eb260fca6fc15d1fa729fe4c8"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/array/slice_i_ii.sch",
+        "passed": true,
+        "content_hash": "sha256:fb8c8f2bf07885272d447951db2a439bf8bb6d97f2c3eae1b8347a2f42419e36"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/array/slice_i_ii.sym",
+        "passed": true,
+        "content_hash": "sha256:71a48176dee93cbc656b22d591316c5e394596c5c9f2ee1b46eea58f5019908b"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/array/slice_ii_iii.sch",
+        "passed": true,
+        "content_hash": "sha256:cf986ab4cf03348f4148813206313d5e5b401f836d700c55abb17a267f91b7c0"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/array/slice_ii_iii.sym",
+        "passed": true,
+        "content_hash": "sha256:07cf96182149f05610356199de0d9d2382408a2c2db808daa4206b7b2a51b22a"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/cells/cell_candidate1.sch",
+        "passed": true,
+        "content_hash": "sha256:9a3abd188e2864c5e0b8fd1a96d718b1920c0f4a72c86298316eab96d746f294"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/cells/cell_candidate1.sym",
+        "passed": true,
+        "content_hash": "sha256:6bcb9b66f53f96fba6c941170885ef3cdf33e0aad68515d82a3dd71bad8f9ca5"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/cells/cell_candidate2.sch",
+        "passed": true,
+        "content_hash": "sha256:258ada80971503a49c50806b27278a0dcdd429dd4a512f865643d82c4d74fbfd"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/cells/cell_candidate2.sym",
+        "passed": true,
+        "content_hash": "sha256:1d2a020104f08f32e367199ec62e95922515c0fa92373553c92f90f30a7454d0"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/cells/cell_candidate3.sch",
+        "passed": true,
+        "content_hash": "sha256:48b242cefc277b27220c22802a738071abc254eaa008d56c2e1e17ac25eab1cd"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/cells/cell_candidate3.sym",
+        "passed": true,
+        "content_hash": "sha256:d6d6f92fd8ab6c168eb13ea3bc482e28fb9c684d4e82dbecbcff6b8dda7e5020"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/cells/cell_library.sch",
+        "passed": true,
+        "content_hash": "sha256:f99d3f752213e3350c4480245195f9ef58549f2f85649c5f0667d5de11cd4ee2"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/cells/leg_interlock.sch",
+        "passed": true,
+        "content_hash": "sha256:b0e072353e8669358c1158ba8d65c45099acb76b751dde22633eba58395e0a92"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/cells/leg_interlock.sym",
+        "passed": true,
+        "content_hash": "sha256:86ceb2842156e1f0f04b1ffee2cd99846ae22b8860786b11fd89cda1dbe26263"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/cells/leg_library.sch",
+        "passed": true,
+        "content_hash": "sha256:3f7e52346575be9a3b0f8dcd1c7aeffe846230c950f7804c7ab6aabe481c31ea"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/cells/program_leg.sch",
+        "passed": true,
+        "content_hash": "sha256:d970dcb30d407ced6f3368b2d4dde4caea20a5c46b4644324ac3fcc6f3067c82"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/cells/program_leg.sym",
+        "passed": true,
+        "content_hash": "sha256:0857ce513e578d762d29bd1e28bdf1c44a15f2a28a82d22958b65ad647c8d22f"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/cells/read_leg.sch",
+        "passed": true,
+        "content_hash": "sha256:b59e4e95ccd1f5ca14acfa26356dc8fe576b596ad24164fd532e2bfa4d9c6cb1"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/cells/read_leg.sym",
+        "passed": true,
+        "content_hash": "sha256:d4a7e6dc74985f42e07dcd30bd5b65d4225828b0fd94d08c0174c8e145cd028d"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/mux/ls_hv06.sch",
+        "passed": true,
+        "content_hash": "sha256:3deff3c89f973a09e2bc1725127a644acd7c8d6a2ffc655edd164aabc05f2c8e"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/mux/ls_hv06.sym",
+        "passed": true,
+        "content_hash": "sha256:dfbebd09f75136420bcc0be471818fdd90346e2d716faea0a60971957f213156"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/mux/ls_hv10.sch",
+        "passed": true,
+        "content_hash": "sha256:882ce60cfc68d0305deb0db4236b162f43debdbdb8303d3975787af5ad3806fe"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/mux/ls_hv10.sym",
+        "passed": true,
+        "content_hash": "sha256:9957a61dadb3d6525ee0b4143cc886e025f781e0e0c18a9e7bda11ca75845694"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/mux/pg_n06.sch",
+        "passed": true,
+        "content_hash": "sha256:6cd67339d91ed5624bccac8efdd32f452f1f48d9324754464bd02300930c10ee"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/mux/pg_n06.sym",
+        "passed": true,
+        "content_hash": "sha256:b303cff5510a243dd8f37f90bda3e734afa92da7d989ebc965a2fac998350f1c"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/mux/pg_n10.sch",
+        "passed": true,
+        "content_hash": "sha256:ab1415e7363370858f790059d45d66754360c1aaa137d4082dd5e2226ba3fc84"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/mux/pg_n10.sym",
+        "passed": true,
+        "content_hash": "sha256:f24567ee0883fa7932ac5b65c26f2e622fe32cd842ba7d9b6ab444b60b4ef823"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/array_32x32.spice",
+        "passed": true,
+        "content_hash": "sha256:022bad608b6e544c9b63c39d6b08a42e9f296d9537ea3c5c8dbccf6b25d7f608"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/band_i.spice",
+        "passed": true,
+        "content_hash": "sha256:675af3a6e43e342e5e2ed0a9adc1c0a549cf095f7306721b5e70ad3d2d8378a4"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/band_ii.spice",
+        "passed": true,
+        "content_hash": "sha256:f62d092123e9046862d8e06b9f0527e1e0cb4c33c191fb22971ffaa40d416d7b"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/band_iii.spice",
+        "passed": true,
+        "content_hash": "sha256:b3b6e7f69e2624cb554aadc0cc3e403b0f3c887ccfb3befb15aa0f99c9566773"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/cell_candidate1.spice",
+        "passed": true,
+        "content_hash": "sha256:9462f2cdbc3afeed9fe5b5d102440ae49b8b87b3d5c877eacac03862e714e835"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/cell_candidate2.spice",
+        "passed": true,
+        "content_hash": "sha256:098c687185762fbfbda720bf3513ca337adbec8a12fe1bf82d22f84038c36a2d"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/cell_candidate3.spice",
+        "passed": true,
+        "content_hash": "sha256:9e9c8417377629212af73a547d24a5c7d618c901b24b00319fe087c764739f22"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/leg_interlock.spice",
+        "passed": true,
+        "content_hash": "sha256:f9ed5f32eff1d8ebdd3ee524526529b7a0dcc33e9a0b2df15eb328444a4c43c1"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/ls_hv06.spice",
+        "passed": true,
+        "content_hash": "sha256:14319e56df875956e5e44edeb7b73815b982363e17b627fba96bb573b8ac1f47"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/ls_hv10.spice",
+        "passed": true,
+        "content_hash": "sha256:583ae1cecd3f07086da6bed34bd0590dc02486a5b1e93bae9258cd7d80a844c7"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/pg_n06.spice",
+        "passed": true,
+        "content_hash": "sha256:35fd3a4967c56d8f1a349f0410d9002aa2d9a9a71000bb9e46db6cbc19ef6f9c"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/pg_n10.spice",
+        "passed": true,
+        "content_hash": "sha256:77f478d32be5482f4755eb17680336377f89dce022085c8595cdfe05b711bc46"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/program_leg.spice",
+        "passed": true,
+        "content_hash": "sha256:3537051c532b18336d4940643d6ad5694ca88c5b921918c461ba107f5817e751"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/read_leg.spice",
+        "passed": true,
+        "content_hash": "sha256:9b58756e1292a841b5422cb7ec0c3370ee2fee7bc6539c97c23838a7d33b0090"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/slice_i_ii.spice",
+        "passed": true,
+        "content_hash": "sha256:b5a6df9cebf6949fda8395ac9ef0ac37f1fbe0718bde7ec615258f24b558d74f"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/slice_ii_iii.spice",
+        "passed": true,
+        "content_hash": "sha256:b1369b3d35bd30ef5fae2b4e8e3b765e686c458274a90555b74381325c966f2f"
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/array_32x32.spice",
+        "generator": "klt netlist (xschem)",
+        "argv": [
+          "design/check-netlists.sh"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/band_i.spice",
+        "generator": "klt netlist (xschem)",
+        "argv": [
+          "design/check-netlists.sh"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/band_ii.spice",
+        "generator": "klt netlist (xschem)",
+        "argv": [
+          "design/check-netlists.sh"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/band_iii.spice",
+        "generator": "klt netlist (xschem)",
+        "argv": [
+          "design/check-netlists.sh"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/cell_candidate1.spice",
+        "generator": "klt netlist (xschem)",
+        "argv": [
+          "design/check-netlists.sh"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/cell_candidate2.spice",
+        "generator": "klt netlist (xschem)",
+        "argv": [
+          "design/check-netlists.sh"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/cell_candidate3.spice",
+        "generator": "klt netlist (xschem)",
+        "argv": [
+          "design/check-netlists.sh"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/leg_interlock.spice",
+        "generator": "klt netlist (xschem)",
+        "argv": [
+          "design/check-netlists.sh"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/ls_hv06.spice",
+        "generator": "klt netlist (xschem)",
+        "argv": [
+          "design/check-netlists.sh"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/ls_hv10.spice",
+        "generator": "klt netlist (xschem)",
+        "argv": [
+          "design/check-netlists.sh"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/pg_n06.spice",
+        "generator": "klt netlist (xschem)",
+        "argv": [
+          "design/check-netlists.sh"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/pg_n10.spice",
+        "generator": "klt netlist (xschem)",
+        "argv": [
+          "design/check-netlists.sh"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/program_leg.spice",
+        "generator": "klt netlist (xschem)",
+        "argv": [
+          "design/check-netlists.sh"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/read_leg.spice",
+        "generator": "klt netlist (xschem)",
+        "argv": [
+          "design/check-netlists.sh"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/slice_i_ii.spice",
+        "generator": "klt netlist (xschem)",
+        "argv": [
+          "design/check-netlists.sh"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/slice_ii_iii.spice",
+        "generator": "klt netlist (xschem)",
+        "argv": [
+          "design/check-netlists.sh"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      }
+    ]
+  },
+  "provenance": {
+    "klt_version": "0.8.0",
+    "klayout_version": null,
+    "pdk": null,
+    "deck": null,
+    "input": {
+      "path": {
+        "path": "signoff/inventories/item-1-analog.json",
+        "scope": "repo"
+      },
+      "content_hash": "sha256:4f28d8277d630738c21d5504ea5da167c63b787d2e6ccf87e42e29b3bbe8ab1c"
+    }
+  }
+}

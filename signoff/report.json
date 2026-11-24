@@ -5,7 +5,7 @@
   "tier": null,
   "t1_item_count": 22,
   "build_t1_item_count": 22,
-  "t1_met_count": 6,
+  "t1_met_count": 8,
   "source_doc": "docs/design-evidence-tiers.md",
   "source_doc_content_hash": "sha256:a26b90262320d0fbd32b3f549a02b6300832706041797a559d8bf6bdb62efdc7",
   "build": {
@@ -25,10 +25,35 @@
       "partition": "analog",
       "text": "committed schematic sources (or generator) plus the netlist derived from them, regenerated on design change.",
       "notes": [],
-      "status": "unmet",
-      "reason": "no_evidence",
+      "status": "met",
+      "reason": null,
       "graded_by_build": true,
-      "citation": null
+      "citation": {
+        "file": "signoff/attestations/item-1-analog.json",
+        "command": null,
+        "kind": "generic",
+        "check_status": "pass",
+        "content_hash": "sha256:4f28d8277d630738c21d5504ea5da167c63b787d2e6ccf87e42e29b3bbe8ab1c",
+        "input_verified": true,
+        "exit_status": 0,
+        "artifact_binding": {
+          "t1_item": 1,
+          "path": {
+            "path": "signoff/inventories/item-1-analog.json",
+            "scope": "repo"
+          },
+          "content_hash": "sha256:4f28d8277d630738c21d5504ea5da167c63b787d2e6ccf87e42e29b3bbe8ab1c",
+          "input_verified": true,
+          "summary": "T1 item 1 (Design sources): 67/67 attestation checks passed (klt signoff --attest)",
+          "source": "signoff/inventories/item-1-analog.json",
+          "attestation": {
+            "producer": "klt signoff --attest",
+            "inventory_schema_version": 1,
+            "check_count": 67,
+            "passed_count": 67
+          }
+        }
+      }
     },
     {
       "tier": "T1",
@@ -358,10 +383,35 @@
       "partition": "analog",
       "text": "every claimed measurement's testbench committed, with a documented cold-start invocation a third party can run; pinned PDK revision.",
       "notes": [],
-      "status": "unmet",
-      "reason": "no_evidence",
+      "status": "met",
+      "reason": null,
       "graded_by_build": true,
-      "citation": null
+      "citation": {
+        "file": "signoff/attestations/item-9-analog.json",
+        "command": null,
+        "kind": "generic",
+        "check_status": "pass",
+        "content_hash": "sha256:cb1aeea225c7bb04b37b62b1bd0143fcb32ba755e0fcb874cbbd2e2e5efff7d1",
+        "input_verified": true,
+        "exit_status": 0,
+        "artifact_binding": {
+          "t1_item": 9,
+          "path": {
+            "path": "signoff/inventories/item-9-analog.json",
+            "scope": "repo"
+          },
+          "content_hash": "sha256:cb1aeea225c7bb04b37b62b1bd0143fcb32ba755e0fcb874cbbd2e2e5efff7d1",
+          "input_verified": true,
+          "summary": "T1 item 9 (Testbenches shipped): 151/151 attestation checks passed (klt signoff --attest)",
+          "source": "signoff/inventories/item-9-analog.json",
+          "attestation": {
+            "producer": "klt signoff --attest",
+            "inventory_schema_version": 1,
+            "check_count": 151,
+            "passed_count": 151
+          }
+        }
+      }
     },
     {
       "tier": "T1",

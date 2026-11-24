@@ -37,9 +37,10 @@ findings; 25 on C2), so no drawn cell is native-clean. Cell-level fixes
 are #287's. The floorplan's area table still carries estimates for
 Candidates 2 and 3.
 
-**T1 ladder (#10).** `signoff/report.json` (klt 0.8.0): `tier: null`, 6 of 22
-rows met: `1.digital`, `2.digital`, `3.digital`, `4.analog`, `9.digital`,
-`11.analog`. `3.analog` grades `unmet` / `check_failed`: its DRC evidence is
+**T1 ladder (#10).** `signoff/report.json` (klt 0.8.0): `tier: null`, 8 of 22
+rows met: `1.analog`, `1.digital`, `2.digital`, `3.digital`, `4.analog`,
+`9.analog`, `9.digital`, `11.analog`. `3.analog` grades `unmet` /
+`check_failed`: its DRC evidence is
 now graded on the native runset, which reports violations on the Candidate 1
 bitcell, superseding the curated-deck `clean` the row once rested on. The
 remaining analog met rows (`4.analog`, `11.analog`) still rest on the

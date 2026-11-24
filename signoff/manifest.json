@@ -35,6 +35,14 @@
     "9.digital": {
       "file": "signoff/attestations/item-9-digital.json",
       "content_hash": "sha256:9de9885208fb24ea0c535002f1ff8fd768026e6c4278e325362fdd321745b619"
+    },
+    "1.analog": {
+      "file": "signoff/attestations/item-1-analog.json",
+      "content_hash": "sha256:4f28d8277d630738c21d5504ea5da167c63b787d2e6ccf87e42e29b3bbe8ab1c"
+    },
+    "9.analog": {
+      "file": "signoff/attestations/item-9-analog.json",
+      "content_hash": "sha256:cb1aeea225c7bb04b37b62b1bd0143fcb32ba755e0fcb874cbbd2e2e5efff7d1"
     }
   },
   "supporting_evidence": [
