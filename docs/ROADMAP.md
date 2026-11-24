@@ -49,12 +49,16 @@ Candidate 1 bitcell only; `2.analog` stays uncited until array layout exists.
 clean; the 15-corner SPEF-annotated STA (PR #251) fails setup at two slow
 corners, so `5.digital` is uncited. It is not on the Run 3 chip (no on-die mux).
 
-**Repo checks.** No CI (#14). `npm run check:ci` fails on `main` twice:
-`scripts/check_artifact_manifests.py` reports 15,713 "committed AND stored"
-lines (the #225 condition; 4,401 when #225 was parked), and two `RequestBatchOpts`
-shape assertions in `tests/test_program_read_legs_request.py` reject the
-`remote` sharding key PR #326 added to `make_request` (#333). The HV-pad suite
-itself runs stdlib-clean since PR #291 ported it off pytest.
+**Repo checks.** No CI (#14): no `.github/workflows` exists in the tree.
+`npm run check:ci` passes on `main` end to end (measured 2026-11-24 at
+`13357228`: 341 unittest cases OK, and all five `check_*` scripts rc=0 —
+`check_artifact_manifests.py` reports "checked 42 manifest(s): ok"). The two
+former failures are gone from the run: #333 (the `RequestBatchOpts` shape
+assertions) is closed, and #225's "committed AND stored" condition no longer
+fires because `3ae1a8e8` grandfathered the 34 ruling-era manifests into
+`manifests/artifacts/grandfathered.txt` — exempted, not fixed, so #225 stays
+open while the committed bytes remain. The HV-pad suite itself runs
+stdlib-clean since PR #291 ported it off pytest.
 
 ## Now
 
@@ -64,11 +68,12 @@ and pad table (PR #329), and the HV-pad suite's unittest port (PR #291) have
 all landed — see the floorplan table and Repo checks above. What remains is
 parked on the runner question, not on a decision.
 
-1. **CI bootstrap (#14, `loom:issue`).** Done: a PR-blocking workflow runs
-   `npm run check:ci`, green on `main`. PR #15 wires the older
-   `design/check-netlists.sh` (xschem and PDK), is conflicting, and was held
-   on 2026-10-15 for a supported runner. `check:ci` is now Python only, so
-   only the runner target and the two red checks above remain (#333, #225).
+1. **CI bootstrap (#14, `loom:issue`).** No PR-blocking workflow exists:
+   `.github/workflows` is not in the tree and #14 is open. `npm run
+   check:ci` is green on `main` (see Repo checks) and is Python only, so
+   what remains is the runner target and the workflow itself. PR #15 wires
+   the older `design/check-netlists.sh` (xschem and PDK), is conflicting,
+   and was held on 2026-10-15 for a supported runner.
 
 ## Next
 
