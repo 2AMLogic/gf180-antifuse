@@ -140,9 +140,9 @@ purpose as `cell_library.sch`).
 ## The array and addressing stage
 
 Emitted by [`gen_array.py`](gen_array.py) (checked in; a generator rather than
-1024 hand-placed symbols), netlisted by xschem like everything else here, and
-guarded by [`check-array.py`](check-array.py). The `.sch`/`.sym` files under
-`array/` and `mux/` are **generated** - edit the generator, not them.
+1024 hand-placed symbols), netlisted through `klt netlist` like everything else
+here, and guarded by [`check-array.py`](check-array.py). The `.sch`/`.sym` files
+under `array/` and `mux/` are **generated** - edit the generator, not them.
 
 ### Structure
 
@@ -331,7 +331,12 @@ evidence — see below. The cornered per-region bench for the array slices is
 ## Working with these sources
 
 Everything below needs `PDK_ROOT` pointing at the open_pdks / ciel install
-root that contains `gf180mcuD/`, plus `xschem` and `ngspice` on `PATH`. The
+root that contains `gf180mcuD/`, plus `klt` (klayout-tools) and `ngspice` on
+`PATH`. Netlist exports go through `klt netlist`, which owns the xschem
+invocation (nothing here calls `xschem` directly; `klt` still resolves
+`xschem` on `PATH` as its backend). The exports need a `klt` whose
+`klt netlist` has `--output-dir` split-output delivery — added after
+klayout-tools v0.9.2 by 2AMLogic/klayout-tools#7147. The
 scripts honour `$PDK_ROOT` first and fall back to `~/.ciel` when it is unset
 or does not contain `gf180mcuD/`; each prints the root it resolved before
 running. They also read `<root>/gf180mcuD/SOURCES` and refuse a tree
@@ -356,8 +361,8 @@ Check everything:
 design/check-netlists.sh
 ```
 
-Check everything except xschem reproducibility (needs `ngspice` and the pinned
-PDK, not `xschem`; this is the worker-safe entry point):
+Check everything except netlist reproducibility (needs `ngspice` and the
+pinned PDK, but no `klt`/`xschem`; the lightest entry point):
 
 ```sh
 design/run_analog_cold_start.sh
@@ -368,13 +373,17 @@ the generator `--check` runs inside `regen-netlists.sh`) and prints
 `== 1. netlist reproducibility == SKIPPED (--skip-regen)` so the log never
 implies it ran. Steps 2-7 are unchanged; it ends with
 `ANALOG COLD START PASSED` or `FAILED`. Typical corner, elaboration and
-mechanism only: not a result.
+mechanism only: not a result. With the step-1 exports now going through
+`klt netlist` (bounded, real exit status, no raw xschem), the full
+`check-netlists.sh` is itself safe to run on a worker; `--skip-regen` remains
+for hosts without `klt`, not because step 1 is unsafe to automate.
 
 which asserts, in order:
 
 1. **Reproducibility** — the generated array/mux sources are byte-identical to
-   a fresh `gen_array.py` run, and a fresh xschem export of every cell, mux,
-   array and slice schematic is byte-identical to the committed netlist. This is the T1 "regenerated on
+   a fresh `gen_array.py` run, and a fresh `klt netlist` export of every cell,
+   mux, array and slice schematic is byte-identical to the committed netlist.
+   This is the T1 "regenerated on
    design change" pass condition: the netlists are a derived artifact kept in
    sync, not a one-off drop.
 2. **Elaboration** — each committed netlist elaborates cleanly in ngspice
@@ -434,5 +443,6 @@ which asserts, in order:
   touched, and `--check` re-runs the identical pipeline.
 
 Also note that xschem 3.4.7 exits `10` after batch-netlisting *any* hierarchical
-schematic, including the PDK's own `libs.tech/xschem/tests/0_top.sch`. It is not
-an error signal; `regen-netlists.sh` validates the emitted files instead.
+schematic, including the PDK's own `libs.tech/xschem/tests/0_top.sch`. It is
+not an error signal: `klt netlist` judges the run by the emitted netlist, and
+`regen-netlists.sh` additionally validates each expected split file by name.

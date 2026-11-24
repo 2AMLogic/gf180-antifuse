@@ -14,7 +14,16 @@
 #
 # How the netlists are produced
 # -----------------------------
-# xschem is driven in batch (-n -s -q -x) over design/cells/cell_library.sch,
+# Every export goes through `klt netlist` (klayout-tools), which owns the
+# xschem invocation: xschem's headless flags are always passed, the run is
+# bounded by a wall-clock timeout with SIGTERM -> SIGKILL escalation over the
+# whole process group, and the exit status is real. Raw `xschem -n -s -q -x`
+# offers none of that (a GUI-initialised run can hang for hours, and xschem
+# 3.4.7 exits 10 after netlisting any hierarchical schematic), and workers may
+# not run raw xschem at all - the --check mode below is the worker-safe
+# freshness check that constraint previously blocked.
+#
+# klt netlist is driven over design/cells/cell_library.sch with --output-dir,
 # with split_files enabled by design/xschemrc, so each cell schematic lands in
 # its own .spice file carrying a parameterized .subckt line. cell_library.sch
 # is a netlist driver, not a circuit - see its header comment for why the cell
@@ -60,8 +69,9 @@ esac
 
 # PDK root resolution: $PDK_ROOT first, then ~/.ciel (pinned revision verified) - see
 # design/lib-pdk-root.sh for the order and why it is shared with
-# check-netlists.sh. This script only drives xschem, so bare gf180mcuD is
-# enough of a candidate root to require.
+# check-netlists.sh. This script drives xschem only through `klt netlist`,
+# which resolves the PDK the same way and cross-checks it against
+# design/xschemrc, so bare gf180mcuD is enough of a candidate root to require.
 # shellcheck source=design/lib-pdk-root.sh
 source "${DESIGN_DIR}/lib-pdk-root.sh"
 
@@ -69,8 +79,8 @@ PDK_ROOT="$(resolve_pdk_root gf180mcuD)" || exit 1
 export PDK_ROOT
 echo "using PDK_ROOT=${PDK_ROOT}"
 
-if ! command -v xschem >/dev/null 2>&1; then
-  echo "ERROR: xschem not found on PATH." >&2
+if ! command -v klt >/dev/null 2>&1; then
+  echo "ERROR: klt (klayout-tools) not found on PATH." >&2
   exit 1
 fi
 
@@ -102,29 +112,48 @@ fi
 SCRATCH="$(mktemp -d)"
 trap 'rm -rf "${SCRATCH}"' EXIT
 
-# xschem's batch exit status is not a success/failure signal: xschem 3.4.7
-# exits 10 after netlisting ANY hierarchical schematic, including the PDK's own
-# libs.tech/xschem/tests/0_top.sch. So the log is kept and the emitted files are
-# what this script actually validates.
-XSCHEM_LOG="${SCRATCH}/xschem.log"
-set +e
-: >"${XSCHEM_LOG}"
+# klt netlist reports a real exit status, so a failed export aborts right here
+# with klt's own diagnostics (raw xschem's was useless: 3.4.7 exits 10 after
+# netlisting ANY hierarchical schematic, including the PDK's own
+# libs.tech/xschem/tests/0_top.sch). Generation is still judged by the stem
+# netlist, though, so the emitted files are validated by name below: a
+# silently missing split_files output must be caught even when the driver
+# export itself succeeds. The log is kept for those by-name error paths.
+KLT_LOG="${SCRATCH}/klt.log"
+: >"${KLT_LOG}"
 for DRIVER in "${DRIVERS[@]}"; do
-  xschem -n -s -q -x -o "${SCRATCH}" --rcfile "${DESIGN_DIR}/xschemrc" "${DRIVER}" \
-    >>"${XSCHEM_LOG}" 2>&1
+  if ! klt netlist "${DRIVER}" \
+      --output-dir "${SCRATCH}" \
+      --rcfile "${DESIGN_DIR}/xschemrc" \
+      --pdk gf180mcuD \
+      --backend local \
+      --timeout-s 120 \
+      --no-provenance-header \
+      >>"${KLT_LOG}" 2>&1; then
+    echo "ERROR: klt netlist failed for $(basename "${DRIVER}")." >&2
+    sed 's/^/    /' "${KLT_LOG}" >&2
+    exit 1
+  fi
 done
-set -e
 
 ARRAY_SCRATCH="${SCRATCH}/array"
 mkdir -p "${ARRAY_SCRATCH}"
-set +e
-xschem -n -s -q -x -o "${ARRAY_SCRATCH}" --rcfile "${DESIGN_DIR}/xschemrc" "${ARRAY_DRIVER}" \
-  >"${SCRATCH}/xschem-array.log" 2>&1
-set -e
+if ! klt netlist "${ARRAY_DRIVER}" \
+    --output-dir "${ARRAY_SCRATCH}" \
+    --rcfile "${DESIGN_DIR}/xschemrc" \
+    --pdk gf180mcuD \
+    --backend local \
+    --timeout-s 120 \
+    --no-provenance-header \
+    >>"${KLT_LOG}" 2>&1; then
+  echo "ERROR: klt netlist failed for $(basename "${ARRAY_DRIVER}")." >&2
+  sed 's/^/    /' "${KLT_LOG}" >&2
+  exit 1
+fi
 for nl in "${ARRAY_NETLISTS[@]}"; do
   if [[ ! -f "${ARRAY_SCRATCH}/${nl}.spice" ]]; then
-    echo "ERROR: xschem did not emit ${nl}.spice from $(basename "${ARRAY_DRIVER}")." >&2
-    sed 's/^/    /' "${SCRATCH}/xschem-array.log" >&2
+    echo "ERROR: klt netlist did not emit ${nl}.spice from $(basename "${ARRAY_DRIVER}")." >&2
+    sed 's/^/    /' "${KLT_LOG}" >&2
     exit 1
   fi
   sed "s#${REPO_ROOT}/##g" "${ARRAY_SCRATCH}/${nl}.spice" >"${SCRATCH}/${nl}.spice"
@@ -134,11 +163,11 @@ done
 for cell in "${CELLS[@]}" "${ARRAY_NETLISTS[@]}"; do
   src="${SCRATCH}/${cell}.spice"
   if [[ ! -f "${src}" ]]; then
-    echo "ERROR: xschem did not emit ${cell}.spice." >&2
+    echo "ERROR: klt netlist did not emit ${cell}.spice." >&2
     echo "       Is ${cell}.sym instantiated in a driver schematic (cell_library.sch / leg_library.sch)," >&2
     echo "       and is split_files set in design/xschemrc?" >&2
-    echo "--- xschem output ---" >&2
-    sed 's/^/    /' "${XSCHEM_LOG}" >&2
+    echo "--- klt netlist output ---" >&2
+    sed 's/^/    /' "${KLT_LOG}" >&2
     exit 1
   fi
   # Portable in-place edit: GNU sed's bare `-i` and BSD/macOS sed's
@@ -168,7 +197,7 @@ for cell in "${CELLS[@]}" "${ARRAY_NETLISTS[@]}"; do
       echo "DRIFT: ${dst#"${REPO_ROOT}"/} is missing" >&2
       status=1
     elif ! diff -u "${dst}" "${src}" >/dev/null; then
-      echo "DRIFT: ${dst#"${REPO_ROOT}"/} differs from a fresh xschem export:" >&2
+      echo "DRIFT: ${dst#"${REPO_ROOT}"/} differs from a fresh klt netlist export:" >&2
       diff -u --label "committed" --label "regenerated" "${dst}" "${src}" >&2 || true
       status=1
     else

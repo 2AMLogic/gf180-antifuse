@@ -5,13 +5,13 @@
 #   design/check-netlists.sh [--skip-regen]
 #
 # --skip-regen skips step 1 (the reproducibility step, including the generator
-# --check runs inside regen-netlists.sh) so the script needs no xschem; steps
-# 2-7 are unchanged. design/run_analog_cold_start.sh uses it. Without the flag
-# the behaviour is exactly as before.
+# --check runs inside regen-netlists.sh) so the script needs neither klt nor
+# xschem; steps 2-7 are unchanged. design/run_analog_cold_start.sh uses it.
+# Without the flag the behaviour is exactly as before.
 #
 # Seven checks, all of which must pass:
 #
-#   1. Reproducibility - design/regen-netlists.sh --check: a fresh xschem
+#   1. Reproducibility - design/regen-netlists.sh --check: a fresh klt netlist
 #      export of every cell schematic is byte-identical to what is committed.
 #
 #   2. Elaboration - each committed netlist elaborates cleanly in ngspice
