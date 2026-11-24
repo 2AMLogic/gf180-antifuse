@@ -31,14 +31,12 @@ Human-approved issues ready for implementation (`loom:issue`).
 Issues currently being built (`loom:building`).
 
 - **#176**: T1 item 4 (LVS clean, digital partition): klt lvs against the gate-level netlist with power_connectivity
-- **#491**: C3 diagnosis harness: honour $PDK_ROOT and record run provenance in results JSON
 
 ## PRs Awaiting Review
 
 PRs waiting on Judge (`loom:review-requested`).
 
 - **#347**: docs: sourced wafer.space Run 3 precheck reading (would-reject verdict)
-- **#495**: fix: honour $PDK_ROOT and record run provenance in C3 diagnosis harness
 
 ## Approved (Awaiting Merge)
 
@@ -60,7 +58,6 @@ Issues carrying `loom:curated`.
 - **#316**: Follow-on: establish the foreign-host re-run byte-identity evidence for the shared report scrubber (PR #309 / #285 step 5) *(curated)*
 - **#338**: wafer.space: precheck treatment and foundry conversation on the unmodified nfet_10v0_asym PCell's CO.4/DF.6_MV/PL.4_MV findings (#299) *(curated)*
 - **#444**: design/regen-netlists.sh: export through klt netlist instead of raw xschem so the item-1 freshness check can run on a worker (unblocks #117) *(curated)*
-- **#491**: C3 diagnosis harness: honour $PDK_ROOT and record run provenance in results JSON *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -79,10 +76,10 @@ Issues carrying `loom:curated`.
 | Very important | 0 |
 | Important | 2 |
 | Ready (`loom:issue`) | 1 |
-| In Progress (`loom:building`) | 2 |
-| PRs awaiting review | 2 |
+| In Progress (`loom:building`) | 1 |
+| PRs awaiting review | 1 |
 | Approved PRs awaiting merge | 1 |
-| Curated | 11 |
+| Curated | 10 |
 | Architect / Hermit proposals | 1 |
 | Active epics | 2 |
 <!-- guide:plan-body:end -->
