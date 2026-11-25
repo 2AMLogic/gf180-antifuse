@@ -479,40 +479,15 @@ def _seg(x1, y1, x2, y2):
     return (x1, y1, x2, y2)
 
 
-def _orient(seg):
-    x1, y1, x2, y2 = seg
-    if y1 == y2:
-        return ("H", y1, min(x1, x2), max(x1, x2))
-    assert x1 == x2, seg
-    return ("V", x1, min(y1, y2), max(y1, y2))
-
-
-def _pt_seg(p, seg) -> float:
-    (px, py), (x1, y1, x2, y2) = p, seg
-    o, v, lo, hi = _orient(seg)
-    if o == "H":
-        cx = max(lo, min(hi, px))
-        return ((px - cx) ** 2 + (py - v) ** 2) ** 0.5
-    cy = max(lo, min(hi, py))
-    return ((px - v) ** 2 + (py - cy) ** 2) ** 0.5
-
-
 def _seg_dist(a, b) -> float:
-    """Exact minimum distance between two axis-aligned closed segments."""
-    oa, va, lo_a, hi_a = _orient(a)
-    ob, vb, lo_b, hi_b = _orient(b)
-    if oa == "H" and ob == "V":
-        if lo_a <= vb <= hi_a and lo_b <= va <= hi_b:
-            return 0.0
-    if oa == "V" and ob == "H":
-        if lo_b <= va <= hi_b and lo_a <= vb <= hi_a:
-            return 0.0
-    best = float("inf")
-    for p in ((a[0], a[1]), (a[2], a[3])):
-        best = min(best, _pt_seg(p, b))
-    for p in ((b[0], b[1]), (b[2], b[3])):
-        best = min(best, _pt_seg(p, a))
-    return best
+    """Exact minimum distance between two axis-aligned closed segments:
+    the Euclidean length of the x-interval gap and the y-interval gap
+    (zero on an axis where the intervals overlap or touch)."""
+    for x1, y1, x2, y2 in (a, b):
+        assert x1 == x2 or y1 == y2, (x1, y1, x2, y2)
+    gx = max(min(a[0], a[2]), min(b[0], b[2])) - min(max(a[0], a[2]), max(b[0], b[2]))
+    gy = max(min(a[1], a[3]), min(b[1], b[3])) - min(max(a[1], a[3]), max(b[1], b[3]))
+    return (max(gx, 0) ** 2 + max(gy, 0) ** 2) ** 0.5
 
 
 def check_keep_clear(paths: dict[str, list], width_um: float, margin_um: float) -> None:
