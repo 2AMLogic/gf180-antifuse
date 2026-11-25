@@ -52,7 +52,7 @@ REPO_ROOT = SIM_DIR.parent
 
 sys.path.insert(0, str(SIM_DIR))
 from harness import evidence_store as ES  # noqa: E402
-from harness.modload import load_module  # noqa: E402
+from harness.modload import facade_hooks, load_module  # noqa: E402
 from harness import pdk as P  # noqa: E402
 from harness import report as R  # noqa: E402
 
@@ -79,27 +79,8 @@ render_retab = RENDER.render_retab
 render_pl = RENDER.render_pl
 
 
-def __getattr__(name: str):
-    """Re-export model.py's and render.py's library surface under this module,
-    so `load_module(.../run_experiment.py)` callers see the attribute set the
-    pre-split single file had. Dynamic on purpose: module state that the
-    library mutates in place (cell-breakdown-model's `VBD_EBD_OVERRIDE`,
-    armed by apply_vbd_case) must be read through to the owning module, not
-    frozen at load time."""
-    for src in (M, RENDER):
-        try:
-            return getattr(src, name)
-        except AttributeError:
-            continue
-    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
-
-
-def __dir__() -> list[str]:
-    """dir() parity with the pre-split module: dir() does not consult
-    __getattr__, so without this the facade would advertise only its own
-    names instead of the library surface callers actually resolve -- losing
-    tab completion and help() for interactive use."""
-    return sorted(set(globals()) | {n for n in dir(M) + dir(RENDER) if not n.startswith("_")})
+# Library surface of model.py/render.py, read through live (see modload.facade_hooks).
+__getattr__, __dir__ = facade_hooks(globals(), M, RENDER)
 
 
 # ---------------------------------------------------------------------------

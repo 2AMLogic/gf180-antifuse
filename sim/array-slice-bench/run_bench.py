@@ -54,7 +54,7 @@ sys.path.insert(0, str(REPO / "sim"))
 from harness import evidence_store as ES  # noqa: E402
 from harness import klt as K  # noqa: E402
 from harness import report as R  # noqa: E402
-from harness.modload import load_module  # noqa: E402
+from harness.modload import facade_hooks, load_module  # noqa: E402
 
 # The library siblings are loaded once each under fixed unique names (never a
 # bare `import`, which under python3 -I has no script dir on sys.path and
@@ -75,23 +75,8 @@ fullband_measurement_view = RENDER.fullband_measurement_view
 fullband_csv = RENDER.fullband_csv
 
 
-def __getattr__(name: str):
-    """Re-export model.py's and render.py's library surface under this module,
-    so `load_module(.../run_bench.py)` callers see the attribute set the
-    pre-split single file had."""
-    for src in (M, RENDER):
-        try:
-            return getattr(src, name)
-        except AttributeError:
-            continue
-    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
-
-
-def __dir__() -> list[str]:
-    """dir() parity with the pre-split module: dir() does not consult
-    __getattr__, so without this the facade would advertise only its own
-    names instead of the library surface callers actually resolve."""
-    return sorted(set(globals()) | {n for n in dir(M) + dir(RENDER) if not n.startswith("_")})
+# Library surface of model.py/render.py, read through live (see modload.facade_hooks).
+__getattr__, __dir__ = facade_hooks(globals(), M, RENDER)
 
 
 def git(*a):

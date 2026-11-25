@@ -46,7 +46,7 @@ sys.path.insert(0, str(SIM_DIR))
 
 from harness import evidence_store as ES  # noqa: E402
 from harness import klt as K  # noqa: E402
-from harness.modload import load_module  # noqa: E402
+from harness.modload import facade_hooks, load_module  # noqa: E402
 from harness import pdk as P  # noqa: E402
 from harness import report as R  # noqa: E402
 
@@ -87,25 +87,8 @@ render_record = RENDER.render_record
 WORK = THIS_DIR / ".work"          # git-ignored scratch (host-specific paths)
 
 
-def __getattr__(name: str):
-    """Re-export model.py's and render.py's library surface under this module,
-    so `load_module(.../run_experiment.py)` callers see the attribute set the
-    pre-split single file had."""
-    for src in (M, RENDER):
-        try:
-            return getattr(src, name)
-        except AttributeError:
-            continue
-    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
-
-
-def __dir__() -> list[str]:
-    """dir() parity with the pre-split module: dir() does not consult
-    __getattr__, so without this the facade would advertise only its own
-    names (55 of them, the eagerly re-exported subset) instead of the
-    library surface callers actually resolve -- losing tab completion and
-    help() for interactive use."""
-    return sorted(set(globals()) | {n for n in dir(M) + dir(RENDER) if not n.startswith("_")})
+# Library surface of model.py/render.py, read through live (see modload.facade_hooks).
+__getattr__, __dir__ = facade_hooks(globals(), M, RENDER)
 
 
 # ---------------------------------------------------------------------------
