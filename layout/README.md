@@ -810,7 +810,12 @@ a 6.0 V thick-oxide NMOS capacitor (`cap_nmos_06v0`) in series with the 10 V
 drain-extended `nfet_10v0_asym`, per `design/cells/cell_candidate2.sch`. One
 cell, not the array; no breakdown claim. Files: `generate.py` (with `--check`),
 `cell_candidate2.gds`, `drc_report.json`, `drc_crosscheck_report.json`,
-`erc_report.json`, `lvs_request.json`, `lvs_reference.spice`, `lvs_report.json`.
+`erc_report.json`, `lvs_request.json`, `lvs_reference.spice`, `lvs_report.json`,
+plus #521's dated fixed-deck diagnostic comparison artifacts
+(`drc_native_pinned_control_20261125.json`, `drc_native_fd_pv_42.json`,
+`fd_pv_42_rule_decks.patch` -- not sign-off verdicts; see
+`spec/pdk-pcell-drc-exception-decision.md` § "Fixed-deck comparison
+(2026-11-25, #521)").
 
 **Result on klt 0.9.2 (regenerated 2026-11-17, #296): LVS `match`; the two
 capacitor violations the native runset found (`DF.1c`, `PL.2_MV`) are gone at
@@ -822,7 +827,12 @@ anywhere below.
 
 Toolchain: released `klt 0.9.2` (`uvx --from klayout-tools==0.9.2`), KLayout
 0.30.13 (the engine bundled with that wheel), PDK `gf180mcuA`
-(`open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7`, from `~/.ciel`). No host
+(`open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7`, from `~/.ciel`).
+(Exception: `drc_native_pinned_control_20261125.json` and
+`drc_native_fd_pv_42.json` were recorded 2026-11-25 on the worker's
+`klt 0.9.3.dev5587+g945e94f0` / KLayout `0.30.12`, with the latter run against a
+scratch copy of the native deck carrying `fd_pv#42` -- diagnostic comparison
+only, not the project deck.) No host
 tool was installed or changed. Regenerate/verify with
 `uvx --from klayout-tools==0.9.2 python3 layout/cell_candidate2/generate.py --check`
 (the generator calls `klt` on PATH, so put a `klt` wrapper for the pinned
