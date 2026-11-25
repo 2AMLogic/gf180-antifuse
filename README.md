@@ -9,9 +9,6 @@ margin, retention) rather than proving one operating point.
 
 ![fleet burndown](https://raw.githubusercontent.com/2AMLogic/2am/main/fleet-metrics/charts/gf180-antifuse.svg)
 
-**Private repo.** Visibility is an operator decision; nothing here is
-published.
-
 ## What the block is
 
 - **Cell**: thin-oxide MOS capacitor antifuse (programmed by gate-oxide
@@ -108,4 +105,4 @@ product, PVT corners on every recorded result, spec changes via decision
 record, and tool friction filed upstream at `2AMLogic/klayout-tools`
 (generically — no design detail in that public tracker).
 
-Proprietary. Copyright Two AM Logic Inc. No licence is granted; see [LICENSE](LICENSE). This repository is private and stays private.
+Apache License 2.0 — see [LICENSE](LICENSE).
