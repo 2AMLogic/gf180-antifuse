@@ -3,6 +3,11 @@
 Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 
+### 2026-11-25
+
+- **PR #519**: refactor: split array-slice-bench runner into model, render, and CLI modules
+- **Issue #517** (closed): Split sim/array-slice-bench/run_bench.py (590 LOC) into model, render, and CLI modules
+
 ### 2026-11-24
 
 - **PR #515**: docs(sim): add Layout section to program-bias-scheme README
