@@ -34,12 +34,14 @@ Issues currently being built (`loom:building`).
 - **#255**: Measurement plan: constant-voltage time-to-breakdown statistics (Weibull slope, voltage acceleration) and a sub-programming soak
 - **#527**: Simplify the Run 3 route clearance calculation using interval gaps
 - **#528**: Reuse the shared open_pdks pin and SOURCES reader in C3 diagnosis
+- **#533**: Share Run 3 SPICE instance formatting between the full and drawn references
 
 ## PRs Awaiting Review
 
 PRs waiting on Judge (`loom:review-requested`).
 
 - **#347**: docs: sourced wafer.space Run 3 precheck reading (would-reject verdict)
+- **#535**: refactor: share SPICE instance formatter across Run 3 netlists
 
 ## Approved (Awaiting Merge)
 
@@ -65,7 +67,6 @@ Issues carrying `loom:curated`.
 ## Proposed (Architect / Hermit)
 
 - **#454**: Remove the unused Run 3 pad helper that puts L37–L48 on the wrong edge *(hermit)*
-- **#533**: Share Run 3 SPICE instance formatting between the full and drawn references *(hermit)*
 
 ## Epics
 
@@ -80,11 +81,11 @@ Issues carrying `loom:curated`.
 | Very important | 0 |
 | Important | 2 |
 | Ready (`loom:issue`) | 1 |
-| In Progress (`loom:building`) | 4 |
-| PRs awaiting review | 1 |
+| In Progress (`loom:building`) | 5 |
+| PRs awaiting review | 2 |
 | Approved PRs awaiting merge | 3 |
 | Curated | 8 |
-| Architect / Hermit proposals | 2 |
+| Architect / Hermit proposals | 1 |
 | Active epics | 2 |
 <!-- guide:plan-body:end -->
 
