@@ -46,8 +46,8 @@ one-corner local pre-flight of a single bench is available for debugging:
 stdlib only; needs `klt` on PATH and a gf180mcuD install the PDK resolver
 finds (sim/harness/pdk.py).
 
-The library itself lives in the siblings model.py (constants, deck/request
-builders, collection and analysis) and render.py (record renderers); this
+The library itself lives in the siblings model.py (constants, collection and
+analysis), benches.py (deck/request builders) and render.py (record renderers); this
 file is the CLI driver and re-exports their surface, so loading
 run_experiment.py as a library (as downstream drivers and tests do) keeps
 every attribute unchanged.
@@ -77,18 +77,19 @@ from harness import report as R  # noqa: E402
 # The library siblings are loaded once each under fixed unique names (never a
 # bare `import`, which under python3 -I has no script dir on sys.path and
 # would collide in sys.modules with other experiments' sibling modules).
-# model first: render.py reuses the already-loaded copy from sys.modules.
+# model first: benches.py and render.py reuse the already-loaded copy from sys.modules.
 M = load_module(THIS_DIR / "model.py", "sim_cb_model")
+DECKS = load_module(THIS_DIR / "benches.py", "sim_cb_benches")
 RENDER = load_module(THIS_DIR / "render.py", "sim_cb_render")
 
 
 def __getattr__(name: str):
-    """Re-export model.py's and render.py's library surface under this module,
+    """Re-export model.py's, benches.py's and render.py's library surface under this module,
     so `load_module(.../run_experiment.py)` callers see the attribute set the
     pre-split single file had. Dynamic on purpose: module state that the
     library mutates in place (`VBD_EBD_OVERRIDE`, armed by apply_vbd_case)
     must be read through to the owning module, not frozen at load time."""
-    for src in (M, RENDER):
+    for src in (M, DECKS, RENDER):
         try:
             return getattr(src, name)
         except AttributeError:
@@ -101,7 +102,7 @@ def __dir__() -> list[str]:
     __getattr__, so without this the facade would advertise only its own
     names (28 of them) instead of the library surface callers actually
     resolve -- losing tab completion and help() for interactive use."""
-    return sorted(set(globals()) | {n for n in dir(M) + dir(RENDER) if not n.startswith("_")})
+    return sorted(set(globals()) | {n for n in dir(M) + dir(DECKS) + dir(RENDER) if not n.startswith("_")})
 
 
 # ---------------------------------------------------------------------------
@@ -123,9 +124,9 @@ def smoke(pdk, cand, bench: str, params: dict, pick: list[str] | None = None) ->
     defaults = M.CHAR.parse_defaults(REPO_ROOT / "design" / "netlists" / cand.netlist)
     work = THIS_DIR / ".work" / f"smoke-{time.strftime('%Y%m%d-%H%M%S')}-c{cand.n}-{bench}"
     work.mkdir(parents=True)
-    body, ms = M.build_body(bench, pdk, cand, defaults, work, str(pdk.variant_dir), params)
+    body, ms = DECKS.build_body(bench, pdk, cand, defaults, work, str(pdk.variant_dir), params)
     (work / "body.spice").write_text(body)
-    req = M.make_request(bench, cand, pdk, ms, params)
+    req = DECKS.make_request(bench, cand, pdk, ms, params)
     corners = req["corners"]
     proc = [p for p in corners["process"] if pick and p["name"] == pick[0]]
     corners["process"] = proc or corners["process"][:1]
@@ -276,9 +277,9 @@ def main(argv: list[str] | None = None) -> int:
         for bench in benches:
             bdir = THIS_DIR / "corners" / rid / bench
             bdir.mkdir(parents=True, exist_ok=False)  # corners/<rid>/ itself exists (run-provenance.json)
-            body, ms = M.build_body(bench, pdk, cand, defaults, bdir, M.fleet_lib_root(pdk), params)
+            body, ms = DECKS.build_body(bench, pdk, cand, defaults, bdir, M.fleet_lib_root(pdk), params)
             R.write_once(bdir / "body.spice", body)
-            req = M.make_request(bench, cand, pdk, ms, params)
+            req = DECKS.make_request(bench, cand, pdk, ms, params)
             R.write_once(bdir / "request.json", json.dumps(req, indent=2) + "\n")
             t0 = time.time()
             report, err = run_klt(bdir / "request.json", bdir / ".work" / "klt", None)
@@ -295,7 +296,7 @@ def main(argv: list[str] | None = None) -> int:
                   + (f" ERROR {res.error[:300]}" if res.error else ""))
             if res.status not in ("pass", "pass_partial"):
                 rc = 1
-        R.write_once(THIS_DIR / "netlist-snapshots" / f"{rid}.spice", M.snapshot(cand))
+        R.write_once(THIS_DIR / "netlist-snapshots" / f"{rid}.spice", DECKS.snapshot(cand))
         R.write_once(THIS_DIR / "records" / f"{rid}.md",
                      M.tag_record(set_supersedes(RENDER.render_any(pdk, cand, rid, results, params, dirty, args.note),
                                                  supersedes.get(n)),

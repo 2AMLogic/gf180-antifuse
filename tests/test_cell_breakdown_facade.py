@@ -36,17 +36,18 @@ class DirParity(unittest.TestCase):
         self.assertIn("derive", d)             # model.py's, read by the CLI's smoke()
         self.assertIn("sensitivity_block", d)  # model.py's, called by the CLI
         self.assertIn("render_any", d)         # render.py's, called by the CLI
+        self.assertIn("make_request", d)       # benches.py's, called by the CLI
 
     def test_every_public_sibling_name_is_listed_and_resolves(self):
         d = dir(RE)
-        for n in dir(RE.M) + dir(RE.RENDER):
+        for n in dir(RE.M) + dir(RE.DECKS) + dir(RE.RENDER):
             if n.startswith("_"):
                 continue
             self.assertIn(n, d, n)
             self.assertTrue(hasattr(RE, n), n)
 
     def test_own_facade_names_stay_listed(self):
-        for n in ("main", "smoke", "run_klt", "KLT_CMD", "M", "RENDER"):
+        for n in ("main", "smoke", "run_klt", "KLT_CMD", "M", "DECKS", "RENDER"):
             self.assertIn(n, dir(RE), n)
 
 
