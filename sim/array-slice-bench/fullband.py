@@ -40,13 +40,23 @@ REPO = HERE.parents[1]
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(REPO / "design"))
 sys.path.insert(0, str(REPO / "sim" / "program-read-legs"))
+sys.path.insert(0, str(REPO / "sim"))
 import gen_array as G  # noqa: E402
 import make_bench as B  # noqa: E402
+from harness.modload import load_module  # noqa: E402
+
+# The slice bench's own library siblings, loaded under the fixed unique names
+# run_bench.py uses (reusing its already-loaded copies when present): the
+# selected-path thresholds come from model.py, the region names and the
+# number formatter from render.py -- the values are the same bench's, so
+# they are shared, not re-declared here.
+ASB_M = sys.modules.get("sim_asb_model") or load_module(HERE / "model.py", "sim_asb_model")
+ASB_R = sys.modules.get("sim_asb_render") or load_module(HERE / "render.py", "sim_asb_render")
 
 GMIN = 1e-12            # A/V, ngspice default conductance floor (not overridden by design.ngspice)
 FLOOR_FACTOR = 10.0     # a reading below FLOOR_FACTOR x floor is "floor-dominated": upper bound only
 I_REF = {"I": (1e-6,), "II": (1e-6,), "III": (1e-6, 3e-10)}   # as in sim/program-read-legs (III has a low-I_ref bench)
-ETA_MIN, BL_MIN, RETURN_MIN = 0.80, 0.98, 0.95   # selected-path thresholds (same as the slice bench)
+ETA_MIN, BL_MIN, RETURN_MIN = ASB_M.ETA_MIN, ASB_M.BL_MIN, ASB_M.RETURN_MIN   # selected-path thresholds (the slice bench's, shared)
 R_FIL = B.R_FIL
 CAND_OF = {lab: cand for lab, _lo, _hi, cand in G.BANDS}
 EXPECTED_COLS = {lab: hi - lo + 1 for lab, lo, hi, _c in G.BANDS}   # 11 / 11 / 10
@@ -232,11 +242,8 @@ def analyze_sel(name: str, reports: dict[str, dict]):
 # Tables
 # ---------------------------------------------------------------------------
 
-REGION_NAME = {"I": "Region I (Candidate 1)", "II": "Region II (Candidate 2)", "III": "Region III (Candidate 3)"}
-
-
-def e(x: float) -> str:
-    return f"{x:.3g}"
+REGION_NAME = ASB_R.REGION_NAME
+e = ASB_R.fmt_e
 
 
 def worst_by(rows: list[dict], keyf, valf):
