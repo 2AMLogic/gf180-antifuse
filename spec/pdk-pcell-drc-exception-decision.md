@@ -218,6 +218,86 @@ within it, only the 20 `nfet_10v0_asym` rows.
   rejected for this record: the enumeration command above does it in one
   line; a standing check can be filed separately if one is wanted later.
 
+## Fixed-deck comparison (2026-11-25, #521)
+
+A dated measurement, not a change to the ruling above. It records which of
+the three covered rules still fire when the pinned native deck carries
+upstream `fd_pv#42` (`6290c6342f`, "ignore edges inside mvsd/mvpsd",
+merged 2026-11-02). Input for both runs: the committed
+`layout/cell_candidate2/cell_candidate2.gds`
+(`sha256:5cb4a64fa103f2b698aeaffedddfc28405931e6afbfec8f21cf8b90678462e7a`,
+equal to `.identity.layout_content_hash` of the baseline report).
+
+| Rule (cell `nfet_10v0_asym`) | Baseline 2026-11-14 (committed report) | Pinned deck re-run 2026-11-25 (control) | Deck + `fd_pv#42` |
+|---|---|---|---|
+| `CO.4` | 16 | 16 | 16 |
+| `DF.6_MV` | 2 | 2 | **0** |
+| `PL.4_MV` | 2 | 2 | **0** |
+
+`cell_candidate2` findings (`DBU`, `M1.4`, `M2.4`, `M3.4`, `MT30.7`, 5 in
+total) are unchanged in all three columns; whole-layout totals are 25, 25
+and 21. Full output: `layout/cell_candidate2/drc_native_fd_pv_42.json`.
+
+**Reading.** On the `fd_pv#42` deck only `CO.4` (16) remains inside the
+unmodified PCell. `DF.6_MV` and `PL.4_MV` did not fire on stock PCell
+geometry, so no reproducer is needed for them. The exception *as ratified*
+is unchanged; this measurement shows which rows it is still needed for on
+that deck, and it is not adopted as the project deck here.
+
+**Deck provenance.** The native entry point is
+`~/.ciel/gf180mcuA/libs.tech/klayout/tech/drc/gf180mcu.drc`
+(`sha256:e7c7d259...`, matching the baseline report), at open_pdks
+`f6eeac7d`. It loads `rule_decks/*.rb` relative to itself. That tree does
+**not** carry `6290c6342f`. The fixed deck is a scratch copy of the pinned
+tree with the `comp.rb` and `poly2.rb` hunks of the upstream PR applied
+(`patch -p3`; the patch also carries the PR's `PL.5a_MV`/`PL.5b_MV`
+`.outside(mvsd/mvpsd)` edits and comment rewording). The shared installation
+was not modified.
+
+| Ruby file | Pinned `sha256` | With `fd_pv#42` `sha256` |
+|---|---|---|
+| `rule_decks/comp.rb` | `97030747eb619ac41c0294e389a5576a3a109ab007c9c60779b65ff9397ea232` | `1ff8291580813015100adde8266809e8f9acfb0a4f6a771e283d2de7a12f36bf` |
+| `rule_decks/poly2.rb` | `98872935f83315cce2b59539594aee401f7f1e12e23ad7940cdb8d455cde3891` | `e1ecf7aef5a3376a8371a8b9578c3479ba925ed7c2cc4f1a8688f1e96ba8ec08` |
+
+The report's `deck.content_hash` and tree hash cover the entry point and
+top-level tree, and are identical for both decks; they do not distinguish
+them. The two Ruby hashes above do. The upstream patch text (rule-deck files
+only) has `sha256:0c01f517cd2ed24bcb3c27e2f71743c12856d099c052d66f242eccf17ddeeaec`
+and is the output of
+`curl -L https://github.com/fossi-foundation/globalfoundries-pdk-libs-gf180mcu_fd_pv/pull/42.diff`
+filtered to the `rule_decks/` files.
+
+**Reproduce.**
+
+```sh
+cp -r ~/.ciel/gf180mcuA/libs.tech/klayout/tech/drc "$S/drc"   # pinned tree
+(cd "$S/drc" && patch -p3 < fd_pv_42_rule_decks.patch)         # comp.rb, poly2.rb
+klt drc --engine klayout --deck-file "$S/drc/gf180mcu.drc" \
+  --top cell_candidate2 --deck-var variant=gf180mcuA \
+  --deck-var decks=all,-mslot \
+  -o layout/cell_candidate2/drc_native_fd_pv_42.json \
+  layout/cell_candidate2/cell_candidate2.gds
+```
+
+**Tool versions differ from the baseline.** This run used `klt
+0.9.3.dev5587+g945e94f0` and KLayout 0.30.12; the baseline used klt 0.9.2
+and KLayout 0.30.13 (the report's `klayout_version_mismatch` is true).
+Host tools are not changed from a sweep. The control column shows the pinned
+deck reproduces the baseline counts exactly on this toolchain, so the
+difference between columns is attributable to the deck change.
+
+**Execution check.** The report's `coverage.rules_checked` lists only rules
+that produced findings, so it cannot show that a rule which now reports zero
+actually ran. The run log embedded in the report (`deck_output`) records
+`Executing rule DF.6_MV` and `Executing rule PL.4_MV`.
+
+**Precheck caveat.** This is a local `gf180mcuA` native-deck result. It does
+not show what the wafer.space Run 3 precheck enforces, and the maintainers
+have said the `fd_pv#42` fix may not yet be part of it. #338 step 1's
+recorded verdict (2026-11-16, `gf180mcuD` and a different deck selection) is
+not superseded; adoption of the fix by the precheck still needs its own
+evidence on #338.
+
 ## Open items
 
 - **Precheck condition (open, conditions this record).** The ruling adds:
