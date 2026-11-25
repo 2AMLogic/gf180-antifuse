@@ -167,7 +167,7 @@ sim/cell-breakdown-model/
   model.py              library: bench constants, collection and grading
   benches.py            library: SPICE deck and `klt sim` request builders
   render.py             library: record renderers
-  run_experiment.py     CLI driver / record writer; library facade re-exporting model.py + render.py (stdlib only)
+  run_experiment.py     CLI driver / record writer; library facade re-exporting model.py + benches.py + render.py (stdlib only)
   .work/                git-ignored: local --smoke probe debris with host paths
   records/, corners/, netlist-snapshots/   written by each successful run (append-only)
 ```

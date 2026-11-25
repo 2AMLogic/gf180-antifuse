@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """sim/cell-breakdown-model model.py -- the experiment's shared library.
 
-Bench constants, V_bd sensitivity overrides, SPICE deck and request builders,
-report collection/grading, and the analysis helpers of the #62/#74/#75
-campaigns. The CLI entry point is run_experiment.py, which loads this module
-(and render.py) via harness.modload and re-exports this surface, so consumers
-keep loading run_experiment.py as the library. render.py imports one-way from
-this module; nothing here imports render.py or the CLI.
+Bench constants, V_bd sensitivity overrides, report collection/grading, and
+the analysis helpers of the #62/#74/#75 campaigns. The SPICE deck and `klt
+sim` request builders live in the sibling benches.py. The CLI entry point is
+run_experiment.py, which loads this module (and benches.py, render.py) via
+harness.modload and re-exports this surface, so consumers keep loading
+run_experiment.py as the library. benches.py and render.py import one-way
+from this module; nothing here imports them or the CLI.
 """
 
 from __future__ import annotations
