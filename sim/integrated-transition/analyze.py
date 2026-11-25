@@ -8,7 +8,6 @@ every record; they are not spec values.
 from __future__ import annotations
 
 import re
-from collections import defaultdict
 
 import limits as LIM
 import make_bench as B

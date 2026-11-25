@@ -114,7 +114,8 @@ make_bench.py        generates testbench/ (`--check` fails on drift)
 nlflat.py            flattens the committed netlists to leaf devices (probe roster)
 limits.py            supported limits with provenance
 analyze.py           grading, stress aggregation (pure functions)
-run_bench.py         submits via klt sim, grades, writes records
+render.py            Markdown/CSV record renderers (pure text; write_records does the disk writes)
+run_bench.py         CLI: submits via klt sim, grades, writes records; re-exports render.py
 test_integrated.py   offline tests
 testbench/tb_<slice>_<process>.spice, <slice>_<process>.request.json (tier A), <slice>_<process>_x.request.json (tier B), probes_<slice>.json
 reports/<record-id>/<slice>_<process>.report.json.gz   raw measurements of every unit
