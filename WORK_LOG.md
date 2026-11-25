@@ -5,6 +5,12 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-25
 
+- **Issue #524** (closed): Split sim/integrated-transition/run_bench.py (520 LOC) into render and CLI modules and remove dead code
+- **PR #525**: refactor: split integrated-transition renderers into render.py and drop dead code
+- **Issue #531** (closed): Split sim/cell-breakdown-model/model.py (1,076 LOC) into benches.py and model.py
+- **PR #532**: refactor: split cell-breakdown deck builders into benches.py
+- **Issue #521** (closed): Re-check #338's nfet_10v0_asym DF.6_MV / PL.4_MV findings against the upstream deck fix (fd_pv#42, merged 2026-11-02)
+- **PR #523**: docs: record native DRC on fd_pv#42 deck for nfet_10v0_asym findings
 - **PR #518**: Restore Apache-2.0 licence ahead of going public
 - **PR #519**: refactor: split array-slice-bench runner into model, render, and CLI modules
 - **Issue #517** (closed): Split sim/array-slice-bench/run_bench.py (590 LOC) into model, render, and CLI modules
@@ -419,15 +425,6 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 - **PR #56**: docs: embed fleet burndown chart and fleet-ops firewall carve-out (#46)
 - **Issue #46** (closed): README: embed the fleet burndown chart (one line)
-
-### 2026-09-25
-
-- **PR #55**: fix: use POSIX bracket expression instead of GNU \s in ngspice error grep
-- **PR #54**: fix: make netlist path normalization portable to BSD/macOS sed
-- **PR #51**: refactor: extract shared PDK_ROOT resolution into design/lib-pdk-root.sh
-- **Issue #53** (closed): check-netlists.sh error detection uses GNU-only \s in grep -E, likely silently misses indented ngspice errors on macOS
-- **Issue #52** (closed): regen-netlists.sh fails on macOS: sed -i needs a backup suffix for BSD sed
-- **Issue #50** (closed): Remove duplicated PDK_ROOT resolution: consolidate check-netlists.sh and regen-netlists.sh
 
 ## Archives
 

@@ -2,6 +2,15 @@
 
 Sections moved byte-for-byte from [WORK_LOG.md](../WORK_LOG.md) by `loom-daemon work-docs archive`.
 
+### 2026-09-25
+
+- **PR #55**: fix: use POSIX bracket expression instead of GNU \s in ngspice error grep
+- **PR #54**: fix: make netlist path normalization portable to BSD/macOS sed
+- **PR #51**: refactor: extract shared PDK_ROOT resolution into design/lib-pdk-root.sh
+- **Issue #53** (closed): check-netlists.sh error detection uses GNU-only \s in grep -E, likely silently misses indented ngspice errors on macOS
+- **Issue #52** (closed): regen-netlists.sh fails on macOS: sed -i needs a backup suffix for BSD sed
+- **Issue #50** (closed): Remove duplicated PDK_ROOT resolution: consolidate check-netlists.sh and regen-netlists.sh
+
 ### 2026-09-24
 
 - **PR #49**: fix: resolve PDK root from $PDK_ROOT before falling back to ~/.volare

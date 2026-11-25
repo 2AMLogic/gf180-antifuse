@@ -32,7 +32,8 @@ Issues currently being built (`loom:building`).
 
 - **#176**: T1 item 4 (LVS clean, digital partition): klt lvs against the gate-level netlist with power_connectivity
 - **#255**: Measurement plan: constant-voltage time-to-breakdown statistics (Weibull slope, voltage acceleration) and a sub-programming soak
-- **#521**: Re-check #338's nfet_10v0_asym DF.6_MV / PL.4_MV findings against the upstream deck fix (fd_pv#42, merged 2026-11-02)
+- **#527**: Simplify the Run 3 route clearance calculation using interval gaps
+- **#528**: Reuse the shared open_pdks pin and SOURCES reader in C3 diagnosis
 
 ## PRs Awaiting Review
 
@@ -45,6 +46,8 @@ PRs waiting on Judge (`loom:review-requested`).
 PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
 - **#256**: docs(spec): propose constant-voltage TDDB and sub-programming soak plan
+- **#529**: refactor: reuse shared open_pdks pin and reader in C3 diagnosis runner
+- **#530**: refactor: compute Run 3 route clearance from interval gaps
 
 ## Proposed
 
@@ -58,11 +61,11 @@ Issues carrying `loom:curated`.
 - **#313**: sim/program-read-legs: capacity_wait_s spends the same per-submit subprocess budget as the run, and a subprocess timeout is not retried *(curated)*
 - **#316**: Follow-on: establish the foreign-host re-run byte-identity evidence for the shared report scrubber (PR #309 / #285 step 5) *(curated)*
 - **#338**: wafer.space: precheck treatment and foundry conversation on the unmodified nfet_10v0_asym PCell's CO.4/DF.6_MV/PL.4_MV findings (#299) *(curated)*
-- **#521**: Re-check #338's nfet_10v0_asym DF.6_MV / PL.4_MV findings against the upstream deck fix (fd_pv#42, merged 2026-11-02) *(curated)*
 
 ## Proposed (Architect / Hermit)
 
 - **#454**: Remove the unused Run 3 pad helper that puts L37–L48 on the wrong edge *(hermit)*
+- **#533**: Share Run 3 SPICE instance formatting between the full and drawn references *(hermit)*
 
 ## Epics
 
@@ -77,11 +80,11 @@ Issues carrying `loom:curated`.
 | Very important | 0 |
 | Important | 2 |
 | Ready (`loom:issue`) | 1 |
-| In Progress (`loom:building`) | 3 |
+| In Progress (`loom:building`) | 4 |
 | PRs awaiting review | 1 |
-| Approved PRs awaiting merge | 1 |
-| Curated | 9 |
-| Architect / Hermit proposals | 1 |
+| Approved PRs awaiting merge | 3 |
+| Curated | 8 |
+| Architect / Hermit proposals | 2 |
 | Active epics | 2 |
 <!-- guide:plan-body:end -->
 
