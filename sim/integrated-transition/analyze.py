@@ -8,9 +8,17 @@ every record; they are not spec values.
 from __future__ import annotations
 
 import re
+import sys
+from pathlib import Path
 
 import limits as LIM
-import make_bench as B
+
+HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE.parent))
+from harness.modload import load_module  # noqa: E402
+
+# array-slice-bench also has a make_bench.py. All users of this bench share B.
+B = load_module(HERE / "make_bench.py", "sim_it_make_bench")
 
 G = B.G
 

@@ -19,8 +19,8 @@ HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[1]
 sys.path.insert(0, str(HERE))
 import analyze as A  # noqa: E402
-import make_bench as B  # noqa: E402
 
+B = A.B
 G = B.G
 
 

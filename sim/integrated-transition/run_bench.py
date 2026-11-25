@@ -19,10 +19,9 @@
       measurements/integrated-transition/<record-id>.md                                 per-region / per-sub-combination view
       measurements/integrated-transition/<record-id>.csv                                one row per graded point
   Records are never edited; a re-run mints a new <record-id>.
-  Records are never edited; a re-run mints a new <record-id>.
 
-The Markdown/CSV renderers live in the sibling render.py and the grading in analyze.py; this file is the CLI driver
-and re-exports render.py's surface, so loading run_bench.py as a library keeps every attribute unchanged.
+The CLI grades results with analyze.py and re-exports the Markdown and CSV renderers
+from render.py. Library callers of write_records supply the Git revision for the record.
 """
 
 from __future__ import annotations
@@ -39,7 +38,6 @@ HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[1]
 sys.path.insert(0, str(HERE))
 import analyze as A  # noqa: E402
-import make_bench as B  # noqa: E402
 
 sys.path.insert(0, str(HERE.parents[1] / "sim"))
 from harness import evidence_store as ES  # noqa: E402
@@ -51,7 +49,7 @@ from harness.modload import load_module  # noqa: E402
 # would collide in sys.modules with other experiments' sibling modules).
 RENDER = load_module(HERE / "render.py", "sim_it_render")
 
-G = B.G
+B = A.B
 summary_lines = RENDER.summary_lines
 write_records = RENDER.write_records
 
