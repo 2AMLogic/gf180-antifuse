@@ -12,7 +12,8 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import analyze as A  # noqa: E402
 import limits as LIM  # noqa: E402
-import make_bench as B  # noqa: E402
+
+B = A.B
 
 
 class Bench(unittest.TestCase):
