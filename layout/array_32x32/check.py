@@ -61,6 +61,10 @@ def probe(path, fault=None):
     layout.read(str(path))
     top = layout.top_cell()
     for inst in top.each_inst():
+        # Preserve the mask dimensions and the GF180 Manhattan manufacturing grid.
+        # Orthogonal rotations and reflections preserve both. Scaled geometry does not.
+        if inst.cplx_trans.is_complex():
+            raise ValueError(f"Non-unit or non-orthogonal transform on {inst.property(1)}")
         placements = inst.cell_inst.size()
         if placements != 1:
             raise ValueError(f"Expected one physical placement for {inst.property(1)}, found {placements}")
@@ -127,7 +131,7 @@ def probe(path, fault=None):
             sites[name] = original_pins(layout, cell, master, set(formal))
         for pin, net_name in zip(formal, nets, strict=True):
             number, local = sites[name][pin]
-            connections[net_name].add(island(number, inst.trans * local))
+            connections[net_name].add(island(number, inst.cplx_trans * local))
     if seen != expected_instances:
         raise ValueError("Incomplete set of selector and array instances")
     opens = {net for net, values in connections.items() if len(values) != 1}
@@ -159,6 +163,15 @@ def fault_copy(source, kind, sites, dest):
         inst, = [entry for entry in top.each_inst() if entry.property(1) == kind]
         offset = db.Vector(0, round(3000 / layout.dbu))
         inst.cell_inst = db.CellInstArray(inst.cell_index, inst.trans, offset, db.Vector(), 2, 1)
+    elif kind in ("scaled-selector", "rotated-region"):
+        ident = "XLR_0_I" if kind == "scaled-selector" else "Xregion_III"
+        inst, = [entry for entry in top.each_inst() if entry.property(1) == ident]
+        transform = inst.cplx_trans
+        if kind == "scaled-selector":
+            transform.mag = 0.5
+        else:
+            transform.angle = 45.0
+        inst.cplx_trans = transform
     elif kind == "short":
         a, b = sites["RSEL_0"], sites["RSEL_1"]
         x = max(a.x, b.x) + round(5 / layout.dbu)
@@ -180,17 +193,23 @@ def main():
             fault_copy(source, kind, sites, fault)
             probe(fault, kind)
             print(f"Physical {kind} control detected")
-        for ident in ("XPC_11", "Xregion_III"):
+        rejected = {
+            "XPC_11": "Expected one physical placement for XPC_11, found 2",
+            "Xregion_III": "Expected one physical placement for Xregion_III, found 2",
+            "scaled-selector": "Non-unit or non-orthogonal transform on XLR_0_I",
+            "rotated-region": "Non-unit or non-orthogonal transform on Xregion_III",
+        }
+        for ident, reason in rejected.items():
             duplicate = Path(tmp) / (ident + ".gds")
             fault_copy(source, ident, sites, duplicate)
             try:
                 probe(duplicate)
             except ValueError as exc:
-                if str(exc) != f"Expected one physical placement for {ident}, found 2":
+                if str(exc) != reason:
                     raise
             else:
-                raise AssertionError(f"An extra physical placement escaped the probe: {ident}")
-            print(f"Duplicate placement of {ident} detected")
+                raise AssertionError(f"Invalid GDS placement escaped the probe: {ident}")
+            print(f"Rejected {ident}: {reason}")
 
 
 if __name__ == "__main__":
