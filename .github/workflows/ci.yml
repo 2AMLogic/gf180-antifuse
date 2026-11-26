@@ -89,7 +89,7 @@ jobs:
           source design/lib-pdk-root.sh
           export PDK_ROOT="$(resolve_pdk_root gf180mcuD)"
           uv run --no-project --script layout/array_addressing/generate.py --check
-          uv run --no-project --script layout/array_32x32/generate.py --check
+          uv run --no-project --script layout/array_32x32/attest.py --check
           uv run --no-project --script layout/array_32x32/check.py
           python layout/array_addressing/check_shifter.py --smoke \
             --native-cir layout/array_addressing/ls_hv10/native.cir \

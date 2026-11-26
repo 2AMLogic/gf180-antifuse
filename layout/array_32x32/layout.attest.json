@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "kind": "generic",
+  "t1_item": 2,
+  "status": "pass",
+  "source": "layout/array_32x32/generate.py",
+  "summary": "The 1,024-cell, 75-port analog array, including all 128 row/column selector pairs, reproduces the committed GDS byte for byte.",
+  "provenance": {
+    "klayout_version": "0.30.13",
+    "input": {
+      "path": {
+        "path": "layout/array_32x32/array_32x32.gds",
+        "scope": "repo"
+      },
+      "content_hash": "sha256:c42e0c25a02217d9106e6a87c2d8d11cd584ade477f21dc6abf87ff7f65b2fe6",
+      "role": "layout"
+    },
+    "regeneration": {
+      "generator": "uv run --no-project --script layout/array_32x32/generate.py --check",
+      "regenerated_hash": "sha256:c42e0c25a02217d9106e6a87c2d8d11cd584ade477f21dc6abf87ff7f65b2fe6"
+    }
+  }
+}

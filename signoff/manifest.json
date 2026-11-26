@@ -2,6 +2,10 @@
   "block": "gf180-antifuse",
   "kind": "mixed-signal",
   "evidence": {
+    "2.analog": {
+      "file": "layout/array_32x32/layout.attest.json",
+      "content_hash": "sha256:c42e0c25a02217d9106e6a87c2d8d11cd584ade477f21dc6abf87ff7f65b2fe6"
+    },
     "2.digital": {
       "file": "rtl/pnr/antifuse_digital_top.attest.json",
       "content_hash": "sha256:dae02f43855fda9b7c8f880fa62be529f3479af070dc34a82cbab4b140373bf5"

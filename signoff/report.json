@@ -5,7 +5,7 @@
   "tier": null,
   "t1_item_count": 22,
   "build_t1_item_count": 22,
-  "t1_met_count": 10,
+  "t1_met_count": 11,
   "source_doc": "docs/design-evidence-tiers.md",
   "source_doc_content_hash": "sha256:a26b90262320d0fbd32b3f549a02b6300832706041797a559d8bf6bdb62efdc7",
   "build": {
@@ -99,10 +99,34 @@
       "partition": "analog",
       "text": "committed GDS/OASIS, reproducibly generated or with documented provenance.",
       "notes": [],
-      "status": "unmet",
-      "reason": "no_evidence",
+      "status": "met",
+      "reason": null,
       "graded_by_build": true,
-      "citation": null
+      "citation": {
+        "file": "layout/array_32x32/layout.attest.json",
+        "command": null,
+        "kind": "generic",
+        "check_status": "pass",
+        "content_hash": "sha256:c42e0c25a02217d9106e6a87c2d8d11cd584ade477f21dc6abf87ff7f65b2fe6",
+        "input_verified": true,
+        "exit_status": 0,
+        "artifact_binding": {
+          "t1_item": 2,
+          "path": {
+            "path": "layout/array_32x32/array_32x32.gds",
+            "scope": "repo"
+          },
+          "content_hash": "sha256:c42e0c25a02217d9106e6a87c2d8d11cd584ade477f21dc6abf87ff7f65b2fe6",
+          "input_verified": true,
+          "summary": "The 1,024-cell, 75-port analog array, including all 128 row/column selector pairs, reproduces the committed GDS byte for byte.",
+          "source": "layout/array_32x32/generate.py",
+          "regeneration": {
+            "generator": "uv run --no-project --script layout/array_32x32/generate.py --check",
+            "regenerated_hash": "sha256:c42e0c25a02217d9106e6a87c2d8d11cd584ade477f21dc6abf87ff7f65b2fe6",
+            "executed_by_klt": false
+          }
+        }
+      }
     },
     {
       "tier": "T1",
