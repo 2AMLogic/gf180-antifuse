@@ -71,8 +71,8 @@ doc) or on any drift from the committed report.
 
 ## Current verdict
 
-`tier: null` — **11 of 22 T1 items met** (five analog rows, `1.digital`, `2.digital`,
-`3.digital`, `7.digital`, `8.digital` and `9.digital`), graded against `design-evidence-tiers.md` at
+`tier: null` — **11 of 22 T1 items met** (five analog and six digital),
+graded against `design-evidence-tiers.md` at
 `sha256:a26b90262320d0fbd32b3f549a02b6300832706041797a559d8bf6bdb62efdc7`
 (the copy bundled in klayout-tools `0.8.0`, which is the
 eleven-item checklist — item 11, "Power delivery (structural)", included).
@@ -95,11 +95,12 @@ changes either, this paragraph moves with it.
 | 9.analog Testbenches shipped | met | `signoff/attestations/item-9-analog.json`, a `klt signoff --attest 9` envelope (`status: pass`, 151/151 checks) over `signoff/inventories/item-9-analog.json`; the manifest pins the inventory's sha256. Covers the analog partition: the 148 committed bench decks and `klt sim` request manifests under `sim/*/testbench/` (array-slice-bench, cell-device-characterization, integrated-transition) and `design/tb/`. Disclosed gap: the five `sim/` experiments that generate their benches at run time from committed Python -- `cell-breakdown-model`, `hv-pad-protection`, `program-bias-scheme`, `program-read-legs`, `programming-yield`, each driven by its `run_experiment.py` -- have no `testbench/` directory, so their generated benches are not cited; what the tree keeps of them are per-run records, not cited benches: generated corner decks under `corners/<record-id>/` (`cell-breakdown-model`, `program-bias-scheme`, `programming-yield`, each as a `body.spice` + `request.json` pair; the per-corner `.cir` expansions that `cell-breakdown-model` and `program-bias-scheme` also keep `.include` a netlist from the ephemeral job directory of the run that produced them), `netlist-snapshots/` (DUT netlists for those three; the snapshotted benches themselves for `program-read-legs`), and for `hv-pad-protection` only `records/*.md`. The attested `cold_start` is `design/run_analog_cold_start.sh` (typical-corner elaboration and mechanism checks only, `local_only`: needs ngspice + the pinned PDK, no xschem, no grid). Pins: gf180mcu @ `f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7` (from `design/lib-pdk-root.sh` / `spec/pdk-pin-decision.md`), klt 0.8.0, ngspice 47. See "Items 1 and 9 (analog)" below. |
 | 11.analog Power delivery (structural) | met | Compound citation `[erc_report.json, lvs_report.json]` (both pinned to the GDS sha256), `klayout-tools==0.8.0`. Covers the one declared supply net `VB` of the Region I bitcell only; every other supply row is a disclosed gap (`layout/erc/README.md`). See "Item 11" below. |
 
-Every other row except 1.analog, 1.digital, 2.digital, 3.digital, 4.analog, 7.digital, 8.digital, 9.digital, 9.analog and 11.analog remains `unmet`, reason `no_evidence` -- except `3.analog`, which is `unmet` with reason `check_failed`: it cites evidence (see "Item 3 (analog)" below) and that evidence fails. The layout evidence
-above covers **one bitcell of candidate 1**, not the array, the multiplexers,
-the pass gates or any program or sense path. The `klt sim` reports added by
-issue #63 sit under the ungraded `supporting_evidence` key (next section) and
-move no graded row.
+Every T1 row omitted from the table is `unmet` with reason `no_evidence`.
+The layout citation for `2.analog` covers the addressed 32 × 32 array.
+The cited DRC (`3.analog`), LVS (`4.analog`) and structural power
+(`11.analog`) checks each cover one Candidate 1 bitcell. The manifest lists
+the `klt sim` reports from issue #63 under the ungraded `supporting_evidence`
+key (next section).
 
 ## Item 3 (analog): the cited cell is not DRC clean under the PDK's own runset (issue #295)
 
@@ -160,7 +161,7 @@ expressed as a checked-in `klt sim` request set
 reports are real `klt sim` envelopes, listed under the manifest's
 **`supporting_evidence`** key with pinned `content_hash`es.
 
-**Rows that moved: none.** All 22 T1 rows remain `unmet` / `no_evidence`.
+When issue #63 added these reports, all 22 T1 rows were `unmet` / `no_evidence`.
 `supporting_evidence` is deliberately *not* an `evidence` key: `klt signoff`
 ignores it, so it cannot move a row, and `verify.sh` checks that every entry
 names a file in the tree whose sha256 still matches. The reasons no graded row
@@ -502,8 +503,8 @@ the recorded paths resolve against the report's directory; re-check with
 - Scope is the single Region I bitcell `cell_candidate1` (the analog partition
   while candidate selection is open, #127). `VPP`, `PL`, the logic rails and
   every other supply row are disclosed gaps in `layout/erc/README.md` (OI-1 to
-  OI-8); none is guessed. If the analog layout grows to an array, this row
-  must follow it.
+  OI-8). An array-level structural power claim needs ERC and LVS evidence
+  for the addressed array.
 - Run with `--findings-only` (no gf180mcu antenna table exists in `klt erc
   --pdk`), so the antenna verdict is `not_checked`; this is a structural
   supply/tie check, not an antenna, IR-drop or electromigration claim.
