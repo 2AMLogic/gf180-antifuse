@@ -29,9 +29,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.local/antifuse-eda
-          key: netlist-eda-ubuntu-24.04-${{ runner.arch }}-xschem-3.4.7-ngspice-47-v1
+          key: netlist-eda-ubuntu-24.04-${{ runner.arch }}-xschem-3.4.7-ngspice-47p1-v1
 
-      - name: Build xschem 3.4.7 and ngspice 47
+      - name: Build xschem 3.4.7 and ngspice 47 with its MOS capacitor fix
         if: steps.eda-cache.outputs.cache-hit != 'true'
         working-directory: ${{ runner.temp }}
         run: |
@@ -42,8 +42,12 @@ jobs:
           curl -fsSL --retry 3 https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/47/ngspice-47.tar.gz -o ngspice.tar.gz
           echo 'db5250690bc193bb2874e7a3b43d7bfc3499c882feb7fa885080434cc9a81c7c  xschem.tar.gz' | sha256sum -c -
           echo '894e649651f1838a14095e5a5439e7d3aa63e87ede14d283173fda4fcdef675f  ngspice.tar.gz' | sha256sum -c -
+          # Upstream ngspice bug 876 affects the pinned GF180 MOS capacitors with m=.
+          curl -fsSL --retry 3 https://github.com/imr/ngspice/commit/3ef069fb1f04177a153f342a32d941fc20ff047e.patch -o ngspice-bug876.patch
+          echo '4b4b1acb0e5d47d964acf9063aaabd851b4cb3ceaa7ae402b5b218b5fd81d35a  ngspice-bug876.patch' | sha256sum -c -
           tar xzf xschem.tar.gz
           tar xzf ngspice.tar.gz
+          patch -d ngspice-47 -p1 < ngspice-bug876.patch
           (cd xschem-92dd8fe5f4d5c1057489710d8a22f18fdc9d7ed0 && ./configure --prefix="$prefix" && make -j"$(nproc)" && make install)
           (cd ngspice-47 && ./configure --prefix="$prefix" --with-x=no --with-readline=no --enable-xspice --disable-debug && make -j"$(nproc)" && make install)
 
