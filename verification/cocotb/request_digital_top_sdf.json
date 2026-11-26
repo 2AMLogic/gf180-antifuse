@@ -5,6 +5,7 @@
   "hdl_toplevel": "antifuse_digital_top",
   "testbench": { "module": "test_antifuse_digital_top" },
   "pdk": { "variant": "gf180mcuD", "cell_library": "gf180mcu_fd_sc_mcu7t5v0" },
+  "env": { "ANTIFUSE_GATE_CLOCK_NS": "50" },
   "options": {
     "timescale": ["1ns", "1ps"],
     "random_seed": 1,

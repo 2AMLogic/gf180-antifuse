@@ -18,6 +18,8 @@ are the port-applicable subset of test_spi_regs.py, with the netlist's own
 elaboration constants below (ARM_TIMEOUT is the netlist's 4096, not the RTL
 request's 300) and frame rates kept inside the f_clk >= 8 x f_SCLK contract.
 """
+import os
+
 import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import ClockCycles, RisingEdge
@@ -48,7 +50,8 @@ class Bench:
         d.mosi.value = 0
         d.cs_n.value = 1
         d.sense_in.value = 0
-        cocotb.start_soon(Clock(d.clk, 10, unit="ns").start())
+        period_ns = int(os.environ.get("ANTIFUSE_GATE_CLOCK_NS", "10"))
+        cocotb.start_soon(Clock(d.clk, period_ns, unit="ns").start())
         await ClockCycles(d.clk, 4)
         d.rst_n.value = 1
         await ClockCycles(d.clk, 8)

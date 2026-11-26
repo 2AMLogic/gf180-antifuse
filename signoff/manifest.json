@@ -43,6 +43,16 @@
     "9.analog": {
       "file": "signoff/attestations/item-9-analog.json",
       "content_hash": "sha256:cb1aeea225c7bb04b37b62b1bd0143fcb32ba755e0fcb874cbbd2e2e5efff7d1"
+    },
+    "7.digital": {
+      "file": "verification/cocotb/report_digital_top_sdf.json",
+      "content_hash": "sha256:3103a1b715c4f14c416062ac5d161f69c1ab1bb7c2978c2515d37be2e81ed79d",
+      "source_hash_order": [
+        1,
+        0,
+        2
+      ],
+      "sdf_sha256": "9c28984e9baa42bb08bd5f65cc146de01a2f9f6e9c3aef066ceeac033ec46e04"
     }
   },
   "supporting_evidence": [
@@ -211,8 +221,8 @@
     {
       "file": "verification/cocotb/report_digital_top.json",
       "kind": "functional-verification",
-      "content_hash": "sha256:3b1918f54dbf236bedacac9c6f2f66c595bdae3efc341c3fa6652683b26d1e69",
-      "backs": "zero-delay gate-level klt functional-verification of the routed antifuse_digital_top netlist with PDK cell models, N=32: 21/21 tests pass (SPI registers plus row/column decoder one-hot coverage through ports only); the SDF-annotated leg fails functionally (klayout-tools#6991) so 7.digital is unmet; see rtl/README.md"
+      "content_hash": "sha256:8d2488d31aaa6ea58aa943009e0abd2b273fffc9c1cd5073c49ec28044df80c6",
+      "backs": "zero-delay gate-level klt functional-verification of the routed antifuse_digital_top netlist with PDK cell models, N=32: 21/21 tests pass (SPI registers plus row/column decoder one-hot coverage through ports only); the separate SDF-annotated report is cited under 7.digital."
     },
     {
       "file": "layout/cell_candidate1/pex/pex_report.json",

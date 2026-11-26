@@ -24,7 +24,11 @@ The input each envelope names is found the way the klt envelope families
 record it: generic attestations put a repo-scoped path object in
 `provenance.input.path`, DRC and ERC envelopes use the top-level `file`, and
 LVS envelopes use the top-level `layout`. The first present wins; the path
-is resolved from the repository root. Stdlib only.
+is resolved from the repository root. Functional reports combine Verilog source
+digests in path order. Their manifest source_hash_order indexes the recorded
+source list because KLT redacts the two external PDK paths. The repo netlist
+is rehashed locally. The declared PDK pins come from the actual simulator run.
+Stdlib only.
 
 Usage:
     scripts/check_signoff_pins.py [MANIFEST]
@@ -57,6 +61,49 @@ def _input_ref(envelope: dict) -> str | None:
         if isinstance(probe, dict) and isinstance(probe.get("path"), str):
             return probe["path"]
     return None
+
+
+def verify_routed_sdf(citation: dict, report: dict, sdf: Path | None = None) -> None:
+    """Bind the simulator's normalized SDF to the reviewed STA output digest."""
+    expected = citation.get("sdf_sha256")
+    if not isinstance(expected, str) or not re.fullmatch(r"[0-9a-f]{64}", expected):
+        raise ValueError("missing or malformed SDF pin in signoff/manifest.json")
+    reported = report.get("provenance", {}).get("sdf_sha256")
+    if reported != expected:
+        raise ValueError(f"reported SDF digest {reported} differs from the pin {expected}")
+    if sdf is not None:
+        actual = hashlib.sha256(sdf.read_bytes()).hexdigest()
+        if actual != expected:
+            raise ValueError(f"normalized SDF {sdf} hashes to {actual}, expected {expected}")
+
+
+def _functional_source_hash(root: Path, envelope: dict, order: list) -> str:
+    """Replay the producer's path-sorted multi-source hash, including PDK model pins."""
+    sources = envelope.get("environment", {}).get("sources", [])
+    if (not isinstance(sources, list) or not sources or not isinstance(order, list)
+            or any(type(i) is not int for i in order)
+            or sorted(order) != list(range(len(sources)))):
+        raise ValueError("source_hash_order must name every source exactly once")
+    digests = []
+    repo_sources = 0
+    for i in order:
+        source = sources[i]
+        if not isinstance(source, dict):
+            raise ValueError(f"source {i} is not an object")
+        digest = source.get("sha256")
+        if not isinstance(digest, str) or not re.fullmatch(r"[0-9a-f]{64}", digest):
+            raise ValueError(f"source {i} has no sha256")
+        if source.get("scope") == "repo" and isinstance(source.get("path"), str):
+            repo_sources += 1
+            actual = hashlib.sha256((root / source["path"]).read_bytes()).hexdigest()
+            if actual != digest:
+                raise ValueError(f"{source['path']} differs from its recorded source sha256")
+        elif source.get("scope") != "external" or source.get("path") is not None:
+            raise ValueError(f"source {i} has an invalid scope or path")
+        digests.append(digest)
+    if not repo_sources:
+        raise ValueError("functional report names no repo source")
+    return "sha256:" + hashlib.sha256("".join(digests).encode("ascii")).hexdigest()
 
 
 def _parts(evidence: dict) -> list[tuple[str, str, dict]]:
@@ -110,6 +157,23 @@ def _check_evidence(root: Path, manifest: dict,
         recorded = (envelope.get("provenance") or {}).get("input", {}).get("content_hash")
         if not isinstance(recorded, str):
             errs.append(f"{where}: {part['file']} records no provenance.input.content_hash")
+            continue
+        if row == "7.digital":
+            try:
+                verify_routed_sdf(part, envelope)
+            except ValueError as exc:
+                errs.append(f"{where}: {exc}")
+        if "source_hash_order" in part:
+            if envelope.get("engine") != "icarus" or not envelope.get("testbench"):
+                errs.append(f"{where}: source_hash_order requires a functional report")
+                continue
+            try:
+                digest = _functional_source_hash(root, envelope, part["source_hash_order"])
+            except (OSError, ValueError) as exc:
+                errs.append(f"{where}: {exc}")
+                continue
+            if not pin == recorded == digest:
+                errs.append(f"{where}: pin {pin}, recorded {recorded}, combined sources {digest}")
             continue
         ref = _input_ref(envelope)
         if ref is None:
