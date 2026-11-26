@@ -1,0 +1,13 @@
+f53f8514a8f3794946ee255270cc2086d12807db81494bb54c51ad516dbd0d31  arm64LW-klayout-0.30.12-macOS-Tahoe-C32-1-qt5MP-Rmp34Pmp314.dmg
+ProductName:		macOS
+ProductVersion:		26.7.2
+BuildVersion:		25G332
+arm64
+/Users/runner/work/_temp/klayout.app/Contents/MacOS/klayout: Mach-O 64-bit executable arm64
+KLayout 0.30.12
+open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7
+149b171ef157fb84105f5aeaad5344e620b471f215cbc9c55c1b829c8df9d466  array_region_ii.gds
+1fb2e54e1e1633d1c9b367b47f30bbb0ef4ff35cca3887a3c48d5dd6e0d24897  /Users/runner/work/_temp/klayout.app/Contents/MacOS/klayout
+e7c7d2597890cfcb4cf0e5312f5652051a119fb3e1cc1772a6e5c04594bc65d8  /Users/runner/.ciel/gf180mcuD/libs.tech/klayout/tech/drc/gf180mcu.drc
+f026a12c91807f846a0ad0da2966c2f7a4da8c1188fd58f5136aaf884ad19ca4  /Users/runner/.ciel/gf180mcuD/libs.tech/klayout/tech/drc/rule_decks/ldnmos.rb
+KLT exit 3
