@@ -144,6 +144,10 @@ Emitted by [`gen_array.py`](gen_array.py) (checked in; a generator rather than
 here, and guarded by [`check-array.py`](check-array.py). The `.sch`/`.sym` files
 under `array/` and `mux/` are **generated** - edit the generator, not them.
 
+The physical array includes all 1,024 cells and 128 selection pairs. Its native
+LVS, fault controls, shifter measurements and open routing violations are
+recorded with the GDS. [Addressed array layout](../layout/array_32x32/README.md)
+
 ### Structure
 
 | Piece | Source | Notes |

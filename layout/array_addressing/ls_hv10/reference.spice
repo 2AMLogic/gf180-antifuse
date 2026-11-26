@@ -1,0 +1,8 @@
+.subckt ls_hv10 IN VDDL VSS OUT OUTB VDDH
+XM1 INB IN VSS VSS nfet_03v3 L=0.28u W=2u nf=1 m=1
+XM2 INB IN VDDL VDDL pfet_03v3 L=0.28u W=4u nf=1 m=1
+XM3 OUTB IN VSS VSS nfet_10v0_asym L=0.6u W=20u nf=2 m=1
+XM4 OUT INB VSS VSS nfet_10v0_asym L=0.6u W=20u nf=2 m=1
+XM5 OUT OUTB VDDH VDDH pfet_10v0_asym L=0.6u W=8u nf=2 m=1
+XM6 OUTB OUT VDDH VDDH pfet_10v0_asym L=0.6u W=8u nf=2 m=1
+.ends
