@@ -31,8 +31,8 @@ every placement. The LVS deck supplies a placeholder capacitor value. These
 results cover physical topology. Capacitance, programming behavior and timing
 require electrical evidence. [Geometry basis](../../design/geometry-basis.json)
 
-Region II still needs three Candidate 2 split masters. Completing the array
-also requires the control interfaces, level shifters and pass gates.
+The [Region II macro](../array_region_ii/README.md) completes the physical
+cell population. The control interfaces, level shifters and pass gates remain.
 Full-array analog signoff remains open.
 
 Each new master also has a signed, extracted SPICE subcircuit and a body-biased

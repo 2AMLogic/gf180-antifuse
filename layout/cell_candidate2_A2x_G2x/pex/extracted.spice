@@ -1,0 +1,62 @@
+* extracted by klt extract --deck gf180mcu
+* parasitic model (--parasitics):
+* - capacitance: net-to-ground for every net's own (non-coupled) area/perimeter, plus net-to-net for the vertical-overlap coupling `coupling` describes below -- a coupled net pair gets a direct capacitor between their two hub nodes, not just capacitors to the deck's ground/substrate net
+* - coupling: vertical overlap (crossover) unconditionally -- where one net's conductor on an adjacent metal level sits directly over another *distinct* net's conductor, that overlap area is charged between the two nets instead of to ground (issue #760) -- plus lateral (same-layer, sidewall) coupling, but only for a net pair naming one of the caller's declared `--critical-net` nets (issue #976): facing-edge length within that layer's own minimum-spacing lookback is charged between the two nets, *additively* (not deducted from either net's substrate fringe term, unlike the vertical case -- a known simplification). Any same-layer pair with neither side named `--critical-net`, and fringe shielding in general, are still not modelled
+* - resistance: single lumped series resistance per net, distributed as a star across that net's device terminals (issue #592) -- not a per-segment, distributed RC ladder, *unless* `--distributed-rc` names this net via `--critical-net` (issue #977, Epic #709 Phase 2b): then the net's terminals are ordered along their approximate physical spread and its total R/C is broken into a chain of per-segment resistors (segment length proportional to inter-terminal distance) with a ground capacitor at each terminal node (proportional to its adjacent segment length/2), instead of one star hub -- still an approximation (terminal position is a device-placement proxy, not true per-segment routing geometry), but a strictly finer-grained one than the single-hub star
+* - frequency: quasi-static -- one frequency-independent R and C per net; no skin effect, no distributed transmission-line behavior
+* - substrate tie: 1e+12 ohm to ground -- the substrate is capacitively floating in transient analysis (DC reference only); see --substrate-tie-ohms
+.GLOBAL vsubs
+
+* cell cell_candidate2_A2x_G2x
+* pin BL
+* pin PL
+* pin VB
+* pin WL
+.SUBCKT cell_candidate2_A2x_G2x BL PL VB WL
+* device instance $1 r0 *1 6.35,1.79 cap_nmos_06v0
+X$1 \$3__t0 PL__t0 cap_nmos_06v0 c_length=2U c_width=0.7U
+* device instance $2 r0 *1 -1.17,0 nfet
+X$2 BL__t0 WL__t0 \$3__t1 VB__t0 nfet_10v0_asym L=0.6U W=8U AS=3.52P AD=3.2P
++ PS=16.88U PD=16.8U
+* device instance $3 r0 *1 1.17,0 nfet
+X$3 BL__t1 WL__t1 \$3__t2 VB__t1 nfet_10v0_asym L=0.6U W=8U AS=3.52P AD=3.2P
++ PS=16.88U PD=16.8U
+* device instance _3_t0 r0 *1 0,0 
+R_3_t0 \$3__t0 \$3 23.4703626738
+* device instance _3_t1 r0 *1 0,0 
+R_3_t1 \$3__t1 \$3 17.8250411828
+* device instance _3_t2 r0 *1 0,0 
+R_3_t2 \$3__t2 \$3 5.97129614338
+* device instance _3 r0 *1 0,0 
+C_3 \$3 vsubs 3.085456e-15
+* device instance BL_t0 r0 *1 0,0 
+RBL_t0 BL__t0 BL 0.94735
+* device instance BL_t1 r0 *1 0,0 
+RBL_t1 BL__t1 BL 0.94735
+* device instance BL r0 *1 0,0 
+CBL BL vsubs 7.46364e-16
+* device instance PL_t0 r0 *1 0,0 
+RPL_t0 PL__t0 PL 1.2125
+* device instance PL r0 *1 0,0 
+CPL PL vsubs 4.79817e-16
+* device instance VB_t0 r0 *1 0,0 
+RVB_t0 VB__t0 VB 5.8779
+* device instance VB_t1 r0 *1 0,0 
+RVB_t1 VB__t1 VB 5.8779
+* device instance VB r0 *1 0,0 
+CVB VB vsubs 4.560095e-15
+* device instance WL_t0 r0 *1 0,0 
+RWL_t0 WL__t0 WL 126.5588
+* device instance WL_t1 r0 *1 0,0 
+RWL_t1 WL__t1 WL 126.5588
+* device instance WL r0 *1 0,0 
+CWL WL vsubs 4.016182e-15
+* device instance cc__3_BL r0 *1 0,0 
+Ccc__3_BL \$3 BL 1.1215e-17
+* device instance cc__3_PL r0 *1 0,0 
+Ccc__3_PL \$3 PL 1.2396e-17
+* device instance cc__3_VB r0 *1 0,0 
+Ccc__3_VB \$3 VB 1.0625e-17
+* device instance vsubs_dctie r0 *1 0,0 
+Rvsubs_dctie vsubs 0 1e+12
+.ENDS cell_candidate2_A2x_G2x

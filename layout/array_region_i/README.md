@@ -34,9 +34,9 @@ geometry parameters; the comparison supports topology. Absolute capacitance,
 programming yield, and voltage/timing behavior require separate evidence.
 [Geometry basis](../../design/geometry-basis.json)
 
-The [Region III macro](../array_region_iii/README.md) covers columns 22–31.
-Completing the array requires three Candidate 2 split masters and Region II,
-plus the shared addressing, level shifters and pass gates. This macro is supporting work for item 2.analog. The current
+The [Region II macro](../array_region_ii/README.md) covers columns 11–21 and
+the [Region III macro](../array_region_iii/README.md) covers columns 22–31.
+Array-level addressing, level shifters and pass gates remain. This macro is supporting work for item 2.analog. The current
 Bronze signoff manifest continues to require full-array coverage.
 
 ## Reproduction

@@ -11,10 +11,6 @@
 * record, scripts/check_run3_pad_table.py re-checks each half against its
 * binding source.
 *
-* cell_candidate2_Amin_G2x has no drawn cell (#296; #299 rules on drawing
-* the Candidate 2 G2x cell at all): access literals from cell_candidate2
-* (same Amin level), capacitor from the ratified record.
-*
 * The substrate net VSS_ANALOG is the generator's placeholder for the
 * C1/C2 p-substrate tie; it is NOT a ratified name
 * (spec/supply-domains-decision.md rows 2/13/14, OI-2/OI-6). C3's n-well
@@ -63,10 +59,7 @@ XC1 CN PL cap_nmos_06v0 c_width=1.0u c_length=0.70u m=1
 .ends
 
 .subckt cell_candidate2_Amin_G2x BL WL PL VB
-* access: drawn XM1 literal (layout/cell_candidate2/lvs_reference.spice)
-* NO DRAWN CELL (#296; #299 rules on drawing the Candidate 2 G2x cell):
-* access literals from cell_candidate2 (same Amin level), capacitor
-* from the ratified record. Its absence blocks #211's LVS, not this issue.
+* access: drawn XM1 literal (layout/cell_candidate2_Amin_G2x/lvs_reference.spice)
 XM1 BL WL CN VB nfet_10v0_asym L=0.60u W=8u nf=2 m=1
 * capacitor: ratified G2x level (spec/capacitor-geometry-decision.md)
 XC1 CN PL cap_nmos_06v0 c_width=2.0u c_length=0.70u m=1

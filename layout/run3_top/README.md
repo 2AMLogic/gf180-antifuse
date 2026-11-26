@@ -1,5 +1,11 @@
 # run3_top — chip-level reference netlist and pad table
 
+The retained 31-instance GDS and its as-measured reference predate the new
+C2-Amin-G2x master. [Region II](../array_region_ii/README.md) now supplies
+it for the five pending direct-pad sites. The direct-pad assembly still
+requires placement, routing and fresh whole-chip verification of those sites.
+
+
 Generated artifacts for the run3 test chip (issue #275, part of #203):
 
 - `run3_top.spice` — chip-level SPICE reference netlist: the 8 per-geometry

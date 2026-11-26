@@ -39,6 +39,8 @@ def run_erc(gds, spec_path, top, expected_findings):
     islands = {net["name"]: net["matched_islands"] for net in report["nets"]}
     if top == "run3_top":
         expected_islands = {"VSS_ANALOG": 1, "VBW_C3": 1}
+    elif top == "array_region_ii":
+        expected_islands = {"VSS": 1}
     elif top == "array_region_iii":
         expected_islands = {"VDDH_III": 1}
     elif top.startswith("cell_candidate3"):
@@ -95,7 +97,8 @@ def main():
     layout_dir = ROOT / "layout"
     directories = [layout_dir / name for name in (
         "cell_candidate1", "cell_candidate1_A2x_G2x", "cell_candidate1_A2x_Gmin",
-        "cell_candidate1_Amin_G2x", "cell_candidate2", "cell_candidate3",
+        "cell_candidate1_Amin_G2x", "cell_candidate2", "cell_candidate2_Amin_G2x",
+        "cell_candidate2_A2x_Gmin", "cell_candidate2_A2x_G2x", "cell_candidate3",
         "cell_candidate3_Amin_G2x", "cell_candidate3_A2x_Gmin", "cell_candidate3_A2x_G2x", "run3_top")]
     with tempfile.TemporaryDirectory() as temp:
         for directory in directories:
@@ -117,6 +120,15 @@ def main():
                 check_open(gds, spec_path, tie, Path(temp))
                 if gds.stem == "run3_top" and tie["well_layer"]:
                     check_open(gds, spec_path, tie, Path(temp), single_well=True)
+
+        directory = layout_dir / "array_region_ii"
+        spec_path = directory / "supplies.json"
+        gds = directory / "array_region_ii.gds"
+        tie, = json.loads(spec_path.read_text())["ties"]
+        if tie["net"] != "VSS" or tie["tap_requires"] != ["31/0", "33/0"]:
+            raise ValueError("Region II requires P+ active contacts to VSS")
+        run_erc(gds, spec_path, gds.stem, [])
+        check_open(gds, spec_path, tie, Path(temp), single_well=True, expected_wells=704)
 
         directory = layout_dir / "array_region_iii"
         spec_path = directory / "supplies.json"

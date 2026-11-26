@@ -65,9 +65,10 @@ CELL_RE = re.compile(r"^cell_candidate(\d)(_.*)?$")
 # capacitor literals bind to spec/capacitor-geometry-decision.md through
 # the cell's own generator `--check` hash and LVS, not through run3_top.
 FALLBACK_CELLS = {"cell_candidate2_fallback"}
-# The Run 3 floorplan holds C3 at Amin. These A2x masters belong to the
-# larger 32 x 32 array. Region III checks their geometry and connectivity.
-ARRAY_ONLY_CELLS = {"cell_candidate3_A2x_Gmin", "cell_candidate3_A2x_G2x"}
+# The Run 3 sample holds C2 and C3 at Amin. The complete array also uses
+# the A2x masters. Their regional checks exercise geometry and connectivity.
+ARRAY_ONLY_CELLS = {f"cell_candidate{n}_A2x_G{cap}"
+                    for n in (2, 3) for cap in ("min", "2x")}
 
 
 def _num(token: str) -> float:
@@ -311,14 +312,9 @@ def check_geometry(netlist_text: str, decision_text: str,
             except ValueError:
                 errs.append(f"{name}: unparsable access {param} ({a} vs {b})")
 
-    # --- cell-set guard: every chip cell without a drawn counterpart must be
-    # a known no-drawn-cell point, not a silent new cell ---
-    no_drawn_expected = {"cell_candidate2_Amin_G2x"}
     unbacked = sorted(set(chip_cells) - set(drawn_cells))
-    if unbacked != sorted(no_drawn_expected):
-        errs.append(f"chip cells with no committed drawn cell: {unbacked} != "
-                    f"the expected {sorted(no_drawn_expected)} "
-                    "(#296/#299 own the missing layout)")
+    if unbacked:
+        errs.append(f"chip cells with no committed drawn cell: {unbacked}")
     return errs
 
 

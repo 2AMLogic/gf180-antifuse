@@ -110,11 +110,6 @@ ACCESS_DRAWN = {
 # pfet draws CN WL BL VB (as in every committed lvs_reference.spice).
 XM1_NODES = {"C1": "BL WL CN VB", "C2": "BL WL CN VB", "C3": "CN WL BL VB"}
 
-# Geometry point with no committed drawn cell (issue #275 Verified
-# correction 7): only its layout is missing, not its numbers -- access from
-# cell_candidate2 (same Amin level), capacitor from the ratified record.
-NO_DRAWN_CELL = {"cell_candidate2_Amin_G2x"}
-
 # --- pad-table derivation ---------------------------------------------------
 #
 # spec/program-bias-scheme-proposed-decision.md is PROPOSED, not ratified, and
@@ -212,16 +207,7 @@ def _cell_subckt(cand: str, acc: str, cap: str) -> str:
     cap_dev, levels = CAP_RATIFIED[cand]
     cw, cl = levels[cap]
     lines = [f".subckt {name} BL WL PL VB"]
-    if name in NO_DRAWN_CELL:
-        # No lvs_reference.spice of its own: cite the donor cell it borrows
-        # the access literals from, never its own non-existent path.
-        donor = cell_name(cand, acc, "Gmin")
-        lines.append(f"* access: drawn XM1 literal (layout/{donor}/lvs_reference.spice)")
-        lines.append("* NO DRAWN CELL (#296; #299 rules on drawing the Candidate 2 G2x cell):")
-        lines.append(f"* access literals from {donor} (same {acc} level), capacitor")
-        lines.append("* from the ratified record. Its absence blocks #211's LVS, not this issue.")
-    else:
-        lines.append(f"* access: drawn XM1 literal (layout/{name}/lvs_reference.spice)")
+    lines.append(f"* access: drawn XM1 literal (layout/{name}/lvs_reference.spice)")
     lines.append(f"XM1 {XM1_NODES[cand]} {dev} L={l}u W={w}u nf={nf} m=1")
     lines.append(f"* capacitor: ratified {cap} level"
                  f" (spec/capacitor-geometry-decision.md)")
@@ -275,10 +261,6 @@ def emit_netlist() -> str:
         "* until #296 lands; design/check-geometry-basis.py owns that divergence",
         "* record, scripts/check_run3_pad_table.py re-checks each half against its",
         "* binding source.",
-        "*",
-        "* cell_candidate2_Amin_G2x has no drawn cell (#296; #299 rules on drawing",
-        "* the Candidate 2 G2x cell at all): access literals from cell_candidate2",
-        "* (same Amin level), capacitor from the ratified record.",
         "*",
         f"* The substrate net {SUBSTRATE_NET} is the generator's placeholder for the",
         "* C1/C2 p-substrate tie; it is NOT a ratified name",
