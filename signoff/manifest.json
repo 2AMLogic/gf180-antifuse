@@ -53,6 +53,10 @@
         2
       ],
       "sdf_sha256": "9c28984e9baa42bb08bd5f65cc146de01a2f9f6e9c3aef066ceeac033ec46e04"
+    },
+    "8.digital": {
+      "file": "signoff/attestations/item-8-digital.json",
+      "content_hash": "sha256:14bb5035fc06aeba9eb88e1ee7dd1431d80abeb7f545101ae6a7455bfa7f7aec"
     }
   },
   "supporting_evidence": [

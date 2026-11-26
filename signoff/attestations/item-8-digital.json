@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "kind": "generic",
+  "t1_item": 8,
+  "status": "pass",
+  "summary": "Routed digital characterization across 15 PVT corners, including Fmax, area, power and SPI functional outcomes.",
+  "source": "rtl/characterization/REPORT.md",
+  "provenance": {
+    "input": {
+      "path": {
+        "path": "rtl/characterization/REPORT.md",
+        "scope": "repo"
+      },
+      "content_hash": "sha256:14bb5035fc06aeba9eb88e1ee7dd1431d80abeb7f545101ae6a7455bfa7f7aec"
+    }
+  }
+}
