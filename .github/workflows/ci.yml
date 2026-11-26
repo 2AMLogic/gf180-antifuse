@@ -62,7 +62,7 @@ jobs:
           source design/lib-pdk-root.sh
           uvx --from ciel==2.6.1 ciel enable --pdk-family gf180mcu -l gf180mcu_fd_pr "$PINNED_OPEN_PDKS"
           echo "$HOME/.local/antifuse-eda/bin" >> "$GITHUB_PATH"
-          echo "$(uv tool dir --bin)" >> "$GITHUB_PATH"
+          uv tool dir --bin >> "$GITHUB_PATH"
 
       - name: Regenerate netlists and run the seven design checks
         run: ./design/check-netlists.sh
