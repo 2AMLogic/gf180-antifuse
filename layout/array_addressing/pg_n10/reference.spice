@@ -1,0 +1,3 @@
+.subckt pg_n10 A G B VB
+XM1 A G B VB nfet_10v0_asym L=0.6u W=25u nf=2 m=1
+.ends
