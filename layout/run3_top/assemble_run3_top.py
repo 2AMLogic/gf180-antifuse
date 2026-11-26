@@ -702,8 +702,7 @@ PADRING_STRIPS = {
 }
 
 
-def padring_block(pads: list[dict], strip_id: str) -> dict:
-    strip_pads = [pad for pad in pads if PADRING_STRIPS[strip_id](pad)]
+def padring_block(strip_pads: list[dict], strip_id: str) -> dict:
     # this strip's piece of the die outline (quarter-slot template border):
     # four slim bars, one per strip, so no block ever spans the whole die
     bars = {"pads_left": [0.0, 0.0, 10.0, DIE_H_UM],
@@ -755,16 +754,17 @@ def compose_request(rows: list[dict], pads: list[dict],
     blocks = []
     order = []
     origins = {}
-    for strip_id in PADRING_STRIPS:
+    for strip_id, keep in PADRING_STRIPS.items():
+        strip_pads = [pad for pad in pads if keep(pad)]
         pads_gds = workdir / f"{strip_id}.gds"
-        draw_req = padring_block(pads, strip_id)
+        draw_req = padring_block(strip_pads, strip_id)
         r = subprocess.run(
             ["klt", "draw", "--params", json.dumps(draw_req),
              "--cell-name", strip_id, "-o", str(pads_gds), "--format", "json"],
             capture_output=True, text=True)
         if r.returncode != 0:
             sys.exit(f"klt draw failed ({r.returncode}):\n{r.stdout}{r.stderr}")
-        ports = padring_ports(pads)
+        ports = padring_ports(strip_pads)
         blocks.append({"id": strip_id,
                        "cell": {"gds_path": str(pads_gds),
                                 "cell_name": strip_id,

@@ -22,6 +22,7 @@ import hashlib
 import json
 import re
 import sys
+import tempfile
 import unittest
 import xml.etree.ElementTree as ET
 from collections import Counter
@@ -42,7 +43,15 @@ class Run3TopAssemblyTest(unittest.TestCase):
             json.loads((ROOT / "layout" / "run3_top" / "pad_table.json").read_text())
         )
         cls.rows = asm.build_placement()
-        cls.nets, cls.paths = asm.build_connectivity(cls.rows, cls.pads)
+        _, cls.paths = asm.build_connectivity(cls.rows, cls.pads)
+        with tempfile.TemporaryDirectory() as tmp, mock.patch.object(
+                asm.subprocess, "run", return_value=mock.Mock(returncode=0)):
+            request, _ = asm.compose_request(cls.rows, cls.pads, Path(tmp))
+        cls.nets = request["connectivity"]
+        cls.block_ports = {
+            block["id"]: [port["name"] for port in block["cell"]["ports"]]
+            for block in request["blocks"]
+        }
 
     def test_placement_shape(self):
         self.assertEqual(len(self.rows), 36)
@@ -93,6 +102,13 @@ class Run3TopAssemblyTest(unittest.TestCase):
                 self.assertGreaterEqual(b["x"] - a["x"], asm.PAD_SIDE_UM,
                                         f"pads overlap at y={y}")
 
+    def test_pad_ports_match_labelled_pads_on_each_strip(self):
+        for strip_id, keep in asm.PADRING_STRIPS.items():
+            with self.subTest(strip=strip_id):
+                labels = [pad["label"] for pad in self.pads
+                          if keep(pad) and pad["label"]]
+                self.assertCountEqual(self.block_ports[strip_id], labels)
+
     def test_connectivity_net_list(self):
         pl = [n for n in self.nets if n["net"].startswith("PL_")]
         bundles = [n for n in self.nets if n["net"] in asm.BUNDLE_NETS]
@@ -100,14 +116,13 @@ class Run3TopAssemblyTest(unittest.TestCase):
         self.assertEqual(len(pl), 31)
         self.assertEqual(len(bundles), 9)
         self.assertEqual(len(substrate), 1)
-        block_ports = {}
-        for block in self._blocks():
-            for port in block.get("ports", []):
-                block_ports.setdefault(block["id"], set()).add(port["name"])
         for net in self.nets:
             for pin in net["pins"]:
-                self.assertIn(pin["block"], block_ports, net["net"])
-                self.assertIn(pin["port"], block_ports[pin["block"]], net["net"])
+                self.assertIn(pin["block"], self.block_ports, net["net"])
+                self.assertIn(pin["port"], self.block_ports[pin["block"]], net["net"])
+            for leg in net.get("legs", []):
+                self.assertIn(leg["from_pin"], net["pins"], net["net"])
+                self.assertIn(leg["to_pin"], net["pins"], net["net"])
 
     def test_wl_clamps_deferred_substrate_tap_drawn(self):
         # The WL antenna remedy is evaluated but NOT drawn (deferred to the
@@ -297,19 +312,6 @@ class Run3TopAssemblyTest(unittest.TestCase):
             text.encode("utf-8"),
             (ROOT / "layout/run3_top/lvs_reference_drawn.spice").read_bytes(),
         )
-
-    def _blocks(self):
-        """The request's block list, rebuilt cheaply (no klt calls)."""
-        blocks = [{"id": sid, "ports": [{"name": p["label"]} for p in self.pads
-                                        if keep(p) and p["label"]]}
-                  for sid, keep in asm.PADRING_STRIPS.items()]
-        for row in self.rows:
-            if row["placed"]:
-                blocks.append({"id": row["name"],
-                               "ports": [{"name": p} for p in
-                                         ("BL", "WL", "PL", "VB")]})
-        blocks.append({"id": "substrate_tap_c3", "ports": [{"name": "B"}]})
-        return blocks
 
 
 if __name__ == "__main__":
