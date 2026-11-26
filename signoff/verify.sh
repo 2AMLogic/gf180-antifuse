@@ -52,7 +52,7 @@ command -v python3 >/dev/null 2>&1 || fail "python3 is not on PATH"
 
 # 1. Citation hygiene: every citation pinned, every cited file present.
 python3 - "$manifest" "$repo_root" "$committed_report" <<'PY'
-import json, os, re, sys
+import json, os, re, subprocess, sys
 
 manifest_path, repo_root, report_path = sys.argv[1], sys.argv[2], sys.argv[3]
 with open(manifest_path) as fh:
@@ -142,6 +142,10 @@ if problems:
     for problem in problems:
         print(f"signoff/verify.sh: {problem}", file=sys.stderr)
     sys.exit(1)
+
+# Recompute a cited digital characterization from its actual measurements.
+if "8.digital" in manifest.get("evidence", {}):
+    subprocess.run([sys.executable, os.path.join(repo_root, "rtl/characterization/report.py")], check=True)
 PY
 
 # 2 + 3. Re-grade and compare against the committed verdict.
