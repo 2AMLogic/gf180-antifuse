@@ -23,6 +23,7 @@ recognizes only the 320 PMOS capacitors.
 | --- | --- |
 | Native GF180D LVS, 5LM, flat, combined fingers | All 2,944 devices, 1,611 nets and 75 same-named external pins match the as-drawn reference. The full cross-reference is in `native.lvsdb.gz`. |
 | KLayout physical probe | All 459 interface nets reach their intended endpoints across 256 control macros, three regions and 75 public pins. Instance masks are XOR-compared to their source masters. |
+| Duplicate physical placements | Two separate GDS controls use a two-copy array reference for column pass gate XPC_11 or memory region Xregion_III. The probe rejects each extra placement under its original instance ID. |
 | Row-select short | A Metal5 bridge physically shorts RSEL_0/RSEL_1. Both the probe and native deck reject it. |
 | Column-select open | A Metal4 cut disconnects the CSEL_7 pin. The probe finds the open. The native circuit summary still says Match because the isolated pin is purged. The native cross-reference pairs reference CSEL_7 with no layout pin. The same-name check rejects it. |
 | One missing NMOS capacitor well | Removing one LVPWELL shape loses one native capacitor. The deck rejects the comparison after matching the other 2,943 devices. |

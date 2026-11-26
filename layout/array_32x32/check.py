@@ -60,6 +60,10 @@ def probe(path, fault=None):
     layout = db.Layout()
     layout.read(str(path))
     top = layout.top_cell()
+    for inst in top.each_inst():
+        placements = inst.cell_inst.size()
+        if placements != 1:
+            raise ValueError(f"Expected one physical placement for {inst.property(1)}, found {placements}")
     graph = db.LayoutToNetlist(top.name, layout.dbu)
     conductors = {}
     for number in METAL:
@@ -151,10 +155,16 @@ def fault_copy(source, kind, sites, dest):
         cut = db.Box(x - 400, y - 400, x + 400, y + 400)
         shapes.clear()
         shapes.insert(original - db.Region(cut))
-    else:
+    elif kind in ("XPC_11", "Xregion_III"):
+        inst, = [entry for entry in top.each_inst() if entry.property(1) == kind]
+        offset = db.Vector(0, round(3000 / layout.dbu))
+        inst.cell_inst = db.CellInstArray(inst.cell_index, inst.trans, offset, db.Vector(), 2, 1)
+    elif kind == "short":
         a, b = sites["RSEL_0"], sites["RSEL_1"]
         x = max(a.x, b.x) + round(5 / layout.dbu)
         top.shapes(layout.layer(81, 0)).insert(db.Box(x-250, min(a.y,b.y), x+250, max(a.y,b.y)))
+    else:
+        raise ValueError(f"Unknown physical control {kind}")
     options = db.SaveLayoutOptions()
     options.gds2_write_timestamps = False
     layout.write(str(dest), options)
@@ -170,6 +180,17 @@ def main():
             fault_copy(source, kind, sites, fault)
             probe(fault, kind)
             print(f"Physical {kind} control detected")
+        for ident in ("XPC_11", "Xregion_III"):
+            duplicate = Path(tmp) / (ident + ".gds")
+            fault_copy(source, ident, sites, duplicate)
+            try:
+                probe(duplicate)
+            except ValueError as exc:
+                if str(exc) != f"Expected one physical placement for {ident}, found 2":
+                    raise
+            else:
+                raise AssertionError(f"An extra physical placement escaped the probe: {ident}")
+            print(f"Duplicate placement of {ident} detected")
 
 
 if __name__ == "__main__":
