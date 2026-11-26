@@ -478,18 +478,26 @@ class CheckKltReleaseTests(unittest.TestCase):
         """Without both provenance fields there is no release to verify
         against: the check stops and says what it could not read, rather
         than compose or compare under an unverified klt."""
-        partial = json.dumps({"provenance": {"klt_version": self.release}})
-        for content in (None, partial):
-            with self.subTest(report=content):
+        valid = {"klt_version": self.release,
+                 "klt_reinstall_spec": f"klayout-tools=={self.release}"}
+        reports = [None, {"klt_version": self.release}]
+        for field in valid:
+            for value in ("", " \t", None, 42):
+                reports.append({**valid, field: value})
+        for provenance in reports:
+            with self.subTest(provenance=provenance):
                 with tempfile.TemporaryDirectory() as tmp:
-                    if content is not None:
-                        (Path(tmp) / "compose_report.json").write_text(content)
+                    if provenance is not None:
+                        (Path(tmp) / "compose_report.json").write_text(
+                            json.dumps({"provenance": provenance}))
                     with mock.patch.object(asm, "HERE", Path(tmp)):
-                        code, out, _run, compose = self.run_check(self.release)
+                        code, out, run, compose = self.run_check(
+                            FileNotFoundError("klt"))
                     self.assertNotIn(code, (None, 0))
                     self.assertIn("cannot name the recorded klt release", code)
                     self.assertIn("klt_reinstall_spec", code)
                     self.assertNotIn("drift", code.lower())
+                    run.assert_not_called()
                     compose.assert_not_called()
                     self.assertEqual(out, "")
 

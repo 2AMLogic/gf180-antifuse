@@ -143,14 +143,13 @@ python3 -I layout/run3_top/assemble_run3_top.py            # write both
 python3 -I layout/run3_top/assemble_run3_top.py --check    # byte-compare
 ```
 
-The committed artifacts are the **`klt 0.9.2`** stream
-(`compose_report.json` `provenance.klt_version`, #568): another release -- a
-development build of the same number included -- writes different bytes for
-the same request. `--check` therefore first compares the recorded release with
-the full version the `klt` on PATH reports, and stops with a "wrong klt
-release" message before composing anything, instead of reporting drift and
-advising the rewrite that would replace the committed `run3_top.gds`. Run it
-from the repository root under the recorded release:
+The committed artifacts were generated with **`klt 0.9.2`**, as recorded in
+`compose_report.json` under `provenance.klt_version`. To reproduce the check
+under that toolchain, `--check` compares the full version reported by `klt` on
+PATH with the recorded version. A mismatch, including a development suffix,
+stops the check before geometry generation. Other builds may produce identical
+or different bytes for the same request. Run the pinned check from the repository
+root.
 
 ```sh
 uvx --from klayout-tools==0.9.2 python -I layout/run3_top/assemble_run3_top.py --check

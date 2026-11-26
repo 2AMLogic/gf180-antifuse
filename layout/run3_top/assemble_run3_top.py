@@ -1070,6 +1070,10 @@ def recorded_klt_release() -> tuple[str, str]:
     report = HERE / "compose_report.json"
     try:
         provenance = json.loads(report.read_text())["provenance"]
+        for field in ("klt_version", "klt_reinstall_spec"):
+            value = provenance[field]
+            if not isinstance(value, str) or not value.strip():
+                raise ValueError(f"{field} must be a nonblank string")
         return provenance["klt_version"], provenance["klt_reinstall_spec"]
     except (OSError, ValueError, KeyError, TypeError) as e:
         sys.exit(f"cannot name the recorded klt release: --check reads it from "
@@ -1093,13 +1097,9 @@ def klt_version_on_path() -> str:
 
 
 def check_klt_release() -> None:
-    """``--check``'s release guard (#568): exit before anything is composed
-    unless the ``klt`` on PATH reports exactly the release the committed
-    compose report records. The committed artifacts are that release's
-    stream; under any other -- a development build of the same number
-    included -- the byte comparison would report drift and advise the rewrite
-    that replaces the committed ``run3_top.gds`` every sign-off report's
-    provenance pins."""
+    """Require the recorded klt release to reproduce the artifact check under
+    the toolchain that generated the committed files (#568). Other builds
+    may produce identical or different bytes for the same request."""
     version, spec = recorded_klt_release()
     found = klt_version_on_path()
     if found == version:
