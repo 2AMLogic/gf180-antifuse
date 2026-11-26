@@ -23,15 +23,12 @@ from harness import corners as C  # noqa: E402
 from harness import numfmt as NF  # noqa: E402
 from harness.modload import load_module  # noqa: E402
 
-# model.py is loaded under the fixed unique name run_experiment.py uses, so
-# the library exists once per process (one BenchResult identity, one V_bd
-# override global) whether this module is reached through the CLI or alone.
+# Reuse the current runner's model, or load one when the renderer is used alone.
 M = sys.modules.get("sim_cb_model") or load_module(THIS_DIR / "model.py", "sim_cb_model")
 
-# The #74 convergence-record renderer lives in render_conv.py (loaded once under a fixed unique
-# name); its public names are re-exported here so they stay reachable through this module and
-# the run_experiment.py facade.
-_CONV = sys.modules.get("sim_cb_render_conv") or load_module(THIS_DIR / "render_conv.py", "sim_cb_render_conv")
+# Each runner loads a fresh model. Load the convergence renderer alongside
+# this renderer so its re-exported functions bind to the same model.
+_CONV = load_module(THIS_DIR / "render_conv.py", "sim_cb_render_conv")
 ORIGINAL_TRIGGER_RECORDS = _CONV.ORIGINAL_TRIGGER_RECORDS
 CELL_QUANTITIES = _CONV.CELL_QUANTITIES
 conv_ok = _CONV.conv_ok
