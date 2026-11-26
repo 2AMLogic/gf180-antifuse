@@ -1,28 +1,23 @@
 # wafer.space Run 3 precheck: what the public sources establish
 
-Issue #338, step 1 (the buildable half). Step 2 — the conversation with
-wafer.space and the PDK maintainers — is operator-only and **has not
-happened**: nothing below reflects any answer from wafer.space or the PDK
-maintainers, and no outbound message was sent or drafted (#338 AC8). This
-note is evidence with a verdict, not a decision; the scoped `spec/` exception
-and its decision record belong to #299.
+Issue #338 tracks the wafer.space precheck evidence and the operator's
+conversation with wafer.space and the PDK maintainers. This note records
+the public tool and local measurements for step 1. The operator owns step 2,
+including slot availability. The internal exception is recorded under #299.
 
-**Verdict (AC6):**
-
-> **Would reject.** Run 3's precheck, as publicly documented at the pinned
-> revisions below, would fail on the 20 `nfet_10v0_asym`-internal findings
-> (`CO.4` x16, `DF.6_MV` x2, `PL.4_MV` x2, measured 2026-11-14 at `feb788e1`,
-> `layout/README.md`): its only gating DRC is the PDK's own native KLayout
-> runset — the same runset that reports those rules — run with violations
-> fatal by default and no waiver or exclusion mechanism anywhere in the
-> chain. Per #338 AC6 this routes to the operator (`loom:operator`), well
-> before the 2026-12-16 submission deadline (S10). Whether wafer.space
-> accepts the unmodified PCell as drawn is exactly what step 2 must settle;
-> this note claims nothing beyond the public material.
+**Verdict (AC6).** The public Run 3 KLayout DRC stage would reject
+Candidate 2 as drawn. On the deck selected by the published precheck, the
+unmodified `nfet_10v0_asym` produces all 20 previously tracked findings
+plus one `MDN.10c`. The stage counts each finding as an error (S5/S6).
+The bare-capacitor fallback removes those 21 device findings. Both cell
+streams still fail the separate database-unit rule. See the replay below
+for cell and deck identities. December 16 is the Run 3 deadline if space
+is obtained (#203).
 
 ## Sources
 
-All reads below are **2026-11-16**. Each entry pins the revision read; the
+The original source review was **2026-11-16**. The deck pins and KLayout
+DRC settings in S2/S4/S9 were rechecked **2026-11-25**. Each entry pins the revision read; the
 precheck and its inputs are updated between runs (the repository's own
 history shows PDK/LibreLane bumps, S4/S3), so **every answer here is
 revision-bound and must be re-read against the then-current precheck before
@@ -108,41 +103,24 @@ KLAYOUT_DRC_RUNSET = $PDK_ROOT/$PDK/libs.tech/klayout/tech/drc/gf180mcu.drc
 KLAYOUT_DRC_OPTIONS = {variant: $PDK, decks: "all,-antenna,-density"}
 ```
 
-So the precheck's KLayout DRC is the PDK's **own native runset** — the same
-one this block's cross-check ran (`layout/README.md`), with the precheck's
-`decks` override (S2) replacing the default.
+The precheck runs the PDK's native KLayout runset, with the deck selection
+in S2 overriding the default. S9 identifies the source revision of that
+runset.
 
-**S9.** The runset itself: `fossi-foundation/globalfoundries-pdk-libs-gf180mcu_fd_pv`,
-`klayout/drc/` — the deck source open-pdks stages (S4/S8; open-pdks
-`gf180mcu/Makefile.in` clones it as `PDK_LIB_PV` and copies
-`klayout/drc/*` into the installed `tech/drc`). Read at PV HEAD
-`6290c6342fdb` (2026-11-02, "Merge pull request #42 ... ldnmos-fixes"):
+**S9.** The precheck's open-pdks build `792ef670` selects process-verification
+(PV) commit `a561909c667ce1e8485313f5d280a7014f524e49` for
+`gf180mcu_fd_pv`. Its Makefile reads the concrete commit from the manifest,
+fetches the repository at that revision, and copies `klayout/drc/*` into
+the installed PDK. [PDK manifest](https://github.com/fossi-foundation/open-pdks/blob/792ef67037d74c8c51811eab3ce23cf793491296/gf180mcu/gf180mcu.json#L105)
+· [Fetch and install recipe](https://github.com/fossi-foundation/open-pdks/blob/792ef67037d74c8c51811eab3ce23cf793491296/gf180mcu/Makefile.in)
 
-- `options.rb`: `decks` is a comma list with `-` exclusions; `all` selects
-  every registered deck. `VARIANTS` maps gf180mcuA..F to `metal_top` /
-  `mim_option` / `metal_level` only — **BEOL stack and MIM option**; no FEOL
-  rule depends on the variant.
-- `rule_decks/contact.rb`: rule `CO.4` (`CO.4_comp_overlap`, deck tags `all
-  feol contact`) outputs "CO.4 : COMP overlap of contact. : 0.07µm".
-- `rule_decks/comp.rb`: `DF.6_MV` (`df_6_mv`, tags `all feol comp`), 0.4 µm.
-- `rule_decks/poly2.rb` (whole module tags `all feol poly2`): `PL.4_MV`,
-  0.22 µm.
-
-Local cross-check (repo-internal, read 2026-11-16): the installed decks at
-`~/.ciel/gf180mcuA` and `~/.ciel/gf180mcuD` (this repo's pinned open-pdks
-build) are **byte-identical A vs D** (`diff -r` over
-`libs.tech/klayout/tech/drc` reports no differences). The installed tree
-does differ from PV HEAD (S9) in more than the three rules' files —
-`comp.rb`, `contact.rb`, `density.rb`, `dummy_comp.rb`, `geom.rb`,
-`poly2.rb` and the `testing/` fixtures all differ — but **none of those
-differences touch the three rules**. Within the files that hold them the
-changes are `CO.5a`/`CO.5b` derivations, a `DF.11` derivation rewrite, a
-`PL.5a_LV` report-string correction, and marker-exclusion refinements
-(`mvsd`/`mvpsd`/`otp_mk`/`ymtp_mk`/`sramcore`) around
-`DF.6_MV`/`PL.4_LV`/`PL.4_MV`/`PL.5a_MV`/`PL.5b_MV`; `CO.4`, `DF.6_MV` and
-`PL.4_MV` keep their presence, deck tags and thresholds in both trees. The
-`nfet_10v0_asym` PCell carries none of those markers (its 20 findings were
-reported without them; `layout/README.md`).
+At this PV revision, `klayout/drc/options.rb` selects decks by tag.
+`contact.rb`, `comp.rb` and `poly2.rb` register `CO.4`, `DF.6_MV` and
+`PL.4_MV` respectively in the front-end decks. The newer upstream fix at
+`6290c6342fdbf2849179bda6d345c72ed15b285b` changes which edges are
+included for the latter two rules. Their thresholds stay the same, but their
+findings on this PCell change. [Public shuttle PV deck](https://github.com/fossi-foundation/globalfoundries-pdk-libs-gf180mcu_fd_pv/tree/a561909c667ce1e8485313f5d280a7014f524e49/klayout/drc)
+· [Upstream change](https://github.com/fossi-foundation/globalfoundries-pdk-libs-gf180mcu_fd_pv/pull/42)
 
 **S10.** wafer.space public site, read 2026-11-16: homepage states the Run 3
 submission deadline **16 December 2026 AoE**; the technology page's flow is
@@ -164,6 +142,40 @@ logs, no DRC results, no claims about passing or PCell findings. It contains
 P&R/template-style chip tops; nothing in it documents an analog-PCell
 precedent either way.
 
+## Cell replay on the public shuttle deck (2026-11-25)
+
+KLayout 0.30.12 ran the precheck's native DRC stage selection against the
+individual cell layouts in design commit `55d8a6ce`. Each table row counts
+items in the XML report by rule and owning cell.
+
+| Cell | PV revision | Findings inside `nfet_10v0_asym` | Cell-top findings |
+|---|---|---|---|
+| Candidate 2 | public pin `a561909c` | CO.4 ×16, DF.6_MV ×2, PL.4_MV ×2, MDN.10c ×1 | DBU ×1 |
+| Candidate 2, same GDS | upstream fix `6290c634` | CO.4 ×16, MDN.10c ×1 | DBU ×1 |
+| Bare-capacitor fallback | public pin `a561909c` | 0 (access device omitted) | DBU ×1 |
+
+`MDN.10c` checks POLY2 extension beyond COMP in the field. The report
+locates its edge at (0.27, −1.813) to (0.27, 1.813) µm in
+`nfet_10v0_asym`. The fallback still hits the database-unit rule tracked
+in #448. These cell results cover one stage. Chip routing, density,
+antenna, and the hosted submission service require separate evidence.
+
+To reproduce, use a checkout of the PV revision in the table as `$pv` and
+run from this design repository. Set `top` to `cell_candidate2` or
+`cell_candidate2_fallback`, and `out` to an existing scratch directory.
+
+```sh
+git show "55d8a6ce:layout/$top/$top.gds" > "$out/$top.gds"
+klayout -b -r "$pv/klayout/drc/gf180mcu.drc" \
+  -rd input="$out/$top.gds" -rd topcell="$top" -rd report="$out/$top.lyrdb" \
+  -rd variant=gf180mcuD -rd decks=all,-antenna,-density,-cup -rd workers=1
+```
+
+The Candidate 2 GDS SHA-256 is
+`5cb4a64fa103f2b698aeaffedddfc28405931e6afbfec8f21cf8b90678462e7a`.
+The fallback GDS SHA-256 is
+`92b431518b22a3c8067b31442b2c91792df72b9358bb5362b111121a994f7a16`.
+
 ## Answers
 
 ### Does the precheck enforce CO.4, DF.6_MV, PL.4_MV? (AC2, per rule)
@@ -175,10 +187,8 @@ all three rules are registered under decks tagged `all` and `feol` (S9:
 `CO.4` in `contact`, `DF.6_MV` in `comp`, `PL.4_MV` in `poly2`), and
 `antenna`/`density`/`cup` are none of these. Each rule therefore **runs and
 reports**, its count lands unfiltered in `klayout__drc_error__count` (S5),
-and any non-zero count fails the flow (S6). This deck is the same native
-runset that produced the 20 findings this block measured at `gf180mcuA`
-(`layout/README.md`) — same rules, same values (S9 vs repo-internal
-cross-check).
+and any non-zero count fails the flow (S6). The cell replay above reproduces all 20 of the findings originally
+measured at `gf180mcuA` (#338) and identifies the additional LDNMOS rule.
 
 For magic DRC: the stage runs, but it **cannot reject** — the precheck sets
 `ERROR_ON_MAGIC_DRC: False` (S2/S6). What magic's own gf180mcu rule set
@@ -190,13 +200,11 @@ the stage cannot fail the submission.
 
 ### The two discrepancies (AC3)
 
-- **PDK variant (gf180mcuD vs gf180mcuA): immaterial for these three rules.**
-  The precheck runs `gf180mcuD` only (hard exit otherwise, S2). Variants
-  differ only in metal stack and MIM option (S9 `options.rb`); all three
-  findings are FEOL rules, invariant across variants; the installed A and D
-  deck trees are byte-identical (S9). Caveat: this compares deck *content*;
-  the precheck's pinned build could carry a different deck revision — see
-  Caveats.
+- **PDK variant.** The precheck requires `gf180mcuD` (S2). The design's
+  earlier diagnostic used `gf180mcuA`. The public-deck replay uses D and
+  reports all three rules on this PCell. The comparison in #523 uses A and
+  independently confirms that the upstream fix clears DF.6_MV and PL.4_MV.
+
 - **DRC engine (magic):** magic DRC is a second engine this block has never
   run (verified 2026-11-16 by the curation: no magic DRC anywhere in the
   repo). It runs in the precheck but is non-gating (S2/S6), so its behavior
@@ -238,12 +246,10 @@ What the sources do **not** say:
   2026-11-16; the deployed precheck revision is not publicly pinned. This
   note's verdict is about the public tool; only step 2 can confirm what the
   platform will enforce in December 2026.
-- **The deck at the precheck's pinned build.** The open-pdks commit is
-  pinned (S4) but the deck inside comes from the PV sources fetched at
-  build time; the PV HEAD read (S9) still reports all three rules
-  identically, and the local-install diff shows no change to them — but a
-  future PV or precheck revision can change the answer. **Re-read S1, S2,
-  S4 and S9 against the then-current revisions before 2026-12-16.**
+- **Future revisions.** The public sources identify the current deck (S4/S9).
+  Recheck those pins and the S2 settings if the precheck changes before
+  submission. The local cell measurements apply to the revisions above.
+
 - **Magic's gf180mcu rule set.** Whether magic would report these three
   conditions, in its own naming, is not established by any source read
   (S6/S9 are KLayout-side). Unsourced.
