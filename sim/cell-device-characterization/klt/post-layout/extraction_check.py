@@ -26,10 +26,13 @@ def _bare(h):
 
 def signed_connectivity(reference: str, extracted: str) -> list[str]:
     """Check signed GF180 capacitor pins after collapsing extracted parasitic resistors."""
-    def devices(netlist):
+    def parse_cell(netlist):
+        ports = set()
         caps, fets = [], []
         for line in netlist.lower().splitlines():
             words = line.split()
+            if words[:1] == [".subckt"]:
+                ports.update(words[2:])
             if not words or not words[0].startswith("x"):
                 continue
             if len(words) >= 4 and words[3].startswith("cap_"):
@@ -41,7 +44,7 @@ def signed_connectivity(reference: str, extracted: str) -> list[str]:
                 caps.append((words[3], size, words[1:3]))
             elif len(words) >= 6 and words[5].startswith(("nfet_", "pfet_")):
                 fets.append((words[5], words[1:5]))
-        return caps, fets
+        return ports, caps, fets
 
     graph = defaultdict(set)
     for line in extracted.lower().splitlines():
@@ -59,8 +62,10 @@ def signed_connectivity(reference: str, extracted: str) -> list[str]:
                 pending.append(adjacent)
         return seen
 
-    ref_caps, ref_fets = devices(reference)
-    caps, fets = devices(extracted)
+    ref_ports, ref_caps, ref_fets = parse_cell(reference)
+    ports, caps, fets = parse_cell(extracted)
+    if ports != ref_ports:
+        return ["extracted cell ports differ from reference"]
     if not ref_caps or len(caps) != len(ref_caps):
         return ["signed MOS capacitor count differs from reference"]
     # The sole schematic C2 LDMOS represents the two outer access fingers.
@@ -72,22 +77,24 @@ def signed_connectivity(reference: str, extracted: str) -> list[str]:
         if len(pairs) != 1:
             return [f"expected one signed {model} with dimensions {size}"]
         gate, plate = map(connected, pairs[0])
-        if gate & plate or ref_pins[1] not in plate:
+        if gate & plate or plate & ports != {ref_pins[1]}:
             return [f"{model}: capacitor body plate does not exclusively reach {ref_pins[1]}"]
         if not ref_fets:  # Bare probe: two private gates and one shared BL.
-            if gate & {"pl_gmin", "pl_g2x", "vb", "bl"} != {ref_pins[0]}:
+            if gate & ports != {ref_pins[0]}:
                 return [f"{model}: private gate does not exclusively reach {ref_pins[0]}"]
             continue
-        if gate & {"bl", "wl", "pl", "vb"}:
+        if gate & ports:
             return [f"{model}: storage gate shorted to a cell port"]
         fet_model, ref_fet_pins = ref_fets[0]
         for extracted_model, pins in fets:
             if extracted_model != fet_model:
                 return ["access model differs from reference"]
             for target, pin in zip(ref_fet_pins, pins):
-                reaches_target = pin in gate if target == ref_pins[0] else target in connected(pin)
-                if not reaches_target:
-                    return [f"{fet_model}: access pin does not reach {target}"]
+                if target == ref_pins[0]:  # CN is private to the capacitor and access finger(s).
+                    if pin not in gate:
+                        return [f"{fet_model}: access pin does not reach {target}"]
+                elif connected(pin) & ports != {target}:
+                    return [f"{fet_model}: access pin does not exclusively reach {target}"]
     return []
 
 

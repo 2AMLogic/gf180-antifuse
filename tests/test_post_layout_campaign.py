@@ -29,11 +29,20 @@ C = load_module(PL / "run_post_layout_campaign.py", "run_post_layout_campaign")
 
 
 class ExtractionGate(unittest.TestCase):
-    def _scratch(self):
+    def _scratch(self, candidate=1):
         t = Path(tempfile.mkdtemp())
         self.addCleanup(shutil.rmtree, t)
-        shutil.copytree(REPO / "layout" / "cell_candidate1", t / "layout" / "cell_candidate1")
+        cell = Path("layout") / f"cell_candidate{candidate}"
+        shutil.copytree(REPO / cell, t / cell)
         return t
+
+    def _write_rehashed_extraction(self, pex, text):
+        netlist = pex / "extracted.spice"
+        netlist.write_text(text)
+        report = pex / "pex_report.json"
+        data = json.loads(report.read_text())
+        data["extraction"]["netlist_sha256"] = hashlib.sha256(netlist.read_bytes()).hexdigest()
+        report.write_text(json.dumps(data))
 
     def test_committed_extractions_usable(self):
         for cell in sorted((REPO / "layout").glob("cell_candidate*")):
@@ -49,12 +58,24 @@ class ExtractionGate(unittest.TestCase):
         words = lines[idx].split()
         words[1], words[2] = words[2], words[1]
         lines[idx] = " ".join(words) + "\n"
-        netlist.write_text("".join(lines))
-        report = d / "pex_report.json"
-        data = json.loads(report.read_text())
-        data["extraction"]["netlist_sha256"] = hashlib.sha256(netlist.read_bytes()).hexdigest()
-        report.write_text(json.dumps(data))
+        self._write_rehashed_extraction(d, "".join(lines))
         self.assertIn("capacitor body plate", " ".join(check_extraction(t, 1)))
+
+    def test_shorted_public_ports_fail_even_with_new_report_hash(self):
+        for candidate, a, b, finding in (
+            (1, "PL", "BL", "capacitor body plate"),
+            (2, "PL", "WL", "capacitor body plate"),
+            (3, "PL", "VB", "capacitor body plate"),
+            ("2_fallback", "BL", "VB", "capacitor body plate"),
+            (1, "WL", "VB", "access pin"),
+        ):
+            with self.subTest(candidate=candidate, ports=(a, b)):
+                t = self._scratch(candidate)
+                pex = t / "layout" / f"cell_candidate{candidate}" / "pex"
+                netlist = (pex / "extracted.spice").read_text()
+                start, end = netlist.rsplit(".ENDS", 1)
+                self._write_rehashed_extraction(pex, f"{start}Rshort {a} {b} 1m\n.ENDS{end}")
+                self.assertIn(finding, " ".join(check_extraction(t, candidate)))
 
     def test_shorted_private_probe_gates_fail(self):
         d = REPO / "layout/cell_candidate2_fallback"
