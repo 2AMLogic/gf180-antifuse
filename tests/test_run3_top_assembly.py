@@ -18,6 +18,7 @@ derived tables against the committed sources they must agree with.
   5. the routing planes: no two bundle nets share a plane where their
      bounding boxes overlap (BL metal4 / WL metal3 / VB metal2 / PL metal5).
 """
+import ast
 import hashlib
 import json
 import re
@@ -109,6 +110,45 @@ class Run3TopAssemblyTest(unittest.TestCase):
                           if keep(pad) and pad["label"]]
                 self.assertCountEqual(self.block_ports[strip_id], labels)
 
+    def _bundle_patch_centres(self, pads):
+        # x centre of each bundle landing rect in the fixup script's rect
+        # list, by net: the 31 plate-pin rects come first, then one per
+        # BUNDLE_NETS entry in its iteration order.
+        rows = asm.build_placement()
+        script = asm.mt1_fixup_script(Path("unused.gds"), rows, pads)
+        loop = next(line for line in script.splitlines()
+                    if line.startswith("for x0, y0, x1, y1 in "))
+        rects = ast.literal_eval(loop[len("for x0, y0, x1, y1 in "):-1])
+        placed = sum(1 for r in rows if r["placed"])
+        self.assertEqual(len(rects), placed + len(asm.BUNDLE_NETS))
+        return {net: (x0 + x1) / 2.0 for net, (x0, _y0, x1, _y1)
+                in zip(asm.BUNDLE_NETS, rects[placed:])}
+
+    def test_bundle_landing_patches_are_centred_on_their_pads(self):
+        # Each bundle landing patch takes its x from the pad record its net
+        # is labelled on (BOTTOM_PAD_X through build_pads); BUNDLE_NETS holds
+        # no pad coordinate of its own.
+        by_label = {p["label"]: p for p in self.pads if p["label"]}
+        for net, centre in self._bundle_patch_centres(self.pads).items():
+            self.assertEqual(centre, by_label[net]["x"], net)
+
+    def test_moved_bottom_pad_carries_its_landing_patch(self):
+        # Issue #563: a bottom-edge floorplan edit is one change to
+        # BOTTOM_PAD_X. Moving L37 (BL_C1_Amin) in memory moves its drawn
+        # pad and its landing patch together; the other eight stay put.
+        pad_table = json.loads(
+            (ROOT / "layout" / "run3_top" / "pad_table.json").read_text())
+        before = self._bundle_patch_centres(self.pads)
+        moved_x = asm.BOTTOM_PAD_X["L37"] + 5.0
+        with mock.patch.dict(asm.BOTTOM_PAD_X, {"L37": moved_x}):
+            moved = asm.build_pads(pad_table)
+            after = self._bundle_patch_centres(moved)
+        self.assertEqual([p["x"] for p in moved if p["pad"] == "L37"],
+                         [moved_x])
+        self.assertEqual(after["BL_C1_Amin"], moved_x)
+        del after["BL_C1_Amin"], before["BL_C1_Amin"]
+        self.assertEqual(after, before)
+
     def test_connectivity_net_list(self):
         pl = [n for n in self.nets if n["net"].startswith("PL_")]
         bundles = [n for n in self.nets if n["net"] in asm.BUNDLE_NETS]
@@ -143,7 +183,7 @@ class Run3TopAssemblyTest(unittest.TestCase):
         taps = [p for p in substrate["pins"] if p["block"] == "substrate_tap_c3"]
         self.assertEqual(len(taps), 1)
         branch = asm.c3_tap_branch(self.rows)
-        _role, trunk_x, _pad_x, _ca = asm.BUNDLE_NETS["WL_C3_Amin"]
+        _role, trunk_x, _ca = asm.BUNDLE_NETS["WL_C3_Amin"]
         c3_top = max(p[1] for r, p in asm.instance_ports(self.rows, "WL")
                      if r["origin"][0] == asm.COL_X_RIGHT)
         self.assertGreater(branch["tap_x"], trunk_x)
@@ -156,7 +196,7 @@ class Run3TopAssemblyTest(unittest.TestCase):
 
     def test_bundle_planes_do_not_share_crossing_paths(self):
         planes = {}
-        for net, (role, _tx, _px, _ca) in asm.BUNDLE_NETS.items():
+        for net, (role, _tx, _ca) in asm.BUNDLE_NETS.items():
             planes.setdefault(role, set()).add(net)
         self.assertEqual(planes.get("metal4"),
                          {"BL_C1_Amin", "BL_C1_A2x", "BL_C2_Amin", "BL_C3_Amin"})
