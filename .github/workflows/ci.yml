@@ -1,12 +1,12 @@
 name: CI
 
-# Minimal PR-blocking pipeline for this repo. The only checks that exist here
-# today are the design/ netlist checks — see design/check-netlists.sh and
-# package.json's "check:ci" script, which this workflow runs verbatim so a
-# local run and a CI run mean the same thing.
-
 on:
   pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
@@ -15,37 +15,54 @@ concurrency:
 jobs:
   check:
     name: design netlist checks
-    # This repo is PRIVATE: GitHub-hosted `ubuntu-latest` is billed, not a free
-    # fallback, and a billing failure kills the job silently at startup with no
-    # test output. Route same-repo PRs to the self-hosted runner (which also
-    # carries the gf180mcuD PDK + xschem/ngspice this check needs); only an
-    # external/fork PR (where the self-hosted runner cannot be trusted with
-    # untrusted code) falls back to ubuntu-latest.
-    runs-on: ${{ (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && fromJSON('["self-hosted","heavy"]') || 'ubuntu-latest' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
     steps:
-      - name: Check out
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      # This job's own log is not readable from here (the forge App
-      # installation lacks Actions:read on this repo, so
-      # `actions/jobs/<id>/logs` 403s for every agent). Check-run
-      # *annotations*, unlike job logs, don't need that permission — emitting
-      # them via the `::notice::`/`::error::` workflow commands is the only
-      # way a failure's actual cause reaches anyone diagnosing this repo
-      # without direct runner access.
-      - name: Diagnose toolchain environment
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Check repository, characterization and signoff evidence
         run: |
-          : "${PDK_ROOT:=${HOME}/.volare}"
-          echo "::notice::PATH=${PATH}"
-          echo "::notice::HOME=${HOME}"
-          echo "::notice::PDK_ROOT=${PDK_ROOT}"
-          echo "::notice::xschem=$(command -v xschem || echo 'NOT FOUND')"
-          echo "::notice::ngspice=$(command -v ngspice || echo 'NOT FOUND')"
-          if [[ -d "${PDK_ROOT}/gf180mcuD/libs.tech/ngspice" ]]; then
-            echo "::notice::gf180mcuD models found at ${PDK_ROOT}/gf180mcuD/libs.tech/ngspice"
-          else
-            echo "::error::gf180mcuD models NOT found at ${PDK_ROOT}/gf180mcuD/libs.tech/ngspice"
-          fi
+          python -m pip install uv
+          npm run check:ci
+          python -m unittest discover -s sim/characterization-report/tests
+          ./signoff/verify.sh
 
-      - name: Run repo checks (same command as package.json's check:ci)
+      - name: Restore schematic and simulation tools
+        id: eda-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/antifuse-eda
+          key: netlist-eda-ubuntu-24.04-${{ runner.arch }}-xschem-3.4.7-ngspice-47-v1
+
+      - name: Build xschem 3.4.7 and ngspice 47
+        if: steps.eda-cache.outputs.cache-hit != 'true'
+        working-directory: ${{ runner.temp }}
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends bison flex libcairo2-dev libx11-dev libxcb1-dev libxpm-dev libxrender-dev tcl-dev tk-dev
+          prefix="$HOME/.local/antifuse-eda"
+          curl -fsSL --retry 3 https://codeload.github.com/StefanSchippers/xschem/tar.gz/92dd8fe5f4d5c1057489710d8a22f18fdc9d7ed0 -o xschem.tar.gz
+          curl -fsSL --retry 3 https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/47/ngspice-47.tar.gz -o ngspice.tar.gz
+          echo 'db5250690bc193bb2874e7a3b43d7bfc3499c882feb7fa885080434cc9a81c7c  xschem.tar.gz' | sha256sum -c -
+          echo '894e649651f1838a14095e5a5439e7d3aa63e87ede14d283173fda4fcdef675f  ngspice.tar.gz' | sha256sum -c -
+          tar xzf xschem.tar.gz
+          tar xzf ngspice.tar.gz
+          (cd xschem-92dd8fe5f4d5c1057489710d8a22f18fdc9d7ed0 && ./configure --prefix="$prefix" && make -j"$(nproc)" && make install)
+          (cd ngspice-47 && ./configure --prefix="$prefix" --with-x=no --with-readline=no --enable-xspice --disable-debug && make -j"$(nproc)" && make install)
+
+      - name: Install the netlist exporter and pinned GF180MCU models
+        run: |
+          # design/regen-netlists.sh uses --output-dir, which first appeared
+          # after release 0.9.2. Use the commit recorded in signoff/README.md.
+          uv tool install 'git+https://github.com/2AMLogic/klayout-tools.git@83764a3c6b6f38478e59d36de9a2df60d5236122'
+          source design/lib-pdk-root.sh
+          uvx --from ciel==2.6.1 ciel enable --pdk-family gf180mcu -l gf180mcu_fd_pr "$PINNED_OPEN_PDKS"
+          echo "$HOME/.local/antifuse-eda/bin" >> "$GITHUB_PATH"
+          echo "$(uv tool dir --bin)" >> "$GITHUB_PATH"
+
+      - name: Regenerate netlists and run the seven design checks
         run: ./design/check-netlists.sh
