@@ -166,26 +166,27 @@ PIN_LADDER_CLEAR_UM = 3.3  # pad-leg run y sits this far below the lowest pin
 PL_ROUTE_WIDTH_UM = 5.0
 PAD_ROUTE_PORT_WIDTH_UM = 5.0  # port width drives the own-block escape margin
 
-# Shared-net trunk x per bundle net (um) and its pad position on the bottom
-# edge. Physical mapping of L37..L45 (pad id -> bottom-edge centre x):
-#   L37 BL_C1_Amin 540 | L38 BL_C1_A2x 450 | L39 BL_C2_Amin 360
-#   L40 BL_C3_Amin 760 | L41 WL_C1_Amin 270 | L42 WL_C1_A2x 180
-#   L43 WL_C2_Amin  90 | L44 WL_C3_Amin 880 | L45 VBW_C3 640
+# Shared-net trunk x per bundle net (um). Each net lands on the bottom-edge
+# pad labelled with its signal; the pad's position is read from the drawn pad
+# records (BOTTOM_PAD_X), never restated here. Pad id -> net:
+#   L37 BL_C1_Amin | L38 BL_C1_A2x | L39 BL_C2_Amin
+#   L40 BL_C3_Amin | L41 WL_C1_Amin | L42 WL_C1_A2x
+#   L43 WL_C2_Amin | L44 WL_C3_Amin | L45 VBW_C3
 # Left-driven groups connect their trunk at the group's lowest pin; the C3
 # trunks (right column) are the pads' own verticals rising to the group's
 # highest pin. Trunk x per metal keeps same-plane paths keep-clear (the
 # constructor asserts every pair below).
 BUNDLE_NETS = {
-    # signal: (route role, trunk x, pad centre x, connects-at)
-    "BL_C1_Amin": ("metal4", 615.0, 540.0, "low"),
-    "BL_C1_A2x": ("metal4", 615.0, 450.0, "low"),
-    "BL_C2_Amin": ("metal4", 588.0, 360.0, "low"),
-    "BL_C3_Amin": ("metal4", 760.0, 760.0, "high"),
-    "WL_C1_Amin": ("metal3", 617.0, 270.0, "low"),
-    "WL_C1_A2x": ("metal3", 617.0, 180.0, "low"),
-    "WL_C2_Amin": ("metal3", 586.0, 90.0, "low"),
-    "WL_C3_Amin": ("metal3", 880.0, 880.0, "high"),
-    "VBW_C3": ("metal2", 640.0, 640.0, "high"),
+    # signal: (route role, trunk x, connects-at)
+    "BL_C1_Amin": ("metal4", 615.0, "low"),
+    "BL_C1_A2x": ("metal4", 615.0, "low"),
+    "BL_C2_Amin": ("metal4", 588.0, "low"),
+    "BL_C3_Amin": ("metal4", 760.0, "high"),
+    "WL_C1_Amin": ("metal3", 617.0, "low"),
+    "WL_C1_A2x": ("metal3", 617.0, "low"),
+    "WL_C2_Amin": ("metal3", 586.0, "low"),
+    "WL_C3_Amin": ("metal3", 880.0, "high"),
+    "VBW_C3": ("metal2", 640.0, "high"),
 }
 SUBSTRATE_NET = gen.SUBSTRATE_NET          # VSS_ANALOG (generator placeholder)
 SUBSTRATE_TRUNK_X = 570.0                  # metal2, left of the left column
@@ -352,6 +353,15 @@ def pad_centre(pad_id: str) -> tuple[float, float]:
     return BOTTOM_PAD_X[pad_id], BUNDLE_PAD_Y
 
 
+def bundle_pad(net: str, pads: list[dict]) -> dict:
+    """The pad record a bundle net lands on: the pad labelled with the net's
+    signal. The landing patch and the pad leg take the pad's position from
+    here, so a BOTTOM_PAD_X edit moves the pad and its patch together."""
+    found = [p for p in pads if p["label"] == net]
+    assert len(found) == 1, net
+    return found[0]
+
+
 def build_placement() -> list[dict]:
     """One row per instance-table instance: the placed ones carry their cell,
     column origin and the pad-aligned plate pin; the five rows whose cell
@@ -391,7 +401,7 @@ def c3_tap_branch(rows: list[dict]) -> dict:
     group's highest pin, the Metal2 branch y above the C3 group's top stub,
     and the left-column VB pin the branch lands on -- the highest one below
     the branch whose descent corridor is free of other cells."""
-    _role, trunk_x, _pad_x, _connect_at = BUNDLE_NETS["WL_C3_Amin"]
+    _role, trunk_x, _connect_at = BUNDLE_NETS["WL_C3_Amin"]
     pins = [(r, p) for r, p in instance_ports(rows, "WL")
             if r["group"] == GROUP_OF_NET["WL_C3_Amin"]
             and r["origin"][0] == COL_X_RIGHT]
@@ -414,7 +424,7 @@ def c3_tap_branch(rows: list[dict]) -> dict:
             "block": vbx_row["name"], "pin": vbx_pt}
 
 
-def mt1_fixup_script(gds: Path, rows: list[dict]) -> str:
+def mt1_fixup_script(gds: Path, rows: list[dict], pads: list[dict]) -> str:
     """The in-place MetalTop landing fixup as a headless KLayout script: one
     Metal5 overshoot rect per via-ladder top that lands on Metal5 (the 36
     private-plate pin ladders and the 9 bundle pad legs), merged into the
@@ -429,7 +439,8 @@ def mt1_fixup_script(gds: Path, rows: list[dict]) -> str:
         rects.append([round(px - 0.5, 4), round(py - MT1_PATCH_HALF_W_UM, 4),
                       round(px + MT1_PATCH_OVERSHOOT_UM, 4),
                       round(py + MT1_PATCH_HALF_W_UM, 4)])
-    for net, (role, trunk_x, pad_x, connect_at) in BUNDLE_NETS.items():
+    for net in BUNDLE_NETS:
+        pad_x = bundle_pad(net, pads)["x"]
         y = BUNDLE_PAD_Y + PAD_SIDE_UM / 2.0
         rects.append([round(pad_x - MT1_PATCH_HALF_W_UM, 4), round(y - 2.0, 4),
                       round(pad_x + MT1_PATCH_HALF_W_UM, 4), round(y + 1.0, 4)])
@@ -449,10 +460,11 @@ def mt1_fixup_script(gds: Path, rows: list[dict]) -> str:
     )
 
 
-def apply_mt1_fixup(gds: Path, rows: list[dict], workdir: Path) -> None:
+def apply_mt1_fixup(gds: Path, rows: list[dict], pads: list[dict],
+                    workdir: Path) -> None:
     """Run the MT.1 fixup script on the composed layout, in place."""
     script = workdir / "mt1_fixup.py"
-    script.write_text(mt1_fixup_script(gds, rows))
+    script.write_text(mt1_fixup_script(gds, rows, pads))
     r = subprocess.run(["klayout", "-b", "-r", str(script)],
                        capture_output=True, text=True)
     if r.returncode != 0:
@@ -558,7 +570,7 @@ def build_connectivity(rows: list[dict],
             pins.sort(key=lambda p: -p[1][1])
             near = pins[0]
             far = pins[-1]
-        pad_x = BUNDLE_NETS[net][2]
+        pad_x = bundle_pad(net, PADS)["x"]
         legs = []
         segs = []
         for (row_a, p_a), (row_b, p_b) in zip(pins, pins[1:]):
@@ -603,7 +615,7 @@ def build_connectivity(rows: list[dict],
                      "layer_role": role, "width_um": BUNDLE_WIDTH_UM})
         paths[net] = {role: segs}
 
-    for net, (role, trunk_x, pad_x, connect_at) in BUNDLE_NETS.items():
+    for net, (role, trunk_x, connect_at) in BUNDLE_NETS.items():
         port = "VB" if net == "VBW_C3" else ("BL" if net.startswith("BL_") else "WL")
         col_x = COL_X_RIGHT if net.split("_")[1] == "C3" else COL_X_LEFT
         emit(net, port, trunk_x, net, connect_at, col_x)
@@ -776,7 +788,7 @@ def compose_request(rows: list[dict], pads: list[dict],
         order.append(strip_id)
         origins[strip_id] = {"x": 0.0, "y": 0.0}
     facing = {}
-    for net, (role, trunk_x, pad_x, connect_at) in BUNDLE_NETS.items():
+    for net, (role, trunk_x, connect_at) in BUNDLE_NETS.items():
         if connect_at != "low":
             continue
         port = net.split("_")[0]
@@ -1070,7 +1082,7 @@ def main() -> None:
             source = Path(block["source_path"])
             block["source_path"] = (source.name if source.is_relative_to(workdir)
                                     else str(source.relative_to(HERE.parents[1])))
-        apply_mt1_fixup(out_gds, rows, workdir)
+        apply_mt1_fixup(out_gds, rows, pads, workdir)
         filled = fill_density(out_gds, pads, workdir)
         reference = emit_lvs_reference(rows)
         new = {"run3_top.gds": filled.read_bytes(),
