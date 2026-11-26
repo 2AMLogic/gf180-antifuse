@@ -159,6 +159,35 @@ def draw(name, work, destination):
     layout.write(str(dest / (name + ".gds")), options)
 
 
+def check_stream(expected, generated):
+    if expected.read_bytes() == generated.read_bytes():
+        return
+    # External PCell backends may emit identical shapes in a different GDS
+    # record order. Compare the full hierarchy including properties and pin
+    # texts with zero coordinate tolerance before accepting a reordered stream.
+    first, second = db.Layout(), db.Layout()
+    first.read(str(expected))
+    second.read(str(generated))
+    differ = db.LayoutDiff()
+    if first.dbu == second.dbu and differ.compare(
+            first, second, db.LayoutDiff.WithMetaInfo, 0):
+        print(f"{expected.name}: identical hierarchy, masks and pin text in different record order")
+        return
+    for leaf in first.each_cell():
+        other = second.cell(leaf.name)
+        if other is None:
+            raise ValueError(f"{expected.name}: missing physical master {leaf.name}")
+        for index in first.layer_indices():
+            mask = first.get_info(index)
+            left = db.Region(leaf.begin_shapes_rec(index))
+            right = db.Region(other.begin_shapes_rec(second.layer(mask)))
+            delta = left ^ right
+            if not delta.is_empty():
+                raise ValueError(f"{expected.name}: {leaf.name} mask {mask} differs at {delta.bbox()} "
+                                 f"with XOR area {delta.area()} square database units")
+    raise ValueError(f"{expected.name}: hierarchy, shape properties or text differs")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true")
@@ -169,9 +198,10 @@ def main():
         destination = work if args.check else HERE
         for name in CELLS:
             draw(name, work, destination)
-            for item in (name + ".gds", "reference.spice"):
-                if args.check and (destination/name/item).read_bytes() != (HERE/name/item).read_bytes():
-                    raise SystemExit(f"Regeneration differs for {name}/{item}")
+            if args.check:
+                check_stream(HERE / name / (name + ".gds"), destination / name / (name + ".gds"))
+                if (destination / name / "reference.spice").read_bytes() != (HERE / name / "reference.spice").read_bytes():
+                    raise SystemExit(f"Regeneration differs for {name}/reference.spice")
 
 
 if __name__ == "__main__":

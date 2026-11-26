@@ -46,6 +46,14 @@ def import_master(layout, name):
         src.shapes(index).clear()
     dest = layout.create_cell(name)
     dest.copy_tree(src)
+    if name.startswith("array_region_"):
+        # copy_tree traverses KLayout's spatial index in platform-dependent
+        # order. Restore explicit row/column order before the GDS writer.
+        instances = sorted(((i.cell_inst, i.prop_id) for i in dest.each_inst()),
+                           key=lambda row: (row[0].trans.disp.y, row[0].trans.disp.x))
+        dest.clear_insts()
+        for placement, properties in instances:
+            dest.insert(placement, properties)
     return dest, pins
 
 
@@ -121,7 +129,9 @@ def draw(destination):
         if body.count() != 352 or not (body & (polygons(21) | polygons(12))).is_empty():
             raise ValueError(f"Unexpected non-DNWELL NMOS capacitor population in {master.name}")
         shift = db.Trans(round(x / layout.dbu), round(y / layout.dbu))
-        top.shapes(layout.layer(204, 0)).insert(body.transformed(shift))
+        # Region iterators also traverse a platform-dependent spatial tree.
+        for polygon in sorted(body.each(), key=lambda p: (p.bbox().bottom, p.bbox().left)):
+            top.shapes(layout.layer(204, 0)).insert(polygon.transformed(shift))
 
     left = 0.
     for band in BANDS:
