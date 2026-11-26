@@ -71,11 +71,13 @@ def add_leaf(layout, path):
     source = db.Layout()
     source.read(str(path))
     source.top_cell().flatten(-1, True)
-    leaf = layout.create_cell(path.stem)
     for index in source.layer_indices():
-        info = source.get_info(index)
-        if info.datatype != 10:
-            leaf.shapes(layout.layer(info)).insert(source.top_cell().shapes(index))
+        if source.get_info(index).datatype == 10:
+            source.top_cell().shapes(index).clear()
+    leaf = layout.create_cell(path.stem)
+    # The primitive-only PDK can emit 1 nm units while an installation with
+    # technology LEF emits 0.5 nm. Copy the physical tree across these grids.
+    leaf.copy_tree(source.top_cell())
     return leaf
 
 
