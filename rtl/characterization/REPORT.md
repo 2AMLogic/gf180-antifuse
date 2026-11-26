@@ -40,7 +40,7 @@ The following named checks passed in the committed zero-delay and nominal SDF re
 
 ## Timing coverage and controls
 
-Each PVT run used seed 1 and its own normalized SDF, including interconnect. Icarus applied partial typical-entry annotation and omitted 1,070 conditional IOPATH expressions, 144 IFNONE edge modifier paths and 95 timing checks. Functional results cover the represented arcs. At 25 ns with identical delay files, SS/+125 °C/1.62 V passed 3/21 and FF/−40 °C/5.50 V passed 21/21. Each passed 21/21 at 50 ns. The 25 ns trial is a timing sensitivity control.
+Each PVT run used seed 1 and its own normalized SDF, including interconnect. Icarus applied partial typical-entry annotation and omitted 1,070 conditional IOPATH expressions, 144 IFNONE edge modifier paths and all 96 TIMINGCHECK sections present in each hashed SDF. The archived nominal envelope records 95 recognized timing-check warning lines. When cocotb and Icarus write to the transcript together, one warning can be split before the parser recognizes its prefix. The campaign counts the source-file sections independently. Functional results cover the represented arcs. At 25 ns with identical delay files, SS/+125 °C/1.62 V passed 3/21 and FF/−40 °C/5.50 V passed 21/21. Each passed 21/21 at 50 ns. The 25 ns trial is a timing sensitivity control.
 
 The [campaign](sdf-campaign.json) records every named test outcome, SDF digest, simulation source and route-source digest. [Implementation](../pnr/antifuse_digital_top.pnr.report.json), [STA](../sta/antifuse_digital_top.sta.report.json), [zero-delay](../../verification/cocotb/report_digital_top.json) and [nominal SDF](../../verification/cocotb/report_digital_top_sdf.json) are the original KLT reports.
 
@@ -48,7 +48,7 @@ The [campaign](sdf-campaign.json) records every named test outcome, SDF digest, 
 
 | Input | SHA-256 |
 |---|---|
-| `rtl/characterization/sdf-campaign.json` | `651f1aaf774b370ba3ef527312f67279f43753c36d773cb3038a3c3df46976b0` |
+| `rtl/characterization/sdf-campaign.json` | `f77b7815ad2be1e3fb30ff60d06830e78f592cc3805ac50922f553c7346fb74a` |
 | `rtl/pnr/antifuse_digital_top.def` | `19e277921100398ed87f45b37e2d5ba0c583225a55d3e0ff6b4a7c2a17632484` |
 | `rtl/pnr/antifuse_digital_top.gds` | `dae02f43855fda9b7c8f880fa62be529f3479af070dc34a82cbab4b140373bf5` |
 | `rtl/pnr/antifuse_digital_top.pnr.json` | `57b6ea67b4b28d2d6fe61c57b9bb5a1e49c63d02a56e03354a3f97badb2b2db8` |

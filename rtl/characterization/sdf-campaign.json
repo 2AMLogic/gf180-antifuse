@@ -50,11 +50,11 @@
         }
       ],
       "source_content_hash": "sha256:3103a1b715c4f14c416062ac5d161f69c1ab1bb7c2978c2515d37be2e81ed79d",
-      "omitted_arcs": {
+      "omitted_path_entries": {
         "iopath_cond_expression": 1070,
-        "iopath_ifnone_edge_modpath": 144,
-        "timingcheck": 95
+        "iopath_ifnone_edge_modpath": 144
       },
+      "unsupported_timingcheck_sections": 96,
       "outcomes": {
         "reset_values_and_idle_outputs": "passed",
         "miso_enable_follows_cs": "passed",
@@ -102,11 +102,11 @@
         }
       ],
       "source_content_hash": "sha256:3103a1b715c4f14c416062ac5d161f69c1ab1bb7c2978c2515d37be2e81ed79d",
-      "omitted_arcs": {
+      "omitted_path_entries": {
         "iopath_cond_expression": 1070,
-        "iopath_ifnone_edge_modpath": 144,
-        "timingcheck": 95
+        "iopath_ifnone_edge_modpath": 144
       },
+      "unsupported_timingcheck_sections": 96,
       "outcomes": {
         "reset_values_and_idle_outputs": "passed",
         "miso_enable_follows_cs": "passed",
@@ -154,11 +154,11 @@
         }
       ],
       "source_content_hash": "sha256:3103a1b715c4f14c416062ac5d161f69c1ab1bb7c2978c2515d37be2e81ed79d",
-      "omitted_arcs": {
+      "omitted_path_entries": {
         "iopath_cond_expression": 1070,
-        "iopath_ifnone_edge_modpath": 144,
-        "timingcheck": 95
+        "iopath_ifnone_edge_modpath": 144
       },
+      "unsupported_timingcheck_sections": 96,
       "outcomes": {
         "reset_values_and_idle_outputs": "passed",
         "miso_enable_follows_cs": "passed",
@@ -206,11 +206,11 @@
         }
       ],
       "source_content_hash": "sha256:3103a1b715c4f14c416062ac5d161f69c1ab1bb7c2978c2515d37be2e81ed79d",
-      "omitted_arcs": {
+      "omitted_path_entries": {
         "iopath_cond_expression": 1070,
-        "iopath_ifnone_edge_modpath": 144,
-        "timingcheck": 95
+        "iopath_ifnone_edge_modpath": 144
       },
+      "unsupported_timingcheck_sections": 96,
       "outcomes": {
         "reset_values_and_idle_outputs": "passed",
         "miso_enable_follows_cs": "passed",
@@ -258,11 +258,11 @@
         }
       ],
       "source_content_hash": "sha256:3103a1b715c4f14c416062ac5d161f69c1ab1bb7c2978c2515d37be2e81ed79d",
-      "omitted_arcs": {
+      "omitted_path_entries": {
         "iopath_cond_expression": 1070,
-        "iopath_ifnone_edge_modpath": 144,
-        "timingcheck": 95
+        "iopath_ifnone_edge_modpath": 144
       },
+      "unsupported_timingcheck_sections": 96,
       "outcomes": {
         "reset_values_and_idle_outputs": "passed",
         "miso_enable_follows_cs": "passed",
@@ -310,11 +310,11 @@
         }
       ],
       "source_content_hash": "sha256:3103a1b715c4f14c416062ac5d161f69c1ab1bb7c2978c2515d37be2e81ed79d",
-      "omitted_arcs": {
+      "omitted_path_entries": {
         "iopath_cond_expression": 1070,
-        "iopath_ifnone_edge_modpath": 144,
-        "timingcheck": 95
+        "iopath_ifnone_edge_modpath": 144
       },
+      "unsupported_timingcheck_sections": 96,
       "outcomes": {
         "reset_values_and_idle_outputs": "passed",
         "miso_enable_follows_cs": "passed",
@@ -362,11 +362,11 @@
         }
       ],
       "source_content_hash": "sha256:3103a1b715c4f14c416062ac5d161f69c1ab1bb7c2978c2515d37be2e81ed79d",
-      "omitted_arcs": {
+      "omitted_path_entries": {
         "iopath_cond_expression": 1070,
-        "iopath_ifnone_edge_modpath": 144,
-        "timingcheck": 95
+        "iopath_ifnone_edge_modpath": 144
       },
+      "unsupported_timingcheck_sections": 96,
       "outcomes": {
         "reset_values_and_idle_outputs": "passed",
         "miso_enable_follows_cs": "passed",
@@ -414,11 +414,11 @@
         }
       ],
       "source_content_hash": "sha256:3103a1b715c4f14c416062ac5d161f69c1ab1bb7c2978c2515d37be2e81ed79d",
-      "omitted_arcs": {
+      "omitted_path_entries": {
         "iopath_cond_expression": 1070,
-        "iopath_ifnone_edge_modpath": 144,
-        "timingcheck": 95
+        "iopath_ifnone_edge_modpath": 144
       },
+      "unsupported_timingcheck_sections": 96,
       "outcomes": {
         "reset_values_and_idle_outputs": "passed",
         "miso_enable_follows_cs": "passed",
@@ -466,11 +466,11 @@
         }
       ],
       "source_content_hash": "sha256:3103a1b715c4f14c416062ac5d161f69c1ab1bb7c2978c2515d37be2e81ed79d",
-      "omitted_arcs": {
+      "omitted_path_entries": {
         "iopath_cond_expression": 1070,
-        "iopath_ifnone_edge_modpath": 144,
-        "timingcheck": 95
+        "iopath_ifnone_edge_modpath": 144
       },
+      "unsupported_timingcheck_sections": 96,
       "outcomes": {
         "reset_values_and_idle_outputs": "passed",
         "miso_enable_follows_cs": "passed",
@@ -518,11 +518,11 @@
         }
       ],
       "source_content_hash": "sha256:3103a1b715c4f14c416062ac5d161f69c1ab1bb7c2978c2515d37be2e81ed79d",
-      "omitted_arcs": {
+      "omitted_path_entries": {
         "iopath_cond_expression": 1070,
-        "iopath_ifnone_edge_modpath": 144,
-        "timingcheck": 95
+        "iopath_ifnone_edge_modpath": 144
       },
+      "unsupported_timingcheck_sections": 96,
       "outcomes": {
         "reset_values_and_idle_outputs": "passed",
         "miso_enable_follows_cs": "passed",
@@ -570,11 +570,11 @@
         }
       ],
       "source_content_hash": "sha256:3103a1b715c4f14c416062ac5d161f69c1ab1bb7c2978c2515d37be2e81ed79d",
-      "omitted_arcs": {
+      "omitted_path_entries": {
         "iopath_cond_expression": 1070,
-        "iopath_ifnone_edge_modpath": 144,
-        "timingcheck": 95
+        "iopath_ifnone_edge_modpath": 144
       },
+      "unsupported_timingcheck_sections": 96,
       "outcomes": {
         "reset_values_and_idle_outputs": "passed",
         "miso_enable_follows_cs": "passed",
@@ -622,11 +622,11 @@
         }
       ],
       "source_content_hash": "sha256:3103a1b715c4f14c416062ac5d161f69c1ab1bb7c2978c2515d37be2e81ed79d",
-      "omitted_arcs": {
+      "omitted_path_entries": {
         "iopath_cond_expression": 1070,
-        "iopath_ifnone_edge_modpath": 144,
-        "timingcheck": 95
+        "iopath_ifnone_edge_modpath": 144
       },
+      "unsupported_timingcheck_sections": 96,
       "outcomes": {
         "reset_values_and_idle_outputs": "passed",
         "miso_enable_follows_cs": "passed",
@@ -674,11 +674,11 @@
         }
       ],
       "source_content_hash": "sha256:3103a1b715c4f14c416062ac5d161f69c1ab1bb7c2978c2515d37be2e81ed79d",
-      "omitted_arcs": {
+      "omitted_path_entries": {
         "iopath_cond_expression": 1070,
-        "iopath_ifnone_edge_modpath": 144,
-        "timingcheck": 95
+        "iopath_ifnone_edge_modpath": 144
       },
+      "unsupported_timingcheck_sections": 96,
       "outcomes": {
         "reset_values_and_idle_outputs": "passed",
         "miso_enable_follows_cs": "passed",
@@ -726,11 +726,11 @@
         }
       ],
       "source_content_hash": "sha256:3103a1b715c4f14c416062ac5d161f69c1ab1bb7c2978c2515d37be2e81ed79d",
-      "omitted_arcs": {
+      "omitted_path_entries": {
         "iopath_cond_expression": 1070,
-        "iopath_ifnone_edge_modpath": 144,
-        "timingcheck": 95
+        "iopath_ifnone_edge_modpath": 144
       },
+      "unsupported_timingcheck_sections": 96,
       "outcomes": {
         "reset_values_and_idle_outputs": "passed",
         "miso_enable_follows_cs": "passed",
@@ -778,11 +778,11 @@
         }
       ],
       "source_content_hash": "sha256:3103a1b715c4f14c416062ac5d161f69c1ab1bb7c2978c2515d37be2e81ed79d",
-      "omitted_arcs": {
+      "omitted_path_entries": {
         "iopath_cond_expression": 1070,
-        "iopath_ifnone_edge_modpath": 144,
-        "timingcheck": 95
+        "iopath_ifnone_edge_modpath": 144
       },
+      "unsupported_timingcheck_sections": 96,
       "outcomes": {
         "reset_values_and_idle_outputs": "passed",
         "miso_enable_follows_cs": "passed",
@@ -830,11 +830,11 @@
         }
       ],
       "source_content_hash": "sha256:3103a1b715c4f14c416062ac5d161f69c1ab1bb7c2978c2515d37be2e81ed79d",
-      "omitted_arcs": {
+      "omitted_path_entries": {
         "iopath_cond_expression": 1070,
-        "iopath_ifnone_edge_modpath": 144,
-        "timingcheck": 95
+        "iopath_ifnone_edge_modpath": 144
       },
+      "unsupported_timingcheck_sections": 96,
       "outcomes": {
         "reset_values_and_idle_outputs": "passed",
         "miso_enable_follows_cs": "passed",
@@ -882,11 +882,11 @@
         }
       ],
       "source_content_hash": "sha256:3103a1b715c4f14c416062ac5d161f69c1ab1bb7c2978c2515d37be2e81ed79d",
-      "omitted_arcs": {
+      "omitted_path_entries": {
         "iopath_cond_expression": 1070,
-        "iopath_ifnone_edge_modpath": 144,
-        "timingcheck": 95
+        "iopath_ifnone_edge_modpath": 144
       },
+      "unsupported_timingcheck_sections": 96,
       "outcomes": {
         "reset_values_and_idle_outputs": "failed",
         "miso_enable_follows_cs": "passed",

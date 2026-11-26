@@ -5,6 +5,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import subprocess
 import tempfile
 from concurrent.futures import ThreadPoolExecutor
@@ -66,6 +67,14 @@ def observed(report, corner, period, sdf):
     checksum = digest(sdf)
     if report["provenance"]["sdf_sha256"].removeprefix("sha256:") != checksum:
         raise ValueError(f"{corner}: annotation reports a different SDF digest")
+    dropped = {key: entry["count"] for key, entry in annotation["dropped"].items()}
+    warning_lines = dropped.pop("timingcheck")
+    # Icarus lacks SDF timing-check support. A warning interleaved with cocotb output
+    # can lose its prefix in the native transcript scanner. Count the actual sections
+    # in the hash-verified OpenSTA file independently of transcript line framing.
+    timing_sections = len(re.findall(rb"(?im)^[ \t]*\(TIMINGCHECK(?=[\s)])", sdf.read_bytes()))
+    if not 0 < warning_lines <= timing_sections:
+        raise ValueError(f"{corner}: invalid timing-check diagnostics for {timing_sections} SDF sections")
     rows = {test["name"]: test["status"] for test in report["tests"]}
     if len(rows) != report["test_count"] or len(report["tests"]) != report["test_count"]:
         raise ValueError(f"{corner}: inconsistent or duplicate test names")
@@ -79,7 +88,8 @@ def observed(report, corner, period, sdf):
         "status": report["status"],
         "sources": env["sources"],
         "source_content_hash": report["provenance"]["input"]["content_hash"],
-        "omitted_arcs": {key: entry["count"] for key, entry in annotation["dropped"].items()},
+        "omitted_path_entries": dropped,
+        "unsupported_timingcheck_sections": timing_sections,
         "outcomes": rows,
     }
 

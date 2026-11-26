@@ -52,7 +52,7 @@ ROWS = {
         "decoder_onehot_all_indices",
     ],
 }
-OMITTED = {"iopath_cond_expression": 1070, "iopath_ifnone_edge_modpath": 144, "timingcheck": 95}
+OMITTED_PATHS = {"iopath_cond_expression": 1070, "iopath_ifnone_edge_modpath": 144}
 ASYNC = ["u_regs/_730_/D", "u_regs/_733_/D", "u_regs/_736_/D", "u_regs/_738_/D"]
 
 
@@ -155,7 +155,8 @@ def measure(pnr, sta, request, zero, annotated, campaign):
     )
     nominal_digest = annotated["provenance"]["sdf_sha256"].removeprefix("sha256:")
     require(
-        {k: v["count"] for k, v in annotated["environment"]["sdf"]["dropped"].items()} == OMITTED,
+        {k: v["count"] for k, v in annotated["environment"]["sdf"]["dropped"].items()}
+        == {**OMITTED_PATHS, "timingcheck": 95},
         "nominal SDF scope changed",
     )
     require(
@@ -169,7 +170,9 @@ def measure(pnr, sta, request, zero, annotated, campaign):
         require(key not in runs, f"duplicate functional condition: {key}")
         runs[key] = r
         require(
-            re.fullmatch(r"[0-9a-f]{64}", r["sdf_sha256"]) and r["omitted_arcs"] == OMITTED,
+            re.fullmatch(r"[0-9a-f]{64}", r["sdf_sha256"])
+            and r["omitted_path_entries"] == OMITTED_PATHS
+            and r["unsupported_timingcheck_sections"] == 96,
             f"{key}: invalid SDF record",
         )
         require(
@@ -243,7 +246,7 @@ def render():
         "",
         "## Timing coverage and controls",
         "",
-        "Each PVT run used seed 1 and its own normalized SDF, including interconnect. Icarus applied partial typical-entry annotation and omitted 1,070 conditional IOPATH expressions, 144 IFNONE edge modifier paths and 95 timing checks. Functional results cover the represented arcs. At 25 ns with identical delay files, SS/+125 °C/1.62 V passed 3/21 and FF/−40 °C/5.50 V passed 21/21. Each passed 21/21 at 50 ns. The 25 ns trial is a timing sensitivity control.",
+        "Each PVT run used seed 1 and its own normalized SDF, including interconnect. Icarus applied partial typical-entry annotation and omitted 1,070 conditional IOPATH expressions, 144 IFNONE edge modifier paths and all 96 TIMINGCHECK sections present in each hashed SDF. The archived nominal envelope records 95 recognized timing-check warning lines. When cocotb and Icarus write to the transcript together, one warning can be split before the parser recognizes its prefix. The campaign counts the source-file sections independently. Functional results cover the represented arcs. At 25 ns with identical delay files, SS/+125 °C/1.62 V passed 3/21 and FF/−40 °C/5.50 V passed 21/21. Each passed 21/21 at 50 ns. The 25 ns trial is a timing sensitivity control.",
         "",
         "The [campaign](sdf-campaign.json) records every named test outcome, SDF digest, simulation source and route-source digest. [Implementation](../pnr/antifuse_digital_top.pnr.report.json), [STA](../sta/antifuse_digital_top.sta.report.json), [zero-delay](../../verification/cocotb/report_digital_top.json) and [nominal SDF](../../verification/cocotb/report_digital_top_sdf.json) are the original KLT reports.",
         "",

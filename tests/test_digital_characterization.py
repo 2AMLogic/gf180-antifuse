@@ -4,12 +4,14 @@ import copy
 import hashlib
 import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "rtl/characterization"))
 import report as char  # noqa: E402
+import replay_sdf  # noqa: E402
 
 
 class DigitalCharacterization(unittest.TestCase):
@@ -55,6 +57,27 @@ class DigitalCharacterization(unittest.TestCase):
             first["sdf_sha256"], second["sdf_sha256"] = second["sdf_sha256"], first["sdf_sha256"]
 
         self.check_bad(5, swap, "wrong STA file")
+
+    def test_physical_timing_sections_survive_a_split_diagnostic(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / "antifuse_digital_top.tt_025C_1v80.sdf"
+            source.write_bytes(b"(DELAYFILE\n (TIMINGCHECK (WIDTH ...))\n (TIMINGCHECK\n )\n)\n")
+            native = copy.deepcopy(self.evidence[4])
+            native["provenance"]["sdf_sha256"] = replay_sdf.digest(source)
+            warning = native["environment"]["sdf"]["dropped"]["timingcheck"]
+
+            def observed():
+                return replay_sdf.observed(native, "tt_025C_1v80", 50, source)
+
+            warning["count"] = 1
+            one_warning = observed()
+            warning["count"] = 2
+            self.assertEqual(observed(), one_warning)
+            self.assertEqual(one_warning["unsupported_timingcheck_sections"], 2)
+            for invalid in (0, 3):
+                warning["count"] = invalid
+                with self.assertRaisesRegex(ValueError, "invalid timing-check diagnostics"):
+                    observed()
 
     def test_source_hash_change(self):
         changed = copy.deepcopy(self.evidence[5])
