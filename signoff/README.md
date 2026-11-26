@@ -207,7 +207,16 @@ was claimed:
 changed.
 
 
-## Post-layout probe (issue #447): `klt pex` on the drawn bitcells
+## Signed post-layout evidence (issue #539)
+
+The current manifest pins the signed nonlinear PEX reports for the three minimum access cells and twelve paired ngspice 47 reports. The seven access-cell streams connect the capacitor gate to the access storage node and the diffusion to PL. The bare C2 probe retains its private gates. The GDS-level positive and swapped controls, cell and assembly hashes, native reports and isolated ±1 V measurements are in [the layout record](../layout/README.md#signed-mos-capacitors-in-the-drawn-cells).
+
+The corrected extraction gives C3 R_on of 101.86 Ω against 2.9035 kΩ from the schematic at 10 MHz. Its cause remains open. C2's PEX report records a device-count difference from resolving the two LDMOS fingers separately. The signed bitcell results are supporting evidence. Item 7.analog still requires post-layout verification of the array.
+
+## Historical post-layout probe (issue #447)
+
+The following describes the first, linear-capacitor extraction. Its append-only run is `sim/cell-device-characterization/klt/post-layout/runs/20261121-073730-17c2f21/`. The cell PEX paths and manifest now refer to #539.
+
 
 The first `klt pex` runs on any drawn cell in this repo (klayout-tools `0.9.2`
 released, KLayout `0.30.13`, deck `gf180mcu`, `--pdk gf180mcuD`,
