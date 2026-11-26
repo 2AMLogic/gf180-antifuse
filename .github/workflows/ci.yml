@@ -24,13 +24,6 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Check repository, characterization and signoff evidence
-        run: |
-          python -m pip install uv
-          npm run check:ci
-          python -m unittest discover -s sim/characterization-report/tests
-          ./signoff/verify.sh
-
       - name: Restore schematic and simulation tools
         id: eda-cache
         uses: actions/cache@v4
@@ -58,11 +51,18 @@ jobs:
         run: |
           # design/regen-netlists.sh uses --output-dir, which first appeared
           # after release 0.9.2. Use the commit recorded in signoff/README.md.
+          python -m pip install uv
           uv tool install 'git+https://github.com/2AMLogic/klayout-tools.git@83764a3c6b6f38478e59d36de9a2df60d5236122'
           source design/lib-pdk-root.sh
           uvx --from ciel==2.6.1 ciel enable --pdk-family gf180mcu -l gf180mcu_fd_pr "$PINNED_OPEN_PDKS"
           echo "$HOME/.local/antifuse-eda/bin" >> "$GITHUB_PATH"
           uv tool dir --bin >> "$GITHUB_PATH"
+
+      - name: Check repository, characterization and signoff evidence
+        run: |
+          npm run check:ci
+          python -m unittest discover -s sim/characterization-report/tests
+          ./signoff/verify.sh
 
       - name: Regenerate netlists and run the seven design checks
         run: ./design/check-netlists.sh
