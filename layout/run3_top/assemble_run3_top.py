@@ -931,7 +931,8 @@ def emit_lvs_reference(rows: list[dict]) -> str:
         "* ---- per-geometry cell subcircuits (7 drawn points) ----",
         "",
     ]
-    placed_cells = sorted({r["cell"] for r in rows if r["placed"]})
+    placed = [r for r in rows if r["placed"]]
+    placed_cells = sorted({r["cell"] for r in placed})
     for cand, acc, cap in gen._geometry_points():
         name = gen.cell_name(cand, acc, cap)
         if name in placed_cells:
@@ -940,21 +941,7 @@ def emit_lvs_reference(rows: list[dict]) -> str:
     out.append("* ---- top: 31 placed instances, 40 connected ports ----")
     out.append("")
     out.append(".subckt run3_top " + " ".join(ports))
-    last_group = None
-    for row in rows:
-        if not row["placed"]:
-            continue
-        if row["group"] != last_group:
-            cand = row["candidate"]
-            sub = "A2x" if row["access"] == "A2x" else "Amin"
-            bl = f"BL_C1_{sub}" if cand == "C1" else f"BL_{cand}_Amin"
-            wl = bl.replace("BL_", "WL_")
-            vb = gen.VBW_NET if cand == "C3" else SUBSTRATE_NET
-            out.append(f"* Group {row['group']}: shared {bl} / {wl}, private PL"
-                       f" per instance, bodies to {vb}.")
-            last_group = row["group"]
-        vb = gen.VBW_NET if row["candidate"] == "C3" else SUBSTRATE_NET
-        out.append(f"{row['name']} {bl} {wl} {row['signal']} {vb} {row['cell']}")
+    out.extend(gen.format_instance_lines(placed))
     out.append(".ends")
     out.append("")
     return "\n".join(out)

@@ -26,6 +26,7 @@ import unittest
 import xml.etree.ElementTree as ET
 from collections import Counter
 from pathlib import Path
+from unittest import mock
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
@@ -286,6 +287,31 @@ class Run3TopAssemblyTest(unittest.TestCase):
         self.assertEqual(after["provenance"]["input"]["content_hash"],
                          "sha256:79bc84145a1baf87116b42d7aedee9bd9c69c29b7"
                          "2ce4d46a5a7ab1fa0c679f8")
+
+    def test_lvs_reference_matches_committed_bytes(self):
+        committed = (ROOT / "layout/run3_top/lvs_reference_drawn.spice").read_bytes()
+        self.assertEqual(asm.emit_lvs_reference(self.rows).encode("utf-8"),
+                         committed)
+
+    def test_shared_instance_formatter(self):
+        full_lines = asm.gen.format_instance_lines(asm.gen.build_instances())
+        placed = [r for r in self.rows if r["placed"]]
+        unplaced_names = {r["name"] for r in self.rows if not r["placed"]}
+        placed_lines = asm.gen.format_instance_lines(placed)
+        self.assertEqual(len(full_lines), 4 + 36)
+        self.assertEqual(len(placed_lines), 4 + 31)
+        self.assertEqual(
+            [ln for ln in full_lines if ln.split()[0] not in unplaced_names],
+            placed_lines,
+        )
+        with mock.patch.object(asm.gen, "format_instance_lines",
+                               wraps=asm.gen.format_instance_lines) as fmt:
+            text = asm.emit_lvs_reference(self.rows)
+        fmt.assert_called_once_with(placed)
+        self.assertEqual(
+            text.encode("utf-8"),
+            (ROOT / "layout/run3_top/lvs_reference_drawn.spice").read_bytes(),
+        )
 
     def _blocks(self):
         """The request's block list, rebuilt cheaply (no klt calls)."""

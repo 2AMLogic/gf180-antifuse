@@ -239,6 +239,26 @@ def _geometry_points() -> list[tuple[str, str, str]]:
     return pts
 
 
+def format_instance_lines(insts: list[dict]) -> list[str]:
+    """SPICE group comments and instance calls for an ordered slice of
+    build_instances() rows."""
+    lines: list[str] = []
+    last_group = None
+    for inst in insts:
+        cand = inst["candidate"]
+        sub = "A2x" if inst["access"] == "A2x" else "Amin"
+        bl = f"BL_C1_{sub}" if cand == "C1" else f"BL_{cand}_Amin"
+        wl = bl.replace("BL_", "WL_")
+        vb = VBW_NET if cand == "C3" else SUBSTRATE_NET
+        if inst["group"] != last_group:
+            lines.append(f"* Group {inst['group']}: shared {bl} / {wl},"
+                         f" private PL per instance, bodies to {vb}.")
+            last_group = inst["group"]
+        cell = cell_name(cand, inst["access"], inst["capacitor"])
+        lines.append(f"{inst['name']} {bl} {wl} {inst['signal']} {vb} {cell}")
+    return lines
+
+
 def emit_netlist() -> str:
     insts = build_instances()
     points = _geometry_points()
@@ -280,20 +300,7 @@ def emit_netlist() -> str:
     out.append("")
     ports = [p["signal"] for p in build_pads()[:45]]
     out.append(".subckt run3_top " + " ".join(ports))
-    last_group = None
-    for inst in insts:
-        if inst["group"] != last_group:
-            cand = inst["candidate"]
-            sub = "A2x" if inst["access"] == "A2x" else "Amin"
-            bl = f"BL_C1_{sub}" if cand == "C1" else f"BL_{cand}_Amin"
-            wl = bl.replace("BL_", "WL_")
-            vb = VBW_NET if cand == "C3" else SUBSTRATE_NET
-            out.append(f"* Group {inst['group']}: shared {bl} / {wl}, private PL"
-                       f" per instance, bodies to {vb}.")
-            last_group = inst["group"]
-        cell = cell_name(inst["candidate"], inst["access"], inst["capacitor"])
-        vb = VBW_NET if inst["candidate"] == "C3" else SUBSTRATE_NET
-        out.append(f"{inst['name']} {bl} {wl} {inst['signal']} {vb} {cell}")
+    out.extend(format_instance_lines(insts))
     out.append(".ends")
     out.append("")
     return "\n".join(out)
