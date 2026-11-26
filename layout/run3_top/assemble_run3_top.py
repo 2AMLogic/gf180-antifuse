@@ -120,19 +120,19 @@ COL_X_RIGHT = 1000.0  # instances whose pad is on the right edge (L25..L48)
 # Regenerated cells must keep these or the plate-route alignment below
 # breaks (the compose asserts it).
 PIN_OFFSET_UM = {
-    "cell_candidate1": {"PL": (0.64, 1.96), "BL": (5.69, 0.21),
+    "cell_candidate1": {"PL": (0.21, 0.36), "BL": (5.69, 0.21),
                         "WL": (5.05, 1.38), "VB": (1.99, 3.385)},
-    "cell_candidate1_A2x_G2x": {"PL": (0.64, 2.96), "BL": (5.69, 0.42),
+    "cell_candidate1_A2x_G2x": {"PL": (0.21, 0.36), "BL": (5.69, 0.42),
                                 "WL": (5.05, 1.80), "VB": (1.99, 4.385)},
-    "cell_candidate1_A2x_Gmin": {"PL": (0.64, 1.96), "BL": (5.69, 0.42),
+    "cell_candidate1_A2x_Gmin": {"PL": (0.21, 0.36), "BL": (5.69, 0.42),
                                  "WL": (5.05, 1.80), "VB": (1.99, 3.385)},
-    "cell_candidate1_Amin_G2x": {"PL": (0.64, 2.96), "BL": (5.69, 0.21),
+    "cell_candidate1_Amin_G2x": {"PL": (0.21, 0.36), "BL": (5.69, 0.21),
                                  "WL": (5.05, 1.38), "VB": (1.99, 4.385)},
-    "cell_candidate2": {"PL": (6.35, 2.75), "BL": (0.00, 0.00),
+    "cell_candidate2": {"PL": (5.71, 1.0), "BL": (0.00, 0.00),
                         "WL": (0.00, 2.91), "VB": (3.99, 2.99)},
-    "cell_candidate3": {"PL": (6.23, 1.96), "BL": (0.21, 0.21),
+    "cell_candidate3": {"PL": (5.8, 0.36), "BL": (0.21, 0.21),
                         "WL": (0.775, 1.38), "VB": (2.655, 3.595)},
-    "cell_candidate3_Amin_G2x": {"PL": (6.23, 2.96), "BL": (0.21, 0.21),
+    "cell_candidate3_Amin_G2x": {"PL": (5.8, 0.36), "BL": (0.21, 0.21),
                                  "WL": (0.775, 1.38), "VB": (3.50, 4.385)},
 }
 
@@ -208,7 +208,7 @@ MT1_PATCH_HALF_W_UM = 2.5     # 5 um patch width == the PL route width
 #
 # The precheck's gating antenna stage reports the shared WL trunks over the
 # ANT.16_ii_ANT.4 limit (Metal3 perimeter area vs thick gate oxide area,
-# 400): measured ratios 428-1034 at gf180mcuD. The deck's diode filtering
+# 400): measured ratios 429-1035 at gf180mcuD. The deck's diode filtering
 # divides the ratio by (gate + 15*(n_diode + p_diode + nwell))
 # (antenna.rb, antenna_check_gf180mcu), so one n-diode per WL net would
 # clear every violation: the worst net needs >= 0.245 um^2 of diode area --
@@ -225,8 +225,8 @@ MT1_PATCH_HALF_W_UM = 2.5     # 5 um patch width == the PL route width
 # beside the C3 column. Per the #210 record's standard for the HV program
 # legs, whether a junction may hang on a program pad is an operator
 # decision, not a layout edit (README.md, "Precheck applicability"); the
-# findings are recorded in drc_antenna_report.json with the private-plate
-# Metal5 group (ANT.16_i/ii_ANT.6, ratios 2028-7820), not waived.
+# findings are recorded in drc_antenna_report.json on the shared WL trunks.
+# The private pad on capacitor diffusion has zero markers after #539.
 DIODE_COMP_UM = 0.6            # sizes the substrate tap body (and the
 DIODE_ENC_UM = 0.16            # evaluated, unapplied WL diode remedy above)
 DIODE_CONTACT_UM = 0.22        # the PDK contact square
@@ -1058,6 +1058,12 @@ def main() -> None:
         req, out_gds = compose_request(rows, pads, workdir)
         response = run_klt_compose(req, workdir)
         resp = assert_composed(response, rows, req)
+        # Record portable names for the compose-stage stream and its inputs.
+        resp["gds_path"] = out_gds.name
+        for block in resp["blocks"]:
+            source = Path(block["source_path"])
+            block["source_path"] = (source.name if source.is_relative_to(workdir)
+                                    else str(source.relative_to(HERE.parents[1])))
         apply_mt1_fixup(out_gds, rows, workdir)
         filled = fill_density(out_gds, pads, workdir)
         reference = emit_lvs_reference(rows)

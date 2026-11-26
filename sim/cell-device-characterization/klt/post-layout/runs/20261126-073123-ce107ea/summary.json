@@ -1,0 +1,89 @@
+{
+  "run_id": "20261126-073123-ce107ea",
+  "cells": {
+    "1": {
+      "extraction_findings": [],
+      "ioff": {
+        "schematic": 1.7444033e-13,
+        "extracted": 4.1491748e-13,
+        "delta": 2.4047715e-13,
+        "schematic_error": null,
+        "extracted_error": null,
+        "jobs": [
+          "-",
+          "-"
+        ]
+      },
+      "ron": {
+        "schematic": 6840.772901953599,
+        "extracted": 6805.863623474848,
+        "delta": -34.90927847875082,
+        "schematic_error": null,
+        "extracted_error": null,
+        "z_imag_schematic_ohm": -7520565.738127857,
+        "z_imag_extracted_ohm": -4446670.807182859,
+        "model_mismatch_disclosed": false,
+        "jobs": [
+          "-",
+          "-"
+        ]
+      }
+    },
+    "3": {
+      "extraction_findings": [],
+      "ioff": {
+        "schematic": 3.3198748e-13,
+        "extracted": 4.9299823e-13,
+        "delta": 1.6101075000000007e-13,
+        "schematic_error": null,
+        "extracted_error": null,
+        "jobs": [
+          "-",
+          "-"
+        ]
+      },
+      "ron": {
+        "schematic": 2903.5062498191965,
+        "extracted": 101.86194567561961,
+        "delta": -2801.644304143577,
+        "schematic_error": null,
+        "extracted_error": null,
+        "z_imag_schematic_ohm": -116438726.14382418,
+        "z_imag_extracted_ohm": -30914715.419661645,
+        "model_mismatch_disclosed": false,
+        "jobs": [
+          "-",
+          "-"
+        ]
+      }
+    },
+    "2": {
+      "extraction_findings": [],
+      "ioff": {
+        "schematic": 4.1472017e-11,
+        "extracted": 3.1231894e-11,
+        "delta": -1.0240123000000002e-11,
+        "schematic_error": null,
+        "extracted_error": null,
+        "jobs": [
+          "-",
+          "-"
+        ]
+      },
+      "ron": {
+        "schematic": 159.57400512639842,
+        "extracted": 171.97963190485862,
+        "delta": 12.405626778460203,
+        "schematic_error": null,
+        "extracted_error": null,
+        "z_imag_schematic_ohm": -172709.21391564363,
+        "z_imag_extracted_ohm": -100669.52390292785,
+        "model_mismatch_disclosed": true,
+        "jobs": [
+          "-",
+          "-"
+        ]
+      }
+    }
+  }
+}

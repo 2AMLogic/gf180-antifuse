@@ -1,4 +1,12 @@
-# cell_candidate2 -- klt pex extraction (issue #447 probe)
+# cell_candidate2 signed post-layout extraction
+
+Both outer LDMOS source fingers reach the capacitor gate on CN. The centre drain reaches BL, and PL reaches capacitor diffusion. The PEX model-count difference records the two extracted fingers of the schematic access device. The PEX report records a biased body and no floating devices. The GDS SHA-256 is `f2bb06eea53f3288cf4ef584465d2bcf84cbbb315a71e2a2e5be6fdd7e987620`. The extracted SPICE SHA-256 is `4172800506d200f0d2fa2e5157196d7d59c8be495c99f53669e47dedf6a9755e`.
+
+The signed regression, extractor revision, reproduction instructions and three-cell ±1 V controls are in [the layout verification record](../../README.md#signed-mos-capacitors-in-the-drawn-cells).
+
+## Historical linear-capacitor extraction from issue #447
+
+The following record describes the earlier GDS and extractor. The current netlist and report above supersede its input and output hashes.
 
 T1 item-7-style probe extraction of the drawn Region II bitcell (the
 `nfet_10v0_asym` LDMOS cell). Ungraded supporting evidence only -- nothing

@@ -1,4 +1,12 @@
-# cell_candidate1 -- klt pex extraction (issue #447 probe)
+# cell_candidate1 signed post-layout extraction
+
+The NMOS capacitor has CN on its gate and PL on diffusion. The access source reaches CN. The PEX report records a biased body and no floating devices. The GDS SHA-256 is `fa008179952e206211354a27a73dde172686dda6dba7c055cbefc1b82ec16de4`. The extracted SPICE SHA-256 is `7bb3d589554f9c64147b5a12e3444ead4312b76ebc685b76fb784f26121a796e`.
+
+The signed regression, extractor revision, reproduction instructions and three-cell ±1 V controls are in [the layout verification record](../../README.md#signed-mos-capacitors-in-the-drawn-cells).
+
+## Historical linear-capacitor extraction from issue #447
+
+The following record describes the earlier GDS and extractor. The current netlist and report above supersede its input and output hashes.
 
 T1 item-7-style probe extraction of the drawn Region I bitcell. Ungraded
 supporting evidence only -- nothing here cites `7.analog` (see

@@ -172,20 +172,16 @@ class Run3TopAssemblyTest(unittest.TestCase):
         self.assertEqual(len(substrate["pins"]), 22)
 
     def test_post_fix_stage_reports(self):
-        # The committed stage evidence (issue #404): the precheck's DRC stage
-        # at gf180mcuD carries only the out-of-scope PCell-exception class
-        # and DBU; the antenna stage carries both operator-deferred groups
-        # (the WL remedy is evaluated and NOT drawn, the private-plate Metal5
-        # group unchanged); the density stage is clean.
+        # Only shared WL gates have antenna findings on the signed layout.
+        # MDN.10c is also present in the same-deck replay of the earlier C2.
         stage = json.loads(
             (ROOT / "layout/run3_top/drc_stage_report.json").read_text())
         self.assertEqual(stage["rule_counts"],
-                         {"CO.4": 80, "DBU": 1, "DF.6_MV": 10, "PL.4_MV": 10})
+                         {"CO.4": 80, "DBU": 1, "DF.6_MV": 10, "MDN.10c": 5, "PL.4_MV": 10})
         antenna = json.loads(
             (ROOT / "layout/run3_top/drc_antenna_report.json").read_text())
         self.assertEqual(antenna["rule_counts"],
-                         {"ANT.16_i_ANT.6": 26, "ANT.16_ii_ANT.4": 29,
-                          "ANT.16_ii_ANT.6": 5})
+                         {"ANT.16_ii_ANT.4": 29})
         density = json.loads(
             (ROOT / "layout/run3_top/drc_density_report.json").read_text())
         self.assertEqual(density["rule_counts"], {})
@@ -257,24 +253,13 @@ class Run3TopAssemblyTest(unittest.TestCase):
                     ratios.setdefault(cat, []).append(
                         float(text.split("float:")[1]))
         self.assertEqual({c: len(v) for c, v in ratios.items()},
-                         {"ANT.16_i_ANT.6": 26, "ANT.16_ii_ANT.4": 29,
-                          "ANT.16_ii_ANT.6": 5})
-        # the README's quoted ranges: the shared-WL group, and the
-        # private-plate group combined across its thin/thick-gate rules
+                         {"ANT.16_ii_ANT.4": 29})
         wl = ratios["ANT.16_ii_ANT.4"]
-        self.assertAlmostEqual(min(wl), 428.361, places=3)
-        self.assertAlmostEqual(max(wl), 1034.186, places=3)
-        plates = ratios["ANT.16_i_ANT.6"] + ratios["ANT.16_ii_ANT.6"]
-        self.assertAlmostEqual(min(plates), 2030.99, places=3)
-        self.assertAlmostEqual(max(plates), 7822.295, places=3)
-        # the companion stdout log names the committed RDB and cross-checks
-        # the envelope's per-rule counts
+        self.assertAlmostEqual(min(wl), 428.958, places=3)
+        self.assertAlmostEqual(max(wl), 1035.402, places=3)
         log = (ROOT / "layout/run3_top/drc_antenna_stage.log").read_text()
         self.assertIn("drc_antenna_stage.lyrdb", log)
-        for rule, count in (("ANT.16_i_ANT.6", 26), ("ANT.16_ii_ANT.4", 29),
-                            ("ANT.16_ii_ANT.6", 5)):
-            self.assertIsNotNone(
-                re.search(rf"'{rule}'\s*:\s+{count} violation", log), rule)
+        self.assertRegex(log, r"'ANT\.16_ii_ANT\.4'\s*:\s+29 violation")
         # the WL remedy's "after" round -- the drawn-clamp layout whose
         # ANT.16_ii_ANT.4 count is 0 -- re-committed from 9f5dc932, where
         # that layout lived; its input is the diode-drawn GDS (sha pinned),

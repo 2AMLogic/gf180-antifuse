@@ -1,0 +1,245 @@
+{
+  "schema_version": 3,
+  "netlist": {
+    "path": "sim/cell-device-characterization/klt/post-layout/requests/c1_schematic/body.spice",
+    "scope": "repo"
+  },
+  "status": "pass",
+  "corner_count": 1,
+  "passed": 1,
+  "failed": 0,
+  "errored": 0,
+  "inconclusive": 0,
+  "diagnostic_counts": {
+    "by_code": {},
+    "by_severity": {},
+    "corners_with_diagnostics": 0
+  },
+  "metrics": {
+    "sim__corner__count": 1,
+    "sim__corner__passed_count": 1,
+    "sim__corner__failed_count": 0,
+    "sim__corner__errored_count": 0,
+    "sim__corner__inconclusive_count": 0
+  },
+  "environment": {
+    "engine": "ngspice",
+    "engine_version": "47",
+    "ngspice_binary": "/Volumes/Stripe/gf180-antifuse-bronze-539-e764/install/bin/ngspice",
+    "engine_build": {
+      "version_banner": "******\n** ngspice-47 : Circuit level simulation program\n** Compiled with KLU Direct Linear Solver\n** The U. C. Berkeley CAD Group\n** Copyright 1985-1994, Regents of the University of California.\n** Copyright 2001-2026, The ngspice team.\n** Please get your ngspice manual from https://ngspice.sourceforge.io/docs.html\n** Please file your bug-reports at http://ngspice.sourceforge.net/bugrep.html\n******",
+      "binary_sha256": "75d576700bd73ef769b5be8a08d3960ab9a80a89c0039f0d7a82d91f54abfd65",
+      "probe": "ok",
+      "reason": null
+    },
+    "ngspice_init": {
+      "source": "request",
+      "lines": [
+        "set measureprec=7"
+      ],
+      "sha256": "sha256:0dd87941a50d7be4626bf6cc958d17957763d87579f2bc16e8cefaf5e616e882"
+    },
+    "models_lib": {
+      "path": null,
+      "scope": "external"
+    },
+    "models_lib_sha256": "f6f4a96e18fc5ad11270ad3451aaecc7ac37fc81eb61e15b0d7d94c7bc594a24",
+    "models_lib_sha256_scope": "local",
+    "netlist_sha256": "76b1666a6c942b0ab2832157ce5596c913ce6419d966f3250cf86f70413badad",
+    "netlist_sha256_scope": "staged",
+    "netlist_closure": [
+      {
+        "path": "sim/cell-device-characterization/klt/post-layout/requests/c1_schematic/body.spice",
+        "scope": "repo",
+        "sha256": "76b1666a6c942b0ab2832157ce5596c913ce6419d966f3250cf86f70413badad"
+      },
+      {
+        "path": "sim/cell-device-characterization/klt/post-layout/requests/design.ngspice",
+        "scope": "repo",
+        "sha256": "091cb530bf85160a1f07878fb81f789ca367d018991c8ab41a584cd1a85c6692"
+      },
+      {
+        "path": "layout/cell_candidate1/lvs_reference.spice",
+        "scope": "repo",
+        "sha256": "5d91d01e20b0e42ec61d8f85644c5e60d82cf4a50345902eff568bba3aa96831"
+      }
+    ],
+    "netlist_identity": "sha256:a5cfb67bc8314795fff3eafe1565c3e6e381295e162697279ad16242fa738416",
+    "netlist_source": "schematic",
+    "engine_host": "local",
+    "backend": {
+      "resolved": "local",
+      "source": "flag",
+      "requested": "local"
+    }
+  },
+  "coverage": {
+    "corners_simulated": 1,
+    "measurements_declared": 4,
+    "measurements_with_limits": 0,
+    "unrecognized_limit_keys": [],
+    "schema_version": 1,
+    "known": true,
+    "checked": "<4 entries elided by sim/harness/report.py elide_coverage()>",
+    "skipped": [],
+    "inapplicable": "<4 entries elided by sim/harness/report.py elide_coverage()>",
+    "unknown": [],
+    "nothing_checked": false,
+    "nothing_checked_reasons": []
+  },
+  "provenance": {
+    "klt_version": "0.10.0.dev1+g9d2780c5e1c8",
+    "klt_git_commit": "9d2780c5e1c842777519330943a5435b118c4437",
+    "klt_reinstall_spec": "klayout-tools @ git+https://github.com/2AMLogic/klayout-tools@9d2780c5e1c842777519330943a5435b118c4437",
+    "klayout_version": "0.30.14",
+    "pdk": {
+      "name": "gf180mcuD",
+      "source": "PDK_ROOT environment variable",
+      "version": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7",
+      "ambiguous_sources": [
+        "search root: ~/.volare"
+      ]
+    },
+    "deck": {
+      "name": "sm141064.ngspice",
+      "content_hash": "sha256:f6f4a96e18fc5ad11270ad3451aaecc7ac37fc81eb61e15b0d7d94c7bc594a24",
+      "released": false
+    },
+    "input": {
+      "content_hash": "sha256:76b1666a6c942b0ab2832157ce5596c913ce6419d966f3250cf86f70413badad",
+      "role": "netlist"
+    }
+  },
+  "measurements": [
+    {
+      "name": "ire",
+      "unit": "A",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "ss/vbl=0.900_vwl=3.300V/-40C",
+        "value": -1.2094942e-10,
+        "margin": null
+      },
+      "min": {
+        "corner_id": "ss/vbl=0.900_vwl=3.300V/-40C",
+        "value": -1.2094942e-10
+      },
+      "max": {
+        "corner_id": "ss/vbl=0.900_vwl=3.300V/-40C",
+        "value": -1.2094942e-10
+      }
+    },
+    {
+      "name": "iim",
+      "unit": "A",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "ss/vbl=0.900_vwl=3.300V/-40C",
+        "value": -1.3296861e-07,
+        "margin": null
+      },
+      "min": {
+        "corner_id": "ss/vbl=0.900_vwl=3.300V/-40C",
+        "value": -1.3296861e-07
+      },
+      "max": {
+        "corner_id": "ss/vbl=0.900_vwl=3.300V/-40C",
+        "value": -1.3296861e-07
+      }
+    },
+    {
+      "name": "vre",
+      "unit": "V",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "ss/vbl=0.900_vwl=3.300V/-40C",
+        "value": 1.0,
+        "margin": null
+      },
+      "min": {
+        "corner_id": "ss/vbl=0.900_vwl=3.300V/-40C",
+        "value": 1.0
+      },
+      "max": {
+        "corner_id": "ss/vbl=0.900_vwl=3.300V/-40C",
+        "value": 1.0
+      }
+    },
+    {
+      "name": "vim",
+      "unit": "V",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "ss/vbl=0.900_vwl=3.300V/-40C",
+        "value": 0.0,
+        "margin": null
+      },
+      "min": {
+        "corner_id": "ss/vbl=0.900_vwl=3.300V/-40C",
+        "value": 0.0
+      },
+      "max": {
+        "corner_id": "ss/vbl=0.900_vwl=3.300V/-40C",
+        "value": 0.0
+      }
+    }
+  ],
+  "corners": [
+    {
+      "corner_id": "ss/vbl=0.900_vwl=3.300V/-40C",
+      "process": "ss",
+      "supply_v": {
+        "vbl": 0.9,
+        "vwl": 3.3
+      },
+      "temperature_c": -40,
+      "status": "pass",
+      "runtime_s": 0.084,
+      "peak_rss_bytes": 13910016,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -1.2094942e-10,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -1.3296861e-07,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    }
+  ]
+}

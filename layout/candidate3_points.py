@@ -24,10 +24,10 @@ this pfet + medium_voltage pairing misses two native-deck well/Dualgate rules
 at the generator default, and the padding raises the acc ring (and its TAP_N
 pad) by `DPAD` on all four sides -- hence `DX`, `Y_TAP_ACC` and the VB flat
 band's min edge all track `DPAD`, and the strap shapes split by W_CAP
-(single-band vs doglegged CN, flat vs stacked VB).
+(flat vs stacked VB).
 
 Ports (text labels on Metal1): BL (access source), WL (access gate),
-PL (cap gate/plate), VB (both tap rings, strapped).
+PL (shorted capacitor diffusion pads), VB (both tap rings, strapped).
 """
 import os
 import sys
@@ -99,96 +99,19 @@ Y_TAP_CAP_BY_W = {1.0: 3.28, 2.0: 4.28}
 # the whole grid.
 Y_TAP_ACC = 2.70 + DPAD
 
-# CN (access drain -> capacitor shorted S/D, metal1) leaves each tap ring
-# through that ring's metal1 exit gap (ring_gap_um 1.0, ring_gap_offset_um
-# -0.7). The gap is centred on the device, so it rises with the width:
-# measured GAP_E/GAP_W spans y -0.28..0.72 at W = 0.42 um (access, E side),
-# 0.01..1.01 at W_CAP = 1.0 and 0.51..1.51 at W_CAP = 2.0 um (capacitor, W
-# side) -- centre W/2 + 0.01 um at every width, 1.0 um tall, and
-# padding-independent in y (the gap follows the pads, not the ring). With the
-# 0.23 um (metal1.space.1) clearance required from every edge, the common
-# window at the Minimum point (access W = 0.42, cap W_CAP = 1.0) is
-# 0.24..0.49 -- 0.25..0.48 sits inside it with >= 0.24 um clearance and is
-# exactly the 0.23 um metal1 minimum WIDTH (M1.1) tall -- a thinner band
-# fails M1.1 on its free-standing stretches between pads (observed on the
-# first generated cell), and the window has no room for a taller one (the
-# same derivation as layout/candidate1_points.py). The band overlaps both
-# S/D pads (each as tall as its device width). At the 2x capacitor the legal
-# windows are DISJOINT (access -0.05..0.49 vs capacitor 0.74..1.28) -- no
-# single-rect CN exists (the same measured constraint as the candidate-1 G2x
-# cells; spec/capacitor-geometry-decision.md) and the strap becomes a
-# doglegged three-rect shape: an access-side band through the access ring's
-# gap, a riser across the inter-ring field, and a capacitor-side band
-# through the capacitor ring's gap. Binding metal edges there (measured from
-# the generated blocks): the access ring's metal1 outer edge sits at
-# x 2.77 + DPAD (2.77 at the default padding, + DPAD with the raised ring)
-# and the capacitor ring's metal1 outer edge at DX - 1.07 = 3.73 + DPAD, so
-# the field stays 0.96 um wide (DX tracks DPAD) and the riser
-# (x 3.02 + DPAD .. 3.48 + DPAD) clears both by >= 0.25 um at every padding.
-# (Metal edges, not the comp/pplus tap-ring extents the ERC well boxes quote:
-# the space rule that binds CN is metal1-to-metal1.)
-CN_BAND_Y = (0.25, 0.48)  # the Minimum point's single band, y span
-
-
-def cn_dogleg():
-    """CN strap rects for the 2x point, as `klt draw` expects them.
-
-    The two ring gaps' legal CN windows are disjoint at W_CAP = 2.0 um (see
-    the CN comment above), so the strap is a doglegged three-rect metal1
-    shape: an access-side band from the access D pad through the access
-    ring's gap into the inter-ring field, a riser across that field, and a
-    capacitor-side band through the capacitor ring's gap over both S/D pads.
-    The access row (y 0.0..0.45) overlaps the access D pad at x 1.13..1.55,
-    y 0..0.42, measured off the committed GDS (the BL/U0_S pad is x 0..0.42;
-    the 0.86..1.28 range in pre-#400 comments was the capacitor block's
-    second S/D pad column, not the access device's). Both candidate-3
-    points keep W_ACC = bg.W_MIN, so the rows are constants.
-    """
-    return [
-        [0.92, 0.00, 3.48 + DPAD, 0.45],         # access D pad -> acc ring gap
-        [3.02 + DPAD, 0.00, 3.48 + DPAD, 1.25],  # riser, inter-ring field
-        [3.02 + DPAD, 0.78, DX + 1.22, 1.25],    # acc ring gap -> both S/D pads
-    ]
-
-
 def straps(w_cap):
-    """Strap/marker rectangle list for a point, as `klt draw` expects it.
-
-    Pad coverage (both grid cases): the S/D pads the CN band crosses are as
-    tall as their device width, so at a doubled device the band lies inside
-    that pad, and at a Minimum device it may overhang the pad's top edge --
-    metal over field, DRC clean.
-
-    VB is one flat band (min/max of the two TAP_N centres +/- 0.21) at the
-    Minimum capacitor, where it clears the capacitor's metal1 gate pad
-    (x DX + 0.43..DX + 0.85, y W_CAP + 0.75..W_CAP + 1.17 = 1.75..2.17) by
-    >= 1.1 um. At the 2x capacitor the same gate pad (y 2.75..3.17, measured
-    on the committed GDS) sits BELOW both rings' metal north bands (access
-    y 2.49 + DPAD .. 2.91 + DPAD = 3.28..3.70 over the raised ring, measured
-    off the committed GDS, capacitor y 4.07..4.49): its top edge is 0.11 um
-    below the raised access band's bottom edge. The flat shape fails there
-    on spacing, not a short: a flat band covering both TAP_N pads at the
-    same +/- 0.21 overlap every strap here uses would have its bottom edge
-    at y 3.28 (the access pad centre 3.49 - 0.21), yet it must still reach
-    the capacitor TAP_N pad across the gate pad's x column (both sit at
-    x DX + 0.43..DX + 0.85), which puts metal1 0.11 um from the gate pad --
-    under the 0.23 um metal1.space.1 minimum. Measured on the scratch
-    single-flat-band variant (y 3.28..4.49): exactly one metal1.space.1
-    finding, bbox (5.818,3.170)-(6.440,3.280) um (klt drc --deck gf180mcu;
-    the committed GDS is clean on the same rule). (Older revisions of this
-    rationale -- here and in layout/README.md -- said the pad sat BETWEEN
-    the north bands and that a flat band would short PL to VB; that reading
-    predates #389's ring raise, which moved the access band clear above the
-    pad, and is stale -- the re-measurement landed as #400, which also
-    corrected the README bullet.) So there VB is two
-    stacked bands -- one per ring, each over its TAP_N pad -- joined by a
-    riser at x 3.05 + DPAD .. 3.45 + DPAD, left of the capacitor ring's
-    metal edge and clear of the gate pad and both CN rows.
-    """
+    """Route CN to the PMOS capacitor gate and VB to both well taps."""
     y_tap_cap = Y_TAP_CAP_BY_W[w_cap]
-    shapes = []
+    # The jog clears the assembled WL via ladder. The drain is the storage side.
+    shapes = bg.signed_cap_straps(DX, w_cap, (1.34, 0.21), 1.82)
     if w_cap == 2.0:
-        shapes += [{"layer": bg.METAL1, "rect_um": r} for r in cn_dogleg()]
+        # Retain a Metal1 landing through each ring gap to meet standalone
+        # density. They are separate electrodes now: CN on the access side
+        # and PL on the capacitor side, with a 0.33 um gap in y.
+        shapes.extend([
+            {"layer": bg.METAL1, "rect_um": [0.92, 0.00, 3.48 + DPAD, 0.45]},
+            {"layer": bg.METAL1, "rect_um": [3.02 + DPAD, 0.78, DX + 1.22, 1.25]},
+        ])
         shapes += [
             # VB, access ring: band over the access TAP_N pad (which rides
             # the raised ring via Y_TAP_ACC).
@@ -204,11 +127,6 @@ def straps(w_cap):
         ]
     else:
         shapes += [
-            # CN: access drain pad -> cap source pad -> cap drain pad
-            # (metal1); one band through both tap rings' exit gaps (see the
-            # CN comment above).
-            {"layer": bg.METAL1,
-             "rect_um": [0.92, CN_BAND_Y[0], DX + 1.22, CN_BAND_Y[1]]},
             # VB: tie both tap rings together along the north side. The
             # TAP_N pad centre rises with the width (centre = W + 2.28 um,
             # measured), so the band spans both pads -- min/max +/- 0.21 --
@@ -255,7 +173,7 @@ POINTS = {
 PINS = [
     {"net": "BL", "block": "acc", "port": "U0_S"},
     {"net": "WL", "block": "acc", "port": "U0_G"},
-    {"net": "PL", "block": "cap", "port": "U0_G"},
+    {"net": "PL", "block": "cap", "port": "U0_S"},
     {"net": "VB", "block": "cap", "port": "TAP_N"},
 ]
 

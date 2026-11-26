@@ -332,7 +332,7 @@ class MeasurementTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             root = make_tree(Path(d))
             rec = read_claims(root)
-            rec["claims"][0]["layer"] = "35/0"
+            rec["claims"][0]["layer"] = "37/0"  # Via2 is absent from the bitcell straps.
             write_claims(root, rec)
             r = run_check(root)
         self.assertEqual(r.returncode, 1, r.stdout + r.stderr)

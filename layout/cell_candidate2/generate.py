@@ -12,7 +12,7 @@ Source/drain assignment (deliberate; design/cells/cell_candidate2.sch):
   d -> BL  the PCell's centre COMP stripe (the drift-extended, high-voltage
            terminal, between the two gate fingers)
   s -> CN  the PCell's two outer COMP stripes, strapped together and to the
-           capacitor's S and D (Metal2 over Via1, so the strap crosses the
+           capacitor gate (Metal2 over Via1, so the strap crosses the
            PCell's tap ring without touching it)
 
 Geometry: the PCell clamps W up to 4 um (a request for 0.42 um draws the same
@@ -21,7 +21,7 @@ device is 2 x W = 4 um (8 um total), L = 0.6 um (schematic lacc). The capacitor
 is drawn at the ratified Minimum level, W = 1.0 um at L = 0.70 um
 (`spec/capacitor-geometry-decision.md`: the PDK runset's 1 um `DF.1c` "Min.
 COMP Width for MOSCAP" floor, and the 0.7 um `PL.2_MV` 6 V n-gate minimum the
-old 0.56 um length violated), source and drain shorted on CN, with the
+old 0.56 um length violated), source and drain shorted on PL, with the
 MOS-capacitor marker added by hand (no `klt gen` MOS-capacitor marker for a
 gate-contacted unit). Both dimensions now clear their native-deck rules; the
 remaining native findings on this cell live inside the PDK's own
@@ -29,7 +29,7 @@ remaining native findings on this cell live inside the PDK's own
 ruling's business (#299), not this cell's drawn geometry.
 
 Ports (Metal1 labels): BL (access drain), WL (access gates), PL (capacitor
-gate), VB (both tap rings strapped). The PCell tap ring is closed, so it has no
+diffusion), VB (both tap rings strapped). The PCell tap ring is closed, so it has no
 `klt` port; the labels are drawn by `klt draw`.
 
 Usage:  generate.py            write cell_candidate2.gds next to this script
@@ -56,27 +56,18 @@ W_CAP = 1.0        # um, capacitor width -- the ratified Minimum level (the
 L_CAP = 0.70       # um, 6 V n-gate minimum drawn length (PL.2_MV); the drawn
                    # 0.56 um violated it
 LABEL_M1 = [34, 10]   # gf180mcu extraction deck reads Metal1 pin labels from 34/10
-VIA1 = [35, 0]
-METAL2 = [36, 0]
-# Access PCell at the origin; capacitor block at (CX, CY). CY puts the lower
-# part of the capacitor S/D pads -- and the Via1s on them -- under the Metal2
-# CN bar; the pads are as tall as the device width (y CY..CY+W_CAP) and grow
-# upward around the vias, which stay put.
+# Access PCell at the origin, capacitor at (CX, CY). Route CN below the
+# assembled VB landing at y = 2.99 and above the PL landing at y = 1.0.
 CX, CY = 5.5, 0.79
-# Source stripes (Metal1) x = +/-[1.53, 1.91]; via centres y = 1.0.
+GATE = (CX + 0.78, CY + W_CAP + 0.96)
 STRAPS = {
     "shapes": [
-        # CN: Metal2 bar over both source stripes, the ring, and the cap S/D pads
-        {"layer": METAL2, "rect_um": [-1.97, 0.75, CX + 1.62, 1.25]},
-        {"layer": VIA1, "rect_um": [-1.85, 0.87, -1.59, 1.13]},
-        {"layer": VIA1, "rect_um": [1.59, 0.87, 1.85, 1.13]},
-        {"layer": VIA1, "rect_um": [CX + 0.08, CY + 0.08, CX + 0.34, CY + 0.34]},
-        # Right via sits fully on the capacitor D pad: the MV block's pads
-        # shift +x with L (D pad x CX+1.14..CX+1.56 at L = 0.56, CX+1.28..1.70
-        # at L = 0.70 -- measured), and the old x left the via's left sliver
-        # off the pad (native V1.3a, "metal1 overlap of via1", observed on the
-        # first generated cell at the new L).
-        {"layer": VIA1, "rect_um": [CX + 1.28, CY + 0.08, CX + 1.54, CY + 0.34]},
+        # Both outer source stripes reach the capacitor gate.
+        *bg.metal2_route((-1.72, 1.0), (1.72, 1.0)),
+        bg.via1(-1.72, 1.0), bg.via1(1.72, 1.0), bg.via1(*GATE),
+        *bg.metal2_route(GATE, (GATE[0], 1.85), (1.72, 1.85), (1.72, 1.0)),
+        # Short the capacitor's two diffusion pads to the private plate.
+        {"layer": bg.METAL1, "rect_um": [CX + 0.06, 0.87, CX + 1.56, 1.13]},
         # WL: join the two access gate pads (Metal1)
         {"layer": bg.METAL1, "rect_um": [-0.4, 2.72, 0.4, 3.1]},
         # VB: tie the PCell ring to the capacitor ring (Metal1, clear of the gap).
@@ -91,7 +82,7 @@ STRAPS = {
     "labels": [
         {"layer": LABEL_M1, "text": "BL", "at_um": [0.0, 0.0]},
         {"layer": LABEL_M1, "text": "WL", "at_um": [0.0, 2.9]},
-        {"layer": LABEL_M1, "text": "PL", "at_um": [CX + 0.78, CY + W_CAP + 0.96]},
+        {"layer": LABEL_M1, "text": "PL", "at_um": [CX + 0.21, 1.0]},
         {"layer": LABEL_M1, "text": "VB", "at_um": [4.0, CY + 2.2]},
     ],
 }

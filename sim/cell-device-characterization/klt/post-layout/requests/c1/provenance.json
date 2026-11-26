@@ -1,7 +1,7 @@
 {
   "cell": "cell_candidate1",
   "gds": "layout/cell_candidate1/cell_candidate1.gds",
-  "gds_sha256": "sha256:d31a786ed748a9e3bf6e46dcec4d59ccdd3cd095ddace86714574e624d3305cd",
+  "gds_sha256": "sha256:fa008179952e206211354a27a73dde172686dda6dba7c055cbefc1b82ec16de4",
   "bench_nets": [
     "BL",
     "WL",
@@ -22,7 +22,7 @@
   "extracted": {
     "leg": "extracted",
     "dut": "layout/cell_candidate1/pex/extracted.spice",
-    "dut_sha256": "sha256:34ad48ab64c2bb1486ccb545d3f425b1961dee5c46b91d63dd6f0eaf8c6810aa",
+    "dut_sha256": "sha256:7bb3d589554f9c64147b5a12e3444ead4312b76ebc685b76fb784f26121a796e",
     "subckt_pin_order": [
       "BL",
       "PL",

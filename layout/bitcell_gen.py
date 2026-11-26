@@ -35,6 +35,35 @@ L_CAP = 0.28       # um, thin-oxide minimum drawn length
 GAP = {"ring_gap_um": 1.0, "ring_gap_offset_um": -0.7}
 METAL1 = [34, 0]
 MOS_CAP_MK = [166, 5]
+VIA1 = [35, 0]
+METAL2 = [36, 0]
+
+
+def via1(x, y):
+    """Single 0.26 um cut between Metal1 and Metal2."""
+    return {"layer": VIA1, "rect_um": [x - 0.13, y - 0.13, x + 0.13, y + 0.13]}
+
+
+def metal2_route(*points):
+    """Join successive Manhattan centres with 0.50 um metal, including end pads."""
+    shapes = []
+    for (x1, y1), (x2, y2) in zip(points, points[1:]):
+        if x1 != x2 and y1 != y2:
+            raise ValueError("Metal2 route must be Manhattan")
+        shapes.append({"layer": METAL2,
+                       "rect_um": [min(x1, x2) - 0.25, min(y1, y2) - 0.25,
+                                   max(x1, x2) + 0.25, max(y1, y2) + 0.25]})
+    return shapes
+
+
+def signed_cap_straps(cap_x, cap_width, access, jog_x):
+    """Join the storage terminal to the gate on Metal2, short both PL pads on Metal1."""
+    gate = (cap_x + 0.64, cap_width + 0.96)
+    return [
+        {"layer": METAL1, "rect_um": [cap_x + 0.06, 0.25, cap_x + 1.22, 0.48]},
+        via1(*gate), via1(*access),
+        *metal2_route(gate, (jog_x, gate[1]), (jog_x, access[1]), access),
+    ]
 
 
 def run(args, **kw):

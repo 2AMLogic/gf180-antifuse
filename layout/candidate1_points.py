@@ -19,7 +19,7 @@ the held L = 0.28 um. The access widths keep their section-3 split values;
 that axis is not under a MOSCAP rule and is not touched here.
 
 Ports (text labels on Metal1): BL (access drain), WL (access gate),
-PL (cap gate/plate), VB (both tap rings, strapped).
+PL (shorted capacitor diffusion pads), VB (both tap rings, strapped).
 """
 import os
 import sys
@@ -60,30 +60,6 @@ DX = 4.2           # um, access-block x offset (keeps Pplus spacing >= 0.4).
 # tap-ring coordinate nobody verified.
 Y_TAP_BY_W = {0.42: 2.70, 0.84: 3.12, 1.0: 3.28, 2.0: 4.28}
 
-# CN leaves each tap ring through that ring's metal1 exit gap (ring_gap_um
-# 1.0, ring_gap_offset_um -0.7); the gap is centred on the device, so it rises
-# with the width: measured GAP_E/GAP_W spans y -0.28..0.72 at W = 0.42 um,
-# -0.07..0.93 at 0.84, 0.01..1.01 at 1.0 and 0.51..1.51 at 2.0 (centre
-# W/2 + 0.01 um, 1.0 um tall, at every width; spec/capacitor-geometry-decision.md
-# tabulates the 1.0/2.0 runs). CN crosses BOTH rings' gaps, so a single-rect
-# CN must sit in the intersection of both spans with >= 0.23 um
-# (metal1.space.1) clearance from each edge. At the Minimum capacitor that
-# intersection is 0.24..0.49 um (access at 0.42) or 0.24..0.70 um (access at
-# 0.84), so one band serves both cap-1.0 points; 0.25..0.48 sits in each with
-# >= 0.24 um clearance and is exactly the 0.23 um metal1 minimum WIDTH (M1.1)
-# tall -- a thinner band fails M1.1 on its free-standing stretches between
-# pads (observed on the first generated cell), and the window has no room
-# for a taller one. At the 2x capacitor the inset windows are disjoint
-# (cap 0.74..1.28 vs access -0.05..0.49 or 0.16..0.70) -- no single rect
-# exists (measured and ratified as a constraint in
-# spec/capacitor-geometry-decision.md); those points pass cn_dogleg(w_acc)
-# instead. The inter-ring field is wide enough for the dogleg riser: the
-# ring METAL1 outer edges are x 2.35 (capacitor) and DX - 1.07 = 3.13
-# (access), leaving 0.78 um -- a 0.28 um riser clears both by >= 0.25 um.
-# (Metal edges, not the comp/pplus tap-ring extents the ERC well boxes quote:
-# the space rule that binds CN is metal1-to-metal1.)
-CN_ROW = (0.25, 0.48)
-
 # The candidate-1 split-axis points: key -> (cell directory, W_CAP um,
 # W_ACC um). This table is the only place a point's constants are written;
 # each cell_candidate1*/generate.py names exactly one entry. (The Minimum
@@ -103,68 +79,21 @@ POINTS = {
 PINS = [
     {"net": "BL", "block": "acc", "port": "U0_D"},
     {"net": "WL", "block": "acc", "port": "U0_G"},
-    {"net": "PL", "block": "cap", "port": "U0_G"},
+    {"net": "PL", "block": "cap", "port": "U0_S"},
     {"net": "VB", "block": "cap", "port": "TAP_N"},
 ]
 
 
-def cn_dogleg(w_acc):
-    """CN strap rects for a cap-2.0 point, as `klt draw` expects them.
-
-    No single rectangle crosses both ring gaps at W_CAP = 2.0 um -- the two
-    gap windows are disjoint (see the CN comment above) -- so the strap is a
-    doglegged three-rect metal1 shape: a capacitor-side band through the
-    capacitor ring's gap, a riser across the inter-ring field, and an
-    access-side band through the access ring's gap. Clearances, from the
-    measured geometry: the cap row (y 0.78..1.25) clears the capacitor gap
-    (0.51..1.51) by >= 0.26 um; the access row clears its gap (spans in the CN
-    comment above) by >= 0.27 um and overlaps the access S pad (y 0..w_acc,
-    x DX..DX + 0.42); the riser (x 2.60..2.88) clears both ring metal edges
-    (2.35 and 3.13) by >= 0.25 um. The unmeasured-width KeyError of
-    Y_TAP_BY_W applies here too.
-    """
-    acc_row = {0.42: (0.00, 0.45), 0.84: (0.20, 0.65)}[w_acc]
-    return [
-        [0.06, 0.78, 2.88, 1.25],                    # cap pads -> cap ring gap
-        [2.60, 0.00, 2.88, 1.25],                    # riser, inter-ring field
-        [2.60, acc_row[0], DX + 0.36, acc_row[1]],   # access ring gap -> S pad
-    ]
-
-
-def straps(w_cap, w_acc, cn_shapes=None):
-    """Strap/marker rectangle list for a point, as `klt draw` expects it.
-
-    Pad coverage (both grid cases): the S/D pads the CN band crosses are as
-    tall as their device width, so at a doubled device the band lies inside
-    that pad, and at a Minimum device it may overhang the pad's top edge --
-    metal over field, DRC clean. The MOS-capacitor marker (MOS_CAP_MK) covers
-    the cap block's COMP island (0,0)-(1.28, W_CAP), which is as tall as the
-    device width; the 0.1 um margin matches cell_candidate1/. The marker is
-    what makes the deck read the thin-oxide gate as cap_nmos_03v3 instead of
-    an nfet, and is not drawn over the access device.
-
-    VB is one flat band (min/max of the two TAP_N centres +/- 0.21) at
-    cap-1.0 points, where it clears the capacitor's metal1 gate pad
-    (x 0.43..0.85, y W_CAP + 0.75..W_CAP + 1.17) by >= 0.32 um. At cap-2.0
-    points that gate pad (y 2.75..3.17) sits BETWEEN the two rings' metal
-    north bands (access 2.45..2.91 or 2.87..3.33, capacitor 4.03..4.49), so a
-    flat band would sweep through it and short PL to VB; there VB is two
-    stacked bands -- one per ring, each over its TAP_N pad -- joined by a
-    riser at x 1.10..1.50, right of the gate pad (0.25 um clearance).
-
-    `cn_shapes` replaces the default single CN rect (a list of rect_um
-    4-lists on METAL1) for a point that needs a doglegged strap; cap-2.0
-    points pass cn_dogleg(w_acc) from main().
-    """
+def straps(w_cap, w_acc):
+    """Route CN on Metal2, PL across the diffusion pads and VB over both taps."""
     y_tap_cap = Y_TAP_BY_W[w_cap]
     y_tap_acc = Y_TAP_BY_W[w_acc]
-    if cn_shapes is None:
-        cn_shapes = [[0.06, CN_ROW[0], DX + 0.36, CN_ROW[1]]]
-    shapes = [{"layer": bg.METAL1, "rect_um": r} for r in cn_shapes]
+    # The jog clears the assembled WL via ladder at every access width.
+    shapes = bg.signed_cap_straps(0, w_cap, (DX + 0.21, w_acc / 2), 3.95)
     if w_cap == 2.0:
         shapes += [
             # VB, access ring: band over the access TAP_N pad. Its x0 clears
-            # the capacitor gate pad by 0.25 um (see the docstring).
+            # the capacitor gate pad by 0.25 um.
             {"layer": bg.METAL1, "rect_um": [1.10, y_tap_acc - 0.21,
                                              DX + 0.85, y_tap_acc + 0.21]},
             # VB riser between the two stacked bands, right of the gate pad.
@@ -200,8 +129,7 @@ def main(here, point):
         here, gds_name=cell + ".gds", cell=cell,
         flavor="nfet", w_cap_um=w_cap, l_cap_um=L_CAP, w_acc_um=w_acc,
         l_acc=L_ACC, cap_gap_side="E", acc_gap_side="W",
-        straps=straps(w_cap, w_acc,
-                      cn_shapes=cn_dogleg(w_acc) if w_cap == 2.0 else None),
+        straps=straps(w_cap, w_acc),
         origins_um={"cap": {"x": 0, "y": 0}, "acc": {"x": DX, "y": 0},
                     "straps": {"x": 0, "y": 0}},
         pins=PINS,

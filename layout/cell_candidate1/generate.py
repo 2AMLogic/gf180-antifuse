@@ -3,7 +3,7 @@
 
 Cell: thin-oxide NMOS capacitor (antifuse element, netlist `cap_nmos_03v3`)
 in series with a 6.0 V NMOS access device (`nfet_06v0`). Drawn with `klt gen`
-(mos_array primitives + tap ring), `klt draw` (two metal1 straps) and
+(mos_array primitives + tap ring), `klt draw` (Metal1 and Metal2 straps) and
 `klt gen-compose` (explicit placement), for gf180mcu.
 
 Geometry point: Minimum x Minimum of spec/split-axis-plan.md sections 2-3
@@ -17,15 +17,13 @@ of scope here, see README).
 
   access : nfet_06v0 (Dualgate marker), W = 0.42 um, L = 0.70 um
   cap    : thin-oxide NMOS gate over COMP, W = 1.0 um, L = 0.28 um,
-           source and drain shorted (moscap) on net CN
+           gate on CN, source and drain shorted on PL
 
-Straps and marker come from `candidate1_points.straps(1.0, 0.42)` -- the same
-derivation every candidate-1 point uses: CN inside both tap rings' metal1
-exit-gap windows (>= 0.23 um metal1.space.1 clearance), VB over both tap-ring
-pads, MOS_CAP_MK grown with the capacitor island.
+Metal2 joins the access source to the capacitor gate (CN). Metal1 joins the
+two capacitor diffusion pads on PL and straps both well taps on VB.
 
 Ports (text labels on Metal1): BL (access drain), WL (access gate),
-PL (cap gate/plate), VB (both tap rings, strapped).
+PL (cap diffusion), VB (both tap rings, strapped).
 
 Point table, shared constants, strap derivation and flow call:
 layout/candidate1_points.py. This file names only this point. (This cell's
