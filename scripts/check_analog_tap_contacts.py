@@ -39,6 +39,8 @@ def run_erc(gds, spec_path, top, expected_findings):
     islands = {net["name"]: net["matched_islands"] for net in report["nets"]}
     if top == "run3_top":
         expected_islands = {"VSS_ANALOG": 1, "VBW_C3": 1}
+    elif top == "array_region_iii":
+        expected_islands = {"VDDH_III": 1}
     elif top.startswith("cell_candidate3"):
         expected_islands = {}  # The Region III spec declares VB ties only.
     else:
@@ -48,7 +50,7 @@ def run_erc(gds, spec_path, top, expected_findings):
         raise ValueError(f"{gds.name}: {coverage['skipped']=}, {report['erc_status']=}, {islands=}")
 
 
-def check_open(gds, spec_path, tie, dest, single_well=False):
+def check_open(gds, spec_path, tie, dest, single_well=False, expected_wells=None):
     layout = db.Layout()
     layout.read(str(gds))
     top = layout.top_cell()
@@ -64,6 +66,8 @@ def check_open(gds, spec_path, tie, dest, single_well=False):
     else:
         bodies = [polygon.bbox() for polygon in wells.each()]
         taps = active & region(32) & wells
+    if expected_wells is not None and len(bodies) != expected_wells:
+        raise ValueError(f"{gds.name}: expected {expected_wells} wells, found {len(bodies)}")
     if single_well:
         if len(bodies) < 2:
             raise ValueError(f"{gds.name}: single-well control requires multiple drawn wells")
@@ -92,7 +96,7 @@ def main():
     directories = [layout_dir / name for name in (
         "cell_candidate1", "cell_candidate1_A2x_G2x", "cell_candidate1_A2x_Gmin",
         "cell_candidate1_Amin_G2x", "cell_candidate2", "cell_candidate3",
-        "cell_candidate3_Amin_G2x", "run3_top")]
+        "cell_candidate3_Amin_G2x", "cell_candidate3_A2x_Gmin", "cell_candidate3_A2x_G2x", "run3_top")]
     with tempfile.TemporaryDirectory() as temp:
         for directory in directories:
             report = json.loads((directory / "erc_report.json").read_text())
@@ -113,6 +117,15 @@ def main():
                 check_open(gds, spec_path, tie, Path(temp))
                 if gds.stem == "run3_top" and tie["well_layer"]:
                     check_open(gds, spec_path, tie, Path(temp), single_well=True)
+
+        directory = layout_dir / "array_region_iii"
+        spec_path = directory / "supplies.json"
+        gds = directory / "array_region_iii.gds"
+        tie, = json.loads(spec_path.read_text())["ties"]
+        if tie["net"] != "VDDH_III" or tie["tap_requires"] != ["32/0", "33/0"]:
+            raise ValueError("Region III requires N+ active contacts to VDDH_III")
+        run_erc(gds, spec_path, gds.stem, [])
+        check_open(gds, spec_path, tie, Path(temp), single_well=True, expected_wells=640)
 
 
 if __name__ == "__main__":

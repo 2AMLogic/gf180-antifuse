@@ -177,6 +177,58 @@
       "owner": "design/README.md open item 1(a)"
     },
     {
+      "cell": "cell_candidate3_A2x_G2x",
+      "levels": {
+        "access": "2x",
+        "capacitor": "2x"
+      },
+      "parameter": "cap_l",
+      "simulated": 1e-06,
+      "drawn": 2.8e-07,
+      "ratio": 0.28,
+      "status": "decided in spec; simulated basis not conformed",
+      "owner": "design/README.md open item 1(a) (netlist regeneration)"
+    },
+    {
+      "cell": "cell_candidate3_A2x_G2x",
+      "levels": {
+        "access": "2x",
+        "capacitor": "2x"
+      },
+      "parameter": "acc_w",
+      "simulated": 6e-07,
+      "drawn": 8.4e-07,
+      "ratio": 1.4,
+      "status": "unresolved",
+      "owner": "design/README.md open item 1(a)"
+    },
+    {
+      "cell": "cell_candidate3_A2x_Gmin",
+      "levels": {
+        "access": "2x",
+        "capacitor": "min"
+      },
+      "parameter": "cap_l",
+      "simulated": 1e-06,
+      "drawn": 2.8e-07,
+      "ratio": 0.28,
+      "status": "decided in spec; simulated basis not conformed",
+      "owner": "design/README.md open item 1(a) (netlist regeneration)"
+    },
+    {
+      "cell": "cell_candidate3_A2x_Gmin",
+      "levels": {
+        "access": "2x",
+        "capacitor": "min"
+      },
+      "parameter": "acc_w",
+      "simulated": 6e-07,
+      "drawn": 8.4e-07,
+      "ratio": 1.4,
+      "status": "unresolved",
+      "owner": "design/README.md open item 1(a)"
+    },
+    {
       "cell": "cell_candidate3_Amin_G2x",
       "levels": {
         "access": "min",
@@ -245,36 +297,6 @@
         "cap_l": 1e-06,
         "acc_w": 2.5e-05,
         "acc_l": 6e-07
-      },
-      "status": "decided in spec (capacitor half); no drawn cell",
-      "owner": "Run 3 bitcell layout drop (WORK_PLAN.md Run 3: #207/#211); capacitor levels per spec/capacitor-geometry-decision.md (#294)"
-    },
-    {
-      "candidate": 3,
-      "levels": {
-        "access": "2x",
-        "capacitor": "2x"
-      },
-      "simulated": {
-        "cap_w": 2e-06,
-        "cap_l": 1e-06,
-        "acc_w": 6e-07,
-        "acc_l": 5.5e-07
-      },
-      "status": "decided in spec (capacitor half); no drawn cell",
-      "owner": "Run 3 bitcell layout drop (WORK_PLAN.md Run 3: #207/#211); capacitor levels per spec/capacitor-geometry-decision.md (#294)"
-    },
-    {
-      "candidate": 3,
-      "levels": {
-        "access": "2x",
-        "capacitor": "min"
-      },
-      "simulated": {
-        "cap_w": 1e-06,
-        "cap_l": 1e-06,
-        "acc_w": 6e-07,
-        "acc_l": 5.5e-07
       },
       "status": "decided in spec (capacitor half); no drawn cell",
       "owner": "Run 3 bitcell layout drop (WORK_PLAN.md Run 3: #207/#211); capacitor levels per spec/capacitor-geometry-decision.md (#294)"

@@ -1,0 +1,5 @@
+* Drawn Region III split from design/netlists/cell_candidate3.spice.
+.subckt cell_candidate3_A2x_G2x BL WL PL VB
+XM1 CN WL BL VB pfet_06v0 L=0.55u W=0.84u nf=1 m=1
+XC1 CN PL cap_pmos_03v3 c_width=2.0u c_length=0.28u m=1
+.ends

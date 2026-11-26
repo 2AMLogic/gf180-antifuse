@@ -57,7 +57,7 @@ def main():
     lib = Path(os.environ["PDK_ROOT"]) / "gf180mcuD/libs.tech/ngspice/sm141064.ngspice"
     ngspice = os.environ.get("KLT_NGSPICE_BINARY", "ngspice")
     print("cell,bias_V,reference_fF,physical_fF,swapped_fF")
-    for n in (1, 2, 3):
+    for n in (1, 2, 3, "3_A2x_Gmin", "3_A2x_G2x"):
         if findings := check_extraction(ROOT, n):
             raise ValueError(f"candidate {n}: {findings}")
         d = ROOT / "layout" / f"cell_candidate{n}"
