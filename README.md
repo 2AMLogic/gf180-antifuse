@@ -24,15 +24,18 @@ margin, retention) rather than proving one operating point.
 
 ## Status
 
-The spec — cell candidates, N, split-axis plan, program/read architecture,
-and the measurement matrix — came first. The first design sources are now in
-`design/`: xschem schematics and derived netlists for the three ratified
-antifuse cell candidates. The SPI slave, register file and program/read
-sequencer are captured as behavioural RTL in `rtl/` with a self-checking
-Icarus bench in `verification/` (no synthesized netlist yet). The program
-strobe is a dedicated `FIRE` command (amendment A1 of `spec/architecture.md` §5). The array,
-row/column MUX and sense path are specified at the interface level only and
-are not captured yet — see `design/README.md` for what is and is not designed.
+The analog design includes the three antifuse cell candidates, the 32 × 32
+array and its row/column selectors, and the program and read legs.
+The three regional layouts contain 352, 352 and 320 cells respectively.
+The [design inventory](design/README.md) describes how the circuits connect.
+Each region records its own layout checks. [Region I](layout/array_region_i/README.md),
+[Region II](layout/array_region_ii/README.md), [Region III](layout/array_region_iii/README.md).
+
+The SPI slave, register file and program/read sequencer have self-checking
+Icarus tests in `verification/`. A dedicated `FIRE` command strobes programming
+(amendment A1 of `spec/architecture.md` §5). The digital top has both a
+[synthesized netlist](rtl/synth/antifuse_digital_top_synth.v) and a
+[routed netlist](rtl/pnr/antifuse_digital_top_routed.v).
 
 ## Spec table
 
