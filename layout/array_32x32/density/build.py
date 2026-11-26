@@ -58,7 +58,11 @@ def publish(source, filled, scratch, output):
     # Keep the addressing hierarchy and every instance property intact: the
     # top-level probe identifies each selector and memory band by its property.
     for index, region in added:
-        top.shapes(index).insert(region)
+        shapes = top.shapes(index)
+        # A Region can enumerate identical geometry in a different order across
+        # KLayout builds. The complete polygon key also covers nonrectangular fill.
+        for polygon in sorted(region.each(), key=lambda item: item.to_s()):
+            shapes.insert(polygon)
     staged = scratch / "verified.gds"
     layout.write(str(staged), options)
     os.replace(staged, output)

@@ -1,9 +1,9 @@
 {
   "parent_commit": "ca154dc3f370702b2cea40e7f3761e7aa683a28c",
   "input_gds_sha256": "7aca07104fcc644950bdacc48dff0416ec7b671bfb38616a17452571c885a0c5",
-  "delivered_gds_sha256": "159b16b2a119b8133f54970b6e8f6ebee1cbd349f94b6a7ed8d95c1d7b4d76b4",
+  "delivered_gds_sha256": "a264fc6d555dc470fa89b643e83116a61f8fbd443cf2bccb77b233cadfc454ec",
   "uncompressed_bytes": 39099792,
-  "verified_regeneration": "byte-identical to decompressed delivered GDS",
+  "verified_regeneration": "Uncompressed delivered bytes matched independent complete Ubuntu 24.04 and macOS rebuilds with Python KLayout 0.30.14.",
   "stripped_functional_layout": "KLayout LayoutDiff, zero database units, exact original hierarchy and properties",
   "extent_um": [
     8.75,
@@ -92,7 +92,7 @@
         }
       },
       "input": {
-        "content_hash": "sha256:159b16b2a119b8133f54970b6e8f6ebee1cbd349f94b6a7ed8d95c1d7b4d76b4",
+        "content_hash": "sha256:a264fc6d555dc470fa89b643e83116a61f8fbd443cf2bccb77b233cadfc454ec",
         "role": "layout"
       },
       "klayout_version_mismatch": true
@@ -169,17 +169,17 @@
       "pfet_06v0": 490,
       "pfet_10v0_asym": 86
     },
-    "source_gds_sha256": "159b16b2a119b8133f54970b6e8f6ebee1cbd349f94b6a7ed8d95c1d7b4d76b4",
-    "tested_gds_sha256": "159b16b2a119b8133f54970b6e8f6ebee1cbd349f94b6a7ed8d95c1d7b4d76b4",
+    "source_gds_sha256": "a264fc6d555dc470fa89b643e83116a61f8fbd443cf2bccb77b233cadfc454ec",
+    "tested_gds_sha256": "a264fc6d555dc470fa89b643e83116a61f8fbd443cf2bccb77b233cadfc454ec",
     "source_reference_sha256": "4462a6d8da9e1852bfcfabef5ac1d5e92f6d7dda4335a1260c7751b0a091a002",
     "tested_cdl_sha256": "250e920ed9aa8e37f0d5e58cb8191f0b63a4ce9e2aac75acafe641a1e74aa593",
     "deck_sha256": "09a4f1f1a6fe1fc1e4e193ae5ae1c2b1c49ba190f9e135ffd72d45c14637fde9",
     "cross_reference": "native.lvsdb.gz",
-    "cross_reference_sha256": "0a25033bea6b85aa7ce6fd40ad6145855948bc1ec4d49a20948bf784df6c8433"
+    "cross_reference_sha256": "d4f01911013ebd0b0fdf8d936556ff378f80e67c7d1b468d7260ada3a382f54d"
   },
   "native_lvs_mutations": {
     "select_open": {
-      "tested_gds_sha256": "56990ff22ae7fe6e683870960311ae2f3fe21d86524b2e1956949f177ba6cefa",
+      "tested_gds_sha256": "6fbc17308a018709c7ac7dde8b581b227805d1d5ae6b15a07dfc0cebdd5a4107",
       "tested_cdl_sha256": "250e920ed9aa8e37f0d5e58cb8191f0b63a4ce9e2aac75acafe641a1e74aa593",
       "strict_match": false,
       "circuit": "Match",
@@ -202,7 +202,7 @@
       ]
     },
     "row_short": {
-      "tested_gds_sha256": "8ae95d7358b27dc292b5cd7db7cb57e1aa9d8152c8eeb8978ea19c9012e22af4",
+      "tested_gds_sha256": "3b9eaf3f20286700d7dce5674707291ad8a85eb99cc7d5c0c804571c2aa4fbb9",
       "tested_cdl_sha256": "250e920ed9aa8e37f0d5e58cb8191f0b63a4ce9e2aac75acafe641a1e74aa593",
       "strict_match": false,
       "circuit": "NoMatch",
@@ -231,7 +231,7 @@
       ]
     },
     "missing_pwell": {
-      "tested_gds_sha256": "003f9ccec0d1b3d10b19d755c14b68aa177ccdd96131db24ff3ddceea568e97f",
+      "tested_gds_sha256": "7113f7ed624042c6c84bb7184e87a5a2bb35749cb40ea92356d25bc3629a9102",
       "tested_cdl_sha256": "250e920ed9aa8e37f0d5e58cb8191f0b63a4ce9e2aac75acafe641a1e74aa593",
       "strict_match": false,
       "circuit": "NoMatch",

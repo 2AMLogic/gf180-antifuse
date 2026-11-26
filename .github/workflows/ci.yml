@@ -91,6 +91,8 @@ jobs:
           uv run --no-project --script layout/array_addressing/generate.py --check
           uv run --no-project --script layout/array_32x32/attest.py --check
           uv run --no-project --script layout/array_32x32/check.py
+          uv run --no-project --script layout/array_32x32/density/build.py --output "$RUNNER_TEMP/filled-array.gds"
+          gzip -dc layout/array_32x32/density/array_32x32.gds.gz | cmp - "$RUNNER_TEMP/filled-array.gds"
           python layout/array_addressing/check_shifter.py --smoke \
             --native-cir layout/array_addressing/ls_hv10/native.cir \
             --output "$RUNNER_TEMP/shifter.csv"

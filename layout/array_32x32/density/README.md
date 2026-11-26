@@ -1,6 +1,6 @@
 # Addressed-array density fill
 
-This filled GDS removes the eight chip-area density findings from the 32 × 32 addressed macro. The fill occupies the existing 5.1312 mm² outline. The filled view and the parent layout have identical device masks, conductors, labels and instance properties. The generator checks this by removing the dedicated dummy-fill cell and comparing the complete hierarchy at zero database-unit tolerance before flattening those masks into the top. [Filled stream](array_32x32.gds.gz) · [Verification results](evidence.json)
+This filled GDS removes the eight chip-area density findings from the 32 × 32 addressed macro. The fill occupies the existing 5.1312 mm² outline. The filled view and the parent layout have identical device masks, conductors, labels and instance properties. The generator removes the dedicated dummy-fill cell and compares the entire hierarchy at zero database-unit tolerance. It then inserts each dummy polygon in a fixed order using its full geometry. The same 39,099,792 bytes rebuild on Ubuntu and macOS with Python KLayout 0.30.14. [Filled stream](array_32x32.gds.gz) · [Verification results](evidence.json)
 
 | Mask | Drawn and dummy coverage |
 |---|---:|
