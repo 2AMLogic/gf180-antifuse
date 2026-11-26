@@ -3,6 +3,31 @@
 Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 
+### 2026-11-26
+
+- **PR #549**: Route the 352-cell Region I antifuse array core
+- **PR #548**: Require real contacts in analog substrate and well tie ERC
+- **Issue #547** (closed): Require physical contacts in analog substrate and well tie ERC
+- **PR #546**: refactor(cell-breakdown): move convergence-record renderer into render_conv.py
+- **Issue #544** (closed): Move the cell-breakdown convergence report into its own renderer
+- **PR #545**: fix: declare Run 3 pad ports on their own strips
+- **Issue #543** (closed): Remove 120 unused pad-port declarations from the Run 3 assembly request
+- **PR #542**: feat(signoff): characterize the routed digital macro across 15 corners
+- **Issue #541** (closed): Characterize the routed digital macro across all 15 PVT corners and SPI contract rows for T1 item 8
+- **PR #540**: Correct signed MOS capacitor routing and verify the Run 3 assembly
+- **Issue #539** (closed): Correct signed MOS-capacitor gate/body connectivity in the three drawn antifuse cells
+- **PR #538**: feat(signoff): verify routed logic with SDF at the 50 ns constraint
+- **PR #537**: feat(erc): verify digital supply islands and well contact polarity
+- **PR #535**: refactor: share SPICE instance formatter across Run 3 netlists
+- **Issue #533** (closed): Share Run 3 SPICE instance formatting between the full and drawn references
+- **PR #530**: refactor: compute Run 3 route clearance from interval gaps
+- **Issue #527** (closed): Simplify the Run 3 route clearance calculation using interval gaps
+- **PR #529**: refactor: reuse shared open_pdks pin and reader in C3 diagnosis runner
+- **Issue #528** (closed): Reuse the shared open_pdks pin and SOURCES reader in C3 diagnosis
+- **PR #347**: docs: sourced wafer.space Run 3 precheck reading (would-reject verdict)
+- **PR #15**: ci: run reproducible design netlist and signoff checks on Ubuntu
+- **Issue #14** (closed): CI: bootstrap a PR-blocking workflow, routed to the self-hosted runner (2am#525 AC4)
+
 ### 2026-11-25
 
 - **Issue #524** (closed): Split sim/integrated-transition/run_bench.py (520 LOC) into render and CLI modules and remove dead code
