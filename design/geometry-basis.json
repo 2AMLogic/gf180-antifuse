@@ -151,6 +151,87 @@
       "drawn_note": "W literal is the drawn total across nf=2 fingers"
     },
     {
+      "cell": "cell_candidate2_A2x_G2x",
+      "levels": {
+        "access": "2x",
+        "capacitor": "2x"
+      },
+      "parameter": "cap_l",
+      "simulated": 1e-06,
+      "drawn": 7e-07,
+      "ratio": 0.7,
+      "status": "decided in spec; simulated basis not conformed",
+      "owner": "design/README.md open item 1(a) (netlist regeneration)"
+    },
+    {
+      "cell": "cell_candidate2_A2x_G2x",
+      "levels": {
+        "access": "2x",
+        "capacitor": "2x"
+      },
+      "parameter": "acc_w",
+      "simulated": 5e-05,
+      "drawn": 1.6e-05,
+      "ratio": 0.32,
+      "status": "unresolved",
+      "owner": "design/README.md open item 1(a)",
+      "drawn_note": "W literal is the drawn total across nf=2 fingers"
+    },
+    {
+      "cell": "cell_candidate2_A2x_Gmin",
+      "levels": {
+        "access": "2x",
+        "capacitor": "min"
+      },
+      "parameter": "cap_l",
+      "simulated": 1e-06,
+      "drawn": 7e-07,
+      "ratio": 0.7,
+      "status": "decided in spec; simulated basis not conformed",
+      "owner": "design/README.md open item 1(a) (netlist regeneration)"
+    },
+    {
+      "cell": "cell_candidate2_A2x_Gmin",
+      "levels": {
+        "access": "2x",
+        "capacitor": "min"
+      },
+      "parameter": "acc_w",
+      "simulated": 5e-05,
+      "drawn": 1.6e-05,
+      "ratio": 0.32,
+      "status": "unresolved",
+      "owner": "design/README.md open item 1(a)",
+      "drawn_note": "W literal is the drawn total across nf=2 fingers"
+    },
+    {
+      "cell": "cell_candidate2_Amin_G2x",
+      "levels": {
+        "access": "min",
+        "capacitor": "2x"
+      },
+      "parameter": "cap_l",
+      "simulated": 1e-06,
+      "drawn": 7e-07,
+      "ratio": 0.7,
+      "status": "decided in spec; simulated basis not conformed",
+      "owner": "design/README.md open item 1(a) (netlist regeneration)"
+    },
+    {
+      "cell": "cell_candidate2_Amin_G2x",
+      "levels": {
+        "access": "min",
+        "capacitor": "2x"
+      },
+      "parameter": "acc_w",
+      "simulated": 2.5e-05,
+      "drawn": 8e-06,
+      "ratio": 0.32,
+      "status": "unresolved",
+      "owner": "design/README.md open item 1(a)",
+      "drawn_note": "W literal is the drawn total across nf=2 fingers"
+    },
+    {
       "cell": "cell_candidate3",
       "levels": {
         "access": "min",
@@ -255,51 +336,5 @@
       "owner": "design/README.md open item 1(a)"
     }
   ],
-  "coverage_gaps": [
-    {
-      "candidate": 2,
-      "levels": {
-        "access": "2x",
-        "capacitor": "2x"
-      },
-      "simulated": {
-        "cap_w": 2e-06,
-        "cap_l": 1e-06,
-        "acc_w": 5e-05,
-        "acc_l": 6e-07
-      },
-      "status": "decided in spec (capacitor half); no drawn cell",
-      "owner": "Run 3 bitcell layout drop (WORK_PLAN.md Run 3: #207/#211); capacitor levels per spec/capacitor-geometry-decision.md (#294)"
-    },
-    {
-      "candidate": 2,
-      "levels": {
-        "access": "2x",
-        "capacitor": "min"
-      },
-      "simulated": {
-        "cap_w": 1e-06,
-        "cap_l": 1e-06,
-        "acc_w": 5e-05,
-        "acc_l": 6e-07
-      },
-      "status": "decided in spec (capacitor half); no drawn cell",
-      "owner": "Run 3 bitcell layout drop (WORK_PLAN.md Run 3: #207/#211); capacitor levels per spec/capacitor-geometry-decision.md (#294)"
-    },
-    {
-      "candidate": 2,
-      "levels": {
-        "access": "min",
-        "capacitor": "2x"
-      },
-      "simulated": {
-        "cap_w": 2e-06,
-        "cap_l": 1e-06,
-        "acc_w": 2.5e-05,
-        "acc_l": 6e-07
-      },
-      "status": "decided in spec (capacitor half); no drawn cell",
-      "owner": "Run 3 bitcell layout drop (WORK_PLAN.md Run 3: #207/#211); capacitor levels per spec/capacitor-geometry-decision.md (#294)"
-    }
-  ]
+  "coverage_gaps": []
 }

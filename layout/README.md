@@ -24,7 +24,8 @@ The routed 32-row array bands have their own connectivity and physical
 verification results. [Region I](array_region_i/README.md) implements 352
 Candidate 1 cells in columns 0–10. [Region III](array_region_iii/README.md)
 implements 320 Candidate 3 cells in columns 22–31, including the two
-0.84 µm access variants. Region II still needs three physical split masters.
+0.84 µm access variants. [Region II](array_region_ii/README.md) implements the
+remaining 352 cells with all four asymmetric-access geometry splits.
 
 ## Signed MOS capacitors in the drawn cells
 

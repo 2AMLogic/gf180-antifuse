@@ -1,0 +1,5 @@
+* Signed cell from design/netlists/cell_candidate2.spice at the drawn split dimensions.
+.subckt cell_candidate2_A2x_G2x BL WL PL VB
+XM1 BL WL CN VB nfet_10v0_asym L=0.60u W=16u nf=2 m=1
+XC1 CN PL cap_nmos_06v0 c_width=2.0u c_length=0.70u m=1
+.ends

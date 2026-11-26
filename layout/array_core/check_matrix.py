@@ -1,4 +1,5 @@
 """Probe the GDS connectivity without connecting equal text labels."""
+import gzip
 import hashlib
 import json
 import subprocess
@@ -9,7 +10,7 @@ from pathlib import Path
 
 import klayout.db as db
 
-from regions import I, III, LAYOUT
+from regions import I, II, III, LAYOUT
 KLT = Path(sys.executable).with_name("klt")
 METALS = (34, 36, 42, 46, 81)
 VIAS = (35, 38, 40, 41)
@@ -25,10 +26,10 @@ def source_cells(region):
             _, row, col = words[0].split("_")
             params = dict(field.split("=") for field in words[6:])
             cap_nm = round(float(params["wcap"]) * 1e9)
-            drawn_access_nm = {"0.30u": 420, "0.6u": 840}[params["wacc"]]
+            drawn_access_nm = {"0.30u": 420, "0.6u": 840, "25u": 4000, "50u": 8000}[params["wacc"]]
             access_length_nm = round(float(params["lacc"].removesuffix("u")) * 1000)
             pins = dict(zip(("BL", "WL", "PL", "VB"), words[1:5]))
-            result[int(row), int(col)] = (pins, (280, cap_nm, access_length_nm, drawn_access_nm))
+            result[int(row), int(col)] = (pins, (700 if region == II else 280, cap_nm, access_length_nm, drawn_access_nm))
     return result
 
 
@@ -47,6 +48,7 @@ def original_pins(layout, cell):
         if not (original ^ imported).is_empty():
             raise ValueError(f"Imported mask differs on {cell.name} {info}")
     pins = {}
+    source.top_cell().flatten(-1, True)
     for shape in source.top_cell().shapes(source.layer(34, 10)).each():
         if shape.is_text():
             pins[shape.text.string] = db.DPoint(shape.text.x * source.dbu, shape.text.y * source.dbu)
@@ -61,12 +63,14 @@ def device_channels(layout, cell):
 
     gates = layer(30) & layer(22)  # Poly2 crossing Comp
     cap_marker = layer(166, 5)
-    boxes = []
-    for channel in (gates & cap_marker, gates - cap_marker):
-        if channel.count() != 1 or channel.bbox().area() != channel.area():
-            raise ValueError(f"Expected one rectangular device channel in {cell.name}")
-        boxes.append(channel.bbox())
-    return boxes
+    capacitor = gates & cap_marker
+    # Inside each LDNMOS gate the MVSD drain extension is outside the
+    # 0.60 µm effective channel. Preserve both fingers around the central drain.
+    access = ((gates - cap_marker) - layer(210)).merged()
+    channels = list(capacitor.each()) + sorted(access.each(), key=lambda p: p.bbox().left)
+    if capacitor.count() != 1 or not channels or any(p.bbox().area() != p.area() for p in channels):
+        raise ValueError(f"Unexpected nonrectangular or missing channel in {cell.name}")
+    return [p.bbox() for p in channels]
 
 
 def probe(region, gds, fault=None):
@@ -122,7 +126,7 @@ def probe(region, gds, fault=None):
         raise ValueError("Core ports differ from the source schematic")
     aliases = {frozenset(name for name in ports if ports[name] == net) for net in ports.values()}
     aliases = {group for group in aliases if len(group) > 1}
-    shorted = ("BL_3", "BL_4") if region == I else ("WL_7_III", "WL_8_III")
+    shorted = ("BL_3", "BL_4") if region == I else (f"WL_7_{region.name}", f"WL_8_{region.name}")
     expected_aliases = {frozenset(shorted)} if fault == "short" else set()
     if aliases != expected_aliases:
         raise ValueError(f"Unexpected physical aliases: {aliases}")
@@ -143,10 +147,11 @@ def probe(region, gds, fault=None):
     disconnected = {}
     for (row, col), (expected, split) in cells.items():
         inst = placements[xs[col - region.columns.start], ys[row]]
-        capacitor, access = channels[inst.cell.name]
-        drawn = [round(length * layout.dbu * 1000)
-                 for box in (capacitor, access) for length in (box.width(), box.height())]
-        if tuple(drawn) != split:
+        capacitor, *fingers = channels[inst.cell.name]
+        def size(box):
+            return tuple(round(n * layout.dbu * 1000) for n in (box.width(), box.height()))
+        if (len(fingers) != (2 if region == II else 1) or size(capacitor) != split[:2]
+                or any(size(finger) != split[2:] for finger in fingers)):
             raise ValueError(f"Wrong drawn device geometry at ({row}, {col})")
         terminals = {}
         for pin, name in expected.items():
@@ -166,8 +171,20 @@ def probe(region, gds, fault=None):
                     island(22, inst.trans * right))
 
         plate_l, storage, plate_r = electrodes(capacitor)
-        left, word, right = electrodes(access)
-        bitline, internal = (right, left) if region == I else (left, right)
+        if region == II:
+            # The two access gates surround a central drift-extended drain
+            # (BL). Both outer diffusion stripes are shorted to the private CN.
+            first, last = fingers
+            central_drain = db.Point((first.right + last.left) // 2, first.center().y)
+            bitline = island(22, inst.trans * central_drain)
+            word = island(30, inst.trans * first.center())
+            internal = island(22, inst.trans * db.Point(first.left - 1, first.center().y))
+            if (island(22, inst.trans * db.Point(last.right + 1, last.center().y)) != storage
+                    or island(30, inst.trans * last.center()) != word):
+                raise ValueError(f"Independent LDNMOS fingers disagree at ({row}, {col})")
+        else:
+            left, word, right = electrodes(fingers[0])
+            bitline, internal = (right, left) if region == I else (left, right)
         if ((plate_l, plate_r, word, bitline, internal) !=
                 (terminals["PL"], terminals["PL"], terminals["WL"], terminals["BL"], storage)
                 or storage in storage_nodes or storage in ports.values() or storage in terminals.values()):
@@ -178,7 +195,7 @@ def probe(region, gds, fault=None):
         if region == I:
             expected_opens = {(r, 3, "BL") for r in range(16, 32)}
         else:
-            expected_opens = {(7, col, "PL") for col in range(27, 32)}
+            expected_opens = {(7, col, "PL") for col in region.columns[5:]}
     if set(disconnected) != expected_opens or len(set(disconnected.values())) != (1 if expected_opens else 0):
         raise ValueError(f"Unexpected disconnected cell terminals: {disconnected}")
     return Counter(i.cell.name for i in placements.values())
@@ -193,12 +210,15 @@ def fault_layout(region, source, kind, dest):
         layer, x, y = 46, 3 * 12 + 5.69, 15 * 9 + 7
         bridge = db.DBox(x, y - 0.25, x + 12, y + 0.25)
     elif kind == "open":
-        # Row 7's Metal5 plate between columns 26 and 27.
-        layer, x, y = 81, 4 * 12 + 5.8 + 6, 7 * 9 + 0.36
+        # Row 7 plate split after the fifth local column.
+        pitch_x, pitch_y = region.pitch
+        plate_x, plate_y = (5.71, 1.0) if region == II else (5.8, 0.36)
+        layer, x, y = 81, 4.5 * pitch_x + plate_x, 7 * pitch_y + plate_y
     else:
         # Join the Metal3 word lines of rows 7 and 8 between two cells.
-        layer, x, y = 42, 4 * 12 + 9, 7 * 9 + 1.8
-        bridge = db.DBox(x - 0.25, y, x + 0.25, y + 9)
+        pitch_x, pitch_y = region.pitch
+        layer, x, y = 42, 4 * pitch_x + 9, 7 * pitch_y + region.word_y
+        bridge = db.DBox(x - 0.25, y, x + 0.25, y + pitch_y)
     shapes = top.shapes(layout.layer(layer, 0))
     if kind == "short":
         shapes.insert(bridge)
@@ -226,7 +246,7 @@ def lvs(region, gds, work, intact):
     nets = placements + ports
     if intact:
         if report["status"] != "match" or report["error_count"] or any(
-            set(counts[k].values()) != {n} for k, n in (("nets", nets), ("devices", 2 * placements), ("pins", ports))
+            set(counts[k].values()) != {n} for k, n in (("nets", nets), ("devices", (3 if region == II else 2) * placements), ("pins", ports))
         ):
             raise ValueError(f"Incomplete comparison: {counts}")
         public = {(p["layout"], p["reference"]) for p in report["net_correspondence"] if p["pin"]}
@@ -244,10 +264,14 @@ def main(region):
     gds = region.directory / (region.top + ".gds")
     digest = "sha256:" + hashlib.sha256(gds.read_bytes()).hexdigest()
     reports = ["lvs_report.json", "drc_report.json", "drc_native_report.json"]
-    if region == III:
+    if region in (II, III):
         reports.append("erc_report.json")
     for name in reports:
-        report = json.loads((region.directory / name).read_text())
+        path = region.directory / name
+        if region == II and name in ("drc_report.json", "erc_report.json"):
+            report = json.loads(gzip.decompress(path.with_suffix(".json.gz").read_bytes()))
+        else:
+            report = json.loads(path.read_text())
         if report["provenance"]["input"]["content_hash"] != digest:
             raise ValueError(f"{name} was produced from a different GDS")
     committed = json.loads((region.directory / "lvs_report.json").read_text())

@@ -1,0 +1,2416 @@
+{
+  "schema_version": 3,
+  "engine": "klayout",
+  "layout": {
+    "path": "layout/array_region_ii/array_region_ii.gds",
+    "scope": "repo"
+  },
+  "reference": {
+    "path": "layout/array_region_ii/reference.spice",
+    "scope": "repo"
+  },
+  "top": "array_region_ii",
+  "reference_top": "ARRAY_REGION_II",
+  "reference_conversion": {
+    "form": "subckt-call",
+    "deck": "gf180mcu",
+    "device_map": null
+  },
+  "parameter_tolerance": null,
+  "options": {
+    "combine_devices": false,
+    "combine_devices_per_circuit": null,
+    "combine_devices_max_attempts": 5,
+    "flatten_layout": true,
+    "flatten_reference": true,
+    "netgen_setup": null,
+    "parameter_tolerance": null,
+    "compare_parameters": null,
+    "power_connectivity": null,
+    "anchor_top_level_pins": null,
+    "strict_top_level_pin_count": false,
+    "compare_mos_flavour": false,
+    "ignore_mos_bulk": false,
+    "supply_nets": [
+      "GND",
+      "VCC",
+      "VDD",
+      "VGND",
+      "VPWR",
+      "VSS"
+    ],
+    "finfet_bulk": null
+  },
+  "hints_applied": null,
+  "constant_nets_applied": null,
+  "status": "match",
+  "power_connectivity": {
+    "status": "unchecked",
+    "reason": "reference.form is 'subckt-call', whose reference netlist carries its own power/ground pins and nets -- they take part in the ordinary compare, so this check (which exists to cover the signal-only 'gate-level-verilog' form) does not apply",
+    "power_pins": [],
+    "power_pins_derivation": null,
+    "instance_count": 0,
+    "expected_nets": null,
+    "unchecked_expected_pins": [],
+    "excluded_pins": [],
+    "findings": [],
+    "finding_count": 0
+  },
+  "body_verification": {
+    "status": "verified",
+    "reason": null,
+    "device_classes": [],
+    "device_count": 0,
+    "findings": [],
+    "finding_count": 0
+  },
+  "device_parameter_coverage": [
+    {
+      "class": "cap_nmos_06v0",
+      "device_kind": "capacitor",
+      "layout_devices": 352,
+      "reference_devices": 352,
+      "compared": [],
+      "not_compared": [
+        {
+          "parameter": "C",
+          "reason": "placeholder_value"
+        },
+        {
+          "parameter": "A",
+          "reason": "secondary"
+        },
+        {
+          "parameter": "P",
+          "reason": "secondary"
+        }
+      ]
+    }
+  ],
+  "mismatch_count": 5,
+  "error_count": 0,
+  "category_counts": {
+    "device.geometry_not_compared": 1,
+    "device.placeholder_value": 1,
+    "topology": 2,
+    "topology.flattened": 1
+  },
+  "category_error_counts": {},
+  "counts": {
+    "nets": {
+      "layout": 428,
+      "reference": 428,
+      "matched": 428
+    },
+    "devices": {
+      "layout": 1056,
+      "reference": 1056,
+      "matched": 1056
+    },
+    "pins": {
+      "layout": 76,
+      "reference": 76,
+      "matched": 76
+    }
+  },
+  "device_classes": [
+    "nfet",
+    "pfet",
+    "bjt",
+    "cap_mim_2f0_m4m5_noshield",
+    "cap_nmos_03v3",
+    "cap_nmos_03v3_dn",
+    "cap_pmos_03v3",
+    "cap_pmos_03v3_dn",
+    "cap_nmos_06v0",
+    "cap_nmos_06v0_dn",
+    "cap_pmos_06v0",
+    "cap_pmos_06v0_dn",
+    "cap_nmos_03v3_b",
+    "cap_pmos_03v3_b",
+    "cap_nmos_06v0_b",
+    "cap_pmos_06v0_b",
+    "resistor",
+    "diode_nd2ps_06v0",
+    "diode_pd2nw_06v0"
+  ],
+  "environment": {
+    "engine": "klayout",
+    "engine_version": "0.30.13",
+    "netgen_binary": null,
+    "layout_sha256": "149b171ef157fb84105f5aeaad5344e620b471f215cbc9c55c1b829c8df9d466",
+    "reference_sha256": "6fc590bb40ae2c7e170571a22d154f8bf0328af105299bd094febe349a858b4a",
+    "extracted_netlist": null
+  },
+  "provenance": {
+    "klt_version": "0.9.2",
+    "klt_git_commit": "046ba74652fc096bd97071fc3237f7159dd40183",
+    "klt_reinstall_spec": "klayout-tools==0.9.2",
+    "klayout_version": "0.30.13",
+    "pdk": null,
+    "deck": {
+      "name": "gf180mcu",
+      "content_hash": "sha256:c3f2cce49000857a3a71cb65203aabf0eb27cd0ee6b1c60e29792355c455c4b1",
+      "released": true,
+      "options": {
+        "metal_top": "9K",
+        "mim_cap": "cap_mim_2f0_m4m5_noshield",
+        "poly_res": "1k"
+      },
+      "options_explicit": {
+        "metal_top": false,
+        "mim_cap": false,
+        "poly_res": false
+      },
+      "options_hash": "sha256:6a7dc7660a470994263c5ca8ace6d8ac8c605d77e6876a9c5490949de6e7cb05"
+    },
+    "input": {
+      "content_hash": "sha256:149b171ef157fb84105f5aeaad5344e620b471f215cbc9c55c1b829c8df9d466",
+      "role": "layout"
+    },
+    "klayout_version_mismatch": true
+  },
+  "mismatches": [
+    {
+      "category": "device.geometry_not_compared",
+      "severity": "warning",
+      "description": "device class 'cap_nmos_06v0' is a capacitor class, whose ['A', 'P'] parameter(s) KLayout declares *secondary*: kdb.NetlistComparer compares primary parameters only, so none of them took part in this compare and each is NOT verified -- this capacitor's geometry could differ between the two sides by any amount and this run would still report 'match'. No parameter of this class was compared at all: the remaining parameter(s) were separately excluded from this run (see the device.placeholder_value/device.parameter_excluded entries), so the two sides were paired on topology alone. Name them in options.compare_parameters to compare them (see docs/cli/lvs.md, 'device.geometry_not_compared')",
+      "side": "both",
+      "net": null,
+      "device": {
+        "layout": null,
+        "reference": null,
+        "class": "cap_nmos_06v0"
+      },
+      "property": null,
+      "details": {
+        "device_kind": "capacitor",
+        "compared_parameters": [],
+        "not_compared_parameters": [
+          "A",
+          "P"
+        ],
+        "layout_devices": 352,
+        "reference_devices": 352
+      },
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "device.placeholder_value",
+      "severity": "warning",
+      "description": "reference device class 'CAP_NMOS_06V0' was converted from a subcircuit call (request.reference.form: \"subckt-call\"), so its 'C' value is the literal 0 placeholder on all 352 reference instance(s) -- klt lvs has no PDK sheet-resistance/capacitance-per-area data to compute a real one. 'C' was therefore excluded from this compare on both sides (layout: 352 instance(s), C 1.6100000000000001e-15..3.2200000000000003e-15) and the two sides were paired on topology alone -- that dimension of the compare is not independently verified. Supply a reference in the plain-element form carrying real 'C' values to compare it (see docs/cli/lvs.md, 'device.placeholder_value')",
+      "side": "reference",
+      "net": null,
+      "device": {
+        "layout": null,
+        "reference": null,
+        "class": "CAP_NMOS_06V0"
+      },
+      "property": null,
+      "details": {
+        "parameter": "C",
+        "device_kind": "capacitor",
+        "reference_devices": 352,
+        "layout_devices": 352,
+        "layout_values": [
+          1.6100000000000001e-15,
+          3.2200000000000003e-15
+        ]
+      },
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "device class has no counterpart on the other side, but no devices of this class were extracted either -- not a real topology mismatch: 'pfet'",
+      "side": "layout",
+      "net": null,
+      "device": {
+        "layout": null,
+        "reference": null,
+        "class": "pfet"
+      },
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "device class has no counterpart on the other side, but no devices of this class were extracted either -- not a real topology mismatch: 'bjt'",
+      "side": "layout",
+      "net": null,
+      "device": {
+        "layout": null,
+        "reference": null,
+        "class": "bjt"
+      },
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology.flattened",
+      "severity": "warning",
+      "description": "options.flatten_reference flattened the reference netlist before comparing: 5 circuit(s) were collapsed into 1 top-level circuit(s), substituting every subcircuit-call instance in place -- this compare verified topology only after removing the original hierarchy boundaries on this side (see docs/cli/lvs.md, \"topology.flattened\")",
+      "side": "reference",
+      "net": null,
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    }
+  ],
+  "net_correspondence": [
+    {
+      "layout": "BL_11",
+      "reference": "BL_11",
+      "pin": true
+    },
+    {
+      "layout": "BL_12",
+      "reference": "BL_12",
+      "pin": true
+    },
+    {
+      "layout": "BL_13",
+      "reference": "BL_13",
+      "pin": true
+    },
+    {
+      "layout": "BL_14",
+      "reference": "BL_14",
+      "pin": true
+    },
+    {
+      "layout": "BL_15",
+      "reference": "BL_15",
+      "pin": true
+    },
+    {
+      "layout": "BL_16",
+      "reference": "BL_16",
+      "pin": true
+    },
+    {
+      "layout": "BL_17",
+      "reference": "BL_17",
+      "pin": true
+    },
+    {
+      "layout": "BL_18",
+      "reference": "BL_18",
+      "pin": true
+    },
+    {
+      "layout": "BL_19",
+      "reference": "BL_19",
+      "pin": true
+    },
+    {
+      "layout": "BL_20",
+      "reference": "BL_20",
+      "pin": true
+    },
+    {
+      "layout": "BL_21",
+      "reference": "BL_21",
+      "pin": true
+    },
+    {
+      "layout": "\\$18",
+      "reference": "C_0_11_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$19",
+      "reference": "C_0_12_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$7",
+      "reference": "C_0_13_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$8",
+      "reference": "C_0_14_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$20",
+      "reference": "C_0_15_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$21",
+      "reference": "C_0_16_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$9",
+      "reference": "C_0_17_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$10",
+      "reference": "C_0_18_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$22",
+      "reference": "C_0_19_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$23",
+      "reference": "C_0_20_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$11",
+      "reference": "C_0_21_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$144",
+      "reference": "C_10_11_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$145",
+      "reference": "C_10_12_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$150",
+      "reference": "C_10_13_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$151",
+      "reference": "C_10_14_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$146",
+      "reference": "C_10_15_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$147",
+      "reference": "C_10_16_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$152",
+      "reference": "C_10_17_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$153",
+      "reference": "C_10_18_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$148",
+      "reference": "C_10_19_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$149",
+      "reference": "C_10_20_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$154",
+      "reference": "C_10_21_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$156",
+      "reference": "C_11_11_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$157",
+      "reference": "C_11_12_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$162",
+      "reference": "C_11_13_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$163",
+      "reference": "C_11_14_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$158",
+      "reference": "C_11_15_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$159",
+      "reference": "C_11_16_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$164",
+      "reference": "C_11_17_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$165",
+      "reference": "C_11_18_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$160",
+      "reference": "C_11_19_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$161",
+      "reference": "C_11_20_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$166",
+      "reference": "C_11_21_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$174",
+      "reference": "C_12_11_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$175",
+      "reference": "C_12_12_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$169",
+      "reference": "C_12_13_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$170",
+      "reference": "C_12_14_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$176",
+      "reference": "C_12_15_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$177",
+      "reference": "C_12_16_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$171",
+      "reference": "C_12_17_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$172",
+      "reference": "C_12_18_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$178",
+      "reference": "C_12_19_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$179",
+      "reference": "C_12_20_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$173",
+      "reference": "C_12_21_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$187",
+      "reference": "C_13_11_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$188",
+      "reference": "C_13_12_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$182",
+      "reference": "C_13_13_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$183",
+      "reference": "C_13_14_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$189",
+      "reference": "C_13_15_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$190",
+      "reference": "C_13_16_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$184",
+      "reference": "C_13_17_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$185",
+      "reference": "C_13_18_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$191",
+      "reference": "C_13_19_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$192",
+      "reference": "C_13_20_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$186",
+      "reference": "C_13_21_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$195",
+      "reference": "C_14_11_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$196",
+      "reference": "C_14_12_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$201",
+      "reference": "C_14_13_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$202",
+      "reference": "C_14_14_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$197",
+      "reference": "C_14_15_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$198",
+      "reference": "C_14_16_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$203",
+      "reference": "C_14_17_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$204",
+      "reference": "C_14_18_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$199",
+      "reference": "C_14_19_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$200",
+      "reference": "C_14_20_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$205",
+      "reference": "C_14_21_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$209",
+      "reference": "C_15_11_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$210",
+      "reference": "C_15_12_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$215",
+      "reference": "C_15_13_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$216",
+      "reference": "C_15_14_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$211",
+      "reference": "C_15_15_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$212",
+      "reference": "C_15_16_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$217",
+      "reference": "C_15_17_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$218",
+      "reference": "C_15_18_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$213",
+      "reference": "C_15_19_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$214",
+      "reference": "C_15_20_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$219",
+      "reference": "C_15_21_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$227",
+      "reference": "C_16_11_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$228",
+      "reference": "C_16_12_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$221",
+      "reference": "C_16_13_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$222",
+      "reference": "C_16_14_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$229",
+      "reference": "C_16_15_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$230",
+      "reference": "C_16_16_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$223",
+      "reference": "C_16_17_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$224",
+      "reference": "C_16_18_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$231",
+      "reference": "C_16_19_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$232",
+      "reference": "C_16_20_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$225",
+      "reference": "C_16_21_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$240",
+      "reference": "C_17_11_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$241",
+      "reference": "C_17_12_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$234",
+      "reference": "C_17_13_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$235",
+      "reference": "C_17_14_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$242",
+      "reference": "C_17_15_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$243",
+      "reference": "C_17_16_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$236",
+      "reference": "C_17_17_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$237",
+      "reference": "C_17_18_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$244",
+      "reference": "C_17_19_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$245",
+      "reference": "C_17_20_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$238",
+      "reference": "C_17_21_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$247",
+      "reference": "C_18_11_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$248",
+      "reference": "C_18_12_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$253",
+      "reference": "C_18_13_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$254",
+      "reference": "C_18_14_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$249",
+      "reference": "C_18_15_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$250",
+      "reference": "C_18_16_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$255",
+      "reference": "C_18_17_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$256",
+      "reference": "C_18_18_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$251",
+      "reference": "C_18_19_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$252",
+      "reference": "C_18_20_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$257",
+      "reference": "C_18_21_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$260",
+      "reference": "C_19_11_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$261",
+      "reference": "C_19_12_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$266",
+      "reference": "C_19_13_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$267",
+      "reference": "C_19_14_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$262",
+      "reference": "C_19_15_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$263",
+      "reference": "C_19_16_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$268",
+      "reference": "C_19_17_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$269",
+      "reference": "C_19_18_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$264",
+      "reference": "C_19_19_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$265",
+      "reference": "C_19_20_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$270",
+      "reference": "C_19_21_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$32",
+      "reference": "C_1_11_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$33",
+      "reference": "C_1_12_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$26",
+      "reference": "C_1_13_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$27",
+      "reference": "C_1_14_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$34",
+      "reference": "C_1_15_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$35",
+      "reference": "C_1_16_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$28",
+      "reference": "C_1_17_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$29",
+      "reference": "C_1_18_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$36",
+      "reference": "C_1_19_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$37",
+      "reference": "C_1_20_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$30",
+      "reference": "C_1_21_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$278",
+      "reference": "C_20_11_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$279",
+      "reference": "C_20_12_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$273",
+      "reference": "C_20_13_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$274",
+      "reference": "C_20_14_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$280",
+      "reference": "C_20_15_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$281",
+      "reference": "C_20_16_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$275",
+      "reference": "C_20_17_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$276",
+      "reference": "C_20_18_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$282",
+      "reference": "C_20_19_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$283",
+      "reference": "C_20_20_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$277",
+      "reference": "C_20_21_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$292",
+      "reference": "C_21_11_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$293",
+      "reference": "C_21_12_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$286",
+      "reference": "C_21_13_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$287",
+      "reference": "C_21_14_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$294",
+      "reference": "C_21_15_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$295",
+      "reference": "C_21_16_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$288",
+      "reference": "C_21_17_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$289",
+      "reference": "C_21_18_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$296",
+      "reference": "C_21_19_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$297",
+      "reference": "C_21_20_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$290",
+      "reference": "C_21_21_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$299",
+      "reference": "C_22_11_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$300",
+      "reference": "C_22_12_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$305",
+      "reference": "C_22_13_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$306",
+      "reference": "C_22_14_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$301",
+      "reference": "C_22_15_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$302",
+      "reference": "C_22_16_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$307",
+      "reference": "C_22_17_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$308",
+      "reference": "C_22_18_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$303",
+      "reference": "C_22_19_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$304",
+      "reference": "C_22_20_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$309",
+      "reference": "C_22_21_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$313",
+      "reference": "C_23_11_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$314",
+      "reference": "C_23_12_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$319",
+      "reference": "C_23_13_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$320",
+      "reference": "C_23_14_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$315",
+      "reference": "C_23_15_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$316",
+      "reference": "C_23_16_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$321",
+      "reference": "C_23_17_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$322",
+      "reference": "C_23_18_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$317",
+      "reference": "C_23_19_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$318",
+      "reference": "C_23_20_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$323",
+      "reference": "C_23_21_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$330",
+      "reference": "C_24_11_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$331",
+      "reference": "C_24_12_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$325",
+      "reference": "C_24_13_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$326",
+      "reference": "C_24_14_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$332",
+      "reference": "C_24_15_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$333",
+      "reference": "C_24_16_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$327",
+      "reference": "C_24_17_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$328",
+      "reference": "C_24_18_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$334",
+      "reference": "C_24_19_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$335",
+      "reference": "C_24_20_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$329",
+      "reference": "C_24_21_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$344",
+      "reference": "C_25_11_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$345",
+      "reference": "C_25_12_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$338",
+      "reference": "C_25_13_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$339",
+      "reference": "C_25_14_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$346",
+      "reference": "C_25_15_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$347",
+      "reference": "C_25_16_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$340",
+      "reference": "C_25_17_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$341",
+      "reference": "C_25_18_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$348",
+      "reference": "C_25_19_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$349",
+      "reference": "C_25_20_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$342",
+      "reference": "C_25_21_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$352",
+      "reference": "C_26_11_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$353",
+      "reference": "C_26_12_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$358",
+      "reference": "C_26_13_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$359",
+      "reference": "C_26_14_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$354",
+      "reference": "C_26_15_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$355",
+      "reference": "C_26_16_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$360",
+      "reference": "C_26_17_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$361",
+      "reference": "C_26_18_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$356",
+      "reference": "C_26_19_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$357",
+      "reference": "C_26_20_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$362",
+      "reference": "C_26_21_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$365",
+      "reference": "C_27_11_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$366",
+      "reference": "C_27_12_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$371",
+      "reference": "C_27_13_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$372",
+      "reference": "C_27_14_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$367",
+      "reference": "C_27_15_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$368",
+      "reference": "C_27_16_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$373",
+      "reference": "C_27_17_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$374",
+      "reference": "C_27_18_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$369",
+      "reference": "C_27_19_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$370",
+      "reference": "C_27_20_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$375",
+      "reference": "C_27_21_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$382",
+      "reference": "C_28_11_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$383",
+      "reference": "C_28_12_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$377",
+      "reference": "C_28_13_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$378",
+      "reference": "C_28_14_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$384",
+      "reference": "C_28_15_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$385",
+      "reference": "C_28_16_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$379",
+      "reference": "C_28_17_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$380",
+      "reference": "C_28_18_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$386",
+      "reference": "C_28_19_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$387",
+      "reference": "C_28_20_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$381",
+      "reference": "C_28_21_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$396",
+      "reference": "C_29_11_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$397",
+      "reference": "C_29_12_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$390",
+      "reference": "C_29_13_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$391",
+      "reference": "C_29_14_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$398",
+      "reference": "C_29_15_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$399",
+      "reference": "C_29_16_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$392",
+      "reference": "C_29_17_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$393",
+      "reference": "C_29_18_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$400",
+      "reference": "C_29_19_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$401",
+      "reference": "C_29_20_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$394",
+      "reference": "C_29_21_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$39",
+      "reference": "C_2_11_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$40",
+      "reference": "C_2_12_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$45",
+      "reference": "C_2_13_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$46",
+      "reference": "C_2_14_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$41",
+      "reference": "C_2_15_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$42",
+      "reference": "C_2_16_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$47",
+      "reference": "C_2_17_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$48",
+      "reference": "C_2_18_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$43",
+      "reference": "C_2_19_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$44",
+      "reference": "C_2_20_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$49",
+      "reference": "C_2_21_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$404",
+      "reference": "C_30_11_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$405",
+      "reference": "C_30_12_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$410",
+      "reference": "C_30_13_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$411",
+      "reference": "C_30_14_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$406",
+      "reference": "C_30_15_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$407",
+      "reference": "C_30_16_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$412",
+      "reference": "C_30_17_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$413",
+      "reference": "C_30_18_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$408",
+      "reference": "C_30_19_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$409",
+      "reference": "C_30_20_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$414",
+      "reference": "C_30_21_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$416",
+      "reference": "C_31_11_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$417",
+      "reference": "C_31_12_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$422",
+      "reference": "C_31_13_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$423",
+      "reference": "C_31_14_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$418",
+      "reference": "C_31_15_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$419",
+      "reference": "C_31_16_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$424",
+      "reference": "C_31_17_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$425",
+      "reference": "C_31_18_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$420",
+      "reference": "C_31_19_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$421",
+      "reference": "C_31_20_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$426",
+      "reference": "C_31_21_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$53",
+      "reference": "C_3_11_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$54",
+      "reference": "C_3_12_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$59",
+      "reference": "C_3_13_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$60",
+      "reference": "C_3_14_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$55",
+      "reference": "C_3_15_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$56",
+      "reference": "C_3_16_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$61",
+      "reference": "C_3_17_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$62",
+      "reference": "C_3_18_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$57",
+      "reference": "C_3_19_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$58",
+      "reference": "C_3_20_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$63",
+      "reference": "C_3_21_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$70",
+      "reference": "C_4_11_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$71",
+      "reference": "C_4_12_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$65",
+      "reference": "C_4_13_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$66",
+      "reference": "C_4_14_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$72",
+      "reference": "C_4_15_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$73",
+      "reference": "C_4_16_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$67",
+      "reference": "C_4_17_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$68",
+      "reference": "C_4_18_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$74",
+      "reference": "C_4_19_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$75",
+      "reference": "C_4_20_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$69",
+      "reference": "C_4_21_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$83",
+      "reference": "C_5_11_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$84",
+      "reference": "C_5_12_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$78",
+      "reference": "C_5_13_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$79",
+      "reference": "C_5_14_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$85",
+      "reference": "C_5_15_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$86",
+      "reference": "C_5_16_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$80",
+      "reference": "C_5_17_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$81",
+      "reference": "C_5_18_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$87",
+      "reference": "C_5_19_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$88",
+      "reference": "C_5_20_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$82",
+      "reference": "C_5_21_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$92",
+      "reference": "C_6_11_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$93",
+      "reference": "C_6_12_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$98",
+      "reference": "C_6_13_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$99",
+      "reference": "C_6_14_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$94",
+      "reference": "C_6_15_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$95",
+      "reference": "C_6_16_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$100",
+      "reference": "C_6_17_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$101",
+      "reference": "C_6_18_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$96",
+      "reference": "C_6_19_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$97",
+      "reference": "C_6_20_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$102",
+      "reference": "C_6_21_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$104",
+      "reference": "C_7_11_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$105",
+      "reference": "C_7_12_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$110",
+      "reference": "C_7_13_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$111",
+      "reference": "C_7_14_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$106",
+      "reference": "C_7_15_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$107",
+      "reference": "C_7_16_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$112",
+      "reference": "C_7_17_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$113",
+      "reference": "C_7_18_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$108",
+      "reference": "C_7_19_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$109",
+      "reference": "C_7_20_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$114",
+      "reference": "C_7_21_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$123",
+      "reference": "C_8_11_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$124",
+      "reference": "C_8_12_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$117",
+      "reference": "C_8_13_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$118",
+      "reference": "C_8_14_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$125",
+      "reference": "C_8_15_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$126",
+      "reference": "C_8_16_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$119",
+      "reference": "C_8_17_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$120",
+      "reference": "C_8_18_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$127",
+      "reference": "C_8_19_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$128",
+      "reference": "C_8_20_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$121",
+      "reference": "C_8_21_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$136",
+      "reference": "C_9_11_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$137",
+      "reference": "C_9_12_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$130",
+      "reference": "C_9_13_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$131",
+      "reference": "C_9_14_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$138",
+      "reference": "C_9_15_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$139",
+      "reference": "C_9_16_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$132",
+      "reference": "C_9_17_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$133",
+      "reference": "C_9_18_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$140",
+      "reference": "C_9_19_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$141",
+      "reference": "C_9_20_CN",
+      "pin": false
+    },
+    {
+      "layout": "\\$134",
+      "reference": "C_9_21_CN",
+      "pin": false
+    },
+    {
+      "layout": "PL_0_II",
+      "reference": "PL_0_II",
+      "pin": true
+    },
+    {
+      "layout": "PL_10_II",
+      "reference": "PL_10_II",
+      "pin": true
+    },
+    {
+      "layout": "PL_11_II",
+      "reference": "PL_11_II",
+      "pin": true
+    },
+    {
+      "layout": "PL_12_II",
+      "reference": "PL_12_II",
+      "pin": true
+    },
+    {
+      "layout": "PL_13_II",
+      "reference": "PL_13_II",
+      "pin": true
+    },
+    {
+      "layout": "PL_14_II",
+      "reference": "PL_14_II",
+      "pin": true
+    },
+    {
+      "layout": "PL_15_II",
+      "reference": "PL_15_II",
+      "pin": true
+    },
+    {
+      "layout": "PL_16_II",
+      "reference": "PL_16_II",
+      "pin": true
+    },
+    {
+      "layout": "PL_17_II",
+      "reference": "PL_17_II",
+      "pin": true
+    },
+    {
+      "layout": "PL_18_II",
+      "reference": "PL_18_II",
+      "pin": true
+    },
+    {
+      "layout": "PL_19_II",
+      "reference": "PL_19_II",
+      "pin": true
+    },
+    {
+      "layout": "PL_1_II",
+      "reference": "PL_1_II",
+      "pin": true
+    },
+    {
+      "layout": "PL_20_II",
+      "reference": "PL_20_II",
+      "pin": true
+    },
+    {
+      "layout": "PL_21_II",
+      "reference": "PL_21_II",
+      "pin": true
+    },
+    {
+      "layout": "PL_22_II",
+      "reference": "PL_22_II",
+      "pin": true
+    },
+    {
+      "layout": "PL_23_II",
+      "reference": "PL_23_II",
+      "pin": true
+    },
+    {
+      "layout": "PL_24_II",
+      "reference": "PL_24_II",
+      "pin": true
+    },
+    {
+      "layout": "PL_25_II",
+      "reference": "PL_25_II",
+      "pin": true
+    },
+    {
+      "layout": "PL_26_II",
+      "reference": "PL_26_II",
+      "pin": true
+    },
+    {
+      "layout": "PL_27_II",
+      "reference": "PL_27_II",
+      "pin": true
+    },
+    {
+      "layout": "PL_28_II",
+      "reference": "PL_28_II",
+      "pin": true
+    },
+    {
+      "layout": "PL_29_II",
+      "reference": "PL_29_II",
+      "pin": true
+    },
+    {
+      "layout": "PL_2_II",
+      "reference": "PL_2_II",
+      "pin": true
+    },
+    {
+      "layout": "PL_30_II",
+      "reference": "PL_30_II",
+      "pin": true
+    },
+    {
+      "layout": "PL_31_II",
+      "reference": "PL_31_II",
+      "pin": true
+    },
+    {
+      "layout": "PL_3_II",
+      "reference": "PL_3_II",
+      "pin": true
+    },
+    {
+      "layout": "PL_4_II",
+      "reference": "PL_4_II",
+      "pin": true
+    },
+    {
+      "layout": "PL_5_II",
+      "reference": "PL_5_II",
+      "pin": true
+    },
+    {
+      "layout": "PL_6_II",
+      "reference": "PL_6_II",
+      "pin": true
+    },
+    {
+      "layout": "PL_7_II",
+      "reference": "PL_7_II",
+      "pin": true
+    },
+    {
+      "layout": "PL_8_II",
+      "reference": "PL_8_II",
+      "pin": true
+    },
+    {
+      "layout": "PL_9_II",
+      "reference": "PL_9_II",
+      "pin": true
+    },
+    {
+      "layout": "VSS",
+      "reference": "VSS",
+      "pin": true
+    },
+    {
+      "layout": "WL_0_II",
+      "reference": "WL_0_II",
+      "pin": true
+    },
+    {
+      "layout": "WL_10_II",
+      "reference": "WL_10_II",
+      "pin": true
+    },
+    {
+      "layout": "WL_11_II",
+      "reference": "WL_11_II",
+      "pin": true
+    },
+    {
+      "layout": "WL_12_II",
+      "reference": "WL_12_II",
+      "pin": true
+    },
+    {
+      "layout": "WL_13_II",
+      "reference": "WL_13_II",
+      "pin": true
+    },
+    {
+      "layout": "WL_14_II",
+      "reference": "WL_14_II",
+      "pin": true
+    },
+    {
+      "layout": "WL_15_II",
+      "reference": "WL_15_II",
+      "pin": true
+    },
+    {
+      "layout": "WL_16_II",
+      "reference": "WL_16_II",
+      "pin": true
+    },
+    {
+      "layout": "WL_17_II",
+      "reference": "WL_17_II",
+      "pin": true
+    },
+    {
+      "layout": "WL_18_II",
+      "reference": "WL_18_II",
+      "pin": true
+    },
+    {
+      "layout": "WL_19_II",
+      "reference": "WL_19_II",
+      "pin": true
+    },
+    {
+      "layout": "WL_1_II",
+      "reference": "WL_1_II",
+      "pin": true
+    },
+    {
+      "layout": "WL_20_II",
+      "reference": "WL_20_II",
+      "pin": true
+    },
+    {
+      "layout": "WL_21_II",
+      "reference": "WL_21_II",
+      "pin": true
+    },
+    {
+      "layout": "WL_22_II",
+      "reference": "WL_22_II",
+      "pin": true
+    },
+    {
+      "layout": "WL_23_II",
+      "reference": "WL_23_II",
+      "pin": true
+    },
+    {
+      "layout": "WL_24_II",
+      "reference": "WL_24_II",
+      "pin": true
+    },
+    {
+      "layout": "WL_25_II",
+      "reference": "WL_25_II",
+      "pin": true
+    },
+    {
+      "layout": "WL_26_II",
+      "reference": "WL_26_II",
+      "pin": true
+    },
+    {
+      "layout": "WL_27_II",
+      "reference": "WL_27_II",
+      "pin": true
+    },
+    {
+      "layout": "WL_28_II",
+      "reference": "WL_28_II",
+      "pin": true
+    },
+    {
+      "layout": "WL_29_II",
+      "reference": "WL_29_II",
+      "pin": true
+    },
+    {
+      "layout": "WL_2_II",
+      "reference": "WL_2_II",
+      "pin": true
+    },
+    {
+      "layout": "WL_30_II",
+      "reference": "WL_30_II",
+      "pin": true
+    },
+    {
+      "layout": "WL_31_II",
+      "reference": "WL_31_II",
+      "pin": true
+    },
+    {
+      "layout": "WL_3_II",
+      "reference": "WL_3_II",
+      "pin": true
+    },
+    {
+      "layout": "WL_4_II",
+      "reference": "WL_4_II",
+      "pin": true
+    },
+    {
+      "layout": "WL_5_II",
+      "reference": "WL_5_II",
+      "pin": true
+    },
+    {
+      "layout": "WL_6_II",
+      "reference": "WL_6_II",
+      "pin": true
+    },
+    {
+      "layout": "WL_7_II",
+      "reference": "WL_7_II",
+      "pin": true
+    },
+    {
+      "layout": "WL_8_II",
+      "reference": "WL_8_II",
+      "pin": true
+    },
+    {
+      "layout": "WL_9_II",
+      "reference": "WL_9_II",
+      "pin": true
+    }
+  ]
+}

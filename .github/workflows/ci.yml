@@ -75,10 +75,12 @@ jobs:
       - name: Verify analog body ties on contact-only opens
         run: uv run --no-project --script scripts/check_analog_tap_contacts.py
 
-      - name: Rebuild and check Region I and III array connectivity
+      - name: Rebuild and check the three array regions
         run: |
           uv run --no-project --script layout/array_region_i/generate.py --check
           uv run --no-project --script layout/array_region_i/check.py
+          uv run --no-project --script layout/array_region_ii/generate.py --check
+          uv run --no-project --script layout/array_region_ii/check.py
           uv run --no-project --script layout/array_region_iii/generate.py --check
           uv run --no-project --script layout/array_region_iii/check.py
 

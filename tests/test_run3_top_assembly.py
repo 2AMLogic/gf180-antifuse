@@ -7,7 +7,7 @@ derived tables against the committed sources they must agree with.
      exactly the undrawn cell's instances; every placed instance's plate pin
      sits at its pad's y (the straight HV-route invariant);
   2. every placed cell names a committed cell GDS, and every excluded cell is
-     the generator's NO_DRAWN_CELL point;
+     the assembler's pending C2-Amin-G2x split;
   3. the pad ring: 48 signal pads + 8 power pads, the 40 connected pads
      labelled with their pad-table signals, the 16 unconnected ones
      unlabelled, and no two pads of one edge overlapping;
@@ -59,9 +59,9 @@ class Run3TopAssemblyTest(unittest.TestCase):
         excluded = [r for r in self.rows if not r["placed"]]
         self.assertEqual(len(placed), 31)
         self.assertEqual(
-            {r["cell"] for r in excluded}, asm.gen.NO_DRAWN_CELL
+            {r["cell"] for r in excluded}, asm.PENDING_ASSEMBLY
         )
-        self.assertEqual({r["cell"] for r in placed} - asm.gen.NO_DRAWN_CELL,
+        self.assertEqual({r["cell"] for r in placed} - asm.PENDING_ASSEMBLY,
                          set(asm.PIN_OFFSET_UM))
 
     def test_plate_pins_are_pad_aligned(self):
