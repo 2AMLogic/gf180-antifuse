@@ -5,6 +5,12 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-26
 
+- **PR #559**: docs: point the Run 3 layout READMEs at the drawn C2-Amin-G2x master
+- **Issue #556** (closed): Reconcile Region II MDN.10c and MDN.5c native DRC markers across replays
+- **PR #557**: docs: record native Region II DRC replays on Linux and macOS
+- **Issue #555** (closed): Update Run 3 layout documentation for the available C2-Amin-G2x master
+- **PR #551**: Complete the 352-cell asymmetric Region II matrix
+- **PR #550**: Route and verify the 320-cell Region III PMOS array
 - **PR #549**: Route the 352-cell Region I antifuse array core
 - **PR #548**: Require real contacts in analog substrate and well tie ERC
 - **Issue #547** (closed): Require physical contacts in analog substrate and well tie ERC
