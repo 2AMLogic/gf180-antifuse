@@ -111,9 +111,9 @@ def read_xref(path):
             "layout_devices": dict(sorted(devices.items()))}
 
 
-def run(case, out, native):
+def run(case, out, native, array_layout):
     folder = HERE if case in CASES[:4] else SHIFT
-    source = folder / (folder.name + ".gds")
+    source = array_layout if folder == HERE else folder / (folder.name + ".gds")
     ref = folder / "reference.spice"
     work = out / case
     work.mkdir(exist_ok=True, parents=True)
@@ -144,10 +144,11 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--case", choices=CASES, action="append")
+    parser.add_argument("--array-layout", type=Path, default=HERE / "array_32x32.gds")
     args = parser.parse_args()
     native = Path(os.environ["PDK_ROOT"]).resolve() / "gf180mcuD/libs.tech/klayout/tech/lvs"
     for case in args.case or CASES:
-        run(case, args.output.resolve(), native)
+        run(case, args.output.resolve(), native, args.array_layout.resolve())
 
 
 if __name__ == "__main__":

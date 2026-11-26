@@ -2,6 +2,7 @@
 # dependencies = ["klayout==0.30.13"]
 # ///
 """Probe the addressed array using only physical metal, vias and original pin sites."""
+import argparse
 from collections import defaultdict
 from pathlib import Path
 import tempfile
@@ -199,7 +200,9 @@ def fault_copy(source, kind, sites, dest):
 
 
 def main():
-    source = HERE / "array_32x32.gds"
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--array-layout", type=Path, default=HERE / "array_32x32.gds")
+    source = parser.parse_args().array_layout.resolve()
     sites, count = probe(source)
     print(f"75 pins, 256 selector macros, three complete memory regions, {count} distinct interface nets")
     with tempfile.TemporaryDirectory() as tmp:

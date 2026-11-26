@@ -1,0 +1,300 @@
+{
+  "parent_commit": "ca154dc3f370702b2cea40e7f3761e7aa683a28c",
+  "input_gds_sha256": "7aca07104fcc644950bdacc48dff0416ec7b671bfb38616a17452571c885a0c5",
+  "delivered_gds_sha256": "a264fc6d555dc470fa89b643e83116a61f8fbd443cf2bccb77b233cadfc454ec",
+  "uncompressed_bytes": 39099792,
+  "verified_regeneration": "Uncompressed delivered bytes matched independent complete Ubuntu 24.04 and macOS rebuilds with Python KLayout 0.30.14.",
+  "stripped_functional_layout": "KLayout LayoutDiff, zero database units, exact original hierarchy and properties",
+  "extent_um": [
+    8.75,
+    13.64,
+    2777.91,
+    1866.63
+  ],
+  "extent_area_um2": 5131225.8,
+  "fill_polygons": 569818,
+  "fill_layers": [
+    {
+      "name": "COMP",
+      "fill_layer": "22/4",
+      "fill_shapes": 67877,
+      "drawn_pct": 0.9362354490149958,
+      "total_pct": 51.61213402043246
+    },
+    {
+      "name": "Poly2",
+      "fill_layer": "30/4",
+      "fill_shapes": 67877,
+      "drawn_pct": 0.3215028042089733,
+      "total_pct": 61.073205975158835
+    },
+    {
+      "name": "Metal1",
+      "fill_layer": "34/4",
+      "fill_shapes": 95066,
+      "drawn_pct": 0.7609754395971651,
+      "total_pct": 69.34775460562152
+    },
+    {
+      "name": "Metal2",
+      "fill_layer": "36/4",
+      "fill_shapes": 98033,
+      "drawn_pct": 0.790331645348339,
+      "total_pct": 69.00689985626437
+    },
+    {
+      "name": "Metal3",
+      "fill_layer": "42/4",
+      "fill_shapes": 84494,
+      "drawn_pct": 4.085561856855436,
+      "total_pct": 59.81886531945229
+    },
+    {
+      "name": "Metal4",
+      "fill_layer": "46/4",
+      "fill_shapes": 63044,
+      "drawn_pct": 15.37340544988909,
+      "total_pct": 55.96822091696517
+    },
+    {
+      "name": "Metal5",
+      "fill_layer": "81/4",
+      "fill_shapes": 93427,
+      "drawn_pct": 2.1764290757281772,
+      "total_pct": 66.63047527023923
+    }
+  ],
+  "native_drc": {
+    "report": "native-drc.json.gz",
+    "provenance": {
+      "klt_version": "0.9.2",
+      "klt_git_commit": "046ba74652fc096bd97071fc3237f7159dd40183",
+      "klt_reinstall_spec": "klayout-tools==0.9.2",
+      "klayout_version": "0.30.14",
+      "pdk": {
+        "name": "gf180mcuD",
+        "source": "--pdk-root flag",
+        "version": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
+      },
+      "deck": {
+        "name": "gf180mcu.drc",
+        "content_hash": "sha256:e7c7d2597890cfcb4cf0e5312f5652051a119fb3e1cc1772a6e5c04594bc65d8",
+        "released": false,
+        "options": {
+          "variant": "D",
+          "decks": "all",
+          "threads": "1"
+        },
+        "tree": {
+          "file_count": 6,
+          "content_hash": "sha256:8af3b4875893f3ffbff639bd7e2966c5e3b9b27f70d03e86d6da46ca9510fbc4",
+          "release": null
+        }
+      },
+      "input": {
+        "content_hash": "sha256:a264fc6d555dc470fa89b643e83116a61f8fbd443cf2bccb77b233cadfc454ec",
+        "role": "layout"
+      },
+      "klayout_version_mismatch": true
+    },
+    "base_category_count": 771,
+    "expected_categories_present": true,
+    "filled_category_count": 763,
+    "cleared_density_markers": [
+      "DCF.1b",
+      "M1.4",
+      "M2.4",
+      "M3.4",
+      "M4.4",
+      "M5.4",
+      "MT.3",
+      "PL.8"
+    ],
+    "before_markers": 266,
+    "after_markers": 258,
+    "remaining_rules": {
+      "CO.4": 210,
+      "DF.13_MV": 3,
+      "DF.6_MV": 14,
+      "MDN.10c": 6,
+      "MDN.17": 3,
+      "MDN.5c": 5,
+      "MDP.4b": 3,
+      "PL.4_MV": 14
+    },
+    "remaining_cells": {
+      "cell_candidate2": 21,
+      "cell_candidate2_A2x_G2x": 39,
+      "cell_candidate2_A2x_Gmin": 40,
+      "cell_candidate2_Amin_G2x": 21,
+      "ldn20": 48,
+      "ldn25": 57,
+      "ldp8": 26,
+      "ls_hv10": 6
+    }
+  },
+  "curated_drc": {
+    "report": "curated-drc.json.gz",
+    "checked_categories": 80,
+    "markers": 16849,
+    "deck": {
+      "name": "gf180mcu",
+      "content_hash": "sha256:c3f2cce49000857a3a71cb65203aabf0eb27cd0ee6b1c60e29792355c455c4b1",
+      "released": true
+    }
+  },
+  "native_lvs": {
+    "circuit": "Match",
+    "pin_name_differences": [],
+    "strict_match": true,
+    "pairs": {
+      "device": {
+        "Match": 2944
+      },
+      "net": {
+        "Match": 1611
+      },
+      "pin": {
+        "Match": 75
+      }
+    },
+    "layout_devices": {
+      "cap_nmos_03v3": 352,
+      "cap_nmos_06v0": 352,
+      "cap_pmos_03v3": 320,
+      "nfet_03v3": 128,
+      "nfet_06v0": 607,
+      "nfet_10v0_asym": 481,
+      "pfet_03v3": 128,
+      "pfet_06v0": 490,
+      "pfet_10v0_asym": 86
+    },
+    "source_gds_sha256": "a264fc6d555dc470fa89b643e83116a61f8fbd443cf2bccb77b233cadfc454ec",
+    "tested_gds_sha256": "a264fc6d555dc470fa89b643e83116a61f8fbd443cf2bccb77b233cadfc454ec",
+    "source_reference_sha256": "4462a6d8da9e1852bfcfabef5ac1d5e92f6d7dda4335a1260c7751b0a091a002",
+    "tested_cdl_sha256": "250e920ed9aa8e37f0d5e58cb8191f0b63a4ce9e2aac75acafe641a1e74aa593",
+    "deck_sha256": "09a4f1f1a6fe1fc1e4e193ae5ae1c2b1c49ba190f9e135ffd72d45c14637fde9",
+    "cross_reference": "native.lvsdb.gz",
+    "cross_reference_sha256": "d4f01911013ebd0b0fdf8d936556ff378f80e67c7d1b468d7260ada3a382f54d"
+  },
+  "native_lvs_mutations": {
+    "select_open": {
+      "tested_gds_sha256": "6fbc17308a018709c7ac7dde8b581b227805d1d5ae6b15a07dfc0cebdd5a4107",
+      "tested_cdl_sha256": "250e920ed9aa8e37f0d5e58cb8191f0b63a4ce9e2aac75acafe641a1e74aa593",
+      "strict_match": false,
+      "circuit": "Match",
+      "pairs": {
+        "device": {
+          "Match": 2944
+        },
+        "net": {
+          "Match": 1611
+        },
+        "pin": {
+          "Match": 75
+        }
+      },
+      "pin_name_differences": [
+        [
+          null,
+          "CSEL_7"
+        ]
+      ]
+    },
+    "row_short": {
+      "tested_gds_sha256": "3b9eaf3f20286700d7dce5674707291ad8a85eb99cc7d5c0c804571c2aa4fbb9",
+      "tested_cdl_sha256": "250e920ed9aa8e37f0d5e58cb8191f0b63a4ce9e2aac75acafe641a1e74aa593",
+      "strict_match": false,
+      "circuit": "NoMatch",
+      "pairs": {
+        "device": {
+          "Match": 2935,
+          "Mismatch": 9
+        },
+        "net": {
+          "Match": 1607,
+          "Mismatch": 4
+        },
+        "pin": {
+          "Match": 75
+        }
+      },
+      "pin_name_differences": [
+        [
+          null,
+          "RSEL_1"
+        ],
+        [
+          "RSEL_0,RSEL_1",
+          "RSEL_0"
+        ]
+      ]
+    },
+    "missing_pwell": {
+      "tested_gds_sha256": "7113f7ed624042c6c84bb7184e87a5a2bb35749cb40ea92356d25bc3629a9102",
+      "tested_cdl_sha256": "250e920ed9aa8e37f0d5e58cb8191f0b63a4ce9e2aac75acafe641a1e74aa593",
+      "strict_match": false,
+      "circuit": "NoMatch",
+      "pairs": {
+        "device": {
+          "Match": 2943,
+          "Mismatch": 1
+        },
+        "net": {
+          "Match": 1609,
+          "Mismatch": 2
+        },
+        "pin": {
+          "Match": 75
+        }
+      },
+      "pin_name_differences": []
+    }
+  },
+  "curated_lvs": {
+    "status": "mismatch",
+    "counts": {
+      "nets": {
+        "layout": 1697,
+        "reference": 1611,
+        "matched": 1524
+      },
+      "devices": {
+        "layout": 3511,
+        "reference": 3511,
+        "matched": 3339
+      },
+      "pins": {
+        "layout": 75,
+        "reference": 75,
+        "matched": 76
+      }
+    },
+    "mismatch_count": 269,
+    "category_counts": {
+      "device.body_unverified": 1,
+      "device.geometry_not_compared": 3,
+      "device.placeholder_value": 3,
+      "device.unmatched": 172,
+      "net.merged": 1,
+      "net.split": 87,
+      "topology": 1,
+      "topology.flattened": 1
+    }
+  },
+  "physical_probe": {
+    "distinct_interface_nets": 459,
+    "external_pins": 75,
+    "selectors": 256,
+    "memory_regions": 3,
+    "rejected": [
+      "open",
+      "bridge_open",
+      "short",
+      "duplicate_selector",
+      "duplicate_region",
+      "scaled_selector",
+      "rotated_region"
+    ]
+  }
+}
