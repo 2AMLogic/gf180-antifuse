@@ -1,5 +1,7 @@
 # layout/
 
+The [Region I array core](array_region_i/README.md) routes all 352 Candidate 1 bitcells in the first 11 columns of the N=32 array and verifies the physical connectivity against the xschem source.
+
 Layout and DRC/LVS signoff via klayout-tools.
 
 **Capacitor geometry levels (2026-11-17).** Every moscap in this directory is

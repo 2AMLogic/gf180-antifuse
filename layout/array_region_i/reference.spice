@@ -1,0 +1,394 @@
+* LVS reference for layout/cell_candidate1/cell_candidate1.gds.
+* Derived from design/netlists/cell_candidate1.spice (do not edit that file):
+* same subcircuit, same device models and connectivity, with the subcircuit's
+* parameters (wcap, lcap, wacc, lacc) resolved to the drawn Minimum x Minimum
+* geometry point, because klt lvs --reference-form subckt-call cannot carry
+* parameter expressions. Only literal geometry differs from the source netlist.
+.subckt cell_candidate1 BL WL PL VB
+XM1 BL WL CN VB nfet_06v0 L=0.70u W=0.42u nf=1 m=1
+XC1 CN PL cap_nmos_03v3 c_width=1.0u c_length=0.28u m=1
+.ends
+* LVS reference for layout/cell_candidate1_A2x_G2x/cell_candidate1_A2x_G2x.gds.
+* Derived from design/netlists/cell_candidate1.spice (do not edit that file):
+* same subcircuit, same device models and connectivity, with the subcircuit's
+* parameters (wcap, lcap, wacc, lacc) resolved to the drawn access 2x x capacitor 2x
+* geometry point, because klt lvs --reference-form subckt-call cannot carry
+* parameter expressions. Only literal geometry differs from the source netlist.
+.subckt cell_candidate1_A2x_G2x BL WL PL VB
+XM1 BL WL CN VB nfet_06v0 L=0.70u W=0.84u nf=1 m=1
+XC1 CN PL cap_nmos_03v3 c_width=2.0u c_length=0.28u m=1
+.ends
+* LVS reference for layout/cell_candidate1_A2x_Gmin/cell_candidate1_A2x_Gmin.gds.
+* Derived from design/netlists/cell_candidate1.spice (do not edit that file):
+* same subcircuit, same device models and connectivity, with the subcircuit's
+* parameters (wcap, lcap, wacc, lacc) resolved to the drawn access 2x x capacitor Minimum
+* geometry point, because klt lvs --reference-form subckt-call cannot carry
+* parameter expressions. Only literal geometry differs from the source netlist.
+.subckt cell_candidate1_A2x_Gmin BL WL PL VB
+XM1 BL WL CN VB nfet_06v0 L=0.70u W=0.84u nf=1 m=1
+XC1 CN PL cap_nmos_03v3 c_width=1.0u c_length=0.28u m=1
+.ends
+* LVS reference for layout/cell_candidate1_Amin_G2x/cell_candidate1_Amin_G2x.gds.
+* Derived from design/netlists/cell_candidate1.spice (do not edit that file):
+* same subcircuit, same device models and connectivity, with the subcircuit's
+* parameters (wcap, lcap, wacc, lacc) resolved to the drawn access Minimum x capacitor 2x
+* geometry point, because klt lvs --reference-form subckt-call cannot carry
+* parameter expressions. Only literal geometry differs from the source netlist.
+.subckt cell_candidate1_Amin_G2x BL WL PL VB
+XM1 BL WL CN VB nfet_06v0 L=0.70u W=0.42u nf=1 m=1
+XC1 CN PL cap_nmos_03v3 c_width=2.0u c_length=0.28u m=1
+.ends
+.subckt array_region_i BL_0 BL_1 BL_2 BL_3 BL_4 BL_5 BL_6 BL_7 BL_8 BL_9 BL_10 WL_0_I WL_1_I WL_2_I WL_3_I WL_4_I WL_5_I WL_6_I WL_7_I WL_8_I WL_9_I WL_10_I WL_11_I WL_12_I WL_13_I WL_14_I WL_15_I WL_16_I WL_17_I WL_18_I WL_19_I WL_20_I WL_21_I WL_22_I WL_23_I WL_24_I WL_25_I WL_26_I WL_27_I WL_28_I WL_29_I WL_30_I WL_31_I PL_0_I PL_1_I PL_2_I PL_3_I PL_4_I PL_5_I PL_6_I PL_7_I PL_8_I PL_9_I PL_10_I PL_11_I PL_12_I PL_13_I PL_14_I PL_15_I PL_16_I PL_17_I PL_18_I PL_19_I PL_20_I PL_21_I PL_22_I PL_23_I PL_24_I PL_25_I PL_26_I PL_27_I PL_28_I PL_29_I PL_30_I PL_31_I VSS
+Xc_0_0 BL_0 WL_0_I PL_0_I VSS cell_candidate1
+Xc_0_1 BL_1 WL_0_I PL_0_I VSS cell_candidate1_Amin_G2x
+Xc_0_2 BL_2 WL_0_I PL_0_I VSS cell_candidate1_A2x_Gmin
+Xc_0_3 BL_3 WL_0_I PL_0_I VSS cell_candidate1_A2x_G2x
+Xc_0_4 BL_4 WL_0_I PL_0_I VSS cell_candidate1
+Xc_0_5 BL_5 WL_0_I PL_0_I VSS cell_candidate1_Amin_G2x
+Xc_0_6 BL_6 WL_0_I PL_0_I VSS cell_candidate1_A2x_Gmin
+Xc_0_7 BL_7 WL_0_I PL_0_I VSS cell_candidate1_A2x_G2x
+Xc_0_8 BL_8 WL_0_I PL_0_I VSS cell_candidate1
+Xc_0_9 BL_9 WL_0_I PL_0_I VSS cell_candidate1_Amin_G2x
+Xc_0_10 BL_10 WL_0_I PL_0_I VSS cell_candidate1_A2x_Gmin
+Xc_1_0 BL_0 WL_1_I PL_1_I VSS cell_candidate1_Amin_G2x
+Xc_1_1 BL_1 WL_1_I PL_1_I VSS cell_candidate1
+Xc_1_2 BL_2 WL_1_I PL_1_I VSS cell_candidate1_A2x_G2x
+Xc_1_3 BL_3 WL_1_I PL_1_I VSS cell_candidate1_A2x_Gmin
+Xc_1_4 BL_4 WL_1_I PL_1_I VSS cell_candidate1_Amin_G2x
+Xc_1_5 BL_5 WL_1_I PL_1_I VSS cell_candidate1
+Xc_1_6 BL_6 WL_1_I PL_1_I VSS cell_candidate1_A2x_G2x
+Xc_1_7 BL_7 WL_1_I PL_1_I VSS cell_candidate1_A2x_Gmin
+Xc_1_8 BL_8 WL_1_I PL_1_I VSS cell_candidate1_Amin_G2x
+Xc_1_9 BL_9 WL_1_I PL_1_I VSS cell_candidate1
+Xc_1_10 BL_10 WL_1_I PL_1_I VSS cell_candidate1_A2x_G2x
+Xc_2_0 BL_0 WL_2_I PL_2_I VSS cell_candidate1_A2x_Gmin
+Xc_2_1 BL_1 WL_2_I PL_2_I VSS cell_candidate1_A2x_G2x
+Xc_2_2 BL_2 WL_2_I PL_2_I VSS cell_candidate1
+Xc_2_3 BL_3 WL_2_I PL_2_I VSS cell_candidate1_Amin_G2x
+Xc_2_4 BL_4 WL_2_I PL_2_I VSS cell_candidate1_A2x_Gmin
+Xc_2_5 BL_5 WL_2_I PL_2_I VSS cell_candidate1_A2x_G2x
+Xc_2_6 BL_6 WL_2_I PL_2_I VSS cell_candidate1
+Xc_2_7 BL_7 WL_2_I PL_2_I VSS cell_candidate1_Amin_G2x
+Xc_2_8 BL_8 WL_2_I PL_2_I VSS cell_candidate1_A2x_Gmin
+Xc_2_9 BL_9 WL_2_I PL_2_I VSS cell_candidate1_A2x_G2x
+Xc_2_10 BL_10 WL_2_I PL_2_I VSS cell_candidate1
+Xc_3_0 BL_0 WL_3_I PL_3_I VSS cell_candidate1_A2x_G2x
+Xc_3_1 BL_1 WL_3_I PL_3_I VSS cell_candidate1_A2x_Gmin
+Xc_3_2 BL_2 WL_3_I PL_3_I VSS cell_candidate1_Amin_G2x
+Xc_3_3 BL_3 WL_3_I PL_3_I VSS cell_candidate1
+Xc_3_4 BL_4 WL_3_I PL_3_I VSS cell_candidate1_A2x_G2x
+Xc_3_5 BL_5 WL_3_I PL_3_I VSS cell_candidate1_A2x_Gmin
+Xc_3_6 BL_6 WL_3_I PL_3_I VSS cell_candidate1_Amin_G2x
+Xc_3_7 BL_7 WL_3_I PL_3_I VSS cell_candidate1
+Xc_3_8 BL_8 WL_3_I PL_3_I VSS cell_candidate1_A2x_G2x
+Xc_3_9 BL_9 WL_3_I PL_3_I VSS cell_candidate1_A2x_Gmin
+Xc_3_10 BL_10 WL_3_I PL_3_I VSS cell_candidate1_Amin_G2x
+Xc_4_0 BL_0 WL_4_I PL_4_I VSS cell_candidate1
+Xc_4_1 BL_1 WL_4_I PL_4_I VSS cell_candidate1_Amin_G2x
+Xc_4_2 BL_2 WL_4_I PL_4_I VSS cell_candidate1_A2x_Gmin
+Xc_4_3 BL_3 WL_4_I PL_4_I VSS cell_candidate1_A2x_G2x
+Xc_4_4 BL_4 WL_4_I PL_4_I VSS cell_candidate1
+Xc_4_5 BL_5 WL_4_I PL_4_I VSS cell_candidate1_Amin_G2x
+Xc_4_6 BL_6 WL_4_I PL_4_I VSS cell_candidate1_A2x_Gmin
+Xc_4_7 BL_7 WL_4_I PL_4_I VSS cell_candidate1_A2x_G2x
+Xc_4_8 BL_8 WL_4_I PL_4_I VSS cell_candidate1
+Xc_4_9 BL_9 WL_4_I PL_4_I VSS cell_candidate1_Amin_G2x
+Xc_4_10 BL_10 WL_4_I PL_4_I VSS cell_candidate1_A2x_Gmin
+Xc_5_0 BL_0 WL_5_I PL_5_I VSS cell_candidate1_Amin_G2x
+Xc_5_1 BL_1 WL_5_I PL_5_I VSS cell_candidate1
+Xc_5_2 BL_2 WL_5_I PL_5_I VSS cell_candidate1_A2x_G2x
+Xc_5_3 BL_3 WL_5_I PL_5_I VSS cell_candidate1_A2x_Gmin
+Xc_5_4 BL_4 WL_5_I PL_5_I VSS cell_candidate1_Amin_G2x
+Xc_5_5 BL_5 WL_5_I PL_5_I VSS cell_candidate1
+Xc_5_6 BL_6 WL_5_I PL_5_I VSS cell_candidate1_A2x_G2x
+Xc_5_7 BL_7 WL_5_I PL_5_I VSS cell_candidate1_A2x_Gmin
+Xc_5_8 BL_8 WL_5_I PL_5_I VSS cell_candidate1_Amin_G2x
+Xc_5_9 BL_9 WL_5_I PL_5_I VSS cell_candidate1
+Xc_5_10 BL_10 WL_5_I PL_5_I VSS cell_candidate1_A2x_G2x
+Xc_6_0 BL_0 WL_6_I PL_6_I VSS cell_candidate1_A2x_Gmin
+Xc_6_1 BL_1 WL_6_I PL_6_I VSS cell_candidate1_A2x_G2x
+Xc_6_2 BL_2 WL_6_I PL_6_I VSS cell_candidate1
+Xc_6_3 BL_3 WL_6_I PL_6_I VSS cell_candidate1_Amin_G2x
+Xc_6_4 BL_4 WL_6_I PL_6_I VSS cell_candidate1_A2x_Gmin
+Xc_6_5 BL_5 WL_6_I PL_6_I VSS cell_candidate1_A2x_G2x
+Xc_6_6 BL_6 WL_6_I PL_6_I VSS cell_candidate1
+Xc_6_7 BL_7 WL_6_I PL_6_I VSS cell_candidate1_Amin_G2x
+Xc_6_8 BL_8 WL_6_I PL_6_I VSS cell_candidate1_A2x_Gmin
+Xc_6_9 BL_9 WL_6_I PL_6_I VSS cell_candidate1_A2x_G2x
+Xc_6_10 BL_10 WL_6_I PL_6_I VSS cell_candidate1
+Xc_7_0 BL_0 WL_7_I PL_7_I VSS cell_candidate1_A2x_G2x
+Xc_7_1 BL_1 WL_7_I PL_7_I VSS cell_candidate1_A2x_Gmin
+Xc_7_2 BL_2 WL_7_I PL_7_I VSS cell_candidate1_Amin_G2x
+Xc_7_3 BL_3 WL_7_I PL_7_I VSS cell_candidate1
+Xc_7_4 BL_4 WL_7_I PL_7_I VSS cell_candidate1_A2x_G2x
+Xc_7_5 BL_5 WL_7_I PL_7_I VSS cell_candidate1_A2x_Gmin
+Xc_7_6 BL_6 WL_7_I PL_7_I VSS cell_candidate1_Amin_G2x
+Xc_7_7 BL_7 WL_7_I PL_7_I VSS cell_candidate1
+Xc_7_8 BL_8 WL_7_I PL_7_I VSS cell_candidate1_A2x_G2x
+Xc_7_9 BL_9 WL_7_I PL_7_I VSS cell_candidate1_A2x_Gmin
+Xc_7_10 BL_10 WL_7_I PL_7_I VSS cell_candidate1_Amin_G2x
+Xc_8_0 BL_0 WL_8_I PL_8_I VSS cell_candidate1
+Xc_8_1 BL_1 WL_8_I PL_8_I VSS cell_candidate1_Amin_G2x
+Xc_8_2 BL_2 WL_8_I PL_8_I VSS cell_candidate1_A2x_Gmin
+Xc_8_3 BL_3 WL_8_I PL_8_I VSS cell_candidate1_A2x_G2x
+Xc_8_4 BL_4 WL_8_I PL_8_I VSS cell_candidate1
+Xc_8_5 BL_5 WL_8_I PL_8_I VSS cell_candidate1_Amin_G2x
+Xc_8_6 BL_6 WL_8_I PL_8_I VSS cell_candidate1_A2x_Gmin
+Xc_8_7 BL_7 WL_8_I PL_8_I VSS cell_candidate1_A2x_G2x
+Xc_8_8 BL_8 WL_8_I PL_8_I VSS cell_candidate1
+Xc_8_9 BL_9 WL_8_I PL_8_I VSS cell_candidate1_Amin_G2x
+Xc_8_10 BL_10 WL_8_I PL_8_I VSS cell_candidate1_A2x_Gmin
+Xc_9_0 BL_0 WL_9_I PL_9_I VSS cell_candidate1_Amin_G2x
+Xc_9_1 BL_1 WL_9_I PL_9_I VSS cell_candidate1
+Xc_9_2 BL_2 WL_9_I PL_9_I VSS cell_candidate1_A2x_G2x
+Xc_9_3 BL_3 WL_9_I PL_9_I VSS cell_candidate1_A2x_Gmin
+Xc_9_4 BL_4 WL_9_I PL_9_I VSS cell_candidate1_Amin_G2x
+Xc_9_5 BL_5 WL_9_I PL_9_I VSS cell_candidate1
+Xc_9_6 BL_6 WL_9_I PL_9_I VSS cell_candidate1_A2x_G2x
+Xc_9_7 BL_7 WL_9_I PL_9_I VSS cell_candidate1_A2x_Gmin
+Xc_9_8 BL_8 WL_9_I PL_9_I VSS cell_candidate1_Amin_G2x
+Xc_9_9 BL_9 WL_9_I PL_9_I VSS cell_candidate1
+Xc_9_10 BL_10 WL_9_I PL_9_I VSS cell_candidate1_A2x_G2x
+Xc_10_0 BL_0 WL_10_I PL_10_I VSS cell_candidate1_A2x_Gmin
+Xc_10_1 BL_1 WL_10_I PL_10_I VSS cell_candidate1_A2x_G2x
+Xc_10_2 BL_2 WL_10_I PL_10_I VSS cell_candidate1
+Xc_10_3 BL_3 WL_10_I PL_10_I VSS cell_candidate1_Amin_G2x
+Xc_10_4 BL_4 WL_10_I PL_10_I VSS cell_candidate1_A2x_Gmin
+Xc_10_5 BL_5 WL_10_I PL_10_I VSS cell_candidate1_A2x_G2x
+Xc_10_6 BL_6 WL_10_I PL_10_I VSS cell_candidate1
+Xc_10_7 BL_7 WL_10_I PL_10_I VSS cell_candidate1_Amin_G2x
+Xc_10_8 BL_8 WL_10_I PL_10_I VSS cell_candidate1_A2x_Gmin
+Xc_10_9 BL_9 WL_10_I PL_10_I VSS cell_candidate1_A2x_G2x
+Xc_10_10 BL_10 WL_10_I PL_10_I VSS cell_candidate1
+Xc_11_0 BL_0 WL_11_I PL_11_I VSS cell_candidate1_A2x_G2x
+Xc_11_1 BL_1 WL_11_I PL_11_I VSS cell_candidate1_A2x_Gmin
+Xc_11_2 BL_2 WL_11_I PL_11_I VSS cell_candidate1_Amin_G2x
+Xc_11_3 BL_3 WL_11_I PL_11_I VSS cell_candidate1
+Xc_11_4 BL_4 WL_11_I PL_11_I VSS cell_candidate1_A2x_G2x
+Xc_11_5 BL_5 WL_11_I PL_11_I VSS cell_candidate1_A2x_Gmin
+Xc_11_6 BL_6 WL_11_I PL_11_I VSS cell_candidate1_Amin_G2x
+Xc_11_7 BL_7 WL_11_I PL_11_I VSS cell_candidate1
+Xc_11_8 BL_8 WL_11_I PL_11_I VSS cell_candidate1_A2x_G2x
+Xc_11_9 BL_9 WL_11_I PL_11_I VSS cell_candidate1_A2x_Gmin
+Xc_11_10 BL_10 WL_11_I PL_11_I VSS cell_candidate1_Amin_G2x
+Xc_12_0 BL_0 WL_12_I PL_12_I VSS cell_candidate1
+Xc_12_1 BL_1 WL_12_I PL_12_I VSS cell_candidate1_Amin_G2x
+Xc_12_2 BL_2 WL_12_I PL_12_I VSS cell_candidate1_A2x_Gmin
+Xc_12_3 BL_3 WL_12_I PL_12_I VSS cell_candidate1_A2x_G2x
+Xc_12_4 BL_4 WL_12_I PL_12_I VSS cell_candidate1
+Xc_12_5 BL_5 WL_12_I PL_12_I VSS cell_candidate1_Amin_G2x
+Xc_12_6 BL_6 WL_12_I PL_12_I VSS cell_candidate1_A2x_Gmin
+Xc_12_7 BL_7 WL_12_I PL_12_I VSS cell_candidate1_A2x_G2x
+Xc_12_8 BL_8 WL_12_I PL_12_I VSS cell_candidate1
+Xc_12_9 BL_9 WL_12_I PL_12_I VSS cell_candidate1_Amin_G2x
+Xc_12_10 BL_10 WL_12_I PL_12_I VSS cell_candidate1_A2x_Gmin
+Xc_13_0 BL_0 WL_13_I PL_13_I VSS cell_candidate1_Amin_G2x
+Xc_13_1 BL_1 WL_13_I PL_13_I VSS cell_candidate1
+Xc_13_2 BL_2 WL_13_I PL_13_I VSS cell_candidate1_A2x_G2x
+Xc_13_3 BL_3 WL_13_I PL_13_I VSS cell_candidate1_A2x_Gmin
+Xc_13_4 BL_4 WL_13_I PL_13_I VSS cell_candidate1_Amin_G2x
+Xc_13_5 BL_5 WL_13_I PL_13_I VSS cell_candidate1
+Xc_13_6 BL_6 WL_13_I PL_13_I VSS cell_candidate1_A2x_G2x
+Xc_13_7 BL_7 WL_13_I PL_13_I VSS cell_candidate1_A2x_Gmin
+Xc_13_8 BL_8 WL_13_I PL_13_I VSS cell_candidate1_Amin_G2x
+Xc_13_9 BL_9 WL_13_I PL_13_I VSS cell_candidate1
+Xc_13_10 BL_10 WL_13_I PL_13_I VSS cell_candidate1_A2x_G2x
+Xc_14_0 BL_0 WL_14_I PL_14_I VSS cell_candidate1_A2x_Gmin
+Xc_14_1 BL_1 WL_14_I PL_14_I VSS cell_candidate1_A2x_G2x
+Xc_14_2 BL_2 WL_14_I PL_14_I VSS cell_candidate1
+Xc_14_3 BL_3 WL_14_I PL_14_I VSS cell_candidate1_Amin_G2x
+Xc_14_4 BL_4 WL_14_I PL_14_I VSS cell_candidate1_A2x_Gmin
+Xc_14_5 BL_5 WL_14_I PL_14_I VSS cell_candidate1_A2x_G2x
+Xc_14_6 BL_6 WL_14_I PL_14_I VSS cell_candidate1
+Xc_14_7 BL_7 WL_14_I PL_14_I VSS cell_candidate1_Amin_G2x
+Xc_14_8 BL_8 WL_14_I PL_14_I VSS cell_candidate1_A2x_Gmin
+Xc_14_9 BL_9 WL_14_I PL_14_I VSS cell_candidate1_A2x_G2x
+Xc_14_10 BL_10 WL_14_I PL_14_I VSS cell_candidate1
+Xc_15_0 BL_0 WL_15_I PL_15_I VSS cell_candidate1_A2x_G2x
+Xc_15_1 BL_1 WL_15_I PL_15_I VSS cell_candidate1_A2x_Gmin
+Xc_15_2 BL_2 WL_15_I PL_15_I VSS cell_candidate1_Amin_G2x
+Xc_15_3 BL_3 WL_15_I PL_15_I VSS cell_candidate1
+Xc_15_4 BL_4 WL_15_I PL_15_I VSS cell_candidate1_A2x_G2x
+Xc_15_5 BL_5 WL_15_I PL_15_I VSS cell_candidate1_A2x_Gmin
+Xc_15_6 BL_6 WL_15_I PL_15_I VSS cell_candidate1_Amin_G2x
+Xc_15_7 BL_7 WL_15_I PL_15_I VSS cell_candidate1
+Xc_15_8 BL_8 WL_15_I PL_15_I VSS cell_candidate1_A2x_G2x
+Xc_15_9 BL_9 WL_15_I PL_15_I VSS cell_candidate1_A2x_Gmin
+Xc_15_10 BL_10 WL_15_I PL_15_I VSS cell_candidate1_Amin_G2x
+Xc_16_0 BL_0 WL_16_I PL_16_I VSS cell_candidate1
+Xc_16_1 BL_1 WL_16_I PL_16_I VSS cell_candidate1_Amin_G2x
+Xc_16_2 BL_2 WL_16_I PL_16_I VSS cell_candidate1_A2x_Gmin
+Xc_16_3 BL_3 WL_16_I PL_16_I VSS cell_candidate1_A2x_G2x
+Xc_16_4 BL_4 WL_16_I PL_16_I VSS cell_candidate1
+Xc_16_5 BL_5 WL_16_I PL_16_I VSS cell_candidate1_Amin_G2x
+Xc_16_6 BL_6 WL_16_I PL_16_I VSS cell_candidate1_A2x_Gmin
+Xc_16_7 BL_7 WL_16_I PL_16_I VSS cell_candidate1_A2x_G2x
+Xc_16_8 BL_8 WL_16_I PL_16_I VSS cell_candidate1
+Xc_16_9 BL_9 WL_16_I PL_16_I VSS cell_candidate1_Amin_G2x
+Xc_16_10 BL_10 WL_16_I PL_16_I VSS cell_candidate1_A2x_Gmin
+Xc_17_0 BL_0 WL_17_I PL_17_I VSS cell_candidate1_Amin_G2x
+Xc_17_1 BL_1 WL_17_I PL_17_I VSS cell_candidate1
+Xc_17_2 BL_2 WL_17_I PL_17_I VSS cell_candidate1_A2x_G2x
+Xc_17_3 BL_3 WL_17_I PL_17_I VSS cell_candidate1_A2x_Gmin
+Xc_17_4 BL_4 WL_17_I PL_17_I VSS cell_candidate1_Amin_G2x
+Xc_17_5 BL_5 WL_17_I PL_17_I VSS cell_candidate1
+Xc_17_6 BL_6 WL_17_I PL_17_I VSS cell_candidate1_A2x_G2x
+Xc_17_7 BL_7 WL_17_I PL_17_I VSS cell_candidate1_A2x_Gmin
+Xc_17_8 BL_8 WL_17_I PL_17_I VSS cell_candidate1_Amin_G2x
+Xc_17_9 BL_9 WL_17_I PL_17_I VSS cell_candidate1
+Xc_17_10 BL_10 WL_17_I PL_17_I VSS cell_candidate1_A2x_G2x
+Xc_18_0 BL_0 WL_18_I PL_18_I VSS cell_candidate1_A2x_Gmin
+Xc_18_1 BL_1 WL_18_I PL_18_I VSS cell_candidate1_A2x_G2x
+Xc_18_2 BL_2 WL_18_I PL_18_I VSS cell_candidate1
+Xc_18_3 BL_3 WL_18_I PL_18_I VSS cell_candidate1_Amin_G2x
+Xc_18_4 BL_4 WL_18_I PL_18_I VSS cell_candidate1_A2x_Gmin
+Xc_18_5 BL_5 WL_18_I PL_18_I VSS cell_candidate1_A2x_G2x
+Xc_18_6 BL_6 WL_18_I PL_18_I VSS cell_candidate1
+Xc_18_7 BL_7 WL_18_I PL_18_I VSS cell_candidate1_Amin_G2x
+Xc_18_8 BL_8 WL_18_I PL_18_I VSS cell_candidate1_A2x_Gmin
+Xc_18_9 BL_9 WL_18_I PL_18_I VSS cell_candidate1_A2x_G2x
+Xc_18_10 BL_10 WL_18_I PL_18_I VSS cell_candidate1
+Xc_19_0 BL_0 WL_19_I PL_19_I VSS cell_candidate1_A2x_G2x
+Xc_19_1 BL_1 WL_19_I PL_19_I VSS cell_candidate1_A2x_Gmin
+Xc_19_2 BL_2 WL_19_I PL_19_I VSS cell_candidate1_Amin_G2x
+Xc_19_3 BL_3 WL_19_I PL_19_I VSS cell_candidate1
+Xc_19_4 BL_4 WL_19_I PL_19_I VSS cell_candidate1_A2x_G2x
+Xc_19_5 BL_5 WL_19_I PL_19_I VSS cell_candidate1_A2x_Gmin
+Xc_19_6 BL_6 WL_19_I PL_19_I VSS cell_candidate1_Amin_G2x
+Xc_19_7 BL_7 WL_19_I PL_19_I VSS cell_candidate1
+Xc_19_8 BL_8 WL_19_I PL_19_I VSS cell_candidate1_A2x_G2x
+Xc_19_9 BL_9 WL_19_I PL_19_I VSS cell_candidate1_A2x_Gmin
+Xc_19_10 BL_10 WL_19_I PL_19_I VSS cell_candidate1_Amin_G2x
+Xc_20_0 BL_0 WL_20_I PL_20_I VSS cell_candidate1
+Xc_20_1 BL_1 WL_20_I PL_20_I VSS cell_candidate1_Amin_G2x
+Xc_20_2 BL_2 WL_20_I PL_20_I VSS cell_candidate1_A2x_Gmin
+Xc_20_3 BL_3 WL_20_I PL_20_I VSS cell_candidate1_A2x_G2x
+Xc_20_4 BL_4 WL_20_I PL_20_I VSS cell_candidate1
+Xc_20_5 BL_5 WL_20_I PL_20_I VSS cell_candidate1_Amin_G2x
+Xc_20_6 BL_6 WL_20_I PL_20_I VSS cell_candidate1_A2x_Gmin
+Xc_20_7 BL_7 WL_20_I PL_20_I VSS cell_candidate1_A2x_G2x
+Xc_20_8 BL_8 WL_20_I PL_20_I VSS cell_candidate1
+Xc_20_9 BL_9 WL_20_I PL_20_I VSS cell_candidate1_Amin_G2x
+Xc_20_10 BL_10 WL_20_I PL_20_I VSS cell_candidate1_A2x_Gmin
+Xc_21_0 BL_0 WL_21_I PL_21_I VSS cell_candidate1_Amin_G2x
+Xc_21_1 BL_1 WL_21_I PL_21_I VSS cell_candidate1
+Xc_21_2 BL_2 WL_21_I PL_21_I VSS cell_candidate1_A2x_G2x
+Xc_21_3 BL_3 WL_21_I PL_21_I VSS cell_candidate1_A2x_Gmin
+Xc_21_4 BL_4 WL_21_I PL_21_I VSS cell_candidate1_Amin_G2x
+Xc_21_5 BL_5 WL_21_I PL_21_I VSS cell_candidate1
+Xc_21_6 BL_6 WL_21_I PL_21_I VSS cell_candidate1_A2x_G2x
+Xc_21_7 BL_7 WL_21_I PL_21_I VSS cell_candidate1_A2x_Gmin
+Xc_21_8 BL_8 WL_21_I PL_21_I VSS cell_candidate1_Amin_G2x
+Xc_21_9 BL_9 WL_21_I PL_21_I VSS cell_candidate1
+Xc_21_10 BL_10 WL_21_I PL_21_I VSS cell_candidate1_A2x_G2x
+Xc_22_0 BL_0 WL_22_I PL_22_I VSS cell_candidate1_A2x_Gmin
+Xc_22_1 BL_1 WL_22_I PL_22_I VSS cell_candidate1_A2x_G2x
+Xc_22_2 BL_2 WL_22_I PL_22_I VSS cell_candidate1
+Xc_22_3 BL_3 WL_22_I PL_22_I VSS cell_candidate1_Amin_G2x
+Xc_22_4 BL_4 WL_22_I PL_22_I VSS cell_candidate1_A2x_Gmin
+Xc_22_5 BL_5 WL_22_I PL_22_I VSS cell_candidate1_A2x_G2x
+Xc_22_6 BL_6 WL_22_I PL_22_I VSS cell_candidate1
+Xc_22_7 BL_7 WL_22_I PL_22_I VSS cell_candidate1_Amin_G2x
+Xc_22_8 BL_8 WL_22_I PL_22_I VSS cell_candidate1_A2x_Gmin
+Xc_22_9 BL_9 WL_22_I PL_22_I VSS cell_candidate1_A2x_G2x
+Xc_22_10 BL_10 WL_22_I PL_22_I VSS cell_candidate1
+Xc_23_0 BL_0 WL_23_I PL_23_I VSS cell_candidate1_A2x_G2x
+Xc_23_1 BL_1 WL_23_I PL_23_I VSS cell_candidate1_A2x_Gmin
+Xc_23_2 BL_2 WL_23_I PL_23_I VSS cell_candidate1_Amin_G2x
+Xc_23_3 BL_3 WL_23_I PL_23_I VSS cell_candidate1
+Xc_23_4 BL_4 WL_23_I PL_23_I VSS cell_candidate1_A2x_G2x
+Xc_23_5 BL_5 WL_23_I PL_23_I VSS cell_candidate1_A2x_Gmin
+Xc_23_6 BL_6 WL_23_I PL_23_I VSS cell_candidate1_Amin_G2x
+Xc_23_7 BL_7 WL_23_I PL_23_I VSS cell_candidate1
+Xc_23_8 BL_8 WL_23_I PL_23_I VSS cell_candidate1_A2x_G2x
+Xc_23_9 BL_9 WL_23_I PL_23_I VSS cell_candidate1_A2x_Gmin
+Xc_23_10 BL_10 WL_23_I PL_23_I VSS cell_candidate1_Amin_G2x
+Xc_24_0 BL_0 WL_24_I PL_24_I VSS cell_candidate1
+Xc_24_1 BL_1 WL_24_I PL_24_I VSS cell_candidate1_Amin_G2x
+Xc_24_2 BL_2 WL_24_I PL_24_I VSS cell_candidate1_A2x_Gmin
+Xc_24_3 BL_3 WL_24_I PL_24_I VSS cell_candidate1_A2x_G2x
+Xc_24_4 BL_4 WL_24_I PL_24_I VSS cell_candidate1
+Xc_24_5 BL_5 WL_24_I PL_24_I VSS cell_candidate1_Amin_G2x
+Xc_24_6 BL_6 WL_24_I PL_24_I VSS cell_candidate1_A2x_Gmin
+Xc_24_7 BL_7 WL_24_I PL_24_I VSS cell_candidate1_A2x_G2x
+Xc_24_8 BL_8 WL_24_I PL_24_I VSS cell_candidate1
+Xc_24_9 BL_9 WL_24_I PL_24_I VSS cell_candidate1_Amin_G2x
+Xc_24_10 BL_10 WL_24_I PL_24_I VSS cell_candidate1_A2x_Gmin
+Xc_25_0 BL_0 WL_25_I PL_25_I VSS cell_candidate1_Amin_G2x
+Xc_25_1 BL_1 WL_25_I PL_25_I VSS cell_candidate1
+Xc_25_2 BL_2 WL_25_I PL_25_I VSS cell_candidate1_A2x_G2x
+Xc_25_3 BL_3 WL_25_I PL_25_I VSS cell_candidate1_A2x_Gmin
+Xc_25_4 BL_4 WL_25_I PL_25_I VSS cell_candidate1_Amin_G2x
+Xc_25_5 BL_5 WL_25_I PL_25_I VSS cell_candidate1
+Xc_25_6 BL_6 WL_25_I PL_25_I VSS cell_candidate1_A2x_G2x
+Xc_25_7 BL_7 WL_25_I PL_25_I VSS cell_candidate1_A2x_Gmin
+Xc_25_8 BL_8 WL_25_I PL_25_I VSS cell_candidate1_Amin_G2x
+Xc_25_9 BL_9 WL_25_I PL_25_I VSS cell_candidate1
+Xc_25_10 BL_10 WL_25_I PL_25_I VSS cell_candidate1_A2x_G2x
+Xc_26_0 BL_0 WL_26_I PL_26_I VSS cell_candidate1_A2x_Gmin
+Xc_26_1 BL_1 WL_26_I PL_26_I VSS cell_candidate1_A2x_G2x
+Xc_26_2 BL_2 WL_26_I PL_26_I VSS cell_candidate1
+Xc_26_3 BL_3 WL_26_I PL_26_I VSS cell_candidate1_Amin_G2x
+Xc_26_4 BL_4 WL_26_I PL_26_I VSS cell_candidate1_A2x_Gmin
+Xc_26_5 BL_5 WL_26_I PL_26_I VSS cell_candidate1_A2x_G2x
+Xc_26_6 BL_6 WL_26_I PL_26_I VSS cell_candidate1
+Xc_26_7 BL_7 WL_26_I PL_26_I VSS cell_candidate1_Amin_G2x
+Xc_26_8 BL_8 WL_26_I PL_26_I VSS cell_candidate1_A2x_Gmin
+Xc_26_9 BL_9 WL_26_I PL_26_I VSS cell_candidate1_A2x_G2x
+Xc_26_10 BL_10 WL_26_I PL_26_I VSS cell_candidate1
+Xc_27_0 BL_0 WL_27_I PL_27_I VSS cell_candidate1_A2x_G2x
+Xc_27_1 BL_1 WL_27_I PL_27_I VSS cell_candidate1_A2x_Gmin
+Xc_27_2 BL_2 WL_27_I PL_27_I VSS cell_candidate1_Amin_G2x
+Xc_27_3 BL_3 WL_27_I PL_27_I VSS cell_candidate1
+Xc_27_4 BL_4 WL_27_I PL_27_I VSS cell_candidate1_A2x_G2x
+Xc_27_5 BL_5 WL_27_I PL_27_I VSS cell_candidate1_A2x_Gmin
+Xc_27_6 BL_6 WL_27_I PL_27_I VSS cell_candidate1_Amin_G2x
+Xc_27_7 BL_7 WL_27_I PL_27_I VSS cell_candidate1
+Xc_27_8 BL_8 WL_27_I PL_27_I VSS cell_candidate1_A2x_G2x
+Xc_27_9 BL_9 WL_27_I PL_27_I VSS cell_candidate1_A2x_Gmin
+Xc_27_10 BL_10 WL_27_I PL_27_I VSS cell_candidate1_Amin_G2x
+Xc_28_0 BL_0 WL_28_I PL_28_I VSS cell_candidate1
+Xc_28_1 BL_1 WL_28_I PL_28_I VSS cell_candidate1_Amin_G2x
+Xc_28_2 BL_2 WL_28_I PL_28_I VSS cell_candidate1_A2x_Gmin
+Xc_28_3 BL_3 WL_28_I PL_28_I VSS cell_candidate1_A2x_G2x
+Xc_28_4 BL_4 WL_28_I PL_28_I VSS cell_candidate1
+Xc_28_5 BL_5 WL_28_I PL_28_I VSS cell_candidate1_Amin_G2x
+Xc_28_6 BL_6 WL_28_I PL_28_I VSS cell_candidate1_A2x_Gmin
+Xc_28_7 BL_7 WL_28_I PL_28_I VSS cell_candidate1_A2x_G2x
+Xc_28_8 BL_8 WL_28_I PL_28_I VSS cell_candidate1
+Xc_28_9 BL_9 WL_28_I PL_28_I VSS cell_candidate1_Amin_G2x
+Xc_28_10 BL_10 WL_28_I PL_28_I VSS cell_candidate1_A2x_Gmin
+Xc_29_0 BL_0 WL_29_I PL_29_I VSS cell_candidate1_Amin_G2x
+Xc_29_1 BL_1 WL_29_I PL_29_I VSS cell_candidate1
+Xc_29_2 BL_2 WL_29_I PL_29_I VSS cell_candidate1_A2x_G2x
+Xc_29_3 BL_3 WL_29_I PL_29_I VSS cell_candidate1_A2x_Gmin
+Xc_29_4 BL_4 WL_29_I PL_29_I VSS cell_candidate1_Amin_G2x
+Xc_29_5 BL_5 WL_29_I PL_29_I VSS cell_candidate1
+Xc_29_6 BL_6 WL_29_I PL_29_I VSS cell_candidate1_A2x_G2x
+Xc_29_7 BL_7 WL_29_I PL_29_I VSS cell_candidate1_A2x_Gmin
+Xc_29_8 BL_8 WL_29_I PL_29_I VSS cell_candidate1_Amin_G2x
+Xc_29_9 BL_9 WL_29_I PL_29_I VSS cell_candidate1
+Xc_29_10 BL_10 WL_29_I PL_29_I VSS cell_candidate1_A2x_G2x
+Xc_30_0 BL_0 WL_30_I PL_30_I VSS cell_candidate1_A2x_Gmin
+Xc_30_1 BL_1 WL_30_I PL_30_I VSS cell_candidate1_A2x_G2x
+Xc_30_2 BL_2 WL_30_I PL_30_I VSS cell_candidate1
+Xc_30_3 BL_3 WL_30_I PL_30_I VSS cell_candidate1_Amin_G2x
+Xc_30_4 BL_4 WL_30_I PL_30_I VSS cell_candidate1_A2x_Gmin
+Xc_30_5 BL_5 WL_30_I PL_30_I VSS cell_candidate1_A2x_G2x
+Xc_30_6 BL_6 WL_30_I PL_30_I VSS cell_candidate1
+Xc_30_7 BL_7 WL_30_I PL_30_I VSS cell_candidate1_Amin_G2x
+Xc_30_8 BL_8 WL_30_I PL_30_I VSS cell_candidate1_A2x_Gmin
+Xc_30_9 BL_9 WL_30_I PL_30_I VSS cell_candidate1_A2x_G2x
+Xc_30_10 BL_10 WL_30_I PL_30_I VSS cell_candidate1
+Xc_31_0 BL_0 WL_31_I PL_31_I VSS cell_candidate1_A2x_G2x
+Xc_31_1 BL_1 WL_31_I PL_31_I VSS cell_candidate1_A2x_Gmin
+Xc_31_2 BL_2 WL_31_I PL_31_I VSS cell_candidate1_Amin_G2x
+Xc_31_3 BL_3 WL_31_I PL_31_I VSS cell_candidate1
+Xc_31_4 BL_4 WL_31_I PL_31_I VSS cell_candidate1_A2x_G2x
+Xc_31_5 BL_5 WL_31_I PL_31_I VSS cell_candidate1_A2x_Gmin
+Xc_31_6 BL_6 WL_31_I PL_31_I VSS cell_candidate1_Amin_G2x
+Xc_31_7 BL_7 WL_31_I PL_31_I VSS cell_candidate1
+Xc_31_8 BL_8 WL_31_I PL_31_I VSS cell_candidate1_A2x_G2x
+Xc_31_9 BL_9 WL_31_I PL_31_I VSS cell_candidate1_A2x_Gmin
+Xc_31_10 BL_10 WL_31_I PL_31_I VSS cell_candidate1_Amin_G2x
+.ends
