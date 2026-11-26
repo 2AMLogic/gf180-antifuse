@@ -496,7 +496,9 @@ the recorded paths resolve against the report's directory; re-check with
 - One supply net is declared and checked: `VB` (`kind: supply`, `islands: 1`,
   `matched_islands: 1`), plus the p-substrate tie `vb_psub_region_i`
   (`erc.missing_tie` checked, `uncovered_tap_area_um2: 0`). That tie rests on an
-  **asserted** substrate region (`checked_by_well_assertion`), not a drawn well.
+  **asserted** substrate region (`checked_by_well_assertion`). Each of the two
+  body regions requires a real Contact (33/0) in P+ diffusion. Opening all 14
+  substrate contacts produces two missing ties while `VB` remains one island.
 - Scope is the single Region I bitcell `cell_candidate1` (the analog partition
   while candidate selection is open, #127). `VPP`, `PL`, the logic rails and
   every other supply row are disclosed gaps in `layout/erc/README.md` (OI-1 to

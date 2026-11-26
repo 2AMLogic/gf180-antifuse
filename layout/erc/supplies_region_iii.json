@@ -19,7 +19,7 @@
       "name": "vb_nwell_region_iii",
       "well_layer": "21/0",
       "tap_layer": "22/0",
-      "tap_requires": ["32/0"],
+      "tap_requires": ["32/0", "33/0"],
       "connect_to": "metal1",
       "net": "VB"
     }
