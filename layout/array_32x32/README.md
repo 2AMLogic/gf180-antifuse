@@ -45,6 +45,8 @@ source integrated. The representative Run 3 die and the signoff manifest
 continue to describe their existing inputs.
 [Bitcell geometry record](../../design/geometry-basis.json)
 
+The [standalone filled view](density/README.md) eliminates all eight full-array density findings while preserving the extracted devices, nets and pins.
+
 ## Level-shifter measurements
 
 At 27 °C, typical process, 3.3/5.5 V supplies and 100 fF on each output, the
