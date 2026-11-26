@@ -133,13 +133,27 @@ here.
 `assemble_run3_top.py` builds the chip layout, `run3_top.gds` (top cell
 `run3_top`, die 1936 x 2531 um), from two inputs: `pad_table.json` (the 48
 logical slots) and the shared instance table in `generate_run3_top.py`
-(imported). It is deterministic; `--check` byte-compares both artifacts it
-writes (`run3_top.gds`, `lvs_reference_drawn.spice`) against the committed
-copies on sha256, like `generate_run3_top.py`:
+(imported). It is deterministic under the recorded klt release; `--check`
+byte-compares both artifacts it writes (`run3_top.gds`,
+`lvs_reference_drawn.spice`) against the committed copies on sha256, like
+`generate_run3_top.py`:
 
 ```sh
 python3 -I layout/run3_top/assemble_run3_top.py            # write both
 python3 -I layout/run3_top/assemble_run3_top.py --check    # byte-compare
+```
+
+The committed artifacts are the **`klt 0.9.2`** stream
+(`compose_report.json` `provenance.klt_version`, #568): another release -- a
+development build of the same number included -- writes different bytes for
+the same request. `--check` therefore first compares the recorded release with
+the full version the `klt` on PATH reports, and stops with a "wrong klt
+release" message before composing anything, instead of reporting drift and
+advising the rewrite that would replace the committed `run3_top.gds`. Run it
+from the repository root under the recorded release:
+
+```sh
+uvx --from klayout-tools==0.9.2 python -I layout/run3_top/assemble_run3_top.py --check
 ```
 
 Stdlib only; geometry comes from calling `klt draw` (pad ring, outline) and
@@ -224,9 +238,10 @@ than by that test.
 | `supplies.json`, `erc_report.json` | chip-level ERC spec extending the `layout/erc/` convention: p-substrate tie over the left column (net `VSS_ANALOG`, now reaching the C3 substrate tap), n-well tie over the right column (net `VBW_C3`); `erc_status: clean`, all 35 gates float-checked; antenna-ratio verdicts stay `unchecked` here (the build ships no gf180mcu limit table for `klt erc`) — the antenna verdict of record is `drc_antenna_report.json` above | `klt erc run3_top.gds supplies.json --top run3_top --pdk gf180mcu --deck gf180mcu --format json > erc_report.json` (exit 4 = not-checked verdict, not a tool failure) |
 | `economy_report.json` | `klt economy` density/utilisation: 4.90 mm2 die, ~78 % drawn after fill | `klt economy run3_top.gds --format json > economy_report.json` |
 
-Toolchain: assembled and checked with the host dev build
-(`klt 0.9.3.dev1370+g30969f578991`, KLayout 0.30.12); the committed artifacts
-reproduce from the pinned commands above. The template page's
+Toolchain: assembled and checked with the recorded release (`klt 0.9.2`,
+KLayout 0.30.13; `economy_report.json` with `klt 0.10.0.dev1+g9d2780c5e1c8`,
+KLayout 0.30.14 -- each report's `provenance` names its own); the committed
+artifacts reproduce from the pinned commands above. The template page's
 antenna/density/ERC list is empty (see provenance above); the operator's
 chip-level checklist is not yet provided and remains tracked on the issue.
 
