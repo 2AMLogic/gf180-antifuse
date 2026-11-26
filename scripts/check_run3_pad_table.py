@@ -16,8 +16,9 @@ Against the committed files (issue #275), verifies that:
      spec/capacitor-geometry-decision.md (binding), access W/L against the
      drawn XM1 literals of the committed layout/cell_*/lvs_reference.spice.
 
-The capacitor half deliberately disagrees with all seven committed drawn
-cells until #296 lands; that expected disagreement is NOT checked here.
+The capacitor half is checked against the ratified Decision table, not
+against the drawn cells' XC1 lines; the two have agreed since #296 redrew
+the capacitor at the ratified levels (closed 2026-11-17).
 design/check-geometry-basis.py owns the design <-> layout geometry boundary.
 
 Stdlib only. Exit 0 clean, 1 on any failure.

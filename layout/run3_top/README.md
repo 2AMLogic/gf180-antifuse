@@ -61,17 +61,19 @@ Stated here once: **capacitor W/L** comes from the ratified
 `XM1` literals of the committed `layout/cell_*/lvs_reference.spice` (the
 access-device sizing axis is unratified — the decision record explicitly
 leaves it "untouched" — so the drawn literals are the only committed physical
-basis). The netlist therefore holds exactly the geometry the post-#296 die
-will contain: #296 redraws the capacitor only, so this artifact **leads**
-#296 rather than needing regeneration when it lands.
+basis).
 
-**The capacitor half knowingly disagrees with all seven committed drawn
-cells** (which still carry the superseded 0.42/0.84 µm levels) until #296
-lands. That is the expected state, not drift: `design/check-geometry-basis.py`
-with `design/geometry-basis.json` (landed with #292) owns the
-design ↔ layout geometry divergence record; this issue does not re-check it,
-and `scripts/check_run3_pad_table.py` keys each half to its own binding
-source instead.
+#296 redrew the capacitor only, at the ratified levels, and closed
+2026-11-17. This artifact had carried those levels since it was first
+generated, so it **led** #296 and needed no regeneration when it landed.
+With the redrawn capacitor at those levels, the netlist's `XM1` and `XC1`
+literals now equal the drawn `lvs_reference.spice` literals on both halves.
+
+`design/check-geometry-basis.py` with `design/geometry-basis.json` (landed
+with #292) owns the separate design ↔ layout geometry divergence record
+(simulated netlist defaults against drawn cells), which this generator does
+not re-check; `scripts/check_run3_pad_table.py` keys each half of this
+netlist to its own binding source instead.
 
 ## The one geometry point with no drawn cell
 

@@ -17,9 +17,11 @@ package. Deterministic: two runs are byte-identical.
 
 Geometry basis (README.md states it in exactly one place): capacitor W/L at
 the ratified levels of spec/capacitor-geometry-decision.md; access W/L at the
-drawn XM1 literals of layout/cell_*/lvs_reference.spice. The capacitor half
-knowingly disagrees with all seven committed cells until #296 lands;
-design/check-geometry-basis.py owns that divergence record, not this issue.
+drawn XM1 literals of layout/cell_*/lvs_reference.spice. #296 redrew the
+capacitor at those ratified levels and closed 2026-11-17, so the netlist's
+literals equal the drawn literals on both halves;
+design/check-geometry-basis.py owns the separate simulated-vs-drawn
+divergence record, not this generator.
 """
 from __future__ import annotations
 
@@ -257,10 +259,11 @@ def emit_netlist() -> str:
         "* Geometry basis (README.md states it in exactly one place): capacitor",
         "* W/L at the ratified levels of spec/capacitor-geometry-decision.md;",
         "* access W/L at the drawn XM1 literals of layout/cell_*/lvs_reference.spice.",
-        "* The capacitor half knowingly disagrees with all seven committed cells",
-        "* until #296 lands; design/check-geometry-basis.py owns that divergence",
-        "* record, scripts/check_run3_pad_table.py re-checks each half against its",
-        "* binding source.",
+        "* #296 redrew the capacitor at those ratified levels and closed",
+        "* 2026-11-17, so the netlist's literals equal the drawn literals on",
+        "* both halves; design/check-geometry-basis.py owns the separate",
+        "* simulated-vs-drawn divergence record, scripts/check_run3_pad_table.py",
+        "* re-checks each half against its binding source.",
         "*",
         f"* The substrate net {SUBSTRATE_NET} is the generator's placeholder for the",
         "* C1/C2 p-substrate tie; it is NOT a ratified name",
