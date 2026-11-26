@@ -17,33 +17,48 @@
 #      declines the requested method (exit 1) makes merge-pr.sh refuse fast,
 #      before ever touching a specific PR, with the daemon's own message
 #      surfaced -- never a silent fallback to squash.
+#   6. LOOM_DAEMON_BIN (#8878): with an older `loom-daemon` on PATH that
+#      predates `forge merge-method` and a pinned LOOM_DAEMON_BIN that has it,
+#      the PINNED binary decides -- validation runs instead of degrading to an
+#      unvalidated pass-through, which is what made the documented
+#      _mp_daemon_roll_hint remediation a no-op.
 #
 # Usage:
 #   ./.loom/scripts/tests/test-merge-pr-merge-method.sh
 
 set -euo pipefail
+# shellcheck source=lib/write-scope-fixture.sh
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib/write-scope-fixture.sh"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCRIPTS_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 MERGE_PR="$SCRIPTS_DIR/merge-pr.sh"
+# #9548: merge-pr.sh vets its repo before it validates anything else. The
+# suite runs from a checkout registered as owner/repo (origin, .loom/, push
+# reported to the permission probe), so the real decision admits it. Later
+# cases that set LOOM_DAEMON_BIN or PATH for one invocation keep their stubs.
+WS_FIXTURE_DIR="$(mktemp -d)"
+write_scope_register "$WS_FIXTURE_DIR" owner/repo
+cd "$WS_FIXTURE_DIR"
 
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-NC='\033[0m'
+source "$SCRIPT_DIR/lib/assert.sh"
 
-TESTS_RUN=0
-TESTS_PASSED=0
-TESTS_FAILED=0
-
-pass() { TESTS_RUN=$((TESTS_RUN + 1)); TESTS_PASSED=$((TESTS_PASSED + 1)); echo -e "  ${GREEN}PASS${NC}: $1"; }
-fail() { TESTS_RUN=$((TESTS_RUN + 1)); TESTS_FAILED=$((TESTS_FAILED + 1)); echo -e "  ${RED}FAIL${NC}: $1"; }
-
+# Local assert_grep kept: fixed-string (-F) match; shared assert_grep is -E (#13258).
 assert_grep() {
     local pattern="$1" file="$2" msg="$3"
     if grep -qF "$pattern" "$file"; then pass "$msg"; else fail "$msg (pattern: $pattern)"; fi
 }
 
 [[ -x "$MERGE_PR" ]] || { echo "ERROR: $MERGE_PR not executable" >&2; exit 1; }
+
+# #8191 slice: Test 1 reads --help, whose text is `loom-daemon merge-pr usage`
+# now. --self-only pins ONLY LOOM_DAEMON_SELF_BIN (the seam --help resolves
+# first), so Tests 5/6's PATH stub and per-invocation LOOM_DAEMON_BIN keep
+# their meaning and no assertion changes. FAILS rather than skips without a
+# binary.
+# shellcheck source=lib/require-daemon-bin.sh
+source "$SCRIPT_DIR/lib/require-daemon-bin.sh"
+loom_test_require_daemon_bin --self-only "$SCRIPTS_DIR" "merge-pr usage"
 
 # --- Test 1: --help mentions --merge-method ---
 echo "Test 1: --help documents --merge-method"
@@ -98,14 +113,19 @@ echo "Test 3: merge-pr.sh source contains the #8845 resolution logic"
 
 assert_grep 'MERGE_METHOD_REQUESTED=' "$MERGE_PR" \
     "merge-pr.sh declares MERGE_METHOD_REQUESTED state"
-assert_grep 'loom-daemon forge merge-method --repo' "$MERGE_PR" \
-    "merge-pr.sh calls loom-daemon forge merge-method"
+# #8878: the probe AND the invocation both go through LOOM_DAEMON_BIN when set --
+# a bare `command -v loom-daemon` probed PATH's older binary and degraded to the
+# unvalidated path even when the pinned one could have answered authoritatively.
+assert_grep '"${LOOM_DAEMON_BIN:-loom-daemon}" forge merge-method --repo' "$MERGE_PR" \
+    "merge-pr.sh calls forge merge-method through the LOOM_DAEMON_BIN-resolved binary (#8878)"
+assert_grep 'if command -v "${LOOM_DAEMON_BIN:-loom-daemon}"' "$MERGE_PR" \
+    "the availability probe tests the resolved binary, not a bare 'loom-daemon' (#8878)"
 assert_grep 'Merge blocked: $_MPM_OUT' "$MERGE_PR" \
     "a validated-disallowed request (exit 1) hard-blocks with the daemon's message"
 assert_grep 'using it unvalidated' "$MERGE_PR" \
     "an unverifiable request (daemon declines/errors) warns rather than blocking"
-assert_grep 'loom-daemon not found; using --merge-method' "$MERGE_PR" \
-    "a missing loom-daemon warns and falls back to the unvalidated request"
+assert_grep 'loom-daemon not found (' "$MERGE_PR" \
+    "a missing loom-daemon warns (naming the resolved path) and falls back to the unvalidated request"
 
 # --- Test 4: inline simulation of the three-way resolution branch ---
 echo ""
@@ -176,8 +196,12 @@ echo "Test 5: live stubbed-daemon end-to-end (disallowed request hard-blocks)"
 
 STUB_DIR=$(mktemp -d)
 trap 'rm -rf "$STUB_DIR"' EXIT
-cat > "$STUB_DIR/loom-daemon" <<'STUB'
-#!/usr/bin/env bash
+echo '#!/usr/bin/env bash' > "$STUB_DIR/loom-daemon"
+# #9548: `forge may-write` goes to a real daemon when WRITE_SCOPE_DAEMON names
+# one (lib/write-scope-fixture.sh), else answers as a pre-verb binary, so the
+# registered fixture is admitted by a real decision either way.
+write_scope_stub_verb_snippet >> "$STUB_DIR/loom-daemon"
+cat >> "$STUB_DIR/loom-daemon" <<'STUB'
 if [[ "$1" == "forge" && "$2" == "merge-method" ]]; then
   echo "requested merge method 'merge' is not allowed by this repository; allowed method(s): squash" >&2
   exit 1
@@ -187,13 +211,66 @@ STUB
 chmod +x "$STUB_DIR/loom-daemon"
 
 set +e
-out=$(PATH="$STUB_DIR:$PATH" "$MERGE_PR" --merge-method merge 999999999 2>&1)
+# Pin LOOM_DAEMON_BIN to the stub (#9740): exercises the explicit-pin path, so a caller-exported LOOM_DAEMON_BIN cannot bypass the stub.
+out=$(PATH="$STUB_DIR:$PATH" LOOM_DAEMON_BIN="$STUB_DIR/loom-daemon" "$MERGE_PR" --merge-method merge 999999999 2>&1)
 rc=$?
 set -e
 if [[ $rc -ne 0 ]] && [[ "$out" == *"Merge blocked:"* ]] && [[ "$out" == *"allowed method(s): squash"* ]]; then
     pass "a stubbed daemon declining the request hard-blocks the merge with its own message (never a silent squash fallback)"
 else
     fail "expected a 'Merge blocked' refusal naming the allowed set; got rc=$rc, out='$out'"
+fi
+
+# --- Test 6 (#8878): LOOM_DAEMON_BIN wins over an older PATH loom-daemon ---
+#
+# This is the issue's own reproduction, made automatic: PATH carries a daemon
+# that PREDATES `forge merge-method` (clap exits 2 with a usage message), while
+# LOOM_DAEMON_BIN points at one that has it. Before #8878 the bare
+# `command -v loom-daemon` probe found the PATH binary, got exit 2, and passed
+# the request through UNVALIDATED -- discarding the very answer the operator
+# exported LOOM_DAEMON_BIN to get (the remediation _mp_daemon_roll_hint prints
+# verbatim). The pinned binary must be the one that decides.
+echo ""
+echo "Test 6: LOOM_DAEMON_BIN is honored over an older PATH loom-daemon (#8878)"
+
+OLD_DIR=$(mktemp -d)
+PINNED_DIR=$(mktemp -d)
+trap 'rm -rf "$STUB_DIR" "$OLD_DIR" "$PINNED_DIR"' EXIT
+
+# PATH daemon: predates the subcommand -- clap's "unrecognized subcommand", exit 2.
+cat > "$OLD_DIR/loom-daemon" <<'OLDSTUB'
+#!/usr/bin/env bash
+echo "error: unrecognized subcommand 'merge-method'" >&2
+echo "Usage: loom-daemon forge <COMMAND>" >&2
+exit 2
+OLDSTUB
+chmod +x "$OLD_DIR/loom-daemon"
+
+# Pinned daemon: has the subcommand and answers authoritatively (exit 1 = refuse).
+cat > "$PINNED_DIR/loom-daemon" <<'NEWSTUB'
+#!/usr/bin/env bash
+if [[ "$1" == "forge" && "$2" == "merge-method" ]]; then
+  echo "requested merge method 'merge' is not allowed by this repository; allowed method(s): squash" >&2
+  exit 1
+fi
+exit 2
+NEWSTUB
+chmod +x "$PINNED_DIR/loom-daemon"
+
+set +e
+out=$(PATH="$OLD_DIR:$PATH" LOOM_DAEMON_BIN="$PINNED_DIR/loom-daemon" \
+    "$MERGE_PR" --merge-method merge 999999999 2>&1)
+rc=$?
+set -e
+if [[ $rc -ne 0 ]] && [[ "$out" == *"Merge blocked:"* ]] && [[ "$out" == *"allowed method(s): squash"* ]]; then
+    pass "LOOM_DAEMON_BIN's daemon decides the request even when PATH's loom-daemon predates 'forge merge-method'"
+else
+    fail "expected the pinned daemon's refusal; got rc=$rc, out='$out'"
+fi
+if [[ "$out" != *"using it unvalidated"* ]]; then
+    pass "validation actually ran -- no degraded 'using it unvalidated' pass-through when a usable binary was pinned"
+else
+    fail "the pinned binary was ignored and the request degraded to unvalidated; out='$out'"
 fi
 
 # --- Summary ---

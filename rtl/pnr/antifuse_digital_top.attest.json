@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "kind": "generic",
+  "t1_item": 2,
+  "status": "pass",
+  "source": "rtl/pnr/antifuse_digital_top.pnr.report.json",
+  "summary": "antifuse_digital_top routed GDS (N=32) from klt place-and-route: stage_reached=route, power.pdn=True, tapcell_master=gf180mcu_fd_sc_mcu7t5v0__filltie, tapcells=220, route_drc_violation_count=0. Evidence of reproducible P&R only; not DRC, LVS or timing sign-off.",
+  "provenance": {
+    "klt_version": "0.8.0",
+    "input": {
+      "path": {
+        "path": "rtl/pnr/antifuse_digital_top.gds",
+        "scope": "repo"
+      },
+      "content_hash": "sha256:dae02f43855fda9b7c8f880fa62be529f3479af070dc34a82cbab4b140373bf5",
+      "role": "layout"
+    }
+  }
+}

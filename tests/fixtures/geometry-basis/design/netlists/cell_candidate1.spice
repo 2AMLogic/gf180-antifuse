@@ -1,0 +1,6 @@
+* Fixture cell netlist for tests/test_check_geometry_basis.py.
+* Only the .subckt parameter defaults are read by design/check-geometry-basis.py.
+.subckt cell_candidate1 BL WL PL VB  wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u
+XM1 BL WL CN VB nfet_06v0 L=lacc W=wacc nf=1 m=1
+XC1 CN PL cap_nmos_03v3 c_width=wcap c_length=lcap m=1
+.ends

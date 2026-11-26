@@ -1,0 +1,151 @@
+{
+  "netlist": "tb_leak_pgoff_band_iii_ss.spice",
+  "engine": "ngspice",
+  "models": {
+    "pdk": "gf180mcuD",
+    "lib": "libs.tech/ngspice/sm141064.ngspice"
+  },
+  "corners": {
+    "process": [
+      {
+        "name": "ss",
+        "sections": [
+          "ss",
+          "moscap_ss"
+        ]
+      }
+    ],
+    "supply_v": {
+      "vddl": [
+        2.97,
+        3.3,
+        3.63,
+        2.97,
+        3.3,
+        3.63,
+        2.97,
+        3.3,
+        3.63,
+        2.97,
+        3.3,
+        3.63,
+        2.97,
+        3.3,
+        3.63,
+        2.97,
+        3.3,
+        3.63
+      ],
+      "vddh_iii": [
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5,
+        4.5,
+        5.0,
+        5.5
+      ],
+      "vbl_iii": [
+        0.954,
+        0.954,
+        0.954,
+        1.06,
+        1.06,
+        1.06,
+        1.166,
+        1.166,
+        1.166,
+        3.393,
+        3.393,
+        3.393,
+        3.77,
+        3.77,
+        3.77,
+        4.147,
+        4.147,
+        4.147
+      ]
+    },
+    "temperature_c": [
+      -40,
+      27,
+      125
+    ]
+  },
+  "analysis": {
+    "kind": "dc",
+    "args": "vdum 0 1 1"
+  },
+  "measurements": [
+    {
+      "name": "ibus",
+      "spice": ".meas dc ibus FIND i(vbl_III) AT=0",
+      "unit": "A"
+    },
+    {
+      "name": "icl_22",
+      "spice": ".meas dc icl_22 FIND i(vcl_22) AT=0",
+      "unit": "A"
+    },
+    {
+      "name": "icl_23",
+      "spice": ".meas dc icl_23 FIND i(vcl_23) AT=0",
+      "unit": "A"
+    },
+    {
+      "name": "icl_24",
+      "spice": ".meas dc icl_24 FIND i(vcl_24) AT=0",
+      "unit": "A"
+    },
+    {
+      "name": "icl_25",
+      "spice": ".meas dc icl_25 FIND i(vcl_25) AT=0",
+      "unit": "A"
+    },
+    {
+      "name": "icl_26",
+      "spice": ".meas dc icl_26 FIND i(vcl_26) AT=0",
+      "unit": "A"
+    },
+    {
+      "name": "icl_27",
+      "spice": ".meas dc icl_27 FIND i(vcl_27) AT=0",
+      "unit": "A"
+    },
+    {
+      "name": "icl_28",
+      "spice": ".meas dc icl_28 FIND i(vcl_28) AT=0",
+      "unit": "A"
+    },
+    {
+      "name": "icl_29",
+      "spice": ".meas dc icl_29 FIND i(vcl_29) AT=0",
+      "unit": "A"
+    },
+    {
+      "name": "icl_30",
+      "spice": ".meas dc icl_30 FIND i(vcl_30) AT=0",
+      "unit": "A"
+    },
+    {
+      "name": "icl_31",
+      "spice": ".meas dc icl_31 FIND i(vcl_31) AT=0",
+      "unit": "A"
+    }
+  ],
+  "options": {
+    "timeout_s": 600,
+    "keep_artifacts": false
+  }
+}

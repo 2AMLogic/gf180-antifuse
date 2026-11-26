@@ -1,0 +1,392 @@
+# Decision Record: Scoped DRC Exception for Unmodified PDK PCell Geometry
+
+**Status**: Ratified. Operator ruling of 2026-11-15 (@rjwalters, attended
+`/fleet:decide` session, round `20261111-r14`, question q105, recorded on
+#299): option (b) — "Ratify a scoped exception in spec/ for findings inside
+unmodified PDK PCell geometry only; negotiate with the foundry later." This
+record writes that ruling down as enforceable text. It departs from no
+ratified text because none existed: at this record's base (`2ca60fce`,
+re-verified 2026-11-16, matching the curation's grep at `6dbddcc3`)
+`git grep -niE "drc" -- spec/` matches only incidental lines inside
+`spec/capacitor-geometry-decision.md` (71, 173-174, 220, 256, 284, 289) —
+**no ratified spec document states a DRC-clean target at all.** This record
+therefore **creates** the standard for one bounded class of finding on the
+operator's authority; it relaxes nothing. It is not a `-proposed` record: the
+operator has ruled. Per the ruling it still goes through repo review and any
+ratification hold.
+**Date**: 2026-11-16 (ruling dated 2026-11-15)
+**Scope**: Native-deck DRC findings whose geometry was emitted inside an
+unmodified PDK PCell instance (defined operationally below), on this repo's
+gf180mcu cells. It changes how such findings are **dispositioned**; it
+changes no geometry, no generator, no committed report, no waiver, and no
+rule deck. The repo's no-waiver rule stays in force for every shape this
+repo can change — every repo-drawn finding remains a violation to fix.
+**Evidence**: the committed cross-check report
+`layout/cell_candidate2/drc_crosscheck_report.json` (`klt drc --engine both
+--deck gf180mcu --top cell_candidate2 --pdk gf180mcuA --deck-var
+decks=all,-mslot`, released `klayout-tools==0.9.2`, KLayout 0.30.13, PDK
+`gf180mcuA` `open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7`, native
+deck tree hash `sha256:8af3b4875893f3ffbff639bd7e2966c5e3b9b27f70d03e86d6da46ca9510fbc4`),
+first measured 2026-11-14 (#299), re-verified 2026-11-16 at `6dbddcc3`
+(Curator) and again at this record's base `2ca60fce` (Builder) — census
+unchanged at those bases. Re-verified 2026-11-18 at `33043bf6` (Builder;
+report stamps klt 0.9.2, KLayout 0.30.13): 25 native findings — #296's
+clearing commit `2a8614fc` (2026-11-17) drew the ratified capacitor levels,
+removing the two `cap__core` rows from the report; the 20 covered rows are
+unchanged. Coverage of candidates 1 and 3 measured 2026-11-16 from their
+committed reports.
+
+## Problem
+
+Candidate 2's access device is the PDK's own drain-extended
+`nfet_10v0_asym`, instantiated by `klt gen --pdk-pcell` from parameters only.
+The PDK's **own native sign-off runset** flags 20 findings inside that PCell:
+`CO.4` x16, `DF.6_MV` x2, `PL.4_MV` x2 (census pinned below). PR #288
+cross-checked the 16 `CO.4` markers against the foundry runset: they are
+real, not the false positives klayout-tools' docs describe, and the ready
+made waiver documented upstream was deliberately **not** applied.
+
+Three routes out of these findings exist, and each is forbidden by this
+repo's standing rules:
+
+1. **Waive them** (or `--deck-var` a rule off) — deletes the evidence; the
+   committed rollup's `waived_count: 0` is part of candidate 2's recorded
+   state, and #295 (merged as PR #323) exists precisely so a report's
+   `status` cannot overstate a cell's DRC state.
+2. **Hand-edit the PCell geometry** — the geometry belongs to the PDK's
+   generator; editing it by hand is a change this repo's flow does not make.
+3. **Substitute the device** — swaps the access device the schematic
+   ratified.
+
+None of these is a Builder's call, which is why this was an operator ruling
+rather than a task. Meanwhile nothing in `spec/` states what these findings
+*are*: the standard they fail lives only in issue prose (#207's acceptance
+criteria), `layout/README.md` verdict tables and `docs/ROADMAP.md` — none of
+which is ratified text an agent is forbidden to relax. Until this record,
+there was nowhere the disposition could be *read from*, and conversely no
+boundary that stopped a repo-drawn violation later being blamed on "the
+PDK's cell". Both halves are fixed below: the exception is written down, and
+its boundary is a runnable test, not an adjective.
+
+## Decision
+
+A native-deck DRC finding is **covered** by this exception — dispositioned
+as "inside unmodified PDK PCell geometry: recorded, reported as measured,
+and not a blocker at cell level" — if and only if both of these hold:
+
+1. **Provenance of the geometry**: the violating geometry was emitted
+   *inside* a PDK PCell instance created by `klt gen --pdk-pcell` from
+   parameters only, with **no post-generation edit of any shape inside that
+   instance**. The repo's generators may place, strap and connect the
+   instance; they may not move, resize or redraw anything the PCell drew.
+2. **Operational test**: the finding's `cell` attribute in the committed
+   native report is the PCell's own cell name (the cell the
+   `--pdk-pcell` invocation emits, e.g. `nfet_10v0_asym` — a cell name this
+   repo never draws under), and the composed cell's generator passes only
+   parameters to that invocation.
+
+Everything else — every finding on a shape this repo drew, placed or
+composed — is **not covered** and remains a violation to fix.
+
+### Enumerating coverage from a committed report
+
+```bash
+# covered findings = those whose `cell` is the PDK PCell's own cell name
+python3 -I -c "import json,collections,sys; d=json.load(open(sys.argv[1])); \
+  print(collections.Counter((v['cell'], v['rule']) for v in d['reports']['native']['violations']))" \
+  layout/cell_candidate2/drc_crosscheck_report.json
+```
+
+Rows whose cell is a PDK PCell's own cell name are covered; all other rows
+are not. The key is `cell`, deliberately, and **not** `source_cell`: the
+native report leaves `source_cell` `null` on all 25 findings and carries no
+`source_cell_rollup` — only the *curated* report populates those fields, so
+a classifier keyed on `source_cell` would silently match nothing. In the
+native report, `cell` *is* the attribution of where the geometry lives.
+
+### Why `klt gen mos_array` is repo-drawn and `--pdk-pcell` is the PDK's
+
+The line is **who can change the geometry without hand-editing shapes**.
+
+- A `klt gen mos_array` block is **this repo's geometry**: its W/L are
+  parameters this repo picks. #294 ratified the capacitor levels and #296
+  redraws them — that is the repo changing its own geometry through its own
+  flow, which is exactly what the no-waiver rule governs.
+- A `--pdk-pcell` instance's internal construction is **the PDK's**: the
+  PDK's own generator script draws the stripes, contacts and gates inside
+  the instance, and this repo can pass only the parameters the PCell
+  exposes. Measured contrast, both on candidate 2: the capacitor's COMP
+  width is a generator parameter this repo controls — the 0.42 um the repo
+  drew before #296 is the width the `cap__core` `DF.1c` finding fired on
+  (historical: #296's commit `2a8614fc` drew the ratified 1.0 um level and
+  that finding no longer fires); the 0.22 um drain-stripe contact geometry
+  that `CO.4` fires on is internal PCell construction —
+  `layout/cell_candidate2/generate.py`, in the `acc = bg.run([...])` call
+  in `build()`, passes only `{"w": W_ACC, "l": L_ACC}` to
+  `klt gen --pdk-pcell gf180mcu_klayoutapi/nfet_10v0_asym`, and no exposed
+  parameter moves the contacts.
+
+### The covered census, pinned as a dated snapshot
+
+From `layout/cell_candidate2/drc_crosscheck_report.json`, provenance as in
+the Evidence preamble:
+
+| Rule | Report `description` (verbatim) | Cell | Count |
+|---|---|---|---|
+| `CO.4` | `CO.4 : COMP overlap of contact. : 0.07µm` | `nfet_10v0_asym` | 16 |
+| `DF.6_MV` | `DF.6_MV : Min. COMP extend beyond gate (it also means source/drain overhang). : 0.4µm` | `nfet_10v0_asym` | 2 |
+| `PL.4_MV` | `PL.4_MV : Extension beyond COMP to form Poly2 end cap. : 0.22µm` | `nfet_10v0_asym` | 2 |
+
+Total: 20 covered findings, all inside `nfet_10v0_asym`, measured
+2026-11-14, re-verified 2026-11-16 at `6dbddcc3`, at `2ca60fce`, and again
+2026-11-18 at `33043bf6` (klt 0.9.2 / KLayout 0.30.13 report stamps) —
+unchanged. The same report carries, **not covered**, `cell_candidate2`
+{`DBU`, `M1.4`, `M2.4`, `M3.4`, `MT30.7`} (5) — 25 findings reported in
+total at `33043bf6`, all still reported. The census this record originally
+pinned at `2ca60fce` (2026-11-16) was 27: it additionally carried
+`cap__core` {`DF.1c`, `PL.2_MV`} x1 each, which #296's clearing commit
+`2a8614fc` (2026-11-17) removed from the report by drawing the ratified
+capacitor levels — a composition change to the *uncovered* findings, with
+the 20 covered rows unaffected.
+
+**A changed census must be re-recorded against the new report, never
+assumed covered.** The exception attaches to the *class* (findings inside
+unmodified PDK PCell geometry), not to the count: if a klt or PDK update
+changes which rules fire inside the PCell — new rules, vanished rules,
+different counts — the new census is measured, recorded here or in the
+report's own evidence trail, and dispositioned afresh. Coverage is decided
+by the operational test, row by row; the table above is a snapshot, not the
+boundary.
+
+### Limits — what the exception does not cover
+
+Each limit has an owner; none is waved through by this record:
+
+- **Every repo-drawn shape.** The limit stays in force whether or not such
+  a finding exists today. Its standing example — the `cap__core` `DF.1c`
+  and `PL.2_MV` findings on repo-drawn capacitor geometry under rules this
+  repo can satisfy, owned by #296 (levels ratified in #294) — was resolved
+  by #296's clearing commit `2a8614fc` (2026-11-17): both rows are gone
+  from the committed candidate-2 report (the 25-findings census above).
+- **Die-level density** `M1.4` / `M2.4` / `M3.4` / `MT30.7` / `PL.8`: a standalone
+  cell trips them by construction; they become meaningful at chip assembly
+  with dummy fill — **#211**.
+- **`DBU`** (composed GDS written at `dbu = 0.0005` against the runset's
+  0.001): a klt writer default, not geometry, not the PCell — filed
+  upstream as `2AMLogic/klayout-tools#5721`.
+- **Candidate 3's generator-owned findings** `DF.4d_MV` x5 + `DV.6` x1 on
+  `mos_array$1` — repo-drawn drift-extended geometry, **cleared by #297**
+  (acc-block ring padding) in the base cell and by #382 (same mechanism)
+  in the `Amin_G2x` measurement cell; absent from both committed
+  candidate-3 reports (#287/#297 family).
+- **Any finding whose `cell` is not a PDK PCell's own cell name**, whatever
+  its cause.
+
+And the invariants this record fixes, in all cases: **no waiver is applied,
+no rule is disabled, no PCell shape is hand-edited and no device is
+substituted.** The committed reports keep reporting all 25 findings; the
+exception changes how they are *dispositioned*, never what is measured.
+
+### Bounded by construction, shown to be
+
+Applying the enumeration command to all three committed cross-check
+reports (candidates 1 and 3 re-verified 2026-11-18 at `82465b36`; the
+candidate 2 row re-recorded 2026-11-18 at `33043bf6`):
+
+| Report | Native findings | Covered findings |
+|---|---|---|
+| `layout/cell_candidate1/drc_crosscheck_report.json` | 5 (`cell_candidate1` `DBU`/`M2.4`/`M3.4`/`MT30.7`/`PL.8`) | **0** |
+| `layout/cell_candidate2/drc_crosscheck_report.json` | 25 (2026-11-18, at `33043bf6`; 27 at the `2ca60fce` writing base — #296's `2a8614fc` removed the two `cap__core` rows) | 20 (all `nfet_10v0_asym`) |
+| `layout/cell_candidate3/drc_crosscheck_report.json` | 6 (`cell_candidate3` `DBU`/`M1.4`/`M2.4`/`M3.4`/`MT30.7`/`PL.8`) | **0** |
+
+Candidates 1 and 3 instantiate no PDK PCell at all — their findings sit in
+the top cells (the `mos_array` / `mos_array$1` generator-cell findings were
+cleared by #296 and #297) — so **zero** findings on either fall inside this
+exception. Candidate 2 is the only cell the exception reaches today, and
+within it, only the 20 `nfet_10v0_asym` rows.
+
+## Rejected alternatives
+
+- *Apply `klt`'s offered waiver (or `--deck-var` a rule off) so the reports
+  read clean* — rejected: it deletes the evidence; #295 (PR #323) exists so
+  a report's `status` cannot overstate a cell's DRC state, and the
+  committed `waived_count: 0` is part of candidate 2's evidence.
+- *Hand-edit the PCell geometry, or substitute the device* — rejected: both
+  are declined options (c)/(d) of the ruling, and remain `docs/ROADMAP.md`
+  "Not planned".
+- *Ship a checker script that classifies covered findings mechanically* —
+  rejected for this record: the enumeration command above does it in one
+  line; a standing check can be filed separately if one is wanted later.
+
+## Fixed-deck comparison (2026-11-25, #521)
+
+A dated measurement, not a change to the ruling above. It records which of
+the three covered rules still fire when the pinned native deck carries
+upstream `fd_pv#42` (`6290c6342f`, "ignore edges inside mvsd/mvpsd",
+merged 2026-11-02). Input for both runs: the committed
+`layout/cell_candidate2/cell_candidate2.gds`
+(`sha256:5cb4a64fa103f2b698aeaffedddfc28405931e6afbfec8f21cf8b90678462e7a`,
+equal to `.identity.layout_content_hash` of the baseline report).
+
+| Rule (cell `nfet_10v0_asym`) | Baseline 2026-11-14 (`drc_crosscheck_report.json`) | Pinned deck re-run 2026-11-25 (`drc_native_pinned_control_20261125.json`, control) | Deck + `fd_pv#42` (`drc_native_fd_pv_42.json`) |
+|---|---|---|---|
+| `CO.4` | 16 | 16 | 16 |
+| `DF.6_MV` | 2 | 2 | **0** |
+| `PL.4_MV` | 2 | 2 | **0** |
+
+`cell_candidate2` findings (`DBU`, `M1.4`, `M2.4`, `M3.4`, `MT30.7`, 5 in
+total) are unchanged in all three columns; whole-layout totals are 25, 25
+and 21. Full outputs:
+`layout/cell_candidate2/drc_native_pinned_control_20261125.json` (control)
+and `layout/cell_candidate2/drc_native_fd_pv_42.json` (fixed deck).
+
+**Reading.** On the `fd_pv#42` deck only `CO.4` (16) remains inside the
+unmodified PCell. `DF.6_MV` and `PL.4_MV` did not fire on stock PCell
+geometry, so no reproducer is needed for them. The exception *as ratified*
+is unchanged; this measurement shows which rows it is still needed for on
+that deck, and it is not adopted as the project deck here.
+
+**Deck provenance.** The native entry point is
+`~/.ciel/gf180mcuA/libs.tech/klayout/tech/drc/gf180mcu.drc`
+(`sha256:e7c7d259...`, matching the baseline report), at open_pdks
+`f6eeac7d`. It loads `rule_decks/*.rb` relative to itself. That tree does
+**not** carry `6290c6342f`. The control run copies the pinned tree unchanged;
+the fixed deck is a second scratch copy with the `comp.rb` and `poly2.rb`
+hunks of the upstream PR applied (`patch -p3` from the committed
+`layout/cell_candidate2/fd_pv_42_rule_decks.patch`). Beyond adding
+`.outside(mvsd).outside(mvpsd)` on `DF.6_MV` and `PL.4_MV`, the patch:
+
+- in `comp.rb`'s `df_6_mv` block (`DF.6_MV`; `df_6_lv` is untouched), drops
+  `mvsd`/`mvpsd` from `df6_exclude` and converts `df6_comp` and `df6_poly`
+  from `.not(df6_exclude)` to `.not_interacting(df6_exclude)`;
+- in `poly2.rb`, converts `poly_pl_lv`, `poly_pl_mv` and `comp_pl` (shared
+  by `PL.4_LV`, `PL.4_MV`, `PL.5a_LV`, `PL.5a_MV`, `PL.5b_LV` and
+  `PL.5b_MV`; `PL.1*` and `PL.2*` use `poly2_lv`/`poly2_mv` directly and are
+  untouched) from `.not(otp_mk).not(ymtp_mk).not(mvsd).not(mvpsd)` to
+  `.not_interacting(otp_mk).not_interacting(ymtp_mk)`, appends
+  `.outside(mvsd).outside(mvpsd)` on `PL.4_MV`, `PL.5a_MV` and `PL.5b_MV`
+  (leaving `PL.4_LV`, `PL.5a_LV` and `PL.5b_LV` without `mvsd`/`mvpsd`
+  subtraction), and rewords the `PL.5a_LV` comment/description.
+
+Comparing the control and fixed-deck reports bounds the consequence on
+`cell_candidate2.gds`: no other rule's count moved — the 25 → 21 delta is
+entirely the four MV rows (`DF.6_MV` 2 → 0, `PL.4_MV` 2 → 0). The shared
+installation was not modified.
+
+| Ruby file | Pinned `sha256` | With `fd_pv#42` `sha256` |
+|---|---|---|
+| `rule_decks/comp.rb` | `97030747eb619ac41c0294e389a5576a3a109ab007c9c60779b65ff9397ea232` | `1ff8291580813015100adde8266809e8f9acfb0a4f6a771e283d2de7a12f36bf` |
+| `rule_decks/poly2.rb` | `98872935f83315cce2b59539594aee401f7f1e12e23ad7940cdb8d455cde3891` | `e1ecf7aef5a3376a8371a8b9578c3479ba925ed7c2cc4f1a8688f1e96ba8ec08` |
+
+Both 2026-11-25 reports' `deck.content_hash` and tree hash cover the entry
+point and top-level tree, and are identical for both decks; they do not
+distinguish them. The two Ruby hashes above do. The upstream patch text
+(rule-deck files only) is committed at
+`layout/cell_candidate2/fd_pv_42_rule_decks.patch`
+(`sha256:0c01f517cd2ed24bcb3c27e2f71743c12856d099c052d66f242eccf17ddeeaec`,
+extracted from
+`https://github.com/fossi-foundation/globalfoundries-pdk-libs-gf180mcu_fd_pv/pull/42.diff`
+filtered to the `rule_decks/` files).
+
+**Reproduce.**
+
+```sh
+cp -r ~/.ciel/gf180mcuA/libs.tech/klayout/tech/drc "$S/drc-pinned"
+cp -r ~/.ciel/gf180mcuA/libs.tech/klayout/tech/drc "$S/drc"
+(cd "$S/drc" && patch -p3 < layout/cell_candidate2/fd_pv_42_rule_decks.patch)
+
+klt drc --engine klayout --deck-file "$S/drc-pinned/gf180mcu.drc" \
+  --top cell_candidate2 --deck-var variant=gf180mcuA \
+  --deck-var decks=all,-mslot \
+  -o layout/cell_candidate2/drc_native_pinned_control_20261125.json \
+  layout/cell_candidate2/cell_candidate2.gds
+
+klt drc --engine klayout --deck-file "$S/drc/gf180mcu.drc" \
+  --top cell_candidate2 --deck-var variant=gf180mcuA \
+  --deck-var decks=all,-mslot \
+  -o layout/cell_candidate2/drc_native_fd_pv_42.json \
+  layout/cell_candidate2/cell_candidate2.gds
+```
+
+**Tool versions differ from the baseline.** Both 2026-11-25 runs used `klt
+0.9.3.dev5587+g945e94f0` and KLayout 0.30.12; the baseline used klt 0.9.2
+and KLayout 0.30.13 (`klayout_version_mismatch` is true on both 2026-11-25
+reports). Host tools are not changed from a sweep. The committed control
+report (`drc_native_pinned_control_20261125.json`) shows the pinned deck
+reproduces the baseline counts (16 / 2 / 2, total 25) on this toolchain, so
+the difference between columns is attributable to the deck change.
+
+**Execution check.** `coverage.rules_checked` lists only rules that produced
+findings, so it cannot show that a rule which now reports zero actually ran.
+The run log embedded in `drc_native_fd_pv_42.json` (`deck_output.stdout`, as
+in the control report) records `Executing rule DF.6_MV` and
+`Executing rule PL.4_MV`.
+
+**Precheck caveat.** This is a local `gf180mcuA` native-deck result. It does
+not show what the wafer.space Run 3 precheck enforces, and the maintainers
+have said the `fd_pv#42` fix may not yet be part of it. #338 step 1's
+recorded verdict (2026-11-16, `gf180mcuD` and a different deck selection) is
+not superseded; adoption of the fix by the precheck still needs its own
+evidence on #338.
+
+## Open items
+
+- **Precheck condition (open, conditions this record).** The ruling adds:
+  read wafer.space's public precheck to see whether Run 3 tapeout would
+  reject these violations; if it would, the disposition goes back to the
+  operator well before the **2026-12-16** GDS date (#203; that date applies
+  only if shuttle space is obtained — operator correction, 2026-11-17).
+  That reading is **#338 step 1** (agent-doable, no contact); this record
+  carries it as a
+  condition and does **not** claim precheck acceptance. The foundry
+  conversation itself is **#338 step 2** and has **not happened** — the
+  operator sends; agents do not contact wafer.space. Nothing here should be
+  read as foundry agreement.
+
+## What this record does not establish
+
+- **It is not a manufacturability, yield or reliability claim.** It records
+  the operator's direction that the three rules — `CO.4` (COMP overlap of
+  contact, 0.07 um), `DF.6_MV` (COMP extension beyond gate, 0.4 um) and
+  `PL.4_MV` (poly end cap, 0.22 um) — are **mask-geometry margin rules
+  rather than process limits**, and states plainly that **no measurement in
+  this repo bounds the margin given up** by shipping them. That margin is
+  exactly what the foundry conversation (#338) is for.
+- **Not measured**: whether any other *legal* parameter set of the same
+  `nfet_10v0_asym` PCell would clear `CO.4`, `DF.6_MV` and `PL.4_MV`. No
+  parameter sweep over the PCell exists in this repo; this record does not
+  assume one exists.
+- **It does not close candidate 2's DRC-clean criterion** (#207 owns the
+  disposition rewrite in `layout/README.md`), does not fix the repo-drawn
+  findings (#296, #297), and does not touch `signoff/` (its `3.analog` row
+  cites candidate 1's native report and is unaffected by this ruling).
+
+## Downstream
+
+- **#207** consumes this record for candidate 2's `layout/README.md` DRC
+  disposition and its remaining acceptance criterion.
+- **#338** owns the precheck reading (step 1) and the foundry conversation
+  (step 2, operator sends).
+- **#296** owns the repo-drawn `cap__core` findings; **#297** candidate 3's;
+  **#211** the die-level density; `2AMLogic/klayout-tools#5721` the `DBU`
+  writer default.
+- **#203** holds the external dates the precheck condition protects
+  (slot purchase 2026-12-09, GDS 2026-12-16; both apply only if shuttle
+  space is obtained).
+
+## Provenance
+
+- Operator ruling: 2026-11-15, attended `/fleet:decide` round
+  `20261111-r14`, q105, option (b), recorded on #299. Options (a), (c) and
+  (d) declined.
+- Census and rule descriptions: read from the committed
+  `layout/cell_candidate2/drc_crosscheck_report.json` (added by PR #323,
+  #295); first measured 2026-11-14 on `klayout-tools==0.9.2`, KLayout
+  0.30.13, PDK `gf180mcuA` (`open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7`),
+  `--deck-var decks=all,-mslot`, native deck tree hash
+  `sha256:8af3b4875893f3ffbff639bd7e2966c5e3b9b27f70d03e86d6da46ca9510fbc4`.
+- Re-verified 2026-11-16: census, rule descriptions and zero coverage of
+  candidates 1 and 3 re-run by the Curator at `6dbddcc3` and by the Builder
+  at `2ca60fce`; command output recorded in the PR that lands this record.
+- `generate.py` parameter citation: `layout/cell_candidate2/generate.py`
+  lines 96-99 at this record's base `2ca60fce`.

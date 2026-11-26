@@ -1,0 +1,99 @@
+* expanding   symbol:  band_i.sym # of pins=20
+** sym_path: design/array/band_i.sym
+** sch_path: design/array/band_i.sch
+.subckt band_i RSEL_0 RSEL_1 RSEL_2 RSEL_3 CSEL_0 CSEL_1 CSEL_2 CSEL_3 CSEL_4 CSEL_5 CSEL_6 CSEL_7 CSEL_8 CSEL_9 CSEL_10 BLG_I PLG_I VDDH_I VDDL VSS
+*.ipin RSEL_0
+*.ipin RSEL_1
+*.ipin RSEL_2
+*.ipin RSEL_3
+*.ipin CSEL_0
+*.ipin CSEL_1
+*.ipin CSEL_2
+*.ipin CSEL_3
+*.ipin CSEL_4
+*.ipin CSEL_5
+*.ipin CSEL_6
+*.ipin CSEL_7
+*.ipin CSEL_8
+*.ipin CSEL_9
+*.ipin CSEL_10
+*.iopin BLG_I
+*.iopin PLG_I
+*.ipin VDDH_I
+*.ipin VDDL
+*.ipin VSS
+Xc_0_0 BL_0 WL_0_I PL_0_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_0_1 BL_1 WL_0_I PL_0_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_0_2 BL_2 WL_0_I PL_0_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_0_3 BL_3 WL_0_I PL_0_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_0_4 BL_4 WL_0_I PL_0_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_0_5 BL_5 WL_0_I PL_0_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_0_6 BL_6 WL_0_I PL_0_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_0_7 BL_7 WL_0_I PL_0_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_0_8 BL_8 WL_0_I PL_0_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_0_9 BL_9 WL_0_I PL_0_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_0_10 BL_10 WL_0_I PL_0_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_1_0 BL_0 WL_1_I PL_1_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_1_1 BL_1 WL_1_I PL_1_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_1_2 BL_2 WL_1_I PL_1_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_1_3 BL_3 WL_1_I PL_1_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_1_4 BL_4 WL_1_I PL_1_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_1_5 BL_5 WL_1_I PL_1_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_1_6 BL_6 WL_1_I PL_1_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_1_7 BL_7 WL_1_I PL_1_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_1_8 BL_8 WL_1_I PL_1_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_1_9 BL_9 WL_1_I PL_1_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_1_10 BL_10 WL_1_I PL_1_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_2_0 BL_0 WL_2_I PL_2_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_2_1 BL_1 WL_2_I PL_2_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_2_2 BL_2 WL_2_I PL_2_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_2_3 BL_3 WL_2_I PL_2_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_2_4 BL_4 WL_2_I PL_2_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_2_5 BL_5 WL_2_I PL_2_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_2_6 BL_6 WL_2_I PL_2_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_2_7 BL_7 WL_2_I PL_2_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_2_8 BL_8 WL_2_I PL_2_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_2_9 BL_9 WL_2_I PL_2_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_2_10 BL_10 WL_2_I PL_2_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_3_0 BL_0 WL_3_I PL_3_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_3_1 BL_1 WL_3_I PL_3_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_3_2 BL_2 WL_3_I PL_3_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_3_3 BL_3 WL_3_I PL_3_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_3_4 BL_4 WL_3_I PL_3_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_3_5 BL_5 WL_3_I PL_3_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_3_6 BL_6 WL_3_I PL_3_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_3_7 BL_7 WL_3_I PL_3_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+Xc_3_8 BL_8 WL_3_I PL_3_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_3_9 BL_9 WL_3_I PL_3_I VSS cell_candidate1 wcap=1e-6 lcap=1e-6 wacc=0.6u lacc=0.70u m=1
+Xc_3_10 BL_10 WL_3_I PL_3_I VSS cell_candidate1 wcap=2e-6 lcap=1e-6 wacc=0.30u lacc=0.70u m=1
+XLC_0 CSEL_0 VDDL VSS CG_0 CGB_0 VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPC_0 BLG_I CG_0 BL_0 VSS pg_n06 wpg=20u lpg=0.70u
+XLC_1 CSEL_1 VDDL VSS CG_1 CGB_1 VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPC_1 BLG_I CG_1 BL_1 VSS pg_n06 wpg=20u lpg=0.70u
+XLC_2 CSEL_2 VDDL VSS CG_2 CGB_2 VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPC_2 BLG_I CG_2 BL_2 VSS pg_n06 wpg=20u lpg=0.70u
+XLC_3 CSEL_3 VDDL VSS CG_3 CGB_3 VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPC_3 BLG_I CG_3 BL_3 VSS pg_n06 wpg=20u lpg=0.70u
+XLC_4 CSEL_4 VDDL VSS CG_4 CGB_4 VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPC_4 BLG_I CG_4 BL_4 VSS pg_n06 wpg=20u lpg=0.70u
+XLC_5 CSEL_5 VDDL VSS CG_5 CGB_5 VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPC_5 BLG_I CG_5 BL_5 VSS pg_n06 wpg=20u lpg=0.70u
+XLC_6 CSEL_6 VDDL VSS CG_6 CGB_6 VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPC_6 BLG_I CG_6 BL_6 VSS pg_n06 wpg=20u lpg=0.70u
+XLC_7 CSEL_7 VDDL VSS CG_7 CGB_7 VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPC_7 BLG_I CG_7 BL_7 VSS pg_n06 wpg=20u lpg=0.70u
+XLC_8 CSEL_8 VDDL VSS CG_8 CGB_8 VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPC_8 BLG_I CG_8 BL_8 VSS pg_n06 wpg=20u lpg=0.70u
+XLC_9 CSEL_9 VDDL VSS CG_9 CGB_9 VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPC_9 BLG_I CG_9 BL_9 VSS pg_n06 wpg=20u lpg=0.70u
+XLC_10 CSEL_10 VDDL VSS CG_10 CGB_10 VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPC_10 BLG_I CG_10 BL_10 VSS pg_n06 wpg=20u lpg=0.70u
+XLR_0_I RSEL_0 VDDL VSS WL_0_I RGB_0_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_0_I PL_0_I WL_0_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_1_I RSEL_1 VDDL VSS WL_1_I RGB_1_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_1_I PL_1_I WL_1_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_2_I RSEL_2 VDDL VSS WL_2_I RGB_2_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_2_I PL_2_I WL_2_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+XLR_3_I RSEL_3 VDDL VSS WL_3_I RGB_3_I VDDH_I ls_hv06 wpdn=10u lpdn=0.70u wpup=1u lpup=0.55u
+XPR_3_I PL_3_I WL_3_I PLG_I VSS pg_n06 wpg=20u lpg=0.70u
+.ends

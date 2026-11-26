@@ -1,0 +1,36 @@
+* klt sim -- generated corner deck, do not edit
+.lib /opt/pdk/gf180mcuD/libs.tech/ngspice/smbb000149.ngspice ff
+.include /var/tmp/eda-job-klt-sim-abfce5df063a/inputs/netlist.cir
+.temp -40.0
+.meas ac vr_bl FIND vr(bl) AT=1.000000e+07
+.meas ac vi_bl FIND vi(bl) AT=1.000000e+07
+.meas ac hr_st_s1g1 FIND vr(hp_st_s1g1) AT=1.000000e+07
+.meas ac hi_st_s1g1 FIND vi(hp_st_s1g1) AT=1.000000e+07
+.meas ac hr_b0_s1g1 FIND vr(hp_b0_s1g1) AT=1.000000e+07
+.meas ac hi_b0_s1g1 FIND vi(hp_b0_s1g1) AT=1.000000e+07
+.meas ac hr_b1_s1g1 FIND vr(hp_b1_s1g1) AT=1.000000e+07
+.meas ac hi_b1_s1g1 FIND vi(hp_b1_s1g1) AT=1.000000e+07
+.meas ac hr_st_s1g2 FIND vr(hp_st_s1g2) AT=1.000000e+07
+.meas ac hi_st_s1g2 FIND vi(hp_st_s1g2) AT=1.000000e+07
+.meas ac hr_b0_s1g2 FIND vr(hp_b0_s1g2) AT=1.000000e+07
+.meas ac hi_b0_s1g2 FIND vi(hp_b0_s1g2) AT=1.000000e+07
+.meas ac hr_b1_s1g2 FIND vr(hp_b1_s1g2) AT=1.000000e+07
+.meas ac hi_b1_s1g2 FIND vi(hp_b1_s1g2) AT=1.000000e+07
+.meas ac hr_st_s2g1 FIND vr(hp_st_s2g1) AT=1.000000e+07
+.meas ac hi_st_s2g1 FIND vi(hp_st_s2g1) AT=1.000000e+07
+.meas ac hr_b0_s2g1 FIND vr(hp_b0_s2g1) AT=1.000000e+07
+.meas ac hi_b0_s2g1 FIND vi(hp_b0_s2g1) AT=1.000000e+07
+.meas ac hr_b1_s2g1 FIND vr(hp_b1_s2g1) AT=1.000000e+07
+.meas ac hi_b1_s2g1 FIND vi(hp_b1_s2g1) AT=1.000000e+07
+.meas ac hr_st_s2g2 FIND vr(hp_st_s2g2) AT=1.000000e+07
+.meas ac hi_st_s2g2 FIND vi(hp_st_s2g2) AT=1.000000e+07
+.meas ac hr_b0_s2g2 FIND vr(hp_b0_s2g2) AT=1.000000e+07
+.meas ac hi_b0_s2g2 FIND vi(hp_b0_s2g2) AT=1.000000e+07
+.meas ac hr_b1_s2g2 FIND vr(hp_b1_s2g2) AT=1.000000e+07
+.meas ac hi_b1_s2g2 FIND vi(hp_b1_s2g2) AT=1.000000e+07
+.control
+alter vbl=1.0
+ac lin 3 5.000000e+06 1.500000e+07
+quit
+.endc
+.end

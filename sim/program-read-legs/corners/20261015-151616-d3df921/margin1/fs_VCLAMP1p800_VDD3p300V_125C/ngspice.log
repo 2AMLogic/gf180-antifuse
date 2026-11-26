@@ -1,0 +1,50 @@
+
+Note: No compatibility mode selected!
+
+
+Circuit: * klt sim -- generated corner deck, do not edit
+
+Doing analysis at TEMP = 125.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+Note: Starting dynamic gmin stepping
+Note: Dynamic gmin stepping completed
+
+No. of Data Rows : 1
+ird_u_min = 5.231371e-12
+ipg_u_min = 8.142699e-12
+vbl_u_min = 1.722517e+00
+vsense_u_min = 1.375371e-06
+vrdata_u_min = 1.260445e-08
+vddm_u_min = 3.300000e+00
+ird_u_2x = 5.295320e-12
+ipg_u_2x = 8.137274e-12
+vbl_u_2x = 1.722334e+00
+vsense_u_2x = 1.380045e-06
+vrdata_u_2x = 1.260445e-08
+vddm_u_2x = 3.300000e+00
+ird_plo_min = 3.812252e-05
+ipg_plo_min = 9.300841e-12
+vbl_plo_min = 9.535853e-01
+vsense_plo_min = 3.288106e+00
+vrdata_plo_min = 3.299997e+00
+vddm_plo_min = 3.300000e+00
+ird_plo_2x = 4.921476e-05
+ipg_plo_2x = 9.371543e-12
+vbl_plo_2x = 9.082767e-01
+vsense_plo_2x = 3.289489e+00
+vrdata_plo_2x = 3.299997e+00
+vddm_plo_2x = 3.300000e+00
+ird_phi_min = 9.509930e-06
+ipg_phi_min = 9.055639e-12
+vbl_phi_min = 1.115860e+00
+vsense_phi_min = 3.275410e+00
+vrdata_phi_min = 3.299997e+00
+vddm_phi_min = 3.300000e+00
+ird_phi_2x = 1.009527e-05
+ipg_phi_2x = 9.060647e-12
+vbl_phi_2x = 1.110707e+00
+vsense_phi_2x = 3.276221e+00
+vrdata_phi_2x = 3.299997e+00
+vddm_phi_2x = 3.300000e+00
+ngspice-46 done

@@ -12,13 +12,15 @@ Tested versions and live outcomes: [verification receipt](native-runtime-verific
 | Harness | Pinned version | What that pin rests on |
 | --- | --- | --- |
 | Pi | 0.85.1 | Guarded live canary — [verification receipt](native-runtime-verification-2026-09-19.md). |
-| OpenCode | 1.18.31 | Guarded live canary (1.x only) — same receipt; see "OpenCode major versions". |
+| OpenCode | latest 1.x (`harness-pins.yml`; 1.18.34 at 2026-10-02) | Guarded live canary on 1.18.31 (1.x only) — same receipt; see "OpenCode major versions". Later 1.x pins are gated by `docker/native/test-image.sh` in CI, not by a fresh canary. |
 | Kimi | 2.0.2 | **No guarded canary yet.** Credential-free harness probe only — [`docs/experiments/kimi-harness-probe-2026-09-22.json`](https://github.com/rjwalters/loom/blob/main/docs/experiments/kimi-harness-probe-2026-09-22.json) (#8561). The pin names the CLI the adapter and the container image were built against, *not* a verified guard boundary; see "Kimi". |
 
 `docker/native/Dockerfile` equality-checks all three at build time (`ARG
 OPENCODE_VERSION` / `PI_VERSION` / `KIMI_CODE_VERSION`), so a drifted pin fails
-the image build rather than shipping silently. Bump a pin, this table and a
-fresh run together; never one without the others.
+the image build rather than shipping silently. For Pi and Kimi, bump a pin,
+this table and a fresh run together; never one without the others. OpenCode's
+pin is moved by `harness-pins.yml` alone, so the version in its row above is a
+snapshot; the Dockerfile's `OPENCODE_VERSION` is the current value.
 
 Everything this page says about OpenCode's
 guard was verified on OpenCode 1.x only. **No OpenCode 2.x guarded receipt
@@ -47,7 +49,25 @@ has its own private directory (0700), including concurrent launches in one
 workspace. `LOOM_NATIVE_TOOLS_DIR` selects an alternative **external base**,
 including the existing container-private base; it no longer selects a shared
 binding directory. Pi's agent/auth and session directories, and OpenCode's
-config/data/state/cache directories are pinned beneath the launch directory.
+data/state/cache directories are pinned beneath the launch directory.
+
+**One exception, and only for immutable content (#8663):** OpenCode's
+`OPENCODE_CONFIG_DIR` is a content-keyed tree at
+`<workspace-hash>/bindings/<digest>/opencode/`, shared by every launch of that
+workspace whose bindings hash identically (the plugin source is `include_str!`'d
+and its dependency is pinned, so the bytes are fixed by the daemon build). It
+holds the generated `plugins/loom.ts`, the pinned `package.json`, and the
+`node_modules/` the CLI resolves from them — ~126 MB and ~7,300 files that were
+previously re-installed per launch and never removed (30–37 GB per fleet host,
+two ENOSPC incidents). Nothing mutable is shared: auth snapshots, sessions,
+transcripts and every XDG directory stay inside the launch's own 0700
+directory, so two concurrent workers still share no credential or session
+state. The tree is published by an atomic rename of a fully written staging
+copy, and its two binding files are re-written (idempotently) on every launch,
+so a damaged tree self-heals instead of serving content no launch provisioned.
+
+Stale launch directories are reaped by the next launch for the same workspace
+and by `loom-daemon clean` (see "Reaping stale native launch state" below).
 Absolute paths are required. Paths inside this workspace or another Git
 checkout, including symlink aliases, are refused before binding provisioning;
 unsafe inherited HOME, Pi, OpenCode and XDG directory overrides also refuse
@@ -79,8 +99,9 @@ launches and interactive harness sessions keep their previous behavior.
 
 The OpenCode binding depends on the matching
 `@opencode-ai/plugin` package; OpenCode installs it into that isolated config
-directory. That package is pinned to 1.18.31 and was verified against an
-OpenCode 1.18.31 host only; whether a 2.x host loads it is unverified. No
+directory. That package's pin moves with `OPENCODE_VERSION` (`harness-pins.yml`).
+It was live-verified against an OpenCode 1.18.31 host; whether a 2.x host loads
+it is unverified. No
 global CLI model/login settings are rewritten by Loom dispatch.
 
 ## Policy timeout vs. denial (#8451)
@@ -183,6 +204,17 @@ reports none, with or without an explicit `plugin` entry. The 2.x-native
 mechanism for loading a local, per-launch tool binding is still unknown, so
 `Major::guard_verified`'s `V2 => false` refusal stays until a passing 2.x
 receipt exists.
+
+Update (#11283, **unverified**): the leading hypothesis for the 2.0.10 discovery
+failure is the plugin module shape. Read from upstream source: the 2.x loader
+(`core/src/plugin/module.ts`, v2.0.18) accepts only a default export
+`{ id, effect }` or `{ id, setup }` and rejects `server`; the 1.18.x loader
+(`readV1Plugin`, v1.18.31) requires a default-exported object with `server()` and
+ignores other keys. `native_tools/opencode.mjs` therefore default-exports
+`{ id: "loom", server, setup }`, with `setup` registering the same four tools via
+`context.tool.transform`. This is a shape change only: neither major has been
+loaded live with it, so `V2 => false`, the 1.x pins, and this section's
+"unverified on 2.x" list are unchanged until a dated receipt lands (#11308).
 
 ## Kimi
 
@@ -359,6 +391,46 @@ explicit incompatible pins fail rather than silently choosing another model.
 Standalone scheduled roles can have different runtime bindings; one sweep uses
 one runtime throughout. Keep the purchased provider plan's concurrency limit
 in mind when setting the existing worker concurrency configuration.
+
+## Reaping stale native launch state
+
+A per-launch directory is never reused, and nothing used to remove it: three
+fleet hosts accumulated 252–358 session directories (30–37 GB) in a day, and
+one filled its root volume twice (#8663). There is no exit-time hook to use —
+`worker_spawn::exec` replaces the Loom process image with the harness CLI, so
+no parent survives the session — so the reap runs in the two places a Loom
+process demonstrably exists:
+
+1. **At the next launch for the same workspace**, before the new session
+   directory is created. Best effort: a reap failure never fails a launch.
+2. **`loom-daemon clean`**, over every workspace under the base. It *reports*
+   by default (and under `--dry-run`) and removes with `--force`/`-y`, which is
+   what the fleet's scheduled `clean --deep --safe -y` pass uses. `--safe` does
+   not narrow it: a session directory has no PR to be merged, exactly like the
+   log and tmux artifacts.
+
+What is removed is decided by liveness first, age second. Each session
+directory carries a `loom-session.json` record naming the harness pid (`execve`
+preserves it) and the host that wrote it:
+
+| Session state | Removed when |
+| --- | --- |
+| This host, pid alive | never — a 12-hour sweep is safe |
+| This host, pid exited | 15 minutes old (covers the record-write race) |
+| Another host's record, or no record (pre-#8663) | 6 hours old |
+| Age unreadable | never |
+
+Shared binding trees are content-keyed, so a plugin-pin bump strands the
+previous one; each carries a `.last-used` marker refreshed per launch and is
+removed after 7 idle days. Staging trees stranded by a crashed provision are
+removed on the orphan threshold.
+
+The equivalent manual sweep, for a host that cannot run `clean` (it has no
+liveness check, so run it only when no native launch is in flight):
+
+```bash
+find ~/.local/state/loom/native-tools -mindepth 2 -maxdepth 2 -type d -mmin +360 -exec rm -rf {} +
+```
 
 ## Residual limits
 

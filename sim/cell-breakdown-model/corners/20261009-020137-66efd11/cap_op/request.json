@@ -1,0 +1,353 @@
+{
+  "netlist": "body.spice",
+  "engine": "ngspice",
+  "backend": "batch",
+  "batch": {
+    "runner_version_check": "warn",
+    "capacity_wait_s": 1800
+  },
+  "measurements": [
+    {
+      "name": "i_st_s1g1_1",
+      "spice": ".meas dc i_st_s1g1_1 FIND i(vm_st_s1g1_1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b0_s1g1_1",
+      "spice": ".meas dc i_b0_s1g1_1 FIND i(vm_b0_s1g1_1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b1_s1g1_1",
+      "spice": ".meas dc i_b1_s1g1_1 FIND i(vm_b1_s1g1_1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_st_s1g1_2",
+      "spice": ".meas dc i_st_s1g1_2 FIND i(vm_st_s1g1_2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b0_s1g1_2",
+      "spice": ".meas dc i_b0_s1g1_2 FIND i(vm_b0_s1g1_2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b1_s1g1_2",
+      "spice": ".meas dc i_b1_s1g1_2 FIND i(vm_b1_s1g1_2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_st_s1g1_3",
+      "spice": ".meas dc i_st_s1g1_3 FIND i(vm_st_s1g1_3) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b0_s1g1_3",
+      "spice": ".meas dc i_b0_s1g1_3 FIND i(vm_b0_s1g1_3) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b1_s1g1_3",
+      "spice": ".meas dc i_b1_s1g1_3 FIND i(vm_b1_s1g1_3) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_st_s1g1_4",
+      "spice": ".meas dc i_st_s1g1_4 FIND i(vm_st_s1g1_4) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b0_s1g1_4",
+      "spice": ".meas dc i_b0_s1g1_4 FIND i(vm_b0_s1g1_4) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b1_s1g1_4",
+      "spice": ".meas dc i_b1_s1g1_4 FIND i(vm_b1_s1g1_4) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_st_s1g1_5",
+      "spice": ".meas dc i_st_s1g1_5 FIND i(vm_st_s1g1_5) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b0_s1g1_5",
+      "spice": ".meas dc i_b0_s1g1_5 FIND i(vm_b0_s1g1_5) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b1_s1g1_5",
+      "spice": ".meas dc i_b1_s1g1_5 FIND i(vm_b1_s1g1_5) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_st_s1g2_1",
+      "spice": ".meas dc i_st_s1g2_1 FIND i(vm_st_s1g2_1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b0_s1g2_1",
+      "spice": ".meas dc i_b0_s1g2_1 FIND i(vm_b0_s1g2_1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b1_s1g2_1",
+      "spice": ".meas dc i_b1_s1g2_1 FIND i(vm_b1_s1g2_1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_st_s1g2_2",
+      "spice": ".meas dc i_st_s1g2_2 FIND i(vm_st_s1g2_2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b0_s1g2_2",
+      "spice": ".meas dc i_b0_s1g2_2 FIND i(vm_b0_s1g2_2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b1_s1g2_2",
+      "spice": ".meas dc i_b1_s1g2_2 FIND i(vm_b1_s1g2_2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_st_s1g2_3",
+      "spice": ".meas dc i_st_s1g2_3 FIND i(vm_st_s1g2_3) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b0_s1g2_3",
+      "spice": ".meas dc i_b0_s1g2_3 FIND i(vm_b0_s1g2_3) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b1_s1g2_3",
+      "spice": ".meas dc i_b1_s1g2_3 FIND i(vm_b1_s1g2_3) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_st_s1g2_4",
+      "spice": ".meas dc i_st_s1g2_4 FIND i(vm_st_s1g2_4) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b0_s1g2_4",
+      "spice": ".meas dc i_b0_s1g2_4 FIND i(vm_b0_s1g2_4) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b1_s1g2_4",
+      "spice": ".meas dc i_b1_s1g2_4 FIND i(vm_b1_s1g2_4) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_st_s1g2_5",
+      "spice": ".meas dc i_st_s1g2_5 FIND i(vm_st_s1g2_5) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b0_s1g2_5",
+      "spice": ".meas dc i_b0_s1g2_5 FIND i(vm_b0_s1g2_5) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b1_s1g2_5",
+      "spice": ".meas dc i_b1_s1g2_5 FIND i(vm_b1_s1g2_5) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_st_s2g1_1",
+      "spice": ".meas dc i_st_s2g1_1 FIND i(vm_st_s2g1_1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b0_s2g1_1",
+      "spice": ".meas dc i_b0_s2g1_1 FIND i(vm_b0_s2g1_1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b1_s2g1_1",
+      "spice": ".meas dc i_b1_s2g1_1 FIND i(vm_b1_s2g1_1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_st_s2g1_2",
+      "spice": ".meas dc i_st_s2g1_2 FIND i(vm_st_s2g1_2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b0_s2g1_2",
+      "spice": ".meas dc i_b0_s2g1_2 FIND i(vm_b0_s2g1_2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b1_s2g1_2",
+      "spice": ".meas dc i_b1_s2g1_2 FIND i(vm_b1_s2g1_2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_st_s2g1_3",
+      "spice": ".meas dc i_st_s2g1_3 FIND i(vm_st_s2g1_3) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b0_s2g1_3",
+      "spice": ".meas dc i_b0_s2g1_3 FIND i(vm_b0_s2g1_3) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b1_s2g1_3",
+      "spice": ".meas dc i_b1_s2g1_3 FIND i(vm_b1_s2g1_3) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_st_s2g1_4",
+      "spice": ".meas dc i_st_s2g1_4 FIND i(vm_st_s2g1_4) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b0_s2g1_4",
+      "spice": ".meas dc i_b0_s2g1_4 FIND i(vm_b0_s2g1_4) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b1_s2g1_4",
+      "spice": ".meas dc i_b1_s2g1_4 FIND i(vm_b1_s2g1_4) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_st_s2g1_5",
+      "spice": ".meas dc i_st_s2g1_5 FIND i(vm_st_s2g1_5) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b0_s2g1_5",
+      "spice": ".meas dc i_b0_s2g1_5 FIND i(vm_b0_s2g1_5) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b1_s2g1_5",
+      "spice": ".meas dc i_b1_s2g1_5 FIND i(vm_b1_s2g1_5) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_st_s2g2_1",
+      "spice": ".meas dc i_st_s2g2_1 FIND i(vm_st_s2g2_1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b0_s2g2_1",
+      "spice": ".meas dc i_b0_s2g2_1 FIND i(vm_b0_s2g2_1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b1_s2g2_1",
+      "spice": ".meas dc i_b1_s2g2_1 FIND i(vm_b1_s2g2_1) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_st_s2g2_2",
+      "spice": ".meas dc i_st_s2g2_2 FIND i(vm_st_s2g2_2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b0_s2g2_2",
+      "spice": ".meas dc i_b0_s2g2_2 FIND i(vm_b0_s2g2_2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b1_s2g2_2",
+      "spice": ".meas dc i_b1_s2g2_2 FIND i(vm_b1_s2g2_2) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_st_s2g2_3",
+      "spice": ".meas dc i_st_s2g2_3 FIND i(vm_st_s2g2_3) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b0_s2g2_3",
+      "spice": ".meas dc i_b0_s2g2_3 FIND i(vm_b0_s2g2_3) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b1_s2g2_3",
+      "spice": ".meas dc i_b1_s2g2_3 FIND i(vm_b1_s2g2_3) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_st_s2g2_4",
+      "spice": ".meas dc i_st_s2g2_4 FIND i(vm_st_s2g2_4) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b0_s2g2_4",
+      "spice": ".meas dc i_b0_s2g2_4 FIND i(vm_b0_s2g2_4) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b1_s2g2_4",
+      "spice": ".meas dc i_b1_s2g2_4 FIND i(vm_b1_s2g2_4) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_st_s2g2_5",
+      "spice": ".meas dc i_st_s2g2_5 FIND i(vm_st_s2g2_5) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b0_s2g2_5",
+      "spice": ".meas dc i_b0_s2g2_5 FIND i(vm_b0_s2g2_5) AT=0.000000e+00",
+      "unit": "A"
+    },
+    {
+      "name": "i_b1_s2g2_5",
+      "spice": ".meas dc i_b1_s2g2_5 FIND i(vm_b1_s2g2_5) AT=0.000000e+00",
+      "unit": "A"
+    }
+  ],
+  "options": {
+    "timeout_s": 300,
+    "keep_artifacts": true
+  },
+  "corners": {
+    "process": [
+      {
+        "name": "moscap_typical",
+        "sections": [
+          "typical",
+          "moscap_typical"
+        ]
+      },
+      {
+        "name": "moscap_ff",
+        "sections": [
+          "typical",
+          "moscap_ff"
+        ]
+      },
+      {
+        "name": "moscap_ss",
+        "sections": [
+          "typical",
+          "moscap_ss"
+        ]
+      }
+    ],
+    "temperature_c": [
+      -40.0,
+      27.0,
+      125.0
+    ]
+  },
+  "models": {
+    "pdk": "gf180mcuD",
+    "lib": "libs.tech/ngspice/sm141064.ngspice"
+  },
+  "analysis": {
+    "kind": "dc",
+    "args": "VDMY -1 1 1"
+  }
+}

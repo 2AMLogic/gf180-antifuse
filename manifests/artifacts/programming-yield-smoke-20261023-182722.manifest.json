@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "entries": [
+    {
+      "sha256": "4e27e8ef3f8541b83a2e207dba0bc7bf6e343fd738a00736848bda6f628b2bdf",
+      "size": 856,
+      "kind": "evidence",
+      "producer": {
+        "tool": "klt",
+        "version": "0.7.1.dev2518+g5f7d2a67bd80",
+        "loom.repo": "2AMLogic/gf180-antifuse",
+        "commit": "ba1ff08cdcf9cabc4465b42233214579fd4e746f"
+      },
+      "uri": "artifact:evidence/2AMLogic__gf180-antifuse/4e/4e27e8ef3f8541b83a2e207dba0bc7bf6e343fd738a00736848bda6f628b2bdf",
+      "name": "moscap_typical_8p000V_27C_mc0/corner.cir"
+    },
+    {
+      "sha256": "602f8cecc9ac4e533b9b7aaf59168195a3c30ac4f455dee9f2512d01ffa2c375",
+      "size": 645,
+      "kind": "evidence",
+      "producer": {
+        "tool": "klt",
+        "version": "0.7.1.dev2518+g5f7d2a67bd80",
+        "loom.repo": "2AMLogic/gf180-antifuse",
+        "commit": "ba1ff08cdcf9cabc4465b42233214579fd4e746f"
+      },
+      "uri": "artifact:evidence/2AMLogic__gf180-antifuse/60/602f8cecc9ac4e533b9b7aaf59168195a3c30ac4f455dee9f2512d01ffa2c375",
+      "name": "moscap_typical_8p000V_27C_mc0/ngspice.log"
+    }
+  ]
+}

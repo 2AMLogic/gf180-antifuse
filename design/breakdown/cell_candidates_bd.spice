@@ -1,0 +1,59 @@
+* gf180-antifuse: breakdown-augmented wrappers for the three ratified cell
+* candidates (issue #62).
+*
+* WRAPS, DOES NOT EDIT OR COPY. Each cell_candidateN_bd instantiates the
+* committed, xschem-derived subcircuit design/netlists/cell_candidateN.spice
+* unchanged (as XC) and attaches the behavioral breakdown element
+* (af_breakdown.spice) across that subcircuit's internal capacitor node and
+* its PL port -- i.e. in parallel with the stock MOS capacitor XC1. The
+* internal node is reached by its hierarchical name XC.CN, which ngspice
+* resolves to the same flattened node as the cell's own CN; no device line
+* of the cell is repeated here, so the wrapper cannot drift from the
+* schematic.
+*
+* Candidate 2's nfet_10v0_asym access device keeps its ratified orientation
+* (drain -> BL, source -> CN; design/README.md) because the wrapper passes
+* BL/WL/PL/VB straight through to the unmodified subcircuit.
+*
+* Ports: identical to the stock cells -- BL WL PL VB.
+* Parameters:
+*   wcap lcap wacc lacc   forwarded unchanged; defaults are the committed
+*                         netlists' own placeholder defaults (design/README.md:
+*                         "placeholders, not design values")
+*   bden                  1 = breakdown element active, 0 = disabled (the
+*                         element is still instantiated but carries exactly
+*                         zero current -- used by the regression bench)
+*   prog                  1 = force the programmed (broken-down) state
+*   dyn                   1 = integrate damage (transient analyses only)
+*   ubd                   per-instance breakdown-time quantile, (0,1)
+*   zrf                   per-instance filament-resistance draw, in sigmas
+*
+* Include order: this file pulls in the three committed netlists, the
+* element and the parameter file by paths relative to itself. The PDK model
+* libraries (sm141064.ngspice sections, smbb000149.ngspice for Candidate 2,
+* design.ngspice's global switches) are the including deck's job, exactly as
+* for the stock cells.
+
+.include ../netlists/cell_candidate1.spice
+.include ../netlists/cell_candidate2.spice
+.include ../netlists/cell_candidate3.spice
+.include breakdown_params.spice
+.include af_breakdown.spice
+
+.subckt cell_candidate1_bd BL WL PL VB wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.70u
++ bden=1 prog=0 dyn=0 ubd=0.5 zrf=0
+XC BL WL PL VB cell_candidate1 wcap=wcap lcap=lcap wacc=wacc lacc=lacc
+XBD XC.CN PL af_breakdown en=bden prog=prog dyn=dyn ubd=ubd zrf=zrf tox=c1_bd_tox
+.ends cell_candidate1_bd
+
+.subckt cell_candidate2_bd BL WL PL VB wcap=1e-6 lcap=1e-6 wacc=25u lacc=0.60u
++ bden=1 prog=0 dyn=0 ubd=0.5 zrf=0
+XC BL WL PL VB cell_candidate2 wcap=wcap lcap=lcap wacc=wacc lacc=lacc
+XBD XC.CN PL af_breakdown en=bden prog=prog dyn=dyn ubd=ubd zrf=zrf tox=c2_bd_tox
+.ends cell_candidate2_bd
+
+.subckt cell_candidate3_bd BL WL PL VB wcap=1e-6 lcap=1e-6 wacc=0.30u lacc=0.55u
++ bden=1 prog=0 dyn=0 ubd=0.5 zrf=0
+XC BL WL PL VB cell_candidate3 wcap=wcap lcap=lcap wacc=wacc lacc=lacc
+XBD XC.CN PL af_breakdown en=bden prog=prog dyn=dyn ubd=ubd zrf=zrf tox=c3_bd_tox
+.ends cell_candidate3_bd

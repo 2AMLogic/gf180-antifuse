@@ -1,0 +1,3484 @@
+{
+  "schema_version": 3,
+  "netlist": {
+    "path": "sim/cell-device-characterization/klt/requests/c3_access-2x_cap-min/body.spice",
+    "scope": "repo"
+  },
+  "status": "pass",
+  "corner_count": 45,
+  "passed": 45,
+  "failed": 0,
+  "errored": 0,
+  "inconclusive": 0,
+  "diagnostic_counts": {
+    "by_code": {},
+    "by_severity": {},
+    "corners_with_diagnostics": 0
+  },
+  "metrics": {
+    "sim__corner__count": 45,
+    "sim__corner__passed_count": 45,
+    "sim__corner__failed_count": 0,
+    "sim__corner__errored_count": 0,
+    "sim__corner__inconclusive_count": 0
+  },
+  "environment": {
+    "engine": "ngspice",
+    "engine_version": "46",
+    "ngspice_binary": "/usr/local/bin/ngspice",
+    "engine_build": {
+      "version_banner": "******\n** ngspice-46 : Circuit level simulation program\n** Compiled with KLU Direct Linear Solver\n** The U. C. Berkeley CAD Group\n** Copyright 1985-1994, Regents of the University of California.\n** Copyright 2001-2025, The ngspice team.\n** Please get your ngspice manual from https://ngspice.sourceforge.io/docs.html\n** Please file your bug-reports at http://ngspice.sourceforge.net/bugrep.html\n** Creation Date: Thu Oct  1 23:51:59 UTC 2026\n******",
+      "binary_sha256": "dc859418bedd0478ff439a2d3e2e09f4386a7f4d5e3f17671953e101a000cc60",
+      "probe": "ok",
+      "reason": null
+    },
+    "models_lib": {
+      "path": null,
+      "scope": "external"
+    },
+    "models_lib_sha256": "f6f4a96e18fc5ad11270ad3451aaecc7ac37fc81eb61e15b0d7d94c7bc594a24",
+    "models_lib_sha256_scope": "client",
+    "netlist_sha256": "5a045ce81677f88537a1e4fd67f47bd597392ee4d6c4eb65a1e9c412f999b61a",
+    "corner_coverage": {
+      "pdk": "gf180mcuD",
+      "sections": [
+        {
+          "process": "ff",
+          "unmoved_devices": [
+            "06v0",
+            "06v0_nvt",
+            "fets_mm",
+            "noise_corner"
+          ]
+        },
+        {
+          "process": "ss",
+          "unmoved_devices": [
+            "06v0",
+            "06v0_nvt",
+            "fets_mm",
+            "noise_corner"
+          ]
+        },
+        {
+          "process": "fs",
+          "unmoved_devices": [
+            "06v0",
+            "06v0_nvt",
+            "fets_mm",
+            "noise_corner"
+          ]
+        },
+        {
+          "process": "sf",
+          "unmoved_devices": [
+            "06v0",
+            "06v0_nvt",
+            "fets_mm",
+            "noise_corner"
+          ]
+        }
+      ]
+    },
+    "netlist_closure": [
+      {
+        "path": "sim/cell-device-characterization/klt/requests/c3_access-2x_cap-min/body.spice",
+        "scope": "repo",
+        "sha256": "5a045ce81677f88537a1e4fd67f47bd597392ee4d6c4eb65a1e9c412f999b61a"
+      },
+      {
+        "path": "sim/cell-device-characterization/klt/requests/design.ngspice",
+        "scope": "repo",
+        "sha256": "091cb530bf85160a1f07878fb81f789ca367d018991c8ab41a584cd1a85c6692"
+      },
+      {
+        "path": "design/netlists/cell_candidate3.spice",
+        "scope": "repo",
+        "sha256": "9e9c8417377629212af73a547d24a5c7d618c901b24b00319fe087c764739f22"
+      }
+    ],
+    "netlist_identity": "sha256:00fe9f841550df3cfca8642baafe7dd89118599f10970f3b10e287f6f4d81c06",
+    "netlist_source": "schematic",
+    "remote": {
+      "provider": "aws-batch-fleet",
+      "job_id": "klt-sim-309493bddeb7",
+      "region": "us-east-1",
+      "instance_id": "i-0b6ecb4bd1a211058",
+      "instance_type": "c7i.4xlarge",
+      "availability_zone": "us-east-1c",
+      "ami_id": "ami-095c25ae241a4d360",
+      "lifecycle": "spot",
+      "spot": true,
+      "state": "done",
+      "exit_code": "0",
+      "concurrency": "1",
+      "physical_cores": "8",
+      "elapsed_seconds": 9,
+      "client_submitted_at": "2026-11-06T04:23:32.202782Z",
+      "client_launched_at": "2026-11-06T04:23:53.055970Z",
+      "client_status_terminal_at": "2026-11-06T04:24:24.558564Z",
+      "client_collected_at": "2026-11-06T04:24:25.398715Z",
+      "runner_klt_version": "0.9.0",
+      "client_klt_version": "0.9.0",
+      "runner_compatibility": "match",
+      "runner_request_features": {
+        "required": [
+          "options.ngspice_init"
+        ],
+        "missing": [],
+        "status": "supported"
+      },
+      "worker_environment": {
+        "capture": "ok",
+        "simulator": {
+          "requested_binary": "ngspice",
+          "binary_source": "PATH",
+          "selected_path": "/usr/local/bin/ngspice",
+          "version_banner": "******\n** ngspice-46 : Circuit level simulation program\n** Compiled with KLU Direct Linear Solver\n** The U. C. Berkeley CAD Group\n** Copyright 1985-1994, Regents of the University of California.\n** Copyright 2001-2025, The ngspice team.\n** Please get your ngspice manual from https://ngspice.sourceforge.io/docs.html\n** Please file your bug-reports at http://ngspice.sourceforge.net/bugrep.html\n** Creation Date: Thu Oct  1 23:51:59 UTC 2026\n******\n",
+          "version_probe": "ok"
+        },
+        "pdk": {
+          "variant": "gf180mcuD",
+          "root": "/opt/pdk",
+          "stamp_scheme": "sources-sha256",
+          "stamp_sha256": "4ca10280ae9f293aa1ff69f0060a52e0026929111bda881503717469b429ce67",
+          "stamp_text": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7",
+          "models_staged": false,
+          "stamp_scope": "executed"
+        },
+        "cpu_model": "Intel(R) Xeon(R) Platinum 8488C",
+        "omp_num_threads": null,
+        "image_manifest": null,
+        "model_inputs": null,
+        "diagnostics": [],
+        "pdk_stamp_comparison": {
+          "status": "not_comparable",
+          "reason": "client_stamp_unavailable"
+        },
+        "engine_build_comparison": {
+          "status": "match"
+        }
+      },
+      "runner_model_inputs": null,
+      "job_ceiling": {
+        "basis": "conservative_serial_bound",
+        "unit_count": 45,
+        "per_unit_timeout_s": 300,
+        "overhead_s": 120.0,
+        "job_bound_s": 13620.0,
+        "max_job_seconds": 3600.0,
+        "max_job_seconds_source": "fleet_config",
+        "exceeds_ceiling": true,
+        "check": "warn",
+        "max_units_per_job": 11,
+        "recommended_hosts": 5,
+        "warning": "batch job bound 13620s (options.timeout_s 300s x 45 units + 120s; a conservative fully-serial upper bound, not a runtime estimate) exceeds the fleet's whole-job ceiling of 3600s (max_job_seconds from fleet_config); a job still running at the ceiling is killed and every unit is reported batch_job_timeout. Set request.remote.hosts to at least 5 to run one job per shard of at most 11 units, each within the ceiling"
+      }
+    },
+    "engine_host": "worker",
+    "client_ngspice_binary": "/home/ubuntu/.local/bin/ngspice",
+    "backend": {
+      "resolved": "batch",
+      "source": "env",
+      "requested": "batch"
+    }
+  },
+  "coverage": {
+    "corners_simulated": 45,
+    "measurements_declared": 4,
+    "measurements_with_limits": 0,
+    "unrecognized_limit_keys": [],
+    "schema_version": 1,
+    "known": true,
+    "checked": [
+      "measurement:[0,\"typical/vbl=0.900_vwl=0.000V/-40C\",\"iim\"]/observation",
+      "measurement:[0,\"typical/vbl=0.900_vwl=0.000V/-40C\",\"ire\"]/observation",
+      "measurement:[0,\"typical/vbl=0.900_vwl=0.000V/-40C\",\"vim\"]/observation",
+      "measurement:[0,\"typical/vbl=0.900_vwl=0.000V/-40C\",\"vre\"]/observation",
+      "measurement:[1,\"typical/vbl=0.900_vwl=0.000V/27C\",\"iim\"]/observation",
+      "measurement:[1,\"typical/vbl=0.900_vwl=0.000V/27C\",\"ire\"]/observation",
+      "measurement:[1,\"typical/vbl=0.900_vwl=0.000V/27C\",\"vim\"]/observation",
+      "measurement:[1,\"typical/vbl=0.900_vwl=0.000V/27C\",\"vre\"]/observation",
+      "measurement:[10,\"ff/vbl=0.900_vwl=0.000V/27C\",\"iim\"]/observation",
+      "measurement:[10,\"ff/vbl=0.900_vwl=0.000V/27C\",\"ire\"]/observation",
+      "measurement:[10,\"ff/vbl=0.900_vwl=0.000V/27C\",\"vim\"]/observation",
+      "measurement:[10,\"ff/vbl=0.900_vwl=0.000V/27C\",\"vre\"]/observation",
+      "measurement:[11,\"ff/vbl=0.900_vwl=0.000V/125C\",\"iim\"]/observation",
+      "measurement:[11,\"ff/vbl=0.900_vwl=0.000V/125C\",\"ire\"]/observation",
+      "measurement:[11,\"ff/vbl=0.900_vwl=0.000V/125C\",\"vim\"]/observation",
+      "measurement:[11,\"ff/vbl=0.900_vwl=0.000V/125C\",\"vre\"]/observation",
+      "measurement:[12,\"ff/vbl=1.000_vwl=0.000V/-40C\",\"iim\"]/observation",
+      "measurement:[12,\"ff/vbl=1.000_vwl=0.000V/-40C\",\"ire\"]/observation",
+      "measurement:[12,\"ff/vbl=1.000_vwl=0.000V/-40C\",\"vim\"]/observation",
+      "measurement:[12,\"ff/vbl=1.000_vwl=0.000V/-40C\",\"vre\"]/observation",
+      "measurement:[13,\"ff/vbl=1.000_vwl=0.000V/27C\",\"iim\"]/observation",
+      "measurement:[13,\"ff/vbl=1.000_vwl=0.000V/27C\",\"ire\"]/observation",
+      "measurement:[13,\"ff/vbl=1.000_vwl=0.000V/27C\",\"vim\"]/observation",
+      "measurement:[13,\"ff/vbl=1.000_vwl=0.000V/27C\",\"vre\"]/observation",
+      "measurement:[14,\"ff/vbl=1.000_vwl=0.000V/125C\",\"iim\"]/observation",
+      "measurement:[14,\"ff/vbl=1.000_vwl=0.000V/125C\",\"ire\"]/observation",
+      "measurement:[14,\"ff/vbl=1.000_vwl=0.000V/125C\",\"vim\"]/observation",
+      "measurement:[14,\"ff/vbl=1.000_vwl=0.000V/125C\",\"vre\"]/observation",
+      "measurement:[15,\"ff/vbl=1.100_vwl=0.000V/-40C\",\"iim\"]/observation",
+      "measurement:[15,\"ff/vbl=1.100_vwl=0.000V/-40C\",\"ire\"]/observation",
+      "measurement:[15,\"ff/vbl=1.100_vwl=0.000V/-40C\",\"vim\"]/observation",
+      "measurement:[15,\"ff/vbl=1.100_vwl=0.000V/-40C\",\"vre\"]/observation",
+      "measurement:[16,\"ff/vbl=1.100_vwl=0.000V/27C\",\"iim\"]/observation",
+      "measurement:[16,\"ff/vbl=1.100_vwl=0.000V/27C\",\"ire\"]/observation",
+      "measurement:[16,\"ff/vbl=1.100_vwl=0.000V/27C\",\"vim\"]/observation",
+      "measurement:[16,\"ff/vbl=1.100_vwl=0.000V/27C\",\"vre\"]/observation",
+      "measurement:[17,\"ff/vbl=1.100_vwl=0.000V/125C\",\"iim\"]/observation",
+      "measurement:[17,\"ff/vbl=1.100_vwl=0.000V/125C\",\"ire\"]/observation",
+      "measurement:[17,\"ff/vbl=1.100_vwl=0.000V/125C\",\"vim\"]/observation",
+      "measurement:[17,\"ff/vbl=1.100_vwl=0.000V/125C\",\"vre\"]/observation",
+      "measurement:[18,\"ss/vbl=0.900_vwl=0.000V/-40C\",\"iim\"]/observation",
+      "measurement:[18,\"ss/vbl=0.900_vwl=0.000V/-40C\",\"ire\"]/observation",
+      "measurement:[18,\"ss/vbl=0.900_vwl=0.000V/-40C\",\"vim\"]/observation",
+      "measurement:[18,\"ss/vbl=0.900_vwl=0.000V/-40C\",\"vre\"]/observation",
+      "measurement:[19,\"ss/vbl=0.900_vwl=0.000V/27C\",\"iim\"]/observation",
+      "measurement:[19,\"ss/vbl=0.900_vwl=0.000V/27C\",\"ire\"]/observation",
+      "measurement:[19,\"ss/vbl=0.900_vwl=0.000V/27C\",\"vim\"]/observation",
+      "measurement:[19,\"ss/vbl=0.900_vwl=0.000V/27C\",\"vre\"]/observation",
+      "measurement:[2,\"typical/vbl=0.900_vwl=0.000V/125C\",\"iim\"]/observation",
+      "measurement:[2,\"typical/vbl=0.900_vwl=0.000V/125C\",\"ire\"]/observation",
+      "measurement:[2,\"typical/vbl=0.900_vwl=0.000V/125C\",\"vim\"]/observation",
+      "measurement:[2,\"typical/vbl=0.900_vwl=0.000V/125C\",\"vre\"]/observation",
+      "measurement:[20,\"ss/vbl=0.900_vwl=0.000V/125C\",\"iim\"]/observation",
+      "measurement:[20,\"ss/vbl=0.900_vwl=0.000V/125C\",\"ire\"]/observation",
+      "measurement:[20,\"ss/vbl=0.900_vwl=0.000V/125C\",\"vim\"]/observation",
+      "measurement:[20,\"ss/vbl=0.900_vwl=0.000V/125C\",\"vre\"]/observation",
+      "measurement:[21,\"ss/vbl=1.000_vwl=0.000V/-40C\",\"iim\"]/observation",
+      "measurement:[21,\"ss/vbl=1.000_vwl=0.000V/-40C\",\"ire\"]/observation",
+      "measurement:[21,\"ss/vbl=1.000_vwl=0.000V/-40C\",\"vim\"]/observation",
+      "measurement:[21,\"ss/vbl=1.000_vwl=0.000V/-40C\",\"vre\"]/observation",
+      "measurement:[22,\"ss/vbl=1.000_vwl=0.000V/27C\",\"iim\"]/observation",
+      "measurement:[22,\"ss/vbl=1.000_vwl=0.000V/27C\",\"ire\"]/observation",
+      "measurement:[22,\"ss/vbl=1.000_vwl=0.000V/27C\",\"vim\"]/observation",
+      "measurement:[22,\"ss/vbl=1.000_vwl=0.000V/27C\",\"vre\"]/observation",
+      "measurement:[23,\"ss/vbl=1.000_vwl=0.000V/125C\",\"iim\"]/observation",
+      "measurement:[23,\"ss/vbl=1.000_vwl=0.000V/125C\",\"ire\"]/observation",
+      "measurement:[23,\"ss/vbl=1.000_vwl=0.000V/125C\",\"vim\"]/observation",
+      "measurement:[23,\"ss/vbl=1.000_vwl=0.000V/125C\",\"vre\"]/observation",
+      "measurement:[24,\"ss/vbl=1.100_vwl=0.000V/-40C\",\"iim\"]/observation",
+      "measurement:[24,\"ss/vbl=1.100_vwl=0.000V/-40C\",\"ire\"]/observation",
+      "measurement:[24,\"ss/vbl=1.100_vwl=0.000V/-40C\",\"vim\"]/observation",
+      "measurement:[24,\"ss/vbl=1.100_vwl=0.000V/-40C\",\"vre\"]/observation",
+      "measurement:[25,\"ss/vbl=1.100_vwl=0.000V/27C\",\"iim\"]/observation",
+      "measurement:[25,\"ss/vbl=1.100_vwl=0.000V/27C\",\"ire\"]/observation",
+      "measurement:[25,\"ss/vbl=1.100_vwl=0.000V/27C\",\"vim\"]/observation",
+      "measurement:[25,\"ss/vbl=1.100_vwl=0.000V/27C\",\"vre\"]/observation",
+      "measurement:[26,\"ss/vbl=1.100_vwl=0.000V/125C\",\"iim\"]/observation",
+      "measurement:[26,\"ss/vbl=1.100_vwl=0.000V/125C\",\"ire\"]/observation",
+      "measurement:[26,\"ss/vbl=1.100_vwl=0.000V/125C\",\"vim\"]/observation",
+      "measurement:[26,\"ss/vbl=1.100_vwl=0.000V/125C\",\"vre\"]/observation",
+      "measurement:[27,\"fs/vbl=0.900_vwl=0.000V/-40C\",\"iim\"]/observation",
+      "measurement:[27,\"fs/vbl=0.900_vwl=0.000V/-40C\",\"ire\"]/observation",
+      "measurement:[27,\"fs/vbl=0.900_vwl=0.000V/-40C\",\"vim\"]/observation",
+      "measurement:[27,\"fs/vbl=0.900_vwl=0.000V/-40C\",\"vre\"]/observation",
+      "measurement:[28,\"fs/vbl=0.900_vwl=0.000V/27C\",\"iim\"]/observation",
+      "measurement:[28,\"fs/vbl=0.900_vwl=0.000V/27C\",\"ire\"]/observation",
+      "measurement:[28,\"fs/vbl=0.900_vwl=0.000V/27C\",\"vim\"]/observation",
+      "measurement:[28,\"fs/vbl=0.900_vwl=0.000V/27C\",\"vre\"]/observation",
+      "measurement:[29,\"fs/vbl=0.900_vwl=0.000V/125C\",\"iim\"]/observation",
+      "measurement:[29,\"fs/vbl=0.900_vwl=0.000V/125C\",\"ire\"]/observation",
+      "measurement:[29,\"fs/vbl=0.900_vwl=0.000V/125C\",\"vim\"]/observation",
+      "measurement:[29,\"fs/vbl=0.900_vwl=0.000V/125C\",\"vre\"]/observation",
+      "measurement:[3,\"typical/vbl=1.000_vwl=0.000V/-40C\",\"iim\"]/observation",
+      "measurement:[3,\"typical/vbl=1.000_vwl=0.000V/-40C\",\"ire\"]/observation",
+      "measurement:[3,\"typical/vbl=1.000_vwl=0.000V/-40C\",\"vim\"]/observation",
+      "measurement:[3,\"typical/vbl=1.000_vwl=0.000V/-40C\",\"vre\"]/observation",
+      "measurement:[30,\"fs/vbl=1.000_vwl=0.000V/-40C\",\"iim\"]/observation",
+      "measurement:[30,\"fs/vbl=1.000_vwl=0.000V/-40C\",\"ire\"]/observation",
+      "measurement:[30,\"fs/vbl=1.000_vwl=0.000V/-40C\",\"vim\"]/observation",
+      "measurement:[30,\"fs/vbl=1.000_vwl=0.000V/-40C\",\"vre\"]/observation",
+      "measurement:[31,\"fs/vbl=1.000_vwl=0.000V/27C\",\"iim\"]/observation",
+      "measurement:[31,\"fs/vbl=1.000_vwl=0.000V/27C\",\"ire\"]/observation",
+      "measurement:[31,\"fs/vbl=1.000_vwl=0.000V/27C\",\"vim\"]/observation",
+      "measurement:[31,\"fs/vbl=1.000_vwl=0.000V/27C\",\"vre\"]/observation",
+      "measurement:[32,\"fs/vbl=1.000_vwl=0.000V/125C\",\"iim\"]/observation",
+      "measurement:[32,\"fs/vbl=1.000_vwl=0.000V/125C\",\"ire\"]/observation",
+      "measurement:[32,\"fs/vbl=1.000_vwl=0.000V/125C\",\"vim\"]/observation",
+      "measurement:[32,\"fs/vbl=1.000_vwl=0.000V/125C\",\"vre\"]/observation",
+      "measurement:[33,\"fs/vbl=1.100_vwl=0.000V/-40C\",\"iim\"]/observation",
+      "measurement:[33,\"fs/vbl=1.100_vwl=0.000V/-40C\",\"ire\"]/observation",
+      "measurement:[33,\"fs/vbl=1.100_vwl=0.000V/-40C\",\"vim\"]/observation",
+      "measurement:[33,\"fs/vbl=1.100_vwl=0.000V/-40C\",\"vre\"]/observation",
+      "measurement:[34,\"fs/vbl=1.100_vwl=0.000V/27C\",\"iim\"]/observation",
+      "measurement:[34,\"fs/vbl=1.100_vwl=0.000V/27C\",\"ire\"]/observation",
+      "measurement:[34,\"fs/vbl=1.100_vwl=0.000V/27C\",\"vim\"]/observation",
+      "measurement:[34,\"fs/vbl=1.100_vwl=0.000V/27C\",\"vre\"]/observation",
+      "measurement:[35,\"fs/vbl=1.100_vwl=0.000V/125C\",\"iim\"]/observation",
+      "measurement:[35,\"fs/vbl=1.100_vwl=0.000V/125C\",\"ire\"]/observation",
+      "measurement:[35,\"fs/vbl=1.100_vwl=0.000V/125C\",\"vim\"]/observation",
+      "measurement:[35,\"fs/vbl=1.100_vwl=0.000V/125C\",\"vre\"]/observation",
+      "measurement:[36,\"sf/vbl=0.900_vwl=0.000V/-40C\",\"iim\"]/observation",
+      "measurement:[36,\"sf/vbl=0.900_vwl=0.000V/-40C\",\"ire\"]/observation",
+      "measurement:[36,\"sf/vbl=0.900_vwl=0.000V/-40C\",\"vim\"]/observation",
+      "measurement:[36,\"sf/vbl=0.900_vwl=0.000V/-40C\",\"vre\"]/observation",
+      "measurement:[37,\"sf/vbl=0.900_vwl=0.000V/27C\",\"iim\"]/observation",
+      "measurement:[37,\"sf/vbl=0.900_vwl=0.000V/27C\",\"ire\"]/observation",
+      "measurement:[37,\"sf/vbl=0.900_vwl=0.000V/27C\",\"vim\"]/observation",
+      "measurement:[37,\"sf/vbl=0.900_vwl=0.000V/27C\",\"vre\"]/observation",
+      "measurement:[38,\"sf/vbl=0.900_vwl=0.000V/125C\",\"iim\"]/observation",
+      "measurement:[38,\"sf/vbl=0.900_vwl=0.000V/125C\",\"ire\"]/observation",
+      "measurement:[38,\"sf/vbl=0.900_vwl=0.000V/125C\",\"vim\"]/observation",
+      "measurement:[38,\"sf/vbl=0.900_vwl=0.000V/125C\",\"vre\"]/observation",
+      "measurement:[39,\"sf/vbl=1.000_vwl=0.000V/-40C\",\"iim\"]/observation",
+      "measurement:[39,\"sf/vbl=1.000_vwl=0.000V/-40C\",\"ire\"]/observation",
+      "measurement:[39,\"sf/vbl=1.000_vwl=0.000V/-40C\",\"vim\"]/observation",
+      "measurement:[39,\"sf/vbl=1.000_vwl=0.000V/-40C\",\"vre\"]/observation",
+      "measurement:[4,\"typical/vbl=1.000_vwl=0.000V/27C\",\"iim\"]/observation",
+      "measurement:[4,\"typical/vbl=1.000_vwl=0.000V/27C\",\"ire\"]/observation",
+      "measurement:[4,\"typical/vbl=1.000_vwl=0.000V/27C\",\"vim\"]/observation",
+      "measurement:[4,\"typical/vbl=1.000_vwl=0.000V/27C\",\"vre\"]/observation",
+      "measurement:[40,\"sf/vbl=1.000_vwl=0.000V/27C\",\"iim\"]/observation",
+      "measurement:[40,\"sf/vbl=1.000_vwl=0.000V/27C\",\"ire\"]/observation",
+      "measurement:[40,\"sf/vbl=1.000_vwl=0.000V/27C\",\"vim\"]/observation",
+      "measurement:[40,\"sf/vbl=1.000_vwl=0.000V/27C\",\"vre\"]/observation",
+      "measurement:[41,\"sf/vbl=1.000_vwl=0.000V/125C\",\"iim\"]/observation",
+      "measurement:[41,\"sf/vbl=1.000_vwl=0.000V/125C\",\"ire\"]/observation",
+      "measurement:[41,\"sf/vbl=1.000_vwl=0.000V/125C\",\"vim\"]/observation",
+      "measurement:[41,\"sf/vbl=1.000_vwl=0.000V/125C\",\"vre\"]/observation",
+      "measurement:[42,\"sf/vbl=1.100_vwl=0.000V/-40C\",\"iim\"]/observation",
+      "measurement:[42,\"sf/vbl=1.100_vwl=0.000V/-40C\",\"ire\"]/observation",
+      "measurement:[42,\"sf/vbl=1.100_vwl=0.000V/-40C\",\"vim\"]/observation",
+      "measurement:[42,\"sf/vbl=1.100_vwl=0.000V/-40C\",\"vre\"]/observation",
+      "measurement:[43,\"sf/vbl=1.100_vwl=0.000V/27C\",\"iim\"]/observation",
+      "measurement:[43,\"sf/vbl=1.100_vwl=0.000V/27C\",\"ire\"]/observation",
+      "measurement:[43,\"sf/vbl=1.100_vwl=0.000V/27C\",\"vim\"]/observation",
+      "measurement:[43,\"sf/vbl=1.100_vwl=0.000V/27C\",\"vre\"]/observation",
+      "measurement:[44,\"sf/vbl=1.100_vwl=0.000V/125C\",\"iim\"]/observation",
+      "measurement:[44,\"sf/vbl=1.100_vwl=0.000V/125C\",\"ire\"]/observation",
+      "measurement:[44,\"sf/vbl=1.100_vwl=0.000V/125C\",\"vim\"]/observation",
+      "measurement:[44,\"sf/vbl=1.100_vwl=0.000V/125C\",\"vre\"]/observation",
+      "measurement:[5,\"typical/vbl=1.000_vwl=0.000V/125C\",\"iim\"]/observation",
+      "measurement:[5,\"typical/vbl=1.000_vwl=0.000V/125C\",\"ire\"]/observation",
+      "measurement:[5,\"typical/vbl=1.000_vwl=0.000V/125C\",\"vim\"]/observation",
+      "measurement:[5,\"typical/vbl=1.000_vwl=0.000V/125C\",\"vre\"]/observation",
+      "measurement:[6,\"typical/vbl=1.100_vwl=0.000V/-40C\",\"iim\"]/observation",
+      "measurement:[6,\"typical/vbl=1.100_vwl=0.000V/-40C\",\"ire\"]/observation",
+      "measurement:[6,\"typical/vbl=1.100_vwl=0.000V/-40C\",\"vim\"]/observation",
+      "measurement:[6,\"typical/vbl=1.100_vwl=0.000V/-40C\",\"vre\"]/observation",
+      "measurement:[7,\"typical/vbl=1.100_vwl=0.000V/27C\",\"iim\"]/observation",
+      "measurement:[7,\"typical/vbl=1.100_vwl=0.000V/27C\",\"ire\"]/observation",
+      "measurement:[7,\"typical/vbl=1.100_vwl=0.000V/27C\",\"vim\"]/observation",
+      "measurement:[7,\"typical/vbl=1.100_vwl=0.000V/27C\",\"vre\"]/observation",
+      "measurement:[8,\"typical/vbl=1.100_vwl=0.000V/125C\",\"iim\"]/observation",
+      "measurement:[8,\"typical/vbl=1.100_vwl=0.000V/125C\",\"ire\"]/observation",
+      "measurement:[8,\"typical/vbl=1.100_vwl=0.000V/125C\",\"vim\"]/observation",
+      "measurement:[8,\"typical/vbl=1.100_vwl=0.000V/125C\",\"vre\"]/observation",
+      "measurement:[9,\"ff/vbl=0.900_vwl=0.000V/-40C\",\"iim\"]/observation",
+      "measurement:[9,\"ff/vbl=0.900_vwl=0.000V/-40C\",\"ire\"]/observation",
+      "measurement:[9,\"ff/vbl=0.900_vwl=0.000V/-40C\",\"vim\"]/observation",
+      "measurement:[9,\"ff/vbl=0.900_vwl=0.000V/-40C\",\"vre\"]/observation"
+    ],
+    "skipped": [],
+    "inapplicable": [
+      {
+        "id": "measurement:[0,\"typical/vbl=0.900_vwl=0.000V/-40C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"typical/vbl=0.900_vwl=0.000V/-40C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"typical/vbl=0.900_vwl=0.000V/-40C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"typical/vbl=0.900_vwl=0.000V/-40C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"typical/vbl=0.900_vwl=0.000V/27C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"typical/vbl=0.900_vwl=0.000V/27C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"typical/vbl=0.900_vwl=0.000V/27C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"typical/vbl=0.900_vwl=0.000V/27C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[10,\"ff/vbl=0.900_vwl=0.000V/27C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[10,\"ff/vbl=0.900_vwl=0.000V/27C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[10,\"ff/vbl=0.900_vwl=0.000V/27C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[10,\"ff/vbl=0.900_vwl=0.000V/27C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[11,\"ff/vbl=0.900_vwl=0.000V/125C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[11,\"ff/vbl=0.900_vwl=0.000V/125C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[11,\"ff/vbl=0.900_vwl=0.000V/125C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[11,\"ff/vbl=0.900_vwl=0.000V/125C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[12,\"ff/vbl=1.000_vwl=0.000V/-40C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[12,\"ff/vbl=1.000_vwl=0.000V/-40C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[12,\"ff/vbl=1.000_vwl=0.000V/-40C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[12,\"ff/vbl=1.000_vwl=0.000V/-40C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[13,\"ff/vbl=1.000_vwl=0.000V/27C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[13,\"ff/vbl=1.000_vwl=0.000V/27C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[13,\"ff/vbl=1.000_vwl=0.000V/27C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[13,\"ff/vbl=1.000_vwl=0.000V/27C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[14,\"ff/vbl=1.000_vwl=0.000V/125C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[14,\"ff/vbl=1.000_vwl=0.000V/125C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[14,\"ff/vbl=1.000_vwl=0.000V/125C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[14,\"ff/vbl=1.000_vwl=0.000V/125C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[15,\"ff/vbl=1.100_vwl=0.000V/-40C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[15,\"ff/vbl=1.100_vwl=0.000V/-40C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[15,\"ff/vbl=1.100_vwl=0.000V/-40C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[15,\"ff/vbl=1.100_vwl=0.000V/-40C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[16,\"ff/vbl=1.100_vwl=0.000V/27C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[16,\"ff/vbl=1.100_vwl=0.000V/27C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[16,\"ff/vbl=1.100_vwl=0.000V/27C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[16,\"ff/vbl=1.100_vwl=0.000V/27C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[17,\"ff/vbl=1.100_vwl=0.000V/125C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[17,\"ff/vbl=1.100_vwl=0.000V/125C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[17,\"ff/vbl=1.100_vwl=0.000V/125C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[17,\"ff/vbl=1.100_vwl=0.000V/125C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[18,\"ss/vbl=0.900_vwl=0.000V/-40C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[18,\"ss/vbl=0.900_vwl=0.000V/-40C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[18,\"ss/vbl=0.900_vwl=0.000V/-40C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[18,\"ss/vbl=0.900_vwl=0.000V/-40C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[19,\"ss/vbl=0.900_vwl=0.000V/27C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[19,\"ss/vbl=0.900_vwl=0.000V/27C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[19,\"ss/vbl=0.900_vwl=0.000V/27C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[19,\"ss/vbl=0.900_vwl=0.000V/27C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"typical/vbl=0.900_vwl=0.000V/125C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"typical/vbl=0.900_vwl=0.000V/125C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"typical/vbl=0.900_vwl=0.000V/125C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"typical/vbl=0.900_vwl=0.000V/125C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[20,\"ss/vbl=0.900_vwl=0.000V/125C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[20,\"ss/vbl=0.900_vwl=0.000V/125C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[20,\"ss/vbl=0.900_vwl=0.000V/125C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[20,\"ss/vbl=0.900_vwl=0.000V/125C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[21,\"ss/vbl=1.000_vwl=0.000V/-40C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[21,\"ss/vbl=1.000_vwl=0.000V/-40C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[21,\"ss/vbl=1.000_vwl=0.000V/-40C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[21,\"ss/vbl=1.000_vwl=0.000V/-40C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[22,\"ss/vbl=1.000_vwl=0.000V/27C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[22,\"ss/vbl=1.000_vwl=0.000V/27C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[22,\"ss/vbl=1.000_vwl=0.000V/27C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[22,\"ss/vbl=1.000_vwl=0.000V/27C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[23,\"ss/vbl=1.000_vwl=0.000V/125C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[23,\"ss/vbl=1.000_vwl=0.000V/125C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[23,\"ss/vbl=1.000_vwl=0.000V/125C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[23,\"ss/vbl=1.000_vwl=0.000V/125C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[24,\"ss/vbl=1.100_vwl=0.000V/-40C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[24,\"ss/vbl=1.100_vwl=0.000V/-40C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[24,\"ss/vbl=1.100_vwl=0.000V/-40C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[24,\"ss/vbl=1.100_vwl=0.000V/-40C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[25,\"ss/vbl=1.100_vwl=0.000V/27C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[25,\"ss/vbl=1.100_vwl=0.000V/27C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[25,\"ss/vbl=1.100_vwl=0.000V/27C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[25,\"ss/vbl=1.100_vwl=0.000V/27C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[26,\"ss/vbl=1.100_vwl=0.000V/125C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[26,\"ss/vbl=1.100_vwl=0.000V/125C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[26,\"ss/vbl=1.100_vwl=0.000V/125C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[26,\"ss/vbl=1.100_vwl=0.000V/125C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[27,\"fs/vbl=0.900_vwl=0.000V/-40C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[27,\"fs/vbl=0.900_vwl=0.000V/-40C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[27,\"fs/vbl=0.900_vwl=0.000V/-40C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[27,\"fs/vbl=0.900_vwl=0.000V/-40C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[28,\"fs/vbl=0.900_vwl=0.000V/27C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[28,\"fs/vbl=0.900_vwl=0.000V/27C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[28,\"fs/vbl=0.900_vwl=0.000V/27C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[28,\"fs/vbl=0.900_vwl=0.000V/27C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[29,\"fs/vbl=0.900_vwl=0.000V/125C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[29,\"fs/vbl=0.900_vwl=0.000V/125C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[29,\"fs/vbl=0.900_vwl=0.000V/125C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[29,\"fs/vbl=0.900_vwl=0.000V/125C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"typical/vbl=1.000_vwl=0.000V/-40C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"typical/vbl=1.000_vwl=0.000V/-40C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"typical/vbl=1.000_vwl=0.000V/-40C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"typical/vbl=1.000_vwl=0.000V/-40C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[30,\"fs/vbl=1.000_vwl=0.000V/-40C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[30,\"fs/vbl=1.000_vwl=0.000V/-40C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[30,\"fs/vbl=1.000_vwl=0.000V/-40C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[30,\"fs/vbl=1.000_vwl=0.000V/-40C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[31,\"fs/vbl=1.000_vwl=0.000V/27C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[31,\"fs/vbl=1.000_vwl=0.000V/27C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[31,\"fs/vbl=1.000_vwl=0.000V/27C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[31,\"fs/vbl=1.000_vwl=0.000V/27C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[32,\"fs/vbl=1.000_vwl=0.000V/125C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[32,\"fs/vbl=1.000_vwl=0.000V/125C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[32,\"fs/vbl=1.000_vwl=0.000V/125C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[32,\"fs/vbl=1.000_vwl=0.000V/125C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[33,\"fs/vbl=1.100_vwl=0.000V/-40C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[33,\"fs/vbl=1.100_vwl=0.000V/-40C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[33,\"fs/vbl=1.100_vwl=0.000V/-40C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[33,\"fs/vbl=1.100_vwl=0.000V/-40C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[34,\"fs/vbl=1.100_vwl=0.000V/27C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[34,\"fs/vbl=1.100_vwl=0.000V/27C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[34,\"fs/vbl=1.100_vwl=0.000V/27C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[34,\"fs/vbl=1.100_vwl=0.000V/27C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[35,\"fs/vbl=1.100_vwl=0.000V/125C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[35,\"fs/vbl=1.100_vwl=0.000V/125C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[35,\"fs/vbl=1.100_vwl=0.000V/125C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[35,\"fs/vbl=1.100_vwl=0.000V/125C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[36,\"sf/vbl=0.900_vwl=0.000V/-40C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[36,\"sf/vbl=0.900_vwl=0.000V/-40C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[36,\"sf/vbl=0.900_vwl=0.000V/-40C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[36,\"sf/vbl=0.900_vwl=0.000V/-40C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[37,\"sf/vbl=0.900_vwl=0.000V/27C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[37,\"sf/vbl=0.900_vwl=0.000V/27C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[37,\"sf/vbl=0.900_vwl=0.000V/27C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[37,\"sf/vbl=0.900_vwl=0.000V/27C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[38,\"sf/vbl=0.900_vwl=0.000V/125C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[38,\"sf/vbl=0.900_vwl=0.000V/125C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[38,\"sf/vbl=0.900_vwl=0.000V/125C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[38,\"sf/vbl=0.900_vwl=0.000V/125C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[39,\"sf/vbl=1.000_vwl=0.000V/-40C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[39,\"sf/vbl=1.000_vwl=0.000V/-40C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[39,\"sf/vbl=1.000_vwl=0.000V/-40C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[39,\"sf/vbl=1.000_vwl=0.000V/-40C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"typical/vbl=1.000_vwl=0.000V/27C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"typical/vbl=1.000_vwl=0.000V/27C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"typical/vbl=1.000_vwl=0.000V/27C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"typical/vbl=1.000_vwl=0.000V/27C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[40,\"sf/vbl=1.000_vwl=0.000V/27C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[40,\"sf/vbl=1.000_vwl=0.000V/27C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[40,\"sf/vbl=1.000_vwl=0.000V/27C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[40,\"sf/vbl=1.000_vwl=0.000V/27C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[41,\"sf/vbl=1.000_vwl=0.000V/125C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[41,\"sf/vbl=1.000_vwl=0.000V/125C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[41,\"sf/vbl=1.000_vwl=0.000V/125C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[41,\"sf/vbl=1.000_vwl=0.000V/125C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[42,\"sf/vbl=1.100_vwl=0.000V/-40C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[42,\"sf/vbl=1.100_vwl=0.000V/-40C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[42,\"sf/vbl=1.100_vwl=0.000V/-40C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[42,\"sf/vbl=1.100_vwl=0.000V/-40C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[43,\"sf/vbl=1.100_vwl=0.000V/27C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[43,\"sf/vbl=1.100_vwl=0.000V/27C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[43,\"sf/vbl=1.100_vwl=0.000V/27C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[43,\"sf/vbl=1.100_vwl=0.000V/27C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[44,\"sf/vbl=1.100_vwl=0.000V/125C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[44,\"sf/vbl=1.100_vwl=0.000V/125C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[44,\"sf/vbl=1.100_vwl=0.000V/125C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[44,\"sf/vbl=1.100_vwl=0.000V/125C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"typical/vbl=1.000_vwl=0.000V/125C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"typical/vbl=1.000_vwl=0.000V/125C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"typical/vbl=1.000_vwl=0.000V/125C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"typical/vbl=1.000_vwl=0.000V/125C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"typical/vbl=1.100_vwl=0.000V/-40C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"typical/vbl=1.100_vwl=0.000V/-40C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"typical/vbl=1.100_vwl=0.000V/-40C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"typical/vbl=1.100_vwl=0.000V/-40C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"typical/vbl=1.100_vwl=0.000V/27C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"typical/vbl=1.100_vwl=0.000V/27C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"typical/vbl=1.100_vwl=0.000V/27C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"typical/vbl=1.100_vwl=0.000V/27C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"typical/vbl=1.100_vwl=0.000V/125C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"typical/vbl=1.100_vwl=0.000V/125C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"typical/vbl=1.100_vwl=0.000V/125C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"typical/vbl=1.100_vwl=0.000V/125C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[9,\"ff/vbl=0.900_vwl=0.000V/-40C\",\"iim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[9,\"ff/vbl=0.900_vwl=0.000V/-40C\",\"ire\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[9,\"ff/vbl=0.900_vwl=0.000V/-40C\",\"vim\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[9,\"ff/vbl=0.900_vwl=0.000V/-40C\",\"vre\"]/limits",
+        "reason": "characterization_without_limits"
+      }
+    ],
+    "unknown": [],
+    "nothing_checked": false,
+    "nothing_checked_reasons": []
+  },
+  "provenance": {
+    "klt_version": "0.9.0",
+    "klt_git_commit": "5dbbad05ff42265c92a6f3d2f20d1bbcd2957d49",
+    "klt_reinstall_spec": "klayout-tools==0.9.0",
+    "klayout_version": "0.30.13",
+    "pdk": {
+      "name": "gf180mcuD",
+      "source": "search root: ~/.ciel",
+      "version": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7",
+      "ambiguous_sources": [
+        "search root: ~/.volare"
+      ]
+    },
+    "deck": {
+      "name": "sm141064.ngspice",
+      "content_hash": "sha256:f6f4a96e18fc5ad11270ad3451aaecc7ac37fc81eb61e15b0d7d94c7bc594a24",
+      "released": false
+    },
+    "input": {
+      "content_hash": "sha256:5a045ce81677f88537a1e4fd67f47bd597392ee4d6c4eb65a1e9c412f999b61a",
+      "role": "netlist"
+    }
+  },
+  "measurements": [
+    {
+      "name": "ire",
+      "unit": "A",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "typical/vbl=0.900_vwl=0.000V/-40C",
+        "value": -2.907119e-13,
+        "margin": null
+      }
+    },
+    {
+      "name": "iim",
+      "unit": "A",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "typical/vbl=0.900_vwl=0.000V/-40C",
+        "value": -2.5158619e-08,
+        "margin": null
+      }
+    },
+    {
+      "name": "vre",
+      "unit": "V",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "typical/vbl=0.900_vwl=0.000V/-40C",
+        "value": 1.0,
+        "margin": null
+      }
+    },
+    {
+      "name": "vim",
+      "unit": "V",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "typical/vbl=0.900_vwl=0.000V/-40C",
+        "value": 0.0,
+        "margin": null
+      }
+    }
+  ],
+  "corners": [
+    {
+      "corner_id": "typical/vbl=0.900_vwl=0.000V/-40C",
+      "process": "typical",
+      "supply_v": {
+        "vbl": 0.9,
+        "vwl": 0.0
+      },
+      "temperature_c": -40,
+      "status": "pass",
+      "runtime_s": 0.227,
+      "peak_rss_bytes": 49954816,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -2.907119e-13,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.5158619e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "typical/vbl=0.900_vwl=0.000V/27C",
+      "process": "typical",
+      "supply_v": {
+        "vbl": 0.9,
+        "vwl": 0.0
+      },
+      "temperature_c": 27,
+      "status": "pass",
+      "runtime_s": 0.228,
+      "peak_rss_bytes": 49954816,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -3.0209169e-13,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.5838404e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "typical/vbl=0.900_vwl=0.000V/125C",
+      "process": "typical",
+      "supply_v": {
+        "vbl": 0.9,
+        "vwl": 0.0
+      },
+      "temperature_c": 125,
+      "status": "pass",
+      "runtime_s": 0.222,
+      "peak_rss_bytes": 49954816,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -1.5097146e-11,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.6588222e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "typical/vbl=1.000_vwl=0.000V/-40C",
+      "process": "typical",
+      "supply_v": {
+        "vbl": 1.0,
+        "vwl": 0.0
+      },
+      "temperature_c": -40,
+      "status": "pass",
+      "runtime_s": 0.218,
+      "peak_rss_bytes": 49954816,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -3.1802339e-13,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.5301343e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "typical/vbl=1.000_vwl=0.000V/27C",
+      "process": "typical",
+      "supply_v": {
+        "vbl": 1.0,
+        "vwl": 0.0
+      },
+      "temperature_c": 27,
+      "status": "pass",
+      "runtime_s": 0.224,
+      "peak_rss_bytes": 49954816,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -2.5498492e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.5991412e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "typical/vbl=1.000_vwl=0.000V/125C",
+      "process": "typical",
+      "supply_v": {
+        "vbl": 1.0,
+        "vwl": 0.0
+      },
+      "temperature_c": 125,
+      "status": "pass",
+      "runtime_s": 0.218,
+      "peak_rss_bytes": 49954816,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -2.2689572e-10,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.6764618e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "typical/vbl=1.100_vwl=0.000V/-40C",
+      "process": "typical",
+      "supply_v": {
+        "vbl": 1.1,
+        "vwl": 0.0
+      },
+      "temperature_c": -40,
+      "status": "pass",
+      "runtime_s": 0.216,
+      "peak_rss_bytes": 49954816,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -1.2859713e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.544982e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "typical/vbl=1.100_vwl=0.000V/27C",
+      "process": "typical",
+      "supply_v": {
+        "vbl": 1.1,
+        "vwl": 0.0
+      },
+      "temperature_c": 27,
+      "status": "pass",
+      "runtime_s": 0.219,
+      "peak_rss_bytes": 49954816,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -9.2484687e-11,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.6152301e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "typical/vbl=1.100_vwl=0.000V/125C",
+      "process": "typical",
+      "supply_v": {
+        "vbl": 1.1,
+        "vwl": 0.0
+      },
+      "temperature_c": 125,
+      "status": "pass",
+      "runtime_s": 0.067,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -3.5599612e-09,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.7515914e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ff/vbl=0.900_vwl=0.000V/-40C",
+      "process": "ff",
+      "supply_v": {
+        "vbl": 0.9,
+        "vwl": 0.0
+      },
+      "temperature_c": -40,
+      "status": "pass",
+      "runtime_s": 0.068,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -3.992362e-13,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.5484512e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ff/vbl=0.900_vwl=0.000V/27C",
+      "process": "ff",
+      "supply_v": {
+        "vbl": 0.9,
+        "vwl": 0.0
+      },
+      "temperature_c": 27,
+      "status": "pass",
+      "runtime_s": 0.067,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -3.8766768e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.6169183e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ff/vbl=0.900_vwl=0.000V/125C",
+      "process": "ff",
+      "supply_v": {
+        "vbl": 0.9,
+        "vwl": 0.0
+      },
+      "temperature_c": 125,
+      "status": "pass",
+      "runtime_s": 0.068,
+      "peak_rss_bytes": 50085888,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -3.1002922e-10,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.693604e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ff/vbl=1.000_vwl=0.000V/-40C",
+      "process": "ff",
+      "supply_v": {
+        "vbl": 1.0,
+        "vwl": 0.0
+      },
+      "temperature_c": -40,
+      "status": "pass",
+      "runtime_s": 0.071,
+      "peak_rss_bytes": 50085888,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -2.1243007e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.5634023e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ff/vbl=1.000_vwl=0.000V/27C",
+      "process": "ff",
+      "supply_v": {
+        "vbl": 1.0,
+        "vwl": 0.0
+      },
+      "temperature_c": 27,
+      "status": "pass",
+      "runtime_s": 0.067,
+      "peak_rss_bytes": 50085888,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -1.362826e-10,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.633186e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ff/vbl=1.000_vwl=0.000V/125C",
+      "process": "ff",
+      "supply_v": {
+        "vbl": 1.0,
+        "vwl": 0.0
+      },
+      "temperature_c": 125,
+      "status": "pass",
+      "runtime_s": 0.066,
+      "peak_rss_bytes": 50085888,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -4.9863821e-09,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.8167035e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ff/vbl=1.100_vwl=0.000V/-40C",
+      "process": "ff",
+      "supply_v": {
+        "vbl": 1.1,
+        "vwl": 0.0
+      },
+      "temperature_c": -40,
+      "status": "pass",
+      "runtime_s": 0.066,
+      "peak_rss_bytes": 50085888,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -1.9667951e-10,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.5792052e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ff/vbl=1.100_vwl=0.000V/27C",
+      "process": "ff",
+      "supply_v": {
+        "vbl": 1.1,
+        "vwl": 0.0
+      },
+      "temperature_c": 27,
+      "status": "pass",
+      "runtime_s": 0.067,
+      "peak_rss_bytes": 50085888,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -4.983379e-09,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.7467664e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ff/vbl=1.100_vwl=0.000V/125C",
+      "process": "ff",
+      "supply_v": {
+        "vbl": 1.1,
+        "vwl": 0.0
+      },
+      "temperature_c": 125,
+      "status": "pass",
+      "runtime_s": 0.068,
+      "peak_rss_bytes": 50085888,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -1.062638e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -5.4640859e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ss/vbl=0.900_vwl=0.000V/-40C",
+      "process": "ss",
+      "supply_v": {
+        "vbl": 0.9,
+        "vwl": 0.0
+      },
+      "temperature_c": -40,
+      "status": "pass",
+      "runtime_s": 0.066,
+      "peak_rss_bytes": 50085888,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -2.1560531e-13,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.477967e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ss/vbl=0.900_vwl=0.000V/27C",
+      "process": "ss",
+      "supply_v": {
+        "vbl": 0.9,
+        "vwl": 0.0
+      },
+      "temperature_c": 27,
+      "status": "pass",
+      "runtime_s": 0.072,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -2.0566882e-13,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.5454657e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ss/vbl=0.900_vwl=0.000V/125C",
+      "process": "ss",
+      "supply_v": {
+        "vbl": 0.9,
+        "vwl": 0.0
+      },
+      "temperature_c": 125,
+      "status": "pass",
+      "runtime_s": 0.069,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -4.8594462e-13,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.6200858e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ss/vbl=1.000_vwl=0.000V/-40C",
+      "process": "ss",
+      "supply_v": {
+        "vbl": 1.0,
+        "vwl": 0.0
+      },
+      "temperature_c": -40,
+      "status": "pass",
+      "runtime_s": 0.067,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -2.2259972e-13,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.4915701e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ss/vbl=1.000_vwl=0.000V/27C",
+      "process": "ss",
+      "supply_v": {
+        "vbl": 1.0,
+        "vwl": 0.0
+      },
+      "temperature_c": 27,
+      "status": "pass",
+      "runtime_s": 0.068,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -2.3392399e-13,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.5600508e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ss/vbl=1.000_vwl=0.000V/125C",
+      "process": "ss",
+      "supply_v": {
+        "vbl": 1.0,
+        "vwl": 0.0
+      },
+      "temperature_c": 125,
+      "status": "pass",
+      "runtime_s": 0.067,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -1.1045054e-11,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.6360213e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ss/vbl=1.100_vwl=0.000V/-40C",
+      "process": "ss",
+      "supply_v": {
+        "vbl": 1.1,
+        "vwl": 0.0
+      },
+      "temperature_c": -40,
+      "status": "pass",
+      "runtime_s": 0.066,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -2.4330538e-13,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.5057193e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ss/vbl=1.100_vwl=0.000V/27C",
+      "process": "ss",
+      "supply_v": {
+        "vbl": 1.1,
+        "vwl": 0.0
+      },
+      "temperature_c": 27,
+      "status": "pass",
+      "runtime_s": 0.071,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -1.5655255e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.5752457e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ss/vbl=1.100_vwl=0.000V/125C",
+      "process": "ss",
+      "supply_v": {
+        "vbl": 1.1,
+        "vwl": 0.0
+      },
+      "temperature_c": 125,
+      "status": "pass",
+      "runtime_s": 0.066,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -1.5998702e-10,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.6533075e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "fs/vbl=0.900_vwl=0.000V/-40C",
+      "process": "fs",
+      "supply_v": {
+        "vbl": 0.9,
+        "vwl": 0.0
+      },
+      "temperature_c": -40,
+      "status": "pass",
+      "runtime_s": 0.068,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -2.4019675e-13,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.4922853e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "fs/vbl=0.900_vwl=0.000V/27C",
+      "process": "fs",
+      "supply_v": {
+        "vbl": 0.9,
+        "vwl": 0.0
+      },
+      "temperature_c": 27,
+      "status": "pass",
+      "runtime_s": 0.066,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -2.2981617e-13,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.5599413e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "fs/vbl=0.900_vwl=0.000V/125C",
+      "process": "fs",
+      "supply_v": {
+        "vbl": 0.9,
+        "vwl": 0.0
+      },
+      "temperature_c": 125,
+      "status": "pass",
+      "runtime_s": 0.068,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -1.5548673e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.6346744e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "fs/vbl=1.000_vwl=0.000V/-40C",
+      "process": "fs",
+      "supply_v": {
+        "vbl": 1.0,
+        "vwl": 0.0
+      },
+      "temperature_c": -40,
+      "status": "pass",
+      "runtime_s": 0.066,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -2.5007774e-13,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.5061081e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "fs/vbl=1.000_vwl=0.000V/27C",
+      "process": "fs",
+      "supply_v": {
+        "vbl": 1.0,
+        "vwl": 0.0
+      },
+      "temperature_c": 27,
+      "status": "pass",
+      "runtime_s": 0.069,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -3.1141756e-13,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.5747611e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "fs/vbl=1.000_vwl=0.000V/125C",
+      "process": "fs",
+      "supply_v": {
+        "vbl": 1.0,
+        "vwl": 0.0
+      },
+      "temperature_c": 125,
+      "status": "pass",
+      "runtime_s": 0.066,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -2.9477365e-11,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.6509127e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "fs/vbl=1.100_vwl=0.000V/-40C",
+      "process": "fs",
+      "supply_v": {
+        "vbl": 1.1,
+        "vwl": 0.0
+      },
+      "temperature_c": -40,
+      "status": "pass",
+      "runtime_s": 0.067,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -2.9592995e-13,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.5204865e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "fs/vbl=1.100_vwl=0.000V/27C",
+      "process": "fs",
+      "supply_v": {
+        "vbl": 1.1,
+        "vwl": 0.0
+      },
+      "temperature_c": 27,
+      "status": "pass",
+      "runtime_s": 0.068,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -6.9116934e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.5902041e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "fs/vbl=1.100_vwl=0.000V/125C",
+      "process": "fs",
+      "supply_v": {
+        "vbl": 1.1,
+        "vwl": 0.0
+      },
+      "temperature_c": 125,
+      "status": "pass",
+      "runtime_s": 0.066,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -4.4921827e-10,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.6701983e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "sf/vbl=0.900_vwl=0.000V/-40C",
+      "process": "sf",
+      "supply_v": {
+        "vbl": 0.9,
+        "vwl": 0.0
+      },
+      "temperature_c": -40,
+      "status": "pass",
+      "runtime_s": 0.068,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -3.5266234e-13,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.536897e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "sf/vbl=0.900_vwl=0.000V/27C",
+      "process": "sf",
+      "supply_v": {
+        "vbl": 0.9,
+        "vwl": 0.0
+      },
+      "temperature_c": 27,
+      "status": "pass",
+      "runtime_s": 0.066,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -9.1932018e-13,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.6052014e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "sf/vbl=0.900_vwl=0.000V/125C",
+      "process": "sf",
+      "supply_v": {
+        "vbl": 0.9,
+        "vwl": 0.0
+      },
+      "temperature_c": 125,
+      "status": "pass",
+      "runtime_s": 0.067,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -1.0909018e-10,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.6807547e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "sf/vbl=1.000_vwl=0.000V/-40C",
+      "process": "sf",
+      "supply_v": {
+        "vbl": 1.0,
+        "vwl": 0.0
+      },
+      "temperature_c": -40,
+      "status": "pass",
+      "runtime_s": 0.065,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -6.0179639e-13,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.5516229e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "sf/vbl=1.000_vwl=0.000V/27C",
+      "process": "sf",
+      "supply_v": {
+        "vbl": 1.0,
+        "vwl": 0.0
+      },
+      "temperature_c": 27,
+      "status": "pass",
+      "runtime_s": 0.067,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -3.6273762e-11,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.6210248e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "sf/vbl=1.000_vwl=0.000V/125C",
+      "process": "sf",
+      "supply_v": {
+        "vbl": 1.0,
+        "vwl": 0.0
+      },
+      "temperature_c": 125,
+      "status": "pass",
+      "runtime_s": 0.069,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -1.7995301e-09,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.7155753e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "sf/vbl=1.100_vwl=0.000V/-40C",
+      "process": "sf",
+      "supply_v": {
+        "vbl": 1.1,
+        "vwl": 0.0
+      },
+      "temperature_c": -40,
+      "status": "pass",
+      "runtime_s": 0.07,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -3.6842251e-11,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.5669637e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "sf/vbl=1.100_vwl=0.000V/27C",
+      "process": "sf",
+      "supply_v": {
+        "vbl": 1.1,
+        "vwl": 0.0
+      },
+      "temperature_c": 27,
+      "status": "pass",
+      "runtime_s": 0.066,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -1.3291952e-09,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -2.6456796e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "sf/vbl=1.100_vwl=0.000V/125C",
+      "process": "sf",
+      "supply_v": {
+        "vbl": 1.1,
+        "vwl": 0.0
+      },
+      "temperature_c": 125,
+      "status": "pass",
+      "runtime_s": 0.067,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "ire",
+          "value": -1.4558502e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "iim",
+          "value": -4.1434765e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vre",
+          "value": 1.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vim",
+          "value": 0.0,
+          "unit": "V",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    }
+  ]
+}

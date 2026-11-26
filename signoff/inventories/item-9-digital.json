@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "t1-attestation-inventory",
+  "t1_item": 9,
+  "testbenches": [
+    "verification/tb_antifuse_spi_regs.v",
+    "verification/tb_antifuse_decode.v",
+    "verification/cocotb/test_spi_regs.py",
+    "verification/cocotb/request_spi_regs.json",
+    "verification/run_spi_regs.sh",
+    "verification/run_decode.sh",
+    "verification/run_spi_mutations.sh"
+  ],
+  "cold_start": {
+    "argv": ["verification/run_digital_cold_start.sh"],
+    "local_only": true
+  },
+  "pins": {
+    "pdk": {
+      "name": "gf180mcu",
+      "revision": "f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
+    },
+    "tools": {
+      "iverilog": "13.0",
+      "cocotb": "2.1.0",
+      "klt": "0.8.0"
+    }
+  }
+}

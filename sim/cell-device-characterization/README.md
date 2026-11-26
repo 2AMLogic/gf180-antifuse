@@ -170,11 +170,10 @@ distinction explicitly rather than reusing `wl_on` for both testbenches.
   device-family floor the acceptance criteria set (5 process × 3 temp = 15
   already, before the ×3 supply and ×4 sub-configuration multipliers).
 - **PDK revision**: `open_pdks c6d73a35f524070e85faff4a6a9eef49553ebc2b`
-  (`gf180mcuD`), verified present via `klt pdk list` at build time — matches
-  `spec/cell-candidates.md`'s pinned revision exactly; no discrepancy to
-  record. Re-verify before trusting a record produced on a different
-  machine; `run_experiment.py` prints the resolved variant and revision on
-  every invocation.
+  (`gf180mcuD`), verified present via `klt pdk list` at build time (the pin
+  then in force; the forward-looking pin is now `f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7`, see
+  `spec/pdk-pin-decision.md`; this record's runs are not re-qualified here). Re-verify before trusting a record produced on a different
+  machine.
 
 ### Placeholder stimulus values (not ratified spec numbers)
 
@@ -238,24 +237,166 @@ Per candidate (= per `spec/split-axis-plan.md` region):
 
 ## Running it
 
-```bash
-export PDK_ROOT=$HOME/.volare   # or GF180_PDK_PATH=$HOME/.volare/gf180mcuD
-python3 sim/run_corners.py --check-env cell-device-characterization
-python3 sim/run_corners.py cell-device-characterization
-```
-
-or directly:
+The PVT grid runs as a `klt sim` campaign (next section); with
+`KLT_SIM_BACKEND=batch` exported (as on a dispatch worker), it goes to the Spot
+batch fleet and is never looped locally (with `KLT_SIM_BACKEND` unset on a
+fresh shell, `klt` defaults to `local`):
 
 ```bash
-python3 sim/cell-device-characterization/run_experiment.py --candidates 1,2,3 -j 8
+export KLT_SIM_BACKEND=batch
+python3 sim/cell-device-characterization/klt/run_klt_campaign.py
+python3 sim/cell-device-characterization/klt/run_klt_campaign.py --candidates 1,2,3
 ```
 
-`-j` controls how many ngspice invocations run in parallel (default 8);
-`--candidates` restricts to a subset (e.g. `--candidates 1` while
-iterating). A full 3-candidate run (648 ngspice invocations) takes a few
-seconds on a typical dev machine. Every run mints fresh record-ids and
-never overwrites `corners/`, `netlist-snapshots/` or `records/` — re-running
-this command is always safe and always produces new, additional evidence,
-per `sim/README.md`'s append-only rule. Generated per-corner decks live
-under `corners/<record-id>/*/.work/` (git-ignored, disposable — a failing
-corner can be reproduced by hand with `ngspice -b <that path>/deck.spice`).
+The legacy local-ngspice driver (one `ngspice -b` per corner, `-j 8`) was
+retired by operator ruling (#158). Its committed `corners/`, `netlist-snapshots/`
+and `records/` remain as append-only evidence, and `run_experiment.py` is kept
+as the shared candidate/parameter library that
+`sim/cell-breakdown-model/run_experiment.py` loads. Every klt run mints a
+fresh run id and never overwrites existing evidence, per `sim/README.md`'s
+append-only rule.
+
+## klt sim campaign (issue #63)
+
+The access-device bench (sections 1 and 2 above: `I_off`, `R_on`) is also
+expressed as a checked-in `klt sim` request set, so the PVT corner grid goes to
+the Spot batch fleet as a request instead of being looped locally. The legacy
+local-ngspice driver is retired (#158); the klt campaign is now the way to
+regenerate this bench, and the committed legacy logs/records remain the
+append-only reproduction baseline.
+
+```bash
+python3 sim/cell-device-characterization/klt/mk_klt_requests.py        # regenerate klt/requests/ (deterministic)
+python3 sim/cell-device-characterization/klt/run_klt_campaign.py       # submit (backend from $KLT_SIM_BACKEND) + ingest
+python3 sim/cell-device-characterization/klt/run_klt_campaign.py --resume klt/runs/<run-id> --candidates 1,3   # re-submit only requests with no usable report
+python3 sim/cell-device-characterization/klt/run_klt_campaign.py --ingest-only klt/runs/<run-id>
+```
+
+Submissions go through the shared `sim/harness/klt.py` wrapper: while the
+campaign is still running, a fleet refusal (`BATCH_MAX_CONCURRENT_INSTANCES`,
+`batch_no_capacity`) is retried as the same request with bounded backoff
+(`K.BACKOFF`), never replayed locally. If the run is interrupted anyway (or
+the retry budget runs out), `--resume` re-submits only the requests whose run
+directory holds no usable report -- completed reports and their sidecars are
+kept as committed, and ingest reuses the same run ID. `--ingest-only`
+submits nothing.
+
+- **Requests**: `klt/requests/c<N>_access-<sizing>_cap-<geometry>/{body.spice,ioff.json,ron.json}`.
+  The cell is the committed `design/netlists/cell_candidate<N>.spice`,
+  `.include`d unchanged; the testbench sources and `gmin=1e-13` match the
+  legacy template.
+- **Axes expressed as `klt sim` corners**: access-device MOS process (a bundle
+  with `moscap_typical`, as in the legacy deck; Candidate 2 additionally binds
+  `smbb000149`), temperature (-40/27/125), read voltage on BL
+  (0.9/1.0/1.1 V, `corners.supply_v: vbl`). For `I_off` the three OFF-gate
+  biases are enumerated alongside the read voltage in the same `supply_v`
+  lists (`vbl` and `vwl` move by index, so the 3x3 product is spelled out).
+- **Axes not expressed as corners**: access sizing and capacitor geometry. They
+  are sub-circuit instance parameters, which `alter` cannot re-evaluate, so each
+  (sizing, geometry) pair is its own `body.spice` and request pair. This is the
+  "no parameter corner axis" gap already open on the klayout-tools tracker;
+  a generic comment was added there.
+- **Two requests per sub-configuration** (one analysis per request): `ioff`
+  (single-point `dc` sweep standing in for `.op`, 135 units) and `ron` (`ac`
+  at 10 MHz, 45 units). `.meas` cards return raw quantities (signed `i(vbl)`;
+  real/imaginary parts of the branch current and BL voltage); `|I_off|` and
+  `R_on = Re(V/(-I))` are computed at ingest. `measurements[].expr` was tried
+  first and abandoned: on the batch backend the fleet runner rejected every
+  multi-unit request using it (single-unit passed), so the `.meas` form is
+  used.
+- **Capacitor C-V bench (section 3) is not migrated.** It needs two analyses
+  (`op` + `ac`) per point and five swept bias points; it remains in the legacy
+  harness.
+- **Output**: a new run directory `klt/runs/<run-id>/<sub-config>/<ioff|ron>/report.json`
+  (the `-o` klt report, with its `coverage.checked` / `coverage.inapplicable` id
+  lists replaced by their counts -- `harness.report.elide_coverage`; every
+  measurement value, corner status, diagnostic, `environment`, `provenance` and
+  coverage counter is kept, and the sha256 of klt's full stdout is committed
+  beside it as `report.json.sha256`) and one append-only per-region record
+  `records/<run-id>-c<N>.md`. Records list every sub-configuration separately
+  with the full process x temperature x read-voltage grid; the region headline
+  is a worst case across that region's own four sub-configurations, never an
+  average, and nothing aggregates across regions.
+
+### Result of run `20261009-014137-8d6e70b`
+
+Reproduction against the legacy records, stated tolerance **1 % relative**
+(every one of 180 grid values per region, plus the two headline numbers):
+
+| Region / candidate | `I_sneak_max` klt vs legacy | `R_on` klt vs legacy | max deviation, grid I_off / R_on | within tolerance |
+|---|---|---|---|---|
+| I / 1 | 9.8192e-12 A vs 9.8191e-12 A | 1.4466e+04 ohm vs 1.4466e+04 ohm | 6.1e-04 / 6.1e-06 | yes |
+| II / 2 | not resolved | not resolved | n/a | **no** |
+| III / 3 | 1.3956e-11 A vs 1.3956e-11 A | 1.0981e+03 ohm vs 1.0980e+03 ohm | 5.8e-04 / 5.2e-04 | yes |
+
+(The sub-0.1 % residual is the legacy logs' 7-significant-figure print; both
+sides are the same ngspice 46 bench.)
+
+**Candidate 2 failed on the fleet in this run; no local fallback was run.**
+Every Candidate 2 request came back as `batch_job_failed` ("finished 'failed'
+without a usable report: job command exited 1") for every unit. Isolation
+probes at the time (each a tiny batch or single-corner local request): the same
+request passed as a single unit on the fleet, passed multi-unit on
+`local-parallel`, and returned an ordinary per-corner netlist error when the
+per-section model library (`smbb000149`) was removed. Candidate 2 is closed
+out by the follow-up runs below.
+
+Separately, the first submission attempt hit the fleet's shared concurrency
+cap for several Candidate 1 / Candidate 3 requests (verbatim in
+`klt/runs/<run-id>/submit-errors.attempt1.txt`: "8 instance(s) already running
++ 1 requested exceeds BATCH_MAX_CONCURRENT_INSTANCES=8"); those requests were
+re-submitted to the batch backend one at a time with `--resume` and all
+passed.
+
+### Follow-up runs: Candidate 2 (2026-10-13)
+
+The installed client is `klt 0.7.1.dev256`; the fleet runner image runs
+`klt 0.7.0` and **refuses a newer client**. Run `20261013-165427-b0bb935`
+(client 0.7.1.dev256, backend `batch`, all 8 Candidate 2 requests) therefore
+failed on every unit with, verbatim: `batch job ... finished 'failed' (job
+command exited 87): the job's klt reported: the fleet runner runs klt 0.7.0 but
+the submitting client is 0.7.1.dev256+gaf7a43de415a -- the request was not run
+(update the runner image or use a compatible client)`. That run and its record
+(`records/20261013-165427-b0bb935-c2.md`, all sub-configurations "NOT RESOLVED")
+are kept as append-only evidence. The same warning also reported that the
+requests exceed the fleet's 3600 s whole-job ceiling on the conservative serial
+bound (135 and 45 units x 300 s); the jobs nevertheless completed (see below),
+so it is advisory, but `request.remote.hosts` sharding is the stated remedy if
+a run ever times out.
+
+Run `20261013-170230-b0bb935` re-submitted the identical checked-in Candidate 2
+requests to the batch backend with a version-matched client
+(`KLT_CMD='uvx --from klayout-tools==0.7.0 klt' python3 klt/run_klt_campaign.py --candidates 2 --parallel 1`;
+`KLT_CMD` is a launcher override added to the script, default `klt`). All 8
+requests passed: ioff 135/135 and ron 45/45 corners per sub-configuration,
+no errored or missing corner. Record:
+`records/20261013-170230-b0bb935-c2.md` (job ids in the record and in each
+report's `environment.remote`). This also means the earlier "per-section
+library fails multi-unit on the fleet" diagnosis was not reproduced with a
+matching client; the cause of the earlier exit-1 failures was not re-isolated
+and should not be assumed to be version skew.
+
+| Region / candidate | `I_sneak_max` klt vs legacy | `R_on` klt vs legacy | max deviation, grid I_off / R_on | within 1 % |
+|---|---|---|---|---|
+| II / 2 | 7.2887e-09 A vs 7.2887e-09 A | 6.5490e+01 ohm vs 65.49 ohm | 7.0e-05 / 4.1e-07 | yes (180 grid values) |
+
+With this, the access-device bench reproduces the legacy `I_sneak_max`
+(31 x I_off at `ff_125c_bl1p10v`) and `R_on` (`ss_-40c_bl0p90v`) for all three
+candidates within 1 % relative (Candidates 1/3 from run `20261009-014137-8d6e70b`,
+Candidate 2 from `20261013-170230-b0bb935`). These are the named fast/hot and
+slow/cold corners, maximised within each region only; not a global maximum and
+not an average across regions or sub-configurations. No absolute floor was
+needed: every legacy value is far above zero (gmin-floor-limited I_off,
+>= 1e-13 A scale, compared relatively). The capacitor C-V bench remains
+unmigrated.
+
+## Post-layout probe (issue #447)
+
+`klt/post-layout/` re-runs the same bench (I_off, R_on, at the two named bound
+corners only) as **paired** `klt sim` requests: one leg on the cell's
+fixed-geometry `layout/<cell>/lvs_reference.spice`, one leg on the
+`klt pex`-extracted netlist of the drawn GDS (`layout/<cell>/pex/`). It is a
+separate probe with its own README, request generator and run records -- see
+`klt/post-layout/README.md` (this section is only the pointer). Nothing in it
+grades or cites a T1 row; it exists to find out whether the item-7 route works
+for these devices at all.

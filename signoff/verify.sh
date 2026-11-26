@@ -15,25 +15,37 @@
 #
 # Assertion 3 is the anti-rot gate: it fails when the evidence moved (a cited
 # artifact was regenerated and no longer matches its pinned hash, so an item
-# flipped met -> unmet), and it also fails when the *checklist* moved (a newer
-# klayout-tools ships a different design-evidence-tiers.md, changing
+# flipped met -> unmet), and it also fails when the *checklist* moved (the
+# grading build ships a different design-evidence-tiers.md, changing
 # source_doc_content_hash or the item set). Both are cases where the committed
 # verdict has stopped being the truth, and both are fixed the same way: re-run
 # the command below, read what changed, update the claim in signoff/README.md,
 # and commit the new report.
 #
-# Usage:  ./signoff/verify.sh          (from anywhere)
-# Needs:  klt (klayout-tools) and python3 on PATH.
+# The grader is pinned: `klt` is invoked through KLT, by default the release
+# that rendered the committed report (klayout-tools 0.8.0, the pin
+# rtl/pnr/run_drc.sh uses), never whatever `klt` the host has on PATH. A newer
+# host build bundles a different checklist and fails assertion 3 on a clean
+# tree, hiding real drift behind a known-red check (issue #469). Set KLT_CMD to
+# grade with another build (KLT_CMD=klt for the host install); a regrade at a
+# newer release changes the verdict itself and is a decision recorded in
+# signoff/README.md, not a refresh.
+#
+# Usage:  ./signoff/verify.sh                                  (from anywhere)
+#         KLT_CMD=<klt launcher> ./signoff/verify.sh            override the pin
+# Needs:  uv (for the pinned klt) and python3 on PATH.
 
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 manifest="$repo_root/signoff/manifest.json"
 committed_report="$repo_root/signoff/report.json"
+KLT=${KLT_CMD:-uvx --from klayout-tools==0.8.0 klt}
 
 fail() { printf 'signoff/verify.sh: %s\n' "$1" >&2; exit 1; }
 
-command -v klt >/dev/null 2>&1 || fail "klt (klayout-tools) is not on PATH -- see signoff/README.md"
+command -v "${KLT%% *}" >/dev/null 2>&1 \
+    || fail "'${KLT%% *}' is not on PATH -- the pinned grader runs through uvx; install uv, or set KLT_CMD to the klt launcher to use (see signoff/README.md)"
 command -v python3 >/dev/null 2>&1 || fail "python3 is not on PATH"
 [ -f "$manifest" ] || fail "missing $manifest"
 [ -f "$committed_report" ] || fail "missing $committed_report"
@@ -62,8 +74,16 @@ with open(report_path) as fh:
         if item.get("tier") == "T1" and item.get("id") is not None
     }
 
-for item, entry in (manifest.get("evidence") or {}).items():
-    where = f"evidence[{item!r}]"
+# Item 11's compound citation is a list of {file, content_hash} parts (klt erc
+# plus item 4's LVS report); check each part exactly as a single citation.
+checks = []
+for item, cited in (manifest.get("evidence") or {}).items():
+    if isinstance(cited, list):
+        checks.extend((item, f"evidence[{item!r}][{n}]", part) for n, part in enumerate(cited))
+    else:
+        checks.append((item, f"evidence[{item!r}]", cited))
+
+for item, where, entry in checks:
     match = re.fullmatch(r"(\d+)(?:\.(analog|digital))?", str(item))
     if not match:
         problems.append(
@@ -93,6 +113,22 @@ for item, entry in (manifest.get("evidence") or {}).items():
     elif "command" not in entry:
         problems.append(f"{where} has neither a 'file' nor a 'command'")
 
+# `supporting_evidence` is NOT read by `klt signoff` (an unknown top-level key
+# is ignored), so it can never move a row. It records klt envelopes that back
+# claims the grader has no row for; this script is the only thing that keeps it
+# honest, so every entry must name a file that exists and whose sha256 matches.
+import hashlib
+
+for i, entry in enumerate(manifest.get("supporting_evidence") or []):
+    where = f"supporting_evidence[{i}]"
+    path = os.path.join(repo_root, str(entry.get("file", "")))
+    if not os.path.isfile(path):
+        problems.append(f"{where} cites {entry.get('file')!r}, which is not in the tree")
+        continue
+    digest = "sha256:" + hashlib.sha256(open(path, "rb").read()).hexdigest()
+    if entry.get("content_hash") != digest:
+        problems.append(f"{where} content_hash does not match {entry['file']} (now {digest})")
+
 if problems:
     for problem in problems:
         print(f"signoff/verify.sh: {problem}", file=sys.stderr)
@@ -104,28 +140,28 @@ fresh_report="$(mktemp)"
 trap 'rm -f "$fresh_report"' EXIT
 
 rc=0
-klt signoff --manifest "$manifest" --format json >"$fresh_report" || rc=$?
+$KLT signoff --manifest "$manifest" --format json >"$fresh_report" || rc=$?
 # 0 = tier T1 (every item met); 3 = tier null (at least one item unmet). Both
 # are successful gradings and both are legitimate committed verdicts. 1 and 2
 # mean the manifest or the tiers doc could not be read at all.
 case "$rc" in
     0 | 3) ;;
-    *) fail "klt signoff failed to render a report (exit $rc) -- see its error envelope above" ;;
+    *) fail "klt signoff failed to render a report (exit $rc) -- see the error output above" ;;
 esac
 
 if ! diff -u "$committed_report" "$fresh_report"; then
-    cat >&2 <<'EOF'
+    cat >&2 <<EOF
 
 signoff/verify.sh: the committed verdict no longer matches a fresh grading run.
 
 Either the cited evidence moved (an item's freshness/pass state changed) or the
-T1 checklist itself moved (a newer klayout-tools ships a different
-design-evidence-tiers.md). Do not hand-edit signoff/report.json. Re-run:
+T1 checklist itself moved (the grading build ships a different
+design-evidence-tiers.md). Do not hand-edit signoff/report.json, and do not
+re-render it with a host klt: re-run the grader this check used, then read the
+diff, update the claim in signoff/README.md to match what actually changed, and
+commit both.
 
-    klt signoff --manifest signoff/manifest.json --format json > signoff/report.json
-
-then read the diff, update the claim in signoff/README.md to match what actually
-changed, and commit both.
+    $KLT signoff --manifest signoff/manifest.json --format json > signoff/report.json
 EOF
     exit 1
 fi

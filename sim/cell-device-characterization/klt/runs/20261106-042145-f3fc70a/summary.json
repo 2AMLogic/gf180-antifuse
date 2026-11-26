@@ -1,0 +1,18 @@
+{
+  "regions": {
+    "3": {
+      "complete": true,
+      "i_sneak_max": 1.395605864e-11,
+      "r_on_worst": 1098.0478028433681,
+      "legacy_record": "20260909-232143-b6035cb",
+      "legacy_i_sneak_max": 1.3956e-11,
+      "legacy_r_on": 1098.0,
+      "n_compared": 180,
+      "max_dev_ioff": "5.78e-04",
+      "max_dev_ron": "5.15e-04",
+      "headline_ok": true,
+      "grid_ok": true,
+      "tolerance_rel": 0.01
+    }
+  }
+}

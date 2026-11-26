@@ -1,0 +1,109 @@
+{
+  "schema": "layout-geometry-claims/1",
+  "issue": "#407",
+  "purpose": "Pin geometry intervals quoted in layout/README.md to the committed GDS they claim to describe, so a prose number cannot drift from the artifact silently (#378, #391, #401). scripts/check_layout_geometry_claims.py asserts, per claim below, that readme_quote appears verbatim in layout/README.md (whitespace-normalised) AND that the GDS shape it cites still has bbox_um (1 nm tolerance). Where quote_values is present it additionally ties the quote's numerals to bbox_um (#414): editing README and the quote to the same wrong text no longer passes while bbox_um is unchanged. Since #419 a claim whose readme_quote spells an adjacent '<num>..<num>' pair must carry quote_values (coverage guard): deleting the field while the quote still spells an interval fails the check.",
+  "conventions": {
+    "units": "micrometres, top-cell coordinates (2.490 = 2.490 um)",
+    "cell": "top cell name; the GDS is layout/<cell>/<cell>.gds",
+    "subcell": "name of the cell in the GDS hierarchy holding the shape (straps drawn by klt draw land in straps__straps; the ring-array gate pad in the capacitor ring's mos_array -- KLayout disambiguates the access ring's copy as mos_array$1, so a name swap on regeneration is itself a caught drift)",
+    "layer": "GVS layer 'layer/datatype', e.g. 34/0 = metal1 drawing",
+    "bbox_um": "[left, bottom, right, top] of the shape",
+    "match": "a claim passes when some raw shape OR some merged-polygon bbox of layer in subcell equals bbox_um within tolerance_um; the VB bands are single rectangles in straps__straps, so per-band bboxes survive only before the riser merge -- both candidate sets are measured",
+    "readme_quote": "prose span in layout/README.md carrying the quoted numbers; editing the sentence away from this text fails the check by design",
+    "quote_values": "optional per-claim map of bbox_um component names ('left', 'bottom', 'right', 'top') to indices into that claim's bbox_um array; when present, the readme_quote must spell each consecutive named pair as an adjacent '<num>..<num>' range (whitespace-padded, a '+ SYMBOL' or 'SYMBOL +' offset decoration tolerated, so '2.49 + DPAD .. 2.91 + DPAD' is the pair (2.49, 2.91) and 'DX+0.43..DX+0.85' is the pair (0.43, 0.85)) with both numerals equal to the indexed bbox_um components within tolerance_um (#414). Since #419 the field is mandatory wherever the quote demonstrably spells an interval: a claim whose readme_quote contains any '<num>..<num>' pair but omits this field fails the coverage guard, so only a quote that pins no interval may omit it",
+    "scope": "pilot: only the VB-strap north bands and cap gate pads of the candidate-1 and candidate-3 bullets that drifted in #391/#401; every other README number stays unanchored until a per-claim extension lands here. Only layout/README.md is pinned; design-record notes elsewhere (e.g. rtl/pnr/) are build-stamped historical evidence and intentionally unpinned (#439)"
+  },
+  "tolerance_um": 0.001,
+  "claims": [
+    {
+      "id": "cand1-amin-g2x-vb-access-north-band",
+      "cell": "cell_candidate1_Amin_G2x",
+      "subcell": "straps__straps",
+      "layer": "34/0",
+      "role": "vb-strap-access-north-band",
+      "bbox_um": [1.1, 2.49, 5.05, 2.91],
+      "readme_quote": "access 2.49..2.91 or 2.91..3.33, capacitor 4.07..4.49",
+      "quote_values": {"bottom": 1, "top": 3}
+    },
+    {
+      "id": "cand1-a2x-g2x-vb-access-north-band",
+      "cell": "cell_candidate1_A2x_G2x",
+      "subcell": "straps__straps",
+      "layer": "34/0",
+      "role": "vb-strap-access-north-band",
+      "bbox_um": [1.1, 2.91, 5.05, 3.33],
+      "readme_quote": "access 2.49..2.91 or 2.91..3.33, capacitor 4.07..4.49",
+      "quote_values": {"bottom": 1, "top": 3}
+    },
+    {
+      "id": "cand1-amin-g2x-vb-capacitor-north-band",
+      "cell": "cell_candidate1_Amin_G2x",
+      "subcell": "straps__straps",
+      "layer": "34/0",
+      "role": "vb-strap-capacitor-north-band",
+      "bbox_um": [0.64, 4.07, 5.05, 4.49],
+      "readme_quote": "access 2.49..2.91 or 2.91..3.33, capacitor 4.07..4.49",
+      "quote_values": {"bottom": 1, "top": 3}
+    },
+    {
+      "id": "cand1-a2x-g2x-vb-capacitor-north-band",
+      "cell": "cell_candidate1_A2x_G2x",
+      "subcell": "straps__straps",
+      "layer": "34/0",
+      "role": "vb-strap-capacitor-north-band",
+      "bbox_um": [0.64, 4.07, 5.05, 4.49],
+      "readme_quote": "access 2.49..2.91 or 2.91..3.33, capacitor 4.07..4.49",
+      "quote_values": {"bottom": 1, "top": 3}
+    },
+    {
+      "id": "cand1-amin-g2x-cap-gate-pad",
+      "cell": "cell_candidate1_Amin_G2x",
+      "subcell": "mos_array",
+      "layer": "34/0",
+      "role": "cap-gate-pad",
+      "bbox_um": [0.43, 2.75, 0.85, 3.17],
+      "readme_quote": "gate pad (y 2.75..3.17) overlaps the lower of the two rings' metal north",
+      "quote_values": {"bottom": 1, "top": 3}
+    },
+    {
+      "id": "cand1-a2x-g2x-cap-gate-pad",
+      "cell": "cell_candidate1_A2x_G2x",
+      "subcell": "mos_array",
+      "layer": "34/0",
+      "role": "cap-gate-pad",
+      "bbox_um": [0.43, 2.75, 0.85, 3.17],
+      "readme_quote": "gate pad (y 2.75..3.17) overlaps the lower of the two rings' metal north",
+      "quote_values": {"bottom": 1, "top": 3}
+    },
+    {
+      "id": "cand3-amin-g2x-vb-access-north-band",
+      "cell": "cell_candidate3_Amin_G2x",
+      "subcell": "straps__straps",
+      "layer": "34/0",
+      "role": "vb-strap-access-north-band",
+      "bbox_um": [0.49, 3.28, 4.27, 3.7],
+      "readme_quote": "access 3.28..3.70 = 2.49 + DPAD .. 2.91 + DPAD at the raised ring, capacitor 4.07..4.49",
+      "quote_values": {"bottom": 1, "top": 3}
+    },
+    {
+      "id": "cand3-amin-g2x-vb-capacitor-north-band",
+      "cell": "cell_candidate3_Amin_G2x",
+      "subcell": "straps__straps",
+      "layer": "34/0",
+      "role": "vb-strap-capacitor-north-band",
+      "bbox_um": [0.49, 4.07, 6.38, 4.49],
+      "readme_quote": "access 3.28..3.70 = 2.49 + DPAD .. 2.91 + DPAD at the raised ring, capacitor 4.07..4.49",
+      "quote_values": {"bottom": 1, "top": 3}
+    },
+    {
+      "id": "cand3-amin-g2x-cap-gate-pad",
+      "cell": "cell_candidate3_Amin_G2x",
+      "subcell": "mos_array",
+      "layer": "34/0",
+      "role": "cap-gate-pad",
+      "bbox_um": [6.02, 2.75, 6.44, 3.17],
+      "readme_quote": "gate pad (x DX+0.43..DX+0.85, y 2.75..3.17)",
+      "quote_values": {"bottom": 1, "top": 3}
+    }
+  ]
+}

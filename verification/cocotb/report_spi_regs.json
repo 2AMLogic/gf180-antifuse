@@ -1,0 +1,236 @@
+{
+  "schema_version": 1,
+  "engine": "icarus",
+  "hdl_toplevel": "antifuse_spi_regs",
+  "testbench": "test_spi_regs",
+  "status": "pass",
+  "test_count": 21,
+  "passed_count": 21,
+  "failed_count": 0,
+  "skipped_count": 0,
+  "tests": [
+    {
+      "name": "reset_values_and_idle_outputs",
+      "status": "passed",
+      "sim_time_ns": 16430.0,
+      "real_time_s": 0.047
+    },
+    {
+      "name": "miso_enable_follows_cs",
+      "status": "passed",
+      "sim_time_ns": 220.0,
+      "real_time_s": 0.001
+    },
+    {
+      "name": "row_col_pw_read_write",
+      "status": "passed",
+      "sim_time_ns": 68120.0,
+      "real_time_s": 0.201
+    },
+    {
+      "name": "out_of_range_row_col_rejected",
+      "status": "passed",
+      "sim_time_ns": 51800.0,
+      "real_time_s": 0.145
+    },
+    {
+      "name": "ctrl_arm_disarm_and_reserved",
+      "status": "passed",
+      "sim_time_ns": 54520.0,
+      "real_time_s": 0.148
+    },
+    {
+      "name": "read_only_and_unknown_addresses",
+      "status": "passed",
+      "sim_time_ns": 40920.0,
+      "real_time_s": 0.109
+    },
+    {
+      "name": "status_read_clears_protocol_error",
+      "status": "passed",
+      "sim_time_ns": 8280.0,
+      "real_time_s": 0.022
+    },
+    {
+      "name": "program_full_sequence",
+      "status": "passed",
+      "sim_time_ns": 19230.0,
+      "real_time_s": 0.052
+    },
+    {
+      "name": "pulse_width_cycle_counts",
+      "status": "passed",
+      "sim_time_ns": 71049.99999999997,
+      "real_time_s": 0.203
+    },
+    {
+      "name": "read_settle_cycle_count_and_data",
+      "status": "passed",
+      "sim_time_ns": 16640.0,
+      "real_time_s": 0.046
+    },
+    {
+      "name": "read_while_armed_rejected",
+      "status": "passed",
+      "sim_time_ns": 8280.0,
+      "real_time_s": 0.023
+    },
+    {
+      "name": "fire_unarmed_rejected",
+      "status": "passed",
+      "sim_time_ns": 17240.0,
+      "real_time_s": 0.049
+    },
+    {
+      "name": "fire_with_other_command_bytes_never_pulses",
+      "status": "passed",
+      "sim_time_ns": 42320.0,
+      "real_time_s": 0.136
+    },
+    {
+      "name": "fire_while_busy_rejected",
+      "status": "passed",
+      "sim_time_ns": 24300.0,
+      "real_time_s": 0.072
+    },
+    {
+      "name": "bad_frame_length_sets_protocol_error",
+      "status": "passed",
+      "sim_time_ns": 47800.0,
+      "real_time_s": 0.129
+    },
+    {
+      "name": "truncated_and_overlong_writes_do_not_commit",
+      "status": "passed",
+      "sim_time_ns": 16440.0,
+      "real_time_s": 0.048
+    },
+    {
+      "name": "overlong_fire_frame_never_pulses",
+      "status": "passed",
+      "sim_time_ns": 14120.0,
+      "real_time_s": 0.04
+    },
+    {
+      "name": "arm_timeout_expires",
+      "status": "passed",
+      "sim_time_ns": 17520.0,
+      "real_time_s": 0.047
+    },
+    {
+      "name": "arm_timeout_boundary",
+      "status": "passed",
+      "sim_time_ns": 129780.0,
+      "real_time_s": 0.378
+    },
+    {
+      "name": "reset_clears_armed_and_active",
+      "status": "passed",
+      "sim_time_ns": 16550.0,
+      "real_time_s": 0.046
+    },
+    {
+      "name": "sclk_at_oversampling_limit",
+      "status": "passed",
+      "sim_time_ns": 17560.0,
+      "real_time_s": 0.048
+    }
+  ],
+  "coverage": null,
+  "trace": null,
+  "environment": {
+    "engine": "icarus",
+    "engine_version": "13.0",
+    "cocotb_version": "2.1.0",
+    "results_xml": "/tmp/fv151m/results_icarus.xml",
+    "test_log": "/tmp/fv151m/test_icarus.log",
+    "build_log": "/tmp/fv151m/build_icarus.log",
+    "random_seed": 1,
+    "source_defines": {},
+    "initial_state": null,
+    "sdf": null
+  },
+  "mutation_testing": {
+    "schema_version": 1,
+    "proposal_count": 8,
+    "valid_count": 8,
+    "rejected_count": 0,
+    "killed_count": 8,
+    "survived_count": 0,
+    "mutation_score": 1.0,
+    "results": [
+      {
+        "index": 1,
+        "category": "fire_unarmed/arm_guard_removed",
+        "file": "../../rtl/antifuse_spi_regs.v",
+        "line": 194,
+        "status": "killed",
+        "first_killing_test": "fire_unarmed_rejected",
+        "log_path": "/tmp/fv151m/mutants/mutant_1.log"
+      },
+      {
+        "index": 2,
+        "category": "fire_unarmed/fire_on_read_command",
+        "file": "../../rtl/antifuse_spi_regs.v",
+        "line": 199,
+        "status": "killed",
+        "first_killing_test": "fire_with_other_command_bytes_never_pulses",
+        "log_path": "/tmp/fv151m/mutants/mutant_2.log"
+      },
+      {
+        "index": 3,
+        "category": "fire_unarmed/fire_address_partial_decode_0x79",
+        "file": "../../rtl/antifuse_spi_regs.v",
+        "line": 193,
+        "status": "killed",
+        "first_killing_test": "fire_with_other_command_bytes_never_pulses",
+        "log_path": "/tmp/fv151m/mutants/mutant_3.log"
+      },
+      {
+        "index": 4,
+        "category": "fire_unarmed/fire_address_partial_decode_0x7A",
+        "file": "../../rtl/antifuse_spi_regs.v",
+        "line": 193,
+        "status": "killed",
+        "first_killing_test": "fire_with_other_command_bytes_never_pulses",
+        "log_path": "/tmp/fv151m/mutants/mutant_4.log"
+      },
+      {
+        "index": 5,
+        "category": "fire_while_busy/busy_write_guard_removed",
+        "file": "../../rtl/antifuse_spi_regs.v",
+        "line": 170,
+        "status": "killed",
+        "first_killing_test": "fire_while_busy_rejected",
+        "log_path": "/tmp/fv151m/mutants/mutant_5.log"
+      },
+      {
+        "index": 6,
+        "category": "bad_frame_length/overlong_frame_accepted",
+        "file": "../../rtl/antifuse_spi_regs.v",
+        "line": 155,
+        "status": "killed",
+        "first_killing_test": "bad_frame_length_sets_protocol_error",
+        "log_path": "/tmp/fv151m/mutants/mutant_6.log"
+      },
+      {
+        "index": 7,
+        "category": "bad_frame_length/truncated_frame_accepted",
+        "file": "../../rtl/antifuse_spi_regs.v",
+        "line": 155,
+        "status": "killed",
+        "first_killing_test": "bad_frame_length_sets_protocol_error",
+        "log_path": "/tmp/fv151m/mutants/mutant_7.log"
+      },
+      {
+        "index": 8,
+        "category": "bad_frame_length/frame_bad_never_errors",
+        "file": "../../rtl/antifuse_spi_regs.v",
+        "line": 156,
+        "status": "killed",
+        "first_killing_test": "bad_frame_length_sets_protocol_error",
+        "log_path": "/tmp/fv151m/mutants/mutant_8.log"
+      }
+    ]
+  }
+}

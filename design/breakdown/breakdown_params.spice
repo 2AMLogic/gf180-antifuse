@@ -1,0 +1,83 @@
+* gf180-antifuse: parameters for the behavioral breakdown element (issue #62).
+*
+* ONE FILE, EVERY NUMBER LABELLED. Each .param below is immediately preceded
+* by exactly one annotation line of the form
+*
+*   * @param <name> unit=<unit> provenance=<assumed|literature|measured> -- <why>
+*
+* and design/breakdown/check_params.py fails if any .param lacks one, if a
+* label is outside that set, or if anything is labelled `measured` while
+* measurements/ holds no data (it holds none today, so nothing here is
+* measured).
+*
+* What the labels mean here:
+*   literature  read out of a published source that is named in the note
+*               (for this file: the gf180mcu open PDK model files, at the
+*               open_pdks revision spec/cell-candidates.md pins). Nothing is
+*               labelled literature on the strength of "commonly quoted".
+*   assumed     chosen by this model, with the reasoning written next to it.
+*               spec/cell-candidates.md records the gate-oxide breakdown
+*               voltages of both oxide flavors as an open question; every
+*               breakdown-kinetics and filament number below is therefore an
+*               assumption, NOT a property of this process. Results computed
+*               from them are conditional on them.
+*   measured    from this repo's measurements/ -- none yet.
+*
+* Do not tune these to make a result pass; change them only with a stated
+* reason (and a new sim/ record, since records are append-only).
+
+* ---------------------------------------------------------------------------
+* Oxide thickness per candidate (gate-plate dielectric of the antifuse cap)
+* ---------------------------------------------------------------------------
+* The stock cap_* subcircuits carry no toxe of their own (they are a bare
+* C-V tanh fit); spec/cell-candidates.md associates each cap with the oxide
+* of the matching MOS flavor, and these are that flavor's typical-section
+* toxe. Process skew of tox (the PDK's mc_toxe / *_tox corner offsets) is
+* deliberately NOT propagated into the breakdown field -- see README.
+
+* @param c1_bd_tox unit=m provenance=literature -- cap_nmos_03v3: nfet_03v3 typical toxe, sm141064.ngspice `nfet_03v3_tox = 8e-009 + ...`, as cited in spec/cell-candidates.md
+.param c1_bd_tox = 8.0e-9
+* @param c2_bd_tox unit=m provenance=literature -- cap_nmos_06v0: nfet_06v0 toxe, sm141064.ngspice `toxe = '1.52e-008+nfet_06v0_tox'` (nfet_06v0_tox = 0 in typical), as cited in spec/cell-candidates.md
+.param c2_bd_tox = 1.52e-8
+* @param c3_bd_tox unit=m provenance=literature -- cap_pmos_03v3: pfet_03v3 typical toxe, sm141064.ngspice `pfet_03v3_tox = '7.9e-009 + ...'` (not stated in spec/cell-candidates.md; read from the same pinned PDK file)
+.param c3_bd_tox = 7.9e-9
+
+* ---------------------------------------------------------------------------
+* Breakdown kinetics (shared by all three candidates -- see README "what is
+* deliberately the same across candidates")
+* ---------------------------------------------------------------------------
+
+* @param bd_ebd unit=V/m provenance=assumed -- median breakdown field at t = bd_tref (10 MV/cm). Order-of-magnitude choice for SiO2-class gate oxide; NOT a gf180 number (spec/cell-candidates.md: breakdown voltages are an open question). Sets V_bd(1 us) = bd_ebd*tox = 8.0 / 15.2 / 7.9 V for Candidates 1 / 2 / 3. Cross-checked, NOT replaced, against the PDK BVox spec (docs/breakdown-vbd-sources.md): its ramp/current condition is unstated so it cannot be placed at bd_tref.
+.param bd_ebd = 1.0e9
+* @param bd_tref unit=s provenance=assumed -- the time scale bd_ebd is quoted at; 1 us is within the program-pulse-width range a bench-supplied VPP can produce, which keeps the reference point inside the regime the program path will actually exercise.
+.param bd_tref = 1.0e-6
+* @param bd_gam unit=m/V provenance=assumed -- E-model field acceleration, ln(10)*3 per MV/cm (3 decades of time-to-breakdown per MV/cm). Chosen as the smallest round value for which a rated-bias oxide survives >10 years under this model (Candidate 1 at 3.3 V: t50 ~ 4e11 s); a smaller value would make the model predict read-disturb breakdown that the PDK's own voltage rating rules out.
+.param bd_gam = 6.9e-8
+* @param bd_beta unit=1 provenance=assumed -- Weibull shape of the per-instance time-to-breakdown distribution. Mid-range choice; at bd_gam it spreads the instance breakdown field from about -0.63 MV/cm (0.1% quantile) to +0.22 MV/cm (99.9% quantile) around bd_ebd.
+.param bd_beta = 1.5
+* @param bd_tcomp unit=s provenance=assumed -- completion time of the hard-breakdown event once initiated (damage D past 1). Placeholder; only needs to be short against any program pulse width of interest (>= ~100 ns), so a 10 ns value makes pulse width, not this constant, decide whether a cell programs.
+.param bd_tcomp = 1.0e-8
+
+* ---------------------------------------------------------------------------
+* Post-breakdown filament (shared by all three candidates)
+* ---------------------------------------------------------------------------
+
+* @param bd_rf_med unit=ohm provenance=assumed -- median post-breakdown filament resistance, treated as ohmic. Placeholder in the kOhm-class range; in reality it depends on program compliance current, which this model does not couple to.
+.param bd_rf_med = 1.0e4
+* @param bd_rf_sig unit=1 provenance=assumed -- log-normal sigma of the filament resistance, ln-units (one sigma = x2.0). Placeholder spread.
+.param bd_rf_sig = 0.7
+* @param bd_zrf_wc unit=1 provenance=assumed -- worst-case filament quantile used for I_prog_min: +3 sigma (rf = bd_rf_med*exp(3*bd_rf_sig) = 81.7 kOhm), i.e. 99.87% of programmed cells are assumed to read at least this well.
+.param bd_zrf_wc = 3
+
+* ---------------------------------------------------------------------------
+* Numerical-only parameters (no physical meaning; chosen for solver health)
+* ---------------------------------------------------------------------------
+
+* @param bd_num_dw unit=1 provenance=assumed -- width of the smooth 0->1 state transition in damage units (state rises over D = 1.00..1.05). Numerical: avoids a step discontinuity in the B-source.
+.param bd_num_dw = 0.05
+* @param bd_num_cdmg unit=F provenance=assumed -- damage integrator capacitance; 1 F makes V(dmg) equal the dimensionless damage D. Numerical scale only.
+.param bd_num_cdmg = 1
+* @param bd_num_rdleak unit=ohm provenance=assumed -- DC path for the integrator node (time constant 1e15 s, i.e. no decay on any simulated time scale). Numerical: keeps the node non-singular in DC.
+.param bd_num_rdleak = 1.0e15
+* @param bd_num_xmax unit=1 provenance=assumed -- clamp on the E-model exponent (rate <= e^50/tref) so an extreme overstress cannot overflow. Numerical.
+.param bd_num_xmax = 50

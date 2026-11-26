@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "worktree:return": "./.loom/scripts/worktree-return.sh",
-    "check:ci": "./design/check-netlists.sh",
-    "check:all": "echo 'No checks configured. Customize this script for your project.' && exit 0",
-    "test": "echo 'No tests configured. Customize this script for your project.' && exit 0",
-    "lint": "echo 'No linter configured. Customize this script for your project.' && exit 0"
+    "check:ci": "python3 -I -m unittest discover -s tests -q && python3 scripts/check_measurements.py && python3 scripts/check_run3_pad_table.py && python3 scripts/check_artifact_manifests.py && python3 scripts/check_layout_geometry_claims.py && python3 scripts/check_signoff_pins.py",
+    "check:all": "python3 -I -m unittest discover -s tests -q && python3 scripts/check_measurements.py && python3 scripts/check_run3_pad_table.py && python3 scripts/check_artifact_manifests.py && python3 scripts/check_layout_geometry_claims.py && python3 scripts/check_signoff_pins.py",
+    "test": "python3 -I -m unittest discover -s tests -q",
+    "lint": "echo 'No linter configured for this repo.' && exit 0"
   }
 }

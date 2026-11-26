@@ -138,6 +138,25 @@ assert_deny "(b) target at main root, worktree exists -> deny" "$result"
 result=$(run_hook "CLAUDE.md" "$TMPROOT")
 assert_deny "(c) relative path + cwd at main root -> deny" "$result"
 
+# --- #13180: Champion pin / PR-facts files under the git common dir --------
+# Exactly two name patterns, direct children of the git common dir, are
+# writable while a managed worktree exists; everything else under .git stays
+# denied.
+result=$(run_hook "$TMPROOT/.git/loom-champion-pin-pr-42")
+assert_allow "(#13180) champion pin file under git common dir -> allow" "$result"
+result=$(run_hook "$TMPROOT/.git/loom-champion-facts-pr-42.json")
+assert_allow "(#13180) champion facts file under git common dir -> allow" "$result"
+result=$(run_hook "$TMPROOT/.git/config")
+assert_deny "(#13180) .git/config still denied" "$result"
+result=$(run_hook "$TMPROOT/.git/other-file")
+assert_deny "(#13180) sibling file under git common dir still denied" "$result"
+result=$(run_hook "$TMPROOT/.git/loom-champion-pin-pr-x")
+assert_deny "(#13180) non-numeric PR suffix still denied" "$result"
+result=$(run_hook "$TMPROOT/.git/loom-champion-pin-pr-1/../config")
+assert_deny "(#13180) traversal out of the pin name still denied" "$result"
+result=$(run_hook "$TMPROOT/loom-champion-pin-pr-42")
+assert_deny "(#13180) pin name at the checkout root (not .git) still denied" "$result"
+
 # --- deny reason references the worktree isolation contract ----------------
 raw=$(run_hook "$TMPROOT/CLAUDE.md")
 out="${raw#*|}"
@@ -206,6 +225,50 @@ cat > "$WT2/.loom-managed" <<'EOF'
 EOF
 result=$(run_hook "$WT2/other-issue-file.txt")
 assert_allow "cross-issue worktree write is allowed (not the guarded failure mode)" "$result"
+
+# --- #7415: registered-but-unmanaged worktree nested under the main checkout -
+# A worktree created with a plain `git worktree add` carries no `.loom-managed`
+# sentinel. Nested under the main checkout (`<main>/.claude/worktrees/x`, a
+# layout some repos document) it matched the main-root prefix test and was
+# denied, even though git treats it as a separate working tree sharing nothing
+# with the main checkout's index or tracked files. `git worktree list
+# --porcelain` is now consulted; the MAIN worktree entry is excluded, so the
+# checkout this guard protects stays denied.
+#
+# TMPROOT needs a commit before `git worktree add` will run; --allow-empty
+# keeps the fixture inert for every other case in this file.
+git -C "$TMPROOT" -c user.email=loom@test -c user.name=loom \
+    commit -q --allow-empty -m init >/dev/null 2>&1 || true
+mkdir -p "$TMPROOT/.claude/worktrees"
+git -C "$TMPROOT" worktree add -q "$TMPROOT/.claude/worktrees/x" \
+    -b nested/x >/dev/null 2>&1 || true
+NESTED_WT="$TMPROOT/.claude/worktrees/x"
+mkdir -p "$NESTED_WT/src" "$TMPROOT/.claude/worktrees/not-a-worktree"
+
+result=$(run_hook "$NESTED_WT/src/paper.pdf")
+assert_allow "(#7415) target inside a registered-but-unmanaged nested worktree -> allow" "$result"
+
+result=$(run_hook "src/paper.pdf" "$NESTED_WT")
+assert_allow "(#7415) relative target + cwd inside the nested unmanaged worktree -> allow" "$result"
+
+result=$(run_hook "$TMPROOT/CLAUDE.md")
+assert_deny "(#7415) main-root target still denies while a nested worktree is registered" "$result"
+
+result=$(run_hook "$TMPROOT/.claude/worktrees/not-a-worktree/f.txt")
+assert_deny "(#7415) a plain dir under .claude/worktrees that is NOT a registered worktree still denies" "$result"
+
+result=$(run_hook "$TMPROOT/.claude/worktrees/stray.txt")
+assert_deny "(#7415) the nested worktree's PARENT dir (not itself a worktree) still denies" "$result"
+
+# --- #7415: the deny hint names the ACTUALLY configured worktree root --------
+raw=$(run_hook "$TMPROOT/CLAUDE.md")
+out="${raw#*|}"
+reason=$(echo "$out" | jq -r '.hookSpecificOutput.permissionDecisionReason // empty' 2>/dev/null || true)
+if [[ "$reason" == *"$TMPROOT/.loom/worktrees/issue-<N>"* ]]; then
+    pass "(#7415) deny reason names the resolved worktree root, not a bare relative hint"
+else
+    fail "(#7415) deny reason names the resolved worktree root, not a bare relative hint (got: $reason)"
+fi
 
 # --- LOOM_WORKTREE_PATH fast path (tmux/manual) is unchanged ---------------
 result=$(run_hook "$WT/src/foo.rs" "" "LOOM_WORKTREE_PATH=$WT")

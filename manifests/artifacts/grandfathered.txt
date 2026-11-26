@@ -1,0 +1,50 @@
+# Manifests grandfathered out of the tracked-bytes check in
+# scripts/check_artifact_manifests.py.
+#
+# Operator ruling on issue #346 (2026-11-15, /fleet:decide round
+# 20261111-r14, q111): scope the committed-and-stored rule forward,
+# grandfathering — by this explicit allowlist, not by date — every manifest
+# measured at 3822d313 (2026-11-16) that lists any stored object whose bytes
+# are also tracked. That derivation yields the 34 filenames below (34, not
+# the 36 quoted in the ruling: the checker's error text attributes each
+# shared sha256 to only one manifest, so the ruling's count over-counted).
+# One filename per line; '#' comments and blank lines are ignored. A tracked
+# file is exempt only when every manifest listing its (size, sha256) appears
+# here; any manifest off this list keeps its objects fully checked.
+# Do not add entries without an operator ruling. The root cause of
+# committed-and-stored runs is tracked in #356.
+
+cell-breakdown-model-20261028-024005-84a7179.manifest.json
+cell-breakdown-model-20261028-024045-84a7179.manifest.json
+cell-breakdown-model-20261028-024125-84a7179.manifest.json
+cell-breakdown-model-20261028-024225-84a7179.manifest.json
+cell-breakdown-model-20261028-024245-84a7179.manifest.json
+cell-breakdown-model-20261028-024325-84a7179.manifest.json
+cell-breakdown-model-20261028-024405-84a7179.manifest.json
+cell-breakdown-model-20261106-084815-a95fd31.manifest.json
+cell-breakdown-model-20261106-090543-a95fd31.manifest.json
+cell-breakdown-model-20261106-092307-a95fd31.manifest.json
+cell-breakdown-model-20261106-094136-371a901.manifest.json
+cell-breakdown-model-20261106-095819-7e5dbde.manifest.json
+cell-breakdown-model-20261106-103045-7e5dbde.manifest.json
+cell-breakdown-model-20261106-111329-7e5dbde.manifest.json
+cell-breakdown-model-20261106-120013-17ba508.manifest.json
+cell-breakdown-model-20261106-122233-17ba508.manifest.json
+cell-breakdown-model-20261106-124416-17ba508.manifest.json
+cell-breakdown-model-20261106-174202-bbfa96c.manifest.json
+cell-breakdown-model-20261106-174316-bbfa96c.manifest.json
+cell-breakdown-model-20261106-174449-bbfa96c.manifest.json
+cell-breakdown-model-20261106-181832-bcb835c.manifest.json
+cell-breakdown-model-20261106-182823-bcb835c.manifest.json
+cell-breakdown-model-20261106-184024-bcb835c.manifest.json
+cell-breakdown-model-20261106-184951-bcb835c.manifest.json
+cell-breakdown-model-20261106-185345-bcb835c.manifest.json
+cell-breakdown-model-20261106-190447-bcb835c.manifest.json
+cell-breakdown-model-20261106-191540-bcb835c.manifest.json
+cell-breakdown-model-20261106-192549-bcb835c.manifest.json
+program-bias-scheme-20261028-024025-84a7179.manifest.json
+program-bias-scheme-20261028-024105-84a7179.manifest.json
+program-bias-scheme-20261028-024145-84a7179.manifest.json
+program-bias-scheme-20261028-024205-84a7179.manifest.json
+program-bias-scheme-20261028-024305-84a7179.manifest.json
+program-bias-scheme-20261028-024345-84a7179.manifest.json
