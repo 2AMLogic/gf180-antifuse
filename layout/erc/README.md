@@ -2,8 +2,7 @@
 
 `supplies.json` is the `klt erc` spec for the first drawn bitcell
 (`cell_candidate1`, Region I), derived from the supply-domain inventory
-`spec/supply-domains-decision.md` (rows 1 to 17). It is an **input** only: no
-ERC envelope is cited from this directory; the run on the first bitcell is
+`spec/supply-domains-decision.md` (rows 1 to 17). The run on the first bitcell is
 `layout/cell_candidate1/erc_report.json` (issues #120, #196), cited with item
 4's LVS report as `11.analog` (see `signoff/README.md`).
 `supplies_c1_Amin_G2x.json`, `supplies_c1_A2x_Gmin.json` and
@@ -38,7 +37,58 @@ Region I spec it declares a real `well_layer` (`21/0`) and carries no
 Nothing here resolves an open item (OI-n) of the decision record. A row that
 depends on an unresolved OI is a gap below, not a guessed net.
 
-## Spec contents
+## Digital partition
+
+`supplies_digital.json` checks the VDD and VSS labels on the routed
+`antifuse_digital_top` GDS. These are the power and ground net names in
+`rtl/pnr/antifuse_digital_top.pnr.json`. Rows 1 and 2 of the
+[supply-domain inventory](../../spec/supply-domains-decision.md) describe
+their functions. The voltage, supply source and relationship to the analog
+return are open chip-level decisions.
+
+The P&R report records 220 `gf180mcu_fd_sc_mcu7t5v0__filltie` tapcells and
+straps on Metal1, Metal4 and Metal5. The ERC stack spans Metal1 through Metal5
+and their intervening vias. Both supplies share these routing layers. Each
+supply must form one island and the two supplies must be separate.
+
+The n-well tie requires an actual Contact cut (33/0) in Comp (22/0) and Nplus
+(32/0) inside drawn Nwell (21/0), reaching VDD through Metal1. The substrate
+tie requires a Contact cut in Comp and Pplus (31/0) outside Nwell reaching VSS.
+The substrate region is the declared complement of Nwell within the top-cell
+bounds. The report records this under `checked_by_well_assertion`.
+ERC requires at least one connected tap per merged well or substrate region.
+Tap spacing and continuity of every individual tap are separate checks.
+
+From the repository root, reproduce the committed report with the pinned tool:
+
+```sh
+uvx --from klayout-tools==0.8.0 klt erc --check layout/erc/digital_erc_report.json --rerun
+```
+
+`digital_erc_report.json` records one island per supply, both ties checked and
+zero ERC findings. The generation command below returns 4 when connectivity is
+clean and antenna grading was omitted. The full replay above returns 0 on match.
+
+```sh
+uvx --from klayout-tools==0.8.0 klt erc rtl/pnr/antifuse_digital_top.gds \
+  layout/erc/supplies_digital.json --top antifuse_digital_top --deck gf180mcu \
+  --findings-only --compact --omit-antenna-tables --format json
+```
+
+To exercise the polarity check, swap just the requested tie destinations on a
+scratch copy of the spec and use its path in the generation command. The
+routed GDS then yields 27 missing VSS ties on the n-wells and one missing VDD
+tie on the substrate. Both metal rails still have one island.
+
+```sh
+jq '(.ties[] | .net) |= (if . == "VDD" then "VSS" else "VDD" end)' \
+  layout/erc/supplies_digital.json > /tmp/antifuse-swapped-ties.json
+```
+
+Issue #177 also requires the accepted digital LVS evidence from #176 to grade
+the compound power-delivery row.
+
+## Analog spec contents
 
 | Block | Source |
 |---|---|
@@ -49,9 +99,9 @@ depends on an unresolved OI is a gap below, not a guessed net.
 | `supplies_c2.json` `ties[0]` `vb_psub_region_i` | Row 14, same tie, asserted `well_boxes` fitted to `cell_candidate2/`'s own two `Pplus` tap-ring outlines (issue #373). |
 | `supplies_region_iii.json` `ties[0]` `vb_nwell_region_iii` | Row 15 (not run on `cell_candidate1`). |
 
-No other `nets[]` entry is declared; see "The one declared net".
+No other analog `nets[]` entry is declared; see "The one declared net".
 
-## Row mapping (exactly one disposition per row)
+## Analog-spec coverage of the supply-domain inventory
 
 | # | Net | Disposition | Detail |
 |---|---|---|---|
@@ -83,7 +133,7 @@ Region I spec (row 14): `cell_candidate1`, its three split points and
 `cell_candidate2`. It asserts only that the two p-tap rings of the cell the
 spec runs against are strapped into one `VB` island; it does **not** assert
 that rows 14 and 15 are one net (the Region III n-well tie lives in the
-separate `supplies_region_iii.json`). Every other net stays a gap in the table
+separate `supplies_region_iii.json`). Every other net stays a gap in the analog table
 above: `VPP` (rows 3 to 5) would fix an island count that OI-3 leaves open,
 and the placeholder-named rails and `PL` wait on OI-1, OI-2, OI-6 and OI-8.
 Adding any of them needs those OIs resolved through `spec/` with a decision
