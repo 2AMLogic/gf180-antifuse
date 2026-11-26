@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  check:
+    name: design netlist checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install runtime libraries and KLayout
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends klayout libcairo2 libx11-6 \
+            libxcb1 libxpm4 libxrender1 libxft2 libxss1 libtcl8.6 libtk8.6
+
+      - name: Restore schematic and simulation tools
+        id: eda-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/antifuse-eda
+          key: netlist-eda-ubuntu-24.04-${{ runner.arch }}-xschem-3.4.7-ngspice-47p1-v1
+
+      - name: Build xschem 3.4.7 and ngspice 47 with its MOS capacitor fix
+        if: steps.eda-cache.outputs.cache-hit != 'true'
+        working-directory: ${{ runner.temp }}
+        run: |
+          sudo apt-get install -y --no-install-recommends bison flex libcairo2-dev libx11-dev libxcb1-dev libxpm-dev libxrender-dev tcl-dev tk-dev
+          prefix="$HOME/.local/antifuse-eda"
+          curl -fsSL --retry 3 https://codeload.github.com/StefanSchippers/xschem/tar.gz/92dd8fe5f4d5c1057489710d8a22f18fdc9d7ed0 -o xschem.tar.gz
+          curl -fsSL --retry 3 https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/47/ngspice-47.tar.gz -o ngspice.tar.gz
+          echo 'db5250690bc193bb2874e7a3b43d7bfc3499c882feb7fa885080434cc9a81c7c  xschem.tar.gz' | sha256sum -c -
+          echo '894e649651f1838a14095e5a5439e7d3aa63e87ede14d283173fda4fcdef675f  ngspice.tar.gz' | sha256sum -c -
+          # Upstream ngspice bug 876 affects the pinned GF180 MOS capacitors with m=.
+          curl -fsSL --retry 3 https://github.com/imr/ngspice/commit/3ef069fb1f04177a153f342a32d941fc20ff047e.patch -o ngspice-bug876.patch
+          echo '4b4b1acb0e5d47d964acf9063aaabd851b4cb3ceaa7ae402b5b218b5fd81d35a  ngspice-bug876.patch' | sha256sum -c -
+          tar xzf xschem.tar.gz
+          tar xzf ngspice.tar.gz
+          patch -d ngspice-47 -p1 < ngspice-bug876.patch
+          (cd xschem-92dd8fe5f4d5c1057489710d8a22f18fdc9d7ed0 && ./configure --prefix="$prefix" && make -j"$(nproc)" && make install)
+          (cd ngspice-47 && ./configure --prefix="$prefix" --with-x=no --with-readline=no --enable-xspice --disable-debug && make -j"$(nproc)" && make install)
+
+      - name: Install the netlist exporter and pinned GF180MCU models
+        run: |
+          # design/regen-netlists.sh uses --output-dir, which first appeared
+          # after release 0.9.2. Use the commit recorded in signoff/README.md.
+          python -m pip install uv
+          uv tool install 'git+https://github.com/2AMLogic/klayout-tools.git@83764a3c6b6f38478e59d36de9a2df60d5236122'
+          source design/lib-pdk-root.sh
+          uvx --from ciel==2.6.1 ciel enable --pdk-family gf180mcu -l gf180mcu_fd_pr "$PINNED_OPEN_PDKS"
+          echo "$HOME/.local/antifuse-eda/bin" >> "$GITHUB_PATH"
+          uv tool dir --bin >> "$GITHUB_PATH"
+
+      - name: Check repository and signoff evidence
+        run: |
+          npm run check:ci
+          ./signoff/verify.sh
+
+      - name: Regenerate netlists and run the seven design checks
+        run: ./design/check-netlists.sh

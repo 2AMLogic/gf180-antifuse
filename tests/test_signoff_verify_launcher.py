@@ -44,6 +44,15 @@ class VerifyLauncherTests(unittest.TestCase):
         self._td = tempfile.TemporaryDirectory()
         self.addCleanup(self._td.cleanup)
         self.tmp = Path(self._td.name)
+        # Only expose the executables the script and fake graders need. The
+        # interpreter's real bin directory may also contain a working uvx.
+        self.commands = self.tmp / "commands"
+        self.commands.mkdir()
+        for name in ("bash", "cat", "diff", "dirname", "mktemp", "python3", "rm"):
+            executable = shutil.which(name)
+            if executable is None:
+                self.skipTest(f"{name} is not on PATH")
+            (self.commands / name).symlink_to(executable)
         self.root = self.tmp / "repo"
         signoff = self.root / "signoff"
         signoff.mkdir(parents=True)
@@ -68,10 +77,7 @@ class VerifyLauncherTests(unittest.TestCase):
         return bin_dir
 
     def run_verify(self, bin_dir: Path, klt_cmd=None):
-        py3 = shutil.which("python3")
-        if py3 is None:
-            self.skipTest("python3 is not on PATH")
-        env = {"PATH": f"{bin_dir}:{Path(py3).parent}:/usr/bin:/bin",
+        env = {"PATH": f"{bin_dir}:{self.commands}",
                "FAKE_DIR": str(self.tmp)}
         if klt_cmd is not None:
             env["KLT_CMD"] = klt_cmd
