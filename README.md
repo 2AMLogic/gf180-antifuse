@@ -26,7 +26,10 @@ margin, retention) rather than proving one operating point.
 
 The analog design includes the three antifuse cell candidates, the 32 × 32
 array and its row/column selectors, and the program and read legs.
-The three regional layouts contain 352, 352 and 320 cells respectively.
+The [addressed array layout](layout/array_32x32/README.md) connects all 1,024
+cells across three regions of 352, 352 and 320 cells. Native GF180D LVS
+matches all 2,944 devices, 1,611 nets and 75 external pins. The released
+KLT 0.9.2 LVS deck reports 86 extra body nets, and DRC findings remain.
 The [design inventory](design/README.md) describes how the circuits connect.
 Each region records its own layout checks. [Region I](layout/array_region_i/README.md),
 [Region II](layout/array_region_ii/README.md), [Region III](layout/array_region_iii/README.md).
@@ -60,10 +63,9 @@ The per-candidate device names are also tabulated in
 
 ## Reproducing results
 
-Commands are run from the repo root. Outcomes below were observed on a
-shared worker host on 2026-10-09, except the `sim/` driver checks (2026-11-23);
-"not run here" means deliberately not
-executed there, not that it fails.
+Run these commands from the repo root. The design checks below ran on a
+shared worker on 2026-10-09, the simulation driver checks on 2026-11-23,
+and the signoff regrade on 2026-11-26.
 
 **Tools and PDK.** `xschem` 3.4.7, `ngspice` 46, `python3` (stdlib only for
 `sim/`), and the gf180mcu PDK (`gf180mcuD`, `open_pdks` commit
@@ -79,13 +81,13 @@ root containing `gf180mcuD/` (scripts fall back to `~/.ciel`; install with `pip 
 | `design/` | `design/run_analog_cold_start.sh` | ran OK on a worker with no working `xschem` (failing stub first on `PATH`): prints `ANALOG COLD START PASSED`, ~1 s wall-clock. Runs `check-netlists.sh --skip-regen`: ngspice elaboration, capacitor-geometry sweep, region-map drift, slice smoke and leg interlock truth table at the typical corner. It skips the reproducibility step, including the generator checks. Elaboration and mechanism only: no corners, no device evidence. |
 | `sim/` | `--help` on each of the eight Cold start commands in [`sim/README.md`](sim/README.md) | ran OK (2026-11-23): every driver printed its usage directly, including the worked-example flags (`--check-env`, `--probe`, `--mc`, `--resume`). |
 | `sim/` | the eight Cold start campaigns themselves | **not run here**: every experiment submits its PVT grid as `klt sim` requests instead of looping ngspice locally — to the klt batch fleet when `KLT_SIM_BACKEND=batch` is exported as on the dispatch workers (four drivers also pin `"backend": "batch"` in their requests; the other four default to `local` if `KLT_SIM_BACKEND` is unset — see [`sim/README.md`](sim/README.md); fleet job id in `environment.remote` of each report), and the shared worker does not run the grid itself. Existing results are in each experiment's `records/` (append-only; a re-run mints a new record). |
-| `signoff/` | `./signoff/verify.sh` | **fails with the host `klt` (0.6.0+g1eb3e4bfd0f5)**: the committed report was graded by `klt` 0.5.0+g32f69f811682, so a different build reports drift. This is a build mismatch, not evidence drift; the `klt` build pin and the regrade command are in [`signoff/README.md`](signoff/README.md). The report was not regenerated. |
+| `signoff/` | `./signoff/verify.sh` | Passed on 2026-11-26 with the pinned `klayout-tools==0.8.0`. The fresh grade matched the committed report byte for byte, with 11 of 22 T1 items met. |
 
 Methodology, record format and how to read results:
 [`design/README.md`](design/README.md), [`sim/README.md`](sim/README.md),
 [`sim/cell-device-characterization/README.md`](sim/cell-device-characterization/README.md),
-[`signoff/README.md`](signoff/README.md). CI for these checks is tracked in
-issue #14 and is not present yet.
+[`signoff/README.md`](signoff/README.md). The [CI workflow](.github/workflows/ci.yml) runs
+netlist, layout and signoff checks on pull requests and pushes to `main`.
 
 ## Repo layout
 

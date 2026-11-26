@@ -5,6 +5,11 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-26
 
+- **PR #565**: Clear the addressed antifuse array’s 948 gate antenna findings
+- **Issue #563** (closed): Derive Run 3 bundle landing patches from the drawn pad coordinates
+- **PR #564**: refactor: read the Run 3 bundle pad x from the drawn pad records
+- **PR #554**: Cite reproducible full-array GDS for analog layout item 2
+- **PR #553**: Assemble and verify the addressed 1,024-cell GF180 analog array
 - **PR #559**: docs: point the Run 3 layout READMEs at the drawn C2-Amin-G2x master
 - **Issue #556** (closed): Reconcile Region II MDN.10c and MDN.5c native DRC markers across replays
 - **PR #557**: docs: record native Region II DRC replays on Linux and macOS
