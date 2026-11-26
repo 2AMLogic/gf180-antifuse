@@ -14,8 +14,8 @@
   "bbox_area_um2": 4900016.0,
   "bbox_area_mm2": 4.900016,
   "aspect_ratio": 0.7649150533386013,
-  "drawn_area_um2": 3820958.7921,
-  "utilization": 0.779784962355225,
+  "drawn_area_um2": 3820851.9628000003,
+  "utilization": 0.7797631605284555,
   "tight_bbox_um": {
     "left": 0.0,
     "bottom": 0.0,
@@ -32,8 +32,8 @@
     "bottom": 0.0,
     "top": 0.0
   },
-  "whitespace_area_um2": 1079057.2078999998,
-  "whitespace_fraction": 0.220215037644775,
+  "whitespace_area_um2": 1079164.0371999997,
+  "whitespace_fraction": 0.2202368394715445,
   "whitespace_grid": {
     "cols": 4,
     "rows": 4,
@@ -49,8 +49,8 @@
           "width": 484.0,
           "height": 632.75
         },
-        "covered_fraction": 0.8507704415659051,
-        "whitespace_fraction": 0.1492295584340949
+        "covered_fraction": 0.8507668758632625,
+        "whitespace_fraction": 0.1492331241367375
       },
       {
         "row": 0,
@@ -63,8 +63,8 @@
           "width": 484.0,
           "height": 632.75
         },
-        "covered_fraction": 0.7551070458545441,
-        "whitespace_fraction": 0.24489295414545587
+        "covered_fraction": 0.7551564327953215,
+        "whitespace_fraction": 0.24484356720467848
       },
       {
         "row": 0,
@@ -77,8 +77,8 @@
           "width": 484.0,
           "height": 632.75
         },
-        "covered_fraction": 0.6710201204240965,
-        "whitespace_fraction": 0.32897987957590347
+        "covered_fraction": 0.6710283195809973,
+        "whitespace_fraction": 0.3289716804190027
       },
       {
         "row": 0,
@@ -105,8 +105,8 @@
           "width": 484.0,
           "height": 632.75
         },
-        "covered_fraction": 0.8620072463436854,
-        "whitespace_fraction": 0.13799275365631458
+        "covered_fraction": 0.8619632236302902,
+        "whitespace_fraction": 0.1380367763697098
       },
       {
         "row": 1,
@@ -119,8 +119,8 @@
           "width": 484.0,
           "height": 632.75
         },
-        "covered_fraction": 0.7721636964450729,
-        "whitespace_fraction": 0.22783630355492712
+        "covered_fraction": 0.7721493190226317,
+        "whitespace_fraction": 0.22785068097736827
       },
       {
         "row": 1,
@@ -133,8 +133,8 @@
           "width": 484.0,
           "height": 632.75
         },
-        "covered_fraction": 0.6954700265468521,
-        "whitespace_fraction": 0.3045299734531479
+        "covered_fraction": 0.6954897211764206,
+        "whitespace_fraction": 0.3045102788235794
       },
       {
         "row": 1,
@@ -161,8 +161,8 @@
           "width": 484.0,
           "height": 632.75
         },
-        "covered_fraction": 0.8562633516298722,
-        "whitespace_fraction": 0.14373664837012778
+        "covered_fraction": 0.8560940836111556,
+        "whitespace_fraction": 0.14390591638884442
       },
       {
         "row": 2,
@@ -175,8 +175,8 @@
           "width": 484.0,
           "height": 632.75
         },
-        "covered_fraction": 0.7649599002125708,
-        "whitespace_fraction": 0.23504009978742924
+        "covered_fraction": 0.7647925165958642,
+        "whitespace_fraction": 0.23520748340413578
       },
       {
         "row": 2,
@@ -231,8 +231,8 @@
           "width": 484.0,
           "height": 632.75
         },
-        "covered_fraction": 0.7423490346153971,
-        "whitespace_fraction": 0.25765096538460286
+        "covered_fraction": 0.74232154213374,
+        "whitespace_fraction": 0.25767845786626
       },
       {
         "row": 3,
@@ -274,119 +274,119 @@
         "width": 1916.0,
         "height": 2511.0
       },
-      "area_um2": 858898.26015,
-      "fill_fraction": 0.1785251906538163
+      "area_um2": 858405.8309500001,
+      "fill_fraction": 0.17842283741724305
     },
     {
       "bbox_um": {
         "left": 945.0,
-        "bottom": 581.5500000000001,
+        "bottom": 582.5,
         "right": 1084.6,
-        "top": 663.29,
+        "top": 666.35,
         "width": 139.6,
-        "height": 81.74
+        "height": 83.85000000000001
       },
-      "area_um2": 9820.6106,
-      "fill_fraction": 0.860633881417283
+      "area_um2": 9821.144800000002,
+      "fill_fraction": 0.8390225416173307
     },
     {
       "bbox_um": {
         "left": 945.0,
-        "bottom": 836.53,
+        "bottom": 837.5,
         "right": 1084.6,
-        "top": 917.82,
+        "top": 922.35,
         "width": 139.6,
-        "height": 81.29
+        "height": 84.85000000000001
       },
-      "area_um2": 9777.96835,
-      "fill_fraction": 0.8616404628305536
+      "area_um2": 9778.83935,
+      "fill_fraction": 0.8255626691633474
     },
     {
       "bbox_um": {
         "left": 570.21,
-        "bottom": 748.63,
+        "bottom": 751.23,
         "right": 614.79,
-        "top": 832.82,
+        "top": 837.13,
         "width": 44.58,
-        "height": 84.19
+        "height": 85.9
       },
-      "area_um2": 3284.4142,
-      "fill_fraction": 0.875099322171309
+      "area_um2": 3214.5194,
+      "fill_fraction": 0.8394267855566715
     },
     {
       "bbox_um": {
         "left": 570.21,
-        "bottom": 1429.05,
+        "bottom": 240.81,
         "right": 614.79,
-        "top": 1512.82,
+        "top": 326.35,
         "width": 44.58,
-        "height": 83.77
+        "height": 85.54
       },
-      "area_um2": 3241.7999,
-      "fill_fraction": 0.8680757514339531
+      "area_um2": 3185.0076000000004,
+      "fill_fraction": 0.8352205338832297
     },
     {
       "bbox_um": {
         "left": 570.21,
-        "bottom": 239.21,
+        "bottom": 496.23,
         "right": 614.79,
-        "top": 323.29,
+        "top": 582.13,
         "width": 44.58,
-        "height": 84.08
+        "height": 85.9
       },
-      "area_um2": 3227.7993,
-      "fill_fraction": 0.861139986528244
+      "area_um2": 3182.266,
+      "fill_fraction": 0.8310042612174893
     },
     {
       "bbox_um": {
         "left": 570.21,
-        "bottom": 1005.0500000000001,
+        "bottom": 1006.65,
         "right": 614.79,
-        "top": 1088.29,
+        "top": 1091.35,
         "width": 44.58,
-        "height": 83.24
+        "height": 84.7
       },
-      "area_um2": 3222.0936,
-      "fill_fraction": 0.8682924336899319
+      "area_um2": 3179.3082000000004,
+      "fill_fraction": 0.841994308151166
     },
     {
       "bbox_um": {
         "left": 570.21,
-        "bottom": 919.63,
+        "bottom": 921.23,
         "right": 614.79,
-        "top": 1003.2900000000001,
+        "top": 1006.35,
         "width": 44.58,
-        "height": 83.66
+        "height": 85.12
       },
-      "area_um2": 3221.3398,
-      "fill_fraction": 0.8637312126772607
+      "area_um2": 3178.5544,
+      "fill_fraction": 0.8376410828551865
     },
     {
       "bbox_um": {
         "left": 570.21,
-        "bottom": 324.63,
+        "bottom": 326.23,
         "right": 614.79,
-        "top": 408.29,
+        "top": 411.35,
         "width": 44.58,
-        "height": 83.66
+        "height": 85.12
       },
-      "area_um2": 3220.6111,
-      "fill_fraction": 0.8635358278455587
+      "area_um2": 3177.8194,
+      "fill_fraction": 0.8374473890817218
     },
     {
       "bbox_um": {
         "left": 570.21,
-        "bottom": 409.63,
+        "bottom": 411.23,
         "right": 614.79,
-        "top": 493.29,
+        "top": 496.35,
         "width": 44.58,
-        "height": 83.66
+        "height": 85.12
       },
-      "area_um2": 3220.6111,
-      "fill_fraction": 0.8635358278455587
+      "area_um2": 3177.8194,
+      "fill_fraction": 0.8374473890817218
     }
   ],
-  "empty_region_count": 3568,
+  "empty_region_count": 3564,
   "cells": [
     {
       "name": "cap__core",
@@ -1323,8 +1323,8 @@
         "height": 2520.0
       },
       "bbox_area_um2": 4838400.0,
-      "drawn_area_um2": 3414781.9388,
-      "utilization": 0.7057667697585979
+      "drawn_area_um2": 3414680.8906,
+      "utilization": 0.7057458851273148
     },
     {
       "name": "straps__straps",
@@ -1337,8 +1337,8 @@
         "height": 3.59
       },
       "bbox_area_um2": 18.488500000000002,
-      "drawn_area_um2": 6.917400000000001,
-      "utilization": 0.3741460908132082
+      "drawn_area_um2": 9.196,
+      "utilization": 0.4973902696270654
     },
     {
       "name": "straps__straps$1",
@@ -1351,8 +1351,8 @@
         "height": 3.59
       },
       "bbox_area_um2": 18.488500000000002,
-      "drawn_area_um2": 6.917400000000001,
-      "utilization": 0.3741460908132082
+      "drawn_area_um2": 9.196,
+      "utilization": 0.4973902696270654
     },
     {
       "name": "straps__straps$10",
@@ -1365,8 +1365,8 @@
         "height": 3.59
       },
       "bbox_area_um2": 18.488500000000002,
-      "drawn_area_um2": 5.0652,
-      "utilization": 0.27396489709819616
+      "drawn_area_um2": 7.2388,
+      "utilization": 0.3915298699191389
     },
     {
       "name": "straps__straps$11",
@@ -1379,8 +1379,8 @@
         "height": 3.59
       },
       "bbox_area_um2": 18.488500000000002,
-      "drawn_area_um2": 5.0652,
-      "utilization": 0.27396489709819616
+      "drawn_area_um2": 7.2388,
+      "utilization": 0.3915298699191389
     },
     {
       "name": "straps__straps$12",
@@ -1393,8 +1393,8 @@
         "height": 4.59
       },
       "bbox_area_um2": 23.6385,
-      "drawn_area_um2": 8.742600000000001,
-      "utilization": 0.3698458023986294
+      "drawn_area_um2": 9.538200000000002,
+      "utilization": 0.403502760327432
     },
     {
       "name": "straps__straps$13",
@@ -1407,8 +1407,8 @@
         "height": 4.59
       },
       "bbox_area_um2": 23.6385,
-      "drawn_area_um2": 8.742600000000001,
-      "utilization": 0.3698458023986294
+      "drawn_area_um2": 9.538200000000002,
+      "utilization": 0.403502760327432
     },
     {
       "name": "straps__straps$14",
@@ -1421,8 +1421,8 @@
         "height": 4.59
       },
       "bbox_area_um2": 23.6385,
-      "drawn_area_um2": 8.742600000000001,
-      "utilization": 0.3698458023986294
+      "drawn_area_um2": 9.538200000000002,
+      "utilization": 0.403502760327432
     },
     {
       "name": "straps__straps$15",
@@ -1435,8 +1435,8 @@
         "height": 4.59
       },
       "bbox_area_um2": 23.6385,
-      "drawn_area_um2": 8.742600000000001,
-      "utilization": 0.3698458023986294
+      "drawn_area_um2": 9.538200000000002,
+      "utilization": 0.403502760327432
     },
     {
       "name": "straps__straps$16",
@@ -1449,8 +1449,8 @@
         "height": 2.52
       },
       "bbox_area_um2": 23.007600000000004,
-      "drawn_area_um2": 7.025,
-      "utilization": 0.30533388967123903
+      "drawn_area_um2": 8.1373,
+      "utilization": 0.3536787844016759
     },
     {
       "name": "straps__straps$17",
@@ -1463,8 +1463,8 @@
         "height": 2.52
       },
       "bbox_area_um2": 23.007600000000004,
-      "drawn_area_um2": 7.025,
-      "utilization": 0.30533388967123903
+      "drawn_area_um2": 8.1373,
+      "utilization": 0.3536787844016759
     },
     {
       "name": "straps__straps$18",
@@ -1477,8 +1477,8 @@
         "height": 2.52
       },
       "bbox_area_um2": 23.007600000000004,
-      "drawn_area_um2": 7.025,
-      "utilization": 0.30533388967123903
+      "drawn_area_um2": 8.1373,
+      "utilization": 0.3536787844016759
     },
     {
       "name": "straps__straps$19",
@@ -1491,8 +1491,8 @@
         "height": 2.52
       },
       "bbox_area_um2": 23.007600000000004,
-      "drawn_area_um2": 7.025,
-      "utilization": 0.30533388967123903
+      "drawn_area_um2": 8.1373,
+      "utilization": 0.3536787844016759
     },
     {
       "name": "straps__straps$2",
@@ -1505,8 +1505,8 @@
         "height": 3.59
       },
       "bbox_area_um2": 18.488500000000002,
-      "drawn_area_um2": 6.917400000000001,
-      "utilization": 0.3741460908132082
+      "drawn_area_um2": 9.196,
+      "utilization": 0.4973902696270654
     },
     {
       "name": "straps__straps$20",
@@ -1519,8 +1519,8 @@
         "height": 2.52
       },
       "bbox_area_um2": 23.007600000000004,
-      "drawn_area_um2": 7.025,
-      "utilization": 0.30533388967123903
+      "drawn_area_um2": 8.1373,
+      "utilization": 0.3536787844016759
     },
     {
       "name": "straps__straps$21",
@@ -1533,8 +1533,8 @@
         "height": 3.61
       },
       "bbox_area_um2": 23.3928,
-      "drawn_area_um2": 4.1818,
-      "utilization": 0.1787644061420608
+      "drawn_area_um2": 6.7007,
+      "utilization": 0.28644283711227386
     },
     {
       "name": "straps__straps$22",
@@ -1547,8 +1547,8 @@
         "height": 3.61
       },
       "bbox_area_um2": 23.3928,
-      "drawn_area_um2": 4.1818,
-      "utilization": 0.1787644061420608
+      "drawn_area_um2": 6.7007,
+      "utilization": 0.28644283711227386
     },
     {
       "name": "straps__straps$23",
@@ -1561,8 +1561,8 @@
         "height": 3.61
       },
       "bbox_area_um2": 23.3928,
-      "drawn_area_um2": 4.1818,
-      "utilization": 0.1787644061420608
+      "drawn_area_um2": 6.7007,
+      "utilization": 0.28644283711227386
     },
     {
       "name": "straps__straps$24",
@@ -1575,8 +1575,8 @@
         "height": 3.61
       },
       "bbox_area_um2": 23.3928,
-      "drawn_area_um2": 4.1818,
-      "utilization": 0.1787644061420608
+      "drawn_area_um2": 6.7007,
+      "utilization": 0.28644283711227386
     },
     {
       "name": "straps__straps$25",
@@ -1589,8 +1589,8 @@
         "height": 3.61
       },
       "bbox_area_um2": 23.3928,
-      "drawn_area_um2": 4.1818,
-      "utilization": 0.1787644061420608
+      "drawn_area_um2": 6.7007,
+      "utilization": 0.28644283711227386
     },
     {
       "name": "straps__straps$26",
@@ -1603,8 +1603,8 @@
         "height": 4.59
       },
       "bbox_area_um2": 29.7432,
-      "drawn_area_um2": 9.9143,
-      "utilization": 0.33332997122031255
+      "drawn_area_um2": 13.3915,
+      "utilization": 0.4502373651792679
     },
     {
       "name": "straps__straps$27",
@@ -1617,8 +1617,8 @@
         "height": 4.59
       },
       "bbox_area_um2": 29.7432,
-      "drawn_area_um2": 9.9143,
-      "utilization": 0.33332997122031255
+      "drawn_area_um2": 13.3915,
+      "utilization": 0.4502373651792679
     },
     {
       "name": "straps__straps$28",
@@ -1631,8 +1631,8 @@
         "height": 4.59
       },
       "bbox_area_um2": 29.7432,
-      "drawn_area_um2": 9.9143,
-      "utilization": 0.33332997122031255
+      "drawn_area_um2": 13.3915,
+      "utilization": 0.4502373651792679
     },
     {
       "name": "straps__straps$29",
@@ -1645,8 +1645,8 @@
         "height": 4.59
       },
       "bbox_area_um2": 29.7432,
-      "drawn_area_um2": 9.9143,
-      "utilization": 0.33332997122031255
+      "drawn_area_um2": 13.3915,
+      "utilization": 0.4502373651792679
     },
     {
       "name": "straps__straps$3",
@@ -1659,8 +1659,8 @@
         "height": 3.59
       },
       "bbox_area_um2": 18.488500000000002,
-      "drawn_area_um2": 6.917400000000001,
-      "utilization": 0.3741460908132082
+      "drawn_area_um2": 9.196,
+      "utilization": 0.4973902696270654
     },
     {
       "name": "straps__straps$30",
@@ -1673,8 +1673,8 @@
         "height": 4.59
       },
       "bbox_area_um2": 29.7432,
-      "drawn_area_um2": 9.9143,
-      "utilization": 0.33332997122031255
+      "drawn_area_um2": 13.3915,
+      "utilization": 0.4502373651792679
     },
     {
       "name": "straps__straps$4",
@@ -1687,8 +1687,8 @@
         "height": 4.59
       },
       "bbox_area_um2": 23.6385,
-      "drawn_area_um2": 8.9106,
-      "utilization": 0.37695285233834636
+      "drawn_area_um2": 9.891200000000001,
+      "utilization": 0.4184360259745754
     },
     {
       "name": "straps__straps$5",
@@ -1701,8 +1701,8 @@
         "height": 4.59
       },
       "bbox_area_um2": 23.6385,
-      "drawn_area_um2": 8.9106,
-      "utilization": 0.37695285233834636
+      "drawn_area_um2": 9.891200000000001,
+      "utilization": 0.4184360259745754
     },
     {
       "name": "straps__straps$6",
@@ -1715,8 +1715,8 @@
         "height": 4.59
       },
       "bbox_area_um2": 23.6385,
-      "drawn_area_um2": 8.9106,
-      "utilization": 0.37695285233834636
+      "drawn_area_um2": 9.891200000000001,
+      "utilization": 0.4184360259745754
     },
     {
       "name": "straps__straps$7",
@@ -1729,8 +1729,8 @@
         "height": 4.59
       },
       "bbox_area_um2": 23.6385,
-      "drawn_area_um2": 8.9106,
-      "utilization": 0.37695285233834636
+      "drawn_area_um2": 9.891200000000001,
+      "utilization": 0.4184360259745754
     },
     {
       "name": "straps__straps$8",
@@ -1743,8 +1743,8 @@
         "height": 3.59
       },
       "bbox_area_um2": 18.488500000000002,
-      "drawn_area_um2": 5.0652,
-      "utilization": 0.27396489709819616
+      "drawn_area_um2": 7.2388,
+      "utilization": 0.3915298699191389
     },
     {
       "name": "straps__straps$9",
@@ -1757,8 +1757,8 @@
         "height": 3.59
       },
       "bbox_area_um2": 18.488500000000002,
-      "drawn_area_um2": 5.0652,
-      "utilization": 0.27396489709819616
+      "drawn_area_um2": 7.2388,
+      "utilization": 0.3915298699191389
     },
     {
       "name": "substrate_tap_c3__substrate_tap",
@@ -1782,9 +1782,9 @@
       {
         "bbox_um": {
           "left": 598.77,
-          "bottom": 406.02,
+          "bottom": 407.62,
           "right": 1008.1,
-          "top": 411.90000000000003,
+          "top": 413.5,
           "width": 409.33,
           "height": 5.88
         },
@@ -1796,9 +1796,9 @@
       {
         "bbox_um": {
           "left": 598.77,
-          "bottom": 491.02,
+          "bottom": 492.62,
           "right": 1008.1,
-          "top": 496.90000000000003,
+          "top": 498.5,
           "width": 409.33,
           "height": 5.88
         },
@@ -1810,9 +1810,9 @@
       {
         "bbox_um": {
           "left": 598.77,
-          "bottom": 575.8100000000001,
+          "bottom": 577.62,
           "right": 1008.1,
-          "top": 581.69,
+          "top": 583.5,
           "width": 409.33,
           "height": 5.88
         },
@@ -1824,9 +1824,9 @@
       {
         "bbox_um": {
           "left": 598.77,
-          "bottom": 660.8100000000001,
+          "bottom": 662.62,
           "right": 1008.1,
-          "top": 666.69,
+          "top": 668.5,
           "width": 409.33,
           "height": 5.88
         },
@@ -1838,9 +1838,9 @@
       {
         "bbox_um": {
           "left": 598.77,
-          "bottom": 745.8100000000001,
+          "bottom": 747.62,
           "right": 1008.1,
-          "top": 751.69,
+          "top": 753.5,
           "width": 409.33,
           "height": 5.88
         },
@@ -1852,9 +1852,9 @@
       {
         "bbox_um": {
           "left": 598.77,
-          "bottom": 830.02,
+          "bottom": 832.62,
           "right": 1008.1,
-          "top": 835.9,
+          "top": 838.5,
           "width": 409.33,
           "height": 5.88
         },
@@ -1866,9 +1866,9 @@
       {
         "bbox_um": {
           "left": 598.77,
-          "bottom": 915.02,
+          "bottom": 917.62,
           "right": 1008.1,
-          "top": 920.9,
+          "top": 923.5,
           "width": 409.33,
           "height": 5.88
         },
@@ -1880,9 +1880,9 @@
       {
         "bbox_um": {
           "left": 598.77,
-          "bottom": 1000.02,
+          "bottom": 1002.62,
           "right": 1008.1,
-          "top": 1005.9,
+          "top": 1008.5,
           "width": 409.33,
           "height": 5.88
         },
@@ -1894,9 +1894,9 @@
       {
         "bbox_um": {
           "left": 598.77,
-          "bottom": 1085.02,
+          "bottom": 1087.6200000000001,
           "right": 1008.1,
-          "top": 1090.9,
+          "top": 1093.5,
           "width": 409.33,
           "height": 5.88
         },
@@ -1908,9 +1908,9 @@
       {
         "bbox_um": {
           "left": 598.77,
-          "bottom": 1170.02,
+          "bottom": 1172.6200000000001,
           "right": 1008.1,
-          "top": 1175.9,
+          "top": 1178.5,
           "width": 409.33,
           "height": 5.88
         },
@@ -1923,14 +1923,14 @@
   },
   "annotation_layers_excluded": [],
   "provenance": {
-    "klt_version": "0.9.3.dev1370+g30969f578991",
-    "klt_git_commit": "30969f578991f52b680b7cb1ba33276b2e62ace9",
-    "klt_reinstall_spec": "klayout-tools @ git+https://github.com/2AMLogic/klayout-tools@30969f578991f52b680b7cb1ba33276b2e62ace9",
-    "klayout_version": "0.30.12",
+    "klt_version": "0.10.0.dev1+g9d2780c5e1c8",
+    "klt_git_commit": "9d2780c5e1c842777519330943a5435b118c4437",
+    "klt_reinstall_spec": "klayout-tools @ git+https://github.com/2AMLogic/klayout-tools@9d2780c5e1c842777519330943a5435b118c4437",
+    "klayout_version": "0.30.14",
     "pdk": null,
     "deck": null,
     "input": {
-      "content_hash": "sha256:e231fe008290a62c343210bc29354ac3918a6eef3b67875f5cdb91198f1a63b7",
+      "content_hash": "sha256:2ff9138f63a8497075a9b8edf2833ac6504de0929820af074969750e5e41c7bd",
       "role": "layout"
     }
   }

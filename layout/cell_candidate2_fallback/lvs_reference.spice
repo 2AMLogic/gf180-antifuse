@@ -10,6 +10,6 @@
 * subcircuits of layout/run3_top/run3_top.spice, minus the XM1 access
 * device.
 .subckt cell_candidate2_fallback BL PL_GMIN PL_G2X VB
-XC1 BL PL_GMIN cap_nmos_06v0 c_width=1.0u c_length=0.70u m=1
-XC2 BL PL_G2X cap_nmos_06v0 c_width=2.0u c_length=0.70u m=1
+XC1 PL_GMIN BL cap_nmos_06v0 c_width=1.0u c_length=0.70u m=1
+XC2 PL_G2X BL cap_nmos_06v0 c_width=2.0u c_length=0.70u m=1
 .ends

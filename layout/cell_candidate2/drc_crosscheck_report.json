@@ -1,13 +1,13 @@
 {
   "schema_version": 2,
   "mode": "crosscheck",
-  "file": "layout/cell_candidate2/cell_candidate2.gds",
+  "file": "cell_candidate2.gds",
   "status": "violations",
   "identity": {
-    "layout_content_hash": "sha256:5cb4a64fa103f2b698aeaffedddfc28405931e6afbfec8f21cf8b90678462e7a",
+    "layout_content_hash": "sha256:f2bb06eea53f3288cf4ef584465d2bcf84cbbb315a71e2a2e5be6fdd7e987620",
     "pdk": {
       "name": "gf180mcuA",
-      "source": "search root: ~/.ciel",
+      "source": "PDK_ROOT environment variable",
       "version": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7",
       "ambiguous_sources": [
         "search root: ~/.volare"
@@ -2214,7 +2214,7 @@
         "klayout_version": "0.30.13",
         "pdk": {
           "name": "gf180mcuA",
-          "source": "search root: ~/.ciel",
+          "source": "PDK_ROOT environment variable",
           "version": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7",
           "ambiguous_sources": [
             "search root: ~/.volare"
@@ -2226,7 +2226,7 @@
           "released": true
         },
         "input": {
-          "content_hash": "sha256:5cb4a64fa103f2b698aeaffedddfc28405931e6afbfec8f21cf8b90678462e7a",
+          "content_hash": "sha256:f2bb06eea53f3288cf4ef584465d2bcf84cbbb315a71e2a2e5be6fdd7e987620",
           "role": "layout"
         },
         "klayout_version_mismatch": true
@@ -2238,11 +2238,14 @@
         "path": "layout/cell_candidate2/cell_candidate2.gds",
         "scope": "repo"
       },
-      "deck": "/home/ubuntu/.ciel/gf180mcuA/libs.tech/klayout/tech/drc/gf180mcu.drc",
+      "deck": "~/.ciel/gf180mcuA/libs.tech/klayout/tech/drc/gf180mcu.drc",
       "engine": "klayout",
+      "environment": {
+        "klayout_binary": "/Applications/KLayout/klayout.app/Contents/MacOS/klayout"
+      },
       "dbu_um": 0.0005,
       "status": "violations",
-      "violation_count": 25,
+      "violation_count": 26,
       "rule_counts": {
         "CO.4": 16,
         "DBU": 1,
@@ -2250,6 +2253,7 @@
         "M1.4": 1,
         "M2.4": 1,
         "M3.4": 1,
+        "MDN.10c": 1,
         "MT30.7": 1,
         "PL.4_MV": 2
       },
@@ -2926,6 +2930,7 @@
           "M1.4",
           "M2.4",
           "M3.4",
+          "MDN.10c",
           "MT30.7",
           "PL.4_MV"
         ],
@@ -2945,6 +2950,7 @@
           "M1.4",
           "M2.4",
           "M3.4",
+          "MDN.10c",
           "MT30.7",
           "PL.4_MV"
         ],
@@ -3653,6 +3659,22 @@
           ]
         },
         {
+          "rule": "MDN.10c",
+          "description": "MDN.10c : Min/Max POLY2 extension beyond COMP on the field\n                   towards LDNMOS drain COMP direction.: 0.2 um",
+          "check": "external",
+          "layer": "MDN.10c",
+          "cell": "nfet_10v0_asym",
+          "source_cell": null,
+          "source_path": null,
+          "bbox": {
+            "left": 540,
+            "bottom": -3626,
+            "right": 540,
+            "top": 3626
+          },
+          "polygon": null
+        },
+        {
           "rule": "MT30.7",
           "description": "MT30.7 : Thick MetalTop coverage over the entire die shall be >30%\n                                  (Refer to section 13.0 for Dummy Metal-fill guidelines.\n                                  Customer needs to ensure enough dummy metal to satisfy Metaln coverage). : 30%",
           "check": "external",
@@ -3725,7 +3747,7 @@
         "klayout_version": "0.30.13",
         "pdk": {
           "name": "gf180mcuA",
-          "source": "search root: ~/.ciel",
+          "source": "PDK_ROOT environment variable",
           "version": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7",
           "ambiguous_sources": [
             "search root: ~/.volare"
@@ -3746,7 +3768,7 @@
           }
         },
         "input": {
-          "content_hash": "sha256:5cb4a64fa103f2b698aeaffedddfc28405931e6afbfec8f21cf8b90678462e7a",
+          "content_hash": "sha256:f2bb06eea53f3288cf4ef584465d2bcf84cbbb315a71e2a2e5be6fdd7e987620",
           "role": "layout"
         },
         "klayout_version_mismatch": true
@@ -3756,7 +3778,7 @@
   "native_deck": {
     "kind": "pdk_main_script",
     "variant": "gf180mcuA",
-    "deck_file": "/home/ubuntu/.ciel/gf180mcuA/libs.tech/klayout/tech/drc/gf180mcu.drc",
+    "deck_file": "~/.ciel/gf180mcuA/libs.tech/klayout/tech/drc/gf180mcu.drc",
     "deck_vars_defaulted": {
       "variant": "gf180mcuA"
     },

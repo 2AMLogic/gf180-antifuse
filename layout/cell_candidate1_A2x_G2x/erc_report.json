@@ -13,7 +13,7 @@
   "gates": [
     {
       "gate_id": "gate0",
-      "net": "PL",
+      "net": null,
       "gate_area_um2": 0.56,
       "antenna_verdict": "unchecked",
       "levels": [
@@ -270,7 +270,7 @@
     "pdk": null,
     "deck": null,
     "input": {
-      "content_hash": "sha256:eeba35dcb209f2a9c41123f34435b8b82f0168a595e02de2861b0ff7b8fa2d00",
+      "content_hash": "sha256:977bf49d703ba0a5402a7e9210ac0acb41be92fdc0b065e49d57f7ce76a65799",
       "role": "layout"
     },
     "spec": {

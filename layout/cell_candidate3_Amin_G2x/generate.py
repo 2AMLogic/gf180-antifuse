@@ -24,11 +24,10 @@ generator's contact-fit floor (W >= 0.42 um) -- see layout/README.md.
 
   access : pfet_06v0 (Dualgate marker), W = 0.42 um, L = 0.55 um   (Minimum)
   cap    : thin-oxide PMOS gate over COMP, W = 2.0 um, L = 0.28 um (2x area),
-           source and drain shorted (moscap) on net CN
+           gate on CN, source and drain shorted on PL
 
-At W_CAP = 2.0 um the two ring gaps' legal CN windows are disjoint, so CN is
-a doglegged three-rect strap, and VB is two stacked bands joined by a riser;
-both derivations live in candidate3_points.py.
+Metal2 carries CN from the capacitor gate to the access drain. VB uses two
+stacked Metal1 bands joined by a riser.
 
 Terminal assignment (matches design/cells/cell_candidate3.sch): BL is the
 access SOURCE, CN is the access DRAIN (mirror of the NMOS candidates). Well
@@ -38,7 +37,7 @@ net. The access block's tap ring is drawn at the raised generator padding
 RING_PAD_ACC (acc block only) -- the generator default misses two native-deck
 well/Dualgate rules on this pfet + medium-voltage pairing;
 candidate3_points.py's RING_PAD_ACC comment has the story. Ports (Metal1
-labels): BL, WL, PL (cap gate), VB.
+labels): BL, WL, PL (cap diffusion), VB.
 
 Point table, shared constants, strap derivation and flow call:
 layout/candidate3_points.py. This file names only this point.

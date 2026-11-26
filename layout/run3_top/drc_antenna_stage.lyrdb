@@ -2,15 +2,11 @@
 <report-database>
  <description/>
  <original-file/>
- <generator>drc: script='/home/ubuntu/.ciel/gf180mcuD/libs.tech/klayout/tech/drc/gf180mcu.drc'</generator>
+ <generator>drc: script='/Users/rwalters/.ciel/gf180mcuD/libs.tech/klayout/tech/drc/gf180mcu.drc'</generator>
  <top-cell>run3_top</top-cell>
  <tags>
   <tag>
    <name>DIODES_AREA</name>
-   <description/>
-  </tag>
-  <tag>
-   <name>RATIO</name>
    <description/>
   </tag>
   <tag>
@@ -19,6 +15,10 @@
   </tag>
   <tag>
    <name>GATE_AREA</name>
+   <description/>
+  </tag>
+  <tag>
+   <name>RATIO</name>
    <description/>
   </tag>
  </tags>
@@ -187,11 +187,11 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (604.7,918.04;604.7,918.88;605.4,918.88;605.4,918.04)</value>
+    <value>polygon: (604.7,919.64;604.7,920.48;605.4,920.48;605.4,919.64)</value>
     <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 428.360969388</value>
-    <value>[#ANT_PERIMETER] float: 2015.01</value>
+    <value>[#ANT_PERIMETER] float: 2017.818</value>
     <value>[#GATE_AREA] float: 4.704</value>
+    <value>[#RATIO] float: 428.957908163</value>
    </values>
   </item>
   <item>
@@ -203,11 +203,11 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (604.7,1003.04;604.7,1003.88;605.4,1003.88;605.4,1003.04)</value>
+    <value>polygon: (604.7,1004.64;604.7,1005.48;605.4,1005.48;605.4,1004.64)</value>
     <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 428.360969388</value>
-    <value>[#ANT_PERIMETER] float: 2015.01</value>
+    <value>[#ANT_PERIMETER] float: 2017.818</value>
     <value>[#GATE_AREA] float: 4.704</value>
+    <value>[#RATIO] float: 428.957908163</value>
    </values>
   </item>
   <item>
@@ -219,11 +219,11 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (604.7,1088.04;604.7,1088.88;605.4,1088.88;605.4,1088.04)</value>
+    <value>polygon: (604.7,1089.64;604.7,1090.48;605.4,1090.48;605.4,1089.64)</value>
     <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 428.360969388</value>
-    <value>[#ANT_PERIMETER] float: 2015.01</value>
+    <value>[#ANT_PERIMETER] float: 2017.818</value>
     <value>[#GATE_AREA] float: 4.704</value>
+    <value>[#RATIO] float: 428.957908163</value>
    </values>
   </item>
   <item>
@@ -235,11 +235,11 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (604.7,1173.04;604.7,1173.88;605.4,1173.88;605.4,1173.04)</value>
+    <value>polygon: (604.7,1174.64;604.7,1175.48;605.4,1175.48;605.4,1174.64)</value>
     <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 428.360969388</value>
-    <value>[#ANT_PERIMETER] float: 2015.01</value>
+    <value>[#ANT_PERIMETER] float: 2017.818</value>
     <value>[#GATE_AREA] float: 4.704</value>
+    <value>[#RATIO] float: 428.957908163</value>
    </values>
   </item>
   <item>
@@ -251,11 +251,11 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (604.7,1257.04;604.7,1257.88;605.4,1257.88;605.4,1257.04)</value>
+    <value>polygon: (604.7,1259.64;604.7,1260.48;605.4,1260.48;605.4,1259.64)</value>
     <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 428.360969388</value>
-    <value>[#ANT_PERIMETER] float: 2015.01</value>
+    <value>[#ANT_PERIMETER] float: 2017.818</value>
     <value>[#GATE_AREA] float: 4.704</value>
+    <value>[#RATIO] float: 428.957908163</value>
    </values>
   </item>
   <item>
@@ -267,11 +267,11 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (604.7,1342.04;604.7,1342.88;605.4,1342.88;605.4,1342.04)</value>
+    <value>polygon: (604.7,1344.64;604.7,1345.48;605.4,1345.48;605.4,1344.64)</value>
     <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 428.360969388</value>
-    <value>[#ANT_PERIMETER] float: 2015.01</value>
+    <value>[#ANT_PERIMETER] float: 2017.818</value>
     <value>[#GATE_AREA] float: 4.704</value>
+    <value>[#RATIO] float: 428.957908163</value>
    </values>
   </item>
   <item>
@@ -283,11 +283,11 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (604.7,1427.04;604.7,1427.88;605.4,1427.88;605.4,1427.04)</value>
+    <value>polygon: (604.7,1429.64;604.7,1430.48;605.4,1430.48;605.4,1429.64)</value>
     <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 428.360969388</value>
-    <value>[#ANT_PERIMETER] float: 2015.01</value>
+    <value>[#ANT_PERIMETER] float: 2017.818</value>
     <value>[#GATE_AREA] float: 4.704</value>
+    <value>[#RATIO] float: 428.957908163</value>
    </values>
   </item>
   <item>
@@ -299,11 +299,11 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (604.7,1512.04;604.7,1512.88;605.4,1512.88;605.4,1512.04)</value>
+    <value>polygon: (604.7,1514.64;604.7,1515.48;605.4,1515.48;605.4,1514.64)</value>
     <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 428.360969388</value>
-    <value>[#ANT_PERIMETER] float: 2015.01</value>
+    <value>[#ANT_PERIMETER] float: 2017.818</value>
     <value>[#GATE_AREA] float: 4.704</value>
+    <value>[#RATIO] float: 428.957908163</value>
    </values>
   </item>
   <item>
@@ -315,11 +315,11 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (179.79,169.79;179.79,916.75;604.09,916.75;604.09,919.63;604.84,919.63;604.84,920.05;605.26,920.05;605.26,919.63;616.79,919.63;616.79,1004.63;604.84,1004.63;604.84,1005.05;616.79,1005.05;616.79,1089.63;604.84,1089.63;604.84,1090.05;616.79,1090.05;616.79,1174.63;604.84,1174.63;604.84,1175.05;616.79,1175.05;616.79,1258.63;604.84,1258.63;604.84,1259.05;616.79,1259.05;616.79,1343.63;604.84,1343.63;604.84,1344.05;616.79,1344.05;616.79,1428.63;604.84,1428.63;604.84,1429.05;616.79,1429.05;616.79,1513.63;604.84,1513.63;604.84,1514.05;617.21,1514.05;617.21,919.21;604.51,919.21;604.51,916.33;180.21,916.33;180.21,169.79)</value>
+    <value>polygon: (179.79,169.79;179.79,918.35;604.09,918.35;604.09,921.23;604.84,921.23;604.84,921.65;605.26,921.65;605.26,921.23;616.79,921.23;616.79,1006.23;604.84,1006.23;604.84,1006.65;616.79,1006.65;616.79,1091.23;604.84,1091.23;604.84,1091.65;616.79,1091.65;616.79,1176.23;604.84,1176.23;604.84,1176.65;616.79,1176.65;616.79,1261.23;604.84,1261.23;604.84,1261.65;616.79,1261.65;616.79,1346.23;604.84,1346.23;604.84,1346.65;616.79,1346.65;616.79,1431.23;604.84,1431.23;604.84,1431.65;616.79,1431.65;616.79,1516.23;604.84,1516.23;604.84,1516.65;617.21,1516.65;617.21,920.81;604.51,920.81;604.51,917.93;180.21,917.93;180.21,169.79)</value>
     <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 428.360969388</value>
-    <value>[#ANT_PERIMETER] float: 2015.01</value>
+    <value>[#ANT_PERIMETER] float: 2017.818</value>
     <value>[#GATE_AREA] float: 4.704</value>
+    <value>[#RATIO] float: 428.957908163</value>
    </values>
   </item>
   <item>
@@ -331,11 +331,11 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (604.7,238.04;604.7,238.46;605.4,238.46;605.4,238.04)</value>
+    <value>polygon: (604.7,239.64;604.7,240.06;605.4,240.06;605.4,239.64)</value>
     <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 502.957653061</value>
-    <value>[#ANT_PERIMETER] float: 1182.9564</value>
+    <value>[#ANT_PERIMETER] float: 1185.7644</value>
     <value>[#GATE_AREA] float: 2.352</value>
+    <value>[#RATIO] float: 504.151530612</value>
    </values>
   </item>
   <item>
@@ -347,11 +347,11 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (604.7,323.04;604.7,323.46;605.4,323.46;605.4,323.04)</value>
+    <value>polygon: (604.7,324.64;604.7,325.06;605.4,325.06;605.4,324.64)</value>
     <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 502.957653061</value>
-    <value>[#ANT_PERIMETER] float: 1182.9564</value>
+    <value>[#ANT_PERIMETER] float: 1185.7644</value>
     <value>[#GATE_AREA] float: 2.352</value>
+    <value>[#RATIO] float: 504.151530612</value>
    </values>
   </item>
   <item>
@@ -363,11 +363,11 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (604.7,408.04;604.7,408.46;605.4,408.46;605.4,408.04)</value>
+    <value>polygon: (604.7,409.64;604.7,410.06;605.4,410.06;605.4,409.64)</value>
     <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 502.957653061</value>
-    <value>[#ANT_PERIMETER] float: 1182.9564</value>
+    <value>[#ANT_PERIMETER] float: 1185.7644</value>
     <value>[#GATE_AREA] float: 2.352</value>
+    <value>[#RATIO] float: 504.151530612</value>
    </values>
   </item>
   <item>
@@ -379,11 +379,11 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (604.7,493.04;604.7,493.46;605.4,493.46;605.4,493.04)</value>
+    <value>polygon: (604.7,494.64;604.7,495.06;605.4,495.06;605.4,494.64)</value>
     <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 502.957653061</value>
-    <value>[#ANT_PERIMETER] float: 1182.9564</value>
+    <value>[#ANT_PERIMETER] float: 1185.7644</value>
     <value>[#GATE_AREA] float: 2.352</value>
+    <value>[#RATIO] float: 504.151530612</value>
    </values>
   </item>
   <item>
@@ -395,11 +395,11 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (604.7,577.04;604.7,577.46;605.4,577.46;605.4,577.04)</value>
+    <value>polygon: (604.7,579.64;604.7,580.06;605.4,580.06;605.4,579.64)</value>
     <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 502.957653061</value>
-    <value>[#ANT_PERIMETER] float: 1182.9564</value>
+    <value>[#ANT_PERIMETER] float: 1185.7644</value>
     <value>[#GATE_AREA] float: 2.352</value>
+    <value>[#RATIO] float: 504.151530612</value>
    </values>
   </item>
   <item>
@@ -411,11 +411,11 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (604.7,662.04;604.7,662.46;605.4,662.46;605.4,662.04)</value>
+    <value>polygon: (604.7,664.64;604.7,665.06;605.4,665.06;605.4,664.64)</value>
     <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 502.957653061</value>
-    <value>[#ANT_PERIMETER] float: 1182.9564</value>
+    <value>[#ANT_PERIMETER] float: 1185.7644</value>
     <value>[#GATE_AREA] float: 2.352</value>
+    <value>[#RATIO] float: 504.151530612</value>
    </values>
   </item>
   <item>
@@ -427,11 +427,11 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (604.7,747.04;604.7,747.46;605.4,747.46;605.4,747.04)</value>
+    <value>polygon: (604.7,749.64;604.7,750.06;605.4,750.06;605.4,749.64)</value>
     <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 502.957653061</value>
-    <value>[#ANT_PERIMETER] float: 1182.9564</value>
+    <value>[#ANT_PERIMETER] float: 1185.7644</value>
     <value>[#GATE_AREA] float: 2.352</value>
+    <value>[#RATIO] float: 504.151530612</value>
    </values>
   </item>
   <item>
@@ -443,11 +443,11 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (604.7,832.04;604.7,832.46;605.4,832.46;605.4,832.04)</value>
+    <value>polygon: (604.7,834.64;604.7,835.06;605.4,835.06;605.4,834.64)</value>
     <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 502.957653061</value>
-    <value>[#ANT_PERIMETER] float: 1182.9564</value>
+    <value>[#ANT_PERIMETER] float: 1185.7644</value>
     <value>[#GATE_AREA] float: 2.352</value>
+    <value>[#RATIO] float: 504.151530612</value>
    </values>
   </item>
   <item>
@@ -459,11 +459,11 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (269.79,169.79;269.79,236.33;604.09,236.33;604.09,239.21;604.84,239.21;604.84,239.63;605.26,239.63;605.26,239.21;616.79,239.21;616.79,324.21;604.84,324.21;604.84,324.63;616.79,324.63;616.79,409.21;604.84,409.21;604.84,409.63;616.79,409.63;616.79,494.21;604.84,494.21;604.84,494.63;616.79,494.63;616.79,578.21;604.84,578.21;604.84,578.63;616.79,578.63;616.79,663.21;604.84,663.21;604.84,663.63;616.79,663.63;616.79,748.21;604.84,748.21;604.84,748.63;616.79,748.63;616.79,833.21;604.84,833.21;604.84,833.63;617.21,833.63;617.21,238.79;604.51,238.79;604.51,235.91;270.21,235.91;270.21,169.79)</value>
+    <value>polygon: (269.79,169.79;269.79,237.93;604.09,237.93;604.09,240.81;604.84,240.81;604.84,241.23;605.26,241.23;605.26,240.81;616.79,240.81;616.79,325.81;604.84,325.81;604.84,326.23;616.79,326.23;616.79,410.81;604.84,410.81;604.84,411.23;616.79,411.23;616.79,495.81;604.84,495.81;604.84,496.23;616.79,496.23;616.79,580.81;604.84,580.81;604.84,581.23;616.79,581.23;616.79,665.81;604.84,665.81;604.84,666.23;616.79,666.23;616.79,750.81;604.84,750.81;604.84,751.23;616.79,751.23;616.79,835.81;604.84,835.81;604.84,836.23;617.21,836.23;617.21,240.39;604.51,240.39;604.51,237.51;270.21,237.51;270.21,169.79)</value>
     <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 502.957653061</value>
-    <value>[#ANT_PERIMETER] float: 1182.9564</value>
+    <value>[#ANT_PERIMETER] float: 1185.7644</value>
     <value>[#GATE_AREA] float: 2.352</value>
+    <value>[#RATIO] float: 504.151530612</value>
    </values>
   </item>
   <item>
@@ -475,11 +475,11 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (1000.5,408.04;1000.5,408.46;1001.05,408.46;1001.05,408.04)</value>
+    <value>polygon: (1000.5,409.64;1000.5,410.06;1001.05,410.06;1001.05,409.64)</value>
     <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 1034.18649351</value>
-    <value>[#ANT_PERIMETER] float: 2388.9708</value>
+    <value>[#ANT_PERIMETER] float: 2391.7788</value>
     <value>[#GATE_AREA] float: 2.31</value>
+    <value>[#RATIO] float: 1035.40207792</value>
    </values>
   </item>
   <item>
@@ -491,11 +491,11 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (1000.5,493.04;1000.5,493.46;1001.05,493.46;1001.05,493.04)</value>
+    <value>polygon: (1000.5,494.64;1000.5,495.06;1001.05,495.06;1001.05,494.64)</value>
     <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 1034.18649351</value>
-    <value>[#ANT_PERIMETER] float: 2388.9708</value>
+    <value>[#ANT_PERIMETER] float: 2391.7788</value>
     <value>[#GATE_AREA] float: 2.31</value>
+    <value>[#RATIO] float: 1035.40207792</value>
    </values>
   </item>
   <item>
@@ -507,11 +507,11 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (1000.5,578.04;1000.5,578.46;1001.05,578.46;1001.05,578.04)</value>
+    <value>polygon: (1000.5,579.64;1000.5,580.06;1001.05,580.06;1001.05,579.64)</value>
     <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 1034.18649351</value>
-    <value>[#ANT_PERIMETER] float: 2388.9708</value>
+    <value>[#ANT_PERIMETER] float: 2391.7788</value>
     <value>[#GATE_AREA] float: 2.31</value>
+    <value>[#RATIO] float: 1035.40207792</value>
    </values>
   </item>
   <item>
@@ -523,11 +523,11 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (1000.5,663.04;1000.5,663.46;1001.05,663.46;1001.05,663.04)</value>
+    <value>polygon: (1000.5,664.64;1000.5,665.06;1001.05,665.06;1001.05,664.64)</value>
     <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 1034.18649351</value>
-    <value>[#ANT_PERIMETER] float: 2388.9708</value>
+    <value>[#ANT_PERIMETER] float: 2391.7788</value>
     <value>[#GATE_AREA] float: 2.31</value>
+    <value>[#RATIO] float: 1035.40207792</value>
    </values>
   </item>
   <item>
@@ -539,11 +539,11 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (1000.5,748.04;1000.5,748.46;1001.05,748.46;1001.05,748.04)</value>
+    <value>polygon: (1000.5,749.64;1000.5,750.06;1001.05,750.06;1001.05,749.64)</value>
     <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 1034.18649351</value>
-    <value>[#ANT_PERIMETER] float: 2388.9708</value>
+    <value>[#ANT_PERIMETER] float: 2391.7788</value>
     <value>[#GATE_AREA] float: 2.31</value>
+    <value>[#RATIO] float: 1035.40207792</value>
    </values>
   </item>
   <item>
@@ -555,11 +555,11 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (1000.5,832.04;1000.5,832.46;1001.05,832.46;1001.05,832.04)</value>
+    <value>polygon: (1000.5,834.64;1000.5,835.06;1001.05,835.06;1001.05,834.64)</value>
     <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 1034.18649351</value>
-    <value>[#ANT_PERIMETER] float: 2388.9708</value>
+    <value>[#ANT_PERIMETER] float: 2391.7788</value>
     <value>[#GATE_AREA] float: 2.31</value>
+    <value>[#RATIO] float: 1035.40207792</value>
    </values>
   </item>
   <item>
@@ -571,11 +571,11 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (1000.5,917.04;1000.5,917.46;1001.05,917.46;1001.05,917.04)</value>
+    <value>polygon: (1000.5,919.64;1000.5,920.06;1001.05,920.06;1001.05,919.64)</value>
     <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 1034.18649351</value>
-    <value>[#ANT_PERIMETER] float: 2388.9708</value>
+    <value>[#ANT_PERIMETER] float: 2391.7788</value>
     <value>[#GATE_AREA] float: 2.31</value>
+    <value>[#RATIO] float: 1035.40207792</value>
    </values>
   </item>
   <item>
@@ -587,11 +587,11 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (1000.5,1002.04;1000.5,1002.46;1001.05,1002.46;1001.05,1002.04)</value>
+    <value>polygon: (1000.5,1004.64;1000.5,1005.06;1001.05,1005.06;1001.05,1004.64)</value>
     <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 1034.18649351</value>
-    <value>[#ANT_PERIMETER] float: 2388.9708</value>
+    <value>[#ANT_PERIMETER] float: 2391.7788</value>
     <value>[#GATE_AREA] float: 2.31</value>
+    <value>[#RATIO] float: 1035.40207792</value>
    </values>
   </item>
   <item>
@@ -603,11 +603,11 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (1000.5,1087.04;1000.5,1087.46;1001.05,1087.46;1001.05,1087.04)</value>
+    <value>polygon: (1000.5,1089.64;1000.5,1090.06;1001.05,1090.06;1001.05,1089.64)</value>
     <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 1034.18649351</value>
-    <value>[#ANT_PERIMETER] float: 2388.9708</value>
+    <value>[#ANT_PERIMETER] float: 2391.7788</value>
     <value>[#GATE_AREA] float: 2.31</value>
+    <value>[#RATIO] float: 1035.40207792</value>
    </values>
   </item>
   <item>
@@ -619,11 +619,11 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (1000.5,1172.04;1000.5,1172.46;1001.05,1172.46;1001.05,1172.04)</value>
+    <value>polygon: (1000.5,1174.64;1000.5,1175.06;1001.05,1175.06;1001.05,1174.64)</value>
     <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 1034.18649351</value>
-    <value>[#ANT_PERIMETER] float: 2388.9708</value>
+    <value>[#ANT_PERIMETER] float: 2391.7788</value>
     <value>[#GATE_AREA] float: 2.31</value>
+    <value>[#RATIO] float: 1035.40207792</value>
    </values>
   </item>
   <item>
@@ -635,507 +635,11 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (879.79,169.79;879.79,1173.63;1000.985,1173.63;1000.985,1173.21;880.21,1173.21;880.21,1088.63;1000.985,1088.63;1000.985,1088.21;880.21,1088.21;880.21,1003.63;1000.985,1003.63;1000.985,1003.21;880.21,1003.21;880.21,918.63;1000.985,918.63;1000.985,918.21;880.21,918.21;880.21,833.63;1000.985,833.63;1000.985,833.21;880.21,833.21;880.21,749.63;1000.985,749.63;1000.985,749.21;880.21,749.21;880.21,664.63;1000.985,664.63;1000.985,664.21;880.21,664.21;880.21,579.63;1000.985,579.63;1000.985,579.21;880.21,579.21;880.21,494.63;1000.985,494.63;1000.985,494.21;880.21,494.21;880.21,409.63;1000.985,409.63;1000.985,409.21;880.21,409.21;880.21,169.79)</value>
+    <value>polygon: (879.79,169.79;879.79,1176.23;1000.985,1176.23;1000.985,1175.81;880.21,1175.81;880.21,1091.23;1000.985,1091.23;1000.985,1090.81;880.21,1090.81;880.21,1006.23;1000.985,1006.23;1000.985,1005.81;880.21,1005.81;880.21,921.23;1000.985,921.23;1000.985,920.81;880.21,920.81;880.21,836.23;1000.985,836.23;1000.985,835.81;880.21,835.81;880.21,751.23;1000.985,751.23;1000.985,750.81;880.21,750.81;880.21,666.23;1000.985,666.23;1000.985,665.81;880.21,665.81;880.21,581.23;1000.985,581.23;1000.985,580.81;880.21,580.81;880.21,496.23;1000.985,496.23;1000.985,495.81;880.21,495.81;880.21,411.23;1000.985,411.23;1000.985,410.81;880.21,410.81;880.21,169.79)</value>
     <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 1034.18649351</value>
-    <value>[#ANT_PERIMETER] float: 2388.9708</value>
+    <value>[#ANT_PERIMETER] float: 2391.7788</value>
     <value>[#GATE_AREA] float: 2.31</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>'ANT.16_i_ANT.6'</category>
-   <cell>run3_top</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (90,200;90,280;170,280;170,242.5;601.64,242.5;601.64,237.5;170,237.5;170,200)</value>
-    <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 5028.94</value>
-    <value>[#ANT_PERIMETER] float: 1408.1032</value>
-    <value>[#GATE_AREA] float: 0.28</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>'ANT.16_i_ANT.6'</category>
-   <cell>run3_top</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (90,285;90,365;170,365;170,327.5;601.64,327.5;601.64,322.5;170,322.5;170,285)</value>
-    <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 5028.94</value>
-    <value>[#ANT_PERIMETER] float: 1408.1032</value>
-    <value>[#GATE_AREA] float: 0.28</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>'ANT.16_i_ANT.6'</category>
-   <cell>run3_top</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (90,370;90,450;170,450;170,412.5;601.64,412.5;601.64,407.5;170,407.5;170,370)</value>
-    <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 5028.94</value>
-    <value>[#ANT_PERIMETER] float: 1408.1032</value>
-    <value>[#GATE_AREA] float: 0.28</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>'ANT.16_i_ANT.6'</category>
-   <cell>run3_top</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (1766,370;1766,407.5;1005.73,407.5;1005.73,412.5;1766,412.5;1766,450;1846,450;1846,370)</value>
-    <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 7822.295</value>
-    <value>[#ANT_PERIMETER] float: 2190.2426</value>
-    <value>[#GATE_AREA] float: 0.28</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>'ANT.16_i_ANT.6'</category>
-   <cell>run3_top</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (1766,455;1766,492.5;1005.73,492.5;1005.73,497.5;1766,497.5;1766,535;1846,535;1846,455)</value>
-    <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 7822.295</value>
-    <value>[#ANT_PERIMETER] float: 2190.2426</value>
-    <value>[#GATE_AREA] float: 0.28</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>'ANT.16_i_ANT.6'</category>
-   <cell>run3_top</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (90,455;90,535;170,535;170,497.5;601.64,497.5;601.64,492.5;170,492.5;170,455)</value>
-    <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 5028.94</value>
-    <value>[#ANT_PERIMETER] float: 1408.1032</value>
-    <value>[#GATE_AREA] float: 0.28</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>'ANT.16_i_ANT.6'</category>
-   <cell>run3_top</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (1766,540;1766,577.5;1005.73,577.5;1005.73,582.5;1766,582.5;1766,620;1846,620;1846,540)</value>
-    <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 7822.295</value>
-    <value>[#ANT_PERIMETER] float: 2190.2426</value>
-    <value>[#GATE_AREA] float: 0.28</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>'ANT.16_i_ANT.6'</category>
-   <cell>run3_top</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (90,540;90,620;170,620;170,582.5;601.64,582.5;601.64,577.5;600.78,577.5;600.78,577.04;600.5,577.04;600.5,577.5;170,577.5;170,540)</value>
-    <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 2514.47</value>
-    <value>[#ANT_PERIMETER] float: 1408.1032</value>
-    <value>[#GATE_AREA] float: 0.56</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>'ANT.16_i_ANT.6'</category>
-   <cell>run3_top</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (90,625;90,705;170,705;170,667.5;601.64,667.5;601.64,662.5;600.78,662.5;600.78,662.04;600.5,662.04;600.5,662.5;170,662.5;170,625)</value>
-    <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 2514.47</value>
-    <value>[#ANT_PERIMETER] float: 1408.1032</value>
-    <value>[#GATE_AREA] float: 0.56</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>'ANT.16_i_ANT.6'</category>
-   <cell>run3_top</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (1766,625;1766,662.5;1005.73,662.5;1005.73,667.5;1766,667.5;1766,705;1846,705;1846,625)</value>
-    <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 7822.295</value>
-    <value>[#ANT_PERIMETER] float: 2190.2426</value>
-    <value>[#GATE_AREA] float: 0.28</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>'ANT.16_i_ANT.6'</category>
-   <cell>run3_top</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (1766,710;1766,747.5;1005.73,747.5;1005.73,752.5;1766,752.5;1766,790;1846,790;1846,710)</value>
-    <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 7822.295</value>
-    <value>[#ANT_PERIMETER] float: 2190.2426</value>
-    <value>[#GATE_AREA] float: 0.28</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>'ANT.16_i_ANT.6'</category>
-   <cell>run3_top</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (90,710;90,790;170,790;170,752.5;601.64,752.5;601.64,747.5;600.78,747.5;600.78,747.04;600.5,747.04;600.5,747.5;170,747.5;170,710)</value>
-    <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 2514.47</value>
-    <value>[#ANT_PERIMETER] float: 1408.1032</value>
-    <value>[#GATE_AREA] float: 0.56</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>'ANT.16_i_ANT.6'</category>
-   <cell>run3_top</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (90,795;90,875;170,875;170,837.5;601.64,837.5;601.64,832.5;600.78,832.5;600.78,832.04;600.5,832.04;600.5,832.5;170,832.5;170,795)</value>
-    <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 2514.47</value>
-    <value>[#ANT_PERIMETER] float: 1408.1032</value>
-    <value>[#GATE_AREA] float: 0.56</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>'ANT.16_i_ANT.6'</category>
-   <cell>run3_top</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (1766,795;1766,832.5;1006.37,832.5;1006.37,832.04;1006.09,832.04;1006.09,832.5;1005.73,832.5;1005.73,837.5;1766,837.5;1766,875;1846,875;1846,795)</value>
-    <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 3911.1475</value>
-    <value>[#ANT_PERIMETER] float: 2190.2426</value>
-    <value>[#GATE_AREA] float: 0.56</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>'ANT.16_i_ANT.6'</category>
-   <cell>run3_top</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (1766,880;1766,917.5;1006.37,917.5;1006.37,917.04;1006.09,917.04;1006.09,917.5;1005.73,917.5;1005.73,922.5;1766,922.5;1766,960;1846,960;1846,880)</value>
-    <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 3911.1475</value>
-    <value>[#ANT_PERIMETER] float: 2190.2426</value>
-    <value>[#GATE_AREA] float: 0.56</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>'ANT.16_i_ANT.6'</category>
-   <cell>run3_top</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (90,880;90,960;170,960;170,922.5;601.64,922.5;601.64,917.5;170,917.5;170,880)</value>
-    <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 5028.94</value>
-    <value>[#ANT_PERIMETER] float: 1408.1032</value>
-    <value>[#GATE_AREA] float: 0.28</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>'ANT.16_i_ANT.6'</category>
-   <cell>run3_top</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (90,965;90,1045;170,1045;170,1007.5;601.64,1007.5;601.64,1002.5;170,1002.5;170,965)</value>
-    <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 5028.94</value>
-    <value>[#ANT_PERIMETER] float: 1408.1032</value>
-    <value>[#GATE_AREA] float: 0.28</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>'ANT.16_i_ANT.6'</category>
-   <cell>run3_top</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (1766,965;1766,1002.5;1006.37,1002.5;1006.37,1002.04;1006.09,1002.04;1006.09,1002.5;1005.73,1002.5;1005.73,1007.5;1766,1007.5;1766,1045;1846,1045;1846,965)</value>
-    <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 3911.1475</value>
-    <value>[#ANT_PERIMETER] float: 2190.2426</value>
-    <value>[#GATE_AREA] float: 0.56</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>'ANT.16_i_ANT.6'</category>
-   <cell>run3_top</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (90,1050;90,1130;170,1130;170,1092.5;601.64,1092.5;601.64,1087.5;170,1087.5;170,1050)</value>
-    <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 5028.94</value>
-    <value>[#ANT_PERIMETER] float: 1408.1032</value>
-    <value>[#GATE_AREA] float: 0.28</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>'ANT.16_i_ANT.6'</category>
-   <cell>run3_top</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (1766,1050;1766,1087.5;1006.37,1087.5;1006.37,1087.04;1006.09,1087.04;1006.09,1087.5;1005.73,1087.5;1005.73,1092.5;1766,1092.5;1766,1130;1846,1130;1846,1050)</value>
-    <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 3911.1475</value>
-    <value>[#ANT_PERIMETER] float: 2190.2426</value>
-    <value>[#GATE_AREA] float: 0.56</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>'ANT.16_i_ANT.6'</category>
-   <cell>run3_top</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (90,1135;90,1215;170,1215;170,1177.5;601.64,1177.5;601.64,1172.5;170,1172.5;170,1135)</value>
-    <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 5028.94</value>
-    <value>[#ANT_PERIMETER] float: 1408.1032</value>
-    <value>[#GATE_AREA] float: 0.28</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>'ANT.16_i_ANT.6'</category>
-   <cell>run3_top</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (1766,1135;1766,1172.5;1006.37,1172.5;1006.37,1172.04;1006.09,1172.04;1006.09,1172.5;1005.73,1172.5;1005.73,1177.5;1766,1177.5;1766,1215;1846,1215;1846,1135)</value>
-    <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 3911.1475</value>
-    <value>[#ANT_PERIMETER] float: 2190.2426</value>
-    <value>[#GATE_AREA] float: 0.56</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>'ANT.16_i_ANT.6'</category>
-   <cell>run3_top</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (90,1220;90,1300;170,1300;170,1262.5;601.64,1262.5;601.64,1257.5;600.78,1257.5;600.78,1257.04;600.5,1257.04;600.5,1257.5;170,1257.5;170,1220)</value>
-    <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 2514.47</value>
-    <value>[#ANT_PERIMETER] float: 1408.1032</value>
-    <value>[#GATE_AREA] float: 0.56</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>'ANT.16_i_ANT.6'</category>
-   <cell>run3_top</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (90,1305;90,1385;170,1385;170,1347.5;601.64,1347.5;601.64,1342.5;600.78,1342.5;600.78,1342.04;600.5,1342.04;600.5,1342.5;170,1342.5;170,1305)</value>
-    <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 2514.47</value>
-    <value>[#ANT_PERIMETER] float: 1408.1032</value>
-    <value>[#GATE_AREA] float: 0.56</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>'ANT.16_i_ANT.6'</category>
-   <cell>run3_top</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (90,1390;90,1470;170,1470;170,1432.5;601.64,1432.5;601.64,1427.5;600.78,1427.5;600.78,1427.04;600.5,1427.04;600.5,1427.5;170,1427.5;170,1390)</value>
-    <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 2514.47</value>
-    <value>[#ANT_PERIMETER] float: 1408.1032</value>
-    <value>[#GATE_AREA] float: 0.56</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>'ANT.16_i_ANT.6'</category>
-   <cell>run3_top</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (90,1475;90,1555;170,1555;170,1517.5;601.64,1517.5;601.64,1512.5;600.78,1512.5;600.78,1512.04;600.5,1512.04;600.5,1512.5;170,1512.5;170,1475)</value>
-    <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 2514.47</value>
-    <value>[#ANT_PERIMETER] float: 1408.1032</value>
-    <value>[#GATE_AREA] float: 0.56</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>'ANT.16_ii_ANT.6'</category>
-   <cell>run3_top</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (90,1560;90,1640;170,1640;170,1602.5;607.35,1602.5;607.35,1597.5;170,1597.5;170,1560)</value>
-    <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 2030.99</value>
-    <value>[#ANT_PERIMETER] float: 1421.693</value>
-    <value>[#GATE_AREA] float: 0.7</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>'ANT.16_ii_ANT.6'</category>
-   <cell>run3_top</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (90,1645;90,1725;170,1725;170,1687.5;607.35,1687.5;607.35,1682.5;170,1682.5;170,1645)</value>
-    <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 2030.99</value>
-    <value>[#ANT_PERIMETER] float: 1421.693</value>
-    <value>[#GATE_AREA] float: 0.7</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>'ANT.16_ii_ANT.6'</category>
-   <cell>run3_top</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (90,1730;90,1810;170,1810;170,1772.5;607.35,1772.5;607.35,1767.5;170,1767.5;170,1730)</value>
-    <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 2030.99</value>
-    <value>[#ANT_PERIMETER] float: 1421.693</value>
-    <value>[#GATE_AREA] float: 0.7</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>'ANT.16_ii_ANT.6'</category>
-   <cell>run3_top</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (90,1815;90,1895;170,1895;170,1857.5;607.35,1857.5;607.35,1852.5;170,1852.5;170,1815)</value>
-    <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 2030.99</value>
-    <value>[#ANT_PERIMETER] float: 1421.693</value>
-    <value>[#GATE_AREA] float: 0.7</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>'ANT.16_ii_ANT.6'</category>
-   <cell>run3_top</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (90,1900;90,1980;170,1980;170,1942.5;607.35,1942.5;607.35,1937.5;170,1937.5;170,1900)</value>
-    <value>[#DIODES_AREA] float: 0</value>
-    <value>[#RATIO] float: 2030.99</value>
-    <value>[#ANT_PERIMETER] float: 1421.693</value>
-    <value>[#GATE_AREA] float: 0.7</value>
+    <value>[#RATIO] float: 1035.40207792</value>
    </values>
   </item>
  </items>

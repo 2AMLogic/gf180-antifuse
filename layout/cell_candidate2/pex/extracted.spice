@@ -14,21 +14,21 @@
 * pin WL
 .SUBCKT cell_candidate2 BL PL VB WL
 * device instance $1 r0 *1 6.35,1.29 cap_nmos_06v0
-C$1 PL__t0 \$3__t0 1.61e-15
+X$1 \$4__t0 PL__t0 cap_nmos_06v0 c_length=1U c_width=0.7U
 * device instance $2 r0 *1 -1.17,0 nfet
-X$2 BL__t0 WL__t0 \$3__t1 VB__t0 nfet_10v0_asym L=0.6U W=4U AS=1.76P AD=1.6P
+X$2 BL__t0 WL__t0 \$4__t1 VB__t0 nfet_10v0_asym L=0.6U W=4U AS=1.76P AD=1.6P
 + PS=8.88U PD=8.8U
 * device instance $3 r0 *1 1.17,0 nfet
-X$3 BL__t1 WL__t1 \$3__t2 VB__t1 nfet_10v0_asym L=0.6U W=4U AS=1.76P AD=1.6P
+X$3 BL__t1 WL__t1 \$4__t2 VB__t1 nfet_10v0_asym L=0.6U W=4U AS=1.76P AD=1.6P
 + PS=8.88U PD=8.8U
-* device instance _3_t0 r0 *1 0,0 
-R_3_t0 \$3__t0 \$3 1.97184844151
-* device instance _3_t1 r0 *1 0,0 
-R_3_t1 \$3__t1 \$3 1.51304044124
-* device instance _3_t2 r0 *1 0,0 
-R_3_t2 \$3__t2 \$3 0.474611117244
-* device instance _3 r0 *1 0,0 
-C_3 \$3 vsubs 1.732231e-15
+* device instance _4_t0 r0 *1 0,0 
+R_4_t0 \$4__t0 \$4 17.9801502391
+* device instance _4_t1 r0 *1 0,0 
+R_4_t1 \$4__t1 \$4 13.7965443381
+* device instance _4_t2 r0 *1 0,0 
+R_4_t2 \$4__t2 \$4 4.32770542276
+* device instance _4 r0 *1 0,0 
+C_4 \$4 vsubs 2.11185e-15
 * device instance BL_t0 r0 *1 0,0 
 RBL_t0 BL__t0 BL 0.4737
 * device instance BL_t1 r0 *1 0,0 
@@ -36,25 +36,27 @@ RBL_t1 BL__t1 BL 0.4737
 * device instance BL r0 *1 0,0 
 CBL BL vsubs 3.85316e-16
 * device instance PL_t0 r0 *1 0,0 
-RPL_t0 PL__t0 PL 32.3646
+RPL_t0 PL__t0 PL 0.8114
 * device instance PL r0 *1 0,0 
-CPL PL vsubs 5.45601e-16
+CPL PL vsubs 3.00799e-16
 * device instance VB_t0 r0 *1 0,0 
 RVB_t0 VB__t0 VB 4.669
 * device instance VB_t1 r0 *1 0,0 
 RVB_t1 VB__t1 VB 4.669
 * device instance VB r0 *1 0,0 
-CVB VB vsubs 3.659245e-15
+CVB VB vsubs 3.656095e-15
 * device instance WL_t0 r0 *1 0,0 
 RWL_t0 WL__t0 WL 77.68215
 * device instance WL_t1 r0 *1 0,0 
 RWL_t1 WL__t1 WL 77.68215
 * device instance WL r0 *1 0,0 
 CWL WL vsubs 2.684966e-15
-* device instance cc__3_BL r0 *1 0,0 
-Ccc__3_BL \$3 BL 1.1215e-17
-* device instance cc__3_VB r0 *1 0,0 
-Ccc__3_VB \$3 VB 1.1864e-17
+* device instance cc__4_BL r0 *1 0,0 
+Ccc__4_BL \$4 BL 1.1215e-17
+* device instance cc__4_PL r0 *1 0,0 
+Ccc__4_PL \$4 PL 4.71e-18
+* device instance cc__4_VB r0 *1 0,0 
+Ccc__4_VB \$4 VB 1.8062e-17
 * device instance vsubs_dctie r0 *1 0,0 
 Rvsubs_dctie vsubs 0 1e+12
 .ENDS cell_candidate2

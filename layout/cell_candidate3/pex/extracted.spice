@@ -14,32 +14,34 @@
 * pin WL
 .SUBCKT cell_candidate3 BL PL VB WL
 * device instance $1 r0 *1 6.23,0.5 cap_pmos_03v3
-C$1 PL__t0 \$3__t0 1.232e-15
+X$1 \$1__t0 PL__t0 cap_pmos_03v3 c_length=1U c_width=0.28U
 * device instance $2 r0 *1 0.775,0.21 pfet
-X$2 \$3__t1 WL__t0 BL__t0 VB__t0 pfet_06v0 L=0.55U W=0.42U AS=0.21P AD=0.21P
+X$2 \$1__t1 WL__t0 BL__t0 VB__t0 pfet_06v0 L=0.55U W=0.42U AS=0.21P AD=0.21P
 + PS=1.84U PD=1.84U
-* device instance _3_t0 r0 *1 0,0 
-R_3_t0 \$3__t0 \$3 1.2565
-* device instance _3_t1 r0 *1 0,0 
-R_3_t1 \$3__t1 \$3 1.2565
-* device instance _3 r0 *1 0,0 
-C_3 \$3 vsubs 6.92139e-16
+* device instance _1_t0 r0 *1 0,0 
+R_1_t0 \$1__t0 \$1 30.1317
+* device instance _1_t1 r0 *1 0,0 
+R_1_t1 \$1__t1 \$1 30.1317
+* device instance _1 r0 *1 0,0 
+C_1 \$1 vsubs 1.070861e-15
 * device instance BL_t0 r0 *1 0,0 
 RBL_t0 BL__t0 BL 0.09
 * device instance BL r0 *1 0,0 
 CBL BL vsubs 7.1536e-17
 * device instance PL_t0 r0 *1 0,0 
-RPL_t0 PL__t0 PL 58.8882
+RPL_t0 PL__t0 PL 0.6979
 * device instance PL r0 *1 0,0 
-CPL PL vsubs 4.43231e-16
+CPL PL vsubs 2.68765e-16
 * device instance VB_t0 r0 *1 0,0 
 RVB_t0 VB__t0 VB 7.3353
 * device instance VB r0 *1 0,0 
-CVB VB vsubs 3.096559e-15
+CVB VB vsubs 3.083959e-15
 * device instance WL_t0 r0 *1 0,0 
 RWL_t0 WL__t0 WL 39.491
 * device instance WL r0 *1 0,0 
 CWL WL vsubs 3.98172e-16
+* device instance cc__1_VB r0 *1 0,0 
+Ccc__1_VB \$1 VB 2.4791e-17
 * device instance vsubs_dctie r0 *1 0,0 
 Rvsubs_dctie vsubs 0 1e+12
 .ENDS cell_candidate3

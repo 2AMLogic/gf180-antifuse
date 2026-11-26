@@ -5,6 +5,7 @@ No simulator and no fleet; operates on the committed reports and scratch copies.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import shutil
@@ -19,11 +20,11 @@ REPO = Path(__file__).resolve().parent.parent
 PL = REPO / "sim" / "cell-device-characterization" / "klt" / "post-layout"
 sys.path.insert(0, str(REPO / "sim"))
 sys.path.insert(0, str(PL))
-from extraction_check import check_extraction  # noqa: E402
+from extraction_check import check_extraction, signed_connectivity  # noqa: E402
 from harness import klt as K  # noqa: E402
 from harness.modload import load_module  # noqa: E402
 
-RUN = PL / "runs" / "20261121-073730-17c2f21"
+RUN = PL / "runs" / "20261126-073123-ce107ea"
 C = load_module(PL / "run_post_layout_campaign.py", "run_post_layout_campaign")
 
 
@@ -35,8 +36,31 @@ class ExtractionGate(unittest.TestCase):
         return t
 
     def test_committed_extractions_usable(self):
-        for n in (1, 2, 3):
-            self.assertEqual(check_extraction(REPO, n), [])
+        for cell in sorted((REPO / "layout").glob("cell_candidate*")):
+            with self.subTest(cell=cell.name):
+                self.assertEqual(check_extraction(REPO, cell.name.removeprefix("cell_candidate")), [])
+
+    def test_swapped_capacitor_fails_even_with_new_report_hash(self):
+        t = self._scratch()
+        d = t / "layout/cell_candidate1/pex"
+        netlist = d / "extracted.spice"
+        lines = netlist.read_text().splitlines(keepends=True)
+        idx = next(i for i, line in enumerate(lines) if line.startswith("X") and " cap_" in line)
+        words = lines[idx].split()
+        words[1], words[2] = words[2], words[1]
+        lines[idx] = " ".join(words) + "\n"
+        netlist.write_text("".join(lines))
+        report = d / "pex_report.json"
+        data = json.loads(report.read_text())
+        data["extraction"]["netlist_sha256"] = hashlib.sha256(netlist.read_bytes()).hexdigest()
+        report.write_text(json.dumps(data))
+        self.assertIn("capacitor body plate", " ".join(check_extraction(t, 1)))
+
+    def test_shorted_private_probe_gates_fail(self):
+        d = REPO / "layout/cell_candidate2_fallback"
+        result = signed_connectivity((d / "lvs_reference.spice").read_text(),
+                                     (d / "pex/extracted.spice").read_text() + "Rshort PL_GMIN PL_G2X 1\n")
+        self.assertIn("private gate", " ".join(result))
 
     def test_stale_gds_and_unbiased_flagged(self):
         t = self._scratch()

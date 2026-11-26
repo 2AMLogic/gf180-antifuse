@@ -17,7 +17,7 @@ see README).
 
   access : pfet_06v0 (Dualgate marker), W = 0.42 um, L = 0.55 um (schematic lacc)
   cap    : thin-oxide PMOS gate over COMP, W = 1.0 um, L = 0.28 um,
-           source and drain shorted (moscap) on net CN
+           gate on CN, source and drain shorted on PL
   The access block's tap ring is drawn at the raised generator padding
   RING_PAD_ACC (1.29 um, acc block only) -- the generator default misses two
   native-deck well/Dualgate rules; candidate3_points.py's RING_PAD_ACC
@@ -27,7 +27,7 @@ Terminal assignment (matches design/cells/cell_candidate3.sch): BL is the
 access SOURCE, CN is the access DRAIN. Well connection: each device sits in
 its own N-well with an N+ tap ring; the two tap rings are strapped (VB) so
 the access well and the capacitor well are one net. Ports (Metal1 labels):
-BL, WL, PL (cap gate), VB.
+BL, WL, PL (cap diffusion), VB.
 
 Point table, shared constants, strap derivation and flow call:
 layout/candidate3_points.py. This file names only this point.

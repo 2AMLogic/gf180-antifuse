@@ -13,7 +13,7 @@
   "gates": [
     {
       "gate_id": "gate0",
-      "net": "PL",
+      "net": null,
       "gate_area_um2": 0.56,
       "antenna_verdict": "unchecked",
       "levels": [
@@ -29,9 +29,9 @@
         },
         {
           "layer": "metal1",
-          "step_area_um2": 0.1764,
-          "cumulative_area_um2": 1.2488,
-          "antenna_ratio": 2.23,
+          "step_area_um2": 1.6839,
+          "cumulative_area_um2": 2.7563,
+          "antenna_ratio": 4.921964,
           "antenna_ratio_max": null,
           "antenna_ratio_source": null,
           "verdict": "unchecked",
@@ -39,9 +39,9 @@
         },
         {
           "layer": "metal2",
-          "step_area_um2": 0.0,
-          "cumulative_area_um2": 1.2488,
-          "antenna_ratio": 2.23,
+          "step_area_um2": 4.07,
+          "cumulative_area_um2": 6.8263,
+          "antenna_ratio": 12.189821,
           "antenna_ratio_max": null,
           "antenna_ratio_source": null,
           "verdict": "unchecked",
@@ -50,8 +50,8 @@
         {
           "layer": "metal3",
           "step_area_um2": 0.0,
-          "cumulative_area_um2": 1.2488,
-          "antenna_ratio": 2.23,
+          "cumulative_area_um2": 6.8263,
+          "antenna_ratio": 12.189821,
           "antenna_ratio_max": null,
           "antenna_ratio_source": null,
           "verdict": "unchecked",
@@ -60,8 +60,8 @@
         {
           "layer": "metal4",
           "step_area_um2": 0.0,
-          "cumulative_area_um2": 1.2488,
-          "antenna_ratio": 2.23,
+          "cumulative_area_um2": 6.8263,
+          "antenna_ratio": 12.189821,
           "antenna_ratio_max": null,
           "antenna_ratio_source": null,
           "verdict": "unchecked",
@@ -70,8 +70,8 @@
         {
           "layer": "metal5",
           "step_area_um2": 0.0,
-          "cumulative_area_um2": 1.2488,
-          "antenna_ratio": 2.23,
+          "cumulative_area_um2": 6.8263,
+          "antenna_ratio": 12.189821,
           "antenna_ratio_max": null,
           "antenna_ratio_source": null,
           "verdict": "unchecked",
@@ -252,7 +252,7 @@
     "pdk": null,
     "deck": null,
     "input": {
-      "content_hash": "sha256:cd0e2feac49659c92dc48e27b4f6bf9bffb9414da6f9f79a91c9dc7920b4c06b",
+      "content_hash": "sha256:a9c60259a4e29ec54999f5b1ac26414aa9105e4606cdf38fdcc8bce23c650c3c",
       "role": "layout"
     },
     "spec": {

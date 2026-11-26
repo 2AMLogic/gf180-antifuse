@@ -18,6 +18,52 @@ Minimum `cap_nmos_06v0`). All seven cells were regenerated and
 re-signed in the same pass (#296); the per-cell sections below carry the
 details and the measured verdicts.
 
+## Signed MOS capacitors in the drawn cells
+
+The schematic assigns the capacitor gate to CN, the internal storage terminal of the access transistor. PL drives the diffusion electrode. The private gate pads of the bare C2 fallback are a separate probe contract. They retain two independent gates, PL_GMIN and PL_G2X, over shared diffusion BL.
+
+Each access-cell generator reproduced its committed GDS with `--check`. C1 and C3 use klayout-tools 0.8.0 with the Python KLayout 0.30.12 wheel. Standard C2 and the top composer use klayout-tools 0.9.2 with KLayout 0.30.13. The GDS hashes below are SHA-256 prefixes. Each adjoining PEX report records the full input hash. Native counts use the pinned open_pdks f6eeac7 deck, gf180mcuA, `decks=all,-mslot`, and KLayout CLI 0.30.12.
+
+| Cell | Previous GDS | Signed GDS | Native findings |
+|---|---|---|---:|
+| cell_candidate1 | `d31a786ed748` | `fa008179952e` | 5 |
+| cell_candidate1_A2x_G2x | `eeba35dcb209` | `977bf49d703b` | 5 |
+| cell_candidate1_A2x_Gmin | `c39f4556d4e9` | `e42ae36dfb05` | 5 |
+| cell_candidate1_Amin_G2x | `cb7db0539a00` | `c291881ec1a5` | 5 |
+| cell_candidate2 | `5cb4a64fa103` | `f2bb06eea53f` | 26 |
+| cell_candidate2_fallback | `92b431518b22` | `92b431518b22` | 5 |
+| cell_candidate3 | `4ee36d7b8e02` | `a388126da5fb` | 6 |
+| cell_candidate3_Amin_G2x | `cd0e2feac496` | `a9c60259a4e2` | 5 |
+
+LVS matches every cell reference. Structural ERC is clean on all seven access cells. The native standalone findings include die-level density and the generator DBU. In a same-deck comparison of the standard C2, both streams have the same 26 native findings including one `MDN.10c`. The diagnostic fd_pv#42 patch also produces 22 findings on the signed C2. The dated control reports in `cell_candidate2/` identify the earlier stream. The wide C3 retains a Metal1 landing on each side of its two ring gaps to preserve its standalone density.
+
+The fully assembled top changed from `e231fe008290a62c343210bc29354ac3918a6eef3b67875f5cdb91198f1a63b7` to `2ff9138f63a8497075a9b8edf2833ac6504de0929820af074969750e5e41c7bd`. Its 31 placed instances match 72 nets and 67 devices. ERC reports zero structural findings across 35 gates. The same native gating deck produced 106 findings on both streams (80 CO.4, ten DF.6_MV, ten PL.4_MV, five MDN.10c and one DBU). The private-plate antenna findings fall from 31 to zero. The 29 shared-WL findings persist. The separate density stage records zero markers and its companion deck log reports success. See `run3_top/` for the machine-readable envelopes, ratio database and density log.
+
+### Signed electrical control
+
+The nonlinear PEX binding uses klayout-tools source `9d2780c5e1c842777519330943a5435b118c4437` and Python KLayout 0.30.14. Run the following from a cell directory with that extractor and the pinned PDK. Extract-only returns 4 and emits the netlist and report.
+
+```sh
+cell=$(basename "$PWD")
+klt pex "$cell.gds" --deck gf180mcu --pdk gf180mcuD --extract-only \
+  --reference-netlist lvs_reference.spice -o pex/extracted.spice --format json > pex/pex_report.json
+```
+
+The signed connectivity check collapses the extracted parasitic resistor network, matches each access finger to the schematic terminals and checks the oriented capacitor terminals. It covers the four C1 points, standard C2, both C3 points and both bare probe capacitors. Tests swap the physical plates while retaining the model, geometry, hash and body-bias report and independently short the fallback gates.
+
+At 10 kHz, with `moscap_typical` and V(CN)−V(PL) as shown, the checker measured these isolated small-signal capacitances in fF using ngspice 47 with the upstream bug 876 correction. For a replay set `PDK_ROOT` to the open_pdks installation and `KLT_NGSPICE_BINARY` to the simulator, then run `python3 sim/cell-device-characterization/klt/post-layout/check_signed_caps.py` from the repository root.
+
+| Cell | Bias (V) | Reference (fF) | Physical (fF) | Swapped control (fF) |
+|---|---:|---:|---:|---:|
+| C1 | +1 | 1.10447524 | 1.10447524 | 0.00644000 |
+| C1 | -1 | 0.00644000 | 0.00644000 | 1.10447524 |
+| C2 | +1 | 1.50007223 | 1.50007223 | 0.02590000 |
+| C2 | -1 | 0.02590000 | 0.02590000 | 1.50007223 |
+| C3 | +1 | 0.01064000 | 0.01064000 | 1.03410075 |
+| C3 | -1 | 1.03410075 | 1.03410075 | 0.01064000 |
+
+The paired whole-cell access bench is in `sim/cell-device-characterization/klt/post-layout/`. Its C3 R_on discrepancy remains open. Array-level post-layout verification and the five unplaced wide C2 slots remain tracked separately.
+
 ## cell_candidate1/ -- first drawn bitcell (candidate 1), one cell only
 
 `layout/cell_candidate1/` holds a single bitcell of candidate 1
@@ -82,7 +128,7 @@ carries the drawn values, not the schematic defaults.
 ### Structure and bodies
 
 - The capacitor is a thin-oxide NMOS gate over COMP with source and drain
-  strapped together on net CN (a MOS capacitor). It is drawn as a plain
+  strapped together on net PL (a MOS capacitor). It is drawn as a plain
   transistor from `mos_array`, and `generate.py` adds the PDK MOS-capacitor
   marker (`MOS_CAP_MK`, 166/5) as a hand-placed rectangle over its COMP island,
   because `klt gen` has no MOS-capacitor primitive (upstream
@@ -92,8 +138,8 @@ carries the drawn values, not the schematic defaults.
 - Each device sits inside its own P+ tap ring (Metal1 over contacts), so
   neither body floats. The two rings are strapped on the north side (`VB`).
   Both devices are NMOS in the p-substrate; no well is needed or drawn.
-- CN is a Metal1 strap from the access source to the capacitor's S and D.
-  `BL` (access drain), `WL` (access gate), `PL` (capacitor gate) are pad
+- CN crosses the tap rings on Metal2 from the access source to the capacitor gate.
+  `BL` (access drain), `WL` (access gate), `PL` (shorted capacitor diffusion) are pad
   labels with no routing beyond the cell.
 
 ### DRC
@@ -396,32 +442,12 @@ therefore rest on `generate.py` and `klt extract`, not on LVS. See the
 The blocks are composed by port *name*, so `pins=[...]` needs no coordinate work.
 The `klt draw` rectangles are absolute in the composed frame and do **not** follow
 the blocks, so each had to be re-derived per cell. All three now come from the
-one shared derivation in `layout/candidate1_points.py` (`straps()` +
-`cn_dogleg()`), which `cell_candidate1/` calls too:
+one shared derivation in `layout/candidate1_points.py` (`straps()`), which `cell_candidate1/` calls too:
 
-- **`CN` source/drain strap -- a measured per-level window.** CN leaves each
-  tap ring through that ring's metal1 exit gap, and the gap is centred on the
-  device, so it rises with the width: measured `GAP_E`/`GAP_W` spans
-  y -0.28..0.72 um at W = 0.42, -0.07..0.93 at 0.84, 0.01..1.01 at 1.0 and
-  0.51..1.51 at 2.0 (centre W/2 + 0.01 um, tabulated in
-  `spec/capacitor-geometry-decision.md`). With the 0.23 um `metal1.space.1`
-  clearance required from every edge, the capacitor-1.0 points have the common
-  window 0.24..0.49 um (access at 0.42) or 0.24..0.70 (access at 0.84), and
-  one band (y 0.25..0.48) serves both. That band is exactly the 0.23 um metal1
-  **minimum width** (M1.1) tall -- the first cut (0.26..0.47) failed M1.1 on
-  its free-standing stretches between pads, observed on the first generated
-  cell and fixed by thickening into the window's remaining room. At the
-  capacitor-2.0 points the two windows are **disjoint** (0.74..1.28 vs
-  -0.05..0.49 or 0.16..0.70) -- the constraint `#294` measured, with no
-  single-rect CN. The strap there is a doglegged three-rect metal1 shape:
-  a capacitor-side band through the capacitor ring's gap (y 0.78..1.25), an
-  access-side band through the access ring's gap (y 0.0..0.45 at access
-  0.42, 0.20..0.65 at 0.84), and a riser joining them across the inter-ring
-  field -- which is wide enough because the binding edges are the ring
-  *metal1* edges (x 2.35 and DX - 1.07 = 3.13, field 0.78 um), not the wider
-  comp/pplus tap-ring extents the ERC well boxes quote. The riser clears both
-  metal edges by >= 0.25 um; every segment clears its gap edges by
-  >= 0.26 um; all DRC-clean on the committed cells.
+- **Capacitor wiring.** CN connects the access transistor's storage terminal
+  to the gate of the capacitor. A Via1 at each end connects the 0.50 µm
+  Metal2 run to Metal1. A separate Metal1 strap connects both capacitor
+  diffusion pads to PL. The transistor and capacitor taps share VB.
 - **`VB` tap-ring strap -- flat at Minimum, stacked at 2x.** The `TAP_N` pad
   centre rises as W + 2.28 um (measured at all four widths the grid draws).
   At capacitor-1.0 points one band spanning both pads
@@ -524,8 +550,7 @@ generator's raised `ring_padding_um` 1.29 (see the ring-padding bullet below).
 `lvs_reference.spice` carries drawn values.
 
 - **Terminals.** BL is the access **source**, CN the access **drain** (as in
-  the schematic, mirror of the NMOS candidates). Access gate is WL; cap gate is
-  PL; cap source and drain are strapped on CN. The MOS-capacitor marker
+  the schematic, mirror of the NMOS candidates). The access gate is WL. CN reaches the capacitor gate and PL joins its source and drain. The MOS-capacitor marker
   (166/5) is hand-placed over the cap COMP island, as for candidate 1
   (2AMLogic/klayout-tools#2953).
 - **Well connection (stated).** Each device sits in its own N-well with an N+
@@ -564,9 +589,7 @@ generator's raised `ring_padding_um` 1.29 (see the ring-padding bullet below).
   violated `nwell.space.1`). Not waived. The VB strap's access-side edge
   tracks the raised ring and keeps the band at the 0.23 um metal1 minimum
   width (`M1.1` fired at 1.3 um padding without that floor -- measured); the
-  CN strap and the capacitor marker track DX. The E-side routing opening the
-  CN strap passes through is padding-independent (its span follows the pads,
-  not the ring) and stays usable.
+  CN strap and the capacitor marker track DX. CN crosses the Metal1 ring on Metal2.
 - **DRC.** `klt drc --deck gf180mcu --top cell_candidate3`: `status: clean`,
   0 violations. Layers in stream without rules: 34/10 (labels), 166/5 (cap
   marker). The candidate-1 caveat applies: Dualgate is not modelled for the
@@ -668,21 +691,10 @@ the generated blocks; each family shares them once -- candidate 1 via
 since #397 consolidated the two candidate-3 generators -- because the two
 families' x extents differ):
 
-- **`CN` source/drain strap -- doglegged.** CN leaves each tap ring through
-  that ring's metal1 exit gap, which rises with device width (measured spans:
-  y -0.28..0.72 um at W = 0.42 access, y 0.51..1.51 um at W_CAP = 2.0) and is
-  padding-independent in y (the gap follows the pads, not the ring). With
-  the 0.23 um `metal1.space.1` clearance from every gap edge the legal windows
-  (-0.05..0.49 and 0.74..1.28) are **disjoint** -- no single-rect CN exists
-  (`spec/capacitor-geometry-decision.md`). The strap is a three-rect metal1
-  dogleg: an access-side band through the access ring's gap (y 0.0..0.45), a
-  riser across the inter-ring field (access ring metal edge x 2.77 + DPAD =
-  3.56 at the committed padding, capacitor ring metal edge DX - 1.07 = 4.52 --
-  field 0.96 um wide, DX tracking DPAD; riser x 3.02 + DPAD .. 3.48 + DPAD =
-  3.81..4.27 clears both by >= 0.25 um at every padding), and a
-  capacitor-side band through the capacitor ring's gap (y 0.78..1.25, >= 0.26
-  um clear). Measured DRC-proven at the committed geometry: no `metal1.space.1`
-  or any other strap finding in the cross-check.
+- **Capacitor wiring.** CN connects the access transistor's storage terminal
+  to the gate of the capacitor. A Via1 at each end connects the 0.50 µm
+  Metal2 run to Metal1. A separate Metal1 strap connects both capacitor
+  diffusion pads to PL. The transistor and capacitor taps share VB.
 - **`VB` tap-ring strap -- stacked.** One flat band spanning both TAP_N pads
   (y 3.28..4.49 at the committed padding) would fail `metal1.space.1`
   (0.23 um) against the capacitor's metal1 gate pad (x DX+0.43..DX+0.85,
@@ -790,11 +802,7 @@ cleared on the base cell clears here too: the cell-level findings are
 **gone** (see the ring-padding bullet), leaving `DBU` and the die-level
 density rules -- the same disclosed, die-level-assembly class as on every
 other cell -- and no new density rule appeared despite the bbox growing
-50.22 -> 67.50 um2. The doglegged CN and stacked VB this cell needs at the
-2x width (with their strap x-extents re-tracked to the raised access ring)
-are DRC-proven by the same run: no `metal1.space.1` or any other strap
-finding appears, and LVS still pairs all 5 nets -- the re-tracked CN riser
-did not short into the ring metal it now crosses the field beside.
+50.22 -> 67.50 um2. The Metal2 CN route and stacked Metal1 VB bands pass spacing checks. LVS pairs all five nets.
 
 `klt drc --check drc_report.json` and `klt lvs --check lvs_report.json` run
 from the cell directory exit 0. `klt erc --check erc_report.json` reports the
@@ -831,7 +839,7 @@ Toolchain: released `klt 0.9.2` (`uvx --from klayout-tools==0.9.2`), KLayout
 (Exception: `drc_native_pinned_control_20261125.json` and
 `drc_native_fd_pv_42.json` were recorded 2026-11-25 on the worker's
 `klt 0.9.3.dev5587+g945e94f0` / KLayout `0.30.12`, with the latter run against a
-scratch copy of the native deck carrying `fd_pv#42` -- diagnostic comparison
+scratch copy of the native deck carrying `fd_pv#42`. Both historical reports identify the pre-#539 GDS in their provenance. They are a diagnostic comparison
 only, not the project deck.) No host
 tool was installed or changed. Regenerate/verify with
 `uvx --from klayout-tools==0.9.2 python3 layout/cell_candidate2/generate.py --check`
@@ -847,7 +855,7 @@ the pad's new x position, and re-pointed the PL label -- see "Geometry").
 
 d -> BL, s -> CN, as in the schematic. In the PCell the **centre COMP stripe
 (between the two gate fingers) is the drain** and carries BL; the two outer
-COMP stripes are the sources, strapped together and to the capacitor's S and D
+COMP stripes are the sources, strapped together and to the capacitor gate
 as CN with a Metal2 bar over Via1 (so it crosses the PCell's closed tap ring
 without touching it). WL joins the two gate pads in Metal1; VB straps the
 PCell ring to the capacitor ring. Labels are drawn by `klt draw` on 34/10 (the
@@ -858,19 +866,12 @@ PCell has no `klt` ports).
 | Device | Drawn | Note |
 |---|---|---|
 | Access (`nfet_10v0_asym` PDK PCell) | W = 4 um per finger x 2 fingers (8 um total), L = 0.6 um | The PCell clamps any `w` below 4 um to 4 um and always draws two fingers sharing the centre drain. The schematic default `wacc` (25 um) is not what is drawn. |
-| Capacitor (`mos_array`, Dualgate marker, S and D strapped on CN) | W = 1.0 um, L = 0.70 um | The ratified Minimum level for Region II (`spec/capacitor-geometry-decision.md`): W at the `DF.1c` MOSCAP COMP-width floor, L at the `PL.2_MV` 6 V n-gate minimum. Extracted area 0.70 um2 (`cap_nmos_06v0`). |
+| Capacitor (`mos_array`, Dualgate marker, S and D strapped on PL) | W = 1.0 um, L = 0.70 um | The ratified Minimum level for Region II (`spec/capacitor-geometry-decision.md`): W at the `DF.1c` MOSCAP COMP-width floor, L at the `PL.2_MV` 6 V n-gate minimum. Extracted area 0.70 um2 (`cap_nmos_06v0`). |
 
-The capacitor's growth moved two hand-placed shapes, both measured off the
-generated block (the MV `mos_array` block's metal1 shifts **in x with L**:
-its D pad is x CX+1.14..CX+1.56 at L = 0.56, CX+1.28..CX+1.70 at L = 0.70):
-
-- **Right Via1 re-placed** (x CX+1.22..1.48 -> CX+1.28..1.54): at the new L the
-  via's left sliver hung off the D pad, and the native deck flagged it
-  (`V1.3a` "metal1 overlap of via1", observed on the first generated cell).
-  The moved via sits fully on the pad and still fully under the Metal2 CN bar.
-- **`MOS_CAP_MK` marker top edge** now `CY + W_CAP + 0.1` (the COMP island is
-  as tall as the device width), and the **`PL` label** moved to the gate pad's
-  new centre (the gate pad's y tracks W: CY + W + 0.96).
+Both source stripes connect to the capacitor gate through a Metal2 jog at
+y = 1.85 µm. This clears the PL landing on the capacitor diffusion at
+(5.71, 1.00) µm and the via on the substrate ring. The MOS capacitor marker
+covers the capacitor COMP island with a 0.1 µm margin.
 
 ### LVS -- `match`
 
@@ -1155,9 +1156,8 @@ extraction, flattened compare against the derived 31-instance reference:
 instances -- the geometry class `spec/pdk-pcell-drc-exception-decision.md`
 scopes), the three stage reports at the precheck's own binding
 configuration `gf180mcuD` (#404: `drc_stage_report.json` — nothing drawn by
-this assembly, only the PCell exception class and `DBU`;
-`drc_antenna_report.json` — the shared-WL and private-plate antenna groups
-recorded, remedy evaluated and deferred to the operator;
+this assembly, PCell findings, five `MDN.10c` findings, and `DBU`;
+`drc_antenna_report.json` — 29 shared-WL findings, with zero private-plate findings after the signed capacitor routing fix;
 `drc_density_report.json` + `drc_density_stage.log` — every density rule
 above its floor after the fill, `DRC RESULT: SUCCESS`; the variant-A
 `drc_native_report.json` per #287 is withdrawn — its `MT30.*`/`CUP.2` rows

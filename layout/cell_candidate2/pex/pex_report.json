@@ -19,7 +19,7 @@
     "netlist_adaptation": null,
     "device_count": 3,
     "net_count": 5,
-    "netlist_sha256": "8ba7938916fe741eb25cffb1de38fd19ffa6e808e16ff8afcf1533666697fe7c",
+    "netlist_sha256": "4172800506d200f0d2fa2e5157196d7d59c8be495c99f53669e47dedf6a9755e",
     "model": {
       "capacitance": "net-to-ground for every net's own (non-coupled) area/perimeter, plus net-to-net for the vertical-overlap coupling `coupling` describes below -- a coupled net pair gets a direct capacitor between their two hub nodes, not just capacitors to the deck's ground/substrate net",
       "coupling": "vertical overlap (crossover) unconditionally -- where one net's conductor on an adjacent metal level sits directly over another *distinct* net's conductor, that overlap area is charged between the two nets instead of to ground (issue #760) -- plus lateral (same-layer, sidewall) coupling, but only for a net pair naming one of the caller's declared `--critical-net` nets (issue #976): facing-edge length within that layer's own minimum-spacing lookback is charged between the two nets, *additively* (not deducted from either net's substrate fringe term, unlike the vertical case -- a known simplification). Any same-layer pair with neither side named `--critical-net`, and fringe shielding in general, are still not modelled",
@@ -63,6 +63,18 @@
       },
       "version": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
     },
+    "substrate_dc_tie": {
+      "resistance_ohm": 1000000000000.0,
+      "mode": "shunt",
+      "nets": [
+        {
+          "net": "vsubs",
+          "device": "Rvsubs_dctie"
+        }
+      ],
+      "node_scope": "global",
+      "reference_node": "0"
+    },
     "parasitic_integrity": {
       "short_threshold_ohm": 1.0,
       "cap_tolerance": {
@@ -80,8 +92,8 @@
       "capacitance_mismatches": 0,
       "nets": [
         {
-          "net": "\\$3",
-          "net_id": 3,
+          "net": "\\$4",
+          "net_id": 4,
           "rc_model": "lumped",
           "integrity": {
             "open": {
@@ -117,8 +129,8 @@
             },
             "capacitance": {
               "status": "pass",
-              "declared_ff": 1.732231,
-              "computed_ff": 1.732231,
+              "declared_ff": 2.11185,
+              "computed_ff": 2.11185,
               "delta_ff": 0.0,
               "reason": null,
               "tolerance": {
@@ -130,7 +142,7 @@
         },
         {
           "net": "BL",
-          "net_id": 2,
+          "net_id": 3,
           "rc_model": "lumped",
           "integrity": {
             "open": {
@@ -179,7 +191,7 @@
         },
         {
           "net": "PL",
-          "net_id": 4,
+          "net_id": 5,
           "rc_model": "lumped",
           "integrity": {
             "open": {
@@ -215,8 +227,8 @@
             },
             "capacitance": {
               "status": "pass",
-              "declared_ff": 0.545601,
-              "computed_ff": 0.545601,
+              "declared_ff": 0.300799,
+              "computed_ff": 0.300799,
               "delta_ff": 0.0,
               "reason": null,
               "tolerance": {
@@ -264,8 +276,8 @@
             },
             "capacitance": {
               "status": "pass",
-              "declared_ff": 3.659245,
-              "computed_ff": 3.659245,
+              "declared_ff": 3.656095,
+              "computed_ff": 3.656095,
               "delta_ff": 0.0,
               "reason": null,
               "tolerance": {
@@ -277,7 +289,7 @@
         },
         {
           "net": "WL",
-          "net_id": 5,
+          "net_id": 2,
           "rc_model": "lumped",
           "integrity": {
             "open": {
@@ -367,10 +379,8 @@
   "flat_dut_mismatch": null,
   "pin_order_mismatch": null,
   "model_mismatch": {
-    "kind": "model_set",
-    "reference_only": [
-      "cap_nmos_06v0"
-    ],
+    "kind": "count_only",
+    "reference_only": [],
     "extracted_only": [],
     "counts": {
       "reference": {
@@ -378,26 +388,30 @@
         "nfet_10v0_asym": 1
       },
       "extracted": {
+        "cap_nmos_06v0": 1,
         "nfet_10v0_asym": 2
       }
     },
-    "detail": "the reference (schematic) and extracted netlists instantiate different device models/`.subckt`s, and the two sides may be electrically unrelated, so `delta[]` rows could compare two different physical devices rather than a parasitic effect. Only in the reference netlist: cap_nmos_06v0. A common cause: the layout carries no voltage-domain marker geometry, so `klt extract --pdk` bound every MOS to the PDK family's default flavour while the reference netlist names a different one -- see docs/cli/pex.md's `model_mismatch` section"
+    "detail": "the reference (schematic) and extracted netlists instantiate the same device models/`.subckt`s and differ only in how many instances of each they carry. The usual cause is finger/multiplier decomposition: the layout draws a device as several fingers while the schematic has one instance (with `nf`/`m`, or none), a difference `klt lvs` has already reconciled. It does not by itself make `delta[]` unrelated, but representation effects (fingering, AS/AD) are folded into `delta[]` alongside the parasitics. See docs/cli/pex.md's `model_mismatch` section"
   },
   "flatten_schematic": false,
   "schematic_flatten": null,
   "provenance": {
-    "klt_version": "0.9.2",
-    "klt_git_commit": "046ba74652fc096bd97071fc3237f7159dd40183",
-    "klt_reinstall_spec": "klayout-tools==0.9.2",
-    "klayout_version": "0.30.13",
+    "klt_version": "0.10.0.dev1+g9d2780c5e1c8",
+    "klt_git_commit": "9d2780c5e1c842777519330943a5435b118c4437",
+    "klt_reinstall_spec": "klayout-tools @ git+https://github.com/2AMLogic/klayout-tools@9d2780c5e1c842777519330943a5435b118c4437",
+    "klayout_version": "0.30.14",
     "pdk": {
       "name": "gf180mcuD",
-      "source": "search root: ~/.ciel",
-      "version": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
+      "source": "PDK_ROOT environment variable",
+      "version": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7",
+      "ambiguous_sources": [
+        "search root: ~/.volare"
+      ]
     },
     "deck": {
       "name": "gf180mcu",
-      "content_hash": "sha256:c3f2cce49000857a3a71cb65203aabf0eb27cd0ee6b1c60e29792355c455c4b1",
+      "content_hash": "sha256:778e9a4eba34b67a0427367917b4c9c2602d44ff085d663affd302a8d0f197cd",
       "released": true,
       "options": {
         "metal_top": "9K",
@@ -412,8 +426,9 @@
       "options_hash": "sha256:6a7dc7660a470994263c5ca8ace6d8ac8c605d77e6876a9c5490949de6e7cb05"
     },
     "input": {
-      "content_hash": "sha256:5cb4a64fa103f2b698aeaffedddfc28405931e6afbfec8f21cf8b90678462e7a",
+      "content_hash": "sha256:f2bb06eea53f3288cf4ef584465d2bcf84cbbb315a71e2a2e5be6fdd7e987620",
       "role": "layout"
-    }
+    },
+    "klayout_version_mismatch": false
   }
 }

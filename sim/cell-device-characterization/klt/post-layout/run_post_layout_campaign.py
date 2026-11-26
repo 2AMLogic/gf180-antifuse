@@ -207,14 +207,6 @@ def collect(rundir: Path) -> dict:
         i_e, ri_e, e_e = leg_ioff_worst(rundir, n, "extracted")
         r_s, zi_s, rr_s, re_s = leg_ron(rundir, n, "schematic")
         r_e, zi_e, rr_e, re_e = leg_ron(rundir, n, "extracted")
-        # The R_on delta is always reported when both legs are valid.  The
-        # extracted leg carries a linear C card where the schematic leg has the
-        # PDK's nonlinear MOS capacitor (model_mismatch, klayout-tools#7004),
-        # so the cause of a large R_on difference is NOT attributed here: a
-        # single-component control (capacitor card swapped alone on each leg)
-        # showed a large difference with the same capacitor representation on
-        # both legs (see README).  `model_mismatch_disclosed` flags every
-        # R_on pairing whose legs use different capacitor representations.
         finding = check_extraction(REPO, n)
         if finding:
             i_s = i_e = r_s = r_e = None
@@ -227,7 +219,7 @@ def collect(rundir: Path) -> dict:
             "ron": {"schematic": r_s, "extracted": r_e, "delta": delta(r_s, r_e),
                     "schematic_error": re_s, "extracted_error": re_e,
                     "z_imag_schematic_ohm": zi_s, "z_imag_extracted_ohm": zi_e,
-                    "model_mismatch_disclosed": True,
+                    "model_mismatch_disclosed": bool(pex_report(n).get("model_mismatch")),
                     "jobs": [job_id(rr_s), job_id(rr_e)]},
         }
     return out
@@ -241,13 +233,15 @@ def fmt_val(v, err, unit):
     return f"{sci(v)} {unit}"
 
 
-def body_bias_status(n: int) -> str:
-    """`body_bias.status` of cell n's retained PEX report (read, not assumed)."""
+def pex_report(n: int) -> dict:
     try:
-        r = json.loads((REPO / "layout" / f"cell_candidate{n}" / "pex" / "pex_report.json").read_text())
-        return str((r.get("body_bias") or {}).get("status"))
+        return json.loads((REPO / "layout" / f"cell_candidate{n}" / "pex" / "pex_report.json").read_text())
     except (OSError, json.JSONDecodeError):
-        return "unreadable"
+        return {}
+
+
+def body_bias_status(n: int) -> str:
+    return (pex_report(n).get("body_bias") or {}).get("status", "unreadable")
 
 
 def render_readme(rundir: Path, summary: dict) -> str:
@@ -276,21 +270,18 @@ def render_readme(rundir: Path, summary: dict) -> str:
     L.append("  ordered pin map and both DUT sha256s).  Supplies, body connection, model sections,")
     L.append("  solver settings and measurements are identical on both legs; `netlist_source` is")
     L.append("  `schematic` / `extracted`.")
-    L.append("- **Extraction**: klayout-tools `0.9.2` (KLayout `0.30.13`), `--deck gf180mcu --pdk")
+    L.append("- The extraction report in each cell records the klt and KLayout versions,")
+    L.append("  PDK revision and input GDS hash. The common command uses `--deck gf180mcu --pdk")
     statuses = {n: body_bias_status(n) for n in PROBE_ORDER}
     if all(v == "biased" for v in statuses.values()):
         L.append("  gf180mcuD --extract-only`; `body_bias.status: \"biased\"` for all three cells")
     else:
         L.append("  gf180mcuD --extract-only`; `body_bias.status` per cell: " + ", ".join(
             f"C{n} `{statuses[n]}`" for n in PROBE_ORDER))
-    L.append("  (full blocks quoted in each `layout/<cell>/pex/README.md`).")
-    L.append("- **Fleet**: `klt sim --backend batch --wait-for-capacity 600`; runner klt `0.9.0`,")
-    L.append("  client `0.9.2` (`runner_compatibility: match` on every job; job ids per row below).")
-    L.append("- **Known representation divergence**: every drawn MOS capacitor extracts as a")
-    L.append("  linear `C` card (deck area law), not the PDK's nonlinear `cap_*` subcircuit --")
-    L.append("  `model_mismatch` reports the cap in `reference_only` for all three cells")
-    L.append("  (2AMLogic/klayout-tools#7004).  I_off is a DC measurement (cap open on both")
-    L.append("  legs); R_on at 10 MHz sees the linearised cap on the extracted leg only.")
+    L.append("  (full results in each `layout/<cell>/pex/pex_report.json`).")
+    L.append("- Each run report records the resolved simulation backend, ngspice version and DUT closure.")
+    L.append("  The signed topology check follows both nonlinear capacitor pins through the extracted")
+    L.append("  resistor network and verifies the access device terminals against the cell reference.")
     L.append("- **gmin floor**: both legs keep `.options gmin=1e-13`; I_off remains a")
     L.append("  gmin-floor-limited upper bound exactly as in the schematic campaign.")
     L.append("")
@@ -318,25 +309,22 @@ def render_readme(rundir: Path, summary: dict) -> str:
                  f"| {fmt_val(r['extracted'], r['extracted_error'], 'ohm')} "
                  f"| {diff} |")
         L.append("")
-        if not (r["schematic_error"] or r["extracted_error"]):
-            L.append("  - R_on pairing carries the capacitor-model mismatch: the extracted leg has a")
-            L.append("    linear `C` card where the schematic leg has the PDK MOS capacitor")
-            L.append("    (2AMLogic/klayout-tools#7004). The measured difference is reported as is;")
-            L.append("    its cause is **left open** -- a single-component control did not attribute it")
-            L.append("    to the capacitor model (see Dispositions).")
+        if r["model_mismatch_disclosed"]:
+            L.append("  The PEX report's `model_mismatch` field describes the device-count or model difference.")
             L.append("")
         if c.get("extraction_findings"):
             L.append("  - **Extraction unusable, pair suppressed**: " + "; ".join(c["extraction_findings"]))
             L.append("")
-        L.append(f"batch jobs ioff [schematic, extracted]: {i['jobs']}; ron: {r['jobs']}")
+        if any(job != "-" for job in i["jobs"] + r["jobs"]):
+            L.append(f"Batch job IDs for I_off {i['jobs']} and R_on {r['jobs']} (schematic, extracted).")
         L.append("")
     L.append("## Dispositions")
     L.append("")
     usable = [n for n in PROBE_ORDER if not summary["cells"][str(n)].get("extraction_findings")]
     if len(usable) == len(PROBE_ORDER):
         L.append("- All three extractions are usable: access-device model, geometry and drain")
-        L.append("  orientation match the per-cell LVS reference (evidence quoted per cell in")
-        L.append("  `layout/<cell>/pex/README.md`); `body_bias.status` is `biased` everywhere;")
+        L.append("  orientation match the per-cell LVS reference (signed topology and netlist evidence per cell in")
+        L.append("  `layout/<cell>/pex/`); `body_bias.status` is `biased` everywhere;")
         L.append("  parasitics present (per-net lumped R + substrate C, plus C2's coupling caps).")
     else:
         L.append("- Extractions usable: " + (", ".join(f"C{n}" for n in usable) or "none")
@@ -347,24 +335,8 @@ def render_readme(rundir: Path, summary: dict) -> str:
             if f:
                 L.append(f"  - C{n}: " + "; ".join(f))
         L.append("  Usable cells' evidence is quoted in `layout/<cell>/pex/README.md`.")
-    L.append("- No refusal occurred, so no upstream refusal link was needed; the MOS-cap")
-    L.append("  linearisation finding is linked on 2AMLogic/klayout-tools#7004 (the runset-route")
-    L.append("  issues #6559/#6606 cover families the curated deck cannot recognise at all --")
-    L.append("  not this case: all device families here bind under the curated deck with `--pdk`).")
-    L.append("- **C3 R_on difference: measured, cause open.** The fleet summary gives a large")
-    L.append("  negative C3 R_on difference.  A local single-component control (committed C3")
-    L.append("  DUTs, same PDK sections and source biases, `Re(-V(BL)/I(VBL))` at ss, -40 degC,")
-    L.append("  10 MHz, libngspice 42; the fleet ran ngspice 47) swapped only the capacitor card")
-    L.append("  within each row:")
-    L.append("")
-    L.append("  | C3 circuit | PDK MOS capacitor | Linear 1.232 fF capacitor |")
-    L.append("  |---|---:|---:|")
-    L.append("  | Schematic | 2912.900 ohm | 2912.905 ohm |")
-    L.append("  | Extracted | 118.822 ohm | 168.011 ohm |")
-    L.append("")
-    L.append("  The large schematic-vs-extracted difference persists with the same capacitor")
-    L.append("  representation on both legs, so it is not attributed to the capacitor model;")
-    L.append("  no controlled comparison has yet established the cause.")
+    L.append("- The cause of the C3 R_on difference remains open. The single-component")
+    L.append("  control in `diagnosis/` used the earlier linear-capacitor extraction in #447.")
     L.append("- Numbers above cover exactly the drawn Minimum x Minimum split of each")
     L.append("  candidate's GDS (one cell per candidate; no other splits, no averaging).")
     L.append("")

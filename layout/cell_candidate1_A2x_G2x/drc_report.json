@@ -57,6 +57,8 @@
       "32/0",
       "33/0",
       "34/0",
+      "35/0",
+      "36/0",
       "55/0"
     ],
     "layers_in_stream_without_rules": [
@@ -80,9 +82,14 @@
       "dualgate.space.1",
       "dualgate.width.1",
       "metal1.enclosing.contact.1",
+      "metal1.enclosing.via1.1",
       "metal1.ongrid.1",
       "metal1.space.1",
       "metal1.width.1",
+      "metal2.enclosing.via1.1",
+      "metal2.ongrid.1",
+      "metal2.space.1",
+      "metal2.width.1",
       "nplus.enclosing.comp.1",
       "nplus.enclosing.poly2.1",
       "nplus.ongrid.1",
@@ -99,7 +106,10 @@
       "pplus.ongrid.1",
       "pplus.space.1",
       "pplus.space.ncomp.1",
-      "pplus.width.1"
+      "pplus.width.1",
+      "via1.ongrid.1",
+      "via1.space.1",
+      "via1.width.1"
     ],
     "rules_skipped": [
       "bjt.separation.comp.1",
@@ -119,14 +129,9 @@
       "esd.space.1",
       "esd.width.1",
       "fusetop.ongrid.1",
-      "metal1.enclosing.via1.1",
       "metal1.separation.guard_ring_mk.1",
-      "metal2.enclosing.via1.1",
       "metal2.enclosing.via2.1",
-      "metal2.ongrid.1",
       "metal2.separation.guard_ring_mk.1",
-      "metal2.space.1",
-      "metal2.width.1",
       "metal3.enclosing.via2.1",
       "metal3.enclosing.via3.1",
       "metal3.ongrid.1",
@@ -168,9 +173,6 @@
       "sab.separation.contact.1",
       "sab.space.1",
       "sab.width.1",
-      "via1.ongrid.1",
-      "via1.space.1",
-      "via1.width.1",
       "via2.ongrid.1",
       "via2.space.1",
       "via2.width.1",
@@ -325,9 +327,14 @@
       "dualgate.space.1",
       "dualgate.width.1",
       "metal1.enclosing.contact.1",
+      "metal1.enclosing.via1.1",
       "metal1.ongrid.1",
       "metal1.space.1",
       "metal1.width.1",
+      "metal2.enclosing.via1.1",
+      "metal2.ongrid.1",
+      "metal2.space.1",
+      "metal2.width.1",
       "nplus.enclosing.comp.1",
       "nplus.enclosing.poly2.1",
       "nplus.ongrid.1",
@@ -344,7 +351,10 @@
       "pplus.ongrid.1",
       "pplus.space.1",
       "pplus.space.ncomp.1",
-      "pplus.width.1"
+      "pplus.width.1",
+      "via1.ongrid.1",
+      "via1.space.1",
+      "via1.width.1"
     ],
     "skipped": [],
     "inapplicable": [
@@ -417,15 +427,7 @@
         "reason": "no_applicable_geometry"
       },
       {
-        "id": "metal1.enclosing.via1.1",
-        "reason": "no_applicable_geometry"
-      },
-      {
         "id": "metal1.separation.guard_ring_mk.1",
-        "reason": "no_applicable_geometry"
-      },
-      {
-        "id": "metal2.enclosing.via1.1",
         "reason": "no_applicable_geometry"
       },
       {
@@ -433,19 +435,7 @@
         "reason": "no_applicable_geometry"
       },
       {
-        "id": "metal2.ongrid.1",
-        "reason": "no_applicable_geometry"
-      },
-      {
         "id": "metal2.separation.guard_ring_mk.1",
-        "reason": "no_applicable_geometry"
-      },
-      {
-        "id": "metal2.space.1",
-        "reason": "no_applicable_geometry"
-      },
-      {
-        "id": "metal2.width.1",
         "reason": "no_applicable_geometry"
       },
       {
@@ -613,18 +603,6 @@
         "reason": "no_applicable_geometry"
       },
       {
-        "id": "via1.ongrid.1",
-        "reason": "no_applicable_geometry"
-      },
-      {
-        "id": "via1.space.1",
-        "reason": "no_applicable_geometry"
-      },
-      {
-        "id": "via1.width.1",
-        "reason": "no_applicable_geometry"
-      },
-      {
         "id": "via2.ongrid.1",
         "reason": "no_applicable_geometry"
       },
@@ -675,7 +653,7 @@
       "released": true
     },
     "input": {
-      "content_hash": "sha256:eeba35dcb209f2a9c41123f34435b8b82f0168a595e02de2861b0ff7b8fa2d00",
+      "content_hash": "sha256:977bf49d703ba0a5402a7e9210ac0acb41be92fdc0b065e49d57f7ce76a65799",
       "role": "layout"
     },
     "klayout_version_mismatch": false

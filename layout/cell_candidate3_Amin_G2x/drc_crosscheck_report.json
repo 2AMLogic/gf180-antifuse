@@ -1,13 +1,13 @@
 {
   "schema_version": 2,
   "mode": "crosscheck",
-  "file": "layout/cell_candidate3_Amin_G2x/cell_candidate3_Amin_G2x.gds",
+  "file": "cell_candidate3_Amin_G2x.gds",
   "status": "violations",
   "identity": {
-    "layout_content_hash": "sha256:cd0e2feac49659c92dc48e27b4f6bf9bffb9414da6f9f79a91c9dc7920b4c06b",
+    "layout_content_hash": "sha256:a9c60259a4e29ec54999f5b1ac26414aa9105e4606cdf38fdcc8bce23c650c3c",
     "pdk": {
       "name": "gf180mcuA",
-      "source": "search root: ~/.ciel",
+      "source": "PDK_ROOT environment variable",
       "version": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7",
       "ambiguous_sources": [
         "search root: ~/.volare"
@@ -57,9 +57,14 @@
         "dualgate.space.1",
         "dualgate.width.1",
         "metal1.enclosing.contact.1",
+        "metal1.enclosing.via1.1",
         "metal1.ongrid.1",
         "metal1.space.1",
         "metal1.width.1",
+        "metal2.enclosing.via1.1",
+        "metal2.ongrid.1",
+        "metal2.space.1",
+        "metal2.width.1",
         "nplus.enclosing.comp.1",
         "nplus.enclosing.poly2.1",
         "nplus.ongrid.1",
@@ -80,7 +85,10 @@
         "pplus.ongrid.1",
         "pplus.space.1",
         "pplus.space.ncomp.1",
-        "pplus.width.1"
+        "pplus.width.1",
+        "via1.ongrid.1",
+        "via1.space.1",
+        "via1.width.1"
       ],
       "native": [
         "ANT.1",
@@ -812,6 +820,8 @@
           "32/0",
           "33/0",
           "34/0",
+          "35/0",
+          "36/0",
           "55/0"
         ],
         "layers_in_stream_without_rules": [
@@ -835,9 +845,14 @@
           "dualgate.space.1",
           "dualgate.width.1",
           "metal1.enclosing.contact.1",
+          "metal1.enclosing.via1.1",
           "metal1.ongrid.1",
           "metal1.space.1",
           "metal1.width.1",
+          "metal2.enclosing.via1.1",
+          "metal2.ongrid.1",
+          "metal2.space.1",
+          "metal2.width.1",
           "nplus.enclosing.comp.1",
           "nplus.enclosing.poly2.1",
           "nplus.ongrid.1",
@@ -858,7 +873,10 @@
           "pplus.ongrid.1",
           "pplus.space.1",
           "pplus.space.ncomp.1",
-          "pplus.width.1"
+          "pplus.width.1",
+          "via1.ongrid.1",
+          "via1.space.1",
+          "via1.width.1"
         ],
         "rules_skipped": [
           "bjt.separation.comp.1",
@@ -881,14 +899,9 @@
           "esd.width.1",
           "fusetop.ongrid.1",
           "ldmos_xtor.enclosing.mvpsd.1",
-          "metal1.enclosing.via1.1",
           "metal1.separation.guard_ring_mk.1",
-          "metal2.enclosing.via1.1",
           "metal2.enclosing.via2.1",
-          "metal2.ongrid.1",
           "metal2.separation.guard_ring_mk.1",
-          "metal2.space.1",
-          "metal2.width.1",
           "metal3.enclosing.via2.1",
           "metal3.enclosing.via3.1",
           "metal3.ongrid.1",
@@ -935,9 +948,6 @@
           "sab.separation.contact.1",
           "sab.space.1",
           "sab.width.1",
-          "via1.ongrid.1",
-          "via1.space.1",
-          "via1.width.1",
           "via2.ongrid.1",
           "via2.space.1",
           "via2.width.1",
@@ -1208,9 +1218,14 @@
           "dualgate.space.1",
           "dualgate.width.1",
           "metal1.enclosing.contact.1",
+          "metal1.enclosing.via1.1",
           "metal1.ongrid.1",
           "metal1.space.1",
           "metal1.width.1",
+          "metal2.enclosing.via1.1",
+          "metal2.ongrid.1",
+          "metal2.space.1",
+          "metal2.width.1",
           "nplus.enclosing.comp.1",
           "nplus.enclosing.poly2.1",
           "nplus.ongrid.1",
@@ -1231,7 +1246,10 @@
           "pplus.ongrid.1",
           "pplus.space.1",
           "pplus.space.ncomp.1",
-          "pplus.width.1"
+          "pplus.width.1",
+          "via1.ongrid.1",
+          "via1.space.1",
+          "via1.width.1"
         ],
         "skipped": [],
         "inapplicable": [
@@ -1316,15 +1334,7 @@
             "reason": "no_applicable_geometry"
           },
           {
-            "id": "metal1.enclosing.via1.1",
-            "reason": "no_applicable_geometry"
-          },
-          {
             "id": "metal1.separation.guard_ring_mk.1",
-            "reason": "no_applicable_geometry"
-          },
-          {
-            "id": "metal2.enclosing.via1.1",
             "reason": "no_applicable_geometry"
           },
           {
@@ -1332,19 +1342,7 @@
             "reason": "no_applicable_geometry"
           },
           {
-            "id": "metal2.ongrid.1",
-            "reason": "no_applicable_geometry"
-          },
-          {
             "id": "metal2.separation.guard_ring_mk.1",
-            "reason": "no_applicable_geometry"
-          },
-          {
-            "id": "metal2.space.1",
-            "reason": "no_applicable_geometry"
-          },
-          {
-            "id": "metal2.width.1",
             "reason": "no_applicable_geometry"
           },
           {
@@ -1532,18 +1530,6 @@
             "reason": "no_applicable_geometry"
           },
           {
-            "id": "via1.ongrid.1",
-            "reason": "no_applicable_geometry"
-          },
-          {
-            "id": "via1.space.1",
-            "reason": "no_applicable_geometry"
-          },
-          {
-            "id": "via1.width.1",
-            "reason": "no_applicable_geometry"
-          },
-          {
             "id": "via2.ongrid.1",
             "reason": "no_applicable_geometry"
           },
@@ -1591,7 +1577,7 @@
         "klayout_version": "0.30.13",
         "pdk": {
           "name": "gf180mcuA",
-          "source": "search root: ~/.ciel",
+          "source": "PDK_ROOT environment variable",
           "version": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7",
           "ambiguous_sources": [
             "search root: ~/.volare"
@@ -1603,7 +1589,7 @@
           "released": true
         },
         "input": {
-          "content_hash": "sha256:cd0e2feac49659c92dc48e27b4f6bf9bffb9414da6f9f79a91c9dc7920b4c06b",
+          "content_hash": "sha256:a9c60259a4e29ec54999f5b1ac26414aa9105e4606cdf38fdcc8bce23c650c3c",
           "role": "layout"
         },
         "klayout_version_mismatch": true
@@ -1615,8 +1601,11 @@
         "path": "layout/cell_candidate3_Amin_G2x/cell_candidate3_Amin_G2x.gds",
         "scope": "repo"
       },
-      "deck": "/home/ubuntu/.ciel/gf180mcuA/libs.tech/klayout/tech/drc/gf180mcu.drc",
+      "deck": "~/.ciel/gf180mcuA/libs.tech/klayout/tech/drc/gf180mcu.drc",
       "engine": "klayout",
+      "environment": {
+        "klayout_binary": "/Applications/KLayout/klayout.app/Contents/MacOS/klayout"
+      },
       "dbu_um": 0.0005,
       "status": "violations",
       "violation_count": 5,
@@ -2501,7 +2490,7 @@
         "klayout_version": "0.30.13",
         "pdk": {
           "name": "gf180mcuA",
-          "source": "search root: ~/.ciel",
+          "source": "PDK_ROOT environment variable",
           "version": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7",
           "ambiguous_sources": [
             "search root: ~/.volare"
@@ -2522,7 +2511,7 @@
           }
         },
         "input": {
-          "content_hash": "sha256:cd0e2feac49659c92dc48e27b4f6bf9bffb9414da6f9f79a91c9dc7920b4c06b",
+          "content_hash": "sha256:a9c60259a4e29ec54999f5b1ac26414aa9105e4606cdf38fdcc8bce23c650c3c",
           "role": "layout"
         },
         "klayout_version_mismatch": true
@@ -2532,7 +2521,7 @@
   "native_deck": {
     "kind": "pdk_main_script",
     "variant": "gf180mcuA",
-    "deck_file": "/home/ubuntu/.ciel/gf180mcuA/libs.tech/klayout/tech/drc/gf180mcu.drc",
+    "deck_file": "~/.ciel/gf180mcuA/libs.tech/klayout/tech/drc/gf180mcu.drc",
     "deck_vars_defaulted": {
       "variant": "gf180mcuA"
     },
