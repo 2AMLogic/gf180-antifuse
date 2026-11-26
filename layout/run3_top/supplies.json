@@ -24,7 +24,7 @@
       "well_layer": null,
       "well_boxes": [[596.0, 230.0, 610.0, 1950.0]],
       "tap_layer": "22/0",
-      "tap_requires": ["31/0"],
+      "tap_requires": ["31/0", "33/0"],
       "connect_to": "metal1",
       "net": "VSS_ANALOG"
     },
@@ -32,7 +32,7 @@
       "name": "vbw_nwell_right_column",
       "well_layer": "21/0",
       "tap_layer": "22/0",
-      "tap_requires": ["32/0"],
+      "tap_requires": ["32/0", "33/0"],
       "connect_to": "metal1",
       "net": "VBW_C3"
     }

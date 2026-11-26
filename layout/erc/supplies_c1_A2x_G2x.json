@@ -23,7 +23,7 @@
       "well_layer": null,
       "well_boxes": [[-1.23, -1.23, 2.51, 4.65], [2.97, -1.23, 7.13, 3.49]],
       "tap_layer": "22/0",
-      "tap_requires": ["31/0"],
+      "tap_requires": ["31/0", "33/0"],
       "connect_to": "metal1",
       "net": "VB"
     }

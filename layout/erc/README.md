@@ -27,10 +27,9 @@ fraction is 0.0. The same separate-file reasoning applies: the boxes are
 absolute geometry at candidate 2's coordinates, and the run is
 `layout/cell_candidate2/erc_report.json`.
 
-`supplies_region_iii.json` is the previous spec (the Region III n-well tie
-only, no `nets[]`), kept for a future Region III layout; it is not run against
-`cell_candidate1`, which draws no Nwell (the tie would be skipped as
-`empty_well_region`, and a skipped tie cannot grade item 11). Unlike the
+`supplies_region_iii.json` checks the drawn n-wells on both Candidate 3
+bitcells. It declares only a Region III tie and no `nets[]`. Running it against
+`cell_candidate1`, which draws no Nwell, yields a skipped `empty_well_region` tie. Unlike the
 Region I spec it declares a real `well_layer` (`21/0`) and carries no
 `well_boxes`, so it is geometry-independent and needs no per-cell copies.
 
@@ -94,12 +93,27 @@ the compound power-delivery row.
 |---|---|
 | `stackup[]` (poly as `gate` with `active_layer`, Metal1 to Metal5 with label layers) and `vias[]` | gf180mcu GDS layer/datatype numbers: metals, vias and label datatypes from the PDK `gf180mcu.map` (`libs.tech/klayout/tech/gf180mcu.map`, ciel gf180mcu revision `f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7`, identical in variants A to D); Comp 22/0, Poly2 30/0, Nwell 21/0, Pplus 31/0, Nplus 32/0, Contact 33/0 from the klayout-tools `gf180mcu` deck (`LAYER_NAMES`, klayout-tools `ff97d692`). |
 | `nets[0]` `VB` (`kind: supply`, `islands: 1`) | Row 14, Region I only; see "The one declared net". |
-| `ties[0]` `vb_psub_region_i` | Row 14. p-substrate tie: `well_layer: null`, asserted `well_boxes`, tap = Comp 22/0 intersect Pplus 31/0, wired to Metal1, net `VB`. |
+| `ties[0]` `vb_psub_region_i` | Row 14. p-substrate tie: `well_layer: null`, asserted `well_boxes`, tap = Contact 33/0 in Comp 22/0 and Pplus 31/0, wired to Metal1, net `VB`. |
 | `supplies_c1_*.json` `ties[0]` `vb_psub_region_i` | Row 14, same tie, asserted `well_boxes` re-derived for each `layout/cell_candidate1_*/` split point. |
 | `supplies_c2.json` `ties[0]` `vb_psub_region_i` | Row 14, same tie, asserted `well_boxes` fitted to `cell_candidate2/`'s own two `Pplus` tap-ring outlines (issue #373). |
-| `supplies_region_iii.json` `ties[0]` `vb_nwell_region_iii` | Row 15 (not run on `cell_candidate1`). |
+| `supplies_region_iii.json` `ties[0]` `vb_nwell_region_iii` | Row 15, exercised on both Region III bitcells. |
 
 No other analog `nets[]` entry is declared; see "The one declared net".
+
+### Contact-only fault controls
+
+Run `uv run --no-project --script scripts/check_analog_tap_contacts.py` to
+exercise the seven drawn bitcells with ERC reports and the 31-instance Run 3
+die. The regression uses KLayout 0.30.13 and KLT 0.9.2. It checks each
+unchanged GDS, then opens only Contact 33/0 on the selected tap polarity in
+a temporary GDS. It compares every finding to the affected body's bounding
+box and verifies the island count on each declared rail.
+
+On the Run 3 die, opening 510 substrate contacts produces one missing
+`VSS_ANALOG` tie in the asserted substrate box. Opening 140 n-well contacts
+produces 20 missing `VBW_C3` ties, one per drawn well. A separate fault opens the seven contacts of
+just the leftmost well and produces one finding at that well. The two metal rails each retain one island. These
+controls cover the committed macros and the Run 3 test die.
 
 ## Analog-spec coverage of the supply-domain inventory
 
@@ -119,7 +133,7 @@ No other analog `nets[]` entry is declared; see "The one declared net".
 | 12 | `PL` | gap | Which array rail it ties to is OI-6. |
 | 13 | `VSS_ANALOG` | gap | Placeholder name; separate from row 2 or not is OI-6. |
 | 14 | `VB`, Region I (p-substrate tie) | declared | `nets[0]` and `ties[0]` of `supplies.json`, checked on `cell_candidate1` (issue #196), of the three `supplies_c1_*.json`, checked on the three `cell_candidate1_*` split points (issue #273), and of `supplies_c2.json`, checked on `cell_candidate2` (issue #373). Region II is not drawn: still a gap. |
-| 15 | `VB`, Region III (n-well tie) | declared, not run | `supplies_region_iii.json` `ties[0]`: Nwell 21/0, tap = Comp 22/0 intersect Nplus 32/0, wired to Metal1, net `VB`. No Region III layout exists yet. |
+| 15 | `VB`, Region III (n-well tie) | checked on both Candidate 3 bitcells | `supplies_region_iii.json` checks a Contact 33/0 in Comp 22/0 and Nplus 32/0, wired to Metal1 on `VB`, for each drawn Nwell 21/0. |
 | 16 | Pass-gate and level-shifter bulk/well ties | gap | Assignment is OI-3. |
 | 17 | Capacitor body/well tie | gap | No separate tie net is defined; the second terminal is `PL` (row 12, OI-6). |
 

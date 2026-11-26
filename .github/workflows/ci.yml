@@ -72,5 +72,8 @@ jobs:
           npm run check:ci
           ./signoff/verify.sh
 
+      - name: Verify analog body ties on contact-only opens
+        run: uv run --no-project --script scripts/check_analog_tap_contacts.py
+
       - name: Regenerate netlists and run the seven design checks
         run: ./design/check-netlists.sh

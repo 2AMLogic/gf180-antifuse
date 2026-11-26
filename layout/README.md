@@ -1039,8 +1039,8 @@ extents of this cell's two `Pplus` 31/0 tap-ring outlines:
 What the `missing_tie` verdict now covers: all 28.9152 um2 of drawn Comp
 22/0 -- `uncovered_tap_area_um2: 0.0`, `uncovered_tap_fraction: 0.0`. The
 metric's "tap area" is the merged `tap_layer` (Comp) area *before* the
-`tap_requires` Pplus narrowing, so the device diffusion enclosed by each ring
-counts as covered; the tie check itself grades the Comp-and-Pplus straps
+`tap_requires` Pplus and Contact narrowing, so the device diffusion enclosed by each ring
+counts as covered; the tie check itself requires a Contact in Comp and Pplus
 wired to Metal1 on `VB`. `extent_uncovered_fraction: 0.355337` is the cell
 extent (11.60 x 8.80 um) outside both boxes -- the margin between the Pplus
 outlines and the cell edge, where no tap is drawn. The regenerated report
