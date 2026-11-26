@@ -1,0 +1,465 @@
+{
+  "schema_version": 2,
+  "engine": "icarus",
+  "hdl_toplevel": "antifuse_digital_top",
+  "testbench": "test_antifuse_digital_top",
+  "status": "pass",
+  "test_count": 21,
+  "passed_count": 21,
+  "failed_count": 0,
+  "skipped_count": 0,
+  "tests": [
+    {
+      "name": "reset_values_and_idle_outputs",
+      "status": "passed",
+      "sim_time_ns": 82150.0,
+      "real_time_s": 0.2669861316680908
+    },
+    {
+      "name": "miso_enable_follows_cs",
+      "status": "passed",
+      "sim_time_ns": 1100.0,
+      "real_time_s": 0.002619028091430664
+    },
+    {
+      "name": "row_col_pw_read_write",
+      "status": "passed",
+      "sim_time_ns": 340600.0,
+      "real_time_s": 0.8367609977722168
+    },
+    {
+      "name": "onehot_idle_while_sel_changes",
+      "status": "passed",
+      "sim_time_ns": 110000.0,
+      "real_time_s": 0.27767086029052734
+    },
+    {
+      "name": "out_of_range_row_col_rejected",
+      "status": "passed",
+      "sim_time_ns": 259000.0,
+      "real_time_s": 0.6351020336151123
+    },
+    {
+      "name": "ctrl_arm_disarm_and_reserved",
+      "status": "passed",
+      "sim_time_ns": 272599.9999999999,
+      "real_time_s": 0.6860082149505615
+    },
+    {
+      "name": "read_only_and_unknown_addresses",
+      "status": "passed",
+      "sim_time_ns": 204600.0,
+      "real_time_s": 0.5001091957092285
+    },
+    {
+      "name": "status_read_clears_protocol_error",
+      "status": "passed",
+      "sim_time_ns": 41400.0,
+      "real_time_s": 0.10185408592224121
+    },
+    {
+      "name": "program_full_sequence",
+      "status": "passed",
+      "sim_time_ns": 96100.0,
+      "real_time_s": 0.2413620948791504
+    },
+    {
+      "name": "decoder_onehot_all_indices",
+      "status": "passed",
+      "sim_time_ns": 3505399.9999999995,
+      "real_time_s": 8.924542903900146
+    },
+    {
+      "name": "pulse_width_cycle_counts",
+      "status": "passed",
+      "sim_time_ns": 355150.0,
+      "real_time_s": 0.9046938419342041
+    },
+    {
+      "name": "read_settle_cycle_count_and_data",
+      "status": "passed",
+      "sim_time_ns": 83100.0,
+      "real_time_s": 0.20278596878051758
+    },
+    {
+      "name": "read_while_armed_rejected",
+      "status": "passed",
+      "sim_time_ns": 41400.0,
+      "real_time_s": 0.10462307929992676
+    },
+    {
+      "name": "fire_unarmed_rejected",
+      "status": "passed",
+      "sim_time_ns": 86200.0,
+      "real_time_s": 0.2155442237854004
+    },
+    {
+      "name": "fire_with_other_command_bytes_never_pulses",
+      "status": "passed",
+      "sim_time_ns": 211600.0,
+      "real_time_s": 0.5525341033935547
+    },
+    {
+      "name": "fire_while_busy_rejected",
+      "status": "passed",
+      "sim_time_ns": 121400.0,
+      "real_time_s": 0.3121609687805176
+    },
+    {
+      "name": "bad_frame_length_sets_protocol_error",
+      "status": "passed",
+      "sim_time_ns": 239000.0,
+      "real_time_s": 0.590918779373169
+    },
+    {
+      "name": "truncated_and_overlong_writes_do_not_commit",
+      "status": "passed",
+      "sim_time_ns": 82200.0,
+      "real_time_s": 0.20020699501037598
+    },
+    {
+      "name": "overlong_fire_frame_never_pulses",
+      "status": "passed",
+      "sim_time_ns": 70600.0,
+      "real_time_s": 0.1832718849182129
+    },
+    {
+      "name": "arm_timeout_expires",
+      "status": "passed",
+      "sim_time_ns": 277400.0,
+      "real_time_s": 0.7248461246490479
+    },
+    {
+      "name": "arm_timeout_boundary",
+      "status": "passed",
+      "sim_time_ns": 3987500.0,
+      "real_time_s": 10.538381814956665
+    }
+  ],
+  "coverage": null,
+  "trace": null,
+  "environment": {
+    "engine": "icarus",
+    "engine_version": "13.0",
+    "tools": [],
+    "cocotb_version": "2.0.1",
+    "results_xml": {
+      "path": "verification/cocotb/.klt/sdf/results_icarus.xml",
+      "scope": "repo",
+      "sha256": "sha256:5e5fdad5e40b45a3ca7f71644cc6e02144204101faadd52012794e89e149e7d3"
+    },
+    "test_log": {
+      "path": "verification/cocotb/.klt/sdf/test_icarus.log",
+      "scope": "repo",
+      "sha256": "sha256:5ac3df1b6660770411fc24890e74c997b78e08cff9e7bd2617dc107bdc343d91"
+    },
+    "build_log": {
+      "path": "verification/cocotb/.klt/sdf/build_icarus.log",
+      "scope": "repo",
+      "sha256": "sha256:6a46b56bfdd9bc7347996f0ca7b66b73b5ddeb28f8988dec0ee6bb73ed28c01a"
+    },
+    "random_seed": 1,
+    "source_defines": {},
+    "env": {
+      "ANTIFUSE_GATE_CLOCK_NS": "50"
+    },
+    "parameters": {},
+    "initial_state": null,
+    "sdf": {
+      "file": "rtl/sta/.klt/sta/antifuse_digital_top.tt_025C_1v80.sdf",
+      "corner": "typ",
+      "entries": "all",
+      "annotated": true,
+      "partial": true,
+      "dropped": {
+        "iopath_cond_expression": {
+          "count": 1070,
+          "reason": "Icarus Verilog's SDF parser accepts only a bare signal or a simple equality as a conditional-path condition; an operator expression (e.g. '(COND ~CLK&~D&SETN (IOPATH ...))', OpenSTA's write_sdf shape for state-dependent arcs) is 'Invalid/malformed COND' and aborts the whole annotation. Those COND-wrapped IOPATH entries were removed before annotation and counted here, and 'arcs' names every affected cell arc. The cell's unconditional arcs are kept, but the state-dependent delay detail of the dropped arcs is NOT represented in this run. Simple 'COND D' / 'COND D==1'b1' entries are left in place",
+          "arcs": [
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__aoi211_1",
+              "from": "B",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__aoi211_1",
+              "from": "C",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__aoi21_1",
+              "from": "B",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__aoi221_1",
+              "from": "A1",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__aoi221_1",
+              "from": "A2",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__aoi221_1",
+              "from": "B1",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__aoi221_1",
+              "from": "B2",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__aoi221_1",
+              "from": "C",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__aoi222_1",
+              "from": "A1",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__aoi222_1",
+              "from": "A2",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__aoi222_1",
+              "from": "B1",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__aoi222_1",
+              "from": "B2",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__aoi222_1",
+              "from": "C1",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__aoi222_1",
+              "from": "C2",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__aoi22_1",
+              "from": "A1",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__aoi22_1",
+              "from": "A2",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__aoi22_1",
+              "from": "B1",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__aoi22_1",
+              "from": "B2",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__dffrnq_1",
+              "from": "RN",
+              "to": "Q"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__dffrnq_4",
+              "from": "RN",
+              "to": "Q"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__dffsnq_1",
+              "from": "SETN",
+              "to": "Q"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__oai211_1",
+              "from": "B",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__oai211_1",
+              "from": "C",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__oai211_4",
+              "from": "B",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__oai211_4",
+              "from": "C",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__oai21_1",
+              "from": "B",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__oai221_1",
+              "from": "A1",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__oai221_1",
+              "from": "A2",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__oai221_1",
+              "from": "B1",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__oai221_1",
+              "from": "B2",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__oai221_1",
+              "from": "C",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__oai22_1",
+              "from": "A1",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__oai22_1",
+              "from": "A2",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__oai22_1",
+              "from": "B1",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__oai22_1",
+              "from": "B2",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__oai31_1",
+              "from": "B",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__oai32_1",
+              "from": "A1",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__oai32_1",
+              "from": "A2",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__oai32_1",
+              "from": "A3",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__oai32_1",
+              "from": "B1",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__oai32_1",
+              "from": "B2",
+              "to": "ZN"
+            }
+          ]
+        },
+        "iopath_ifnone_edge_modpath": {
+          "count": 144,
+          "reason": "The cell's own Verilog model declares this arc only through 'ifnone' edge-sensitive module paths (e.g. 'ifnone (posedge A1 => (Z:A1))', the shape gf180mcu models give XOR/XNOR inputs and MUX selects), which Icarus Verilog does not support: it discards every such path at elaboration ('sorry: ifnone with an edge-sensitive path is not supported'), so no IOPATH entry -- unqualified or edge-qualified -- can match it ('Unable to match ModPath'). Those IOPATH entries were removed before annotation and counted here, and 'arcs' names every affected cell arc. Removing them cannot change simulated timing relative to annotating them, but the listed arcs simulate with NO module-path delay at all (neither the SDF's nor the model's placeholder): their characterised cell delay is not represented in this run. An IOPATH that fails to match any other arc is left in place and still fails loudly",
+          "arcs": [
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__mux2_1",
+              "from": "S",
+              "to": "Z"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__xnor2_1",
+              "from": "A1",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__xnor2_1",
+              "from": "A2",
+              "to": "ZN"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__xor2_1",
+              "from": "A1",
+              "to": "Z"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__xor2_1",
+              "from": "A2",
+              "to": "Z"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__xor2_2",
+              "from": "A1",
+              "to": "Z"
+            },
+            {
+              "celltype": "gf180mcu_fd_sc_mcu7t5v0__xor2_2",
+              "from": "A2",
+              "to": "Z"
+            }
+          ]
+        },
+        "timingcheck": {
+          "count": 95,
+          "reason": "Icarus Verilog implements SDF delay annotation (IOPATH/INTERCONNECT) but not SDF TIMINGCHECK -- every TIMINGCHECK section in the SDF is dropped, so $setup/$hold/$width checks run against the cell library's own placeholder timing, not the characterised limits in the SDF"
+        }
+      }
+    },
+    "sources": [
+      {
+        "path": null,
+        "scope": "external",
+        "sha256": "ccc0f447f71ce35c635e08d49eb0ed77aa2ec91cf31d8e3e45a246114d3cae92"
+      },
+      {
+        "path": null,
+        "scope": "external",
+        "sha256": "9a21c5f98200acfe77d8ba52067164e0802284dc1c1e117f0e64fb6ac42eb64b"
+      },
+      {
+        "path": "rtl/pnr/antifuse_digital_top_routed.v",
+        "scope": "repo",
+        "sha256": "71195344e88fdeebc7dcee9db0940950360f953056a85a29b958796fdb6aa651"
+      }
+    ]
+  },
+  "provenance": {
+    "klt_version": "0.9.3.dev2575+g6bd18bbc8637",
+    "klt_git_commit": "6bd18bbc8637f6d767b3c24e77bd5db7a39e4bbe",
+    "klt_reinstall_spec": "klayout-tools @ git+https://github.com/2AMLogic/klayout-tools@6bd18bbc8637f6d767b3c24e77bd5db7a39e4bbe",
+    "klayout_version": "0.30.14",
+    "pdk": null,
+    "deck": null,
+    "input": {
+      "role": "source",
+      "content_hash": "sha256:3103a1b715c4f14c416062ac5d161f69c1ab1bb7c2978c2515d37be2e81ed79d"
+    },
+    "request_sha256": "8c31b6af3a5fbe7980c49172c887cb87eb5fcbffa6317aa4a185f82318862ae7",
+    "sdf_sha256": "9c28984e9baa42bb08bd5f65cc146de01a2f9f6e9c3aef066ceeac033ec46e04"
+  }
+}

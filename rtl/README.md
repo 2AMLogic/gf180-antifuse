@@ -426,8 +426,8 @@ report shape and the port-only discipline, no simulator needed.
 | `verification/cocotb/request_digital_top.json` | The zero-delay request: routed netlist + `pdk` block (variant `gf180mcuD`, library `gf180mcu_fd_sc_mcu7t5v0`). |
 | `verification/cocotb/test_antifuse_digital_top.py` | Port-only suite (21 tests): the port-applicable `test_spi_regs.py` coverage at the netlist's own constants, plus `decoder_onehot_all_indices` (all 32 rows and columns) and `onehot_idle_while_sel_changes`. |
 | `verification/cocotb/report_digital_top.json` | The committed report, host-path-scrubbed by `scrub_report_paths.py` and linted clean (`klt env-provenance lint-envelope`, issue #316's guard). |
-| `verification/cocotb/inputs_digital_top.sha256` | sha256 of the netlist, suite, both requests and the SDF-writing sta request. |
-| `rtl/run_gate_sim.sh` | The runner: no args runs and refreshes; `--check` verifies; `--sdf` re-attempts the annotated leg. |
+| `verification/cocotb/inputs_digital_top.sha256` | Input hashes for the zero-delay run. The separate `inputs_digital_top_sdf.sha256` also binds the SDF run to the DEF, SPEF and STA request. |
+| `rtl/run_gate_sim.sh` | The runner: no args runs and refreshes; `--check` verifies; `--sdf` regenerates and checks the annotated report. |
 | `rtl/sta/antifuse_digital_top.sdf.json`, `verification/cocotb/request_digital_top_sdf.json` | The `--sdf` leg's two requests (below). |
 
 The flow pins klayout-tools git rev
@@ -438,34 +438,23 @@ and that build's report envelope emits checkout-free artifact paths
 (`scope: "external", path: null`). `KLT_CMD` overrides the invocation for a
 host dev install of the same rev.
 
-### The SDF-annotated leg: recorded outcome (issue #445 step 4)
+### Post-route simulation with SDF timing
 
-`rtl/run_gate_sim.sh --sdf` writes one post-route SDF from the same
-committed DEF + SPEF the STA flow uses (`rtl/sta/antifuse_digital_top.sdf.json`,
-`write_sdf -divider . -include_typ`, corner `tt_025C_1v80`), then re-runs
-the identical suite with `options.sdf` at `corner: "typ"`
-(`verification/cocotb/request_digital_top_sdf.json`). With the pinned build
-the run **fails functionally (3/21 pass), exit 3**:
+`rtl/run_gate_sim.sh --sdf` generates nominal TT/25 °C/1.8 V timing from the
+routed DEF and SPEF, then runs the 21 port-level tests on the routed Verilog.
+The request sets the testbench clock to the same 50 ns period used by STA.
+This is the engineering constraint used for this run. A product clock target
+and all-corner functional timing remain open.
 
-- `2AMLogic/klayout-tools#5002` does **not** reproduce — no `vvp` abort in
-  `vpi_scan`; this klt build's up-front validation and drop machinery
-  prevent the shapes #5002 reports. No comment was added there.
-- Instead the annotation is `partial`: `iopath_cond_expression` x1070 and
-  `iopath_ifnone_edge_modpath` x144 arcs are dropped (the Icarus
-  compatibility classes), and the annotated remainder mis-simulates — SPI
-  writes stop committing and MISO stays 0 (3/21 pass) — at `typ` **and**
-  `min` alike, and with every `INTERCONNECT` entry stripped from the SDF the
-  failure is unchanged, so the trigger is on the cell-arc side, not the
-  nets. Discriminators: the same netlist and suite pass the zero-delay run
-  above, and pass with the timing-branch models compiled **without**
-  annotation (the models' own 1.0 ns `specify` defaults); OpenSTA hold is
-  clean at all 15 corners. Filed as
-  [2AMLogic/klayout-tools#6991](https://github.com/2AMLogic/klayout-tools/issues/6991);
-  related open: #5784 (SDF file path echoed absolute — why the failing
-  annotated report is not committed) and #6937 (bus-port INTERCONNECT
-  class).
+All 21 tests pass. Icarus reports partial annotation, with 1,070 conditional
+IOPATH entries and 144 IFNONE edge paths dropped, plus 95 TIMINGCHECK
+diagnostics. The report records all three classes. The passing scope is the
+timing that Icarus actually annotated. The zero-delay control uses a 10 ns
+clock. Replaying the same routed inputs with SDF at 10 ns passes 3 of 21.
+The earlier counter-capture trace on a previous routed revision is
+documented in the [upstream timing diagnosis](https://github.com/2AMLogic/klayout-tools/pull/7160).
 
-So the unannotated 21/21 report stays the committed evidence, `7.digital`
-stays `unmet` (its rule requires `environment.sdf.annotated: true`; an
-unannotated run renders `not_post_layout`), and `--sdf`'s nonzero exit is
-the recorded, reproducible outcome until #6991 is fixed.
+The committed result is `verification/cocotb/report_digital_top_sdf.json`.
+The runner removes OpenSTA's optional wall-clock DATE header before the run so
+the report's SDF SHA-256 can be reproduced. In a checkout with two PDK
+installations, set `PDK_ROOT` to the pinned Ciel tree to select it explicitly.

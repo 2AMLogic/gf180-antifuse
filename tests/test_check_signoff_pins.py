@@ -90,6 +90,27 @@ def build_tree(td, gds_bytes=b"gds-bytes", evidence=None, supporting=None) -> Pa
     return root
 
 
+class FunctionalSourceTests(unittest.TestCase):
+    def test_combined_pin_binds_local_source_and_both_external_models(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            netlist = root / "routed.v"
+            netlist.write_bytes(b"module routed; endmodule")
+            digests = [sha(data)[7:] for data in (b"primitives", b"models", netlist.read_bytes())]
+            sources = [{"scope": "external", "path": None, "sha256": h} for h in digests[:2]]
+            sources.append({"scope": "repo", "path": netlist.name, "sha256": digests[2]})
+            report = {"environment": {"sources": sources}}
+            expected = sha((digests[1] + digests[0] + digests[2]).encode("ascii"))
+            self.assertEqual(csp._functional_source_hash(root, report, [1, 0, 2]), expected)
+            with self.assertRaisesRegex(ValueError, "every source"):
+                csp._functional_source_hash(root, report, [1, 0, 0])
+            sources[0]["sha256"] = sha(b"different model")[7:]
+            self.assertNotEqual(csp._functional_source_hash(root, report, [1, 0, 2]), expected)
+            netlist.write_bytes(b"different netlist")
+            with self.assertRaisesRegex(ValueError, "routed.v differs"):
+                csp._functional_source_hash(root, report, [1, 0, 2])
+
+
 class GoodTreeTests(unittest.TestCase):
     def test_all_citation_styles_pass(self):
         """file (DRC/ERC), layout (LVS), provenance.input.path (attestations)
