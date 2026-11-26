@@ -73,16 +73,35 @@ design ↔ layout geometry divergence record; this issue does not re-check it,
 and `scripts/check_run3_pad_table.py` keys each half to its own binding
 source instead.
 
-## The one geometry point with no drawn cell
+## The one geometry point pending direct-pad integration
 
-`cell_candidate2_Amin_G2x` has **no drawn cell** (#296 is the redraw; the
-2026-11-15 #299 operator ruling on the `nfet_10v0_asym` PCell's native-deck
-findings is decided and recorded in
-`spec/pdk-pcell-drc-exception-decision.md`).
-It is still emitted: access literals from
-`cell_candidate2` (same `Amin` level), capacitor from the ratified record —
-only its layout is missing, not its numbers. That absence blocks #211's LVS,
-not this issue.
+`cell_candidate2_Amin_G2x` is drawn. The C2-Amin-G2x master is
+[`cell_candidate2_Amin_G2x/`](../cell_candidate2_Amin_G2x/), landed with the
+352-cell [Region II](../array_region_ii/README.md) macro in #551 (merged
+2026-11-26): `cell_candidate2_Amin_G2x.gds`, LVS `match` against its
+`lvs_reference.spice` (5/5 nets, 0 errors). That reference carries the same
+`XM1` and `XC1` literals the `cell_candidate2_Amin_G2x` subcircuit of
+`run3_top.spice` already held, so #551 changed that subcircuit's provenance
+comment only, not its numbers.
+
+The master is not yet in this directory's chip assembly. The signed
+`run3_top.gds` of 2026-11-25 (`70dbef5f`) places 31 instances, seven of the
+eight geometry points, and predates the master. The reported LVS `match`
+(`lvs_report.json`) applies to that assembly: it compares the GDS against
+`lvs_reference_drawn.spice`, which instantiates the 31 placed instances,
+whereas the design reference `run3_top.spice` holds 36. The five missing
+instances `Xinst_C2_Amin_G2x_1..5` and their reserved private-plate pads
+**L22–L26** are named in that reference's header. The reference was
+committed 2026-11-18 (`59c21b11`), before the master, and its header still
+reads `no drawn cell`: the assembler's wording for a cell in its
+`PENDING_ASSEMBLY` set, not the master's state. Placing those five
+instances, routing their plates to L22–L26 and verifying the resulting
+direct-pad assembly are still pending, and no 36-instance compare is on
+record.
+
+Before 2026-11-26 the master did not exist, and this netlist emitted the
+point with access literals borrowed from `cell_candidate2` (same `Amin`
+level) and the capacitor from the ratified record.
 
 ## Placeholder substrate net
 
@@ -99,8 +118,10 @@ here.
   built by this generator; the assembler takes its cell list from the shared
   instance table, so swapping candidate 2 for the fallback is a table change
   (#372/#377) followed by one regeneration.
-- The **undrawn cell** still blocks nothing here: the assembly excludes its
-  five instances and says so (see "Chip assembly" below).
+- The **five pending direct-pad sites** block nothing here: the netlist
+  carries `cell_candidate2_Amin_G2x` at its drawn master's literals, and the
+  retained assembly excludes those five instances and says so (see "Chip
+  assembly" below).
 - `klt lvs` is **not** run here and no pass is asserted for `run3_top.spice`
   itself: the chip assembly's compare runs against
   `lvs_reference_drawn.spice` (see "Chip assembly" below).
@@ -160,18 +181,19 @@ Bond pads are drawn bare: an 80 um Metal5 square with a 60 um pad opening
 (37/0), enclosure 10 um — the #210 record's bare-pad choice (no pad cell, no
 ESD structure, off-die current limiting) at the template's pad footprint, with
 `PAD.4` (2 um Metal5 overlap of the opening) satisfied. The 40 connected pads
-carry their signal name on Metal5 label 81/10; the 16 unconnected pads (5
-reserved private-plate slots of the undrawn cell, 3 UNUSED, 8 power) are drawn
-unlabelled, so extraction reports them as dead metal rather than as named
-floating nets.
+carry their signal name on Metal5 label 81/10; the 16 unconnected pads (the 5
+reserved private-plate pads L22–L26 of the pending C2-Amin-G2x sites, 3
+UNUSED, 8 power) are drawn unlabelled, so extraction reports them as dead
+metal rather than as named floating nets.
 
 ### Placement and routing
 
 The 31 placed instances sit in two columns (left-edge instances at x = 600,
 right-edge at x = 1000), each at its own pad's y so **every private-plate
 (HV) route is one straight Metal5 run** — the #210 bare-pad path. The five
-excluded instances (undrawn `cell_candidate2_Amin_G2x`) leave their five pads
-unconnected. Shared nets route on dedicated lower-metal planes so no two nets
+excluded instances (`cell_candidate2_Amin_G2x`, a drawn master not yet
+integrated here) leave their five private-plate pads L22–L26 unconnected.
+Shared nets route on dedicated lower-metal planes so no two nets
 share a plane where their paths would cross: BL on Metal4, WL on Metal3,
 VBW_C3 and the C1/C2 substrate strap (`VSS_ANALOG`, internal — no pad) on
 Metal2; each bundle trunk rises from its own bottom-edge pad to its group's

@@ -1173,6 +1173,15 @@ above its floor after the fill, `DRC RESULT: SUCCESS`; the variant-A
 are answered at the binding configuration),
 `supplies.json`/`erc_report.json` (chip ERC extending the `layout/erc/`
 convention: `erc_status: clean`), and `economy_report.json` (density).
-The five instances of the undrawn `cell_candidate2_Amin_G2x` are excluded
-from the assembly and from the LVS reference, named in the reference header;
-a full 36-instance match is blocked until that cell is drawn.
+The five instances of `cell_candidate2_Amin_G2x` are excluded from the
+retained assembly and from the LVS reference, named in the reference header.
+The C2-Amin-G2x master is now drawn
+([`cell_candidate2_Amin_G2x/`](cell_candidate2_Amin_G2x/), landed with the
+352-cell [Region II](array_region_ii/README.md) macro in #551 on 2026-11-26),
+but the assembly is still the signed 31-instance GDS of 2026-11-25
+(`70dbef5f`): its `match` applies to that assembly and its 31-instance
+reference, while the design reference `run3_top.spice` holds 36. Placing and
+routing the five instances at their reserved private-plate pads L22–L26 and
+verifying the resulting direct-pad assembly are pending, so no 36-instance
+match has been reported. Before 2026-11-26 the cell had no drawn master and
+the five instances were excluded for that reason.
