@@ -12,26 +12,15 @@ from datetime import datetime, timezone
 
 HERE = pathlib.Path(__file__).resolve().parent
 ROOT = HERE.parents[4]
-# open_pdks revision pin; twins: sim/harness/pdk.py PINNED_OPEN_PDKS and
-# design/lib-pdk-root.sh PINNED_OPEN_PDKS.
-PINNED_OPEN_PDKS = "f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
+# open_pdks revision pin and SOURCES reader: single source of truth is
+# sim/harness/pdk.py (design/lib-pdk-root.sh keeps the shell-side twin).
+sys.path.insert(0, str(ROOT / "sim"))
+from harness.pdk import PINNED_OPEN_PDKS, read_sources_revision  # noqa: E402
+
 # Documented contract (README): <root>/<variant>/libs.tech/ngspice.  The ciel
 # store layout is probed as an additional candidate, never the only one.
 PDK_RELS = ("gf180mcuD/libs.tech/ngspice",
             f"ciel/gf180mcu/versions/{PINNED_OPEN_PDKS}/gf180mcuD/libs.tech/ngspice")
-
-
-def _sources_revision(variant_dir):
-    """open_pdks hash from <variant_dir>/SOURCES, or None."""
-    try:
-        text = (variant_dir / "SOURCES").read_text()
-    except OSError:
-        return None
-    for line in text.splitlines():
-        parts = line.split()
-        if len(parts) >= 2 and parts[0] == "open_pdks":
-            return parts[1]
-    return None
 
 
 def pdk_dir():
@@ -51,7 +40,7 @@ def pdk_dir():
         for rel in PDK_RELS:
             p = root / rel
             if p.is_dir():
-                found = _sources_revision(p.parents[1])
+                found = read_sources_revision(p.parents[1])
                 if found != PINNED_OPEN_PDKS:
                     sys.exit(f"ERROR: PDK at {p.parents[1]} is open_pdks "
                              f"{found or '<unreadable/missing SOURCES>'}, but this repo pins "

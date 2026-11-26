@@ -47,7 +47,7 @@ def _variant_dir_from_root(root: Path, variant: str) -> Path:
     return root / variant
 
 
-def _read_sources_revision(variant_dir: Path) -> str | None:
+def read_sources_revision(variant_dir: Path) -> str | None:
     """open_pdks hash from ``<variant_dir>/SOURCES`` (``open_pdks <hash>``).
 
     Returns None when the file is missing, unreadable, or has no
@@ -126,7 +126,7 @@ def resolve_pdk(pdk_root_override: str | None = None) -> PDKPaths:
             "installed with `klt pdk list`."
         )
 
-    revision = _read_sources_revision(variant_dir)
+    revision = read_sources_revision(variant_dir)
     if revision != PINNED_OPEN_PDKS:
         found = revision if revision else "unreadable/missing SOURCES"
         raise PDKRevisionMismatchError(
