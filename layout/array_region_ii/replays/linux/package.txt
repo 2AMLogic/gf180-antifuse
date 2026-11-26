@@ -1,0 +1,21 @@
+PRETTY_NAME="Ubuntu 24.04.5 LTS"
+NAME="Ubuntu"
+VERSION_ID="24.04"
+VERSION="24.04.5 LTS (Noble Numbat)"
+VERSION_CODENAME=noble
+ID=ubuntu
+ID_LIKE=debian
+HOME_URL="https://www.ubuntu.com/"
+SUPPORT_URL="https://help.ubuntu.com/"
+BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+UBUNTU_CODENAME=noble
+LOGO=ubuntu-logo
+x86_64
+Package: klayout 0.30.12-1 amd64
+KLayout 0.30.12
+open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7
+149b171ef157fb84105f5aeaad5344e620b471f215cbc9c55c1b829c8df9d466  array_region_ii.gds
+1e67b171e2582f584cff1e719244bc14a9f24dda04d3228cab1a1c0af4005395  /usr/bin/klayout
+e7c7d2597890cfcb4cf0e5312f5652051a119fb3e1cc1772a6e5c04594bc65d8  /home/loom/.ciel/gf180mcuD/libs.tech/klayout/tech/drc/gf180mcu.drc
+f026a12c91807f846a0ad0da2966c2f7a4da8c1188fd58f5136aaf884ad19ca4  /home/loom/.ciel/gf180mcuD/libs.tech/klayout/tech/drc/rule_decks/ldnmos.rb
