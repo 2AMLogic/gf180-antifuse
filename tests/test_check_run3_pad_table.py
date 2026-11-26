@@ -149,6 +149,13 @@ class GeometrySeedMismatchTests(unittest.TestCase):
         e = cr.check_geometry(bad, DECISION.read_text(), drawn_refs())
         self.assertTrue(any("cell_candidate3" in x and "capacitor" in x for x in e), e)
 
+    def test_sampled_c3_cell_still_requires_chip_definition(self):
+        _, _, net = committed()
+        bad = net.replace(".subckt cell_candidate3_Amin_G2x ", ".subckt unexpected ")
+        errors = cr.check_geometry(bad, DECISION.read_text(), drawn_refs())
+        self.assertTrue(any("cell_candidate3_Amin_G2x: drawn cell has no subckt" in e
+                            for e in errors), errors)
+
     def test_netlist_cell_without_drawn_counterpart_rejected(self):
         _, _, net = committed()
         bad = net.replace(

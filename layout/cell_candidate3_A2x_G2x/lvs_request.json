@@ -1,0 +1,13 @@
+{
+  "layout": {
+    "file": "cell_candidate3_A2x_G2x.gds",
+    "top": "cell_candidate3_A2x_G2x",
+    "deck": "gf180mcu"
+  },
+  "reference": {
+    "netlist": "lvs_reference.spice",
+    "top": "cell_candidate3_A2x_G2x",
+    "deck": "gf180mcu",
+    "form": "subckt-call"
+  }
+}

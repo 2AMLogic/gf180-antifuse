@@ -65,6 +65,9 @@ CELL_RE = re.compile(r"^cell_candidate(\d)(_.*)?$")
 # capacitor literals bind to spec/capacitor-geometry-decision.md through
 # the cell's own generator `--check` hash and LVS, not through run3_top.
 FALLBACK_CELLS = {"cell_candidate2_fallback"}
+# The Run 3 floorplan holds C3 at Amin. These A2x masters belong to the
+# larger 32 x 32 array. Region III checks their geometry and connectivity.
+ARRAY_ONLY_CELLS = {"cell_candidate3_A2x_Gmin", "cell_candidate3_A2x_G2x"}
 
 
 def _num(token: str) -> float:
@@ -283,6 +286,8 @@ def check_geometry(netlist_text: str, decision_text: str,
             continue
         ref = drawn["xm1"]
         if name not in chip_cells:
+            if name in ARRAY_ONLY_CELLS:
+                continue
             errs.append(f"{name}: drawn cell has no subckt in {NETLIST}")
             continue
         got = chip_cells[name]["xm1"]

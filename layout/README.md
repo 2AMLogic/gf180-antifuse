@@ -20,6 +20,12 @@ Minimum `cap_nmos_06v0`). All seven cells were regenerated and
 re-signed in the same pass (#296); the per-cell sections below carry the
 details and the measured verdicts.
 
+The routed 32-row array bands have their own connectivity and physical
+verification results. [Region I](array_region_i/README.md) implements 352
+Candidate 1 cells in columns 0–10. [Region III](array_region_iii/README.md)
+implements 320 Candidate 3 cells in columns 22–31, including the two
+0.84 µm access variants. Region II still needs three physical split masters.
+
 ## Signed MOS capacitors in the drawn cells
 
 The schematic assigns the capacitor gate to CN, the internal storage terminal of the access transistor. PL drives the diffusion electrode. The private gate pads of the bare C2 fallback are a separate probe contract. They retain two independent gates, PL_GMIN and PL_G2X, over shared diffusion BL.
@@ -51,7 +57,7 @@ klt pex "$cell.gds" --deck gf180mcu --pdk gf180mcuD --extract-only \
   --reference-netlist lvs_reference.spice -o pex/extracted.spice --format json > pex/pex_report.json
 ```
 
-The signed connectivity check collapses the extracted parasitic resistor network, matches each access finger to the schematic terminals and checks the oriented capacitor terminals. It covers the four C1 points, standard C2, both C3 points and both bare probe capacitors. Tests swap the physical plates while retaining the model, geometry, hash and body-bias report and independently short the fallback gates.
+The signed connectivity check collapses the extracted parasitic resistor network, matches each access finger to the schematic terminals and checks the oriented capacitor terminals. It covers the four C1 points, standard C2, all four C3 points and both bare probe capacitors. Tests swap the physical plates while retaining the model, geometry, hash and body-bias report and independently short the fallback gates.
 
 At 10 kHz, with `moscap_typical` and V(CN)−V(PL) as shown, the checker measured these isolated small-signal capacitances in fF using ngspice 47 with the upstream bug 876 correction. For a replay set `PDK_ROOT` to the open_pdks installation and `KLT_NGSPICE_BINARY` to the simulator, then run `python3 sim/cell-device-characterization/klt/post-layout/check_signed_caps.py` from the repository root.
 
