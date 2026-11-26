@@ -1,0 +1,5 @@
+{
+  "layout": {"file": "array_32x32.gds", "deck": "gf180mcu", "top": "array_32x32"},
+  "reference": {"netlist": "reference.spice", "top": "array_32x32", "form": "subckt-call", "deck": "gf180mcu"},
+  "options": {"flatten_layout": true, "flatten_reference": true, "combine_devices": false}
+}

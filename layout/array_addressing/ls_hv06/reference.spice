@@ -1,0 +1,8 @@
+.subckt ls_hv06 IN VDDL VSS OUT OUTB VDDH
+XM1 INB IN VSS VSS nfet_03v3 L=0.28u W=2u nf=1 m=1
+XM2 INB IN VDDL VDDL pfet_03v3 L=0.28u W=4u nf=1 m=1
+XM3 OUTB IN VSS VSS nfet_06v0 L=0.7u W=10u nf=1 m=1
+XM4 OUT INB VSS VSS nfet_06v0 L=0.7u W=10u nf=1 m=1
+XM5 OUT OUTB VDDH VDDH pfet_06v0 L=0.55u W=1u nf=1 m=1
+XM6 OUTB OUT VDDH VDDH pfet_06v0 L=0.55u W=1u nf=1 m=1
+.ends
