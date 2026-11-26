@@ -110,6 +110,15 @@ for item, where, entry in checks:
         cited = os.path.join(repo_root, entry["file"])
         if not os.path.isfile(cited):
             problems.append(f"{where} cites {entry['file']!r}, which is not in the tree")
+        elif item == "7.digital":
+            from pathlib import Path
+            sys.path.insert(0, os.path.join(repo_root, "scripts"))
+            from check_signoff_pins import verify_routed_sdf
+            try:
+                with open(cited) as report:
+                    verify_routed_sdf(entry, json.load(report))
+            except (ValueError, OSError) as exc:
+                problems.append(f"{where}: {exc}")
     elif "command" not in entry:
         problems.append(f"{where} has neither a 'file' nor a 'command'")
 

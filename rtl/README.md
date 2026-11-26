@@ -456,5 +456,8 @@ documented in the [upstream timing diagnosis](https://github.com/2AMLogic/klayou
 
 The committed result is `verification/cocotb/report_digital_top_sdf.json`.
 The runner removes OpenSTA's optional wall-clock DATE header before the run so
-the report's SDF SHA-256 can be reproduced. In a checkout with two PDK
+the report's SDF SHA-256 can be reproduced. The item 7.digital citation in
+`signoff/manifest.json` pins this normalized digest independently. Offline checks
+compare it with the simulator's reported digest. A live replay also compares
+the generated SDF bytes with the pin. In a checkout with two PDK
 installations, set `PDK_ROOT` to the pinned Ciel tree to select it explicitly.

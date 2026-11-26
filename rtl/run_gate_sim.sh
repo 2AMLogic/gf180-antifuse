@@ -26,10 +26,10 @@ FV_ARGS=(--format json)
 if [[ -n "${PDK_ROOT:-}" ]]; then FV_ARGS+=(--pdk-root "$PDK_ROOT"); fi
 
 check_report() {
-python3 -I - "$1" "$2" "$3" "$NET" "$PIN" "$D/test_antifuse_digital_top.py" "$SDF_STA_REQ" "$SDF" <<'PY'
+python3 -I - "$1" "$2" "$3" "$NET" "$PIN" "$D/test_antifuse_digital_top.py" "$SDF_STA_REQ" "$SDF" "${4:-}" <<'PY'
 import hashlib, json, re, sys
 from pathlib import Path
-rep, request, mode, net, pin, suite, sta_request, sdf_path = sys.argv[1:]
+rep, request, mode, net, pin, suite, sta_request, sdf_path, live_sdf = sys.argv[1:]
 r = json.load(open(rep))
 assert r["schema_version"] == 2, r["schema_version"]
 assert r["engine"] == "icarus" and r["hdl_toplevel"] == "antifuse_digital_top"
@@ -48,7 +48,10 @@ if mode == "sdf":
     assert int(e["env"]["ANTIFUSE_GATE_CLOCK_NS"]) == period
     assert e["sdf"]["annotated"] is True and e["sdf"]["corner"] == "typ"
     assert e["sdf"]["file"] == sdf_path
-    assert re.fullmatch(r"[0-9a-f]{64}", r["provenance"]["sdf_sha256"])
+    sys.path.insert(0, str(Path("scripts").resolve()))
+    from check_signoff_pins import verify_routed_sdf
+    citation = json.loads(Path("signoff/manifest.json").read_text())["evidence"]["7.digital"]
+    verify_routed_sdf(citation, r, Path(live_sdf) if live_sdf else None)
 else:
     assert e["sdf"] is None
 assert e["initial_state"] is None
@@ -80,6 +83,7 @@ print(f"report ok: {r['passed_count']}/{r['test_count']} tests, "
 PY
 }
 
+live_sdf=
 case "${1:-}" in
   --check)
     sha256sum --check --strict "$SUMS" "$SDF_SUMS"
@@ -89,6 +93,7 @@ case "${1:-}" in
   "") mode=zero-delay ;;
   --sdf)
     mode=sdf
+    live_sdf=$SDF
     REPORT=$SDF_REPORT
     REQ=$SDF_REQ
     FV_ARGS+=(-o "$D/.klt/sdf")
@@ -109,6 +114,6 @@ trap 'rm -rf "$tmp"' EXIT
 $KLT functional-verification "$REQ" "${FV_ARGS[@]}" > "$tmp/raw.json"
 python3 -I rtl/scrub_report_paths.py "$tmp/raw.json" "$tmp/report.json"
 $KLT env-provenance lint-envelope "$tmp/report.json"
-check_report "$tmp/report.json" "$REQ" "$mode"
+check_report "$tmp/report.json" "$REQ" "$mode" "$live_sdf"
 mv "$tmp/report.json" "$REPORT"
 sha256sum "${INPUTS[@]}" > "$SUMS"

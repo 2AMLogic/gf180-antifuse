@@ -13,127 +13,127 @@
       "name": "reset_values_and_idle_outputs",
       "status": "passed",
       "sim_time_ns": 82150.0,
-      "real_time_s": 0.2669861316680908
+      "real_time_s": 0.2647547721862793
     },
     {
       "name": "miso_enable_follows_cs",
       "status": "passed",
       "sim_time_ns": 1100.0,
-      "real_time_s": 0.002619028091430664
+      "real_time_s": 0.002992868423461914
     },
     {
       "name": "row_col_pw_read_write",
       "status": "passed",
       "sim_time_ns": 340600.0,
-      "real_time_s": 0.8367609977722168
+      "real_time_s": 0.8189268112182617
     },
     {
       "name": "onehot_idle_while_sel_changes",
       "status": "passed",
       "sim_time_ns": 110000.0,
-      "real_time_s": 0.27767086029052734
+      "real_time_s": 0.26640892028808594
     },
     {
       "name": "out_of_range_row_col_rejected",
       "status": "passed",
       "sim_time_ns": 259000.0,
-      "real_time_s": 0.6351020336151123
+      "real_time_s": 0.6219360828399658
     },
     {
       "name": "ctrl_arm_disarm_and_reserved",
       "status": "passed",
       "sim_time_ns": 272599.9999999999,
-      "real_time_s": 0.6860082149505615
+      "real_time_s": 0.6666979789733887
     },
     {
       "name": "read_only_and_unknown_addresses",
       "status": "passed",
       "sim_time_ns": 204600.0,
-      "real_time_s": 0.5001091957092285
+      "real_time_s": 0.4985358715057373
     },
     {
       "name": "status_read_clears_protocol_error",
       "status": "passed",
       "sim_time_ns": 41400.0,
-      "real_time_s": 0.10185408592224121
+      "real_time_s": 0.09968113899230957
     },
     {
       "name": "program_full_sequence",
       "status": "passed",
       "sim_time_ns": 96100.0,
-      "real_time_s": 0.2413620948791504
+      "real_time_s": 0.2395927906036377
     },
     {
       "name": "decoder_onehot_all_indices",
       "status": "passed",
       "sim_time_ns": 3505399.9999999995,
-      "real_time_s": 8.924542903900146
+      "real_time_s": 8.788953065872192
     },
     {
       "name": "pulse_width_cycle_counts",
       "status": "passed",
       "sim_time_ns": 355150.0,
-      "real_time_s": 0.9046938419342041
+      "real_time_s": 0.8854100704193115
     },
     {
       "name": "read_settle_cycle_count_and_data",
       "status": "passed",
       "sim_time_ns": 83100.0,
-      "real_time_s": 0.20278596878051758
+      "real_time_s": 0.20633816719055176
     },
     {
       "name": "read_while_armed_rejected",
       "status": "passed",
       "sim_time_ns": 41400.0,
-      "real_time_s": 0.10462307929992676
+      "real_time_s": 0.10520601272583008
     },
     {
       "name": "fire_unarmed_rejected",
       "status": "passed",
       "sim_time_ns": 86200.0,
-      "real_time_s": 0.2155442237854004
+      "real_time_s": 0.20995497703552246
     },
     {
       "name": "fire_with_other_command_bytes_never_pulses",
       "status": "passed",
       "sim_time_ns": 211600.0,
-      "real_time_s": 0.5525341033935547
+      "real_time_s": 0.5414719581604004
     },
     {
       "name": "fire_while_busy_rejected",
       "status": "passed",
       "sim_time_ns": 121400.0,
-      "real_time_s": 0.3121609687805176
+      "real_time_s": 0.30428099632263184
     },
     {
       "name": "bad_frame_length_sets_protocol_error",
       "status": "passed",
       "sim_time_ns": 239000.0,
-      "real_time_s": 0.590918779373169
+      "real_time_s": 0.5795280933380127
     },
     {
       "name": "truncated_and_overlong_writes_do_not_commit",
       "status": "passed",
       "sim_time_ns": 82200.0,
-      "real_time_s": 0.20020699501037598
+      "real_time_s": 0.20162701606750488
     },
     {
       "name": "overlong_fire_frame_never_pulses",
       "status": "passed",
       "sim_time_ns": 70600.0,
-      "real_time_s": 0.1832718849182129
+      "real_time_s": 0.17819786071777344
     },
     {
       "name": "arm_timeout_expires",
       "status": "passed",
       "sim_time_ns": 277400.0,
-      "real_time_s": 0.7248461246490479
+      "real_time_s": 0.7044737339019775
     },
     {
       "name": "arm_timeout_boundary",
       "status": "passed",
       "sim_time_ns": 3987500.0,
-      "real_time_s": 10.538381814956665
+      "real_time_s": 10.225019216537476
     }
   ],
   "coverage": null,
@@ -146,12 +146,12 @@
     "results_xml": {
       "path": "verification/cocotb/.klt/sdf/results_icarus.xml",
       "scope": "repo",
-      "sha256": "sha256:5e5fdad5e40b45a3ca7f71644cc6e02144204101faadd52012794e89e149e7d3"
+      "sha256": "sha256:18b82ccf321eeef5f0eff7251027b0cbd99d9e6fa13d4503560d0e5d2bf7be8f"
     },
     "test_log": {
       "path": "verification/cocotb/.klt/sdf/test_icarus.log",
       "scope": "repo",
-      "sha256": "sha256:5ac3df1b6660770411fc24890e74c997b78e08cff9e7bd2617dc107bdc343d91"
+      "sha256": "sha256:7252a3a6f08dd42a881de2b6d757daa00bf0488553b9259674125474fe7dad18"
     },
     "build_log": {
       "path": "verification/cocotb/.klt/sdf/build_icarus.log",

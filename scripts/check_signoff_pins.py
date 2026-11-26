@@ -63,6 +63,20 @@ def _input_ref(envelope: dict) -> str | None:
     return None
 
 
+def verify_routed_sdf(citation: dict, report: dict, sdf: Path | None = None) -> None:
+    """Bind the simulator's normalized SDF to the reviewed STA output digest."""
+    expected = citation.get("sdf_sha256")
+    if not isinstance(expected, str) or not re.fullmatch(r"[0-9a-f]{64}", expected):
+        raise ValueError("missing or malformed SDF pin in signoff/manifest.json")
+    reported = report.get("provenance", {}).get("sdf_sha256")
+    if reported != expected:
+        raise ValueError(f"reported SDF digest {reported} differs from the pin {expected}")
+    if sdf is not None:
+        actual = hashlib.sha256(sdf.read_bytes()).hexdigest()
+        if actual != expected:
+            raise ValueError(f"normalized SDF {sdf} hashes to {actual}, expected {expected}")
+
+
 def _functional_source_hash(root: Path, envelope: dict, order: list) -> str:
     """Replay the producer's path-sorted multi-source hash, including PDK model pins."""
     sources = envelope.get("environment", {}).get("sources", [])
@@ -144,6 +158,11 @@ def _check_evidence(root: Path, manifest: dict,
         if not isinstance(recorded, str):
             errs.append(f"{where}: {part['file']} records no provenance.input.content_hash")
             continue
+        if row == "7.digital":
+            try:
+                verify_routed_sdf(part, envelope)
+            except ValueError as exc:
+                errs.append(f"{where}: {exc}")
         if "source_hash_order" in part:
             if envelope.get("engine") != "icarus" or not envelope.get("testbench"):
                 errs.append(f"{where}: source_hash_order requires a functional report")

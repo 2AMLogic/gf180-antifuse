@@ -91,6 +91,22 @@ def build_tree(td, gds_bytes=b"gds-bytes", evidence=None, supporting=None) -> Pa
 
 
 class FunctionalSourceTests(unittest.TestCase):
+    def test_sdf_pin_binds_both_simulator_provenance_and_fresh_timing_bytes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            sdf = Path(directory) / "routed.sdf"
+            sdf.write_bytes(b"(DELAYFILE)")
+            digest = hashlib.sha256(sdf.read_bytes()).hexdigest()
+            pin = {"sdf_sha256": digest}
+            report = {"provenance": {"sdf_sha256": digest}}
+            csp.verify_routed_sdf(pin, report, sdf)
+            report["provenance"]["sdf_sha256"] = "0" * 64
+            with self.assertRaisesRegex(ValueError, "reported SDF digest"):
+                csp.verify_routed_sdf(pin, report)
+            report["provenance"]["sdf_sha256"] = digest
+            sdf.write_bytes(b"(changed timing)")
+            with self.assertRaisesRegex(ValueError, "normalized SDF"):
+                csp.verify_routed_sdf(pin, report, sdf)
+
     def test_combined_pin_binds_local_source_and_both_external_models(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
