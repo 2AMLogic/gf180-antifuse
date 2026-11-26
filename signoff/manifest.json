@@ -4,7 +4,7 @@
   "evidence": {
     "2.analog": {
       "file": "layout/array_32x32/layout.attest.json",
-      "content_hash": "sha256:c42e0c25a02217d9106e6a87c2d8d11cd584ade477f21dc6abf87ff7f65b2fe6"
+      "content_hash": "sha256:7aca07104fcc644950bdacc48dff0416ec7b671bfb38616a17452571c885a0c5"
     },
     "2.digital": {
       "file": "rtl/pnr/antifuse_digital_top.attest.json",

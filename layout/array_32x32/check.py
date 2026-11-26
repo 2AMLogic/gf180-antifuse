@@ -135,7 +135,7 @@ def probe(path, fault=None):
     if seen != expected_instances:
         raise ValueError("Incomplete set of selector and array instances")
     opens = {net for net, values in connections.items() if len(values) != 1}
-    if opens != ({"CSEL_7"} if fault == "open" else set()):
+    if opens != ({"CSEL_7"} if fault in ("open", "bridge-open") else set()):
         raise ValueError(f"Unexpected disconnected address/supply nets: {sorted(opens)}")
     by_island = defaultdict(set)
     for name, islands in connections.items():
@@ -159,6 +159,19 @@ def fault_copy(source, kind, sites, dest):
         cut = db.Box(x - 400, y - 400, x + 400, y + 400)
         shapes.clear()
         shapes.insert(original - db.Region(cut))
+    elif kind == "bridge-open":
+        # Cut the near-source M5 jumper on the column-select input.
+        port = sites["CSEL_7"]
+        shapes = top.shapes(layout.layer(81, 0))
+        jumps = [shape.bbox() for shape in shapes.each()
+                 if shape.bbox().center().x == port.x and shape.bbox().height() == 2500
+                 and shape.bbox().width() == 500 and shape.bbox().top < port.y]
+        jumper, = jumps
+        middle = jumper.center().y
+        cut = db.Box(jumper.left, middle - 100, jumper.right, middle + 100)
+        original = db.Region(shapes)
+        shapes.clear()
+        shapes.insert(original - db.Region(cut))
     elif kind in ("XPC_11", "Xregion_III"):
         inst, = [entry for entry in top.each_inst() if entry.property(1) == kind]
         offset = db.Vector(0, round(3000 / layout.dbu))
@@ -174,8 +187,10 @@ def fault_copy(source, kind, sites, dest):
         inst.cplx_trans = transform
     elif kind == "short":
         a, b = sites["RSEL_0"], sites["RSEL_1"]
-        x = max(a.x, b.x) + round(5 / layout.dbu)
-        top.shapes(layout.layer(81, 0)).insert(db.Box(x-250, min(a.y,b.y), x+250, max(a.y,b.y)))
+        # Join the two M5 landing pads along their adjacent channel rows.
+        shapes = top.shapes(layout.layer(81, 0))
+        shapes.insert(db.Box(min(a.x, b.x)-250, a.y-250, max(a.x, b.x)+250, a.y+250))
+        shapes.insert(db.Box(b.x-250, min(a.y,b.y)-250, b.x+250, max(a.y,b.y)+250))
     else:
         raise ValueError(f"Unknown physical control {kind}")
     options = db.SaveLayoutOptions()
@@ -188,7 +203,7 @@ def main():
     sites, count = probe(source)
     print(f"75 pins, 256 selector macros, three complete memory regions, {count} distinct interface nets")
     with tempfile.TemporaryDirectory() as tmp:
-        for kind in ("open", "short"):
+        for kind in ("open", "bridge-open", "short"):
             fault = Path(tmp) / (kind + ".gds")
             fault_copy(source, kind, sites, fault)
             probe(fault, kind)

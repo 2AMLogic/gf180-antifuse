@@ -181,15 +181,42 @@ def draw(destination):
                 endpoints[net].append((lane, y))
     if not set(public) <= endpoints.keys():
         raise ValueError("A row, column or supply terminal has no endpoint")
+    # A break in a gate's long M4 escape limits the gate area exposed before
+    # M5 deposition. Select a short M5 bridge clear of the imported geometry.
+    existing_m5 = db.Region(top.begin_shapes_rec(layout.layer(81, 0))).merged()
+
+    def route_gate_escape(x, start, end):
+        bridge_y = start + 1.0
+        while bridge_y + 2.0 < end:
+            # Half-width 0.25 µm plus 0.31 µm clearance to existing top metal.
+            keepout = db.DBox(x - 0.56, bridge_y - 0.56, x + 0.56, bridge_y + 2.56)
+            if existing_m5.interacting(db.Region(keepout.to_itype(layout.dbu))).is_empty():
+                wire(46, x, start, x, bridge_y)
+                meet_m4(81, x, bridge_y)
+                wire(81, x, bridge_y, x, bridge_y + 2.0)
+                meet_m4(81, x, bridge_y + 2.0)
+                wire(46, x, bridge_y + 2.0, x, end)
+                return
+            bridge_y += 1.0
+        raise ValueError(f"No clear Metal5 bridge on lane {x} between {start} and {end}")
+
     channel_y = top.dbbox().top + 5
     for i, (net, points) in enumerate(sorted(endpoints.items())):
         y = channel_y + 1.25 * i
         xs = [x for x, _ in points]
+        gate = net.startswith(("RSEL_", "CSEL_", "WL_", "CG_", "RGB_", "CGB_"))
+        channel_metal = 42 if gate else 81
         for x, start in points:
-            wire(46, x, start, x, y)
-            meet_m4(81, x, y)
-        # A private output with a single lane still needs the minimum top-metal area.
-        wire(81, min(xs), y, max(max(xs), min(xs) + 0.75), y)
+            if gate and y - start > 12.0:
+                route_gate_escape(x, start, y)
+            else:
+                wire(46, x, start, x, y)
+            meet_m4(channel_metal, x, y)
+        wire(channel_metal, min(xs), y, max(max(xs), min(xs) + 0.75), y)
+        if gate and net in public:
+            # Preserve the M5 port while keeping the long horizontal route on M3.
+            meet_m4(81, min(xs), y)
+            wire(81, min(xs), y, min(xs) + 0.75, y)
         if net in public:
             top.shapes(layout.layer(81, 10)).insert(db.DText(net, min(xs), y))
     references.append(".ends")
