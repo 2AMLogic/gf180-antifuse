@@ -10,7 +10,7 @@ permissions:
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   check:
@@ -24,6 +24,12 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Install runtime libraries and KLayout
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends klayout libcairo2 libx11-6 \
+            libxcb1 libxpm4 libxrender1 libxft2 libxss1 libtcl8.6 libtk8.6
+
       - name: Restore schematic and simulation tools
         id: eda-cache
         uses: actions/cache@v4
@@ -35,7 +41,6 @@ jobs:
         if: steps.eda-cache.outputs.cache-hit != 'true'
         working-directory: ${{ runner.temp }}
         run: |
-          sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends bison flex libcairo2-dev libx11-dev libxcb1-dev libxpm-dev libxrender-dev tcl-dev tk-dev
           prefix="$HOME/.local/antifuse-eda"
           curl -fsSL --retry 3 https://codeload.github.com/StefanSchippers/xschem/tar.gz/92dd8fe5f4d5c1057489710d8a22f18fdc9d7ed0 -o xschem.tar.gz
@@ -64,8 +69,6 @@ jobs:
 
       - name: Check repository and signoff evidence
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends klayout
           npm run check:ci
           ./signoff/verify.sh
 
