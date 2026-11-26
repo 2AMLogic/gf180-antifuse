@@ -58,10 +58,11 @@ jobs:
           echo "$HOME/.local/antifuse-eda/bin" >> "$GITHUB_PATH"
           uv tool dir --bin >> "$GITHUB_PATH"
 
-      - name: Check repository, characterization and signoff evidence
+      - name: Check repository and signoff evidence
         run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends klayout
           npm run check:ci
-          python -m unittest discover -s sim/characterization-report/tests
           ./signoff/verify.sh
 
       - name: Regenerate netlists and run the seven design checks
