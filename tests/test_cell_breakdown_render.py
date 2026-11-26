@@ -53,5 +53,18 @@ class GoldenRecord(unittest.TestCase):
         self.assertEqual(golden, out)
 
 
+class ConvergenceRecord(unittest.TestCase):
+    def test_each_runner_uses_its_own_device_rating(self):
+        rid = "20261013-235220-dd70803"
+        first_rating = RE.M.ACCESS_RATING_V[1]
+        second = _load()
+        with mock.patch.dict(second.M.ACCESS_RATING_V, {1: 12.345}):
+            for runner, rating in ((RE, first_rating), (second, 12.345)):
+                with self.subTest(rating=rating):
+                    results = runner.results_from_reports(BY_N[1], rid, PARAMS, base_dir=CORNERS / rid)
+                    record = runner.render_any(PDK, BY_N[1], rid, results, PARAMS, None, None)
+                    self.assertIn(f"Access-device rating {rating:g} V ", record)
+
+
 if __name__ == "__main__":
     unittest.main()
