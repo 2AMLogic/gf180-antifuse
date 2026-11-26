@@ -529,14 +529,16 @@ def check_keep_clear(paths: dict[str, list], width_um: float, margin_um: float) 
 
 
 def build_connectivity(rows: list[dict],
-                       pads: list[dict]) -> tuple[list[dict], dict[str, dict]]:
+                       pads: list[dict]) -> tuple[list[dict], dict[str, dict], dict]:
     """The full net list: 31 straight plate routes + the shared/tie bundles
     with explicitly waypointed legs. Returns (connectivity entries, paths for
-    the keep-clear assertion)."""
+    the keep-clear assertion, the escape-direction overrides for the pins the
+    low-end pad legs leave from)."""
     global PADS
     PADS = pads
     nets: list[dict] = []
     paths: dict[str, dict[str, list]] = {}
+    facing: dict[tuple[str, str], int] = {}
 
     # -- private plates: one straight Metal5 run per instance, pad-y aligned --
     for row in rows:
@@ -603,6 +605,7 @@ def build_connectivity(rows: list[dict],
                 "to_pin": pad_ref,
                 "waypoints_um": [[climb_x, y_join], [trunk_x, y_join]],
             })
+            facing[(near[0]["name"], port)] = NEAR_PIN_FACING
             segs += [_seg(near[1][0], near[1][1], climb_x, near[1][1]),
                      _seg(climb_x, near[1][1], climb_x, y_join),
                      _seg(climb_x, y_join, trunk_x, y_join),
@@ -665,7 +668,7 @@ def build_connectivity(rows: list[dict],
     ])
 
     check_keep_clear(paths, BUNDLE_WIDTH_UM, margin_um=3.0)
-    return nets, paths
+    return nets, paths, facing
 
 
 # --- request assembly -------------------------------------------------------
@@ -787,17 +790,7 @@ def compose_request(rows: list[dict], pads: list[dict],
                                 "ports": ports}})
         order.append(strip_id)
         origins[strip_id] = {"x": 0.0, "y": 0.0}
-    facing = {}
-    for net, (role, trunk_x, connect_at) in BUNDLE_NETS.items():
-        if connect_at != "low":
-            continue
-        port = net.split("_")[0]
-        pins = instance_ports(rows, port)
-        pins = [(r, pt) for r, pt in pins
-                if r["group"] == GROUP_OF_NET[net] and r["origin"][0] == COL_X_LEFT]
-        assert pins, net
-        pins.sort(key=lambda rp: rp[1][1])
-        facing[(pins[0][0]["name"], port)] = NEAR_PIN_FACING
+    nets, _, facing = build_connectivity(rows, pads)
     for row in rows:
         if row["placed"] and row["origin"][0] == COL_X_LEFT:
             facing[(row["name"], "VB")] = SUBSTRATE_FACING
@@ -837,7 +830,6 @@ def compose_request(rows: list[dict], pads: list[dict],
     origins["substrate_tap_c3"] = {"x": round(br["tap_x"] - 0.5, 4),
                                    "y": round(br["tap_y"] - 0.5, 4)}
 
-    nets, _ = build_connectivity(rows, pads)
     out = workdir / "run3_top.gds"
     req = {
         "schema": "klt.gen_compose.request/1",

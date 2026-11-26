@@ -44,10 +44,11 @@ class Run3TopAssemblyTest(unittest.TestCase):
             json.loads((ROOT / "layout" / "run3_top" / "pad_table.json").read_text())
         )
         cls.rows = asm.build_placement()
-        _, cls.paths = asm.build_connectivity(cls.rows, cls.pads)
+        _, cls.paths, _ = asm.build_connectivity(cls.rows, cls.pads)
         with tempfile.TemporaryDirectory() as tmp, mock.patch.object(
                 asm.subprocess, "run", return_value=mock.Mock(returncode=0)):
             request, _ = asm.compose_request(cls.rows, cls.pads, Path(tmp))
+        cls.request = request
         cls.nets = request["connectivity"]
         cls.block_ports = {
             block["id"]: [port["name"] for port in block["cell"]["ports"]]
@@ -163,6 +164,28 @@ class Run3TopAssemblyTest(unittest.TestCase):
             for leg in net.get("legs", []):
                 self.assertIn(leg["from_pin"], net["pins"], net["net"])
                 self.assertIn(leg["to_pin"], net["pins"], net["net"])
+
+    def test_low_end_pad_leg_source_faces_down_its_climb(self):
+        directions = {(block["id"], port["name"]): port["direction_deg"]
+                      for block in self.request["blocks"]
+                      for port in block["cell"]["ports"]}
+        low = sorted(net for net, (_role, _tx, connect_at)
+                     in asm.BUNDLE_NETS.items() if connect_at == "low")
+        self.assertEqual(low, ["BL_C1_A2x", "BL_C1_Amin", "BL_C2_Amin",
+                               "WL_C1_A2x", "WL_C1_Amin", "WL_C2_Amin"])
+        by_net = {n["net"]: n for n in self.nets}
+        for net in low:
+            with self.subTest(net=net):
+                pad_refs = [pin for pin in by_net[net]["pins"]
+                            if pin["block"] in asm.PADRING_STRIPS]
+                self.assertEqual(len(pad_refs), 1)
+                pad_legs = [leg for leg in by_net[net]["legs"]
+                            if leg["to_pin"] == pad_refs[0]]
+                self.assertEqual(len(pad_legs), 1)
+                source = pad_legs[0]["from_pin"]
+                self.assertEqual(
+                    directions[(source["block"], source["port"])],
+                    asm.NEAR_PIN_FACING, source)
 
     def test_wl_clamps_deferred_substrate_tap_drawn(self):
         # The WL antenna remedy is evaluated but NOT drawn (deferred to the
