@@ -5,6 +5,8 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-27
 
+- **Issue #577** (closed): HV pad --smoke exits successfully when ngspice reports a corner error
+- **PR #579**: fix: return nonzero exit status from HV pad smoke on failed corners
 - **Issue #575** (closed): Split sim/hv-pad-protection/run_experiment.py (385 LOC) into model, render, and CLI modules and remove dead code
 - **PR #576**: refactor(sim): extract the HV pad model and record renderer
 - **Issue #568** (closed): Name the klt release that reproduces the committed Run 3 GDS in the assembler's --check
