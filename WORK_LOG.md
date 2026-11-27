@@ -5,6 +5,9 @@ Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 ### 2026-11-26
 
+- **Issue #566** (closed): Use the routed bundle pin to set its escape direction in the Run 3 assembler
+- **PR #569**: refactor: derive the Run 3 near-pin facing from the bundle pad leg
+- **PR #567**: Clear the full-array GF180D density findings on the addressed macro
 - **PR #565**: Clear the addressed antifuse array’s 948 gate antenna findings
 - **Issue #563** (closed): Derive Run 3 bundle landing patches from the drawn pad coordinates
 - **PR #564**: refactor: read the Run 3 bundle pad x from the drawn pad records
