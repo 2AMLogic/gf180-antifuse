@@ -248,6 +248,8 @@ bound is 0.40 (n = 4) and 0.48 (n = 5); anything weaker than a clean sweep
 widens the interval correspondingly (the interval is computed per record, not
 looked up). The count does not support per-cell tail or Weibull-slope claims;
 tighter statistics need an array or more pads (out of scope).
+See `spec/tddb-weibull-plan-proposed.md` §7 (PROPOSED) for the decision on a
+constant-voltage hold and the instance count a slope would need.
 
 ## 9. Variant deltas
 
