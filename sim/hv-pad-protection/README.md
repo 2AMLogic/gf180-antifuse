@@ -44,13 +44,20 @@ codes mean a device passed a cited limit; `function:` codes mean the cell did no
 see the intended voltage or its programmed state is wrong (programs iff
 level >= V_bd).
 
+## Layout
+
+- [`model.py`](model.py) defines the benches and pad levels, builds SPICE decks and `klt sim` requests, and collects graded corner results.
+- [`verdicts.py`](verdicts.py) applies the rating and function limits to each corner.
+- [`render.py`](render.py) formats graded results into Markdown records.
+- [`run_experiment.py`](run_experiment.py) runs the fleet, smoke and saved-report commands and exposes the model and rendering helpers to library callers.
+
 ## Running
 
 ```
 python3 sim/hv-pad-protection/run_experiment.py --candidates 1,2,3   # batch fleet, 10-11 benches x 45 corners per candidate
 python3 sim/hv-pad-protection/run_experiment.py --smoke 2:cx_f       # ONE local corner, debug only, records nothing
 python3 sim/hv-pad-protection/run_experiment.py --check RECORD_ID --candidates N   # re-apply verdicts.py to a saved run
-python3 -m pytest tests/test_hv_pad_protection.py                    # rules + deck generation, no simulator
+python3 -I -m unittest discover -s tests -p test_hv_pad_protection.py -q   # offline rules, decks and records
 ```
 
 A failed submit writes `submit-error.txt` and no fallback local grid is run.

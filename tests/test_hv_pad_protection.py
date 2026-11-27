@@ -1,22 +1,21 @@
-"""Rules and deck generation of sim/hv-pad-protection (issue #210). unittest; also runs under pytest. No simulator."""
+"""Offline checks for the HV pad protection model, grading rules and record renderer."""
 
 from __future__ import annotations
 
+import inspect
 import sys
 import unittest
 from pathlib import Path
 
 SIM = Path(__file__).resolve().parent.parent / "sim"
 sys.path.insert(0, str(SIM))
-sys.path.insert(0, str(SIM / "hv-pad-protection"))
 
-import verdicts as V  # noqa: E402
+from harness import numfmt  # noqa: E402
 from harness.modload import load_module  # noqa: E402
 
-
-def _runner():
-    return load_module(SIM / "hv-pad-protection" / "run_experiment.py", "hv_pad_run")
-
+PAD = SIM / "hv-pad-protection"
+RUN = load_module(PAD / "run_experiment.py", "hv_pad_run")
+V = RUN.V
 
 GOOD = {"vox_max": 15.1, "ifil_max": 1.2e-3}
 
@@ -77,9 +76,7 @@ class RuleTests(unittest.TestCase):
 
 
 class RunnerTests(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls.r = _runner()
+    r = RUN
 
     def test_levels_and_vbd_follow_the_assumed_params(self):
         r = self.r
@@ -109,6 +106,81 @@ class RunnerTests(unittest.TestCase):
                             self.assertEqual(len(cards), 1, (n, name, node))
                     self.assertEqual(("XPD PAD PL 0 hv_pad_ballast" in text), (bd["path"] == "ballast"))
         self.assertIsNotNone(pdk)
+
+
+class FacadeTests(unittest.TestCase):
+    def test_public_model_and_render_names_are_discoverable(self):
+        names = dir(RUN)
+        for module in (RUN.M, RUN.RENDER):
+            for name in dir(module):
+                if not name.startswith("_"):
+                    self.assertIn(name, names)
+                    self.assertTrue(hasattr(RUN, name), name)
+        self.assertIs(RUN.RENDER.M, RUN.M)
+        self.assertIs(RUN.corner_id, RUN.M.corner_id)
+        self.assertIs(RUN.render_bench, RUN.RENDER.render_bench)
+        with self.assertRaises(AttributeError):
+            getattr(RUN, "missing_pad_helper")
+
+    def test_retired_plumbing_and_shared_deck_formatter(self):
+        self.assertFalse(hasattr(RUN, "shutil"))
+        self.assertFalse(hasattr(V, "JUNCTION_BV"))
+        self.assertNotIn("defs", inspect.signature(RUN.render).parameters)
+        self.assertEqual(list(inspect.signature(RUN.render_bench).parameters), ["a", "bench", "rows"])
+        self.assertIs(RUN.fnum, numfmt.fmt)
+
+
+class RecordTests(unittest.TestCase):
+    cand = next(c for c in RUN.CHAR.CANDIDATES if c.n == 3)
+    rid = "20261117-053800-d84a86d"
+
+    def test_collect_preserves_failed_corners_and_normalizes_measurements(self):
+        c = {"process": "ss", "temperature_c": -39.99, "supply_v": {"vamp": -8.69}}
+        vals = {"vox_max": 8.0, "ifil_max": 1e-3}
+        report = {"corners": [
+            {**c, "status": "pass", "measurements": [{"name": k.upper(), "value": v} for k, v in vals.items()]},
+            {**c, "process": "typical", "status": "pass", "measurements": [
+                {"name": "vox_max", "value": 5.0}, {"name": "ifil_max", "value": 0.0}]},
+            {**c, "process": "ff", "status": "timeout", "measurements": [{"name": "vox_max", "value": 20.0}]},
+        ]}
+        self.assertEqual(RUN.corner_id(c), "ss_-40c_pl-8p69v")
+        rows = RUN.collect(report, RUN.bench_defs(3)["cx_f"], self.cand, 7.9)
+        self.assertEqual(rows, [
+            {"cid": "ss_-40c_pl-8p69v", "level": -8.69, "status": "pass", "vals": vals, "codes": []},
+            {"cid": "typical_-40c_pl-8p69v", "level": -8.69, "status": "pass",
+             "vals": {"vox_max": 5.0, "ifil_max": 0.0}, "codes": ["function:cell-voltage-short", "function:program-state"]},
+            {"cid": "ff_-40c_pl-8p69v", "level": -8.69, "status": "timeout", "vals": {"vox_max": 20.0},
+             "codes": ["error:timeout"]},
+        ])
+        lines = []
+        RUN.render_bench(lines.append, "cx_f", rows)
+        self.assertIn("| -8.69 | 2/3 | 1/2 | 8 | 0.001 | `error:timeout` x1; "
+                      "`function:cell-voltage-short` x1; `function:program-state` x1 |", lines)
+
+    def test_render_matches_committed_astd_record(self):
+        # Offline table fixture: repeat the published maxima for the nine corners at each level.
+        maxima = [
+            (0.983, 0.00374, 9.83e-10, 4.83e-11, 0.0321),
+            (1.01,  0.00439, 1.01e-9,  6.77e-11, 0.0673),
+            (1.02,  0.00449, 1.02e-9,  5.02e-11, 0.0751),
+            (1.02,  0.00452, 1.02e-9,  5.31e-11, 0.079),
+            (1.07,  0.00503, 1.07e-9,  2.64e-11, 0.168),
+        ]
+        levels = RUN.levels(self.cand, 7.9)
+        rows = []
+        for level, (voltage, ipad, ifil, idvdd, idvss) in zip(levels, maxima):
+            vals = dict(vpad_max=voltage, vpl_max=voltage, vox_max=voltage, ipad_max=ipad,
+                        ifil_max=ifil, idvdd_hold=idvdd, idvss_hold=idvss)
+            codes = V.check_corner("astd", level, 7.9, 3, vals)
+            rows.extend([dict(level=level, status="pass", vals=vals, codes=codes)] * 9)
+        record = RUN.render(self.rid, self.cand, 7.9, levels, {"astd_f": rows}, False)
+        self.assertEqual(record.encode(), (PAD / "records" / f"{self.rid}.md").read_bytes())
+
+    def test_explicit_provenance_and_failed_submission(self):
+        record = RUN.render(self.rid, self.cand, 7.9, RUN.levels(self.cand, 7.9),
+                            {"cx_f": "submit failed: offline"}, True, git_sha="abc1234")
+        self.assertIn("- **Git**: `abc1234` (working tree dirty at run time)\n", record)
+        self.assertTrue(record.endswith("#### `cx_f`\n\nNO RESULT: submit failed: offline\n\n"))
 
 
 if __name__ == "__main__":

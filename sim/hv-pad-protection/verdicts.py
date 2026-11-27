@@ -25,10 +25,6 @@ STD_PAD_MAX_V = 5.5
 # Exceeding it is reported as a rating-unverified flag, not a proven failure.
 BALLAST_AREA_V = 6.0
 
-# Junction breakdown knees `bv` of the PDK diode models
-# (libs.tech/ngspice/sm141064.ngspice, `.model` lines).
-JUNCTION_BV = {"nd2ps": 11.0, "nw2ps": 14.0, "dw2ps": 30.48, "pd2nw": 10.5}
-
 # Rated oxide voltage of the cell capacitor per candidate
 # (spec/cell-candidates.md), the no-disturb limit for an unprogrammed neighbour.
 CAP_RATED_V = {1: 3.3, 2: 6.0, 3: 3.3}
