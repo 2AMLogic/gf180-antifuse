@@ -16,10 +16,15 @@ derived tables against the committed sources they must agree with.
      port, and the pairwise keep-clear assertion passing (the same assertion
      the assembler hard-fails on before writing a request);
   5. the routing planes: no two bundle nets share a plane where their
-     bounding boxes overlap (BL metal4 / WL metal3 / VB metal2 / PL metal5).
+     bounding boxes overlap (BL metal4 / WL metal3 / VB metal2 / PL metal5);
+  6. --check's release guard (issue #568): the check stops before composing
+     under any klt release but the recorded one, and still byte-compares
+     under it.
 """
 import ast
+import contextlib
 import hashlib
+import io
 import json
 import re
 import sys
@@ -375,6 +380,161 @@ class Run3TopAssemblyTest(unittest.TestCase):
             text.encode("utf-8"),
             (ROOT / "layout/run3_top/lvs_reference_drawn.spice").read_bytes(),
         )
+
+
+class CheckKltReleaseTests(unittest.TestCase):
+    """--check's release guard (issue #568), offline: ``klt --version`` is
+    stubbed and every geometry step is mocked, so no klt is installed and
+    nothing is composed."""
+
+    @classmethod
+    def setUpClass(cls):
+        provenance = json.loads(
+            (ROOT / "layout/run3_top/compose_report.json").read_text()
+        )["provenance"]
+        cls.release = provenance["klt_version"]
+        cls.command = asm.PINNED_CHECK_COMMAND.format(
+            klt_reinstall_spec=provenance["klt_reinstall_spec"])
+
+    def run_check(self, klt_on_path, drift=("", "")):
+        """Run ``main(['--check'])`` with ``klt --version`` answering
+        `klt_on_path` (the version it prints, or an exception it raises) and
+        every geometry step mocked: the chip and the LVS reference regenerate
+        to the committed bytes with `drift[0]` / `drift[1]` appended. Returns
+        (SystemExit's code, or None where main() returns; stdout; the
+        subprocess.run replacement; the compose_request replacement)."""
+        run = (mock.Mock(side_effect=klt_on_path)
+               if isinstance(klt_on_path, Exception)
+               else mock.Mock(return_value=mock.Mock(
+                   returncode=0, stdout=f"klt {klt_on_path}\n", stderr="")))
+        compose = mock.Mock()
+        out = io.StringIO()
+        reference = (ROOT / "layout/run3_top"
+                     / "lvs_reference_drawn.spice").read_text()
+        with tempfile.TemporaryDirectory() as tmp:
+            composed = Path(tmp) / "run3_top.gds"
+            composed.write_bytes(
+                (ROOT / "layout/run3_top/run3_top.gds").read_bytes()
+                + drift[0].encode())
+            compose.return_value = ({}, composed)
+            with mock.patch.object(sys, "argv",
+                                   ["assemble_run3_top.py", "--check"]), \
+                    mock.patch.object(asm.subprocess, "run", run), \
+                    mock.patch.multiple(
+                        asm,
+                        compose_request=compose,
+                        run_klt_compose=mock.Mock(return_value="{}"),
+                        assert_composed=mock.Mock(return_value={"blocks": []}),
+                        apply_mt1_fixup=mock.Mock(),
+                        fill_density=mock.Mock(return_value=composed),
+                        emit_lvs_reference=mock.Mock(
+                            return_value=reference + drift[1])), \
+                    contextlib.redirect_stdout(out):
+                try:
+                    asm.main()
+                except SystemExit as e:
+                    code = e.code
+                else:
+                    code = None
+        return code, out.getvalue(), run, compose
+
+    def assert_stopped_before_composing(self, reported, *diagnostic):
+        """The check exited nonzero naming the recorded release, `reported`
+        and the pinned command, composed nothing (the version probe is the
+        only subprocess it launched), and gave no drift report."""
+        code, out, run, compose = self.run_check(reported)
+        self.assertNotIn(code, (None, 0))
+        for text in ("wrong klt release", f"`klt {self.release}`", self.command,
+                     *diagnostic):
+            self.assertIn(text, code)
+        self.assertNotIn("drift", code.lower())
+        self.assertNotIn("rewrite", code.lower())
+        self.assertEqual([c.args[0] for c in run.call_args_list],
+                         [["klt", "--version"]])
+        compose.assert_not_called()
+        self.assertNotIn("DRIFT", out)
+        return code
+
+    def test_check_stops_before_composing_on_a_development_build(self):
+        """The regression case: a development build that shares the recorded
+        release's number is still a different release."""
+        code = self.assert_stopped_before_composing(
+            f"{self.release}.dev111+g978f7464fae1",
+            f"`klt {self.release}.dev111+g978f7464fae1`")
+        self.assertIn("development suffix", code)
+
+    def test_check_stops_on_every_release_but_the_recorded_one(self):
+        """The full reported version is compared -- not a prefix, not the
+        number before a suffix -- and a klt that reports nothing at all
+        (none on PATH here) stops the check the same way."""
+        self.assert_stopped_before_composing("0.9.3.dev5725",
+                                             "`klt 0.9.3.dev5725`")
+        self.assert_stopped_before_composing("0.9.20", "`klt 0.9.20`")
+        self.assert_stopped_before_composing(
+            FileNotFoundError(2, "No such file or directory: 'klt'"),
+            "no klt on PATH")
+
+    def test_check_needs_the_recorded_release_to_compare_against(self):
+        """Without both provenance fields there is no release to verify
+        against: the check stops and says what it could not read, rather
+        than compose or compare under an unverified klt."""
+        valid = {"klt_version": self.release,
+                 "klt_reinstall_spec": f"klayout-tools=={self.release}"}
+        reports = [None, {"klt_version": self.release}]
+        for field in valid:
+            for value in ("", " \t", None, 42):
+                reports.append({**valid, field: value})
+        for provenance in reports:
+            with self.subTest(provenance=provenance):
+                with tempfile.TemporaryDirectory() as tmp:
+                    if provenance is not None:
+                        (Path(tmp) / "compose_report.json").write_text(
+                            json.dumps({"provenance": provenance}))
+                    with mock.patch.object(asm, "HERE", Path(tmp)):
+                        code, out, run, compose = self.run_check(
+                            FileNotFoundError("klt"))
+                    self.assertNotIn(code, (None, 0))
+                    self.assertIn("cannot name the recorded klt release", code)
+                    self.assertIn("klt_reinstall_spec", code)
+                    self.assertNotIn("drift", code.lower())
+                    run.assert_not_called()
+                    compose.assert_not_called()
+                    self.assertEqual(out, "")
+
+    def test_check_compares_the_committed_bytes_under_the_recorded_release(self):
+        """Under the recorded release the guard stands aside: the version
+        probe is the only subprocess, the geometry runs, and both committed
+        artifacts come back OK."""
+        code, out, run, compose = self.run_check(self.release)
+        self.assertIsNone(code)
+        compose.assert_called_once()
+        self.assertEqual([c.args[0] for c in run.call_args_list],
+                         [["klt", "--version"]])
+        self.assertEqual([line.split()[:2] for line in out.splitlines()],
+                         [["OK:", name] for name in asm.ARTIFACTS])
+
+    def test_check_still_fails_on_drifted_content_under_the_recorded_release(self):
+        """A real content difference in either artifact still fails the check
+        with its drift report and rewrite advice -- the path a wrong release
+        is kept from reaching."""
+        for which, name in enumerate(asm.ARTIFACTS):
+            with self.subTest(artifact=name):
+                drift = ["", ""]
+                drift[which] = "\n* drifted"
+                code, out, _run, compose = self.run_check(self.release, drift)
+                compose.assert_called_once()
+                self.assertNotIn(code, (None, 0))
+                self.assertIn(f"DRIFT: {name}: regenerated sha256 ", out)
+                self.assertEqual(
+                    code, "regeneration drifted; run without --check to rewrite")
+
+    def test_pinned_check_command_is_documented(self):
+        """The README's chip assembly section and the module docstring both
+        carry the runnable command the guard names, built from the recorded
+        reinstall spec: a pin bump that misses one fails here."""
+        self.assertIn(self.command,
+                      (ROOT / "layout/run3_top/README.md").read_text())
+        self.assertIn(self.command, asm.__doc__)
 
 
 if __name__ == "__main__":

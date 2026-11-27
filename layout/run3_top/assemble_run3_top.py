@@ -56,8 +56,14 @@ anything.
 Usage:  assemble_run3_top.py            write both artifacts
         assemble_run3_top.py --check    byte-compare vs committed, write nothing
 
-Requires ``klt`` on PATH. Run with ``uvx --from klayout-tools==X.Y.Z klt`` to
-pin. The evidence verbs (``klt drc`` / ``klt lvs`` / ``klt erc``) are run
+Requires ``klt`` on PATH. The committed artifacts are the ``klt 0.9.2`` stream
+(compose_report.json ``provenance.klt_version``); ``--check`` stops under any
+other release -- a development suffix included -- before composing anything.
+Run it from the repository root under the recorded release:
+
+    uvx --from klayout-tools==0.9.2 python -I layout/run3_top/assemble_run3_top.py --check
+
+The evidence verbs (``klt drc`` / ``klt lvs`` / ``klt erc``) are run
 separately; see README.md.
 """
 from __future__ import annotations
@@ -1053,11 +1059,71 @@ def fill_density(gds: Path, pads: list[dict], workdir: Path) -> Path:
     return final
 
 
+PINNED_CHECK_COMMAND = ("uvx --from {klt_reinstall_spec} python -I "
+                        "layout/run3_top/assemble_run3_top.py --check")
+
+
+def recorded_klt_release() -> tuple[str, str]:
+    """(klt_version, klt_reinstall_spec) from the committed compose report's
+    provenance: the release the committed artifacts are the stream of, and
+    the install spec that puts it on PATH."""
+    report = HERE / "compose_report.json"
+    try:
+        provenance = json.loads(report.read_text())["provenance"]
+        for field in ("klt_version", "klt_reinstall_spec"):
+            value = provenance[field]
+            if not isinstance(value, str) or not value.strip():
+                raise ValueError(f"{field} must be a nonblank string")
+        return provenance["klt_version"], provenance["klt_reinstall_spec"]
+    except (OSError, ValueError, KeyError, TypeError) as e:
+        sys.exit(f"cannot name the recorded klt release: --check reads it from "
+                 f"{report}'s provenance.klt_version and "
+                 f"provenance.klt_reinstall_spec ({e!r}); nothing was composed "
+                 f"or compared")
+
+
+def klt_version_on_path() -> str:
+    """The full version the ``klt`` on PATH reports for itself: the rest of
+    ``klt --version``'s first line after the ``klt`` name, a development
+    suffix included. Empty when no version could be read."""
+    try:
+        r = subprocess.run(["klt", "--version"], capture_output=True, text=True)
+    except FileNotFoundError:
+        return ""
+    if r.returncode != 0:
+        return ""
+    first = r.stdout.strip().splitlines()[:1]
+    return first[0].removeprefix("klt").strip() if first else ""
+
+
+def check_klt_release() -> None:
+    """Require the recorded klt release to reproduce the artifact check under
+    the toolchain that generated the committed files (#568). Other builds
+    may produce identical or different bytes for the same request."""
+    version, spec = recorded_klt_release()
+    found = klt_version_on_path()
+    if found == version:
+        return
+    on_path = f"`klt {found}`" if found else "no klt"
+    sys.exit(
+        f"wrong klt release: {on_path} on PATH, but the committed "
+        f"{' and '.join(ARTIFACTS)} were generated with `klt {version}` "
+        f"(compose_report.json provenance.klt_version; the full version is "
+        f"compared, so a development suffix is a different release). Nothing "
+        f"was composed or compared. Rerun the check under the recorded release "
+        f"(provenance.klt_reinstall_spec) from the repository root:\n"
+        f"  {PINNED_CHECK_COMMAND.format(klt_reinstall_spec=spec)}")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--check", action="store_true",
-                    help="byte-compare against the committed artifacts, write nothing")
+                    help="byte-compare against the committed artifacts under "
+                         "the recorded klt release, write nothing")
     args = ap.parse_args()
+
+    if args.check:
+        check_klt_release()
 
     pad_table = json.loads((HERE / "pad_table.json").read_text())
     rows = build_placement()
