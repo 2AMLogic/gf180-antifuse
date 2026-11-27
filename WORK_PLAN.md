@@ -31,14 +31,12 @@ Issues currently being built (`loom:building`).
 
 - **#176**: T1 item 4 (LVS clean, digital partition): klt lvs against the gate-level netlist with power_connectivity
 - **#255**: Measurement plan: constant-voltage time-to-breakdown statistics (Weibull slope, voltage acceleration) and a sub-programming soak
-- **#566**: Use the routed bundle pin to set its escape direction in the Run 3 assembler
 
 ## PRs Awaiting Review
 
 PRs waiting on Judge (`loom:review-requested`).
 
-- **#567**: Clear the full-array GF180D density findings on the addressed macro
-- **#569**: refactor: derive the Run 3 near-pin facing from the bundle pad leg
+_None._
 
 ## Approved (Awaiting Merge)
 
@@ -59,7 +57,6 @@ Issues carrying `loom:curated`.
 - **#316**: Follow-on: establish the foreign-host re-run byte-identity evidence for the shared report scrubber (PR #309 / #285 step 5) *(curated)*
 - **#338**: wafer.space: precheck treatment and foundry conversation on the unmodified nfet_10v0_asym PCell's CO.4/DF.6_MV/PL.4_MV findings (#299) *(curated)*
 - **#558**: run3_top README geometry basis still says the netlist disagrees with the drawn cells until #296 lands *(curated)*
-- **#568**: Name the klt release that reproduces the committed Run 3 GDS in the assembler's --check *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -79,10 +76,10 @@ Issues carrying `loom:curated`.
 | Very important | 0 |
 | Important | 1 |
 | Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 3 |
-| PRs awaiting review | 2 |
+| In Progress (`loom:building`) | 2 |
+| PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 1 |
-| Curated | 10 |
+| Curated | 9 |
 | Architect / Hermit proposals | 2 |
 | Active epics | 2 |
 <!-- guide:plan-body:end -->
