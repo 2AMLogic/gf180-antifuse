@@ -3,6 +3,11 @@
 Merged PRs and closed issues from the last 30 days at the first Guide snapshot.
 
 
+### 2026-11-27
+
+- **Issue #568** (closed): Name the klt release that reproduces the committed Run 3 GDS in the assembler's --check
+- **PR #571**: fix: stop run3_top --check under the wrong klt release
+
 ### 2026-11-26
 
 - **Issue #566** (closed): Use the routed bundle pin to set its escape direction in the Run 3 assembler
