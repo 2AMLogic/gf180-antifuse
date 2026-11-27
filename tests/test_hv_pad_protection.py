@@ -2,10 +2,15 @@
 
 from __future__ import annotations
 
+import contextlib
 import inspect
+import io
+import os
 import sys
+import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 SIM = Path(__file__).resolve().parent.parent / "sim"
 sys.path.insert(0, str(SIM))
@@ -106,6 +111,33 @@ class RunnerTests(unittest.TestCase):
                             self.assertEqual(len(cards), 1, (n, name, node))
                     self.assertEqual(("XPD PAD PL 0 hv_pad_ballast" in text), (bd["path"] == "ballast"))
         self.assertIsNotNone(pdk)
+
+    def test_smoke_propagates_corner_status_and_prints_diagnostics(self):
+        cases = [
+            ("pass", {"corners": [{"status": "pass", "measurements": [{"name": "vox_max", "value": 1.02}]}]},
+             0, ("pass", "{'vox_max': 1.02}")),
+            ("error", {"corners": [{"status": "error", "measurements": [],
+                                    "diagnostics": [{"code": "engine_aborted"}]}]},
+             1, ("error", "{}", "engine_aborted")),
+            ("timeout", {"corners": [{"status": "timeout", "measurements": [{"name": "vox_max", "value": None}],
+                                      "diagnostics": [{"code": "wall_timeout"}]}]},
+             1, ("timeout", "{'vox_max': None}", "wall_timeout")),
+            ("empty", {"corners": []}, 1, ("smoke FAILED:",)),
+        ]
+        for label, report, expected_rc, fragments in cases:
+            with self.subTest(case=label), tempfile.TemporaryDirectory() as td:
+                out = io.StringIO()
+                run_klt = mock.Mock(return_value=(report, ""))
+                with mock.patch.dict(os.environ, {}, clear=False), \
+                        mock.patch.object(self.r, "REPO_ROOT", Path(td)), \
+                        mock.patch.object(self.r.CB.K, "run_klt", run_klt), \
+                        contextlib.redirect_stdout(out):
+                    rc = self.r.main(["--smoke", "3:astd_f"])
+                self.assertEqual(rc, expected_rc)
+                run_klt.assert_called_once()
+                printed = out.getvalue()
+                for fragment in fragments:
+                    self.assertIn(fragment, printed)
 
 
 class FacadeTests(unittest.TestCase):

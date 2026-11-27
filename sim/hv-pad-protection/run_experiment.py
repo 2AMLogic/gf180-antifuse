@@ -79,12 +79,12 @@ def smoke(spec: str) -> int:
     req.pop("batch", None)
     (work / "request.json").write_text(json.dumps(req))
     report, err = M.CB.K.run_klt(work / "request.json", work / "out", "local", klt_cmd=M.CB.KLT_CMD)
-    if report is None or "corners" not in report:
+    if report is None or not report.get("corners"):
         print("smoke FAILED:", err or report)
         return 1
     c = report["corners"][0]
     print(c["status"], {m["name"]: m["value"] for m in c["measurements"]}, c.get("diagnostics"))
-    return 0
+    return 0 if c["status"] == "pass" else 1
 
 
 def check(rid: str, cand_ns: list[int]) -> int:
